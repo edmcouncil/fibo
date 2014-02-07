@@ -1,2 +1,2 @@
-FIBO
+FIBO Financial Industry Business Ontology
 ====
