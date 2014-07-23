@@ -4,6 +4,9 @@ Documentation of the FIBO Development & Test Environment
 
 ## Introduction
 
+We are in the process of setting up the FIBO Development & Test Environment.
+
+Progress on actual technical steps can be followed here: [progress.md](progress.md)
 ## Amazon AWS
 
 The Amazon AWS primary management console can be reached at: https://322861261923.signin.aws.amazon.com/console
