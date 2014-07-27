@@ -27,9 +27,12 @@ Service\ Name | Description | Purpose
 
 ### IAM
 
-In IAM there is currently one userid defined: `jgeluk`.
-Dean Allemang will be the 2nd AWS user.
 In the very near future, a userid and group allocation plan needs to be devised and documented right here.
+
+IAM User ID | Github User ID | Name | IAM Roles | IAM Groups
+:-----------|:---------------|:-----|:----------|:----------
+`jgeluk` | @jgeluk | Jacobus Geluk | | `fibo-admins`
+`dallemang` | @dallemang | Dean Allemang | | `fibo-admins`
 
 ### EC2
 
