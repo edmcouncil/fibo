@@ -29,10 +29,25 @@ Service\ Name | Description | Purpose
 
 In the very near future, a userid and group allocation plan needs to be devised and documented right here.
 
+#### Users
+
 IAM User ID | Github User ID | Name | IAM Roles | IAM Groups
 :-----------|:---------------|:-----|:----------|:----------
 `jgeluk` | @jgeluk | Jacobus Geluk | | `fibo-admins`
 `dallemang` | @dallemang | Dean Allemang | | `fibo-admins`
+
+#### Groups
+
+IAM Group ID | Purpose
+:------------|:-------
+`fibo-admins` | Provides full access to all services of Amazon AWS (including IAM) and therefore all virtual machines etc.
+`fibo-jenkins-master-admins` | Provides at the moment same access as `fibo-admins` except for access to IAM. Will eventually have to be trimmed down to the group of people who maintain just the Jenkins server and need access to the host it runs on.
+
+#### Roles
+
+| IAM Role ID | Purpose
+:-------------|:-------
+`jenkins-master-server` | Used by the EC2 instance that hosts the Jenkins server to access other services like S3.
 
 ### EC2
 
