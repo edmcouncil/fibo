@@ -21,14 +21,33 @@ Service\ Name | Description | Purpose
 :-------------|:------------|:-------
 [IAM](http://aws.amazon.com/iam/) | Identity & Access Management | Used to define groups and users that have access to the actual backend Amazon AWS EC2 machines. This is not the same as groups and users in services like Jenkins.
 [EC2](http://aws.amazon.com/ec2/) | Elastic Compute Cloud | Used to define and run Virtual Machines
+[VPC](http://aws.amazon.com/vpc/) | Virtual Private Cloud | Used to define a subnet behind a firewall in which the various EC2 instances can run (for now just the Jenkins Master server).
 [S3](http://aws.amazon.com/s3/)   | Simple Storage Service | Used to publish & host static content
 [Route53](http://aws.amazon.com/route53/) | Domain Name System (DNS) web service | Used to define the various host names in the edmcouncil.org domain and their mapping to "S3 buckets"
 
 ### IAM
 
-In IAM there is currently one userid defined: `jgeluk`.
-Dean Allemang will be the 2nd AWS user.
 In the very near future, a userid and group allocation plan needs to be devised and documented right here.
+
+#### Users
+
+IAM User ID | Github User ID | Name | IAM Roles | IAM Groups
+:-----------|:---------------|:-----|:----------|:----------
+`jgeluk` | @jgeluk | Jacobus Geluk | | `fibo-admins`
+`dallemang` | @dallemang | Dean Allemang | | `fibo-admins`
+
+#### Groups
+
+IAM Group ID | Purpose
+:------------|:-------
+`fibo-admins` | Provides full access to all services of Amazon AWS (including IAM) and therefore all virtual machines etc.
+`fibo-jenkins-master-admins` | Provides at the moment same access as `fibo-admins` except for access to IAM. Will eventually have to be trimmed down to the group of people who maintain just the Jenkins server and need access to the host it runs on.
+
+#### Roles
+
+| IAM Role ID | Purpose
+:-------------|:-------
+`jenkins-master-server` | Used by the EC2 instance that hosts the Jenkins server to access other services like S3.
 
 ### EC2
 
