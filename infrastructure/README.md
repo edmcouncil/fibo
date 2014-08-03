@@ -61,9 +61,9 @@ vpc-02359667 | Public Subnet, for running internet facing servers like the Jenki
 
 The following EC2 instances (virtual machines) are created (see [this page](https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#Instances:) in the AWS Console):
 
-EC2 ID     | Purpose
-:----------|:-------
-i-fbe91cd1 | Jenkins Master Server
+EC2 ID     | IP Address    | Purpose
+:----------|:--------------|:-------
+i-fbe91cd1 | 54.210.211.22 | Jenkins Master Server
 
 ### S3
 
