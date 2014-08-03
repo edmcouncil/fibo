@@ -49,6 +49,14 @@ IAM Group ID | Purpose
 :-------------|:-------
 `jenkins-master-server` | Used by the EC2 instance that hosts the Jenkins server to access other services like S3.
 
+### VPC
+
+At the moment there is just one simple subnet, which runs one EC2 instance (see below). (See [this page](https://console.aws.amazon.com/vpc/home?region=us-east-1#vpcs:) in the AWS Console):
+
+VPC ID       | Purpose
+:------------|:-------
+vpc-02359667 | Public Subnet, for running internet facing servers like the Jenkins Master server.
+
 ### EC2
 
 The following EC2 instances (virtual machines) are created (see [this page](https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#Instances:) in the AWS Console):
