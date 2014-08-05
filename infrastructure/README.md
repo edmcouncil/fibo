@@ -17,7 +17,7 @@ The Amazon AWS primary management console can be reached at: https://32286126192
 
 The following services of Amazon AWS will be used:
 
-Service\ Name | Description | Purpose
+Service Name  | Description | Purpose
 :-------------|:------------|:-------
 [IAM](http://aws.amazon.com/iam/) | Identity & Access Management | Used to define groups and users that have access to the actual backend Amazon AWS EC2 machines. This is not the same as groups and users in services like Jenkins.
 [EC2](http://aws.amazon.com/ec2/) | Elastic Compute Cloud | Used to define and run Virtual Machines
@@ -49,7 +49,21 @@ IAM Group ID | Purpose
 :-------------|:-------
 `jenkins-master-server` | Used by the EC2 instance that hosts the Jenkins server to access other services like S3.
 
+### VPC
+
+At the moment there is just one simple subnet, which runs one EC2 instance (see below). (See [this page](https://console.aws.amazon.com/vpc/home?region=us-east-1#vpcs:) in the AWS Console):
+
+VPC ID       | Purpose
+:------------|:-------
+vpc-02359667 | Public Subnet, for running internet facing servers like the Jenkins Master server.
+
 ### EC2
+
+The following EC2 instances (virtual machines) are created (see [this page](https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#Instances:) in the AWS Console):
+
+EC2 ID     | IP Address    | Purpose
+:----------|:--------------|:-------
+i-fbe91cd1 | 54.210.211.22 | Jenkins Master Server (http://54.210.211.22/)
 
 ### S3
 
