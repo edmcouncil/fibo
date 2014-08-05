@@ -12,5 +12,5 @@ Directory                          | Purpose
 
 ## Directory Naming Conventions
 
-See [this page](infrastructure/directory-naming-conventions) for the Directory Naming Conventions
+See [this page](./infrastructure/directory-naming-conventions.md) for the Directory Naming Conventions
 
