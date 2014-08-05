@@ -63,7 +63,7 @@ The following EC2 instances (virtual machines) are created (see [this page](http
 
 EC2 ID     | IP Address    | Purpose
 :----------|:--------------|:-------
-i-fbe91cd1 | 54.210.211.22 | Jenkins Master Server
+i-fbe91cd1 | 54.210.211.22 | Jenkins Master Server (http://54.210.211.22/)
 
 ### S3
 
