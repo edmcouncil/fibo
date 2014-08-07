@@ -1,5 +1,6 @@
 # FIBO Development & Test Environment - Progress
 
+
 Date     | Who     | Action
 :--------|:--------|:------
 14/08/04 | @jgeluk | Jenkins configured now, with Github authentication. First job runs (performing a `pallet lint` check on all .owl files
