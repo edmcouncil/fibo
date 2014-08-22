@@ -163,6 +163,57 @@ The RDF/XML serialized OWL for the Foundations ODM/OWL ontologies have been chec
     <!-- 
     ///////////////////////////////////////////////////////////////////////////////////////
     //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.omg.org/spec/EDMC-FIBO/FND/OwnershipAndControl/Control/controlByParty -->
+
+    <owl:ObjectProperty rdf:about="&fibo-fnd-oac-ctl;controlByParty">
+        <rdfs:label rdf:datatype="&xsd;string">control by party</rdfs:label>
+        <rdfs:domain rdf:resource="&fibo-fnd-oac-ctl;Control"/>
+        <rdfs:range rdf:resource="&fibo-fnd-oac-ctl;ControllingParty"/>
+        <rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;involves"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.omg.org/spec/EDMC-FIBO/FND/OwnershipAndControl/Control/controlOfThing -->
+
+    <owl:ObjectProperty rdf:about="&fibo-fnd-oac-ctl;controlOfThing">
+        <rdfs:label rdf:datatype="&xsd;string">control of thing</rdfs:label>
+        <rdfs:domain rdf:resource="&fibo-fnd-oac-ctl;Control"/>
+        <rdfs:range rdf:resource="&fibo-fnd-oac-ctl;ControlledThing"/>
+        <rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;involves"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.omg.org/spec/EDMC-FIBO/FND/OwnershipAndControl/Control/isControlledThingInRole -->
+
+    <owl:ObjectProperty rdf:about="&fibo-fnd-oac-ctl;isControlledThingInRole">
+        <rdfs:label rdf:datatype="&xsd;string">is controlled thing in role</rdfs:label>
+        <owl:inverseOf rdf:resource="&fibo-fnd-oac-ctl;controlOfThing"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.omg.org/spec/EDMC-FIBO/FND/OwnershipAndControl/Control/isControllingPartyInRole -->
+
+    <owl:ObjectProperty rdf:about="&fibo-fnd-oac-ctl;isControllingPartyInRole">
+        <rdfs:label rdf:datatype="&xsd;string">is controlling party in role</rdfs:label>
+        <owl:inverseOf rdf:resource="&fibo-fnd-oac-ctl;controlByParty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
     // Classes
     //
     ///////////////////////////////////////////////////////////////////////////////////////
@@ -174,31 +225,37 @@ The RDF/XML serialized OWL for the Foundations ODM/OWL ontologies have been chec
     <!-- http://www.omg.org/spec/EDMC-FIBO/FND/OwnershipAndControl/Control/Control -->
 
     <owl:Class rdf:about="&fibo-fnd-oac-ctl;Control">
-        <rdfs:label>control</rdfs:label>
+        <rdfs:label rdf:datatype="&xsd;string">Control</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&owl;Thing"/>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&fibo-fnd-rel-rel;involves"/>
-                <owl:onClass rdf:resource="&fibo-fnd-oac-ctl;ControllingParty"/>
+                <owl:onProperty rdf:resource="&fibo-fnd-oac-ctl;controlByParty"/>
+                <owl:onClass>
+                    <owl:Class>
+                        <owl:intersectionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="&fibo-fnd-pty-pty;PartyInRole"/>
+                            <owl:Restriction>
+                                <owl:onProperty rdf:resource="&fibo-fnd-oac-ctl;controlOfThing"/>
+                                <owl:onClass rdf:resource="&fibo-fnd-pty-rl;ThingInRole"/>
+                                <owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:minQualifiedCardinality>
+                            </owl:Restriction>
+                        </owl:intersectionOf>
+                    </owl:Class>
+                </owl:onClass>
                 <owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:minQualifiedCardinality>
             </owl:Restriction>
         </rdfs:subClassOf>
-        <rdfs:subClassOf>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="&fibo-fnd-rel-rel;involves"/>
-                <owl:onClass rdf:resource="&fibo-fnd-oac-ctl;ControlledParty"/>
-                <owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:minQualifiedCardinality>
-            </owl:Restriction>
-        </rdfs:subClassOf>
-        <skos:definition>The term control (including the terms controlling, controlled by and under common control with) means the possession, direct or indirect, of the power to direct or cause the direction of the management and policies of a person, whether through the ownership of voting shares, by contract, or otherwise.</skos:definition>
+        <skos:definition rdf:datatype="&xsd;string">The term control (including the terms controlling, controlled by and under common control with) means the possession, direct or indirect, of the power to direct or cause the direction of the management and policies of a person, whether through the ownership of voting shares, by contract, or otherwise.
+</skos:definition>
     </owl:Class>
     
 
 
-    <!-- http://www.omg.org/spec/EDMC-FIBO/FND/OwnershipAndControl/Control/ControlledParty -->
+    <!-- http://www.omg.org/spec/EDMC-FIBO/FND/OwnershipAndControl/Control/ControlledThing -->
 
-    <owl:Class rdf:about="&fibo-fnd-oac-ctl;ControlledParty">
-        <rdfs:label rdf:datatype="&xsd;string">Controlled party</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&fibo-fnd-pty-pty;PartyInRole"/>
+    <owl:Class rdf:about="&fibo-fnd-oac-ctl;ControlledThing">
+        <rdfs:label rdf:datatype="&xsd;string">Controlled thing</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&fibo-fnd-pty-rl;ThingInRole"/>
         <rdfs:subClassOf>
             <owl:Restriction>
                 <owl:onProperty rdf:resource="&fibo-fnd-pty-rl;hasRole"/>
@@ -210,6 +267,29 @@ The RDF/XML serialized OWL for the Foundations ODM/OWL ontologies have been chec
                 </owl:someValuesFrom>
             </owl:Restriction>
         </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.omg.org/spec/EDMC-FIBO/FND/OwnershipAndControl/Control/ControllingCapacity -->
+
+    <owl:Class rdf:about="&fibo-fnd-oac-ctl;ControllingCapacity">
+        <rdfs:label>control</rdfs:label>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&fibo-fnd-rel-rel;involves"/>
+                <owl:onClass rdf:resource="&fibo-fnd-oac-ctl;ControlledThing"/>
+                <owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:minQualifiedCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&fibo-fnd-rel-rel;involves"/>
+                <owl:onClass rdf:resource="&fibo-fnd-oac-ctl;ControllingParty"/>
+                <owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:minQualifiedCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <skos:definition>The term control (including the terms controlling, controlled by and under common control with) means the possession, direct or indirect, of the power to direct or cause the direction of the management and policies of a person, whether through the ownership of voting shares, by contract, or otherwise.</skos:definition>
     </owl:Class>
     
 
@@ -240,7 +320,7 @@ The RDF/XML serialized OWL for the Foundations ODM/OWL ontologies have been chec
 
     <owl:Class rdf:about="&fibo-fnd-oac-ctl;DeFactoControl">
         <rdfs:label>de facto control</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&fibo-fnd-oac-ctl;Control"/>
+        <rdfs:subClassOf rdf:resource="&fibo-fnd-oac-ctl;ControllingCapacity"/>
         <owl:disjointWith rdf:resource="&fibo-fnd-oac-ctl;DeJureControl"/>
         <fibo-fnd-utl-av:adaptedFrom>http://www.investorwords.com/1349/de_facto.html</fibo-fnd-utl-av:adaptedFrom>
         <skos:definition>control that is understood, due to condition or situation treated as standard or official, even if not explicitly stated (or actually standardized)</skos:definition>
@@ -253,7 +333,7 @@ The RDF/XML serialized OWL for the Foundations ODM/OWL ontologies have been chec
     <owl:Class rdf:about="&fibo-fnd-oac-ctl;DeJureControl">
         <rdfs:label>de jure control</rdfs:label>
         <rdfs:subClassOf rdf:resource="&fibo-fnd-law-lcap;LegalConstruct"/>
-        <rdfs:subClassOf rdf:resource="&fibo-fnd-oac-ctl;Control"/>
+        <rdfs:subClassOf rdf:resource="&fibo-fnd-oac-ctl;ControllingCapacity"/>
         <fibo-fnd-utl-av:adaptedFrom>http://www.businessdictionary.com/definition/de-jure.html</fibo-fnd-utl-av:adaptedFrom>
         <skos:definition>control that is formalized in law, or codified in some legal instrument</skos:definition>
     </owl:Class>
