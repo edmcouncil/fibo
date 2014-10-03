@@ -14,3 +14,6 @@ Directory                          | Purpose
 
 See [this page](./infrastructure/directory-naming-conventions.md) for the Directory Naming Conventions
 
+## Additional Infomation
+
+- Let's add some additional information here.
