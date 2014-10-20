@@ -4,9 +4,13 @@
 
 The purpose of the various directories in this repository is as follows:
 
-Directory        | Purpose
-:----------------|:-------
-[infra](./infra) | FIBO Development & Test Environment, scripts and documentation
+Directory            | Purpose
+:------------------- |:-------
+[image](./image)     | All images that are used on the wiki or other EDM Council websites or in publications
+[infra](./infra)     | FIBO Development & Test Environment, scripts and documentation
+[source](./source)   | 
+[spec](./spec)       | 
+[testing](./testing) | FIBO Development & Test Environment, scripts and documentation
 
 ## Directory Naming Conventions
 
