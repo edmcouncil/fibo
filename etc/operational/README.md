@@ -1,0 +1,1 @@
+Folder structure for everything except the OWL oaths and ontology files. 

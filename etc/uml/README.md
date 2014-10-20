@@ -1,0 +1,1 @@
+Machine readable UML XMI unzipped in its directory structure, 
