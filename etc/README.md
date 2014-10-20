@@ -8,3 +8,6 @@ Directory        | Purpose
 :----------------|:-------
 [infra](./infra) | FIBO Development & Test Environment, scripts and documentation
 
+## Directory Naming Conventions
+
+See [this page](./infra/directory-naming-conventions.md) for the Directory Naming Conventions
