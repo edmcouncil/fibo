@@ -6,11 +6,10 @@
 
 The purpose of the various directories in this repository is as follows:
 
-Directory                          | Purpose
-:----------------------------------|:-------
-[infrastructure](./infrastructure) | FIBO Development & Test Environment, scripts and documentation
+Directory    | Purpose
+:------------|:-------
+[etc](./etc) | Everything that is not a published OWL ontology in a financial domain
+[fnd](./fnd) | FIBO Foundations
+[be](./be)   | FIBO Business Entities
 
-## Directory Naming Conventions
-
-See [this page](./infrastructure/directory-naming-conventions.md) for the Directory Naming Conventions
 
