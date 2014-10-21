@@ -1,1 +1,0 @@
-Information on general infrastructure including naming conventions for GitHub itself.
