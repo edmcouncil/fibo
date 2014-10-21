@@ -8,7 +8,7 @@ Directory                    | Purpose
 [data](./data)               | All test data 
 [image](./image)             | All images that are used on the wiki or other EDM Council websites or in publications
 [infra](./infra)             | FIBO Development & Test Environment, scripts and documentation
-[odm](./odm)                 | ODM XMI files in their directory structure
+[odm](./odm)                 | ODM XMI sources
 [operational](./operational) | FIBO Operational Ontologies
 [process](./process)         | Process definitions, process flow diagrams, build rules etc.
 [source](./source)           | Source materials - Legacy FIBO OWL
