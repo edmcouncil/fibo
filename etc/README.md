@@ -1,11 +1,10 @@
-# /etc
+# /etc - Everything Else
 
-## Directory Organization
-
-The purpose of the various directories in this repository is as follows:
+## Directories
 
 Directory            | Purpose
 :------------------- |:-------
+[data](./data)       | All test data 
 [image](./image)     | All images that are used on the wiki or other EDM Council websites or in publications
 [infra](./infra)     | FIBO Development & Test Environment, scripts and documentation
 [source](./source)   | 
