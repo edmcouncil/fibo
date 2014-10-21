@@ -1,1 +1,0 @@
-ODM XMI files in their directory structure

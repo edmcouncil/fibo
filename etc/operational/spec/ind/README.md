@@ -1,1 +1,0 @@
-The FIBO Indices and Indicators specification as a Word document.
