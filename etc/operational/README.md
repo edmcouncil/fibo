@@ -1,4 +1,4 @@
-MAaterials relating to the FIBO Operational ontology workings. 
+# /etc/operational - Materials relating to the FIBO Operational ontology workings. 
 
 Includes rules and guidelines for deriving operational ontologies from the FIBO conceptual ontologies and OmG specification ontologies. 
 
