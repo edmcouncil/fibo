@@ -1,4 +1,4 @@
-Formal FIBO Specifications. 
+# /etc/spec - Formal FIBO Specifications. 
 
 These are "Live" documents including work in progress between submitted versions.
 
