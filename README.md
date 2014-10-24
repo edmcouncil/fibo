@@ -2,6 +2,8 @@
 
 ## Intro
 
+Ontologies in the YELLOW branch are ones that are in preparation for submission to the OMG.  These ontologies have been vetted by the FIBO Leadership Team, and will be submitted to the OMG process for ratification. 
+
 ## Directories
 
 Directory     | Purpose
