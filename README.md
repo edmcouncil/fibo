@@ -2,6 +2,8 @@
 
 ## Intro
 
+Ontologies in the PINK branch are work in progress by some FIBO content team.  They may represent ideas or practices that have not been approved by the FIBO leadership team. 
+
 ## Directories
 
 Directory     | Purpose
