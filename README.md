@@ -2,6 +2,12 @@
 
 ## Intro
 
+Ontologies in the RED branch are initial ideas about the various FIBO topics.  These have not been vetted, or even necessarily reviewed, by any members of the FIBO team.  They should be considered simply as suggestions or starting points. 
+
+They are not even likely to be internally consistent.  They have been checked that they will load in TopBraid and Protege; that's about all the testing they've gone through. 
+
+Having said that, there is a lot of good material here that we hope will provide value to future content teams. 
+
 ## Directories
 
 Directory     | Purpose
