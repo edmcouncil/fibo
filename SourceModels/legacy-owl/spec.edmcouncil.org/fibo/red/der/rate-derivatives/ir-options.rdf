@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  
+<!DOCTYPE rdf:RDF [
+    <!ENTITY fibo-der-rd-iro "http://spec.edmcouncil.org/fibo/red/der/rate-derivatives/ir-options/">
+    <!ENTITY fibo-fnd-tim-tim "http://spec.edmcouncil.org/fibo/red/fnd/date-time/date-time/">
+    <!ENTITY fibo-der-ctr-otc "http://spec.edmcouncil.org/fibo/red/der/derivatives-contracts/otc-instruments/">
+    <!ENTITY fibo-loan-loan-bt "http://spec.edmcouncil.org/fibo/red/loan/loans/loan-basic-terms/">
+    <!ENTITY fibo-der-rd-rd "http://spec.edmcouncil.org/fibo/red/der/rate-derivatives/rate-derivatives/">
+    <!ENTITY fibo-der-ctr-opt "http://spec.edmcouncil.org/fibo/red/der/derivatives-contracts/options/">
+]>
+
+<rdf:RDF xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+         xmlns:sm="http://www.omg.org/techprocess/ab/SpecificationMetadata/"
+         xmlns:xs="http://www.w3.org/2001/XMLSchema"
+         xmlns:fibo-fnd-utl-av="http://www.omg.org/spec/EDMC-FIBO/FND/Utilities/AnnotationVocabulary/"
+         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+         xmlns:dc="http://purl.org/dc/terms/"
+         xml:base="http://spec.edmcouncil.org/fibo/red/der/rate-derivatives/ir-options/">
+
+   <owl:Ontology rdf:about="http://spec.edmcouncil.org/fibo/red/der/rate-derivatives/ir-options/">
+      <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/red/fnd/date-time/date-time/"/>
+      <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/red/der/derivatives-contracts/otc-instruments/"/>
+      <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/red/loan/loans/loan-basic-terms/"/>
+      <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/red/der/rate-derivatives/rate-derivatives/"/>
+      <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/red/der/derivatives-contracts/options/"/>
+   </owl:Ontology>
+
+
+  <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Datatypes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+<rdfs:Datatype rdf:about="&fibo-der-rd-iro;AddOrSubtractSelection">
+      <skos:definition>Simple binary selection of "Add" or "Subtract" to specify this fact about the calculation of the relationship between two numeric parameters.</skos:definition>
+      <owl:equivalentClass>
+         <rdfs:Datatype>
+            <owl:oneOf>
+               <rdf:Description>
+                  <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Subtract</rdf:first>
+                  <rdf:rest>
+                     <rdf:Description>
+                        <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Add</rdf:first>
+                        <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                     </rdf:Description>
+                  </rdf:rest>
+               </rdf:Description>
+            </owl:oneOf>
+         </rdfs:Datatype>
+      </owl:equivalentClass>
+   </rdfs:Datatype>
+
+   <rdfs:Datatype rdf:about="&fibo-der-rd-iro;CapOrFloorSelection">
+      <skos:definition>Whether a given thing is treated as a Cap (something goes no higher than this amount) or as a Floor (something goes no lower than this).</skos:definition>
+      <owl:equivalentClass>
+         <rdfs:Datatype>
+            <owl:oneOf>
+               <rdf:Description>
+                  <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Floor</rdf:first>
+                  <rdf:rest>
+                     <rdf:Description>
+                        <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cap</rdf:first>
+                        <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                     </rdf:Description>
+                  </rdf:rest>
+               </rdf:Description>
+            </owl:oneOf>
+         </rdfs:Datatype>
+      </owl:equivalentClass>
+   </rdfs:Datatype>
+
+
+  <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+<owl:ObjectProperty rdf:about="&fibo-der-rd-iro;hasStrikeTerms">
+      <rdfs:label>has strike terms</rdfs:label>
+      <rdfs:subPropertyOf rdf:resource="&fibo-der-ctr-opt;hasStrikeTerms"/>
+      <rdfs:domain rdf:resource="&fibo-der-rd-iro;OTCInterestRateOption"/>
+      <rdfs:range rdf:resource="&fibo-der-rd-iro;InterestRateOptionStrikeTermsSet"/>
+   </owl:ObjectProperty>
+
+   <owl:ObjectProperty rdf:about="&fibo-der-rd-iro;includesSpecificationTerm">
+      <rdfs:label>includes specification term</rdfs:label>
+      <rdfs:subPropertyOf rdf:resource="&fibo-der-ctr-opt;includesSpecificationTerm"/>
+      <rdfs:domain rdf:resource="&fibo-der-rd-iro;InterestRateOptionStrikeTermsSet"/>
+      <rdfs:range rdf:resource="&fibo-der-ctr-opt;PercentageStrikePriceSpecification"/>
+   </owl:ObjectProperty>
+
+   <owl:ObjectProperty rdf:about="&fibo-der-rd-iro;hasUnderlying">
+      <rdfs:label>has underlying</rdfs:label>
+      <rdfs:subPropertyOf rdf:resource="&fibo-der-rd-rd;hasUnderlying.1"/>
+      <rdfs:domain rdf:resource="&fibo-der-rd-iro;OTCInterestRateOption"/>
+      <rdfs:range rdf:resource="&fibo-der-rd-rd;InterestRateObservable"/>
+   </owl:ObjectProperty>
+
+   <owl:ObjectProperty rdf:about="&fibo-der-rd-iro;exerciseDateOffset">
+      <rdfs:label>exercise date offset</rdfs:label>
+      <skos:definition>The period in days between the Reset Date and the date on which the Option may be exercised.</skos:definition>
+      <rdfs:domain rdf:resource="&fibo-der-rd-iro;OptionStripContract"/>
+      <rdfs:range rdf:resource="&fibo-fnd-tim-tim;DurationDescriptionInCalendarTemporalUnit"/>
+   </owl:ObjectProperty>
+
+   <owl:ObjectProperty rdf:about="&fibo-der-rd-iro;interestAccrualDateOffset">
+      <rdfs:label>interest accrual date offset</rdfs:label>
+      <skos:definition>The period in days between each Reset Date and the commencement of accrual of interest for the next period.</skos:definition>
+      <rdfs:domain rdf:resource="&fibo-der-rd-iro;OptionStripContract"/>
+      <rdfs:range rdf:resource="&fibo-fnd-tim-tim;DurationDescriptionInCalendarTemporalUnit"/>
+   </owl:ObjectProperty>
+
+   <owl:ObjectProperty rdf:about="&fibo-der-rd-iro;settlementDateOffset">
+      <rdfs:label>settlement date offset</rdfs:label>
+      <skos:definition>The period in days between each Reset Date and the corresponding Settlement Date.</skos:definition>
+      <rdfs:domain rdf:resource="&fibo-der-rd-iro;OptionStripContract"/>
+      <rdfs:range rdf:resource="&fibo-fnd-tim-tim;DurationDescriptionInCalendarTemporalUnit"/>
+   </owl:ObjectProperty>
+
+   <owl:ObjectProperty rdf:about="&fibo-der-rd-iro;hasResetSchedule">
+      <rdfs:label>has reset schedule</rdfs:label>
+      <rdfs:domain rdf:resource="&fibo-der-rd-iro;OptionStripContract"/>
+      <rdfs:range rdf:resource="&fibo-der-rd-iro;OptionStripResetSchedule"/>
+   </owl:ObjectProperty>
+
+
+  <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+<owl:DatatypeProperty rdf:about="&fibo-der-rd-iro;strikeEffect">
+      <rdfs:label>strike effect</rdfs:label>
+      <skos:definition>The Strike rate is to be subtracted from the Observable rate on the reset date, to determine the settlement amount. This is incorrect. Cap applies to borrower. the Cap is the max amount I will pay to borrow. I take a capped rate. I am the buyer of the option. The market rate this time is higher than the capped rate. You as the seller of the option will pay me thedifference bwteen the capped rate and the market reate. If the market rate is lower than the capped rate no one pays anything because I will not exercise my right to that capped rate. So no money changes hands at settlement. Then: capped Loan: What I would be paying would be interest at the market rate if the market rate is lower, but if the market rate is higher then I would pay interest at the capped rate. This is the difference between a cap as a loan or as a cash settled thing. These represent different kinds of contract: Non loan one: Cap talks of settlement being difference between the market rate and the strike rate. This is cash settled. Name: "Cap" Loan one: Cap talks about a maximum interest rate payable by the holder, so the holder pays an amount each time, up to a maximum which is the Cap rate. Name: "Capped Loan" What manner of thin is this? A loan. Its ancestors are not OTC derivatives contracts thet are Loan.</skos:definition>
+      <rdfs:range rdf:resource="&fibo-der-rd-iro;CapOrFloorSelection"/>
+   </owl:DatatypeProperty>
+
+   <owl:DatatypeProperty rdf:about="&fibo-der-rd-iro;strikeEffect.1">
+      <rdfs:label>strike effect</rdfs:label>
+      <skos:definition>The Observable rate is to be subtracted from the Strike rate on the reset date, to determine the settlement amount. Floor: I am an investor and I am specifying the minimum return I will get for that investment.</skos:definition>
+      <rdfs:range rdf:resource="&fibo-der-rd-iro;CapOrFloorSelection"/>
+   </owl:DatatypeProperty>
+
+   <owl:DatatypeProperty rdf:about="&fibo-der-rd-iro;maturityDate">
+      <rdfs:label>maturity date</rdfs:label>
+      <skos:definition>The date when the whole sequence of caps or floors expires.</skos:definition>
+      <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
+   </owl:DatatypeProperty>
+
+   <owl:DatatypeProperty rdf:about="&fibo-der-rd-iro;strikeEffect.2">
+      <rdfs:label>strike effect</rdfs:label>
+      <skos:definition>Whether the Strike rate is to be subtracted from the Observable rate on the reset date, or whether the Observable rate is to be subtracted from the Strike rate, to determine the settlement amount.</skos:definition>
+      <rdfs:range rdf:resource="&fibo-der-rd-iro;CapOrFloorSelection"/>
+   </owl:DatatypeProperty>
+
+
+  <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotation Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+
+  <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+<owl:Class rdf:about="&fibo-der-rd-iro;CapLoan">
+      <rdfs:label>cap loan</rdfs:label>
+      <rdfs:subClassOf rdf:resource="&fibo-loan-loan-bt;LoanContract"/>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-der-rd-iro;FloorLoan">
+      <rdfs:label>floor loan</rdfs:label>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-der-rd-iro;InterestRateOptionStrikeTermsSet">
+      <rdfs:label>interest rate option strike terms set</rdfs:label>
+      <skos:definition>Terms for the exercise of the Interest Rate Option.</skos:definition>
+      <rdfs:subClassOf rdf:resource="&fibo-der-ctr-opt;OptionExerciseTimeTermsSet"/>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-der-rd-iro;OTCInterestRateCapOptionContract">
+      <rdfs:label>o t c interest rate cap option contract</rdfs:label>
+      <skos:definition>A strip of options in which interest payable in each period is either the Observable (Underlying) rate or the Strike rate, at the holder's discretion, and in which the Strike rate represents a rate above which the holder can elect not to pay.</skos:definition>
+      <rdfs:subClassOf rdf:resource="&fibo-der-rd-iro;OptionStripContract"/>
+      <rdfs:subClassOf rdf:resource="&fibo-der-rd-rd;InterestRateDerivativeContract"/>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-der-rd-iro;OTCInterestRateFloorOptionContract">
+      <rdfs:label>o t c interest rate floor option contract</rdfs:label>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-der-rd-iro;OTCInterestRateOption">
+      <rdfs:label>o t c interest rate option</rdfs:label>
+      <skos:definition>An option that tracks the cap and floor of an underlying interest rate.</skos:definition>
+      <rdfs:subClassOf rdf:resource="&fibo-der-ctr-opt;OTCOptionContract"/>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-der-rd-iro;OptionStripContract">
+      <rdfs:label>option strip contract</rdfs:label>
+      <skos:definition>A strip or sequential set of options with periodic reset dates, such that each period between resets behaves like an individual option (known as a Caplet or Floorlet).</skos:definition>
+      <rdfs:subClassOf rdf:resource="&fibo-der-ctr-otc;OTCInstrumentContract"/>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-der-rd-iro;OptionStripResetSchedule">
+      <rdfs:label>option strip reset schedule</rdfs:label>
+      <skos:definition>Schedule of dates on which the Option Strip rate is determined and reset.</skos:definition>
+      <rdfs:subClassOf rdf:resource="&fibo-fnd-tim-tim;Schedule"/>
+   </owl:Class>
+
+
+  <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+</rdf:RDF>

@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  
+<!DOCTYPE rdf:RDF [
+    <!ENTITY fibo-sec-eq-eqi "http://spec.edmcouncil.org/fibo/red/sec/equities/equity-instruments/">
+    <!ENTITY fibo-fnd-agrx-cst "http://spec.edmcouncil.org/fibo/red/fnd/agreements-ext/contractual-constructs/">
+    <!ENTITY fibo-fnd-agr-ctr "http://spec.edmcouncil.org/fibo/red/fnd/agreements/contracts/">
+    <!ENTITY fibo-fnd-acc-aeq "http://spec.edmcouncil.org/fibo/red/fnd/accounting/accounting-equity/">
+    <!ENTITY fibo-sec-sec-ast "http://spec.edmcouncil.org/fibo/red/sec/securities/security-assets/">
+    <!ENTITY fibo-fnd-utl-bt "http://spec.edmcouncil.org/fibo/red/fnd/utilities/business-facing-types/">
+    <!ENTITY fibo-fnd-acc-cur "http://spec.edmcouncil.org/fibo/red/fnd/accounting/currency-amount/">
+    <!ENTITY fibo-be-oac-cown "http://spec.edmcouncil.org/fibo/red/be/ownership-and-control/corporate-ownership/">
+    <!ENTITY fibo-sec-sec-lst "http://spec.edmcouncil.org/fibo/red/sec/securities/securities-listings/">
+]>
+
+<rdf:RDF xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+         xmlns:sm="http://www.omg.org/techprocess/ab/SpecificationMetadata/"
+         xmlns:xs="http://www.w3.org/2001/XMLSchema"
+         xmlns:fibo-fnd-utl-av="http://www.omg.org/spec/EDMC-FIBO/FND/Utilities/AnnotationVocabulary/"
+         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+         xmlns:dc="http://purl.org/dc/terms/"
+         xml:base="http://spec.edmcouncil.org/fibo/red/sec/equities/equity-instruments/">
+
+   <owl:Ontology rdf:about="http://spec.edmcouncil.org/fibo/red/sec/equities/equity-instruments/">
+      <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/red/fnd/agreements-ext/contractual-constructs/"/>
+      <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/red/fnd/agreements/contracts/"/>
+      <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/red/fnd/accounting/accounting-equity/"/>
+      <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/red/sec/securities/security-assets/"/>
+      <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/red/fnd/utilities/business-facing-types/"/>
+      <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/red/fnd/accounting/currency-amount/"/>
+      <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/red/be/ownership-and-control/corporate-ownership/"/>
+      <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/red/sec/securities/securities-listings/"/>
+   </owl:Ontology>
+
+
+  <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Datatypes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+<rdfs:Datatype rdf:about="&fibo-sec-eq-eqi;DistributionMechanism">
+      <skos:definition>The method by which amounts owing to a holder of an equity or a fund, are distributed, e.g. by payment of a monetary amount or by reinvestment in the same company or fund. Note that this may be defined in a contract or instrument, in which case it will be referred to in contractual terms. In many cases it is not defined in the product, but will be defined in a Corporate Action message at the time that the distribution is made. In this case, this selection will be referred to in the Corporate Action / Event message.</skos:definition>
+      <owl:equivalentClass>
+         <rdfs:Datatype>
+            <owl:oneOf>
+               <rdf:Description>
+                  <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Payment</rdf:first>
+                  <rdf:rest>
+                     <rdf:Description>
+                        <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Security</rdf:first>
+                        <rdf:rest>
+                           <rdf:Description>
+                              <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Reinvestment</rdf:first>
+                              <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                           </rdf:Description>
+                        </rdf:rest>
+                     </rdf:Description>
+                  </rdf:rest>
+               </rdf:Description>
+            </owl:oneOf>
+         </rdfs:Datatype>
+      </owl:equivalentClass>
+   </rdfs:Datatype>
+
+   <rdfs:Datatype rdf:about="&fibo-sec-eq-eqi;SecurityPaymentStatus">
+      <skos:definition>The Payment Status of a Unit or other Security.</skos:definition>
+      <owl:equivalentClass>
+         <rdfs:Datatype>
+            <owl:oneOf>
+               <rdf:Description>
+                  <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fully</rdf:first>
+                  <rdf:rest>
+                     <rdf:Description>
+                        <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Partly</rdf:first>
+                        <rdf:rest>
+                           <rdf:Description>
+                              <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Nil</rdf:first>
+                              <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                           </rdf:Description>
+                        </rdf:rest>
+                     </rdf:Description>
+                  </rdf:rest>
+               </rdf:Description>
+            </owl:oneOf>
+         </rdfs:Datatype>
+      </owl:equivalentClass>
+   </rdfs:Datatype>
+
+   <rdfs:Datatype rdf:about="&fibo-sec-eq-eqi;Seniority">
+      <skos:definition>The seniority of a tranche of equity or debt. The precise implications of the different levels of seniority are defined for the instrument class in question.</skos:definition>
+      <owl:equivalentClass>
+         <rdfs:Datatype>
+            <owl:oneOf>
+               <rdf:Description>
+                  <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Junior</rdf:first>
+                  <rdf:rest>
+                     <rdf:Description>
+                        <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Senior</rdf:first>
+                        <rdf:rest>
+                           <rdf:Description>
+                              <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Other</rdf:first>
+                              <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                           </rdf:Description>
+                        </rdf:rest>
+                     </rdf:Description>
+                  </rdf:rest>
+               </rdf:Description>
+            </owl:oneOf>
+         </rdfs:Datatype>
+      </owl:equivalentClass>
+   </rdfs:Datatype>
+
+   <rdfs:Datatype rdf:about="&fibo-sec-eq-eqi;VotingRightsTypeSelection">
+      <skos:definition>Detailed definition of the voting rights given to the holder of a class of Shares or other Equity Instruments, as a result of holding those securities.</skos:definition>
+      <owl:equivalentClass>
+         <rdfs:Datatype>
+            <owl:oneOf>
+               <rdf:Description>
+                  <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Extraordinary</rdf:first>
+                  <rdf:rest>
+                     <rdf:Description>
+                        <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string">One Per Holder</rdf:first>
+                        <rdf:rest>
+                           <rdf:Description>
+                              <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Subordinated</rdf:first>
+                              <rdf:rest>
+                                 <rdf:Description>
+                                    <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Restricted</rdf:first>
+                                    <rdf:rest>
+                                       <rdf:Description>
+                                          <rdf:first rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ordinary</rdf:first>
+                                          <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                                       </rdf:Description>
+                                    </rdf:rest>
+                                 </rdf:Description>
+                              </rdf:rest>
+                           </rdf:Description>
+                        </rdf:rest>
+                     </rdf:Description>
+                  </rdf:rest>
+               </rdf:Description>
+            </owl:oneOf>
+         </rdfs:Datatype>
+      </owl:equivalentClass>
+   </rdfs:Datatype>
+
+
+  <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+<owl:ObjectProperty rdf:about="&fibo-sec-eq-eqi;hasHolder">
+      <rdfs:label>has holder</rdfs:label>
+      <skos:definition>A party which holds the publicly issued share.</skos:definition>
+      <rdfs:subPropertyOf rdf:resource="&fibo-sec-eq-eqi;holder"/>
+      <rdfs:subPropertyOf rdf:resource="&fibo-sec-sec-ast;holder"/>
+      <rdfs:domain rdf:resource="&fibo-sec-eq-eqi;PubliclyTradedShare"/>
+      <rdfs:range rdf:resource="&fibo-be-oac-cown;PublicShareholder"/>
+   </owl:ObjectProperty>
+
+   <owl:ObjectProperty rdf:about="&fibo-sec-eq-eqi;parValue">
+      <rdfs:label>par value</rdfs:label>
+      <skos:definition>A dollar amount that is assigned to a security when representing the value contributed for each share in cash or goods. (definition from Investor Words) Further notes: from Wikipedia: Par value is a nominal value of a security which is determined by an issuer company at a minimum price. Par value of an equity (a stock) is a somewhat archaic concept. The par value of a stock was the share price upon initial offering; the issuing company promised not to issue further shares below par value, so investors could be confident that no one else was receiving a more favorable issue price. This was far more important in unregulated equity markets than in the regulated markets that exist today. Most common stocks issued today do not have par values; those that do (usually only in jurisdictions where par values are required by law) have extremely low par values (often the smallest unit of currency commonly used), for example a penny par value on a stock issued at USD$25/share. Most states do not allow a company to issue stock below par value. No-par stocks have no par value printed on its certificates. Instead of par value, some U.S. states allow no-par stocks to have a stated value, set by the board of directors of the corporation, which serves the same purpose as par value in setting the minimum legal capital that the corporation must have after paying any dividends or buying back its stock.</skos:definition>
+      <rdfs:domain rdf:resource="&fibo-sec-eq-eqi;Share"/>
+      <rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
+   </owl:ObjectProperty>
+
+   <owl:ObjectProperty rdf:about="&fibo-sec-eq-eqi;shareConfers">
+      <rdfs:label>share confers</rdfs:label>
+      <skos:definition>The right of a stockholder to vote on matters of corporate policy as well as on who is to compose the board of directors. Rights can be of junior or senior rank (precedence of ranks).</skos:definition>
+      <rdfs:subPropertyOf rdf:resource="&fibo-fnd-agrx-cst;confers"/>
+      <rdfs:domain rdf:resource="&fibo-sec-eq-eqi;Share"/>
+      <rdfs:range rdf:resource="&fibo-sec-eq-eqi;VotingRight"/>
+   </owl:ObjectProperty>
+
+   <owl:ObjectProperty rdf:about="&fibo-sec-eq-eqi;holder">
+      <rdfs:label>holder</rdfs:label>
+      <skos:definition>A party which holds the share.</skos:definition>
+      <rdfs:subPropertyOf rdf:resource="&fibo-fnd-agr-ctr;heldBy"/>
+      <rdfs:domain rdf:resource="&fibo-sec-eq-eqi;Share"/>
+      <rdfs:range rdf:resource="&fibo-be-oac-cown;Shareholder"/>
+   </owl:ObjectProperty>
+
+   <owl:ObjectProperty rdf:about="&fibo-sec-eq-eqi;stockholderEquityRepresents">
+      <rdfs:label>stockholder equity represents</rdfs:label>
+      <skos:definition>The Monetary Amount (capital amount) represented by the Stockholder Equity. This is the total equity in the firm in the form of shares (that is, the total equity other than additional paid in capital).</skos:definition>
+      <rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-aeq;equityTakesMaterialForm"/>
+      <rdfs:domain rdf:resource="&fibo-sec-eq-eqi;ShareholderEquity"/>
+      <rdfs:range rdf:resource="&fibo-fnd-acc-cur;MoneyAmount"/>
+   </owl:ObjectProperty>
+
+   <owl:ObjectProperty rdf:about="&fibo-sec-eq-eqi;confersExactlyOneVotingRight">
+      <rdfs:label>confers exactly one voting right</rdfs:label>
+      <skos:definition>The share confers exactly one voting right on the Holder.</skos:definition>
+      <rdfs:subPropertyOf rdf:resource="&fibo-sec-eq-eqi;confersSome"/>
+      <rdfs:domain rdf:resource="&fibo-sec-eq-eqi;SingleVotingShare"/>
+      <rdfs:range rdf:resource="&fibo-sec-eq-eqi;VotingRight"/>
+   </owl:ObjectProperty>
+
+   <owl:ObjectProperty rdf:about="&fibo-sec-eq-eqi;confersNo">
+      <rdfs:label>confers no</rdfs:label>
+      <skos:definition>The share confers no voting rights on the Holder.</skos:definition>
+      <rdfs:subPropertyOf rdf:resource="&fibo-sec-eq-eqi;shareConfers"/>
+      <rdfs:domain rdf:resource="&fibo-sec-eq-eqi;NonVotingShare"/>
+      <rdfs:range rdf:resource="&fibo-sec-eq-eqi;VotingRight"/>
+   </owl:ObjectProperty>
+
+   <owl:ObjectProperty rdf:about="&fibo-sec-eq-eqi;confersOwnershipOfEquity">
+      <rdfs:label>confers ownership of equity</rdfs:label>
+      <skos:definition>Equity represented by the Share and owned by the Holder of the Share in proportion to the amount of the Issue that they hold.</skos:definition>
+      <rdfs:domain rdf:resource="&fibo-sec-eq-eqi;Share"/>
+      <rdfs:range rdf:resource="&fibo-sec-eq-eqi;ShareholderEquity"/>
+   </owl:ObjectProperty>
+
+   <owl:ObjectProperty rdf:about="&fibo-sec-eq-eqi;confersOwnershipOfIssuedEquity">
+      <rdfs:label>confers ownership of issued equity</rdfs:label>
+      <skos:definition>A share confers on the holder the legal right of ownership of issued equity.</skos:definition>
+      <rdfs:subPropertyOf rdf:resource="&fibo-sec-eq-eqi;confersOwnershipOfEquity"/>
+      <rdfs:domain rdf:resource="&fibo-sec-eq-eqi;PubliclyTradedShare"/>
+      <rdfs:range rdf:resource="&fibo-sec-eq-eqi;PubliclyIssuedEquity"/>
+   </owl:ObjectProperty>
+
+   <owl:ObjectProperty rdf:about="&fibo-sec-eq-eqi;confersOwnershipOfPrivateEquity">
+      <rdfs:label>confers ownership of private equity</rdfs:label>
+      <skos:definition>Equity represented by the Private Equity security and owned by the Holder of the share in proportion to the amount of the issue that they hold.</skos:definition>
+      <rdfs:subPropertyOf rdf:resource="&fibo-sec-eq-eqi;confersOwnershipOfEquity"/>
+      <rdfs:domain rdf:resource="&fibo-sec-eq-eqi;PrivatelyHeldShare"/>
+      <rdfs:range rdf:resource="&fibo-sec-eq-eqi;PrivateEquity"/>
+   </owl:ObjectProperty>
+
+   <owl:ObjectProperty rdf:about="&fibo-sec-eq-eqi;confersSome">
+      <rdfs:label>confers some</rdfs:label>
+      <skos:definition>The share confers one or more voting rights on the Holder.</skos:definition>
+      <rdfs:subPropertyOf rdf:resource="&fibo-sec-eq-eqi;shareConfers"/>
+      <rdfs:domain rdf:resource="&fibo-sec-eq-eqi;VotingShare"/>
+      <rdfs:range rdf:resource="&fibo-sec-eq-eqi;VotingRight"/>
+   </owl:ObjectProperty>
+
+   <owl:ObjectProperty rdf:about="&fibo-sec-eq-eqi;confersTwoOrMoreVotingRight">
+      <rdfs:label>confers two or more voting right</rdfs:label>
+      <skos:definition>The share confers multiple voting rights on the Holder.</skos:definition>
+      <rdfs:subPropertyOf rdf:resource="&fibo-sec-eq-eqi;confersSome"/>
+      <rdfs:domain rdf:resource="&fibo-sec-eq-eqi;MultipleVotingShare"/>
+      <rdfs:range rdf:resource="&fibo-sec-eq-eqi;VotingRight"/>
+   </owl:ObjectProperty>
+
+   <owl:ObjectProperty rdf:about="&fibo-sec-eq-eqi;holdsSomeShareholderEquity">
+      <rdfs:label>holds some shareholder equity</rdfs:label>
+      <skos:definition>The shareholder holds some of the issued shareholder equity in the company, by way of the shares that they hold.</skos:definition>
+      <rdfs:subPropertyOf rdf:resource="&fibo-be-oac-cown;shareholderHoldsEquity"/>
+      <rdfs:domain rdf:resource="&fibo-be-oac-cown;Shareholder"/>
+      <rdfs:range rdf:resource="&fibo-sec-eq-eqi;ShareholderEquity"/>
+   </owl:ObjectProperty>
+
+   <owl:ObjectProperty rdf:about="&fibo-sec-eq-eqi;isSeniorTo">
+      <rdfs:label>is senior to</rdfs:label>
+      <skos:definition>The share has a higher seniority than the related share, meaning that it gives the holder a higher claim on the assets of the issuing entity in the event of the winding up of that entity.</skos:definition>
+      <rdfs:subPropertyOf rdf:resource="&fibo-sec-eq-eqi;isSeniorToAnotherClassOf"/>
+      <rdfs:domain rdf:resource="&fibo-sec-eq-eqi;Share"/>
+      <rdfs:range rdf:resource="&fibo-sec-eq-eqi;Share"/>
+   </owl:ObjectProperty>
+
+   <owl:ObjectProperty rdf:about="&fibo-sec-eq-eqi;isSeniorToAnotherClassOf">
+      <rdfs:label>is senior to another class of</rdfs:label>
+      <skos:definition>A class of equity may have a higher claim on the assets of the issuing entity in the event of the winding up of that entity than another class of equity. This is referred to as taking precedence or priority over that other class of equity. It is also referred to as the first class being senior to that other class of issued equity.</skos:definition>
+      <rdfs:domain rdf:resource="&fibo-sec-eq-eqi;ShareholderEquity"/>
+      <rdfs:range rdf:resource="&fibo-sec-eq-eqi;ShareholderEquity"/>
+   </owl:ObjectProperty>
+
+   <owl:ObjectProperty rdf:about="&fibo-sec-eq-eqi;equityAmount">
+      <rdfs:label>equity amount</rdfs:label>
+      <skos:definition>The Monetary Amount (capital amount) represented by the Issued Equity.</skos:definition>
+      <rdfs:domain rdf:resource="&fibo-sec-eq-eqi;PubliclyIssuedEquity"/>
+      <rdfs:range rdf:resource="&fibo-fnd-acc-cur;MoneyAmount"/>
+   </owl:ObjectProperty>
+
+
+  <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+<owl:DatatypeProperty rdf:about="&fibo-sec-eq-eqi;numberOfVotes">
+      <rdfs:label>number of votes</rdfs:label>
+      <skos:definition>Number of votes which are conferred upon the holder of each such share.</skos:definition>
+      <rdfs:range rdf:resource="&fibo-fnd-utl-bt;wholeNumber"/>
+   </owl:DatatypeProperty>
+
+   <owl:DatatypeProperty rdf:about="&fibo-sec-eq-eqi;freeFloat">
+      <rdfs:label>free float</rdfs:label>
+      <skos:definition>The total number of shares publicly owned and available for trading. The float is calculated by subtracting restricted shares from outstanding shares.</skos:definition>
+      <rdfs:range rdf:resource="&fibo-fnd-utl-bt;wholeNumber"/>
+   </owl:DatatypeProperty>
+
+   <owl:DatatypeProperty rdf:about="&fibo-sec-eq-eqi;nonPaidAmount">
+      <rdfs:label>non paid amount</rdfs:label>
+      <skos:definition>Nominal amount which is not paid yet.</skos:definition>
+      <rdfs:range rdf:resource="&fibo-fnd-acc-cur;MoneyAmount"/>
+   </owl:DatatypeProperty>
+
+   <owl:DatatypeProperty rdf:about="&fibo-sec-eq-eqi;numberOfSharesInIssue">
+      <rdfs:label>number of shares in issue</rdfs:label>
+      <skos:definition>The total number of shares issued.</skos:definition>
+      <rdfs:range rdf:resource="&fibo-fnd-utl-bt;wholeNumber"/>
+   </owl:DatatypeProperty>
+
+   <owl:DatatypeProperty rdf:about="&fibo-sec-eq-eqi;votingRightsPerShare">
+      <rdfs:label>voting rights per share</rdfs:label>
+      <skos:definition>Number of voting rights per share.</skos:definition>
+      <rdfs:range rdf:resource="&fibo-fnd-utl-bt;wholeNumber"/>
+   </owl:DatatypeProperty>
+
+   <owl:DatatypeProperty rdf:about="&fibo-sec-eq-eqi;priority">
+      <rdfs:label>priority</rdfs:label>
+      <skos:definition>The Seniority of the Equity. This is the order of precedence in which holders of different classes of equity (whether through private equity or publicly issued shares) will have a call on the assets of the company in the event of it winding up.</skos:definition>
+      <rdfs:range rdf:resource="&fibo-sec-eq-eqi;Seniority"/>
+   </owl:DatatypeProperty>
+
+   <owl:DatatypeProperty rdf:about="&fibo-sec-eq-eqi;typeOfVotingRights">
+      <rdfs:label>type of voting rights</rdfs:label>
+      <skos:definition>The specification of voting rights for the security.</skos:definition>
+      <rdfs:range rdf:resource="&fibo-sec-eq-eqi;VotingRightsTypeSelection"/>
+   </owl:DatatypeProperty>
+
+   <owl:DatatypeProperty rdf:about="&fibo-sec-eq-eqi;votingRestrictions">
+      <rdfs:label>voting restrictions</rdfs:label>
+      <skos:definition>Details of restrictions on voting rights, for the case where type of voting is Restricted.</skos:definition>
+      <rdfs:range rdf:resource="&fibo-fnd-utl-bt;text"/>
+   </owl:DatatypeProperty>
+
+
+  <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotation Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+
+  <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+<owl:Class rdf:about="&fibo-sec-eq-eqi;FoundersShare">
+      <rdfs:label>founders share</rdfs:label>
+      <skos:definition>A share which is not tradable and which is held by founders of the compsny. Ths is stock that pre-dates any flotation of the company.</skos:definition>
+      <rdfs:subClassOf rdf:resource="&fibo-sec-eq-eqi;PrivatelyHeldShare"/>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-sec-eq-eqi;MultipleVotingShare">
+      <rdfs:label>multiple voting share</rdfs:label>
+      <skos:definition>A share which confers upon the holder multiple voting rights.</skos:definition>
+      <rdfs:subClassOf rdf:resource="&fibo-sec-eq-eqi;VotingShare"/>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-sec-eq-eqi;NonVotingShare">
+      <rdfs:label>non voting share</rdfs:label>
+      <rdfs:subClassOf rdf:resource="&fibo-sec-eq-eqi;Share"/>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-sec-eq-eqi;PrivateEquity">
+      <rdfs:label>private equity</rdfs:label>
+      <rdfs:subClassOf rdf:resource="&fibo-sec-eq-eqi;ShareholderEquity"/>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-sec-eq-eqi;PrivatelyHeldShare">
+      <rdfs:label>privately held share</rdfs:label>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-sec-eq-eqi;PublicPrivateIssueFacet">
+      <skos:definition>Classification facet.</skos:definition>
+      <owl:equivalentClass>
+         <owl:Class>
+            <owl:unionOf rdf:parseType="Collection">
+               <owl:Class rdf:about="&fibo-sec-eq-eqi;PubliclyTradedShare"/>
+               <owl:Class rdf:about="&fibo-sec-eq-eqi;PrivatelyHeldShare"/>
+            </owl:unionOf>
+         </owl:Class>
+      </owl:equivalentClass>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-sec-eq-eqi;PubliclyTradedShare">
+      <rdfs:label>publicly traded share</rdfs:label>
+      <skos:definition>A publicly traded security that signifies ownership in a corporation and represents a claim on part of the corporation's assets and earnings.</skos:definition>
+      <rdfs:subClassOf rdf:resource="&fibo-sec-sec-sec;TradingRegisteredSecurity"/>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-sec-eq-eqi;Share">
+      <rdfs:label>share</rdfs:label>
+      <skos:definition>A security that signifies ownership in a corporation and represents a claim on part of the corporation's assets and earnings. What a share confers: 1. Voting rights 2. Entitlement to Income 3. Entitlements to Assets</skos:definition>
+      <rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;TransferableContract"/>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-sec-eq-eqi;ShareholderEquity">
+      <rdfs:label>shareholder equity</rdfs:label>
+      <skos:definition>The equity in the company in the form of shares.</skos:definition>
+      <rdfs:subClassOf rdf:resource="&fibo-fnd-acc-aeq;IssuedEquity"/>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-sec-eq-eqi;SingleVotingShare">
+      <rdfs:label>single voting share</rdfs:label>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-sec-eq-eqi;VotingRight">
+      <rdfs:label>voting right</rdfs:label>
+      <skos:definition>The right of a stockholder to vote on matters of corporate policy as well as on who is to compose the board of directors.</skos:definition>
+      <rdfs:subClassOf rdf:resource="&fibo-fnd-agrx-cst;ContractualRight"/>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-sec-eq-eqi;VotingShare">
+      <rdfs:label>voting share</rdfs:label>
+      <skos:definition>A share which confers upon the holder some voting rights.</skos:definition>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-sec-eq-eqi;PubliclyIssuedEquity">
+      <rdfs:label>publicly issued equity</rdfs:label>
+      <skos:definition>The equity which exists in an incorporated company, which has been issued to the public in the form of shares. This class defines the equity itself, as distinct from the shares which give a holder the ownership of that equity, i.e. this is what is owned by the share holder.</skos:definition>
+   </owl:Class>
+
+
+  <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+</rdf:RDF>
