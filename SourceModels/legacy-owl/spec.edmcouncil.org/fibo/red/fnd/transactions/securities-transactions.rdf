@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  
+<!DOCTYPE rdf:RDF [
+    <!ENTITY fibo-fnd-txn-sec "http://spec.edmcouncil.org/fibo/red/fnd/transactions/securities-transactions/">
+    <!ENTITY fibo-fnd-txn-rea "http://spec.edmcouncil.org/fibo/red/fnd/transactions/rea-transactions/">
+    <!ENTITY fibo-fnd-txn-mkt "http://spec.edmcouncil.org/fibo/red/fnd/transactions/market-transactions/">
+    <!ENTITY fibo-fnd-utl-bt "http://spec.edmcouncil.org/fibo/red/fnd/utilities/business-facing-types/">
+    <!ENTITY fibo-fnd-txn-sup "http://spec.edmcouncil.org/fibo/red/fnd/transactions/supply-transactions/">
+    <!ENTITY fibo-sec-sec-neg "http://spec.edmcouncil.org/fibo/red/sec/securities/negotiable-securities/">
+    <!ENTITY fibo-fnd-occ-proc "http://spec.edmcouncil.org/fibo/red/fnd/occurrent/processes/">
+]>
+
+<rdf:RDF xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+         xmlns:sm="http://www.omg.org/techprocess/ab/SpecificationMetadata/"
+         xmlns:xs="http://www.w3.org/2001/XMLSchema"
+         xmlns:fibo-fnd-utl-av="http://www.omg.org/spec/EDMC-FIBO/FND/Utilities/AnnotationVocabulary/"
+         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+         xmlns:dc="http://purl.org/dc/terms/"
+         xml:base="http://spec.edmcouncil.org/fibo/red/fnd/transactions/securities-transactions/">
+
+   <owl:Ontology rdf:about="http://spec.edmcouncil.org/fibo/red/fnd/transactions/securities-transactions/">
+      <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/red/fnd/transactions/rea-transactions/"/>
+      <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/red/fnd/transactions/market-transactions/"/>
+      <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/red/fnd/utilities/business-facing-types/"/>
+      <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/red/fnd/transactions/supply-transactions/"/>
+      <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/red/sec/securities/negotiable-securities/"/>
+      <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/red/fnd/occurrent/processes/"/>
+   </owl:Ontology>
+
+
+  <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Datatypes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+
+  <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+<owl:ObjectProperty rdf:about="&fibo-fnd-txn-sec;consideration">
+      <rdfs:label>consideration</rdfs:label>
+      <skos:definition>The component of the Securities Transaction which forms the Consideration. Note this does not include Swaps (there are under OTC Transaction). Review whether the option of non cash settlement is required for traded securities transactions, which is what this represents.</skos:definition>
+      <rdfs:subPropertyOf rdf:resource="&fibo-fnd-txn-mkt;consideration"/>
+      <rdfs:domain rdf:resource="&fibo-fnd-txn-sec;FinancialSecuritiesSecondaryMarketTransaction"/>
+      <rdfs:range rdf:resource="&fibo-fnd-txn-sec;.UnionClass.4"/>
+   </owl:ObjectProperty>
+
+   <owl:ObjectProperty rdf:about="&fibo-fnd-txn-sec;follows">
+      <rdfs:label>follows</rdfs:label>
+      <rdfs:subPropertyOf rdf:resource="&fibo-fnd-txn-rea;transactionEventFollowsBusinessProcess"/>
+      <rdfs:domain rdf:resource="&fibo-fnd-txn-sec;FinancialPrimaryMarketTransaction"/>
+      <rdfs:range rdf:resource="&fibo-fnd-txn-sec;SettlementProcess"/>
+   </owl:ObjectProperty>
+
+   <owl:ObjectProperty rdf:about="&fibo-fnd-txn-sec;embodies">
+      <rdfs:label>embodies</rdfs:label>
+      <rdfs:subPropertyOf rdf:resource="&fibo-fnd-txn-rea;transactionEmbodiesEconomicAgreement"/>
+      <rdfs:domain rdf:resource="&fibo-fnd-txn-sec;FinancialSecuritiesSecondaryMarketTransaction"/>
+      <rdfs:range rdf:resource="&fibo-fnd-txn-sec;SecuritiesTransactionContract"/>
+      <owl:inverseOf rdf:resource="&fibo-fnd-txn-sec;governs"/>
+   </owl:ObjectProperty>
+
+   <owl:ObjectProperty rdf:about="&fibo-fnd-txn-sec;transactsWith">
+      <rdfs:label>transacts with</rdfs:label>
+      <rdfs:subPropertyOf rdf:resource="&fibo-fnd-txn-mkt;transactsWith"/>
+      <rdfs:domain rdf:resource="&fibo-fnd-txn-sec;SecuritiesTransactionPrincipal"/>
+      <rdfs:range rdf:resource="&fibo-fnd-txn-sec;SecuritiesTransactionCounterparty"/>
+   </owl:ObjectProperty>
+
+   <owl:ObjectProperty rdf:about="&fibo-fnd-txn-sec;governs">
+      <rdfs:label>governs</rdfs:label>
+      <rdfs:subPropertyOf rdf:resource="&fibo-fnd-txn-rea;economicAgreementGovernsTransaction"/>
+      <rdfs:domain rdf:resource="&fibo-fnd-txn-sec;SecuritiesTransactionContract"/>
+      <rdfs:range rdf:resource="&fibo-fnd-txn-sec;FinancialSecuritiesSecondaryMarketTransaction"/>
+   </owl:ObjectProperty>
+
+   <owl:ObjectProperty rdf:about="&fibo-fnd-txn-sec;counterparty">
+      <rdfs:label>counterparty</rdfs:label>
+      <rdfs:subPropertyOf rdf:resource="&fibo-fnd-txn-mkt;counterparty"/>
+      <rdfs:domain rdf:resource="&fibo-fnd-txn-sec;FinancialSecuritiesSecondaryMarketTransaction"/>
+      <rdfs:range rdf:resource="&fibo-fnd-txn-sec;SecuritiesTransactionCounterparty"/>
+   </owl:ObjectProperty>
+
+   <owl:ObjectProperty rdf:about="&fibo-fnd-txn-sec;principal">
+      <rdfs:label>principal</rdfs:label>
+      <rdfs:subPropertyOf rdf:resource="&fibo-fnd-txn-mkt;principal"/>
+      <rdfs:domain rdf:resource="&fibo-fnd-txn-sec;FinancialSecuritiesSecondaryMarketTransaction"/>
+      <rdfs:range rdf:resource="&fibo-fnd-txn-sec;SecuritiesTransactionPrincipal"/>
+   </owl:ObjectProperty>
+
+   <owl:ObjectProperty rdf:about="&fibo-fnd-txn-sec;hasSubject">
+      <rdfs:label>has subject</rdfs:label>
+      <rdfs:subPropertyOf rdf:resource="&fibo-fnd-txn-rea;subject"/>
+      <rdfs:domain rdf:resource="&fibo-fnd-txn-sec;FinancialSecuritiesSecondaryMarketTransaction"/>
+      <rdfs:range rdf:resource="&fibo-sec-sec-neg;NegotiableSecurity"/>
+   </owl:ObjectProperty>
+
+
+  <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+<owl:DatatypeProperty rdf:about="&fibo-fnd-txn-sec;offsetForWIIssueDate">
+      <rdfs:label>offset for w i issue date</rdfs:label>
+      <skos:definition>Used to calculate actual settlement date from given WI issue date. If issue date is unknwn, this determines how many days form the issue date it's going to settle.</skos:definition>
+      <rdfs:range rdf:resource="&fibo-fnd-utl-bt;wholeNumber"/>
+   </owl:DatatypeProperty>
+
+
+  <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotation Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+
+  <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+<owl:Class rdf:about="&fibo-fnd-txn-sec;.UnionClass.4">
+      <owl:equivalentClass>
+         <owl:Class>
+            <owl:unionOf rdf:parseType="Collection">
+               <owl:Class rdf:about="&fibo-sec-sec-neg;NegotiableSecurity"/>
+               <owl:Class rdf:about="&fibo-fnd-txn-sup;NegotiableCash"/>
+            </owl:unionOf>
+         </owl:Class>
+      </owl:equivalentClass>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-fnd-txn-sec;FinancialPrimaryMarketTransaction">
+      <rdfs:label>financial primary market transaction</rdfs:label>
+      <rdfs:subClassOf rdf:resource="&fibo-fnd-txn-rea;ContractualTransaction"/>
+      <rdfs:subClassOf rdf:resource="&fibo-fnd-txn-mkt;MarketTransaction"/>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-fnd-txn-sec;SettlementProcess">
+      <rdfs:label>settlement process</rdfs:label>
+      <rdfs:subClassOf rdf:resource="&fibo-fnd-occ-proc;BusinessProcess"/>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-fnd-txn-sec;WhenIssuedTransaction">
+      <rdfs:label>when issued transaction</rdfs:label>
+      <skos:definition>Trading in securities ahead of them being traded.</skos:definition>
+      <rdfs:subClassOf rdf:resource="&fibo-fnd-txn-sec;FinancialSecuritiesSecondaryMarketTransaction"/>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-fnd-txn-sec;SecuritiesTransactionContract">
+      <rdfs:label>securities transaction contract</rdfs:label>
+      <skos:definition>The contract (written or implied) which governs the transaction of securities in the secondary Market.</skos:definition>
+      <rdfs:subClassOf rdf:resource="&fibo-fnd-txn-rea;EconomicContract"/>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-fnd-txn-sec;FinancialSecuritiesSecondaryMarketTransaction">
+      <rdfs:label>financial securities secondary market transaction</rdfs:label>
+      <skos:definition>A Transaction in which some negotiable security is provided in exchange for some Consideration.</skos:definition>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-fnd-txn-sec;SecuritiesTransactionCounterparty">
+      <rdfs:label>securities transaction counterparty</rdfs:label>
+      <rdfs:subClassOf rdf:resource="&fibo-fnd-txn-mkt;TransactionCounterparty"/>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-fnd-txn-sec;SecuritiesTransactionPrincipal">
+      <rdfs:label>securities transaction principal</rdfs:label>
+      <rdfs:subClassOf rdf:resource="&fibo-fnd-txn-mkt;TransactionPrincipal"/>
+   </owl:Class>
+
+
+  <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+</rdf:RDF>

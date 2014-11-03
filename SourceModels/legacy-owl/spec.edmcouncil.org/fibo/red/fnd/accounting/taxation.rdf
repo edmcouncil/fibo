@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  
+<!DOCTYPE rdf:RDF [
+    <!ENTITY fibo-fnd-acc-tax "http://spec.edmcouncil.org/fibo/red/fnd/accounting/taxation/">
+    <!ENTITY fibo-uo-rl "http://spec.edmcouncil.org/fibo/red/uo/relatives/">
+    <!ENTITY fibo-fnd-bus-pol "http://spec.edmcouncil.org/fibo/red/fnd/business/policy/">
+    <!ENTITY fibo-fnd-utl-bt "http://spec.edmcouncil.org/fibo/red/fnd/utilities/business-facing-types/">
+    <!ENTITY fibo-fnd-tim-tim "http://spec.edmcouncil.org/fibo/red/fnd/date-time/date-time/">
+    <!ENTITY fibo-fnd-law-jur "http://spec.edmcouncil.org/fibo/red/fnd/law/jurisdictions/">
+]>
+
+<rdf:RDF xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+         xmlns:sm="http://www.omg.org/techprocess/ab/SpecificationMetadata/"
+         xmlns:xs="http://www.w3.org/2001/XMLSchema"
+         xmlns:fibo-fnd-utl-av="http://www.omg.org/spec/EDMC-FIBO/FND/Utilities/AnnotationVocabulary/"
+         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+         xmlns:dc="http://purl.org/dc/terms/"
+         xml:base="http://spec.edmcouncil.org/fibo/red/fnd/accounting/taxation/">
+
+   <owl:Ontology rdf:about="http://spec.edmcouncil.org/fibo/red/fnd/accounting/taxation/">
+      <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/red/uo/relatives/"/>
+      <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/red/fnd/business/policy/"/>
+      <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/red/fnd/utilities/business-facing-types/"/>
+      <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/red/fnd/date-time/date-time/"/>
+      <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/red/fnd/law/jurisdictions/"/>
+   </owl:Ontology>
+
+
+  <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Datatypes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+
+  <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+<owl:ObjectProperty rdf:about="&fibo-fnd-acc-tax;applicableIn">
+      <rdfs:label>applicable in</rdfs:label>
+      <rdfs:subPropertyOf rdf:resource="&fibo-fnd-law-jur;appliesIn"/>
+      <rdfs:domain rdf:resource="&fibo-fnd-acc-tax;TaxLaw"/>
+      <rdfs:range rdf:resource="&fibo-fnd-acc-tax;TaxJurisdiction"/>
+   </owl:ObjectProperty>
+
+   <owl:ObjectProperty rdf:about="&fibo-fnd-acc-tax;defines">
+      <rdfs:label>defines</rdfs:label>
+      <rdfs:subPropertyOf rdf:resource="&fibo-fnd-bus-pol;identifies"/>
+      <rdfs:subPropertyOf rdf:resource="&fibo-fnd-bus-pol;defines.1"/>
+      <rdfs:domain rdf:resource="&fibo-fnd-acc-tax;TaxRuleScheme"/>
+      <rdfs:range rdf:resource="&fibo-fnd-acc-tax;TaxRule"/>
+   </owl:ObjectProperty>
+
+   <owl:ObjectProperty rdf:about="&fibo-fnd-acc-tax;laysDown">
+      <rdfs:label>lays down</rdfs:label>
+      <rdfs:domain rdf:resource="&fibo-fnd-acc-tax;TaxLaw"/>
+      <rdfs:range rdf:resource="&fibo-fnd-acc-tax;TaxRule"/>
+   </owl:ObjectProperty>
+
+   <owl:ObjectProperty rdf:about="&fibo-fnd-acc-tax;applicableIn.1">
+      <rdfs:label>applicable in</rdfs:label>
+      <rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-tax;applicableIn"/>
+      <rdfs:domain rdf:resource="&fibo-fnd-acc-tax;TaxRule"/>
+      <rdfs:range rdf:resource="&fibo-fnd-acc-tax;TaxJurisdiction"/>
+   </owl:ObjectProperty>
+
+   <owl:ObjectProperty rdf:about="&fibo-fnd-acc-tax;isLaidDownIn">
+      <rdfs:label>is laid down in</rdfs:label>
+      <rdfs:domain rdf:resource="&fibo-fnd-acc-tax;TaxRule"/>
+      <rdfs:range rdf:resource="&fibo-fnd-acc-tax;TaxLaw"/>
+      <owl:inverseOf rdf:resource="&fibo-fnd-acc-tax;laysDown"/>
+   </owl:ObjectProperty>
+
+   <owl:ObjectProperty rdf:about="&fibo-fnd-acc-tax;setsOut">
+      <rdfs:label>sets out</rdfs:label>
+      <skos:definition>The treatment of the financial instrument for taxation purposes. This is the most general form of tax treatment for financial instruments, including cash.</skos:definition>
+      <rdfs:domain rdf:resource="&fibo-fnd-acc-tax;TaxRule"/>
+      <rdfs:range rdf:resource="&fibo-fnd-acc-tax;TaxTreatment"/>
+   </owl:ObjectProperty>
+
+   <owl:ObjectProperty rdf:about="&fibo-fnd-acc-tax;definedIn">
+      <rdfs:label>defined in</rdfs:label>
+      <rdfs:domain rdf:resource="&fibo-fnd-acc-tax;TaxTreatment"/>
+      <rdfs:range rdf:resource="&fibo-fnd-acc-tax;TaxRule"/>
+      <owl:inverseOf rdf:resource="&fibo-fnd-acc-tax;setsOut"/>
+   </owl:ObjectProperty>
+
+   <owl:ObjectProperty rdf:about="&fibo-fnd-acc-tax;effectivePeriod">
+      <rdfs:label>effective period</rdfs:label>
+      <skos:definition>Period during which the tax rule applies within the jurisdiction.</skos:definition>
+      <rdfs:domain rdf:resource="&fibo-fnd-acc-tax;TaxRule"/>
+      <rdfs:range rdf:resource="&fibo-fnd-tim-tim;DatePeriod"/>
+   </owl:ObjectProperty>
+
+   <owl:ObjectProperty rdf:about="&fibo-fnd-acc-tax;isDefinedIn">
+      <rdfs:label>is defined in</rdfs:label>
+      <rdfs:domain rdf:resource="&fibo-fnd-acc-tax;TaxRule"/>
+      <rdfs:range rdf:resource="&fibo-fnd-acc-tax;TaxRuleScheme"/>
+      <owl:inverseOf rdf:resource="&fibo-fnd-acc-tax;defines"/>
+   </owl:ObjectProperty>
+
+
+  <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+<owl:DatatypeProperty rdf:about="&fibo-fnd-acc-tax;description">
+      <rdfs:label>description</rdfs:label>
+      <skos:definition>Free text description of the tax rule.</skos:definition>
+      <rdfs:range rdf:resource="&fibo-fnd-utl-bt;text"/>
+   </owl:DatatypeProperty>
+
+   <owl:DatatypeProperty rdf:about="&fibo-fnd-acc-tax;rate">
+      <rdfs:label>rate</rdfs:label>
+      <skos:definition>Rate used for calculation of the tax.</skos:definition>
+      <rdfs:range rdf:resource="&fibo-fnd-utl-bt;percentage"/>
+   </owl:DatatypeProperty>
+
+   <owl:DatatypeProperty rdf:about="&fibo-fnd-acc-tax;ruleName">
+      <rdfs:label>rule name</rdfs:label>
+      <skos:definition>Common name of the Tax Rule</skos:definition>
+      <rdfs:range rdf:resource="&fibo-fnd-utl-bt;text"/>
+   </owl:DatatypeProperty>
+
+
+  <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotation Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+
+  <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+<owl:Class rdf:about="&fibo-fnd-acc-tax;TaxJurisdiction">
+      <rdfs:label>tax jurisdiction</rdfs:label>
+      <rdfs:subClassOf rdf:resource="&fibo-fnd-law-jur;Jurisdiction"/>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-fnd-acc-tax;TaxTreatment">
+      <rdfs:label>tax treatment</rdfs:label>
+      <skos:definition>Amount of money due to the government or tax authority, applicable to some thing or activity in some jurisdiction</skos:definition>
+      <rdfs:subClassOf rdf:resource="&fibo-uo-rl;RelativeThing"/>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-fnd-acc-tax;TaxRule">
+      <rdfs:label>tax rule</rdfs:label>
+      <skos:definition>The tax rule which is applied in determing the applicable tax.</skos:definition>
+      <rdfs:subClassOf rdf:resource="&fibo-fnd-bus-pol;Rule"/>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-fnd-acc-tax;TaxRuleScheme">
+      <rdfs:label>tax rule scheme</rdfs:label>
+      <skos:definition>The scheme in which the tax rule is identified and defined.</skos:definition>
+      <rdfs:subClassOf rdf:resource="&fibo-fnd-bus-pol;RuleScheme"/>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-fnd-acc-tax;TaxLaw">
+      <rdfs:label>tax law</rdfs:label>
+      <skos:definition>A law or body of law pertaining to the liability for and payment of tax by persons or legal entities which are subject to the jurisdiction covered by that law.</skos:definition>
+      <rdfs:subClassOf rdf:resource="&fibo-fnd-law-jur;StatuteLaw"/>
+   </owl:Class>
+
+
+  <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+</rdf:RDF>
