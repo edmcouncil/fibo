@@ -2,15 +2,21 @@
 
 ## Intro
 
-## Directory Organization
+Ontologies in the YELLOW branch are ones that are in preparation for submission to the OMG.  These ontologies have been vetted by the FIBO Leadership Team, and will be submitted to the OMG process for ratification. 
 
-The purpose of the various directories in this repository is as follows:
+## Directories
 
-Directory                          | Purpose
-:----------------------------------|:-------
-[infrastructure](./infrastructure) | FIBO Development & Test Environment, scripts and documentation
+Directory     | Purpose
+:------------ |:-------
+[/etc](./etc) | Everything that is not a published OWL ontology in a financial domain
+[/be](./be)   | FIBO Business Entities
+[/fnd](./fnd) | FIBO Foundations
+[/ind](./ind) | FIBO Indices & Indicators
 
-## Directory Naming Conventions
+## Links
 
-See [this page](./infrastructure/directory-naming-conventions.md) for the Directory Naming Conventions
+- [FIBO Home page of the EDM Council](http://www.edmcouncil.org/financialbusiness)
+- [OMG FIBO Specifications](http://www.omg.org/spec/EDMC-FIBO/)
+
+
 

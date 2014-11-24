@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  
+<!DOCTYPE rdf:RDF [
+    <!ENTITY fibo-md-tmp-cev "http://spec.edmcouncil.org/fibo/red/md/temporal-core/credit-events/">
+    <!ENTITY fibo-fnd-info-sch "http://spec.edmcouncil.org/fibo/red/fnd/information/schemes/">
+    <!ENTITY fibo-fnd-occ-evt "http://spec.edmcouncil.org/fibo/red/fnd/occurrent/events/">
+    <!ENTITY fibo-fnd-acc-cur "http://spec.edmcouncil.org/fibo/red/fnd/accounting/currency-amount/">
+    <!ENTITY fibo-fnd-utl-bt "http://spec.edmcouncil.org/fibo/red/fnd/utilities/business-facing-types/">
+    <!ENTITY fibo-fnd-tim-tim "http://spec.edmcouncil.org/fibo/red/fnd/date-time/date-time/">
+]>
+
+<rdf:RDF xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+         xmlns:sm="http://www.omg.org/techprocess/ab/SpecificationMetadata/"
+         xmlns:xs="http://www.w3.org/2001/XMLSchema"
+         xmlns:fibo-fnd-utl-av="http://www.omg.org/spec/EDMC-FIBO/FND/Utilities/AnnotationVocabulary/"
+         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+         xmlns:dc="http://purl.org/dc/terms/"
+         xml:base="http://spec.edmcouncil.org/fibo/red/md/temporal-core/credit-events/">
+
+   <owl:Ontology rdf:about="http://spec.edmcouncil.org/fibo/red/md/temporal-core/credit-events/">
+      <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/red/fnd/information/schemes/"/>
+      <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/red/fnd/occurrent/events/"/>
+      <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/red/fnd/accounting/currency-amount/"/>
+      <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/red/fnd/utilities/business-facing-types/"/>
+      <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/red/fnd/date-time/date-time/"/>
+   </owl:Ontology>
+
+
+  <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Datatypes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+
+  <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+<owl:ObjectProperty rdf:about="&fibo-md-tmp-cev;gracePeriod">
+      <rdfs:label>grace period</rdfs:label>
+      <skos:definition>The period of days after any due date that the reference entity has to fulfil its obligations before a failure to pay credit event is deemed to have occurred. Further notes: ISDA 2003 Term: Grace Period. Note this may be a period denominated in business days or calendar days - this is a qualifying fact about the referenced term "Date Period". FpML full definition: 'The number of calendar or business days after any due date that the reference entity has to fulfil its obligations before a failure to pay credit event is deemed to have occurred. ISDA 2003 Term: Grace Period.'</skos:definition>
+      <rdfs:domain rdf:resource="&fibo-md-tmp-cev;FailureToPay"/>
+      <rdfs:range rdf:resource="&fibo-fnd-tim-tim;DatePeriod"/>
+   </owl:ObjectProperty>
+
+   <owl:ObjectProperty rdf:about="&fibo-md-tmp-cev;paymentRequirement">
+      <rdfs:label>payment requirement</rdfs:label>
+      <skos:definition>A threshold for the failure to pay credit event. Further notes: Market standard is USD 1,000,000 (JPY 100,000,000 for Japanese Yen trades) or its equivalent in the relevant obligation currency. This is applied on an aggregate basis across all Obligations of the Reference Entity. Intended to prevent technical/operational errors from triggering credit events. ISDA 2003 Term: Payment Requirement. FpML full definition: 'Specifies a threshold for the failure to pay credit event. Market standard is USD 1,000,000 (JPY 100,000,000 for Japanese Yen trades) or its equivalent in the relevant obligation currency. This is applied on an aggregate basis across all Obligations of the Reference Entity. Intended to prevent technical/operational errors from triggering credit events. ISDA 2003 Term: Payment Requirement.'</skos:definition>
+      <rdfs:domain rdf:resource="&fibo-md-tmp-cev;FailureToPay"/>
+      <rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
+   </owl:ObjectProperty>
+
+   <owl:ObjectProperty rdf:about="&fibo-md-tmp-cev;defaultRequirement">
+      <rdfs:label>default requirement</rdfs:label>
+      <skos:definition>The threshold for Repudiation/Moratorium.</skos:definition>
+      <rdfs:domain rdf:resource="&fibo-md-tmp-cev;RepudiationOrMoratorium"/>
+      <rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
+   </owl:ObjectProperty>
+
+   <owl:ObjectProperty rdf:about="&fibo-md-tmp-cev;defaultRequirement.1">
+      <rdfs:label>default requirement</rdfs:label>
+      <skos:definition>The threshold for Restructuring.</skos:definition>
+      <rdfs:domain rdf:resource="&fibo-md-tmp-cev;Restructuring"/>
+      <rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
+   </owl:ObjectProperty>
+
+   <owl:ObjectProperty rdf:about="&fibo-md-tmp-cev;isOfTypeDefinedIn">
+      <rdfs:label>is of type defined in</rdfs:label>
+      <rdfs:subPropertyOf rdf:resource="&fibo-fnd-info-sch;definedIn"/>
+      <rdfs:domain rdf:resource="&fibo-md-tmp-cev;Restructuring"/>
+      <rdfs:range rdf:resource="&fibo-md-tmp-cev;RestructuringTypeScheme"/>
+   </owl:ObjectProperty>
+
+
+  <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+<owl:DatatypeProperty rdf:about="&fibo-md-tmp-cev;applicable">
+      <rdfs:label>applicable</rdfs:label>
+      <skos:definition>Whether the failure to pay provision is applicable Further notes: FpML full definition: 'Indicates whether the failure to pay provision is applicable.'</skos:definition>
+      <rdfs:range rdf:resource="&fibo-fnd-utl-bt;yesOrNo"/>
+   </owl:DatatypeProperty>
+
+   <owl:DatatypeProperty rdf:about="&fibo-md-tmp-cev;gracePeriodExtensionApplicable">
+      <rdfs:label>grace period extension applicable</rdfs:label>
+      <skos:definition>Whether the grace period extension provision is applicable. Further notes: Whether this is applicable or not would vary by jurisdiction. Would in fact be a clause in the Loan Contract. There may also be statutory clauses that would override those in a contract, for a given jurisidction. FpML full definition: 'Indicates whether the grace period extension provision is applicable.'</skos:definition>
+      <rdfs:range rdf:resource="&fibo-fnd-utl-bt;yesOrNo"/>
+   </owl:DatatypeProperty>
+
+   <owl:DatatypeProperty rdf:about="&fibo-md-tmp-cev;applicable.1">
+      <rdfs:label>applicable</rdfs:label>
+      <skos:definition>Whether the restructuring provision is applicable.</skos:definition>
+      <rdfs:range rdf:resource="&fibo-fnd-utl-bt;yesOrNo"/>
+   </owl:DatatypeProperty>
+
+   <owl:DatatypeProperty rdf:about="&fibo-md-tmp-cev;multipleCreditEvent">
+      <rdfs:label>multiple credit event</rdfs:label>
+      <skos:definition>Section 3.9 of the ISDA 2003 Credit Derivatives Definitions shall apply.</skos:definition>
+      <rdfs:range rdf:resource="&fibo-fnd-utl-bt;yesOrNo"/>
+   </owl:DatatypeProperty>
+
+   <owl:DatatypeProperty rdf:about="&fibo-md-tmp-cev;multipleHolderObligation">
+      <rdfs:label>multiple holder obligation</rdfs:label>
+      <skos:definition>A multiple holder obligation means an obligation that is held by more than three holders that are not affiliates of each other and where at least two thirds of the holders must agree to the event that constitutes the restructuring credit event.</skos:definition>
+      <rdfs:range rdf:resource="&fibo-fnd-utl-bt;yesOrNo"/>
+   </owl:DatatypeProperty>
+
+   <owl:DatatypeProperty rdf:about="&fibo-md-tmp-cev;schemeReference">
+      <rdfs:label>scheme reference</rdfs:label>
+      <skos:definition>The URI with which to identify the scheme.</skos:definition>
+      <rdfs:range rdf:resource="&fibo-fnd-utl-bt;URI"/>
+   </owl:DatatypeProperty>
+
+
+  <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotation Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+
+  <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+<owl:Class rdf:about="&fibo-md-tmp-cev;Bankruptcy">
+      <rdfs:label>bankruptcy</rdfs:label>
+      <rdfs:subClassOf rdf:resource="&fibo-fnd-occ-evt;Event"/>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-md-tmp-cev;CreditEvent">
+      <rdfs:label>credit event</rdfs:label>
+      <skos:definition>An event which has some bearing on the credit worthiness of the Reference Entity.</skos:definition>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-md-tmp-cev;DistressedRatingsDowngrade">
+      <rdfs:label>distressed ratings downgrade</rdfs:label>
+      <skos:definition>The fact that the rating of the reference obligation is downgraded to a distressed rating level. Further notes: From a usage standpoint, this credit event is typically not applicable in case of RMBS trades. A credit event. FpML full definition: 'A credit event. Results from the fact that the rating of the reference obligation is downgraded to a distressed rating level. From a usage standpoint, this credit event is typically not applicable in case of RMBS trades.'</skos:definition>
+      <rdfs:subClassOf rdf:resource="&fibo-md-tmp-cev;ObligationCreditEvent"/>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-md-tmp-cev;EntityCreditEvent">
+      <rdfs:label>entity credit event</rdfs:label>
+      <skos:definition>Some Credit Event which is defined with reference to the Reference Entity.</skos:definition>
+      <rdfs:subClassOf rdf:resource="&fibo-md-tmp-cev;CreditEvent"/>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-md-tmp-cev;FailureToPay">
+      <rdfs:label>failure to pay</rdfs:label>
+      <skos:definition>'A credit event. This credit event triggers, after the expiration of any applicable grace period, if the reference entity fails to make due payments in an aggregrate amount of not less than the payment requirement on one or more obligations (e.g. a missed coupon payment). ISDA 2003 Term: Failure to Pay.'</skos:definition>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-md-tmp-cev;FailureToPayInterest">
+      <rdfs:label>failure to pay interest</rdfs:label>
+      <skos:definition>The failure by the Reference Entity to pay an expected interest amount or the payment of an actual interest amount that is less than the expected interest amount. Further notes: A credit event. ISDA 2003 Term: Failure to Pay Interest. FpML full definition: 'A credit event. Corresponds to the failure by the Reference Entity to pay an expected interest amount or the payment of an actual interest amount that is less than the expected interest amount. ISDA 2003 Term: Failure to Pay Interest.'</skos:definition>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-md-tmp-cev;FailureToPayPrincipal">
+      <rdfs:label>failure to pay principal</rdfs:label>
+      <skos:definition>The failure by the Reference Entity to pay an expected principal amount or the payment of an actual principal amount that is less than the expected principal amount. Further notes: A credit event. ISDA 2003 Term: Failure to Pay Principal.' FpML full definition: 'A credit event. Corresponds to the failure by the Reference Entity to pay an expected principal amount or the payment of an actual principal amount that is less than the expected principal amount. ISDA 2003 Term: Failure to Pay Principal.'</skos:definition>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-md-tmp-cev;FilingForBankruptcy">
+      <rdfs:label>filing for bankruptcy</rdfs:label>
+      <skos:definition>An event in which an organization files for bankruptcy.</skos:definition>
+      <rdfs:subClassOf rdf:resource="&fibo-md-tmp-cev;EntityCreditEvent"/>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-md-tmp-cev;HardCreditEvent">
+      <rdfs:label>hard credit event</rdfs:label>
+      <skos:definition>Hard default. This is defined by the event not being repairable.</skos:definition>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-md-tmp-cev;MaturityExtension">
+      <rdfs:label>maturity extension</rdfs:label>
+      <skos:definition>The fact that the underlier fails to make principal payments as expected. Further notes: A credit event. REVIEW: The definition from FpML appears to be a variant on that for Failure To Pay Principal. The definition given here is the definition of a failure to pay principal but the FpML definition for Failure to pay Principal is more detailed. This definition alone does not justify an extension of the maturity. FpML full definition: 'A credit event. Results from the fact that the underlier fails to make principal payments as expected.'</skos:definition>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-md-tmp-cev;ObligationCreditEvent">
+      <rdfs:label>obligation credit event</rdfs:label>
+      <skos:definition>An event which relates specifically to an individual security issued by the Reference Entity (the Reference Obligation).</skos:definition>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-md-tmp-cev;RepudiationOrMoratorium">
+      <rdfs:label>repudiation or moratorium</rdfs:label>
+      <skos:definition>The reference entity, or a governmental authority, either refuses to recognise or challenges the validity of one or more obligations of the reference entity, or imposes a moratorium thereby postponing payments on one or more of the obligations of the reference entity.</skos:definition>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-md-tmp-cev;Restructuring">
+      <rdfs:label>restructuring</rdfs:label>
+      <skos:definition>A restructuring is an event that materially impacts the reference entity's obligations, such as an interest rate reduction, principal reduction, deferral of interest or principal, change in priority ranking, or change in currency or composition of payment.</skos:definition>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-md-tmp-cev;RestructuringTypeScheme">
+      <rdfs:label>restructuring type scheme</rdfs:label>
+      <skos:definition>The scheme which defines the restructuring type in a Restructuring credit event.</skos:definition>
+      <rdfs:subClassOf rdf:resource="&fibo-fnd-info-sch;Scheme"/>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-md-tmp-cev;SoftCreditEvent">
+      <rdfs:label>soft credit event</rdfs:label>
+      <skos:definition>Soft default. This is defined by the event being repairable.</skos:definition>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-md-tmp-cev;Writedown">
+      <rdfs:label>writedown</rdfs:label>
+      <skos:definition>The fact that the underlier writes down its outstanding principal amount. Further notes: A credit event. FpML full definition: 'A credit event. Results from the fact that the underlier writes down its outstanding principal amount.'</skos:definition>
+   </owl:Class>
+
+
+  <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+</rdf:RDF>

@@ -1,0 +1,1 @@
+The FIBO Business Entities specification as a Word document.

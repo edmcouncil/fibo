@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  
+<!DOCTYPE rdf:RDF [
+    <!ENTITY fibo-be-le-lp "http://spec.edmcouncil.org/fibo/red/be/legal-entities/legal-persons/">
+    <!ENTITY fibo-fnd-pty-pty "http://spec.edmcouncil.org/fibo/red/fnd/parties/parties/">
+    <!ENTITY fibo-fnd-aap-agt "http://spec.edmcouncil.org/fibo/red/fnd/agents-and-people/agents/">
+    <!ENTITY fibo-fnd-aap-ppl "http://spec.edmcouncil.org/fibo/red/fnd/agents-and-people/people/">
+    <!ENTITY fibo-be-le-fbo "http://spec.edmcouncil.org/fibo/red/be/legal-entities/formal-business-organizations/">
+    <!ENTITY fibo-fnd-plc-adr "http://spec.edmcouncil.org/fibo/red/fnd/places/addresses/">
+    <!ENTITY fibo-be-le-cb "http://spec.edmcouncil.org/fibo/red/be/legal-entities/corporate-bodies/">
+    <!ENTITY fibo-fnd-rel-rel "http://spec.edmcouncil.org/fibo/red/fnd/relations/relations/">
+    <!ENTITY fibo-fnd-law-lcap "http://spec.edmcouncil.org/fibo/red/fnd/law/legal-capacities/">
+]>
+
+<rdf:RDF xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+         xmlns:sm="http://www.omg.org/techprocess/ab/SpecificationMetadata/"
+         xmlns:xs="http://www.w3.org/2001/XMLSchema"
+         xmlns:fibo-fnd-utl-av="http://www.omg.org/spec/EDMC-FIBO/FND/Utilities/AnnotationVocabulary/"
+         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+         xmlns:dc="http://purl.org/dc/terms/"
+         xml:base="http://spec.edmcouncil.org/fibo/red/be/legal-entities/legal-persons/">
+
+   <owl:Ontology rdf:about="http://spec.edmcouncil.org/fibo/red/be/legal-entities/legal-persons/">
+      <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/red/fnd/parties/parties/"/>
+      <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/red/fnd/agents-and-people/agents/"/>
+      <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/red/fnd/agents-and-people/people/"/>
+      <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/red/be/legal-entities/formal-business-organizations/"/>
+      <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/red/fnd/places/addresses/"/>
+      <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/red/be/legal-entities/corporate-bodies/"/>
+      <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/red/fnd/relations/relations/"/>
+      <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/red/fnd/law/legal-capacities/"/>
+   </owl:Ontology>
+
+
+  <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Datatypes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+
+  <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+<owl:ObjectProperty rdf:about="&fibo-be-le-lp;legalPersonHasCapacity">
+      <rdfs:label>legal person has capacity</rdfs:label>
+      <rdfs:subPropertyOf rdf:resource="&fibo-fnd-law-lcap;hasCapacity"/>
+      <rdfs:domain rdf:resource="&fibo-be-le-lp;LegalPerson"/>
+      <rdfs:range rdf:resource="&fibo-fnd-law-lcap;LiabilityCapacity"/>
+      <owl:inverseOf rdf:resource="&fibo-be-lex-lpx;accruesTo"/>
+   </owl:ObjectProperty>
+
+   <owl:ObjectProperty rdf:about="&fibo-be-le-lp;powerO.fAttorneyIsConferredOn">
+      <rdfs:label>power o:f attorney is conferred on</rdfs:label>
+      <rdfs:subPropertyOf rdf:resource="&fibo-fnd-law-lcap;legalConstructIsConferredOn"/>
+      <rdfs:domain rdf:resource="&fibo-be-le-lp;PowerOfAttorney"/>
+      <rdfs:range rdf:resource="&fibo-be-le-lp;NaturalPerson"/>
+   </owl:ObjectProperty>
+
+   <owl:ObjectProperty rdf:about="&fibo-be-le-lp;hasCapacity">
+      <rdfs:label>has capacity</rdfs:label>
+      <skos:definition>Has the capacity to sign contracts on behalf of some entity.</skos:definition>
+      <rdfs:subPropertyOf rdf:resource="&fibo-fnd-law-lcap;hasCapacity"/>
+      <rdfs:domain rdf:resource="&fibo-be-le-lp;Signatory"/>
+      <rdfs:range rdf:resource="&fibo-fnd-law-lcap;SignatoryCapacity"/>
+   </owl:ObjectProperty>
+
+   <owl:ObjectProperty rdf:about="&fibo-be-le-lp;signatoryHasIdentity">
+      <rdfs:label>signatory has identity</rdfs:label>
+      <skos:definition>The identity of the Signatory. This has to be some natural person (some human being who has legal capacity).</skos:definition>
+      <rdfs:subPropertyOf rdf:resource="&fibo-fnd-pty-pty;hasIdentity"/>
+      <rdfs:domain rdf:resource="&fibo-be-le-lp;Signatory"/>
+      <rdfs:range rdf:resource="&fibo-be-le-lp;NaturalPerson"/>
+   </owl:ObjectProperty>
+
+   <owl:ObjectProperty rdf:about="&fibo-be-le-lp;designatesSignatory">
+      <rdfs:label>designates signatory</rdfs:label>
+      <skos:definition>Designates a party able to sign contracts on the part of the Legal Person.</skos:definition>
+      <rdfs:subPropertyOf rdf:resource="&fibo-fnd-pty-pty;hasPartyInRole"/>
+      <rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;designates"/>
+      <rdfs:domain rdf:resource="&fibo-be-le-lp;LegalPerson"/>
+      <rdfs:range rdf:resource="&fibo-be-le-lp;Signatory"/>
+   </owl:ObjectProperty>
+
+   <owl:ObjectProperty rdf:about="&fibo-be-le-lp;tradingAtPostalAddress">
+      <rdfs:label>trading at postal address</rdfs:label>
+      <skos:definition>Address at which the Body Corporate carries out its business.</skos:definition>
+      <rdfs:subPropertyOf rdf:resource="&fibo-be-le-fbo;hasOperatingAddress"/>
+      <rdfs:domain rdf:resource="&fibo-be-le-cb;BodyCorporate"/>
+      <rdfs:range rdf:resource="&fibo-fnd-plc-adr;PostalAddress"/>
+   </owl:ObjectProperty>
+
+
+  <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+
+  <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotation Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+
+  <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+<owl:Class rdf:about="&fibo-be-le-lp;CharteredLegalPerson">
+      <rdfs:label>chartered legal person</rdfs:label>
+      <skos:definition>A Legal Person created by some Royal Charter or Decree.</skos:definition>
+      <rdfs:subClassOf rdf:resource="&fibo-be-le-lp;JudicialPerson"/>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-be-le-lp;JudicialPerson">
+      <rdfs:label>judicial person</rdfs:label>
+      <rdfs:subClassOf rdf:resource="&fibo-be-le-lp;LegalPerson"/>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-be-le-lp;LegalPerson">
+      <rdfs:label>legal person</rdfs:label>
+      <rdfs:subClassOf rdf:resource="&fibo-fnd-aap-agt;AutonomousAgent"/>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-be-le-lp;PowerOfAttorney">
+      <rdfs:label>power of attorney</rdfs:label>
+      <skos:definition>Written legal authority given by one party (the principal) to another (the agent or attorney-in-fact) to act on the principals behalf. It may be a (1) General power Of attorney that authorizes the agent to act generally on behalf of the principal, or (2) Special power of attorney that is limited to a specific act or situation. Decisions made and actions taken by an attorney in fact (within the scope of his or her authority) are legally binding on the principal. A power of attorney can remain in force only so long as the principal is alive and does not become disabled or incapacitated. Although it is often conferred on the principals attorney, one does not need to be an attorney at law to be an attorney-in-fact.</skos:definition>
+      <rdfs:subClassOf rdf:resource="&fibo-fnd-law-lcap;LegalCapacity"/>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-be-le-lp;Signatory">
+      <rdfs:label>signatory</rdfs:label>
+      <skos:definition>Some agent who has the capacity to sign contracts on the part of some Legal Entity.</skos:definition>
+      <rdfs:subClassOf rdf:resource="&fibo-fnd-pty-pty;PartyInRole"/>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-be-le-lp;StatutoryBody">
+      <rdfs:label>statutory body</rdfs:label>
+      <skos:definition>A legal person which is created and given legal personhood by act of statute.</skos:definition>
+   </owl:Class>
+
+   <owl:Class rdf:about="&fibo-be-le-lp;NaturalPerson">
+      <rdfs:label>natural person</rdfs:label>
+      <rdfs:subClassOf rdf:resource="&fibo-fnd-aap-ppl;Adult"/>
+   </owl:Class>
+
+
+  <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+    -->
+
+
+<owl:NamedIndividual rdf:about="&fibo-be-le-lp;www.investorwords.com">
+      <rdfs:label>www.investorwords.com</rdfs:label>
+      <rdf:type rdf:resource="&fibo-fnd-pub-pub;WebPage"/>
+   </owl:NamedIndividual>
+
+</rdf:RDF>
