@@ -581,27 +581,27 @@ Copyright (c) 2013-2014 Object Management Group, Inc.</sm:copyright>
     <owl:Class rdf:about="http://www.omg.org/spec/EDMC-FIBO/FND/Agreements/Contracts/TransferableContract">
         <rdfs:label>transferable contract</rdfs:label>
         <owl:equivalentClass>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="http://www.omg.org/spec/EDMC-FIBO/FND/Agreements/Contracts/hasPrincipal"/>
-                <owl:onClass rdf:resource="http://www.omg.org/spec/EDMC-FIBO/FND/Agreements/Contracts/ContractOriginator"/>
-                <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
-            </owl:Restriction>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.omg.org/spec/EDMC-FIBO/FND/Agreements/Contracts/UnilateralContract"/>
+                    <rdf:Description rdf:about="http://www.omg.org/spec/EDMC-FIBO/FND/Agreements/Contracts/WrittenContract"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.omg.org/spec/EDMC-FIBO/FND/Relations/Relations/confers"/>
+                        <owl:someValuesFrom rdf:resource="http://www.omg.org/spec/EDMC-FIBO/FND/Agreements/Agreements/CommitmentAtLarge"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.omg.org/spec/EDMC-FIBO/FND/Agreements/Contracts/hasCounterparty"/>
+                        <owl:onClass rdf:resource="http://www.omg.org/spec/EDMC-FIBO/FND/Agreements/Contracts/TransferableContractHolder"/>
+                        <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.omg.org/spec/EDMC-FIBO/FND/Agreements/Contracts/hasPrincipal"/>
+                        <owl:onClass rdf:resource="http://www.omg.org/spec/EDMC-FIBO/FND/Agreements/Contracts/ContractOriginator"/>
+                        <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
         </owl:equivalentClass>
-        <rdfs:subClassOf rdf:resource="http://www.omg.org/spec/EDMC-FIBO/FND/Agreements/Contracts/UnilateralContract"/>
-        <rdfs:subClassOf rdf:resource="http://www.omg.org/spec/EDMC-FIBO/FND/Agreements/Contracts/WrittenContract"/>
-        <rdfs:subClassOf>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="http://www.omg.org/spec/EDMC-FIBO/FND/Agreements/Contracts/hasCounterparty"/>
-                <owl:onClass rdf:resource="http://www.omg.org/spec/EDMC-FIBO/FND/Agreements/Contracts/TransferableContractHolder"/>
-                <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
-            </owl:Restriction>
-        </rdfs:subClassOf>
-        <rdfs:subClassOf>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="http://www.omg.org/spec/EDMC-FIBO/FND/Relations/Relations/confers"/>
-                <owl:someValuesFrom rdf:resource="http://www.omg.org/spec/EDMC-FIBO/FND/Agreements/Agreements/CommitmentAtLarge"/>
-            </owl:Restriction>
-        </rdfs:subClassOf>
         <skos:editorialNote rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Note that the ability to transfer ownership of one side of a contract, and the concept of assignability, are distinct. In one case the contract may be freely traded; in the other case, some legal transfer of rights to a third party takes place, without a change in who are the signatories of a (typically bilateral) contract.</skos:editorialNote>
         <skos:definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">a contract in which the rights and obligations of one party (the holder) may be transferred to another party, which thereby takes on the same rights and obligations with respect to the other party to the contract</skos:definition>
         <fibo-fnd-utl-av:definitionOrigin rdf:datatype="http://www.w3.org/2001/XMLSchema#anyURI">www.edmcouncil.org</fibo-fnd-utl-av:definitionOrigin>
@@ -656,6 +656,12 @@ A unilateral contract differs from a Bilateral Contract, in which the parties ex
     <owl:Class rdf:about="http://www.omg.org/spec/EDMC-FIBO/FND/Agreements/Contracts/WrittenContract">
         <rdfs:label>written contract</rdfs:label>
         <rdfs:subClassOf rdf:resource="http://www.omg.org/spec/EDMC-FIBO/FND/Agreements/Contracts/Contract"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.omg.org/spec/EDMC-FIBO/FND/Agreements/Contracts/isEvidencedBy"/>
+                <owl:someValuesFrom rdf:resource="http://www.omg.org/spec/EDMC-FIBO/FND/Agreements/Contracts/ContractDocument"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
         <skos:definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A formal Contract which is written and signed by the parties thereto.</skos:definition>
     </owl:Class>
     
