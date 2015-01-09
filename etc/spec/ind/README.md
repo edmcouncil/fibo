@@ -1,1 +1,3 @@
-The FIBO Indices and Indicators specification as a Word document.
+# /etc/spec/ind - FIBO Indices & Indicators
+
+The FIBO Indices & Indicators specification as a Word document.
