@@ -12,10 +12,8 @@
     <!ENTITY fibo-fnd-rel-rel "http://www.omg.org/spec/EDMC-FIBO/FND/Relations/Relations/" >
     <!ENTITY fibo-fnd-plc-cty "http://www.omg.org/spec/EDMC-FIBO/FND/Places/Countries/" >
     <!ENTITY fibo-fnd-dt-fd "http://www.omg.org/spec/EDMC-FIBO/FND/DatesAndTimes/FinancialDates/" >
-    <!ENTITY fibo-fnd-dt-oc "http://www.omg.org/spec/EDMC-FIBO/FND/DatesAndTimes/Occurrences/" >
     <!ENTITY fibo-fnd-dt-bd "http://www.omg.org/spec/EDMC-FIBO/FND/DatesAndTimes/BusinessDates/" >
 ]>
-
 
 <rdf:RDF xml:base="http://www.omg.org/spec/EDMC-FIBO/FND/DatesAndTimes/BusinessDates/"
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -29,7 +27,6 @@ xmlns:sm="http://www.omg.org/techprocess/ab/SpecificationMetadata/"
      xmlns:fibo-fnd-rel-rel="http://www.omg.org/spec/EDMC-FIBO/FND/Relations/Relations/"
      xmlns:fibo-fnd-plc-cty="http://www.omg.org/spec/EDMC-FIBO/FND/Places/Countries/"
      xmlns:fibo-fnd-dt-fd="http://www.omg.org/spec/EDMC-FIBO/FND/DatesAndTimes/FinancialDates/"
-     xmlns:fibo-fnd-dt-oc="http://www.omg.org/spec/EDMC-FIBO/FND/DatesAndTimes/Occurrences/"
      xmlns:fibo-fnd-dt-bd="http://www.omg.org/spec/EDMC-FIBO/FND/DatesAndTimes/BusinessDates/">
 
 
@@ -73,7 +70,6 @@ They are modularized this way to minimize the ontological committments that are 
         <rdfs:seeAlso rdf:datatype="&xsd;anyURI">http://www.omg.org/spec/EDMC-FIBO/FND/AboutFND/</rdfs:seeAlso>
         <rdfs:seeAlso rdf:datatype="&xsd;anyURI">http://www.omg.org/spec/EDMC-FIBO/FND/DatesAndTimes/AboutDatesAndTimes/</rdfs:seeAlso>
 
-
         <owl:imports rdf:resource="http://www.omg.org/spec/EDMC-FIBO/FND/Utilities/AnnotationVocabulary/"/>
         <owl:imports rdf:resource="http://www.omg.org/spec/EDMC-FIBO/FND/Relations/Relations/"/>
         <owl:imports rdf:resource="http://www.omg.org/spec/EDMC-FIBO/FND/Places/Countries/"/>
@@ -100,25 +96,31 @@ They are modularized this way to minimize the ontological committments that are 
     
     <owl:ObjectProperty rdf:about="&fibo-fnd-dt-bd;hasBusinessDayAdjustment">
         <rdfs:label>has business day adjustment</rdfs:label>
-        <rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;has"/>
         <rdfs:range rdf:resource="&fibo-fnd-dt-bd;BusinessDayAdjustment"/>
+        <rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;has"/>
     </owl:ObjectProperty>
     
     <owl:ObjectProperty rdf:about="&fibo-fnd-dt-bd;hasBusinessDayConvention">
         <rdfs:label>has business day convention</rdfs:label>
         <skos:definition rdf:datatype="&xsd;string">A BusinessDayConvention identifies how a Date should be handled wihen it falls on a day that is not a business day.</skos:definition>
-        <rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;has"/>
         <rdfs:domain rdf:resource="&fibo-fnd-dt-bd;BusinessDayAdjustment"/>
         <rdfs:range rdf:resource="&fibo-fnd-dt-bd;BusinessDayConvention"/>
+        <rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;has"/>
     </owl:ObjectProperty>
     
     <owl:ObjectProperty rdf:about="&fibo-fnd-dt-bd;hasBusinessRecurrenceIntervalConvention">
         <rdfs:label>has business recurrence interval convention</rdfs:label>
-        <rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;has"/>
         <rdfs:domain rdf:resource="&fibo-fnd-dt-bd;BusinessRecurrenceInterval"/>
         <rdfs:range rdf:resource="&fibo-fnd-dt-bd;BusinessRecurrenceIntervalConvention"/>
+        <rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;has"/>
     </owl:ObjectProperty>
-
+    
+    <owl:ObjectProperty rdf:about="&fibo-fnd-dt-bd;holdsDuring">
+        <rdfs:label>holds during</rdfs:label>
+        <skos:definition rdf:datatype="&xsd;string">a relationship that states that some condition or state holds during a specified date period</skos:definition>
+        <rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDatePeriod"/>
+    </owl:ObjectProperty>
+    
 
     <!-- 
     ///////////////////////////////////////////////////////////////////////////////////////
@@ -146,7 +148,7 @@ They are modularized this way to minimize the ontological committments that are 
         </rdfs:subClassOf>
         <skos:definition rdf:datatype="&xsd;string">A BusinessDayAdjustment uses a BusinessDayConvention to specify what happens when a Date falls on a day that is a weekend or a holiday in some BusinessCenter.</skos:definition>
     </owl:Class>
-
+    
     <owl:Class rdf:about="&fibo-fnd-dt-bd;BusinessDayConvention">
         <rdfs:label>business day convention</rdfs:label>
         <skos:definition rdf:datatype="&xsd;string">BusinessDayConvention is an enumeration of the possible ways to handle a Date that falls on a weekend or holiiday. BusinessDayTreatment combines a BusinessCenter with a BusinessDayConvention to determine what to do when business is not conducted in a particular business center on a particular calendar day.</skos:definition>
@@ -168,28 +170,28 @@ They are modularized this way to minimize the ontological committments that are 
     <owl:Class rdf:about="&fibo-fnd-dt-bd;BusinessRecurrenceIntervalConvention">
         <rdfs:label>business recurrence interval convention</rdfs:label>
         <skos:definition rdf:datatype="&xsd;string">BusinessRecurrenceIntervalConvention models various conventions for recurring days, such as &quot;end of month&quot;, and &quot;TBill auction date&quot;. These conventions are modelled as instances of the BusinessRecurrenceIntervalConvention class.</skos:definition>
-    </owl:Class>   
+    </owl:Class>
+    
+    <owl:Class rdf:about="&fibo-fnd-dt-fd;CalculatedDate">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&fibo-fnd-dt-bd;hasBusinessDayAdjustment"/>
+                <owl:onClass rdf:resource="&fibo-fnd-dt-bd;BusinessDayAdjustment"/>
+                <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+    <owl:Class rdf:about="&fibo-fnd-dt-fd;RegularSchedule">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&fibo-fnd-dt-bd;hasBusinessDayAdjustment"/>
+                <owl:onClass rdf:resource="&fibo-fnd-dt-bd;BusinessDayAdjustment"/>
+                <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>    
 
-    <rdf:Description rdf:about="&fibo-fnd-dt-fd;CalculatedDate">
-        <rdfs:subClassOf>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="&fibo-fnd-dt-bd;hasBusinessDayAdjustment"/>
-                <owl:onClass rdf:resource="&fibo-fnd-dt-bd;BusinessDayAdjustment"/>
-                <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-            </owl:Restriction>
-        </rdfs:subClassOf>
-    </rdf:Description>
-    
-    <rdf:Description rdf:about="&fibo-fnd-dt-fd;RegularSchedule">
-        <rdfs:subClassOf>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="&fibo-fnd-dt-bd;hasBusinessDayAdjustment"/>
-                <owl:onClass rdf:resource="&fibo-fnd-dt-bd;BusinessDayAdjustment"/>
-                <owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-            </owl:Restriction>
-        </rdfs:subClassOf>
-    </rdf:Description>
-    
 
     <!-- 
     ///////////////////////////////////////////////////////////////////////////////////////
@@ -200,51 +202,51 @@ They are modularized this way to minimize the ontological committments that are 
      -->
 
     <owl:NamedIndividual rdf:about="&fibo-fnd-dt-bd;BusinessDayFollowing">
-        <rdfs:label>business day following</rdfs:label>
         <rdf:type rdf:resource="&fibo-fnd-dt-bd;BusinessDayConvention"/>
+        <rdfs:label>business day following</rdfs:label>
         <skos:definition rdf:datatype="&xsd;string">BusinessDayFollowing is a BusinessDayConvention that means a non-business date will be adjusted to the first following day that is a business day.</skos:definition>
         <sm:normativeReference rdf:datatype="&xsd;string">FPML 5.1 &quot;BusinessDayConventionEnum&quot;</sm:normativeReference>
     </owl:NamedIndividual>
     
     <owl:NamedIndividual rdf:about="&fibo-fnd-dt-bd;BusinessDayModifiedFollowing">
-        <rdfs:label>business day modified following</rdfs:label>
         <rdf:type rdf:resource="&fibo-fnd-dt-bd;BusinessDayConvention"/>
+        <rdfs:label>business day modified following</rdfs:label>
         <skos:definition rdf:datatype="&xsd;string">BusinessDayModifiedFollowing is a BusinessDayConvenion that means a non-business date will be adjusted to the first following day that is a business day unless that day falls in the next calendar month, in which case that date will be the first preceding day that is a calendar date.</skos:definition>
         <sm:normativeReference rdf:datatype="&xsd;string">FPML 5.1 &quot;BusinessDayConventionEnum&quot;</sm:normativeReference>
     </owl:NamedIndividual>
     
     <owl:NamedIndividual rdf:about="&fibo-fnd-dt-bd;BusinessDayModifiedPreceding">
-        <rdfs:label>business day modified preceding</rdfs:label>
         <rdf:type rdf:resource="&fibo-fnd-dt-bd;BusinessDayConvention"/>
+        <rdfs:label>business day modified preceding</rdfs:label>
         <skos:definition rdf:datatype="&xsd;string">BusinessDayModifiedPreceding is a BusinessDayConvention that means that a non-business date will be adjusted to the first preceding day that is a business day unless that day falls in the previous month, in which case that date will be the first following day that is a business day.</skos:definition>
         <sm:normativeReference rdf:datatype="&xsd;string">FPML 5.1 &quot;BusinessDayConventionEnum&quot;</sm:normativeReference>
     </owl:NamedIndividual>
-
+    
     <owl:NamedIndividual rdf:about="&fibo-fnd-dt-bd;BusinessDayNearest">
-        <rdfs:label>business day nearest</rdfs:label>
         <rdf:type rdf:resource="&fibo-fnd-dt-bd;BusinessDayConvention"/>
+        <rdfs:label>business day nearest</rdfs:label>
         <skos:definition rdf:datatype="&xsd;string">BusinessDayNearest is a BusinessDayConvention that means that a non-business date will be adjusted to the nearest day that is a business day -- i.e. if the non-business day falls on any day other than a Sunday or a Monday, it will be the first preceding day that is a business day, and will be the first following business day if it falls on a Sunday or a Monday.</skos:definition>
         <sm:normativeReference rdf:datatype="&xsd;string">FPML 5.1 &quot;BusinessDayConventionEnum&quot;</sm:normativeReference>
     </owl:NamedIndividual>
     
     <owl:NamedIndividual rdf:about="&fibo-fnd-dt-bd;BusinessDayNone">
-        <rdfs:label>business day none</rdfs:label>
         <rdf:type rdf:resource="&fibo-fnd-dt-bd;BusinessDayConvention"/>
+        <rdfs:label>business day none</rdfs:label>
         <skos:definition rdf:datatype="&xsd;string">BusinessDayNone is a BusinessDayConvention that means that a date will not be adjusted if it falls on a day that is not a business day.</skos:definition>
         <sm:normativeReference rdf:datatype="&xsd;string">FPML 5.1 &quot;BusinessDayConventionEnum&quot;</sm:normativeReference>
     </owl:NamedIndividual>
     
     <owl:NamedIndividual rdf:about="&fibo-fnd-dt-bd;BusinessDayPreceding">
-        <rdfs:label>business day preceding</rdfs:label>
         <rdf:type rdf:resource="&fibo-fnd-dt-bd;BusinessDayConvention"/>
+        <rdfs:label>business day preceding</rdfs:label>
     </owl:NamedIndividual>
     
     <owl:NamedIndividual rdf:about="&fibo-fnd-dt-bd;BusinessRecurrenceIntervalEndOfMonth">
-        <rdfs:label>business recurrence interval end-of-month</rdfs:label>
         <rdf:type rdf:resource="&fibo-fnd-dt-bd;BusinessRecurrenceIntervalConvention"/>
-        <skos:definition rdf:datatype="&xsd;string">The last day of a calendar month irrespective of the length of the calendar month.</skos:definition>
+        <rdfs:label>business recurrence interval end-of-month</rdfs:label>
         <sm:normativeReference rdf:datatype="&xsd;string">FIX 5.0SP2 &quot;LegDateRollConvention/EOM&quot;</sm:normativeReference>
         <sm:normativeReference rdf:datatype="&xsd;string">FPML 5.1 &apos;RollConventionEnum/EOM&apos;</sm:normativeReference>
+        <skos:definition rdf:datatype="&xsd;string">The last day of a calendar month irrespective of the length of the calendar month.</skos:definition>
     </owl:NamedIndividual>
-    
+
 </rdf:RDF>
