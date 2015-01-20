@@ -9,6 +9,11 @@ Ontologies in the PINK branch are work in progress by some FIBO content team.  T
 Directory     | Purpose
 :------------ |:-------
 [/etc](./etc) | Everything that is not a published OWL ontology in a financial domain
+
+The links below are not yet active - please do not click on these. 
+
+Directory     | Purpose
+:------------ |:-------
 [/be](./be)   | FIBO Business Entities
 [/fnd](./fnd) | FIBO Foundations
 [/ind](./ind) | FIBO Indices & Indicators
