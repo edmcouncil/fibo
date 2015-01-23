@@ -4,7 +4,7 @@ __Financial Industry Business Ontology__
 
 ## Intro
 
-Ontologies in the YELLOW branch are ones that are in preparation for submission to the OMG.  These ontologies have been vetted by the FIBO Leadership Team, and will be submitted to the OMG process for ratification. 
+Yellow FIBOs have entered the OMG Process. They comply with the OMG rules for documentation and public comment.
 
 ## Directories
 
