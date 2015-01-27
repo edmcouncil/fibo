@@ -12,6 +12,7 @@
     <!ENTITY fibo-fnd-utl-bt "http://www.omg.org/spec/EDMC-FIBO/FND/Utilities/BusinessFacingTypes/" >
     <!ENTITY fibo-fnd-rel-rel "http://www.omg.org/spec/EDMC-FIBO/FND/Relations/Relations/" >
     <!ENTITY fibo-fnd-plc-cty "http://www.omg.org/spec/EDMC-FIBO/FND/Places/Countries/" >
+    <!ENTITY fibo-fnd-org-fm "http://www.omg.org/spec/EDMC-FIBO/FND/Organizations/FormalOrganizations/" >
     <!ENTITY fibo-fnd-acc-cur "http://www.omg.org/spec/EDMC-FIBO/FND/Accounting/CurrencyAmount/" >
     <!ENTITY fibo-fnd-acc-aeq "http://www.omg.org/spec/EDMC-FIBO/FND/Accounting/AccountingEquity/" >
     <!ENTITY fibo-fnd-law-cor "http://www.omg.org/spec/EDMC-FIBO/FND/Law/LegalCore/" >
@@ -34,6 +35,7 @@ xmlns:sm="http://www.omg.org/techprocess/ab/SpecificationMetadata/"
      xmlns:fibo-fnd-utl-bt="http://www.omg.org/spec/EDMC-FIBO/FND/Utilities/BusinessFacingTypes/"
      xmlns:fibo-fnd-rel-rel="http://www.omg.org/spec/EDMC-FIBO/FND/Relations/Relations/"
      xmlns:fibo-fnd-plc-cty="http://www.omg.org/spec/EDMC-FIBO/FND/Places/Countries/"
+     xmlns:fibo-fnd-org-fm="http://www.omg.org/spec/EDMC-FIBO/FND/Organizations/FormalOrganizations/"     
      xmlns:fibo-fnd-acc-cur="http://www.omg.org/spec/EDMC-FIBO/FND/Accounting/CurrencyAmount/"     
      xmlns:fibo-fnd-acc-aeq="http://www.omg.org/spec/EDMC-FIBO/FND/Accounting/AccountingEquity/"
      xmlns:fibo-fnd-law-cor="http://www.omg.org/spec/EDMC-FIBO/FND/Law/LegalCore/"
@@ -62,6 +64,7 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
         <sm:fileAbstract rdf:datatype="&xsd;string">This ontology defines the basic mechanisms that establish legal personhood for judicial or artificial persons, specifically those that are corporate bodies, including bodies incorporated by equity, by guarantee, and by agreement.</sm:fileAbstract>
 
         <skos:changeNote rdf:datatype="&xsd;string">The http://www.omg.org/spec/EDMC-FIBO/BE/20131101/LegalEntities/CorporateBodies.rdf version of this ontology was modified per the issue resolutions identified in the FIBO BE 1.0 FTF report.</skos:changeNote>
+        <sm:dependsOn rdf:datatype="&xsd;anyURI">http://www.omg.org/spec/EDMC-FIBO/FND/</sm:dependsOn>
         <sm:dependsOn rdf:datatype="&xsd;anyURI">http://www.omg.org/spec/EDMC-FIBO/BE/LegalEntities/LegalPersons/</sm:dependsOn>
         <sm:dependsOn rdf:datatype="&xsd;anyURI">http://www.omg.org/spec/EDMC-FIBO/BE/LegalEntities/FormalBusinessOrganizations/</sm:dependsOn>
 
@@ -76,6 +79,7 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
         <owl:imports rdf:resource="http://www.omg.org/spec/EDMC-FIBO/FND/Utilities/BusinessFacingTypes/"/>
         <owl:imports rdf:resource="http://www.omg.org/spec/EDMC-FIBO/FND/Relations/Relations/"/>
         <owl:imports rdf:resource="http://www.omg.org/spec/EDMC-FIBO/FND/Places/Countries/"/>
+        <owl:imports rdf:resource="http://www.omg.org/spec/EDMC-FIBO/FND/Organizations/FormalOrganizations/"/>
         <owl:imports rdf:resource="http://www.omg.org/spec/EDMC-FIBO/FND/Accounting/CurrencyAmount/"/>
         <owl:imports rdf:resource="http://www.omg.org/spec/EDMC-FIBO/FND/Accounting/AccountingEquity/"/>
         <owl:imports rdf:resource="http://www.omg.org/spec/EDMC-FIBO/FND/Law/LegalCore/"/>
@@ -106,14 +110,6 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
         <skos:definition rdf:datatype="&xsd;string">the instrument by which an entity is incorporated</skos:definition>
         <rdfs:domain rdf:resource="&fibo-be-le-cb;BodyCorporate"/>
         <rdfs:range rdf:resource="&fibo-fnd-law-cor;Constitution"/>
-    </owl:ObjectProperty>
-
-    <owl:ObjectProperty rdf:about="&fibo-be-le-cb;isDomiciledIn">
-        <rdfs:label>is domiciled in</rdfs:label>
-        <skos:definition rdf:datatype="&xsd;string">the country in which the body corporate is officially domiciled</skos:definition>
-        <skos:editorialNote rdf:datatype="&xsd;string">This would normally be the country corresponding to the jurisdiction in which the body corporate is incorporated. For some primarily federal countries, the domicile is the country that makes up the federation while the jurisdiction under which the entity is registered would be that of some state in that federation.</skos:editorialNote>
-        <rdfs:domain rdf:resource="&fibo-be-le-cb;BodyCorporate"/>
-        <rdfs:range rdf:resource="&fibo-fnd-plc-cty;Country"/>
     </owl:ObjectProperty>
 
     <owl:ObjectProperty rdf:about="&fibo-be-le-cb;isIncorporatedIn">
@@ -162,7 +158,7 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&fibo-be-le-cb;isDomiciledIn"/>
+                <owl:onProperty rdf:resource="&fibo-fnd-org-fm;isDomiciledIn"/>
                 <owl:onClass rdf:resource="&fibo-fnd-plc-cty;Country"/>
                 <owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:minQualifiedCardinality>
             </owl:Restriction>
@@ -192,7 +188,7 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
     <owl:Class rdf:about="&fibo-be-le-cb;BodyIncorporatedWithGuarantee">
         <rdfs:label>body incorporated with guarantee</rdfs:label>
         <skos:definition rdf:datatype="&xsd;string">Incorporated entity without share capital, and in which the liability of its members is limited to the amount each one of them undertakes to contribute at the time the firm is wound up.</skos:definition>
-        <skos:editorialNote>The profit motive is not the prime objective of the organization.</skos:editorialNote>
+        <skos:editorialNote rdf:datatype="&xsd;string">The profit motive is not the prime objective of the organization.</skos:editorialNote>
         <rdfs:subClassOf rdf:resource="&fibo-be-le-cb;BodyCorporate"/>
         <rdfs:subClassOf>
             <owl:Restriction>
