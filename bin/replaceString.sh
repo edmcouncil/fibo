@@ -36,7 +36,8 @@ done
 # MAKE DESTINATION DIRECTORIES: Make sure the DEST_DIR has the appropriate directories
 #
 for dir in `echo $DIRS| sed -e "s|$SRC_DIR|$DEST_DIR|g"` ; do 
-    echo "mkdir $dir"
+    echo "MAKING $dir"
+    mkdir $dir
 done
 
 #
