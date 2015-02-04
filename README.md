@@ -18,7 +18,7 @@ Directory     | Purpose
 ## Links
 
 - [FIBO Home page of the EDM Council](http://www.edmcouncil.org/financialbusiness)
-- [OMG FIBO Specifications](http://edmcouncil.org/spec/EDMC-FIBO/)
+- [OMG FIBO Specifications](http://spec.edmcouncil.org/spec/EDMC-FIBO/)
 
 
 
