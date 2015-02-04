@@ -9,6 +9,7 @@
     <!ENTITY skos "http://www.w3.org/2004/02/skos/core#" >
     <!ENTITY sm "http://www.omg.org/techprocess/ab/SpecificationMetadata/" >
     <!ENTITY fibo-fnd-utl-av "http://www.omg.org/spec/EDMC-FIBO/FND/Utilities/AnnotationVocabulary/" >
+    <!ENTITY fibo-fnd-aap-agt "http://www.omg.org/spec/EDMC-FIBO/FND/AgentsAndPeople/Agents/" >
     <!ENTITY fibo-fnd-rel-rel "http://www.omg.org/spec/EDMC-FIBO/FND/Relations/Relations/" >
     <!ENTITY fibo-fnd-org-fm "http://www.omg.org/spec/EDMC-FIBO/FND/Organizations/FormalOrganizations/" >
     <!ENTITY fibo-fnd-pty-rl "http://www.omg.org/spec/EDMC-FIBO/FND/Parties/Roles/" >
@@ -34,6 +35,7 @@
      xmlns:skos="http://www.w3.org/2004/02/skos/core#"
 xmlns:sm="http://www.omg.org/techprocess/ab/SpecificationMetadata/"
      xmlns:fibo-fnd-utl-av="http://www.omg.org/spec/EDMC-FIBO/FND/Utilities/AnnotationVocabulary/"
+     xmlns:fibo-fnd-aap-agt="http://www.omg.org/spec/EDMC-FIBO/FND/AgentsAndPeople/Agents/"
      xmlns:fibo-fnd-rel-rel="http://www.omg.org/spec/EDMC-FIBO/FND/Relations/Relations/"
      xmlns:fibo-fnd-org-fm="http://www.omg.org/spec/EDMC-FIBO/FND/Organizations/FormalOrganizations/"
      xmlns:fibo-fnd-pty-rl="http://www.omg.org/spec/EDMC-FIBO/FND/Parties/Roles/"
@@ -69,6 +71,7 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
         <sm:fileAbstract rdf:datatype="&xsd;string">This ontology defines concepts relating to executives and their formal capacities. The concepts defined in this ontology cover types of corporate officers, board members and the like, along with the capacities in terms of which those party roles are defined, and the kinds of entity (principally natural persons) that are able to perform in those roles.</sm:fileAbstract>
 
         <skos:changeNote rdf:datatype="&xsd;string">The http://www.omg.org/spec/EDMC-FIBO/BE/20131101/OwnershipAndControl/Executives.rdf version of this ontology was modified per the issue resolutions identified in the FIBO BE 1.0 FTF report.</skos:changeNote>
+        <sm:dependsOn rdf:datatype="&xsd;anyURI">http://www.omg.org/spec/EDMC-FIBO/FND/</sm:dependsOn>
         <sm:dependsOn rdf:datatype="&xsd;anyURI">http://www.omg.org/spec/EDMC-FIBO/BE/LegalEntities/LegalPersons/</sm:dependsOn>
         <sm:dependsOn rdf:datatype="&xsd;anyURI">http://www.omg.org/spec/EDMC-FIBO/BE/LegalEntities/CorporateBodies/</sm:dependsOn>
         <sm:dependsOn rdf:datatype="&xsd;anyURI">http://www.omg.org/spec/EDMC-FIBO/BE/Corporations/Corporations/</sm:dependsOn>
@@ -83,6 +86,7 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
         <rdfs:seeAlso rdf:datatype="&xsd;anyURI">http://www.omg.org/spec/EDMC-FIBO/BE/OwnershipAndControl/AboutBEOwnershipAndControl/</rdfs:seeAlso>
 
         <owl:imports rdf:resource="http://www.omg.org/spec/EDMC-FIBO/FND/Utilities/AnnotationVocabulary/"/>
+        <owl:imports rdf:resource="http://www.omg.org/spec/EDMC-FIBO/FND/AgentsAndPeople/Agents/"/>
         <owl:imports rdf:resource="http://www.omg.org/spec/EDMC-FIBO/FND/Relations/Relations/"/>
         <owl:imports rdf:resource="http://www.omg.org/spec/EDMC-FIBO/FND/Organizations/FormalOrganizations/"/>
         <owl:imports rdf:resource="http://www.omg.org/spec/EDMC-FIBO/FND/Parties/Roles/"/>
@@ -115,14 +119,13 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
         <skos:example rdf:datatype="&xsd;string">the election of officers of an association, the election of directors by the shareholders</skos:example>
         <fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.businessdictionary.com/definition/elect.html</fibo-fnd-utl-av:adaptedFrom>
         <fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.investorwords.com/9558/election.html</fibo-fnd-utl-av:adaptedFrom>
-        <rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;designates"/>
-        <rdfs:domain rdf:resource="&fibo-be-le-lp;LegalPerson"/>
-        <rdfs:range rdf:resource="&fibo-be-le-lp;LegalPerson"/>
+        <rdfs:domain rdf:resource="&fibo-fnd-pty-pty;PartyInRole"/>
+        <rdfs:range rdf:resource="&fibo-fnd-pty-pty;PartyInRole"/>
     </owl:ObjectProperty>
 
     <owl:ObjectProperty rdf:about="&fibo-be-oac-exec;delegatesControlTo">
         <rdfs:label>delegates control to</rdfs:label>
-        <skos:definition rdf:datatype="&xsd;string">a party to which this legal person has delegated some authority or control</skos:definition>
+        <skos:definition rdf:datatype="&xsd;string">indicates a party to which this legal person has delegated some authority or control</skos:definition>
         <rdfs:domain rdf:resource="&fibo-be-le-lp;LegalPerson"/>
         <rdfs:range rdf:resource="&fibo-be-oac-exec;LegallyDelegatedAuthority"/>
         <rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;designates"/>
@@ -130,15 +133,15 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
 
     <owl:ObjectProperty rdf:about="&fibo-be-oac-exec;hasDelegatedControlOf">
         <rdfs:label>has delegated control of</rdfs:label>
-        <skos:definition rdf:datatype="&xsd;string">the legal person that has delegated some authority or control to this party</skos:definition>
+        <skos:definition rdf:datatype="&xsd;string">indicates a legal person that has delegated some authority or control to this party</skos:definition>
         <rdfs:domain rdf:resource="&fibo-be-oac-exec;LegallyDelegatedAuthority"/>
         <rdfs:range rdf:resource="&fibo-be-le-lp;LegalPerson"/>
-        <rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;controls"/>
+        <rdfs:subPropertyOf rdf:resource="&fibo-fnd-oac-ctl;isInControlOfThing"/>
     </owl:ObjectProperty>
 
     <owl:ObjectProperty rdf:about="&fibo-be-oac-exec;hasDelegatedControlOfItself">
         <rdfs:label>has delegated control of itself</rdfs:label>
-        <skos:definition rdf:datatype="&xsd;string">the legal person that has delegated some authority or control to this party and over which this party therefore has control</skos:definition>
+        <skos:definition rdf:datatype="&xsd;string">indicates a legal person that has delegated some authority or control to this party, and as a result this party therefore has control over itself</skos:definition>
         <rdfs:domain rdf:resource="&fibo-be-oac-exec;LegallyDelegatedAuthority"/>
         <rdfs:range rdf:resource="&fibo-be-le-lp;LegalPerson"/>
         <rdfs:subPropertyOf rdf:resource="&fibo-be-oac-exec;hasDelegatedControlOf"/>
@@ -157,17 +160,27 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
         <rdfs:label>has responsibility</rdfs:label>
         <skos:definition rdf:datatype="&xsd;string">identifies a particular burden of obligation upon one who is responsible</skos:definition>
         <rdfs:subPropertyOf rdf:resource="&fibo-fnd-law-lcap;hasCapacity"/>
+        <rdfs:domain rdf:resource="&fibo-fnd-aap-agt;AutonomousAgent"/>
         <rdfs:range rdf:resource="&fibo-fnd-law-lcap;Duty"/>
         <fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://dictionary.reference.com/browse/responsibility</fibo-fnd-utl-av:adaptedFrom>
     </owl:ObjectProperty>
 
     <owl:ObjectProperty rdf:about="&fibo-be-oac-exec;hasVestedInIt">
         <rdfs:label>has vested in it</rdfs:label>
-        <skos:definition rdf:datatype="&xsd;string">a delegated legal authority is one that has the legal capacity of delegated legal authority vested in it.</skos:definition>
+        <skos:definition rdf:datatype="&xsd;string">indicates the delegated legal authority that is vested in the controlling party</skos:definition>
         <rdfs:domain rdf:resource="&fibo-be-oac-exec;LegallyDelegatedAuthority"/>
         <rdfs:range rdf:resource="&fibo-fnd-law-lcap;DelegatedLegalAuthority"/>
         <rdfs:subPropertyOf rdf:resource="&fibo-fnd-law-lcap;hasCapacity"/>
    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="&fibo-be-oac-exec;nominates">
+        <rdfs:label>nominates</rdfs:label>
+        <skos:definition rdf:datatype="&xsd;string">appoints or proposes for appointment to an office or place</skos:definition>
+        <fibo-fnd-utl-av:definitionOrigin rdf:datatype="&xsd;anyURI">http://www.merriam-webster.com/dictionary/nominate</fibo-fnd-utl-av:definitionOrigin>
+        <fibo-fnd-utl-av:explanatoryNote rdf:datatype="&xsd;string">Note that nominates is defined as a relation between two parties-in-role (the range of which could be a corporation or partnership in the case of an auditor), whereas appoints between independent parties.</fibo-fnd-utl-av:explanatoryNote>
+        <rdfs:domain rdf:resource="&fibo-fnd-pty-pty;PartyInRole"/>
+        <rdfs:range rdf:resource="&fibo-fnd-pty-pty;PartyInRole"/>
+    </owl:ObjectProperty>
 
 
     <!-- 
@@ -179,10 +192,10 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
      -->
 
      <owl:Class rdf:about="&fibo-be-oac-cpty;DeFactoControllingInterestParty">
-        <fibo-fnd-utl-av:explanatoryNote rdf:datatype="&xsd;string">a control owner (i.e., control person, per SEC regulations) may have some means or right that allows them to exercise control over board composition, other than through proxy assignment or vote.  Not all Control Persons have this facility, as it is not inherent to having a significant (for example, 20 percent or more) ownership stake.</fibo-fnd-utl-av:explanatoryNote>
+        <fibo-fnd-utl-av:explanatoryNote rdf:datatype="&xsd;string">a control owner (i.e., control person, per SEC regulations) may have some means or right that allows them to exercise control over board composition, other than through proxy assignment or vote.  Not all control persons have this facility, as it is not inherent to having a significant (for example, 20 percent or more) ownership stake.</fibo-fnd-utl-av:explanatoryNote>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&fibo-fnd-rel-rel;appoints"/>
+                <owl:onProperty rdf:resource="&fibo-be-oac-exec;nominates"/>
                 <owl:onClass rdf:resource="&fibo-be-oac-exec;BoardMember"/>
                 <owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
             </owl:Restriction>
@@ -251,7 +264,7 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
 
     <owl:Class rdf:about="&fibo-be-oac-exec;BoardMember">
         <rdfs:label>Board Member</rdfs:label>
-        <skos:definition rdf:datatype="&xsd;string">A person who is a member of the board of directors of an incorporated company.</skos:definition>
+        <skos:definition rdf:datatype="&xsd;string">a person who is a member of the board of directors of a corporation</skos:definition>
         <rdfs:subClassOf rdf:resource="&fibo-fnd-pty-pty;OrganizationMember"/>
         <rdfs:subClassOf>
             <owl:Restriction>
@@ -261,7 +274,7 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&fibo-fnd-pty-rl;hasRole"/>
+                <owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
                 <owl:someValuesFrom>              
                     <owl:Restriction>
                         <owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isMemberOf"/>
@@ -273,7 +286,7 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
         <rdfs:subClassOf rdf:resource="&fibo-be-oac-exec;LegallyDelegatedAuthority"/>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&fibo-fnd-pty-rl;hasRole"/>
+                <owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
                 <owl:someValuesFrom>              
                     <owl:Restriction>
                         <owl:onProperty rdf:resource="&fibo-fnd-pty-pty;isAPartyTo"/>
@@ -304,7 +317,7 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&fibo-fnd-pty-rl;hasRole"/>
+                <owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
                 <owl:someValuesFrom>              
                     <owl:Restriction>
                         <owl:onProperty rdf:resource="&fibo-fnd-law-lcap;hasCapacity"/>
@@ -315,7 +328,7 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&fibo-fnd-rel-rel;appoints"/>
+                <owl:onProperty rdf:resource="&fibo-be-oac-exec;nominates"/>
                 <owl:someValuesFrom rdf:resource="&fibo-be-oac-exec;CorporateOfficer"/>
             </owl:Restriction>
         </rdfs:subClassOf>
@@ -375,7 +388,7 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
 
     <owl:Class rdf:about="&fibo-be-oac-exec;CompanyStatutoryObligation">
         <rdfs:label>company statutory obligation</rdfs:label>
-        <skos:definition rdf:datatype="&xsd;string">An obligation defined in company law (statute).</skos:definition>
+        <skos:definition rdf:datatype="&xsd;string">an obligation defined in company law (statute)</skos:definition>
         <skos:editorialNote rdf:datatype="&xsd;string">This is the set of laws that define the statutory obligations on public officers for the jurisdiction in which the company operates.</skos:editorialNote>
         <rdfs:subClassOf rdf:resource="&fibo-fnd-law-lcap;StatutoryResponsibility"/>
         <rdfs:subClassOf>
@@ -400,7 +413,7 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&fibo-fnd-pty-rl;hasRole"/>
+                <owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
                 <owl:someValuesFrom>              
                     <owl:Restriction>
                         <owl:onProperty rdf:resource="&fibo-be-oac-exec;hasResponsibility"/>
@@ -411,7 +424,7 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&fibo-fnd-pty-rl;hasRole"/>
+                <owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
                 <owl:someValuesFrom>              
                     <owl:Restriction>
                         <owl:onProperty rdf:resource="&fibo-be-oac-exec;hasResponsibility"/>
@@ -422,7 +435,7 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&fibo-fnd-pty-rl;hasRole"/>
+                <owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
                 <owl:someValuesFrom>              
                     <owl:Restriction>
                         <owl:onProperty rdf:resource="&fibo-fnd-law-lcap;hasCapacity"/>
@@ -433,7 +446,7 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&fibo-fnd-pty-rl;hasRole"/>
+                <owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
                 <owl:someValuesFrom>              
                     <owl:Restriction>
                         <owl:onProperty rdf:resource="&fibo-fnd-law-lcap;hasCapacity"/>
@@ -452,12 +465,6 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
         <rdfs:subClassOf rdf:resource="&fibo-fnd-law-lcap;DelegatedLegalAuthority"/>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isConferredOn"/>
-                <owl:allValuesFrom rdf:resource="&fibo-be-oac-exec;CorporateOfficer"/>
-            </owl:Restriction>
-        </rdfs:subClassOf>
-        <rdfs:subClassOf>
-            <owl:Restriction>
                 <owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isConferredBy"/>
                 <owl:allValuesFrom rdf:resource="&fibo-be-oac-exec;CompanyLaw"/>
                 <owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:minQualifiedCardinality>
@@ -467,13 +474,13 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
 
     <owl:Class rdf:about="&fibo-be-oac-exec;CorporateOfficerDuty">
         <rdfs:label>corporate officer duty</rdfs:label>
-        <skos:definition rdf:datatype="&xsd;string">Some duty incumbent upon some officer of a company</skos:definition>
+        <skos:definition rdf:datatype="&xsd;string">some duty incumbent upon some officer of a company</skos:definition>
         <rdfs:subClassOf rdf:resource="&fibo-be-oac-exec;CompanyStatutoryObligation"/>
     </owl:Class>
 
     <owl:Class rdf:about="&fibo-be-oac-exec;Executive">
         <rdfs:label>executive</rdfs:label>
-        <skos:definition rdf:datatype="&xsd;string">Person appointed and given the responsibility to manage the affairs of an organization and the authority to make decisions within specified boundaries.</skos:definition>
+        <skos:definition rdf:datatype="&xsd;string">person appointed and given the responsibility to manage the affairs of an organization and the authority to make decisions within specified boundaries</skos:definition>
         <fibo-fnd-utl-av:definitionOrigin rdf:datatype="&xsd;anyURI">http://www.businessdictionary.com/definition/executive.html</fibo-fnd-utl-av:definitionOrigin>
         <rdfs:subClassOf rdf:resource="&fibo-be-oac-exec;LegallyDelegatedAuthority"/>
         <rdfs:subClassOf>
@@ -496,7 +503,7 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
         <fibo-fnd-utl-av:explanatoryNote rdf:datatype="&xsd;string">extends the definition of an instrument of incorporation to constrain corporate bylaws</fibo-fnd-utl-av:explanatoryNote>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&fibo-fnd-rel-rel;constrains"/>
+                <owl:onProperty rdf:resource="&fibo-fnd-rel-rel;governs"/>
                 <owl:onClass rdf:resource="&fibo-be-oac-exec;CompanyBylaw"/>
                 <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
             </owl:Restriction>
@@ -524,7 +531,7 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
 
     <owl:Class rdf:about="&fibo-be-oac-exec;ResponsibleParty">
         <rdfs:label>responsible party</rdfs:label>
-        <skos:definition rdf:datatype="&xsd;string">A party to which some responsibility has been given.</skos:definition>
+        <skos:definition rdf:datatype="&xsd;string">a party to which some responsibility has been given</skos:definition>
         <skos:editorialNote rdf:datatype="&xsd;string">The responsibility may be defined in terms of specific instruments such as laws, bylaws or contracts, or by some other means. These instruments would mandate certain obligations on the part of the party, for example statutory obligations.</skos:editorialNote>
         <rdfs:subClassOf rdf:resource="&fibo-fnd-pty-pty;PartyInRole"/>
         <rdfs:subClassOf>
@@ -535,7 +542,7 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&fibo-fnd-pty-rl;hasRole"/>
+                <owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
                 <owl:someValuesFrom>              
                     <owl:Restriction>
                         <owl:onProperty rdf:resource="&fibo-be-oac-exec;hasResponsibility"/>
