@@ -10,6 +10,7 @@
     <!ENTITY sm "http://www.omg.org/techprocess/ab/SpecificationMetadata/" >
     <!ENTITY fibo-fnd-utl-av "http://spec.edmcouncil.org/spec/EDMC-FIBO/FND/Utilities/AnnotationVocabulary/" >
     <!ENTITY fibo-fnd-rel-rel "http://spec.edmcouncil.org/spec/EDMC-FIBO/FND/Relations/Relations/" >
+    <!ENTITY fibo-fnd-arr-doc "http://spec.edmcouncil.org/spec/EDMC-FIBO/FND/Arrangements/Documents/" >
     <!ENTITY fibo-fnd-org-fm "http://spec.edmcouncil.org/spec/EDMC-FIBO/FND/Organizations/FormalOrganizations/" >
     <!ENTITY fibo-fnd-pty-rl "http://spec.edmcouncil.org/spec/EDMC-FIBO/FND/Parties/Roles/" >
     <!ENTITY fibo-fnd-pty-pty "http://spec.edmcouncil.org/spec/EDMC-FIBO/FND/Parties/Parties/" >
@@ -28,6 +29,7 @@
 xmlns:sm="http://www.omg.org/techprocess/ab/SpecificationMetadata/"
      xmlns:fibo-fnd-utl-av="http://spec.edmcouncil.org/spec/EDMC-FIBO/FND/Utilities/AnnotationVocabulary/"
      xmlns:fibo-fnd-rel-rel="http://spec.edmcouncil.org/spec/EDMC-FIBO/FND/Relations/Relations/"
+     xmlns:fibo-fnd-arr-doc="http://spec.edmcouncil.org/spec/EDMC-FIBO/FND/Arrangements/Documents/"
      xmlns:fibo-fnd-org-fm="http://spec.edmcouncil.org/spec/EDMC-FIBO/FND/Organizations/FormalOrganizations/"
      xmlns:fibo-fnd-pty-rl="http://spec.edmcouncil.org/spec/EDMC-FIBO/FND/Parties/Roles/"
      xmlns:fibo-fnd-pty-pty="http://spec.edmcouncil.org/spec/EDMC-FIBO/FND/Parties/Parties/"
@@ -54,6 +56,7 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
         <sm:fileAbstract rdf:datatype="&xsd;string">This ontology defines the fundamental concepts for publishers of information, including entities whose primary function is to publish, and entities (whether or not they are publishers in that sense) which are in the role of the publisher of some information. This ontology also includes the published information itself, i.e. the publication.</sm:fileAbstract>
 
         <skos:changeNote rdf:datatype="&xsd;string">The http://spec.edmcouncil.org/spec/EDMC-FIBO/BE/20140501/FunctionalEntities/Publishers.rdf version of this ontology was modified per the issue resolutions identified in the FIBO BE 1.0 FTF report.</skos:changeNote>
+        <sm:dependsOn rdf:datatype="&xsd;anyURI">http://spec.edmcouncil.org/spec/EDMC-FIBO/FND/</sm:dependsOn>
         <sm:dependsOn rdf:datatype="&xsd;anyURI">http://spec.edmcouncil.org/spec/EDMC-FIBO/BE/FunctionalEntities/FunctionalEntities/</sm:dependsOn>
 
         <sm:contentLanguage rdf:datatype="&xsd;anyURI">http://www.omg.org/spec/ODM/</sm:contentLanguage>
@@ -65,6 +68,7 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
 
         <owl:imports rdf:resource="http://spec.edmcouncil.org/spec/EDMC-FIBO/FND/Utilities/AnnotationVocabulary/"/>
         <owl:imports rdf:resource="http://spec.edmcouncil.org/spec/EDMC-FIBO/FND/Relations/Relations/"/>
+        <owl:imports rdf:resource="http://spec.edmcouncil.org/spec/EDMC-FIBO/FND/Arrangements/Documents/"/>
         <owl:imports rdf:resource="http://spec.edmcouncil.org/spec/EDMC-FIBO/FND/Organizations/FormalOrganizations/"/>
         <owl:imports rdf:resource="http://spec.edmcouncil.org/spec/EDMC-FIBO/FND/Parties/Roles/"/>
         <owl:imports rdf:resource="http://spec.edmcouncil.org/spec/EDMC-FIBO/FND/Parties/Parties/"/>
@@ -91,16 +95,17 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
     
     <owl:ObjectProperty rdf:about="&fibo-be-fct-pub;isPublishedBy">
         <rdfs:label>is published by</rdfs:label>
-        <skos:definition rdf:datatype="&xsd;string">the individual or organization which has made this information available to the world at large</skos:definition>
+        <skos:definition rdf:datatype="&xsd;string">identifies the independent party (i.e., the individual or organization) that disseminates the material</skos:definition>
         <rdfs:domain rdf:resource="&fibo-be-fct-pub;Publication"/>
         <rdfs:range rdf:resource="&fibo-fnd-pty-pty;IndependentParty"/>
     </owl:ObjectProperty>
     
     <owl:ObjectProperty rdf:about="&fibo-be-fct-pub;publishes">
         <rdfs:label>publishes</rdfs:label>
-        <skos:definition rdf:datatype="&xsd;string">information which the publisher has made available to the world at large</skos:definition>
+        <skos:definition rdf:datatype="&xsd;string">prepares and issues material for public consumption</skos:definition>
         <rdfs:range rdf:resource="&fibo-be-fct-pub;Publication"/>
         <rdfs:domain rdf:resource="&fibo-be-fct-pub;Publisher"/>
+        <fibo-fnd-utl-av:definitionOrigin rdf:datatype="&xsd;anyURI">http://www.thefreedictionary.com/publish</fibo-fnd-utl-av:definitionOrigin>
     </owl:ObjectProperty>
 
 
@@ -114,9 +119,10 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
 
     <owl:Class rdf:about="&fibo-be-fct-pub;Publication">
         <rdfs:label>publication</rdfs:label>
-        <skos:definition rdf:datatype="&xsd;string">information which has been made publicly available to the world at large</skos:definition>
+        <rdfs:subClassOf rdf:resource="&fibo-fnd-arr-doc;Document"/>
+        <skos:definition rdf:datatype="&xsd;string">anything made public by print (such as a newspaper, magazine, pamphlet, letter, telegram, via computer modem or program, or in a poster, brochure or pamphlet), orally, or by broadcast (radio, television)</skos:definition>
+        <fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://legal-dictionary.thefreedictionary.com/Publication</fibo-fnd-utl-av:adaptedFrom>
     </owl:Class>
-    
 
     <owl:Class rdf:about="&fibo-be-fct-pub;Publisher">
         <rdfs:label>publisher</rdfs:label>
@@ -128,12 +134,11 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
                 <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
             </owl:Restriction>
         </rdfs:subClassOf>
-        <skos:definition rdf:datatype="&xsd;string">That which makes some information available to the world at large.</skos:definition>
+        <skos:definition rdf:datatype="&xsd;string">a party that makes some information available to the world at large</skos:definition>
         <skos:scopeNote rdf:datatype="&xsd;string">This concept defines some business entity in its role as the publisher of some information.</skos:scopeNote>
-        <fibo-fnd-utl-av:explanatoryNote rdf:datatype="&xsd;string">Typically this role is filled by some entity whose function is that of a publishing house (sometimes also referred to as a publisher, in that different sense). Publishers of information may frequently also include bank, government agencies and the like.</fibo-fnd-utl-av:explanatoryNote>
+        <fibo-fnd-utl-av:explanatoryNote rdf:datatype="&xsd;string">Typically this role is filled by some entity whose function is that of a publishing house (sometimes also referred to as a publisher, in that different sense). Publishers may also include banks, government agencies and the like.</fibo-fnd-utl-av:explanatoryNote>
     </owl:Class>
     
-
     <owl:Class rdf:about="&fibo-be-fct-pub;PublishingHouse">
         <rdfs:label>publishing house</rdfs:label>
         <rdfs:subClassOf rdf:resource="&fibo-be-fct-fct;FunctionalBusinessEntity"/>
@@ -144,8 +149,8 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
                 <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
             </owl:Restriction>
         </rdfs:subClassOf>
-        <skos:scopeNote rdf:datatype="&xsd;string">Publishing house in the sense intended here includes any organization whose role is to make information publicly available whether by disemminating it directly otr indirecty and regardless of the type of information. These include organizations whose primary function is that of a market data vendor. </skos:scopeNote>
         <skos:definition rdf:datatype="&xsd;string">some organization whose principal role is to publish information</skos:definition>
+        <skos:scopeNote rdf:datatype="&xsd;string">Publishing house in the sense intended here includes any organization whose role is to make information publicly available whether by disemminating it directly or indirectly and regardless of the type of information. These include organizations whose primary function is that of a market data vendor.</skos:scopeNote>
     </owl:Class>
 
 </rdf:RDF>
