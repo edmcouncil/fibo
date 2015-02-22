@@ -6,7 +6,8 @@ Documentation of the FIBO Development & Test Environment
 
 We are in the process of setting up the FIBO Development & Test Environment.
 
-Progress on actual technical steps can be followed here: [progress.md](progress.md)
+Progress on actual technical steps can be followed here: https://jira.edmcouncil.org/browse/INFRA/
+
 ## Amazon AWS
 
 The Amazon AWS primary management console can be reached at: https://edmcouncil.signin.aws.amazon.com/console
