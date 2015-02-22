@@ -24,6 +24,9 @@ Service Name  | Description | Purpose
 [VPC](http://aws.amazon.com/vpc/) | Virtual Private Cloud | Used to define a subnet behind a firewall in which the various EC2 instances can run (for now just the Jenkins Master server).
 [S3](http://aws.amazon.com/s3/)   | Simple Storage Service | Used to publish & host static content
 [Route53](http://aws.amazon.com/route53/) | Domain Name System (DNS) web service | Used to define the various host names in the edmcouncil.org domain and their mapping to "S3 buckets"
+[SES](http://aws.amazon.com/ses/)  | Simple Email Service |
+[RDS](http://aws.amazon.com/rds/)  | Relational Database Service |
+
 
 ### IAM
 
@@ -47,8 +50,10 @@ IAM Group ID | Purpose
 
 | IAM Role ID | Purpose
 :-------------|:-------
-`jenkins-master-server` | Used by the EC2 instance that hosts the Jenkins server to access other services like S3.
-
+`jenkins-master-server` | Used by the EC2 instance that hosts the Jenkins server to access other services like S3, SES.
+`jira-server`           | Used by the EC2 instance that hosts the JIRA server to to access other services like S3, SES, RDS.
+`confluence-server`     | Used by the EC2 instance that hosts the Confluence server to access other services like S3, SES, RDS.
+`
 ### VPC
 
 At the moment there is just one simple subnet, which runs one EC2 instance (see below). (See [this page](https://console.aws.amazon.com/vpc/home?region=us-east-1#vpcs:) in the AWS Console):
@@ -63,8 +68,22 @@ The following EC2 instances (virtual machines) are created (see [this page](http
 
 EC2 ID     | IP Address    | Purpose
 :----------|:--------------|:-------
-i-fbe91cd1 | 54.210.211.22 | Jenkins Master Server (http://54.210.211.22/)
+i-fbe91cd1 | 54.210.211.22 | Jenkins Master Server (https://jenkins.edmcouncil.org)
+i-f7a3d61d | 54.173.149.43 | JIRA Server (https://jira.edmcouncil.org)
+i-db0a9d21 | 52.1.241.163  | Confluence Server (https://wiki.edmcouncil.org)
 
 ### S3
 
+The S3 bucket `fibo-published` is created to publish all branches and tagged versions of FIBO. See Jenkins job https://jenkins.edmcouncil.org/job/fibo-publish
+
 ### Route53
+
+The Amazon AWS Route53 Service is an advanced DNS service that is used to manage the `edmcouncil.org` domain.
+
+### SES
+
+The Amazon AWS Simple Email Service is used by Jenkins, JIRA and Confluence to send email to users.
+
+### RDS
+
+The Amazon AWS Relational Database Service ([RDS](http://aws.amazon.com/rds/)) is used to host one MySQL database server that is used by both JIRA and Confluence.
