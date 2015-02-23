@@ -1,0 +1,55 @@
+Dual Licensing
+--------------
+
+Pellet is available under a dual licensing [1] scheme whereby use of Pellet 
+in projects that are licensed so as to be compatible with AGPL Version      
+3 may use Pellet under the terms of the compatible license. Please see      
+agpl-3.0.txt in the Pellet distribution for more details.                   
+
+However, if AGPL Version 3.0 terms are incompatible with your use of        
+Pellet, alternative license terms are available from Clark & Parsia LLC --  
+please direct inquiries about Pellet licensing to sales@clarkparsia.com or  
++1 202 408 8770.                                                            
+
+Why Dual Licensing?
+-------------------
+
+Dual licensing has two advantages in this case:
+
+1. it lets us focus on building Pellet as the best available OWL reasoner
+
+2. it lowers the barriers of evaluation and adoption for organizations who
+want to try OWL and Semantic Web technologies
+
+Which License Should I Choose?
+------------------------------
+
+If your software is licensed under a recognized open source license [2], you 
+can use Pellet under its open source license terms (see agpl-3.0.txt) without
+further consideration.
+
+However, if your software is not licensed under an open source compatible   
+license, such as a proprietary license, then you should contact Clark &     
+Parsia LLC in order to arrange alternative license terms to cover your use  
+of Pellet.                                                                  
+
+In short,
+
+* If you derive a commercial advantage by using Pellet with a closed source 
+  solution, you must arrange alternative license terms for your use of        
+  Pellet which will, at a minimum, remove the need to publish your source    
+  code.
+
+* If you wish to use Pellet under its open source terms, you must           
+  contribute back to the community the source code for the solution you use   
+  Pellet with, so that others may benefit from it as you benefit from Pellet. 
+
+License Inquiries
+-----------------
+
+For more about Pellet's dual license terms, or to arrange proprietary       
+or alternative licensing terms, please direct inquires to                   
+sales@clarkparsia.com or, via phone, +1 202 408 8770.                       
+
+[1] http://en.wikipedia.org/wiki/Dual_license
+[2] http://www.opensource.org/licenses

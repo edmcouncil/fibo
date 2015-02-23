@@ -1,0 +1,298 @@
+Summary
+--------
+
+This file documents the list of all lint patterns currently detected by
+Pellint.  There are two groups of patterns: axiom-based and ontology-based.
+Axiom-based patterns detect lints at the axiom level, typically at a single
+equivalent classes axiom or a single subclass axiom; whereas ontology-based
+patterns detect lints that are established by two or more axioms in the
+whole ontology.
+
+Information for each pattern starts with its name and description.  ID and
+parameters are the fully qualified class name and parameter names of the
+pattern used for configurations in pellint.properties file.  It is followed
+by example(s) of axioms demonstrating the pattern, and an explanation of
+why it may be problematic for reasoning.  Lastly, it describes the action
+Pellint takes to improve reasoning performance, if possible, which is
+automatically applied and saved in a new ontology if the "-f" command-line
+option is used.
+
+NOTE: Pellint repair actions are NOT semantically equivalent to the
+constructs they replace, they only serve the purpose of improving the
+reasoning time for the ontology.
+
+Axiom-based Patterns
+--------------------
+
+(1) General Concept Inclusions (GCIs)
+
+A subclass axiom with a complex concept expression on the left hand side,
+or an equivalent axiom with two or more complex concepts.
+
+ID: com.clarkparsia.pellint.lintpattern.axiom.GCIPattern
+
+Parameters: None
+
+Examples:
+
+1.  Class: A and B
+        SubClassOf: C
+
+2.  EquivalentClasses:
+        C and D, P some E
+
+Reasoning complexity: 
+
+        A tableau-based reasoner deals with GCI axioms by converting them
+        into a standard form.  For example, "C SubClassOf: D" is converted
+        into the axiom "Thing SubClassOf: (not C) or D" where C and D can
+        be arbitrary concepts.  Since every individual is an instance of
+        Thing, the reasoner then applies the converted axiom to every
+        individual.  We observe that every conversion produces a
+        nondeterministic choice due to the OR construct, which is then
+        applied to every individual.  Hence GCI axioms are extremely
+        expensive and reported by Pellint.
+
+Action: Pellint will only issue a warning about this pattern. If possible,
+the ontology should be changed to reduce the number such axioms.
+
+
+(2) Equivalent to AllValue Restriction
+
+A named concept is equivalent to an AllValues restriction
+
+ID: com.clarkparsia.pellint.lintpattern.axiom.EquivalentToAllValuePattern
+
+Parameters: None
+
+Example:
+    Class: A
+        Equivalent To: R only C
+
+Reasoning complexity:
+
+        An AllValues restriction does not require to have a property value
+        but only restricts the values for existing property values.  This
+        means any concept not having the property value, e.g. a concept
+        that is disjoint with the domain of the property, will satisfy the
+        AllValues restriction and turn out to be a subclass of the concept
+        defined to be equivalent to the restriction.  This typically leads
+        to unintended inferences and additional inferences may eventually
+        slow down reasoning performance.
+
+Action: Change to a subclass axiom, e.g.
+    Class: A
+        SubClassOf: R only C
+
+
+(3) Equivalent to Some Complement
+
+A named concept is equivalent to some complement
+
+ID: com.clarkparsia.pellint.lintpattern.axiom.EquivalentToComplementPattern
+
+Parameters: None
+
+Example:
+    Class: A
+        Equivalent To: not (C and (R some D))
+
+Reasoning complexity:
+
+        An axiom of this pattern implies that two concepts are disjoint
+        unions of Thing (i.e. Thing SubClassOf: A or (C and (R some D)) in 
+        the example) which adds to the general concept inclusion (GCI) axioms.
+        These pattern typically indicates a modeling error since it forces
+        every individual to be classified under one of the two possible 
+        definitions.
+
+Action: Change to a subclass axiom, e.g.
+    Class: A
+        SubClassOf: not (C and (R some D))
+
+
+(4) Equivalent to Top
+
+Top is equivalent to some concept or is part of an equivalent classes axiom
+
+ID: com.clarkparsia.pellint.lintpattern.axiom.EquivalentToTopPattern
+
+Parameters: None
+
+Examples:
+
+1.  Class: A
+        Equivalent To: Thing
+
+2.  EquivalentClasses:
+        A, Thing, R some C
+
+Reasoning complexity: 
+
+        This pattern directly adds to the GCI axioms since it affects the
+        definition of owl:Thing. 
+
+Action: Remove the axiom
+
+
+(5) Large Cardinality
+
+Cardinality restriction is too large
+
+ID: com.clarkparsia.pellint.lintpattern.axiom.LargeCardinalityPattern
+
+Parameters: MaxAllowed, the maximum cardinality allowed in any min/max/exactly restrictions. (Default = 10)
+
+Examples:
+
+(with MaxAllowed being set to 10)
+
+1.  Class: A
+        SubClassOf: R min 11
+
+2.  Class: A
+        SubClassOf: R max 11
+
+3.  Class: A
+        SubClassOf: R exactly 11
+
+Reasoning complexity:
+
+        min and exactly restrictions generate individuals during reasoning,
+        which grows exponentially when these axioms interact with the
+        others in a recursive manner.  Setting the number too large on
+        these restrictions may lead to intractable memory consumption
+        during reasoning.  On the other hand, a max restriction introduces
+        non-determinism in choosing which individuals to merge during
+        reasoning, which leads to intractable time complexity.
+
+Action: Pellint will only issue a warning about this pattern. If possible,
+the ontology should be changed to reduce the cardinality restriction.
+
+
+(6) Large Disjunction
+Too many disjuncts in a disjunction
+
+ID: com.clarkparsia.pellint.lintpattern.axiom.LargeDisjunctionPattern
+
+Parameters: MaxAllowed, the maximum number of disjuncts allowed in a disjunction. (Default = 10)
+
+Example:
+(with MaxAllowed being set to 10)
+    Class: A
+        SubClassOf: C and (D1 or D2 or D3 or D4 or D5 or D6 or D7 or D8 or D9 or D10 or D11)
+
+Reasoning complexity:
+
+        Disjunction is a source of non-determinism during reasoning, which
+        leads to intractable time complexity.
+
+Action: Pellint will only issue a warning about this pattern. If possible,
+the ontology should be changed to reduce the number of disjuncts.
+
+
+Ontology-based Patterns
+-----------------------
+
+(1) Concept with Equivalent and Subclass Axioms
+
+A named concept appears in an equivalent axiom and on the left-hand side of
+a subclass axiom
+
+ID: com.clarkparsia.pellint.lintpattern.ontology.EquivalentAndSubclassAxiomPattern
+
+Parameters: None
+
+Examples:
+
+1.  Class: A
+        Equivalent To: C1 and C2
+        SubClassOf: R only D
+
+2.  Class: A
+        SubClassOf: R only D
+    EquivalentClasses:
+        A, B, C1 and C2
+
+Reasoning complexity:
+
+        These implicitly define GCI axioms.  For instance,
+        "(C1 and C2) SubClassOf: A" is implicitly implied by both examples
+        above.
+
+Action: Extract the concept from the equivalent classes axiom and add a new
+subclass axiom, e.g.
+
+1.  Class: A
+        SubClassOf: C1 and C2
+        SubClassOf: R only D
+
+2.  Class: A
+        SubClassOf: R only D
+        SubClassOf: B, C1 and C2
+    EquivalentClasses:
+        B, C1 and C2
+
+
+(2) Existential Explosion
+
+An existential restriction (some, as well as min and exactly) generates
+individuals in a tableau-based reasoner.  Many existential restrictions
+interact in a complex manner and may generate an intractable number of
+individuals in such reasoners.  This pattern estimates the total number of
+individuals generated by such reasoners (say for a classification service),
+and reports as a lint if it exceeds a configurable number (Default = 10000).
+
+ID: com.clarkparsia.pellint.lintpattern.ontology.ExistentialExplosionPattern
+
+Parameters: MaxTreeSize, the maximum number of generated individuals allowed
+(generated by a reasoner as an approximation). (Default = 10000)
+
+Example:
+    Class: C
+        SubClassOf: R some D
+    Class: D
+        SubClassOf: R some E
+    Class: E
+        SubClassOf: P min 10
+        SubClassOf: P only F
+    Class: F
+        SubClassOf: R some G
+    ... etc.
+
+Reasoning complexity:
+        A large number of individuals need to be maintained and kept in memory,
+        which slows down reasoning significantly.
+
+Action: Pellint will only issue a warning about this pattern; the ontology
+should be changed to reduce the total number of existential restrictions.
+
+
+(3) Too Many DifferentIndividuals Axioms
+
+Too many individuals involved in DifferentIndividuals axioms
+
+ID: com.clarkparsia.pellint.lintpattern.ontology.TooManyDifferentIndividualsPattern
+
+Parameters: MaxAllowed, the maximum number of total individuals allowed in
+all DifferentIndividuals axioms. (Default = 50)
+
+Example:
+(with MaxAllowed being set to 8)
+    DifferentIndividuals:
+        Ind1, Ind2, Ind3, Ind4, Ind5, Ind6, Ind7, Ind8, Ind9
+
+Reasoning complexity:
+
+        Pellet keeps track of DifferentIndividuals for each individual separately.
+        This means the memory consumption required to represent a DifferentIndividuals
+        axiom is quadratically proportional to the number of individuals involved in 
+        the axiom; for owl:differentFrom there are only 2 individuals involved whereas
+        for owl:AllDifferent there are arbitrary number of individuals involved. Using 
+        too many DifferentIndividual axioms increases the memory consumption significantly
+        and affect reasoning performance.
+
+Action: Pellint will only issue a warning about this pattern; the ontology
+should be changed to reduce the number of DifferentIndividuals axioms. A
+possible solution is to use the Pellet configuration option to turn on 
+Unique Name Assumption (see Pellet FAQ for details). 

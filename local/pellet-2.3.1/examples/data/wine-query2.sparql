@@ -1,0 +1,26 @@
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX food: <http://www.w3.org/TR/2003/PR-owl-guide-20031209/food#>
+PREFIX wine: <http://www.w3.org/TR/2003/PR-owl-guide-20031209/wine#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>  
+
+SELECT ?mealCourse WHERE {
+  ?mealCourse rdfs:subClassOf [
+    owl:intersectionOf(
+      food:MealCourse
+      [
+        owl:onProperty food:hasDrink ;
+        owl:someValuesFrom [
+          owl:intersectionOf(
+            wine:Wine
+            [
+              owl:onProperty wine:hasBody ;
+              owl:hasValue wine:Full
+            ]
+          )
+        ]
+      ]
+    )
+  ] 
+  . 
+}
+ORDER BY ?mealCourse
