@@ -65,6 +65,7 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
         <sm:fileAbstract rdf:datatype="&xsd;string">This ontology defines concepts relating to types of controlling parties. The concepts defined here are party in role concepts, which define the nature of some entity such as an organization or a legal person, in some role such as that of owning a controlling interest in the entity or of controlling that entity. These roles are defined in terms of the types of control enjoyed by the party, for example de facto or de jure control. An important feature of this ontology is the distinction between the holding of a controlling interest (such as voting shares), and the de facto existence of control of one body by another as asserted in company filings or as a conclusion drawn from computational analysis of controlling interests.</sm:fileAbstract>
 
         <skos:changeNote rdf:datatype="&xsd;string">The http://www.omg.org/spec/EDMC-FIBO/BE/20131101/OwnershipAndControl/ControlParties.rdf version of this ontology was modified per the issue resolutions identified in the FIBO BE 1.0 FTF report.</skos:changeNote>
+        <sm:dependsOn rdf:datatype="&xsd;anyURI">http://www.omg.org/spec/EDMC-FIBO/FND/</sm:dependsOn>
         <sm:dependsOn rdf:datatype="&xsd;anyURI">http://www.omg.org/spec/EDMC-FIBO/BE/LegalEntities/FormalBusinessOrganizations/</sm:dependsOn>
         <sm:dependsOn rdf:datatype="&xsd;anyURI">http://www.omg.org/spec/EDMC-FIBO/BE/OwnershipAndControl/OwnershipParties/</sm:dependsOn>
 
@@ -102,6 +103,7 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
     <owl:ObjectProperty rdf:about="&fibo-be-oac-cpty;hasDegreeOfControl">
         <rdfs:label>has degree of control</rdfs:label>
         <skos:definition rdf:datatype="&xsd;string">has degree of control, (partial, majority, or complete) either alone or with other parties, with respect to some activity</skos:definition>
+        <rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;has"/>
         <rdfs:domain rdf:resource="&fibo-be-oac-cpty;EntityControllingParty"/>
         <rdfs:range rdf:resource="&fibo-be-oac-cpty;DegreeOfControl"/>
     </owl:ObjectProperty>
@@ -131,6 +133,14 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
         <rdfs:range rdf:resource="&fibo-be-oac-cpty;MajorityControllingParty"/>
     </owl:ObjectProperty>
 
+    <owl:ObjectProperty rdf:about="&fibo-be-oac-cpty;hasPercentageControl">
+        <rdfs:label>has percentage control</rdfs:label>
+        <skos:definition rdf:datatype="&xsd;string">indicates the percentage (out of 100) control that one party has over another</skos:definition>
+        <rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;has"/>
+        <rdfs:domain rdf:resource="&fibo-be-oac-cpty;DegreeOfControl"/>
+        <rdfs:range rdf:resource="&fibo-fnd-utl-bt;Percentage"/>
+    </owl:ObjectProperty>
+
     <owl:ObjectProperty rdf:about="&fibo-be-oac-cpty;hasSignificantControllingInterestParty">
         <rdfs:label>has significant controlling interest party</rdfs:label>
         <skos:definition rdf:datatype="&xsd;string">identifies an entity that owns a significant percentage of the equity in this company, but less than 50 percent</skos:definition>
@@ -152,9 +162,8 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
     <owl:ObjectProperty rdf:about="&fibo-be-oac-cpty;holdsSomeMeansOf">
         <rdfs:label>holds some means of</rdfs:label>
         <skos:definition rdf:datatype="&xsd;string">Some means of control held by the party.</skos:definition>
-        <rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;holds"/>
         <rdfs:domain rdf:resource="&fibo-be-oac-cpty;ControllingInterestParty"/>
-        <rdfs:range rdf:resource="&fibo-fnd-oac-ctl;Control"/>
+        <rdfs:range rdf:resource="&fibo-fnd-oac-ctl;ControllingCapacity"/>
     </owl:ObjectProperty>
 
     <owl:ObjectProperty rdf:about="&fibo-be-oac-cpty;isBasedOnInvestmentEquity">
@@ -183,10 +192,6 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
     ///////////////////////////////////////////////////////////////////////////////////////
      -->
 
-    <owl:DatatypeProperty rdf:about="&fibo-be-oac-cpty;percentageDeFactoControl">
-        <rdfs:label>percentage de facto control</rdfs:label>
-        <rdfs:range rdf:resource="&fibo-fnd-utl-bt;percentage"/>
-    </owl:DatatypeProperty>
 
 
     <!-- 
@@ -230,7 +235,7 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
         <rdfs:label>contractual control</rdfs:label>
         <skos:definition rdf:datatype="&xsd;string">Control vested in an entity by virtue of the terms in some contract between that entity and others.</skos:definition>
         <skos:editorialNote rdf:datatype="&xsd;string">See SME REview note of 16 Jan 2013: Percentage mechanism (in contracts etc.) would be factored in. Hence percentages as contractual terms. For instance an option to exercise which would give another 5 percent control. So there is percentage control with or without share ownership. Example: In a partnership this might be in the Partnership Agreement, which would identify beneficial ownership and control as potentially 2 distinct things. Contract can say anything. Implications: This means that there are percentages of de jure control based in contract, similar to those based in constitutional instruments (shares, General Partner equity). The concepts of Parent, Siinificant Part Owner etc. can then potentially be defined int erms of the percentages of all applicable instruments by which control may be formally defined.</skos:editorialNote>
-        <rdfs:subClassOf rdf:resource="&fibo-fnd-oac-ctl;Control"/>
+        <rdfs:subClassOf rdf:resource="&fibo-fnd-oac-ctl;ControllingCapacity"/>
         <rdfs:subClassOf>
             <owl:Restriction>
                 <owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isConferredBy"/>
@@ -246,7 +251,7 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
         <rdfs:subClassOf rdf:resource="&fibo-be-oac-cpty;DeJureControllingInterestParty"/>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&fibo-fnd-pty-rl;hasRole"/>
+                <owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
                 <owl:someValuesFrom>              
                     <owl:Class>
                         <owl:unionOf rdf:parseType="Collection">
@@ -270,9 +275,9 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
         <skos:definition rdf:datatype="&xsd;string">Some party which is controlled in some way and to some degree by some other party.</skos:definition>
         <skos:editorialNote rdf:datatype="&xsd;string">Scope Note: Parties, since they stand in roles, will have relationships among them which correspond to the reciprocals of the roles they stand in. In this case, controls and controlled by.</skos:editorialNote>
         <rdfs:subClassOf rdf:resource="&fibo-fnd-pty-pty;PartyInRole"/>
-        <owl:equivalentClass>
+        <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&fibo-fnd-pty-rl;hasRole"/>
+                <owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
                 <owl:someValuesFrom>              
                     <owl:Restriction>
                         <owl:onProperty rdf:resource="&fibo-be-oac-cpty;isControlledToSomeDegreeBy"/>
@@ -280,7 +285,7 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
                     </owl:Restriction>
                 </owl:someValuesFrom>              
             </owl:Restriction>
-        </owl:equivalentClass>
+        </rdfs:subClassOf>
     </owl:Class>
 
     <owl:Class rdf:about="&fibo-be-oac-cpty;ControllingAlliance">
@@ -303,13 +308,13 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
         <rdfs:subClassOf rdf:resource="&fibo-fnd-oac-ctl;ControllingParty"/>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&fibo-fnd-pty-rl;hasRole"/>
+                <owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
                 <owl:someValuesFrom>              
                     <owl:Class>
                         <owl:unionOf rdf:parseType="Collection">
                             <owl:Restriction>
                                 <owl:onProperty rdf:resource="&fibo-be-oac-cpty;holdsSomeMeansOf"/>
-                                <owl:allValuesFrom rdf:resource="&fibo-fnd-oac-ctl;Control"/>
+                                <owl:allValuesFrom rdf:resource="&fibo-fnd-oac-ctl;ControllingCapacity"/>
                             </owl:Restriction>
                             <owl:Restriction>
                                 <owl:onProperty rdf:resource="&fibo-be-oac-opty;holdsAnInterestIn"/>
@@ -329,7 +334,7 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
         <rdfs:subClassOf rdf:resource="&fibo-be-oac-cpty;DeFactoControllingInterestParty"/>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&fibo-fnd-pty-rl;hasRole"/>
+                <owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
                 <owl:someValuesFrom>              
                     <owl:Class>
                         <owl:unionOf rdf:parseType="Collection">
@@ -351,7 +356,7 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
     <owl:Class rdf:about="&fibo-be-oac-cpty;CourtAppointedControl">
         <rdfs:label>court appointed control</rdfs:label>
         <skos:definition rdf:datatype="&xsd;string">Control conferred on some entity by act of some court, for example in the context of receivership.</skos:definition>
-        <rdfs:subClassOf rdf:resource="&fibo-fnd-oac-ctl;Control"/>
+        <rdfs:subClassOf rdf:resource="&fibo-fnd-oac-ctl;ControllingCapacity"/>
         <rdfs:subClassOf>
             <owl:Restriction>
                 <owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isConferredBy"/>
@@ -368,7 +373,7 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
         <rdfs:subClassOf rdf:resource="&fibo-be-oac-cpty;ControllingInterestParty"/>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&fibo-fnd-pty-rl;hasRole"/>
+                <owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
                 <owl:someValuesFrom>              
                     <owl:Class>
                         <owl:unionOf rdf:parseType="Collection">
@@ -390,11 +395,11 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
     <owl:Class rdf:about="&fibo-be-oac-cpty;DegreeOfControl">
         <rdfs:label>degree of control</rdfs:label>
         <skos:definition rdf:datatype="&xsd;string">the degree of control one entity has over another</skos:definition>
+        <rdfs:subClassOf rdf:resource="&fibo-fnd-rel-rel;Reference"/>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&fibo-be-oac-cpty;percentageDeFactoControl"/>
-                <owl:onDataRange rdf:resource="&fibo-fnd-utl-bt;percentage"/>
-                <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onProperty rdf:resource="&fibo-be-oac-cpty;hasPercentageControl"/>
+                <owl:allValuesFrom rdf:resource="&fibo-fnd-utl-bt;Percentage"/>
             </owl:Restriction>
         </rdfs:subClassOf>
     </owl:Class>
@@ -411,7 +416,7 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
         <rdfs:subClassOf rdf:resource="&fibo-be-oac-cpty;ControllingInterestParty"/>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&fibo-fnd-pty-rl;hasRole"/>
+                <owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
                 <owl:someValuesFrom>              
                     <owl:Class>
                         <owl:unionOf rdf:parseType="Collection">
@@ -438,7 +443,7 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
         <rdfs:subClassOf rdf:resource="&fibo-fnd-oac-ctl;ControllingParty"/>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&fibo-fnd-pty-rl;hasRole"/>
+                <owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
                 <owl:someValuesFrom>              
                     <owl:Class>
                         <owl:unionOf rdf:parseType="Collection">
@@ -468,7 +473,7 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
         <rdfs:subClassOf rdf:resource="&fibo-be-oac-cpty;EntityControllingParty"/>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&fibo-fnd-pty-rl;hasRole"/>
+                <owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
                 <owl:someValuesFrom>              
                     <owl:Class>
                         <owl:unionOf rdf:parseType="Collection">
@@ -516,7 +521,7 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
         <rdfs:subClassOf rdf:resource="&fibo-be-oac-cpty;DeFactoControllingInterestParty"/>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&fibo-fnd-pty-rl;hasRole"/>
+                <owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
                 <owl:someValuesFrom>              
                     <owl:Class>
                         <owl:unionOf rdf:parseType="Collection">
@@ -537,7 +542,7 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
 
     <owl:Class rdf:about="&fibo-be-oac-cpty;InvestmentBasedDeFactoControl">
         <rdfs:label>investment-based de facto control</rdfs:label>
-        <skos:definition rdf:datatype="&xsd;string">Control which arises through some investment in some entity, other than as the holding of "constitutional" equity (shares etc.) in that entity.</skos:definition>
+        <skos:definition rdf:datatype="&xsd;string">Control which arises through some investment in some entity, other than as the holding of constitutional equity (shares etc.) in that entity.</skos:definition>
         <rdfs:subClassOf rdf:resource="&fibo-fnd-oac-ctl;DeFactoControl"/>
     </owl:Class>
 
@@ -548,7 +553,7 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
         <rdfs:subClassOf rdf:resource="&fibo-be-oac-cpty;DeFactoControllingInterestParty"/>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&fibo-fnd-pty-rl;hasRole"/>
+                <owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
                 <owl:someValuesFrom>              
                     <owl:Class>
                         <owl:unionOf rdf:parseType="Collection">
@@ -588,7 +593,7 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
 
     <owl:Class rdf:about="&fibo-be-oac-cpty;MajorityControllingParty">
         <rdfs:label>majority controlling party</rdfs:label>
-        <fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.ecfr.gov/cgi-bin/retrieveECFR?gp=1&amp;SID=156b3a57ae63855b0de1b32e322c998a&amp;ty=HTML&amp;h=L&amp;r=PART&amp;n=17y2.0.1.1.8#17:2.0.1.1.8.0.17.2</fibo-fnd-utl-av:adaptedFrom>
+        <fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;string">http://www.ecfr.gov/cgi-bin/retrieveECFR?gp=1&amp;SID=156b3a57ae63855b0de1b32e322c998a&amp;ty=HTML&amp;h=L&amp;r=PART&amp;n=17y2.0.1.1.8#17:2.0.1.1.8.0.17.2</fibo-fnd-utl-av:adaptedFrom>
         <rdfs:subClassOf rdf:resource="&fibo-be-oac-cpty;SoleControllingParty"/>
     </owl:Class>
 
@@ -599,7 +604,7 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
         <rdfs:subClassOf rdf:resource="&fibo-be-oac-cpty;ControllingInterestParty"/>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&fibo-fnd-pty-rl;hasRole"/>
+                <owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
                 <owl:someValuesFrom>              
                     <owl:Class>
                         <owl:unionOf rdf:parseType="Collection">
@@ -624,7 +629,7 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
         <rdfs:subClassOf rdf:resource="&fibo-be-oac-cpty;DeJureControllingInterestParty"/>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&fibo-fnd-pty-rl;hasRole"/>
+                <owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
                 <owl:someValuesFrom>              
                     <owl:Class>
                         <owl:unionOf rdf:parseType="Collection">
