@@ -1,1 +1,0 @@
-The FIBO Repository - equates to the FIBO namespace fragment.
