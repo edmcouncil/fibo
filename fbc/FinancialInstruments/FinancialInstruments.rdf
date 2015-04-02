@@ -12,6 +12,7 @@
     <!ENTITY fibo-fnd-aap-agt "http://spec.edmcouncil.org/fibo/FND/AgentsAndPeople/Agents/" >
     <!ENTITY fibo-fnd-rel-rel "http://spec.edmcouncil.org/fibo/FND/Relations/Relations/" >
     <!ENTITY fibo-fnd-arr-id "http://spec.edmcouncil.org/fibo/FND/Arrangements/IdentifiersAndIndices/" >
+    <!ENTITY fibo-fnd-plc-cty "http://spec.edmcouncil.org/fibo/FND/Places/Countries/" >
     <!ENTITY fibo-fnd-plc-adr "http://spec.edmcouncil.org/fibo/FND/Places/Addresses/" >
     <!ENTITY fibo-fnd-pty-rl "http://spec.edmcouncil.org/fibo/FND/Parties/Roles/" >
     <!ENTITY fibo-fnd-pty-pty "http://spec.edmcouncil.org/fibo/FND/Parties/Parties/" >
@@ -37,6 +38,7 @@ xmlns:sm="http://www.omg.org/techprocess/ab/SpecificationMetadata/"
      xmlns:fibo-fnd-aap-agt="http://spec.edmcouncil.org/fibo/FND/AgentsAndPeople/Agents/"
      xmlns:fibo-fnd-rel-rel="http://spec.edmcouncil.org/fibo/FND/Relations/Relations/"
      xmlns:fibo-fnd-arr-id="http://spec.edmcouncil.org/fibo/FND/Arrangements/IdentifiersAndIndices/"
+     xmlns:fibo-fnd-plc-cty="http://spec.edmcouncil.org/fibo/FND/Places/Countries/"
      xmlns:fibo-fnd-plc-adr="http://spec.edmcouncil.org/fibo/FND/Places/Addresses/"
      xmlns:fibo-fnd-pty-rl="http://spec.edmcouncil.org/fibo/FND/Parties/Roles/"
      xmlns:fibo-fnd-pty-pty="http://spec.edmcouncil.org/fibo/FND/Parties/Parties/"
@@ -75,11 +77,11 @@ Copyright (c) 2015 Object Management Group, Inc.</sm:copyright>
         <rdfs:seeAlso rdf:datatype="&xsd;anyURI">http://spec.edmcouncil.org/fibo/FBC/AboutFBC/</rdfs:seeAlso>
         <rdfs:seeAlso rdf:datatype="&xsd;anyURI">http://spec.edmcouncil.org/fibo/FBC/FinancialInstruments/AboutFinancialInstruments/</rdfs:seeAlso>
 
-
         <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/"/>
         <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/FND/AgentsAndPeople/Agents/"/>
         <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/FND/Relations/Relations/"/>
         <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/FND/Arrangements/IdentifiersAndIndices/"/>
+        <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/FND/Places/Countries/"/>
         <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/FND/Places/Addresses/"/>
         <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/FND/Parties/Roles/"/>
         <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/FND/Parties/Parties/"/>
@@ -106,17 +108,18 @@ Copyright (c) 2015 Object Management Group, Inc.</sm:copyright>
 
    <owl:ObjectProperty rdf:about="&fibo-fbc-fi-fi;hasIssuer">
        <rdfs:label>has issuer</rdfs:label>
-       <skos:definition rdf:datatype="&xsd;string">relates an instrument to the party that issued it</skos:definition>
-       <rdfs:subPropertyOf rdf:resource="&fibo-fnd-pty-pty;hasPartyInRole"/>
        <rdfs:domain rdf:resource="&fibo-fbc-fi-fi;FinancialInstrument"/>
        <rdfs:range rdf:resource="&fibo-fbc-fi-fi;Issuer"/>
+       <rdfs:subPropertyOf rdf:resource="&fibo-fnd-pty-pty;hasPartyInRole"/>
+       <skos:definition rdf:datatype="&xsd;string">relates an instrument to the party that issued it</skos:definition>
    </owl:ObjectProperty>
 
     <owl:ObjectProperty rdf:about="&fibo-fbc-fi-fi;hasPrincipalExecutiveOfficeAddress">
         <rdfs:label>has principal executive office address</rdfs:label>
-        <rdfs:subPropertyOf rdf:resource="&fibo-be-le-fbo;hasRegisteredAddress"/>
         <rdfs:domain rdf:resource="&fibo-be-le-fbo;FormallyConstitutedOrganization"/>
         <rdfs:range rdf:resource="&fibo-fbc-fi-fi;PrincipalExecutiveOfficeAddress"/>
+        <rdfs:subPropertyOf rdf:resource="&fibo-be-le-fbo;hasRegisteredAddress"/>
+       <skos:definition rdf:datatype="&xsd;string">relates an organization, specifically the issuer of a financial instrument, to its principal executive address, as required for issuance of that instrument</skos:definition>
     </owl:ObjectProperty>
 
    <owl:ObjectProperty rdf:about="&fibo-fbc-fi-fi;hasValueExpressedInCurrency">
@@ -124,21 +127,23 @@ Copyright (c) 2015 Object Management Group, Inc.</sm:copyright>
        <rdfs:domain rdf:resource="&fibo-fbc-fi-fi;FinancialInstrument"/>
        <rdfs:range rdf:resource="&fibo-fnd-acc-cur;Currency"/>
        <rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;has"/>
+       <skos:definition rdf:datatype="&xsd;string">relates an instrument to the currency it's value is typically expressed in</skos:definition>
+       <fibo-fnd-utl-av:explanatoryNote rdf:datatype="&xsd;string">This should be the same currency that was declared at the time of issuance.</fibo-fnd-utl-av:explanatoryNote>
    </owl:ObjectProperty>
 
    <owl:ObjectProperty rdf:about="&fibo-fbc-fi-fi;isLegallyRecordedIn">
        <rdfs:label>is legally recorded in</rdfs:label>
-       <skos:definition rdf:datatype="&xsd;string">jurisdiction (country, county, state, province, city) in which the financial instrument is legally recorded for regulatory and/or tax purposes</skos:definition>
-       <rdfs:subPropertyOf rdf:resource="&fibo-fnd-agr-ctr;hasGoverningJurisdiction"/>
        <rdfs:domain rdf:resource="&fibo-fbc-fi-fi;FinancialInstrument"/>
        <rdfs:range rdf:resource="&fibo-fnd-law-jur;Jurisdiction"/>
+       <rdfs:subPropertyOf rdf:resource="&fibo-fnd-agr-ctr;hasGoverningJurisdiction"/>
+       <skos:definition rdf:datatype="&xsd;string">jurisdiction (country, county, state, province, city) in which the financial instrument is legally recorded for regulatory and/or tax purposes</skos:definition>
    </owl:ObjectProperty>
 
    <owl:ObjectProperty rdf:about="&fibo-fbc-fi-fi;mayBeTradedIn">
        <rdfs:label>may be traded in</rdfs:label>
-       <skos:definition rdf:datatype="&xsd;string">identifies a market in which the security may be traded</skos:definition>
        <rdfs:domain rdf:resource="&fibo-fbc-fi-fi;Security"/>
        <rdfs:range rdf:resource="&fibo-fbc-fct-mkt;Market"/>
+       <skos:definition rdf:datatype="&xsd;string">identifies a market in which the security may be traded</skos:definition>
    </owl:ObjectProperty>
 
 
@@ -152,7 +157,7 @@ Copyright (c) 2015 Object Management Group, Inc.</sm:copyright>
 
     <owl:DatatypeProperty rdf:about="&fibo-fbc-fi-fi;isTransferable">
         <rdfs:label>is transferable</rdfs:label>
-        <skos:definition rdf:datatype="&xsd;string">specifies whether or not a particular financial instrument is or is not transferable</skos:definition>
+        <skos:definition rdf:datatype="&xsd;string">specifies whether a particular financial instrument is or is not transferable</skos:definition>
         <rdfs:domain rdf:resource="&fibo-fbc-fi-fi;FinancialInstrument"/>
         <rdfs:range rdf:resource="&xsd;boolean"/>
     </owl:DatatypeProperty>
@@ -166,14 +171,19 @@ Copyright (c) 2015 Object Management Group, Inc.</sm:copyright>
     ///////////////////////////////////////////////////////////////////////////////////////
      -->
 
-   <owl:Class rdf:about="&fibo-fbc-fi-fi;CashCurrency">
-      <rdfs:label>cash currency</rdfs:label>
-      <rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;FinancialInstrument"/>
-      <rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;PromissoryNote"/>
-      <skos:definition rdf:datatype="&xsd;string">a generally accepted form of money, including coins and paper notes, which is issued by a government and circulated within an economy</skos:definition>
-        <fibo-fnd-utl-av:definitionOrigin rdf:datatype="&xsd;anyURI">http://www.investopedia.com/terms/c/currency.asp</fibo-fnd-utl-av:definitionOrigin>
-        <fibo-fnd-utl-av:explanatoryNote rdf:datatype="&xsd;string">used as a medium of exchange for goods and services, currency is the basis for trade</fibo-fnd-utl-av:explanatoryNote>
-        <skos:editorialNote rdf:datatype="&xsd;string">need an object property to relate this to Currency in CurrencyAmount, which may require that the domain of hasCurrency be revised</skos:editorialNote>
+    <owl:Class rdf:about="&fibo-fbc-fi-fi;LegalTender">
+        <rdfs:label>legal tender</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;FinancialInstrument"/>
+        <rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;PromissoryNote"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasDenotation"/>
+                <owl:allValuesFrom rdf:resource="&fibo-fnd-acc-cur;Currency"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <skos:definition rdf:datatype="&xsd;string">any official medium of payment recognized by law that can be used to extinguish a public or private debt, or meet a financial obligation</skos:definition>
+        <fibo-fnd-utl-av:definitionOrigin rdf:datatype="&xsd;anyURI">http://www.investopedia.com/terms/l/legal-tender.asp</fibo-fnd-utl-av:definitionOrigin>
+        <fibo-fnd-utl-av:explanatoryNote rdf:datatype="&xsd;string">The national currency is legal tender in practically every country. A creditor is obligated to accept legal tender toward repayment of a debt. Legal tender can only be issued by the national body that is authorized to do so, such as the U.S. Treasury in the United States and the Royal Canadian Mint in Canada.</fibo-fnd-utl-av:explanatoryNote>
    </owl:Class>
 
    <owl:Class rdf:about="&fibo-fbc-fi-fi;CashInstrument">
