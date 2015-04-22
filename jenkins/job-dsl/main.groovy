@@ -1,3 +1,13 @@
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.ajoberstar:grgit:<version>'
+}
+
 def owner = 'edmcouncil'
 def repo = 'fibo'
 //
