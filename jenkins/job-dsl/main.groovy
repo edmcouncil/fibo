@@ -1,9 +1,19 @@
 
-println "Test 123"
-println " BUILD_NUMBER = ${BUILD_NUMBER}"
+import org.kohsuke.github.GitHub
+
+println "Executing main.groovy in Jenkins build ${BUILD_NUMBER}"
 
 def owner = 'edmcouncil'
 def repo = 'fibo'
+
+//
+// Another test, see if the kohsuke github library works
+//
+def gh = GitHub.connectAnonymously()
+gh.getOrganization(owner).listRepositories().each { repo ->
+  println "Found repo ${repo.fullName}"
+}
+
 //
 // Use the Github API to retrieve all forks of the FIBO repo
 // See https://developer.github.com/v3/repos/forks/
