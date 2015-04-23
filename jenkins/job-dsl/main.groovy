@@ -10,8 +10,8 @@ def repo = 'fibo'
 // Another test, see if the kohsuke github library works
 //
 def gh = GitHub.connectAnonymously()
-gh.getOrganization(owner).listRepositories().each { repo ->
-  println "Found repo ${repo.fullName}"
+gh.getOrganization(owner).listRepositories().each { repoStructure ->
+  println "Found repo ${repoStructure.fullName}"
 }
 
 //
