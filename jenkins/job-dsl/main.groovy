@@ -1,12 +1,6 @@
 
-repositories {
-    jcenter()
-    mavenCentral()
-}
-
-dependencies {
-    compile 'org.ajoberstar:grgit:<version>'
-}
+println "Test 123"
+println " BUILD_NUMBER = ${BUILD_NUMBER}"
 
 def owner = 'edmcouncil'
 def repo = 'fibo'
