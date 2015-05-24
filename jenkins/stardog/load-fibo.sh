@@ -6,4 +6,6 @@
 
 fibo_repo_root=~/git/fibo
 
+export
+
 
