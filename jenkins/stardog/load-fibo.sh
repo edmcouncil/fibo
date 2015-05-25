@@ -59,7 +59,7 @@ function loadIntoTempJobDb() {
   	--name "${BUILD_TAG}" \
   	--type M \
   	--verbose \
-  	--options preserve.bnode.ids=false reasoning.type=EL \
+  	--options preserve.bnode.ids=false reasoning.type=SL \
   	--
   rc=$?	
   set +x
@@ -67,9 +67,10 @@ function loadIntoTempJobDb() {
   echo rc=${rc}
 
   sleep 2
-  
+
   echo "@@@@@@@@@@@@@@@@@@@ stardog.log @@@@@@@@@@@@@@@@@@@@@"
   tail -n 1000 /var/db/stardog/stardog.log	| sed -n '/new database ${BUILD_TAG}/,$p'
+  echo "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
 }
 
 initGlobals || exit $?
