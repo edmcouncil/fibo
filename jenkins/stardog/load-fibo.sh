@@ -52,19 +52,22 @@ function loadIntoTempJobDb() {
 
   echo "Creating temporary Stardog database ${BUILD_TAG}"
 
-set -x
-
+  set -x
   find . -type f -name '*.rdf' | xargs \
   ${stardog_admin_bin} db create \
   	--index-triples-only \
   	--name "${BUILD_TAG}" \
   	--type M \
   	--verbose \
-  	--options preserve.bnode.ids=false reasoning.type=RL \
+  	--options preserve.bnode.ids=false reasoning.type=EL \
   	--
+  rc=$?	
+  set +x
 
-  echo "@@@@@@@@@@@@@@@@@@@ Last 200 lines of stardog.log @@@@@@@@@@@@@@@@@@@@@"
-  tail -n 200 /var/db/stardog/stardog.log	
+  echo rc=${rc}
+
+  echo "@@@@@@@@@@@@@@@@@@@ stardog.log @@@@@@@@@@@@@@@@@@@@@"
+  tail -n 1000 /var/db/stardog/stardog.log	| sed -n '/new database ${BUILD_TAG}/,$p'
 }
 
 initGlobals || exit $?
