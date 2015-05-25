@@ -55,7 +55,7 @@ function loadIntoTempJobDb() {
   	--index-triples-only \ # We don't expect named graphs here
   	--name ${BUILD_TAG} \
   	--type M \ # It's all temporary so just make it a memory database
-  	--options "bnode.preserve.ids=false reasoning.type=RDFS"
+  	--options "bnode.preserve.ids=false reasoning.type=RDFS" \
   	--verbose \
   	--
 }
