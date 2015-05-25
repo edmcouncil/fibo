@@ -49,16 +49,29 @@ function loadIntoMainFiboDb() {
 }
 
 function getDatabases() {
+	
 	stardog-admin db list --verbose | sed 's/[|+]/ /g' | grep -v "Databases" | grep -v "\-\-\-\-"
 }
 
-function getDatabasesCreatedByThisJob() {
+function getPreviousDatabasesCreatedByThisJob() {
+
 	getDatabases | grep jenkins-${JOB_NAME}
+}
+
+function getPreviousDatabasesCreatedByThisJobExectLast2() {
+
+  local jobs=$(getPreviousDatabasesCreatedByThisJob)
+	local count=$(echo ${jobs} | wc -l)
+	if [ ${count} -gt 2 ] ; then
+	  echo ${jobs} | head -n $((count - 2))
+	else
+		echo ""
+	fi
 }
 
 function removePreviousDatabases() {
 
-	for db in $(getDatabasesCreatedByThisJob) ; do
+	for db in $(getPreviousDatabasesCreatedByThisJobExectLast2) ; do
 		echo "Deleting database ${db}"
 	done
 }
@@ -83,7 +96,7 @@ function loadIntoTempJobDb() {
 
   echo "@@@@@@@@@@@@@@@@@@@ stardog.log @@@@@@@@@@@@@@@@@@@@@"
   set -x
-  tail -n 1000 /var/db/stardog/stardog.log	| sed -n '/Bulk loading data to new database ${BUILD_TAG}/,$p'
+  tail -n 1000 /var/db/stardog/stardog.log	| sed -n '/Bulk loading data to new database '${BUILD_TAG}'/,$p'
   set +x
   echo "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
 
