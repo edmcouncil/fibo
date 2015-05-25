@@ -72,6 +72,7 @@ function removePreviousDatabases() {
 
 	for db in $(getPreviousDatabasesCreatedByThisJobExectLast2) ; do
 		echo "Deleting database ${db}"
+		${stardog_admin_bin} db drop --verbose -- ${db}
 	done
 }
 
