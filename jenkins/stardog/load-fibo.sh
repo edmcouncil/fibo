@@ -30,7 +30,7 @@ function initGlobals() {
   stardog_bin=$(which stardog)
   stardog_admin_bin=$(which stardog-admin)
 
-  echo "Using ${stardog_bin"
+  echo "Using ${stardog_bin}"
   echo "Using ${stardog_admin_bin}"
 
   return 0
