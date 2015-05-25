@@ -59,7 +59,7 @@ set -x
   	--index-triples-only \
   	--name "${BUILD_TAG}" \
   	--type M \
-  	--options "bnode.preserve.ids=false reasoning.type=RDFS" \
+  	--options "preserve.bnode.ids=false reasoning.type=RDFS" \
   	--verbose \
   	--
 }
