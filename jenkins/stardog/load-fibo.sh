@@ -60,8 +60,11 @@ set -x
   	--name "${BUILD_TAG}" \
   	--type M \
   	--verbose \
-  	--options preserve.bnode.ids=false reasoning.type=QL \
+  	--options preserve.bnode.ids=false reasoning.type=RL \
   	--
+
+  echo "@@@@@@@@@@@@@@@@@@@ Last 200 lines of stardog.log @@@@@@@@@@@@@@@@@@@@@"
+  tail -n 200 /var/db/stardog/stardog.log	
 }
 
 initGlobals || exit $?
