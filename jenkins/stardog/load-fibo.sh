@@ -60,10 +60,9 @@ function getPreviousDatabasesCreatedByThisJob() {
 
 function getPreviousDatabasesCreatedByThisJobExectLast2() {
 
-  local jobs=$(getPreviousDatabasesCreatedByThisJob)
-	local count=$(echo ${jobs} | wc -l)
+	local count=$(getPreviousDatabasesCreatedByThisJob | wc -l)
 	if [ ${count} -gt 2 ] ; then
-	  echo ${jobs} | head -n $((count - 2))
+	  getPreviousDatabasesCreatedByThisJob | head -n $((count - 2))
 	else
 		echo ""
 	fi
@@ -94,9 +93,9 @@ function loadIntoTempJobDb() {
 
   sleep 5
 
-  echo "@@@@@@@@@@@@@@@@@@@ stardog.log @@@@@@@@@@@@@@@@@@@@@"
+  echo "@@@@@@@@@@@@@@@@@@@@@@@@@@@ stardog.log @@@@@@@@@@@@@@@@@@@@@@@@@@@"
   tail -n 1000 /var/db/stardog/stardog.log	| sed -n '/Bulk loading data to new database '${BUILD_TAG}'/,$p'
-  echo "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
+  echo "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
 
   if [ ${rc} -eq 0 ] ; then
     echo Successfully created database http://stardog.edmcouncil.org/#/databases/${BUILD_TAG}
@@ -106,7 +105,5 @@ function loadIntoTempJobDb() {
 }
 
 initGlobals || exit $?
-set -x
 removePreviousDatabases || exit $?
-set +x
 loadIntoTempJobDb
