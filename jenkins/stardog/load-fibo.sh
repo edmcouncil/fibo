@@ -56,9 +56,9 @@ set -x
 
   find . -type f -name '*.rdf' | xargs \
   ${stardog_admin_bin} db create \
-  	--index-triples-only \ # We don't expect named graphs here
+  	--index-triples-only \
   	--name "${BUILD_TAG}" \
-  	--type M \ # It's all temporary so just make it a memory database
+  	--type M \
   	--options "bnode.preserve.ids=false reasoning.type=RDFS" \
   	--verbose \
   	--
