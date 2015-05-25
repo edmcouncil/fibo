@@ -60,7 +60,7 @@ set -x
   	--name "${BUILD_TAG}" \
   	--type M \
   	--verbose \
-  	--options preserve.bnode.ids=false reasoning.type=RDFS \
+  	--options preserve.bnode.ids=false reasoning.type=QL \
   	--
 }
 
