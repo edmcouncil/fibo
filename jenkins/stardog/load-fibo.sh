@@ -21,7 +21,6 @@ function initGlobals() {
 		echo "ERROR: Could not find FIBO repo root: ${fibo_repo_root}"
 		return 1
 	fi
-	ls -all
 
 	if ! which stardog >/dev/null ; then
 	  echo "ERROR: Stardog is not configured (or at least not on the PATH)"
@@ -30,6 +29,9 @@ function initGlobals() {
 
   stardog_bin=$(which stardog)
   stardog_admin_bin=$(which stardog-admin)
+
+  echo "Using ${stardog_bin"
+  echo "Using ${stardog_admin_bin}"
 
   return 0
 }
@@ -50,10 +52,12 @@ function loadIntoTempJobDb() {
 
   echo "Creating temporary Stardog database ${BUILD_TAG}"
 
+set -x
+
   find . -type f -name '*.rdf' | xargs \
   ${stardog_admin_bin} db create \
   	--index-triples-only \ # We don't expect named graphs here
-  	--name ${BUILD_TAG} \
+  	--name "${BUILD_TAG}" \
   	--type M \ # It's all temporary so just make it a memory database
   	--options "bnode.preserve.ids=false reasoning.type=RDFS" \
   	--verbose \
