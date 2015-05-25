@@ -95,12 +95,8 @@ function loadIntoTempJobDb() {
   sleep 5
 
   echo "@@@@@@@@@@@@@@@@@@@ stardog.log @@@@@@@@@@@@@@@@@@@@@"
-  set -x
   tail -n 1000 /var/db/stardog/stardog.log	| sed -n '/Bulk loading data to new database '${BUILD_TAG}'/,$p'
-  set +x
   echo "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
-
-  tail -n 200 /var/db/stardog/stardog.log
 
   if [ ${rc} -eq 0 ] ; then
     echo Successfully created database http://stardog.edmcouncil.org/#/databases/${BUILD_TAG}
@@ -110,5 +106,7 @@ function loadIntoTempJobDb() {
 }
 
 initGlobals || exit $?
+set -x
 removePreviousDatabases || exit $?
+set +x
 loadIntoTempJobDb
