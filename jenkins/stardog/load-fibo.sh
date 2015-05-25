@@ -48,6 +48,21 @@ function loadIntoMainFiboDb() {
 	find . -type f -name '*.rdf' | xargs ${stardog_bin} data add fibo --named-graph ${fibo_test_named_graph}
 }
 
+function getDatabases() {
+	stardog-admin db list --verbose | sed 's/[|+]/ /g' | grep -v "Databases" | grep -v "\-\-\-\-"
+}
+
+function getDatabasesCreatedByThisJob() {
+	getDatabases | grep jenkins-${JOB_NAME}
+}
+
+function removePreviousDatabases() {
+
+	for db in $(getDatabasesCreatedByThisJob) ; do
+		echo "Deleting database ${db}"
+	done
+}
+
 function loadIntoTempJobDb() {
 
   echo "Creating temporary Stardog database ${BUILD_TAG}"
@@ -61,23 +76,26 @@ function loadIntoTempJobDb() {
   	--verbose \
   	--options preserve.bnode.ids=false reasoning.type=SL \
   	--
-  rc=$?	
+  rc=$?
   set +x
-
-  echo rc=${rc}
 
   sleep 5
 
   echo "@@@@@@@@@@@@@@@@@@@ stardog.log @@@@@@@@@@@@@@@@@@@@@"
-  tail -n 1000 /var/db/stardog/stardog.log	| sed -n '/new database ${BUILD_TAG}/,$p'
+  set -x
+  tail -n 1000 /var/db/stardog/stardog.log	| sed -n '/Bulk loading data to new database ${BUILD_TAG}/,$p'
+  set +x
   echo "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
 
   tail -n 200 /var/db/stardog/stardog.log
 
-  echo Successfully created database http://stardog.edmcouncil.org/#/databases/${BUILD_TAG}
+  if [ ${rc} -eq 0 ] ; then
+    echo Successfully created database http://stardog.edmcouncil.org/#/databases/${BUILD_TAG}
+  fi
 
-  return 0
+  return ${rc}
 }
 
 initGlobals || exit $?
+removePreviousDatabases || exit $?
 loadIntoTempJobDb
