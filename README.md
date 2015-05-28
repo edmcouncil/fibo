@@ -4,7 +4,7 @@ __Financial Industry Business Ontology__
 
 ## Intro
 
-Yellow FIBOs have entered the OMG Process. They comply with the OMG rules for documentation and public comment.
+This is the branch for FND-10 only. This is a branch from Pink for the pink-specific changes to be made in FND-10 (separate changes will be made as a branch of Red against this same JIRA ticket).
 
 ## Directories
 
