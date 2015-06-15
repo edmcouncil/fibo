@@ -122,6 +122,7 @@ function runSparqlTests() {
   #
   # We obviously need to change userid and password below
   #
+  set -x
   getSparqlTestFiles | xargs ${stardog_bin} query execute \
     --username admin \
     --password password \
