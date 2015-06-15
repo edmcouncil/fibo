@@ -6,26 +6,26 @@
 
 function initGlobals() {
 	
-	if [ "${WORKSPACE}" == "" ] ; then
-	  echo "ERROR: This script can only run in the context of a Jenkins job"
-		return 1
-	fi
-	if [ ! -d ${WORKSPACE}/fibo ] ; then
-		echo "ERROR: The fibo repo could not be found"
-		return 1
-	fi
+  if [ "${WORKSPACE}" == "" ] ; then
+    echo "ERROR: This script can only run in the context of a Jenkins job"
+    return 1
+  fi
+  if [ ! -d ${WORKSPACE}/fibo ] ; then
+    echo "ERROR: The fibo repo could not be found"
+    return 1
+  fi
 
-	fibo_repo_root=${WORKSPACE}/fibo
+  fibo_repo_root=${WORKSPACE}/fibo
 
-	if ! cd ${fibo_repo_root} >/dev/null ; then
-		echo "ERROR: Could not find FIBO repo root: ${fibo_repo_root}"
-		return 1
-	fi
+  if ! cd ${fibo_repo_root} >/dev/null ; then
+    echo "ERROR: Could not find FIBO repo root: ${fibo_repo_root}"
+    return 1
+  fi
 
-	if ! which stardog >/dev/null ; then
-	  echo "ERROR: Stardog is not configured (or at least not on the PATH)"
-	  return 1
-	fi
+  if ! which stardog >/dev/null ; then
+    echo "ERROR: Stardog is not configured (or at least not on the PATH)"
+    return 1
+  fi
 
   stardog_bin=$(which stardog)
   stardog_admin_bin=$(which stardog-admin)
@@ -37,43 +37,43 @@ function initGlobals() {
 }
 
 function loadIntoMainFiboDb() {
-	#
-	# By using the Jenkins BUILD_URL for the named graph into which we're loading
-	# everything we can easily find the relationship between the Named Graph and
-	# the job that created it.
-	#
-	fibo_test_named_graph=${BUILD_URL}
+  #
+  # By using the Jenkins BUILD_URL for the named graph into which we're loading
+  # everything we can easily find the relationship between the Named Graph and
+  # the job that created it.
+  #
+  fibo_test_named_graph=${BUILD_URL}
 
-	set -x
-	find . -type f -name '*.rdf' | xargs ${stardog_bin} data add fibo --named-graph ${fibo_test_named_graph}
+  set -x
+  find . -type f -name '*.rdf' | xargs ${stardog_bin} data add fibo --named-graph ${fibo_test_named_graph}
 }
 
 function getDatabases() {
 	
-	stardog-admin db list --verbose | sed 's/[|+]/ /g' | grep -v "Databases" | grep -v "\-\-\-\-"
+  stardog-admin db list --verbose | sed 's/[|+]/ /g' | grep -v "Databases" | grep -v "\-\-\-\-"
 }
 
 function getPreviousDatabasesCreatedByThisJob() {
 
-	getDatabases | grep jenkins-${JOB_NAME}
+  getDatabases | grep jenkins-${JOB_NAME}
 }
 
 function getPreviousDatabasesCreatedByThisJobExectLast2() {
 
-	local count=$(getPreviousDatabasesCreatedByThisJob | wc -l)
-	if [ ${count} -gt 2 ] ; then
-	  getPreviousDatabasesCreatedByThisJob | head -n $((count - 2))
-	else
-		echo ""
-	fi
+  local count=$(getPreviousDatabasesCreatedByThisJob | wc -l)
+  if [ ${count} -gt 2 ] ; then
+    getPreviousDatabasesCreatedByThisJob | head -n $((count - 2))
+  else
+    echo ""
+  fi
 }
 
 function removePreviousDatabases() {
 
-	for db in $(getPreviousDatabasesCreatedByThisJobExectLast2) ; do
-		echo "Deleting database ${db}"
-		${stardog_admin_bin} db drop --verbose -- ${db}
-	done
+  for db in $(getPreviousDatabasesCreatedByThisJobExectLast2) ; do
+    echo "Deleting database ${db}"
+    ${stardog_admin_bin} db drop --verbose -- ${db}
+  done
 }
 
 function loadIntoTempJobDb() {
@@ -83,12 +83,12 @@ function loadIntoTempJobDb() {
   set -x
   find . -type f -name '*.rdf' | xargs \
   ${stardog_admin_bin} db create \
-  	--index-triples-only \
-  	--name "${BUILD_TAG}" \
-  	--type M \
-  	--verbose \
-  	--options preserve.bnode.ids=false reasoning.type=SL \
-  	--
+    --index-triples-only \
+    --name "${BUILD_TAG}" \
+    --type M \
+    --verbose \
+    --options preserve.bnode.ids=false reasoning.type=SL \
+    --
   rc=$?
   set +x
 
