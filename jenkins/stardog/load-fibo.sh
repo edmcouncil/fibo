@@ -87,7 +87,7 @@ function loadIntoTempJobDb() {
     --name "${BUILD_TAG}" \
     --type M \
     --verbose \
-    --options preserve.bnode.ids=false reasoning.type=SL \
+    --options preserve.bnode.ids=false reasoning.type=SL icv.enabled=true icv.reasoning.enabled=true \
     --
   rc=$?
   set +x
