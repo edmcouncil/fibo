@@ -58,7 +58,7 @@ function getPreviousDatabasesCreatedByThisJob() {
   getDatabases | grep jenkins-${JOB_NAME}
 }
 
-function getPreviousDatabasesCreatedByThisJobExectLast2() {
+function getPreviousDatabasesCreatedByThisJobExceptLast2() {
 
   local count=$(getPreviousDatabasesCreatedByThisJob | wc -l)
   if [ ${count} -gt 2 ] ; then
@@ -70,7 +70,7 @@ function getPreviousDatabasesCreatedByThisJobExectLast2() {
 
 function removePreviousDatabases() {
 
-  for db in $(getPreviousDatabasesCreatedByThisJobExectLast2) ; do
+  for db in $(getPreviousDatabasesCreatedByThisJobExceptLast2) ; do
     echo "Deleting database ${db}"
     ${stardog_admin_bin} db drop --verbose -- ${db}
   done
@@ -105,6 +105,32 @@ function loadIntoTempJobDb() {
   return ${rc}
 }
 
+#
+# Return all the .sq files in the FIBO repo
+#
+function getSparqlTestFiles() {
+
+  find . -type f -name '*.sq'
+}
+
+#
+# Execute the stardog command line "query execute" command, as documented here:
+# http://docs.stardog.com/man/query-execute.html
+#
+function runSparqlTests() {
+	
+  #
+  # We obviously need to change userid and password below
+  #
+  getSparqlTestFiles | xargs ${stardog_bin} query execute \
+    --username admin \
+    --password admin \
+    --reasoning \
+    --verbose \
+    "${BUILD_TAG}"
+}
+
 initGlobals || exit $?
 removePreviousDatabases || exit $?
-loadIntoTempJobDb
+loadIntoTempJobDb || exit $?
+runSparqlTests
