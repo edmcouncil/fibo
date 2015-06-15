@@ -124,7 +124,7 @@ function runSparqlTests() {
   #
   getSparqlTestFiles | xargs ${stardog_bin} query execute \
     --username admin \
-    --password admin \
+    --password password \
     --reasoning \
     --verbose \
     "${BUILD_TAG}"
