@@ -19,7 +19,7 @@ $result =~ s/\\/\//g;
 $result =~ s/c:\/Documents\/Ontologies\/\/FIBO\/fibo-git\///g;
 #$result =~ s/\//\\/g;
 
-$command = "$ARQ --data=$result --query=etc\\testing\\echo.sq --results=RDF > c:\\temp\\temp.rdf 2>&1 ";
+$command = "$ARQ --data=$result --query=..\\testing\\echo.sq --results=RDF > c:\\temp\\temp.rdf 2>&1 ";
 
 $ENV{JENA_HOME} = "c:\\Documents\\Software\\jena\\apache-jena-2.13.0\\";
 $ENV{PELLET_HOME} = "c:\\Documents\\Software\\Pellet\\pellet-master\\";
