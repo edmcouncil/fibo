@@ -1,7 +1,7 @@
 use File::Find;
 
 $ARQ='arq.bat';
-$PELLET='c:\Documents\Software\Pellet\pellet-master\pellet.bat';
+$PELLET='pellet.bat';
 
 my @files;
 
