@@ -32,6 +32,6 @@ print "cd into the pellet directory";
 chdir($ENV{PELLET_HOME});
 
 print "then run pellet on the temp.rdf file";
-my $pelletStatus = system( "cmd.exe", "/C", "$PELLET lint -v --root-only c:\\temp\\temp.rdf");
+my $pelletStatus = system( "cmd.exe", "/C", "$PELLET lint -v --root-only file:///C:/temp/temp.rdf");
 print $pelletStatus
 
