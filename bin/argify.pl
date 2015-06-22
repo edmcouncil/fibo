@@ -1,9 +1,7 @@
 use File::Find;
 
-#set PATH=%PATH%;c:\Users\weiyeh\Desktop\apps\pellet-2.3.1;d:\apps\apache-jena-2.10.1\bat\arq.bat;
-
 $ARQ='arq.bat';
-$PELLET='c:\Users\weiyeh\Desktop\apps\pellet-2.3.1\pellet.bat';
+$PELLET='c:\Documents\Software\Pellet\pellet-master\pellet.bat';
 
 my @files;
 
@@ -18,13 +16,13 @@ find( sub {
 $result = join (" --data=", @files);
 
 $result =~ s/\\/\//g;
-$result =~ s/c:\/users\/weiyeh\/desktop\/projects\/edmcouncil_fibo\///g;
+$result =~ s/c:\/Documents\/Ontologies\/\/FIBO\/fibo-git\///g;
 #$result =~ s/\//\\/g;
 
 $command = "$ARQ --data=$result --query=etc\\testing\\echo.sq --results=RDF > c:\\temp\\temp.rdf 2>&1 ";
 
-$ENV{JENA_HOME} = "d:\\apps\\apache-jena-2.10.1\\";
-$ENV{PELLET_HOME} = "c:\\Users\\weiyeh\\Desktop\\apps\\pellet-2.3.1\\";
+$ENV{JENA_HOME} = "c:\\Documents\\Software\\jena\\apache-jena-2.13.0\\";
+$ENV{PELLET_HOME} = "c:\\Documents\\Software\\Pellet\\pellet-master\\";
 
 print "EXECUTING: cmd.exe /C $command ";
 my $status = system( "cmd.exe", "/C", $command );
@@ -34,6 +32,6 @@ print "cd into the pellet directory";
 chdir($ENV{PELLET_HOME});
 
 print "then run pellet on the temp.rdf file";
-my $pelletStatus = system( "cmd.exe", "/C", "$PELLET lint --root-only c:/temp/temp.rdf");
+my $pelletStatus = system( "cmd.exe", "/C", "$PELLET lint -v --root-only c:\\temp\\temp.rdf");
 print $pelletStatus
 
