@@ -16,8 +16,10 @@
     <!ENTITY fibo-fnd-pty-pty "http://spec.edmcouncil.org/fibo/FND/Parties/Parties/" >
     <!ENTITY fibo-fnd-oac-own "http://spec.edmcouncil.org/fibo/FND/OwnershipAndControl/Ownership/" >
     <!ENTITY fibo-fnd-agr-ctr "http://spec.edmcouncil.org/fibo/FND/Agreements/Contracts/" >
+    <!ENTITY fibo-fnd-pas-pas "http://spec.edmcouncil.org/fibo/FND/ProductsAndServices/ProductsAndServices/" >
+
     <!ENTITY fibo-be-oac-exec "http://spec.edmcouncil.org/fibo/BE/OwnershipAndControl/Executives/" >
-    <!ENTITY fibo-fbc-pas-pas "http://spec.edmcouncil.org/fibo/FBC/ProductsAndServices/ProductsAndServices/" >
+
     <!ENTITY fibo-fbc-pas-caa "http://spec.edmcouncil.org/fibo/FBC/ProductsAndServices/ClientsAndAccounts/" >
 ]>
 
@@ -38,8 +40,10 @@ xmlns:sm="http://www.omg.org/techprocess/ab/SpecificationMetadata/"
      xmlns:fibo-fnd-pty-pty="http://spec.edmcouncil.org/fibo/FND/Parties/Parties/"
      xmlns:fibo-fnd-oac-own="http://spec.edmcouncil.org/fibo/FND/OwnershipAndControl/Ownership/"
      xmlns:fibo-fnd-agr-ctr="http://spec.edmcouncil.org/fibo/FND/Agreements/Contracts/"
+     xmlns:fibo-fnd-pas-pas="http://spec.edmcouncil.org/fibo/FND/ProductsAndServices/ProductsAndServices/"
+
      xmlns:fibo-be-oac-exec="http://spec.edmcouncil.org/fibo/BE/OwnershipAndControl/Executives/"
-     xmlns:fibo-fbc-pas-pas="http://spec.edmcouncil.org/fibo/FBC/ProductsAndServices/ProductsAndServices/"
+
      xmlns:fibo-fbc-pas-caa="http://spec.edmcouncil.org/fibo/FBC/ProductsAndServices/ClientsAndAccounts/">
 
 
@@ -58,8 +62,11 @@ Copyright (c) 2015 Object Management Group, Inc.</sm:copyright>
 
         <sm:filename rdf:datatype="&xsd;string">ClientsAndAccounts.rdf</sm:filename>
         <sm:fileAbbreviation rdf:datatype="&xsd;string">fibo-fbc-pas-caa</sm:fileAbbreviation>
-        <owl:versionIRI rdf:resource="http://spec.edmcouncil.org/fibo/FBC/20150501/ProductsAndServices/ClientsAndAccounts/"/>
-        <sm:fileAbstract rdf:datatype="&xsd;string">This ontology defines the fundamental concepts for ...</sm:fileAbstract>
+        <owl:versionIRI rdf:resource="http://spec.edmcouncil.org/fibo/FBC/20150801/ProductsAndServices/ClientsAndAccounts/"/>
+        <sm:fileAbstract rdf:datatype="&xsd;string">This ontology provides basic concepts such as account, account holder, account provider, relationship manager that are commonly used by financial services providers to describe customers and to determine counterparty identities.</sm:fileAbstract>
+
+        <sm:dependsOn rdf:datatype="&xsd;anyURI">http://spec.edmcouncil.org/fibo/FND/</sm:dependsOn>
+        <sm:dependsOn rdf:datatype="&xsd;anyURI">http://spec.edmcouncil.org/fibo/BE/</sm:dependsOn>
 
         <sm:contentLanguage rdf:datatype="&xsd;anyURI">http://www.omg.org/spec/ODM/</sm:contentLanguage>
         <sm:contentLanguage rdf:datatype="&xsd;anyURI">http://www.w3.org/standards/techs/owl#w3c_all</sm:contentLanguage>
@@ -76,10 +83,9 @@ Copyright (c) 2015 Object Management Group, Inc.</sm:copyright>
         <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/FND/Parties/Parties/"/>
         <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/FND/OwnershipAndControl/Ownership/"/>
         <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/FND/Agreements/Contracts/"/>
+        <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/FND/ProductsAndServices/ProductsAndServices/"/>
 
         <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/BE/OwnershipAndControl/Executives/"/>
-
-        <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/FBC/ProductsAndServices/ProductsAndServices/"/>
 
    </owl:Ontology>
 
@@ -120,8 +126,8 @@ Copyright (c) 2015 Object Management Group, Inc.</sm:copyright>
     
     <owl:Class rdf:about="&fibo-fbc-pas-caa;AccountHolder">
         <rdfs:label>account holder</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&fibo-fbc-pas-pas;Client"/>
-        <rdfs:subClassOf rdf:resource="&fibo-fbc-pas-pas;Customer"/>
+        <rdfs:subClassOf rdf:resource="&fibo-fnd-pas-pas;Client"/>
+        <rdfs:subClassOf rdf:resource="&fibo-fnd-pas-pas;Customer"/>
         <rdfs:subClassOf>
             <owl:Restriction>
                 <owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
@@ -138,9 +144,9 @@ Copyright (c) 2015 Object Management Group, Inc.</sm:copyright>
         <fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;string">Barron's Dictionary of Business and Economics Terms, Fifth Edition, 2012</fibo-fnd-utl-av:adaptedFrom>
     </owl:Class>
     
-    <owl:Class rdf:about="&fibo-fbc-pas-caa;AccountingTransaction">
+    <owl:Class rdf:about="&fibo-fbc-pas-caa;AccountingTransactionEvent">
         <rdfs:label>accounting transaction</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&fibo-fbc-pas-pas;Transaction"/>
+        <rdfs:subClassOf rdf:resource="&fibo-fnd-pas-pas;TransactionEvent"/>
         <rdfs:subClassOf>
             <owl:Restriction>
                 <owl:onProperty rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
@@ -167,7 +173,7 @@ Copyright (c) 2015 Object Management Group, Inc.</sm:copyright>
 
     <owl:Class rdf:about="&fibo-fbc-pas-caa;AccountProvider">
         <rdfs:label>account provider</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&fibo-fbc-pas-pas;ServiceProvider"/>
+        <rdfs:subClassOf rdf:resource="&fibo-fnd-pas-pas;ServiceProvider"/>
         <rdfs:subClassOf>
             <owl:Restriction>
                 <owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
@@ -180,11 +186,12 @@ Copyright (c) 2015 Object Management Group, Inc.</sm:copyright>
                 </owl:someValuesFrom>
             </owl:Restriction>
         </rdfs:subClassOf>
+        <skos:definition rdf:datatype="&xsd;string">the service provider that provides and services the account</skos:definition>
     </owl:Class>
     
     <owl:Class rdf:about="&fibo-fbc-pas-caa;AccountSpecificServiceAgreement">
         <rdfs:label>account-specific service agreement</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&fibo-fbc-pas-pas;ServiceAgreement"/>
+        <rdfs:subClassOf rdf:resource="&fibo-fnd-pas-pas;ServiceAgreement"/>
         <rdfs:subClassOf>
             <owl:Restriction>
                 <owl:onProperty rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
@@ -194,20 +201,22 @@ Copyright (c) 2015 Object Management Group, Inc.</sm:copyright>
         <rdfs:subClassOf>
             <owl:Restriction>
                 <owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;hasContractParty"/>
-                <owl:onClass rdf:resource="&fibo-fbc-pas-caa;AccountProvider"/>
-                <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:someValuesFrom rdf:resource="&fibo-fbc-pas-caa;AccountProvider"/>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&fibo-fnd-pty-pty;hasPartyInRole"/>
+                <owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;hasContractParty"/>
                 <owl:someValuesFrom rdf:resource="&fibo-fbc-pas-caa;AccountHolder"/>
             </owl:Restriction>
         </rdfs:subClassOf>
+        <skos:definition rdf:datatype="&xsd;string">a service-agreement that is account-specific, applicable in cases where a client holds multiple accounts with differing terms and conditions</skos:definition>
+        <fibo-fnd-utl-av:explanatoryNote rdf:datatype="&xsd;string">Customers of financial service providers frequently hold multiple accounts - brokerage accounts, checking and savings accounts, trust accounts, and so forth - which may have specific terms and conditions associated with them.</fibo-fnd-utl-av:explanatoryNote>
     </owl:Class>
         
     <owl:Class rdf:about="&fibo-fbc-pas-caa;RelationshipManager">
         <rdfs:label>relationship manager</rdfs:label>
+        <fibo-fnd-utl-av:synonym rdf:datatype="&xsd;string">account manager</fibo-fnd-utl-av:synonym>
         <rdfs:subClassOf rdf:resource="&fibo-be-oac-exec;ResponsibleParty"/>
         <rdfs:subClassOf>
             <owl:Restriction>
@@ -215,6 +224,7 @@ Copyright (c) 2015 Object Management Group, Inc.</sm:copyright>
                 <owl:someValuesFrom rdf:resource="&fibo-fbc-pas-caa;Account"/>
             </owl:Restriction>
         </rdfs:subClassOf>
+        <skos:definition rdf:datatype="&xsd;string">a responsible party who manages the client's account (or portfolio of accounts) and oversees their relationship with the service provider</skos:definition>
     </owl:Class>
 
 </rdf:RDF>
