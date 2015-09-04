@@ -7,6 +7,7 @@ Directory                    | Purpose
 [cm](./cm)                   | Change Management
 [data](./data)               | All test data 
 [image](./image)             | All images that are used on the wiki or other EDM Council websites or in publications
+[imports](./imports)  	     | External models that are needed to complete the load of FIBO
 [infra](./infra)             | FIBO Development & Test Environment, scripts and documentation
 [odm](./odm)                 | ODM XMI sources
 [operational](./operational) | FIBO Operational Ontologies
