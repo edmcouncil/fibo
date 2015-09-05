@@ -43,14 +43,14 @@ Copyright (c) 2015 Unisys
         <sm:filename rdf:datatype="&xsd;string">CountryRepresentation.rdf</sm:filename>
         <sm:fileAbbreviation rdf:datatype="&xsd;string">lcc-cr</sm:fileAbbreviation>
         <owl:versionIRI rdf:resource="http://www.omg.org/spec/LCC/20150801/Countries/CountryRepresentation/"/>
-        <sm:fileAbstract rdf:datatype="&xsd;string">The purpose of the Country Representation ontology, based on ISO 3166 and other representations of countries, such as the ISO Online Browsing Platform, SWIFT registry, UN FAO and CIA World Factbook, and GeoNames, is to provide a systematic description of the vocabulary used for country and geopolitical entity representation (based strictly on requirements for business applications, not broader geographic or political uses). A few additional properties to support geophysical coordinates, identified in the UN FAO and CIA World Factbook as well as from the well-known GeoNames ontology, have been added, but extensions to support other coding systems, such as the FAOSTAT code, have not been included as of this initial publication.
+        <sm:fileAbstract rdf:datatype="&xsd;string">The purpose of the Country Representation ontology, based on ISO 3166 and other representations of countries, such as the ISO Online Browsing Platform, SWIFT registry, UN FAO and CIA World Factbook, and GeoNames, is to provide a systematic description of the vocabulary used for country and geopolitical entity representation (based strictly on requirements for business applications, not broader geographic or political uses). A few additional properties to support geophysical coordinates, identified in the UN FAO and CIA World Factbook as well as from the well-known GeoNames ontology, have been added, but extensions to support other coding systems, such as the FAOSTAT code, have not been included.
 
 ISO 3166 provides universally applicable coded representations of names of countries, dependencies, and other areas of particular geopolitical interest and their subdivisions.
  - ISO 3166-1 (Country codes) establishes codes that represent the current names of countries, dependencies, and other areas of particular geopolitical interest, on the basis of lists of country names obtained from the United Nations.
  - ISO 3166-2 (Country subdivision code) establishes a code that represents the names of the principal administrative divisions, or similar areas, of the countries, etc. included in the ISO 3166-1.
  - ISO 3166-3 (Code for formerly used names of countries) establishes a code that represents non-current country names, i.e., the country names deleted from ISO 3166 since its first publication in 1974.
 
-This ontology reflects the first two parts of ISO 3166, revised to reflect the latest modifications made by the relevant registrars via the sources mentioned above.  It has been partitioned into 4 components: (1) the essential concept system describing the standard (this ontology), (2) lcc-3166-1 contains all of the individuals specified in ISO 3166-1, (3) lcc-3166-2 contains the individuals specified in ISO 3166-2, and (4) lcc-3166-3 will ultimately contain the individuals specified in ISO 3166-3.</sm:fileAbstract>
+This ontology reflects the first two parts of ISO 3166, revised to reflect the latest modifications made by the relevant registrars via the sources mentioned above.  It has been partitioned into 3 components: (1) the essential concept system describing the standard (this ontology), (2) lcc-3166-1 contains all of the individuals specified in ISO 3166-1, and (3) lcc-3166-2 contains the individuals specified in ISO 3166-2.  A fourth ontology, supporting ISO 3166-3, may be added if requirements from the OMG community arise.</sm:fileAbstract>
 
         <sm:directSource rdf:datatype="&xsd;string">ISO 3166-1 Codes for the representation of names of countries and their subdivisions- Part 1: Country codes, Second edition, 2006-11-15</sm:directSource>
         <sm:directSource rdf:datatype="&xsd;string">ISO 3166-2 Codes for the representation of names of countries and their subdivisions- Part 2: Country subdivision code, First edition, 1998-12-15</sm:directSource>
@@ -102,6 +102,13 @@ This ontology reflects the first two parts of ISO 3166, revised to reflect the l
         <sm:directSource rdf:datatype="&xsd;string">Stanford Encyclopedia of Philosophy at http://plato.stanford.edu/entries/mereology/</sm:directSource>
     </owl:ObjectProperty>
 
+    <owl:ObjectProperty rdf:about="&lcc-cr;hasSubdivision">
+        <rdfs:label>has subdivision</rdfs:label>
+        <rdfs:subPropertyOf rdf:resource="&lcc-cr;hasPart"/>
+        <rdfs:domain rdf:resource="&lcc-cr;Country"/>
+        <rdfs:range rdf:resource="&lcc-cr;CountrySubdivision"/>
+    </owl:ObjectProperty>
+
     <owl:ObjectProperty rdf:about="&lcc-cr;hasTerritory">
         <rdfs:label>has territory</rdfs:label>
         <skos:definition rdf:datatype="&xsd;string">relates a country to another geopolitical entity in ISO 3166 that is a territory of that country</skos:definition>
@@ -110,13 +117,6 @@ This ontology reflects the first two parts of ISO 3166, revised to reflect the l
         <rdfs:range rdf:resource="&lcc-cr;GeopoliticalEntity"/>
         <skos:note rdf:datatype="&xsd;string">The isIndependent flag indicates whether or not a 'country' is in fact independent, but does not indicate whether or not it is self-governing.  The UN FAO ontology distinguishes between these two cases, which can be added as an extension if required in a subsequent version of this specification.</skos:note>
         <sm:directSource rdf:datatype="&xsd;anyURI">http://www.fao.org/countryprofiles/geoinfo/en/</sm:directSource>
-    </owl:ObjectProperty>
-
-    <owl:ObjectProperty rdf:about="&lcc-cr;hasSubdivision">
-        <rdfs:label>has subdivision</rdfs:label>
-        <rdfs:subPropertyOf rdf:resource="&lcc-cr;hasPart"/>
-        <rdfs:domain rdf:resource="&lcc-cr;Country"/>
-        <rdfs:range rdf:resource="&lcc-cr;CountrySubdivision"/>
     </owl:ObjectProperty>
 
     <owl:ObjectProperty rdf:about="&lcc-cr;isClassifiedBy">
@@ -380,7 +380,7 @@ Attention is drawn to the fact that other 3-letter codes for some country names 
         <rdfs:subClassOf rdf:resource="&lcc-cr;GeopoliticalEntity"/>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="&lcc-lr;isClassifiedBy"/>
+                <owl:onProperty rdf:resource="&lcc-cr;isClassifiedBy"/>
                 <owl:someValuesFrom rdf:resource="&lcc-cr;SubdivisionKind"/>
             </owl:Restriction>
         </rdfs:subClassOf>
