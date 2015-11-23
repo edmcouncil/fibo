@@ -1,0 +1,29 @@
+# baseURI: http://spinrdf.org/spinx
+# imports: http://spinrdf.org/spin
+
+# c14n-version: 3
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix spinx: <http://spinrdf.org/spinx#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+<http://spinrdf.org/spinx>
+  rdf:type owl:Ontology ;
+  rdfs:comment "Extends SPIN with properties to link spin:Functions with executable expressions in scripting languages such as JavaScript." ;
+  owl:imports <http://spinrdf.org/spin> ;
+  owl:versionInfo "1.0.0"^^xsd:string ;
+.
+spinx:javaScriptCode
+  rdf:type rdf:Property ;
+  rdfs:comment "JavaScript source code that shall be executed as the body of a SPIN function. At execution time, this code will be wrapped into a JavaScript function that has the provided runtime arguments as parameters as arg1, arg2 etc. The code must end with a return call. If a value for spinx:javaScriptFile is provided as well, then this code may call functions from another file." ;
+  rdfs:domain <http://spinrdf.org/spin#Function> ;
+  rdfs:label "java script code"^^xsd:string ;
+  rdfs:range xsd:string ;
+.
+spinx:javaScriptFile
+  rdf:type rdf:Property ;
+  rdfs:comment "Links a SPIN function with a file that contains the function's definition in JavaScript. The file name can be an absolute URL or relative. If it is relative (e.g. \"myFile.js\") then it is assumed to be on the folder as the base URI of the file that contains the function's definition. For example, if you have a SPIN file at http://my.com/spin/functions then the file myFile.js would be loaded from http://my.com/spin/myFile.js. If a local copy of the file is present in the same folder as the SPIN file, then this local copy will be used." ;
+  rdfs:domain <http://spinrdf.org/spin#Function> ;
+  rdfs:label "java script file"^^xsd:string ;
+  rdfs:range xsd:string ;
+.

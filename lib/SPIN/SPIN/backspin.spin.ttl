@@ -1,0 +1,593 @@
+# baseURI: http://topbraid.org/backspin
+# imports: http://spinrdf.org/spin
+# imports: http://topbraid.org/spin/spinmapl
+
+@prefix arg: <http://spinrdf.org/arg#> .
+@prefix backspin: <http://topbraid.org/backspin#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sp: <http://spinrdf.org/sp#> .
+@prefix spin: <http://spinrdf.org/spin#> .
+@prefix spinmap: <http://spinrdf.org/spinmap#> .
+@prefix spl: <http://spinrdf.org/spl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+arg:context
+  rdf:type rdf:Property ;
+  rdfs:subPropertyOf sp:arg ;
+.
+arg:expression
+  rdf:type rdf:Property ;
+  rdfs:subPropertyOf sp:arg ;
+.
+arg:mapping
+  rdf:type rdf:Property ;
+  rdfs:subPropertyOf sp:arg ;
+.
+arg:resource
+  rdf:type rdf:Property ;
+  rdfs:subPropertyOf sp:arg ;
+.
+arg:sourceClass
+  rdf:type rdf:Property ;
+  rdfs:subPropertyOf sp:arg ;
+.
+arg:sourceProperty
+  rdf:type rdf:Property ;
+  rdfs:subPropertyOf sp:arg ;
+.
+arg:targetClass
+  rdf:type rdf:Property ;
+  rdfs:subPropertyOf sp:arg ;
+.
+arg:targetProperty
+  rdf:type rdf:Property ;
+  rdfs:subPropertyOf sp:arg ;
+.
+spinmap:ObjectMapping-1-1
+  rdf:type spin:ConstructTemplate ;
+  spin:body [
+      rdf:type sp:Construct ;
+      sp:templates (
+          [
+            sp:object [
+                sp:varName "newValue"^^xsd:string ;
+              ] ;
+            sp:predicate [
+                sp:varName "targetPredicate1"^^xsd:string ;
+              ] ;
+            sp:subject [
+                sp:varName "target"^^xsd:string ;
+              ] ;
+          ]
+          [
+            sp:object [
+                sp:varName "sourceType"^^xsd:string ;
+              ] ;
+            sp:predicate rdf:type ;
+            sp:subject [
+                sp:varName "oldValue"^^xsd:string ;
+              ] ;
+          ]
+          [
+            sp:object [
+                sp:varName "targetType"^^xsd:string ;
+              ] ;
+            sp:predicate rdf:type ;
+            sp:subject [
+                sp:varName "newValue"^^xsd:string ;
+              ] ;
+          ]
+          [
+            sp:object [
+                sp:varName "oldValue"^^xsd:string ;
+              ] ;
+            sp:predicate backspin:sourceResource ;
+            sp:subject [
+                sp:varName "newValue"^^xsd:string ;
+              ] ;
+          ]
+        ) ;
+      sp:where (
+          [
+            sp:object [
+                sp:varName "oldValue"^^xsd:string ;
+              ] ;
+            sp:predicate [
+                sp:varName "sourcePredicate1"^^xsd:string ;
+              ] ;
+            sp:subject spin:_this ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type spin:eval ;
+                sp:arg1 [
+                    sp:varName "expression"^^xsd:string ;
+                  ] ;
+                sp:arg2 sp:arg1 ;
+                sp:arg3 [
+                    sp:varName "oldValue"^^xsd:string ;
+                  ] ;
+              ] ;
+            sp:variable [
+                sp:varName "newValue"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type spinmap:targetResource ;
+                sp:arg1 spin:_this ;
+                spinmap:context [
+                    sp:varName "context"^^xsd:string ;
+                  ] ;
+              ] ;
+            sp:variable [
+                sp:varName "target"^^xsd:string ;
+              ] ;
+          ]
+          [
+            sp:object [
+                sp:varName "targetType"^^xsd:string ;
+              ] ;
+            sp:predicate rdfs:range ;
+            sp:subject [
+                sp:varName "targetPredicate1"^^xsd:string ;
+              ] ;
+          ]
+          [
+            sp:object [
+                sp:varName "sourceType"^^xsd:string ;
+              ] ;
+            sp:predicate rdfs:range ;
+            sp:subject [
+                sp:varName "sourcePredicate1"^^xsd:string ;
+              ] ;
+          ]
+        ) ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:optional "true"^^xsd:boolean ;
+      spl:predicate spinmap:inverseExpression ;
+      rdfs:comment "An expression that executes the spinmap:expression in reverse direction. Can be used to support bi-directional mapping."^^xsd:string ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate spinmap:expression ;
+      rdfs:comment "The transformation function to use. Must take one argument, sp:arg1."^^xsd:string ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate spinmap:sourcePredicate1 ;
+      spl:valueType rdf:Property ;
+      rdfs:comment "The property to map from (in the source object)."^^xsd:string ;
+    ] ;
+  spin:labelTemplate "Map into {?context}: derive {?targetPredicate1} from {?sourcePredicate1} using {?expression}"^^xsd:string ;
+  rdfs:comment "NOTE: Deprecated, replaced with backspin:ObjectMapping-1-1."^^xsd:string ;
+  rdfs:label "Object property mapping (deprecated)"^^xsd:string ;
+  rdfs:subClassOf spinmap:Mapping-1 ;
+.
+<http://topbraid.org/backspin>
+  rdf:type owl:Ontology ;
+  rdfs:comment "Helper functions and templates used by the BackSPIN engine to find SPIN mappings etc."^^xsd:string ;
+  owl:imports <http://spinrdf.org/spin> ;
+  owl:imports <http://topbraid.org/spin/spinmapl> ;
+  owl:versionInfo "0.1.0"^^xsd:string ;
+.
+backspin:Mapping-0-1
+  rdf:type spin:ConstructTemplate ;
+  spin:body [
+      rdf:type sp:Construct ;
+      sp:templates (
+          [
+            sp:object [
+                sp:varName "newValue"^^xsd:string ;
+              ] ;
+            sp:predicate [
+                sp:varName "targetPredicate1"^^xsd:string ;
+              ] ;
+            sp:subject [
+                sp:varName "target"^^xsd:string ;
+              ] ;
+          ]
+          [
+            sp:object spin:_this ;
+            sp:predicate backspin:sourceResource ;
+            sp:subject [
+                sp:varName "target"^^xsd:string ;
+              ] ;
+          ]
+        ) ;
+      sp:where (
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type spin:eval ;
+                sp:arg1 [
+                    sp:varName "expression"^^xsd:string ;
+                  ] ;
+                sp:arg2 sp:arg1 ;
+                sp:arg3 spin:_this ;
+              ] ;
+            sp:variable [
+                sp:varName "newValue"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type spinmap:targetResource ;
+                sp:arg1 spin:_this ;
+                spinmap:context [
+                    sp:varName "context"^^xsd:string ;
+                  ] ;
+              ] ;
+            sp:variable [
+                sp:varName "target"^^xsd:string ;
+              ] ;
+          ]
+        ) ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate spinmap:expression ;
+      rdfs:comment "The transformation function to use. Must take one argument, sp:arg1, which will be the source resource of the mapping."^^xsd:string ;
+    ] ;
+  spin:labelTemplate "Map into {?context}: derive {?targetPredicate1} using {?expression}"^^xsd:string ;
+  rdfs:comment "A mapping that requires no source property and creates a value for one target property. The value is derived using a provided transformation function based on the source resource."^^xsd:string ;
+  rdfs:label "Mapping-0-1"^^xsd:string ;
+  rdfs:subClassOf spinmap:Mapping-1 ;
+.
+backspin:ObjectMapping-1-1
+  rdf:type spin:ConstructTemplate ;
+  spin:body [
+      rdf:type sp:Construct ;
+      sp:templates (
+          [
+            sp:object [
+                sp:varName "newValue"^^xsd:string ;
+              ] ;
+            sp:predicate [
+                sp:varName "targetPredicate1"^^xsd:string ;
+              ] ;
+            sp:subject [
+                sp:varName "target"^^xsd:string ;
+              ] ;
+          ]
+          [
+            sp:object [
+                sp:varName "sourceType"^^xsd:string ;
+              ] ;
+            sp:predicate rdf:type ;
+            sp:subject [
+                sp:varName "oldValue"^^xsd:string ;
+              ] ;
+          ]
+          [
+            sp:object [
+                sp:varName "targetType"^^xsd:string ;
+              ] ;
+            sp:predicate rdf:type ;
+            sp:subject [
+                sp:varName "newValue"^^xsd:string ;
+              ] ;
+          ]
+          [
+            sp:object [
+                sp:varName "oldValue"^^xsd:string ;
+              ] ;
+            sp:predicate backspin:sourceResource ;
+            sp:subject [
+                sp:varName "newValue"^^xsd:string ;
+              ] ;
+          ]
+        ) ;
+      sp:where (
+          [
+            sp:object [
+                sp:varName "oldValue"^^xsd:string ;
+              ] ;
+            sp:predicate [
+                sp:varName "sourcePredicate1"^^xsd:string ;
+              ] ;
+            sp:subject spin:_this ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type spin:eval ;
+                sp:arg1 [
+                    sp:varName "expression"^^xsd:string ;
+                  ] ;
+                sp:arg2 sp:arg1 ;
+                sp:arg3 [
+                    sp:varName "oldValue"^^xsd:string ;
+                  ] ;
+              ] ;
+            sp:variable [
+                sp:varName "newValue"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type spinmap:targetResource ;
+                sp:arg1 spin:_this ;
+                spinmap:context [
+                    sp:varName "context"^^xsd:string ;
+                  ] ;
+              ] ;
+            sp:variable [
+                sp:varName "target"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Optional ;
+            sp:elements (
+                [
+                  sp:object [
+                      sp:varName "targetType"^^xsd:string ;
+                    ] ;
+                  sp:predicate rdfs:range ;
+                  sp:subject [
+                      sp:varName "targetPredicate1"^^xsd:string ;
+                    ] ;
+                ]
+              ) ;
+          ]
+          [
+            rdf:type sp:Optional ;
+            sp:elements (
+                [
+                  sp:object [
+                      sp:varName "sourceType"^^xsd:string ;
+                    ] ;
+                  sp:predicate rdfs:range ;
+                  sp:subject [
+                      sp:varName "sourcePredicate1"^^xsd:string ;
+                    ] ;
+                ]
+              ) ;
+          ]
+        ) ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:optional "true"^^xsd:boolean ;
+      spl:predicate spinmap:inverseExpression ;
+      rdfs:comment "An expression that executes the spinmap:expression in reverse direction. Can be used to support bi-directional mapping."^^xsd:string ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate spinmap:expression ;
+      rdfs:comment "The transformation function to use. Must take one argument, sp:arg1."^^xsd:string ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate spinmap:sourcePredicate1 ;
+      spl:valueType rdf:Property ;
+      rdfs:comment "The property to map from (in the source object)."^^xsd:string ;
+    ] ;
+  spin:labelTemplate "Map into {?context}: derive {?targetPredicate1} from {?sourcePredicate1} using {?expression}"^^xsd:string ;
+  rdfs:comment "A mapping that takes one source property and maps it into one target property. Both source and target values are assumed to be resources."^^xsd:string ;
+  rdfs:label "Object property mapping"^^xsd:string ;
+  rdfs:subClassOf spinmap:Mapping-1 ;
+.
+backspin:Resource
+  rdf:type rdfs:Class ;
+  rdfs:label "Resource"^^xsd:string ;
+.
+backspin:contextWithSourceAndTargetClass
+  rdf:type spin:Function ;
+  spin:body [
+      rdf:type sp:Select ;
+      sp:resultVariables (
+          [
+            sp:varName "context"^^xsd:string ;
+          ]
+        ) ;
+      sp:where (
+          [
+            sp:object [
+                sp:varName "sourceClass"^^xsd:string ;
+              ] ;
+            sp:predicate spinmap:sourceClass ;
+            sp:subject [
+                sp:varName "context"^^xsd:string ;
+              ] ;
+          ]
+          [
+            sp:object [
+                sp:varName "targetClass"^^xsd:string ;
+              ] ;
+            sp:predicate spinmap:targetClass ;
+            sp:subject [
+                sp:varName "context"^^xsd:string ;
+              ] ;
+          ]
+        ) ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate arg:sourceClass ;
+      spl:valueType rdfs:Class ;
+      rdfs:comment "The source class"^^xsd:string ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate arg:targetClass ;
+      spl:valueType rdfs:Class ;
+      rdfs:comment "The target class."^^xsd:string ;
+    ] ;
+  spin:returnType spinmap:Context ;
+  rdfs:comment "Finds a spinmap:Context for a given pair of source and target classes."^^xsd:string ;
+  rdfs:label "context with source and target class"^^xsd:string ;
+.
+backspin:decodeTargetResource
+  rdf:type spin:Function ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate arg:resource ;
+      spl:valueType rdfs:Resource ;
+    ] ;
+  spin:private "true"^^xsd:boolean ;
+  spin:returnType rdfs:Resource ;
+  rdfs:comment "Given the URI of an encoded BackSPIN resource, this extracts the target resource."^^xsd:string ;
+  rdfs:label "decode target resource"^^xsd:string ;
+  rdfs:subClassOf spin:Functions ;
+.
+backspin:defines
+  rdf:type rdf:Property ;
+  rdfs:domain owl:Ontology ;
+  rdfs:label "defines"^^xsd:string ;
+  rdfs:range rdfs:Resource ;
+.
+backspin:inverseExpression
+  rdf:type spin:Function ;
+  spin:body [
+      rdf:type sp:Select ;
+      sp:resultVariables (
+          [
+            sp:varName "inverse"^^xsd:string ;
+          ]
+        ) ;
+      sp:where (
+          [
+            sp:object [
+                sp:varName "expression"^^xsd:string ;
+              ] ;
+            sp:predicate spinmap:expression ;
+            sp:subject [
+                sp:varName "mapping"^^xsd:string ;
+              ] ;
+          ]
+          [
+            sp:object [
+                sp:varName "inverse"^^xsd:string ;
+              ] ;
+            sp:predicate spinmap:inverseExpression ;
+            sp:subject [
+                sp:varName "mapping"^^xsd:string ;
+              ] ;
+          ]
+        ) ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate arg:expression ;
+      rdfs:comment "The expression to find the inverse for. The expression is expected to have exactly one incoming mapping via spinmap:expression."^^xsd:string ;
+    ] ;
+  rdfs:comment "Tries to find an inverse expression for a given expression."^^xsd:string ;
+  rdfs:label "inverse expression"^^xsd:string ;
+  rdfs:subClassOf spin:Functions ;
+.
+backspin:isAuthoritative
+  rdf:type rdf:Property ;
+  rdfs:domain spinmap:Mapping ;
+  rdfs:range xsd:boolean ;
+.
+backspin:mapping11WithSourceProperty
+  rdf:type spin:Function ;
+  spin:body [
+      rdf:type sp:Select ;
+      sp:resultVariables (
+          [
+            sp:varName "mapping"^^xsd:string ;
+          ]
+        ) ;
+      sp:where (
+          [
+            sp:object [
+                sp:varName "sourceProperty"^^xsd:string ;
+              ] ;
+            sp:predicate spinmap:sourcePredicate1 ;
+            sp:subject [
+                sp:varName "mapping"^^xsd:string ;
+              ] ;
+          ]
+          [
+            sp:object [
+                sp:varName "context"^^xsd:string ;
+              ] ;
+            sp:predicate spinmap:context ;
+            sp:subject [
+                sp:varName "mapping"^^xsd:string ;
+              ] ;
+          ]
+        ) ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate arg:context ;
+      spl:valueType spinmap:Context ;
+      rdfs:comment "The spinmap:Context to operate on."^^xsd:string ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate arg:sourceProperty ;
+      spl:valueType rdf:Property ;
+      rdfs:comment "The source property to find the mapping for."^^xsd:string ;
+    ] ;
+  spin:returnType spinmap:Mapping-1-1 ;
+  rdfs:label "mapping-1-1 with source property"^^xsd:string ;
+  rdfs:subClassOf spin:Functions ;
+.
+backspin:mapping11WithTargetProperty
+  rdf:type spin:Function ;
+  spin:body [
+      rdf:type sp:Select ;
+      sp:resultVariables (
+          [
+            sp:varName "mapping"^^xsd:string ;
+          ]
+        ) ;
+      sp:where (
+          [
+            sp:object [
+                sp:varName "targetProperty"^^xsd:string ;
+              ] ;
+            sp:predicate spinmap:targetPredicate1 ;
+            sp:subject [
+                sp:varName "mapping"^^xsd:string ;
+              ] ;
+          ]
+          [
+            sp:object [
+                sp:varName "context"^^xsd:string ;
+              ] ;
+            sp:predicate spinmap:context ;
+            sp:subject [
+                sp:varName "mapping"^^xsd:string ;
+              ] ;
+          ]
+        ) ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate arg:context ;
+      spl:valueType spinmap:Context ;
+      rdfs:comment "The spinmap:Context to operate on."^^xsd:string ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate arg:targetProperty ;
+      spl:valueType rdf:Property ;
+      rdfs:comment "The target property to find."^^xsd:string ;
+    ] ;
+  spin:returnType spinmap:Mapping-1-1 ;
+  rdfs:label "mapping-1-1 with target property"^^xsd:string ;
+  rdfs:subClassOf spin:Functions ;
+.
+backspin:sourceResource
+  rdf:type owl:SymmetricProperty ;
+  rdfs:comment "One of the source resources from which this top level resource was mapped"^^xsd:string ;
+.
+backspin:uri
+  rdf:type rdf:Property ;
+  rdfs:domain backspin:Resource ;
+  rdfs:label "uri"^^xsd:string ;
+  rdfs:range xsd:string ;
+.

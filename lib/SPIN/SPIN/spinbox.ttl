@@ -1,0 +1,355 @@
+# baseURI: http://topbraid.org/examples/spin/spinbox
+# imports: http://spinrdf.org/spin
+
+# c14n-version: 3
+@prefix images: <http://topbraid.org/examples/spin/box/images#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sp: <http://spinrdf.org/sp#> .
+@prefix spin: <http://spinrdf.org/spin#> .
+@prefix spinbox: <http://topbraid.org/examples/spin/spinbox#> .
+@prefix spl: <http://spinrdf.org/spl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+spin:ruleIndex
+  rdf:type rdf:Property ;
+  rdfs:comment "Needed as legacy - this property was in SPIN 1.0 but has been removed. Currently still needed by the SPIN Box engine to determine ordering of rules."^^xsd:string ;
+  rdfs:label "rule index"^^xsd:string ;
+  rdfs:range xsd:integer ;
+.
+images:Space
+  rdf:type spinbox:Image ;
+  rdfs:label "Space"^^xsd:string ;
+.
+<http://topbraid.org/examples/spin/spinbox>
+  rdf:type owl:Ontology ;
+  owl:imports <http://spinrdf.org/spin> ;
+  owl:versionInfo "Created with TopBraid Composer"^^xsd:string ;
+.
+spinbox:Animation
+  rdf:type rdfs:Class ;
+  rdfs:label "Animation"^^xsd:string ;
+.
+spinbox:Direction
+  rdf:type rdfs:Class ;
+  rdfs:label "Direction"^^xsd:string ;
+.
+spinbox:Down
+  rdf:type spinbox:Direction ;
+  spinbox:dx 0 ;
+  spinbox:dy 1 ;
+  rdfs:label "Down"^^xsd:string ;
+.
+spinbox:Field
+  rdf:type spinbox:FieldType ;
+  rdfs:label "Field"^^xsd:string ;
+.
+spinbox:FieldType
+  rdf:type rdfs:Class ;
+  rdfs:label "Field type"^^xsd:string ;
+  rdfs:subClassOf rdfs:Class ;
+.
+spinbox:Image
+  rdf:type rdfs:Class ;
+  rdfs:label "Image"^^xsd:string ;
+.
+spinbox:Left
+  rdf:type spinbox:Direction ;
+  spinbox:dx -1 ;
+  spinbox:dy 0 ;
+  rdfs:label "Left"^^xsd:string ;
+.
+spinbox:LeftDown
+  rdf:type spinbox:Direction ;
+  spinbox:dx -1 ;
+  spinbox:dy 1 ;
+  rdfs:label "Left down"^^xsd:string ;
+.
+spinbox:LeftUp
+  rdf:type spinbox:Direction ;
+  spinbox:dx -1 ;
+  spinbox:dy -1 ;
+  rdfs:label "Left up"^^xsd:string ;
+.
+spinbox:Right
+  rdf:type spinbox:Direction ;
+  spinbox:dx 1 ;
+  spinbox:dy 0 ;
+  rdfs:label "Right"^^xsd:string ;
+.
+spinbox:RightDown
+  rdf:type spinbox:Direction ;
+  spinbox:dx 1 ;
+  spinbox:dy 1 ;
+  rdfs:label "Right down"^^xsd:string ;
+.
+spinbox:RightUp
+  rdf:type spinbox:Direction ;
+  spinbox:dx 1 ;
+  spinbox:dy -1 ;
+  rdfs:label "Right up"^^xsd:string ;
+.
+spinbox:Space
+  rdf:type spinbox:FieldType ;
+  spinbox:defaultImage images:Space ;
+  spinbox:selectable "true"^^xsd:boolean ;
+  rdfs:label "Space"^^xsd:string ;
+  rdfs:subClassOf spinbox:Field ;
+.
+spinbox:Up
+  rdf:type spinbox:Direction ;
+  spinbox:dx 0 ;
+  spinbox:dy -1 ;
+  rdfs:label "Up"^^xsd:string ;
+.
+spinbox:World
+  rdf:type rdfs:Class ;
+  spin:constructor [
+      rdf:type sp:Construct ;
+      sp:templates (
+          [
+            sp:object 20 ;
+            sp:predicate spinbox:width ;
+            sp:subject spin:_this ;
+          ]
+          [
+            sp:object 12 ;
+            sp:predicate spinbox:height ;
+            sp:subject spin:_this ;
+          ]
+        ) ;
+      sp:where () ;
+    ] ;
+  rdfs:label "World"^^xsd:string ;
+.
+spinbox:animation
+  rdf:type rdf:Property ;
+  rdfs:domain spinbox:Field ;
+  rdfs:label "animation"^^xsd:string ;
+  rdfs:range spinbox:Animation ;
+.
+spinbox:animationStep
+  rdf:type rdf:Property ;
+  rdfs:domain spinbox:Field ;
+  rdfs:label "animation step"^^xsd:string ;
+  rdfs:range xsd:int ;
+.
+spinbox:defaultAnimation
+  rdf:type rdf:Property ;
+  rdfs:domain spinbox:FieldType ;
+  rdfs:label "default animation"^^xsd:string ;
+  rdfs:range spinbox:Animation ;
+.
+spinbox:defaultImage
+  rdf:type rdf:Property ;
+  rdfs:domain spinbox:FieldType ;
+  rdfs:label "default image"^^xsd:string ;
+  rdfs:range spinbox:Image ;
+.
+spinbox:dx
+  rdf:type rdf:Property ;
+  rdfs:domain spinbox:Direction ;
+  rdfs:label "dx"^^xsd:string ;
+  rdfs:range xsd:integer ;
+.
+spinbox:dy
+  rdf:type rdf:Property ;
+  rdfs:domain spinbox:Direction ;
+  rdfs:label "dy"^^xsd:string ;
+  rdfs:range xsd:integer ;
+.
+spinbox:field
+  rdf:type rdf:Property ;
+  rdfs:domain spinbox:World ;
+  rdfs:label "field"^^xsd:string ;
+  rdfs:range spinbox:Field ;
+.
+spinbox:getNeighbor
+  rdf:type spin:Function ;
+  spin:body [
+      rdf:type sp:Select ;
+      sp:resultVariables (
+          _:b65562
+        ) ;
+      sp:where (
+          [
+            sp:object _:b47295 ;
+            sp:predicate spinbox:x ;
+            sp:subject spin:_arg1 ;
+          ]
+          [
+            sp:object _:b30920 ;
+            sp:predicate spinbox:y ;
+            sp:subject spin:_arg1 ;
+          ]
+          [
+            sp:object _:b97101 ;
+            sp:predicate spinbox:dx ;
+            sp:subject spin:_arg2 ;
+          ]
+          [
+            sp:object _:b81182 ;
+            sp:predicate spinbox:dy ;
+            sp:subject spin:_arg2 ;
+          ]
+          [
+            rdf:type sp:Let ;
+            sp:expression [
+                rdf:type sp:add ;
+                sp:arg1 _:b47295 ;
+                sp:arg2 _:b97101 ;
+              ] ;
+            sp:variable _:b91776 ;
+          ]
+          [
+            rdf:type sp:Let ;
+            sp:expression [
+                rdf:type sp:add ;
+                sp:arg1 _:b30920 ;
+                sp:arg2 _:b81182 ;
+              ] ;
+            sp:variable _:b75345 ;
+          ]
+          [
+            sp:object spin:_arg1 ;
+            sp:predicate spinbox:field ;
+            sp:subject _:b49292 ;
+          ]
+          [
+            sp:object _:b91776 ;
+            sp:predicate spinbox:x ;
+            sp:subject _:b65562 ;
+          ]
+          [
+            sp:object _:b75345 ;
+            sp:predicate spinbox:y ;
+            sp:subject _:b65562 ;
+          ]
+          [
+            sp:object _:b65562 ;
+            sp:predicate spinbox:field ;
+            sp:subject _:b49292 ;
+          ]
+        ) ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate sp:arg1 ;
+      spl:valueType spinbox:Field ;
+      rdfs:comment "the start Field"^^xsd:string ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate sp:arg2 ;
+      spl:valueType spinbox:Direction ;
+      rdfs:comment "the direction relative to ?arg1"^^xsd:string ;
+    ] ;
+  spin:returnType spinbox:Field ;
+  rdfs:comment "Starting at a given Field ?arg1, this function finds the adjacent in a given Direction ?arg2." ;
+  rdfs:label "get neighbor"^^xsd:string ;
+  rdfs:subClassOf spin:Functions ;
+.
+spinbox:height
+  rdf:type rdf:Property ;
+  rdfs:domain spinbox:World ;
+  rdfs:label "height"^^xsd:string ;
+  rdfs:range xsd:integer ;
+.
+spinbox:image
+  rdf:type rdf:Property ;
+  rdfs:domain spinbox:Field ;
+  rdfs:label "image"^^xsd:string ;
+  rdfs:range spinbox:Image ;
+.
+spinbox:images
+  rdf:type rdf:Property ;
+  rdfs:domain spinbox:Animation ;
+  rdfs:label "images"^^xsd:string ;
+  rdfs:range rdf:List ;
+.
+spinbox:isSolid
+  rdf:type rdf:Property ;
+  rdfs:domain spinbox:FieldType ;
+  rdfs:label "is solid"^^xsd:string ;
+  rdfs:range xsd:boolean ;
+.
+spinbox:keyDirection
+  rdf:type rdf:Property ;
+  rdfs:domain spinbox:World ;
+  rdfs:label "key direction"^^xsd:string ;
+  rdfs:range spinbox:Direction ;
+.
+spinbox:moveTo
+  rdf:type rdf:Property ;
+  rdfs:domain spinbox:Field ;
+  rdfs:label "move"^^xsd:string ;
+  rdfs:range spinbox:Direction ;
+.
+spinbox:replaceWith
+  rdf:type rdf:Property ;
+  rdfs:domain spinbox:Field ;
+  rdfs:label "replace"^^xsd:string ;
+  rdfs:range spinbox:Field ;
+.
+spinbox:selectable
+  rdf:type rdf:Property ;
+  rdfs:domain spinbox:FieldType ;
+  rdfs:label "selectable"^^xsd:string ;
+  rdfs:range xsd:boolean ;
+.
+spinbox:startAnimation
+  rdf:type rdf:Property ;
+  rdfs:label "start animation"^^xsd:string ;
+  rdfs:range spinbox:Animation ;
+.
+spinbox:stopAnimation
+  rdf:type rdf:Property ;
+  rdfs:label "stop animation"^^xsd:string ;
+.
+spinbox:stopRules
+  rdf:type rdf:Property ;
+  rdfs:label "stop rules"^^xsd:string ;
+  rdfs:range xsd:boolean ;
+.
+spinbox:width
+  rdf:type rdf:Property ;
+  rdfs:domain spinbox:World ;
+  rdfs:label "width"^^xsd:string ;
+  rdfs:range xsd:integer ;
+.
+spinbox:x
+  rdf:type rdf:Property ;
+  rdfs:domain spinbox:Field ;
+  rdfs:label "x"^^xsd:string ;
+  rdfs:range xsd:integer ;
+.
+spinbox:y
+  rdf:type rdf:Property ;
+  rdfs:domain spinbox:Field ;
+  rdfs:label "y"^^xsd:string ;
+  rdfs:range xsd:integer ;
+.
+_:b30920
+  sp:varName "y"^^xsd:string ;
+.
+_:b47295
+  sp:varName "x"^^xsd:string ;
+.
+_:b49292
+  sp:varName "world"^^xsd:string ;
+.
+_:b65562
+  sp:varName "result"^^xsd:string ;
+.
+_:b75345
+  sp:varName "ny"^^xsd:string ;
+.
+_:b81182
+  sp:varName "dy"^^xsd:string ;
+.
+_:b91776
+  sp:varName "nx"^^xsd:string ;
+.
+_:b97101
+  sp:varName "dx"^^xsd:string ;
+.

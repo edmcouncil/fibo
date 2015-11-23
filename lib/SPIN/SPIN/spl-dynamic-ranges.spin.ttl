@@ -1,0 +1,296 @@
+# baseURI: http://spinrdf.org/spl-dynamic-ranges
+# imports: http://spinrdf.org/spin
+
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sp: <http://spinrdf.org/sp#> .
+@prefix spin: <http://spinrdf.org/spin#> .
+@prefix spl: <http://spinrdf.org/spl#> .
+@prefix spl-dynamic-ranges: <http://spinrdf.org/spl-dynamic-ranges#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://spinrdf.org/arg#firstProperty>
+  rdf:type rdf:Property ;
+  rdfs:subPropertyOf sp:arg ;
+.
+<http://spinrdf.org/arg#secondProperty>
+  rdf:type rdf:Property ;
+  rdfs:subPropertyOf sp:arg ;
+.
+spl:DynamicEnumRangeConstraint
+  rdf:type spin:ConstructTemplate ;
+  spin:body [
+      rdf:type sp:Construct ;
+      sp:templates (
+          [
+            sp:object spin:ConstraintViolation ;
+            sp:predicate rdf:type ;
+            sp:subject _:b36523 ;
+          ]
+          [
+            sp:object [
+                sp:varName "predicate"^^xsd:string ;
+              ] ;
+            sp:predicate spin:violationPath ;
+            sp:subject _:b36523 ;
+          ]
+          [
+            sp:object spin:_this ;
+            sp:predicate spin:violationRoot ;
+            sp:subject _:b36523 ;
+          ]
+          [
+            sp:object [
+                sp:varName "label"^^xsd:string ;
+              ] ;
+            sp:predicate rdfs:label ;
+            sp:subject _:b36523 ;
+          ]
+        ) ;
+      sp:where (
+          (
+            [
+              sp:object [
+                  sp:varName "object"^^xsd:string ;
+                ] ;
+              sp:predicate [
+                  sp:varName "predicate"^^xsd:string ;
+                ] ;
+              sp:subject spin:_this ;
+            ]
+            [
+              sp:object [
+                  sp:varName "query"^^xsd:string ;
+                ] ;
+              sp:predicate spl:dynamicEnumRange ;
+              sp:subject [
+                  sp:varName "predicate"^^xsd:string ;
+                ] ;
+            ]
+            [
+              rdf:type sp:Filter ;
+              sp:expression [
+                  rdf:type sp:notExists ;
+                  sp:elements (
+                      [
+                        sp:object [
+                            sp:varName "query"^^xsd:string ;
+                          ] ;
+                        sp:predicate rdf:first ;
+                        sp:subject [
+                            sp:varName "?0"^^xsd:string ;
+                          ] ;
+                      ]
+                      [
+                        sp:object [
+                            sp:varName "?1"^^xsd:string ;
+                          ] ;
+                        sp:predicate rdf:rest ;
+                        sp:subject [
+                            sp:varName "?0"^^xsd:string ;
+                          ] ;
+                      ]
+                      [
+                        sp:object "this" ;
+                        sp:predicate rdf:first ;
+                        sp:subject [
+                            sp:varName "?1"^^xsd:string ;
+                          ] ;
+                      ]
+                      [
+                        sp:object [
+                            sp:varName "?2"^^xsd:string ;
+                          ] ;
+                        sp:predicate rdf:rest ;
+                        sp:subject [
+                            sp:varName "?1"^^xsd:string ;
+                          ] ;
+                      ]
+                      [
+                        sp:object spin:_this ;
+                        sp:predicate rdf:first ;
+                        sp:subject [
+                            sp:varName "?2"^^xsd:string ;
+                          ] ;
+                      ]
+                      [
+                        sp:object () ;
+                        sp:predicate rdf:rest ;
+                        sp:subject [
+                            sp:varName "?2"^^xsd:string ;
+                          ] ;
+                      ]
+                      [
+                        sp:object [
+                            sp:varName "object"^^xsd:string ;
+                          ] ;
+                        sp:predicate spin:select ;
+                        sp:subject [
+                            sp:varName "?0"^^xsd:string ;
+                          ] ;
+                      ]
+                    ) ;
+                ] ;
+            ]
+          )
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type sp:concat ;
+                sp:arg1 "Invalid value " ;
+                sp:arg2 [
+                    rdf:type xsd:string ;
+                    sp:arg1 [
+                        sp:varName "object"^^xsd:string ;
+                      ] ;
+                  ] ;
+                sp:arg3 " does not match (dynamic) range of " ;
+                sp:arg4 [
+                    rdf:type xsd:string ;
+                    sp:arg1 [
+                        sp:varName "predicate"^^xsd:string ;
+                      ] ;
+                  ] ;
+              ] ;
+            sp:variable [
+                sp:varName "label"^^xsd:string ;
+              ] ;
+          ]
+        ) ;
+    ] ;
+  spin:labelTemplate "Dynamic enum range constraint"^^xsd:string ;
+  rdfs:comment "Implements a spin:constraint based on declared dynamic enum ranges. For all properties of the given subject (?this) that have declared a spl:dynamicEnumRange, it will execute that query (SELECT) and check if the given property value of ?this is among the values returned by the SELECT. Constructs a constraint violation otherwise."^^xsd:string ;
+  rdfs:label "Dynamic enum range constraint"^^xsd:string ;
+  rdfs:subClassOf spin:ConstructTemplates ;
+.
+spl:ThisObjectsObjects
+  rdf:type spin:SelectTemplate ;
+  spin:body [
+      rdf:type sp:Select ;
+      sp:resultVariables (
+          [
+            sp:varName "result"^^xsd:string ;
+          ]
+        ) ;
+      sp:where (
+          [
+            sp:object [
+                sp:varName "object"^^xsd:string ;
+              ] ;
+            sp:predicate [
+                sp:varName "firstProperty"^^xsd:string ;
+              ] ;
+            sp:subject spin:_this ;
+          ]
+          [
+            sp:object [
+                sp:varName "result"^^xsd:string ;
+              ] ;
+            sp:predicate [
+                sp:varName "secondProperty"^^xsd:string ;
+              ] ;
+            sp:subject [
+                sp:varName "object"^^xsd:string ;
+              ] ;
+          ]
+        ) ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate <http://spinrdf.org/arg#firstProperty> ;
+      spl:valueType rdf:Property ;
+      rdfs:comment "The first property to walk, from ?this."^^xsd:string ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate <http://spinrdf.org/arg#secondProperty> ;
+      spl:valueType rdf:Property ;
+      rdfs:comment "The second property to walk starting with the values of ?thisProperty."^^xsd:string ;
+    ] ;
+  spin:labelTemplate "This objects' objects via {?firstProperty} and {?secondProperty}"^^xsd:string ;
+  rdfs:comment """Gets all objects that are two steps away from ?this via the property ?firstProperty and then ?secondProperty.
+
+This template can be used in conjunction with spl:dynamicEnumRange."""^^xsd:string ;
+  rdfs:label "This objects' objects"^^xsd:string ;
+  rdfs:subClassOf spin:SelectTemplates ;
+.
+spl:ThisObjectsSubjects
+  rdf:type spin:SelectTemplate ;
+  spin:body [
+      rdf:type sp:Select ;
+      sp:resultVariables (
+          [
+            sp:varName "result"^^xsd:string ;
+          ]
+        ) ;
+      sp:where (
+          [
+            sp:object [
+                sp:varName "object"^^xsd:string ;
+              ] ;
+            sp:predicate [
+                sp:varName "firstProperty"^^xsd:string ;
+              ] ;
+            sp:subject spin:_this ;
+          ]
+          [
+            sp:object [
+                sp:varName "object"^^xsd:string ;
+              ] ;
+            sp:predicate [
+                sp:varName "secondProperty"^^xsd:string ;
+              ] ;
+            sp:subject [
+                sp:varName "result"^^xsd:string ;
+              ] ;
+          ]
+        ) ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate <http://spinrdf.org/arg#firstProperty> ;
+      spl:valueType rdf:Property ;
+      rdfs:comment "The first property to walk, from ?this."^^xsd:string ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate <http://spinrdf.org/arg#secondProperty> ;
+      spl:valueType rdf:Property ;
+      rdfs:comment "The second property to walk starting with the values of ?thisProperty."^^xsd:string ;
+    ] ;
+  spin:labelTemplate "This objects' objects via {?firstProperty} and {?secondProperty}"^^xsd:string ;
+  rdfs:comment """Gets all subjects that are two steps away from ?this via the property ?firstProperty and then ?secondProperty.
+
+This template can be used in conjunction with spl:dynamicEnumRange."""^^xsd:string ;
+  rdfs:label "This objects' subjects"^^xsd:string ;
+  rdfs:subClassOf spin:SelectTemplates ;
+.
+spl:dynamicEnumRange
+  rdf:type rdf:Property ;
+  rdfs:comment "Can be used to link a property with a SELECT query that returns the valid values of the property within the given instance (?this). For example, the values of schema:addressRegion may be \"ACT\", \"NSW\", \"QLD\" and the other abbreviations of Australian States or Territories if the schema:addressCountry of the surrounding address has been changed to Australia."^^xsd:string ;
+  rdfs:domain rdf:Property ;
+  rdfs:label "dynamic enum range"^^xsd:string ;
+  rdfs:range sp:Select ;
+  rdfs:subPropertyOf spin:query ;
+.
+spl:dynamicEnumRangeTrigger
+  rdf:type rdf:Property ;
+  rdfs:comment """Points to any number of property that impact the computation of dynamicEnumRanges. For example, if the range of ex:addressRegion changes whenever ex:addressCountry changes, then ex:addressCountry should be the value of swa:dynamicEnumRangeTrigger.
+
+Currently the values of this property can only be rdf:Properties. However, future versions may support different kinds of triggers."""^^xsd:string ;
+  rdfs:domain rdf:Property ;
+  rdfs:label "dynamic enum range trigger"^^xsd:string ;
+  rdfs:range rdf:Property ;
+.
+<http://spinrdf.org/spl-dynamic-ranges>
+  rdf:type owl:Ontology ;
+  rdfs:comment "A module of the SPIN Standard Library (SPL) with support for dynamic ranges."^^xsd:string ;
+  owl:imports <http://spinrdf.org/spin> ;
+  owl:versionInfo "0.1.0"^^xsd:string ;
+.
+owl:Thing
+  spin:constraint [
+      rdf:type spl:DynamicEnumRangeConstraint ;
+    ] ;
+.

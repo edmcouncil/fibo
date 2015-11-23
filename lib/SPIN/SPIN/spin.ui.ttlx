@@ -1,0 +1,461 @@
+# baseURI: http://spinrdf.org/spin.ui
+# imports: http://spinrdf.org/spin
+# imports: http://uispin.org/html
+
+@prefix afn: <http://jena.hpl.hp.com/ARQ/function#> .
+@prefix arg: <http://spinrdf.org/arg#> .
+@prefix css: <http://uispin.org/css#> .
+@prefix default: <http://uispin.org/default#> .
+@prefix fn: <http://www.w3.org/2005/xpath-functions#> .
+@prefix html: <http://uispin.org/html#> .
+@prefix let: <http://uispin.org/let#> .
+@prefix letrs: <http://uispin.org/letrs#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix smf: <http://topbraid.org/sparqlmotionfunctions#> .
+@prefix sp: <http://spinrdf.org/sp#> .
+@prefix spif: <http://spinrdf.org/spif#> .
+@prefix spin: <http://spinrdf.org/spin#> .
+@prefix spin.ui: <http://spinrdf.org/spin.ui#> .
+@prefix spl: <http://spinrdf.org/spl#> .
+@prefix spr: <http://spinrdf.org/spr#> .
+@prefix spra: <http://spinrdf.org/spra#> .
+@prefix style: <http://uispin.org/style#> .
+@prefix ui: <http://uispin.org/ui#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+arg:function
+  rdf:type rdf:Property ;
+  rdfs:label "function"^^xsd:string ;
+  rdfs:subPropertyOf sp:arg ;
+.
+arg:module
+  rdf:type rdf:Property ;
+  rdfs:label "module"^^xsd:string ;
+  rdfs:subPropertyOf sp:arg ;
+.
+arg:moduleClass
+  rdf:type rdf:Property ;
+  rdfs:label "module class"^^xsd:string ;
+  rdfs:subPropertyOf sp:arg ;
+.
+arg:ontology
+  rdf:type rdf:Property ;
+  rdfs:subPropertyOf sp:arg ;
+.
+arg:predicate
+  rdf:type rdf:Property ;
+  rdfs:label "predicate"^^xsd:string ;
+  rdfs:subPropertyOf sp:arg ;
+.
+arg:query
+  rdf:type rdf:Property ;
+  rdfs:label "query"^^xsd:string ;
+  rdfs:subPropertyOf sp:arg ;
+.
+arg:templates
+  rdf:type rdf:Property ;
+  rdfs:subPropertyOf sp:arg ;
+.
+arg:title
+  rdf:type rdf:Property ;
+  rdfs:label "title"^^xsd:string ;
+  rdfs:subPropertyOf sp:arg ;
+.
+sp:Command
+  ui:instanceView """
+<spin.ui:QueryView arg:query=\"{= ?this }\"/>
+"""^^ui:Literal ;
+.
+spin:Function
+  ui:instanceView """
+<div class=\"spinFunction\" let:body=\"{= spl:object(?this, spin:body) }\" let:returnType=\"{= spl:object(?this, spin:returnType) }\">
+    <h2>{= smf:qname(?this) } ({= smf:qname(spl:object(?this, rdf:type)) })</h2>
+    <p>{= spl:object(?this, rdfs:comment) }</p>
+    <spin.ui:ArgumentsList arg:module=\"{= ?this }\"/>
+    <ui:if ui:condition=\"{= bound(?returnType) }\">
+        <h3>Return type</h3>
+        <ul>
+            <li>
+                <ui:resourceView ui:matchIds=\"label\" ui:resource=\"{= ?returnType }\"/>
+            </li>
+        </ul>
+    </ui:if>
+    <ui:if ui:condition=\"{= bound(?body) }\">
+        <h3>Function body</h3>
+        <spin.ui:QueryView arg:query=\"{= ?body }\"/>
+    </ui:if>
+    <spin.ui:ExamplesView arg:function=\"{= ?this }\"/>
+</div>
+"""^^ui:Literal ;
+  ui:view """
+<spin.ui:ModulesPage arg:moduleClass=\"{= ?this }\"/>
+"""^^ui:Literal ;
+.
+spin:Module
+  ui:view """
+<spin.ui:ModulesPage arg:moduleClass=\"{= ?this }\"/>
+"""^^ui:Literal ;
+.
+spin:Template
+  ui:instanceView """
+<div class=\"spinFunction\" let:body=\"{= spl:object(?this, spin:body) }\" let:returnType=\"{= spl:object(?this, spin:returnType) }\">
+    <h2>{= smf:qname(?this) } ({= smf:qname(spl:object(?this, rdf:type)) })</h2>
+    <p>{= spl:object(?this, rdfs:comment) }</p>
+    <spin.ui:ArgumentsList arg:module=\"{= ?this }\"/>
+    <ui:if ui:condition=\"{= bound(?body) }\">
+        <h3>Template body</h3>
+        <spin.ui:QueryView arg:query=\"{= ?body }\"/>
+    </ui:if>
+</div>
+"""^^ui:Literal ;
+  ui:view """
+<spin.ui:ModulesPage arg:moduleClass=\"{= ?this }\"/>
+"""^^ui:Literal ;
+.
+<http://spinrdf.org/spin.ui>
+  rdf:type owl:Ontology ;
+  rdfs:comment "A collection of SWP views to render SPIN objects such as functions and templates."^^xsd:string ;
+  owl:imports <http://spinrdf.org/spin> ;
+  owl:imports <http://uispin.org/html> ;
+  owl:versionInfo "0.7.0"^^xsd:string ;
+.
+spin.ui:ArgumentsList
+  rdf:type ui:NodeClass ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate arg:module ;
+      spl:valueType spin:Module ;
+      rdfs:comment "The module to list the arguments of."^^xsd:string ;
+    ] ;
+  ui:prototype """
+<div letrs:rs=\"{#
+        SELECT ?arg
+        WHERE {
+            ?module (rdfs:subClassOf)* ?cls .
+            ?cls spin:constraint ?arg .
+            ?arg spl:predicate ?predicate .
+            FILTER (spl:instanceOf(?arg, spl:Argument) || (spl:instanceOf(?arg, spl:Attribute) &amp;&amp; spl:instanceOf(?module, &lt;http://topbraid.org/sparqlmotion#Module&gt;))) .
+        }
+        ORDER BY (afn:localname(?predicate)) }\">
+    <ui:if ui:condition=\"{= spr:rowCount(?rs) &gt; 0 }\">
+        <h3>Arguments</h3>
+        <table class=\"ArgumentsTable\">
+            <ui:forEach ui:resultSet=\"{= ?rs }\">
+                <tr>
+                    <td class=\"ArgumentsTD\">
+                        <ui:resourceView ui:resource=\"{= ?arg }\"/>
+                    </td>
+                </tr>
+            </ui:forEach>
+        </table>
+    </ui:if>
+</div>
+"""^^ui:Literal ;
+  rdfs:label "Arguments list"^^xsd:string ;
+  rdfs:subClassOf spin.ui:Elements ;
+.
+spin.ui:ClassDetails
+  rdf:type ui:NodeClass ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate arg:predicate ;
+      spl:valueType rdf:Property ;
+      rdfs:comment "The predicate to get the classes of."^^xsd:string ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate arg:title ;
+      spl:valueType xsd:string ;
+      rdfs:comment "The title"^^xsd:string ;
+    ] ;
+  ui:prototype """
+<ui:group letrs:rs=\"{#
+        SELECT DISTINCT ?class
+        WHERE {
+            ?p (rdfs:subPropertyOf)* ?predicate .
+            ?class ?p ?object .
+            NOT EXISTS {
+                ?object a spl:Argument .
+            } .
+            NOT EXISTS {
+                ?object a spl:Attribute .
+            } .
+        }
+        ORDER BY (ui:label(?class)) }\">
+    <div>
+        <ui:forEach ui:indexVar=\"index\" ui:resultSet=\"{= ?rs }\">
+            <a name=\"{= smf:qname(?cls) }\"/>
+            <h2>{= ?title } at {= smf:qname(?class) }</h2>
+            <ui:group letrs:rules=\"{#
+                    SELECT ?rule
+                    WHERE {
+                        ?p (rdfs:subPropertyOf)* ?predicate .
+                        ?class ?p ?rule .
+                        NOT EXISTS {
+                            ?rule a spl:Argument .
+                        } .
+                        NOT EXISTS {
+                            ?rule a spl:Attribute .
+                        } .
+                    }
+                    ORDER BY (ui:label(?rule)) }\">
+                <ui:forEach ui:resultSet=\"{= ?rules }\">
+                    <spin.ui:QueryView arg:query=\"{= ?rule }\"/>
+                </ui:forEach>
+            </ui:group>
+        </ui:forEach>
+    </div>
+</ui:group>
+"""^^ui:Literal ;
+  rdfs:comment "The details about all SPIN rules etc, grouped by classes."^^xsd:string ;
+  rdfs:label "Class index"^^xsd:string ;
+  rdfs:subClassOf spin.ui:Elements ;
+.
+spin.ui:Elements
+  rdf:type ui:NodeClass ;
+  ui:abstract "true"^^xsd:boolean ;
+  ui:headIncludes """
+<link href=\"lib/spin/spin.css\" rel=\"stylesheet\" type=\"text/css\"/>
+"""^^ui:Literal ;
+  rdfs:comment "Groups together all SPIN UI elements."^^xsd:string ;
+  rdfs:label "Elements"^^xsd:string ;
+  rdfs:subClassOf ui:Element ;
+.
+spin.ui:ExamplesView
+  rdf:type ui:NodeClass ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate arg:function ;
+      spl:valueType spin:Function ;
+      rdfs:comment "The function to display the examples of."^^xsd:string ;
+    ] ;
+  ui:prototype """
+<ui:group letrs:rs=\"{#
+        SELECT ?testCase
+        WHERE {
+            ?call a ?function .
+            BIND (smf:rootURISubject(?call) AS ?testCase) .
+            FILTER spl:instanceOf(?testCase, spl:TestCase) .
+        }
+        ORDER BY (?testCase) }\">
+    <ui:if ui:condition=\"{= spr:rowCount(?rs) &gt; 0 }\">
+        <h3>Examples</h3>
+        <ui:forEach ui:resultSet=\"{= ?rs }\">
+            <ui:resourceView ui:resource=\"{= ?testCase }\"/>
+        </ui:forEach>
+    </ui:if>
+</ui:group>
+"""^^ui:Literal ;
+  rdfs:comment "Lists all spl:TestCases that mention a given function."^^xsd:string ;
+  rdfs:label "Examples view"^^xsd:string ;
+  rdfs:subClassOf spin.ui:Elements ;
+.
+spin.ui:ModulesPage
+  rdf:type ui:NodeClass ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate arg:moduleClass ;
+      spl:valueType rdfs:Class ;
+      rdfs:comment "The module class."^^xsd:string ;
+    ] ;
+  ui:prototype """
+<div letrs:rs=\"{#
+        SELECT DISTINCT ?module ?qname
+        WHERE {
+            ?type (rdfs:subClassOf)* ?moduleClass .
+            ?module a ?type .
+            FILTER isIRI(?module) .
+            FILTER (!spl:hasValue(?module, rdf:type, owl:DeprecatedClass)) .
+            FILTER (!spl:hasValue(?module, spin:abstract, true)) .
+            FILTER (!spl:hasValue(?module, spin:private, true)) .
+            FILTER (!spl:hasValue(?module, spin:symbol, ?anySymbol)) .
+            BIND (smf:qname(?module) AS ?qname) .
+            BIND (smf:prefix(?module) AS ?prefix) .
+        }
+        ORDER BY (?qname) }\">
+    <h1>{= afn:localname(?moduleClass) }s Overview</h1>
+    <ul>
+        <ui:forEach ui:resultSet=\"{= ?rs }\">
+            <li let:comment=\"{= spl:object(?module, rdfs:comment) }\">
+                <b>
+                    <a href=\"#{= ?qname }\">{= ?qname }</a>
+                </b>
+                <ui:if ui:condition=\"{= bound(?comment) }\">
+                    <ui:group let:dot=\"{= spif:indexOf(?comment, &quot;.&quot;) }\">: {= IF((?dot &gt; 0), smf:subString(?comment, 0, ?dot), ?comment) }</ui:group>
+                </ui:if>
+            </li>
+        </ui:forEach>
+    </ul>
+    <hr/>
+    <ui:forEach ui:resultSet=\"{= ?rs }\">
+        <a name=\"{= ?qname }\"/>
+        <ui:resourceView ui:resource=\"{= ?module }\"/>
+        <hr/>
+    </ui:forEach>
+</div>
+"""^^ui:Literal ;
+  rdfs:label "Modules page"^^xsd:string ;
+  rdfs:subClassOf spin.ui:Elements ;
+.
+spin.ui:OWLRLDetails
+  rdf:type ui:NodeClass ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate arg:templates ;
+      spl:valueType rdfs:Resource ;
+      rdfs:comment "A result set of templates to display."^^xsd:string ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate arg:title ;
+      spl:valueType xsd:string ;
+      rdfs:comment "The title, e.g. \"Rules\"."^^xsd:string ;
+    ] ;
+  ui:private "true"^^xsd:boolean ;
+  ui:prototype """
+<ui:if ui:condition=\"{= !spr:isEmpty(?templates) }\">
+    <h2>{= ?title }</h2>
+    <ui:forEach ui:resultSet=\"{= ?templates }\" ui:separator=\" \">
+        <a name=\"{= afn:localname(?template) }\"/>
+        <h3>{= afn:localname(?template) }</h3>
+        <pre class=\"query\">{= ui:label(spl:object(?template, spin:body)) }</pre>
+    </ui:forEach>
+</ui:if>
+"""^^ui:Literal ;
+  rdfs:label "OWLRLDetails"^^xsd:string ;
+  rdfs:subClassOf spin.ui:Elements ;
+.
+spin.ui:OWLRLIndex
+  rdf:type ui:NodeClass ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate arg:templates ;
+      spl:valueType rdfs:Resource ;
+      rdfs:comment "A result set of templates to display."^^xsd:string ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate arg:title ;
+      spl:valueType xsd:string ;
+      rdfs:comment "The title, e.g. \"Rules\"."^^xsd:string ;
+    ] ;
+  ui:private "true"^^xsd:boolean ;
+  ui:prototype """
+<ui:if ui:condition=\"{= !spr:isEmpty(?templates) }\">
+    <p>
+        <b>{= ?title } Index:&nbsp;</b>
+        <ui:forEach ui:resultSet=\"{= ?templates }\" ui:separator=\" \">
+            <a href=\"#{= afn:localname(?template) }\">{= afn:localname(?template) }</a>
+        </ui:forEach>
+    </p>
+</ui:if>
+"""^^ui:Literal ;
+  rdfs:label "OWLRLIndex"^^xsd:string ;
+  rdfs:subClassOf spin.ui:Elements ;
+.
+spin.ui:OWLRLView
+  rdf:type ui:NodeClass ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate arg:ontology ;
+      spl:valueType rdfs:Resource ;
+      rdfs:comment "The owl:Ontology instance."^^xsd:string ;
+    ] ;
+  ui:prototype """
+<ui:group letrs:constraints=\"{#
+        SELECT ?template
+        WHERE {
+            ?root spin:constraint ?constraint .
+            ?constraint a ?template .
+            ?template a spin:Template .
+        }
+        ORDER BY (?template) }\" letrs:rules=\"{#
+        SELECT ?template
+        WHERE {
+            ?root spin:rule ?rule .
+            ?rule a ?template .
+            ?template a spin:Template .
+        }
+        ORDER BY (?template) }\">
+    <h1>{= ui:label(?ontology) } in SPARQL</h1>
+    <p>{= spl:object(?ontology, rdfs:comment) }</p>
+    <p>Contact: <a href=\"mailto:holger@topquadrant.com\">Holger Knublauch</a>
+        <p style=\"font-size: smaller\">This documentation has been automatically generated using <a href=\"http://uispin.org\">SWP</a> with <a href=\"http://www.topquadrant.com/products/\">TopBraid</a> from the <a href=\"http://spinrdf.org\">SPIN</a> profile at <a href=\"{= ?ontology }\">{= ?ontology }</a>.</p>
+    </p>
+    <hr/>
+    <spin.ui:OWLRLIndex arg:templates=\"{= ?constraints }\" arg:title=\"Constraints\"/>
+    <spin.ui:OWLRLIndex arg:templates=\"{= ?rules }\" arg:title=\"Rules\"/>
+    <spin.ui:OWLRLDetails arg:templates=\"{= ?constraints }\" arg:title=\"Constraints\"/>
+    <spin.ui:OWLRLDetails arg:templates=\"{= ?rules }\" arg:title=\"Rules\"/>
+</ui:group>
+"""^^ui:Literal ;
+  rdfs:comment "Can be used to generate documentation for OWL-RL. For example, open the owl:Ontology of owlrl-all and switch to the OWLRLView in the Browser tab."^^xsd:string ;
+  rdfs:label "OWL RL view"^^xsd:string ;
+  rdfs:subClassOf spin.ui:Elements ;
+.
+spin.ui:QueryView
+  rdf:type ui:NodeClass ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate arg:query ;
+      spl:valueType sp:Query ;
+      rdfs:comment "The query to display"^^xsd:string ;
+    ] ;
+  ui:prototype """
+<pre class=\"query\">{= ui:label(?query) }</pre>
+"""^^ui:Literal ;
+  rdfs:comment "Displays a given SPIN query (?resource) in SPARQL syntax in a greyed box."^^xsd:string ;
+  rdfs:label "Query view"^^xsd:string ;
+  rdfs:subClassOf spin.ui:Elements ;
+.
+spin.ui:SPINOverview
+  rdf:type ui:NodeClass ;
+  ui:prototype """
+<div>
+    <h1>SPIN Rules and Constraints</h1>
+    <spin.ui:ClassDetails arg:predicate=\"{= spin:constraint }\" arg:title=\"Constraints\"/>
+    <spin.ui:ClassDetails arg:predicate=\"{= spin:constructor }\" arg:title=\"Constructors\"/>
+    <spin.ui:ClassDetails arg:predicate=\"{= spin:rule }\" arg:title=\"Rules\"/>
+</div>
+"""^^ui:Literal ;
+  rdfs:label "SPINOverview"^^xsd:string ;
+  rdfs:subClassOf spin.ui:Elements ;
+.
+spl:Argument
+  ui:instanceView """
+<div let:comment=\"{= spl:object(?this, rdfs:comment) }\" let:optional=\"{= spl:object(?this, spl:optional) }\" let:predicate=\"{= spl:object(?this, spl:predicate) }\" let:valueType=\"{= spl:object(?this, spl:valueType) }\">
+    <b>{= smf:qname(?predicate) }</b>
+    <ui:if ui:condition=\"{= bound(?valueType) }\">&nbsp;({= smf:qname(?valueType) })</ui:if>:{= IF(?optional, \" [Optional]\", \"\") } {= ?comment }</div>
+"""^^ui:Literal ;
+.
+spl:Attribute
+  ui:instanceView """
+<div let:comment=\"{= spl:object(?this, rdfs:comment) }\" let:optional=\"{= spl:object(?this, spl:optional) }\" let:predicate=\"{= spl:object(?this, spl:predicate) }\" let:valueType=\"{= spl:object(?this, spl:valueType) }\">
+    <b>{= smf:qname(?predicate) }</b>
+    <ui:if ui:condition=\"{= bound(?valueType) }\">&nbsp;({= smf:qname(?valueType) })</ui:if>:{= IF(?optional, \" [Optional]\", \"\") } {= ?comment }</div>
+"""^^ui:Literal ;
+.
+spl:TestCase
+  ui:instanceView """
+<div let:result=\"{= spl:object(?this, spl:testResult) }\">
+    <spin.ui:QueryView arg:query=\"{= spl:object(?this, spl:testExpression) }\"/>
+    <div css:margin-bottom=\"24px\" css:margin-left=\"40px\">
+        <b>Result:</b>&nbsp;
+		<ui:if ui:condition=\"{= bound(?result) }\">{= ?result }</ui:if>
+        <ui:else>
+			Invalid.
+		</ui:else>
+    </div>
+</div>
+"""^^ui:Literal ;
+.
+owl:Ontology
+  ui:instanceView """
+<spin.ui:OWLRLView arg:ontology=\"{= ?this }\" ui:id=\"owlrl\"/>
+"""^^ui:Literal ;
+  ui:instanceView """
+<spin.ui:SPINOverview ui:id=\"spin\"/>
+"""^^ui:Literal ;
+.

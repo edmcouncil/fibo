@@ -1,0 +1,1469 @@
+# baseURI: http://spinrdf.org/spr
+# imports: http://spinrdf.org/spl
+
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix smf: <http://topbraid.org/sparqlmotionfunctions#> .
+@prefix sp: <http://spinrdf.org/sp#> .
+@prefix spif: <http://spinrdf.org/spif#> .
+@prefix spin: <http://spinrdf.org/spin#> .
+@prefix spl: <http://spinrdf.org/spl#> .
+@prefix spr: <http://spinrdf.org/spr#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+sp:arg6
+  rdf:type rdf:Property ;
+  rdfs:comment "The sixth argument of a function call."^^xsd:string ;
+  rdfs:label "arg6"^^xsd:string ;
+  rdfs:subPropertyOf sp:arg ;
+.
+<http://spinrdf.org/spr>
+  rdf:type owl:Ontology ;
+  rdfs:comment "A collection of SPIN functions that can be used to query, traverse and aggregate tabular data."^^xsd:string ;
+  rdfs:seeAlso <http://spinrdf.org/spr.html> ;
+  owl:imports <http://spinrdf.org/spl> ;
+  owl:versionInfo "1.0.1"^^xsd:string ;
+.
+spr:Aggregator
+  rdf:type rdfs:Class ;
+  rdfs:comment "A pair of SPARQL functions that can be used to aggregate values of a SPR table. Instances of this class can be passed into the various aggregateXY functions."^^xsd:string ;
+  rdfs:label "Aggregator"^^xsd:string ;
+.
+spr:AggregatorFunctions
+  rdf:type spin:Function ;
+  spin:abstract "true"^^xsd:boolean ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate sp:arg1 ;
+      spl:valueType spr:Aggregator ;
+      rdfs:comment "The aggregator to perform."^^xsd:string ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate sp:arg2 ;
+      spl:valueType spr:Table ;
+      rdfs:comment "The spr:Table to iterate over."^^xsd:string ;
+    ] ;
+  rdfs:label "Aggregator functions"^^xsd:string ;
+  rdfs:subClassOf spr:Functions ;
+.
+spr:AggregatorResultFunctions
+  rdf:type spin:Function ;
+  spin:abstract "true"^^xsd:boolean ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate sp:arg1 ;
+      rdfs:comment "The end result after stepping through the values."^^xsd:string ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate sp:arg2 ;
+      rdfs:comment "The total number of steps."^^xsd:string ;
+    ] ;
+  rdfs:label "Aggregator result functions"^^xsd:string ;
+  rdfs:subClassOf spr:Functions ;
+.
+spr:AggregatorStepFunctions
+  rdf:type spin:Function ;
+  spin:abstract "true"^^xsd:boolean ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate sp:arg1 ;
+      rdfs:comment "The old value to start with, e.g. 0 for SUM."^^xsd:string ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate sp:arg2 ;
+      rdfs:comment "The current cell value that shall be aggregated on top of ?arg1."^^xsd:string ;
+    ] ;
+  rdfs:label "Aggregator step functions"^^xsd:string ;
+  rdfs:subClassOf spr:Functions ;
+.
+spr:Avg
+  rdf:type spr:Aggregator ;
+  spr:resultFunction sp:divide ;
+  spr:startValue "0"^^xsd:double ;
+  spr:stepFunction sp:add ;
+  rdfs:label "Avg"^^xsd:string ;
+.
+spr:CellFunctions
+  rdf:type spin:Function ;
+  spin:abstract "true"^^xsd:boolean ;
+  rdfs:label "Cell functions"^^xsd:string ;
+  rdfs:subClassOf spr:Functions ;
+.
+spr:ColCountFunctions
+  rdf:type spin:Function ;
+  spin:abstract "true"^^xsd:boolean ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate sp:arg1 ;
+      spl:valueType spr:TableClass ;
+      rdfs:comment "The table to get the number of columns of."^^xsd:string ;
+    ] ;
+  rdfs:label "Column count functions"^^xsd:string ;
+  rdfs:subClassOf spr:Functions ;
+.
+spr:ColNameFunctions
+  rdf:type spin:Function ;
+  spin:abstract "true"^^xsd:boolean ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate sp:arg1 ;
+      spl:valueType spr:Table ;
+      rdfs:comment "The table to get the column name for."^^xsd:string ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate sp:arg2 ;
+      spl:valueType xsd:integer ;
+      rdfs:comment "The column index, starting at zero."^^xsd:string ;
+    ] ;
+  rdfs:label "Column name functions"^^xsd:string ;
+  rdfs:subClassOf spr:Functions ;
+.
+spr:ColTypeFunctions
+  rdf:type spin:Function ;
+  spin:abstract "true"^^xsd:boolean ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate sp:arg1 ;
+      spl:valueType spr:Table ;
+      rdfs:comment "The table to get the column name for."^^xsd:string ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate sp:arg2 ;
+      spl:valueType xsd:integer ;
+      rdfs:comment "The column index, starting at zero."^^xsd:string ;
+    ] ;
+  rdfs:label "Column type functions"^^xsd:string ;
+  rdfs:subClassOf spr:Functions ;
+.
+spr:ColWidthFunctions
+  rdf:type spin:Function ;
+  spin:abstract "true"^^xsd:boolean ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate sp:arg1 ;
+      spl:valueType spr:Table ;
+      rdfs:comment "The table to get the column name for."^^xsd:string ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate sp:arg2 ;
+      spl:valueType xsd:integer ;
+      rdfs:comment "The column index, starting at zero."^^xsd:string ;
+    ] ;
+  rdfs:label "Column width functions"^^xsd:string ;
+  rdfs:subClassOf spr:Functions ;
+.
+spr:Functions
+  rdf:type spin:Function ;
+  spin:abstract "true"^^xsd:boolean ;
+  rdfs:comment "Base class of various SPR related functions."^^xsd:string ;
+  rdfs:label "SPR Functions"^^xsd:string ;
+  rdfs:subClassOf spin:Functions ;
+.
+spr:MagicProperties
+  rdf:type spin:MagicProperty ;
+  spin:abstract "true"^^xsd:boolean ;
+  rdfs:label "Magic SPR properties"^^xsd:string ;
+  rdfs:subClassOf spin:MagicProperties ;
+  rdfs:subPropertyOf spr:systemProperty ;
+.
+spr:Product
+  rdf:type spr:Aggregator ;
+  spr:startValue "1"^^xsd:double ;
+  spr:stepFunction sp:mul ;
+  rdfs:label "Product"^^xsd:string ;
+.
+spr:RowCountFunctions
+  rdf:type spin:Function ;
+  spin:abstract "true"^^xsd:boolean ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate sp:arg1 ;
+      spl:valueType spr:Table ;
+      rdfs:comment "The spr:Table to get the number of rows for."^^xsd:string ;
+    ] ;
+  rdfs:label "Row count functions"^^xsd:string ;
+  rdfs:subClassOf spr:Functions ;
+.
+spr:Sum
+  rdf:type spr:Aggregator ;
+  spr:startValue "0"^^xsd:double ;
+  spr:stepFunction sp:add ;
+  rdfs:label "Sum"^^xsd:string ;
+.
+spr:Table
+  rdf:type spr:TableClass ;
+  rdfs:comment "Base class of table classes. Must define the URIs of low-level SPARQL functions that are used by SPR to access individual table cells and table meta data."^^xsd:string ;
+  rdfs:label "Table"^^xsd:string ;
+.
+spr:TableClass
+  rdf:type rdfs:Class ;
+  rdfs:comment "Metaclass of classes that can represent tabular data. The classes that have this metaclass as their type need to specify SPARQL/SPIN functions for various look up tasks."^^xsd:string ;
+  rdfs:label "Table class"^^xsd:string ;
+  rdfs:subClassOf rdfs:Class ;
+.
+spr:aggregateCol
+  rdf:type spin:Function ;
+  spin:body [
+      rdf:type sp:Select ;
+      sp:resultVariables (
+          [
+            sp:varName "result"^^xsd:string ;
+          ]
+        ) ;
+      sp:where (
+          [
+            sp:object [
+                sp:varName "stepFunction"^^xsd:string ;
+              ] ;
+            sp:predicate spr:stepFunction ;
+            sp:subject spin:_arg1 ;
+          ]
+          [
+            sp:object [
+                sp:varName "startValue"^^xsd:string ;
+              ] ;
+            sp:predicate spr:startValue ;
+            sp:subject spin:_arg1 ;
+          ]
+          [
+            rdf:type sp:Optional ;
+            sp:elements (
+                [
+                  sp:object [
+                      sp:varName "resultFunction"^^xsd:string ;
+                    ] ;
+                  sp:predicate spr:resultFunction ;
+                  sp:subject spin:_arg1 ;
+                ]
+              ) ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type spr:rowCount ;
+                sp:arg1 spin:_arg2 ;
+              ] ;
+            sp:variable [
+                sp:varName "rowCount"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type spr:visitCol ;
+                sp:arg1 spin:_arg2 ;
+                sp:arg2 spin:_arg3 ;
+                sp:arg3 0 ;
+                sp:arg4 [
+                    rdf:type sp:sub ;
+                    sp:arg1 [
+                        sp:varName "rowCount"^^xsd:string ;
+                      ] ;
+                    sp:arg2 1 ;
+                  ] ;
+                sp:arg5 [
+                    sp:varName "stepFunction"^^xsd:string ;
+                  ] ;
+                sp:arg6 [
+                    sp:varName "startValue"^^xsd:string ;
+                  ] ;
+              ] ;
+            sp:variable [
+                sp:varName "stepped"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type sp:if ;
+                sp:arg1 [
+                    rdf:type sp:bound ;
+                    sp:arg1 [
+                        sp:varName "resultFunction"^^xsd:string ;
+                      ] ;
+                  ] ;
+                sp:arg2 [
+                    rdf:type spif:invoke ;
+                    sp:arg1 [
+                        sp:varName "resultFunction"^^xsd:string ;
+                      ] ;
+                    sp:arg2 [
+                        sp:varName "stepped"^^xsd:string ;
+                      ] ;
+                    sp:arg3 [
+                        sp:varName "rowCount"^^xsd:string ;
+                      ] ;
+                  ] ;
+                sp:arg3 [
+                    sp:varName "stepped"^^xsd:string ;
+                  ] ;
+              ] ;
+            sp:variable [
+                sp:varName "result"^^xsd:string ;
+              ] ;
+          ]
+        ) ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate sp:arg3 ;
+      spl:valueType xsd:integer ;
+      rdfs:comment "The column index."^^xsd:string ;
+    ] ;
+  rdfs:comment "Applies the spr:Aggregator ?arg1 to all rows of column ?arg3 of spr:Table ?arg2."^^xsd:string ;
+  rdfs:label "aggregate row"^^xsd:string ;
+  rdfs:subClassOf spr:AggregatorFunctions ;
+.
+spr:aggregateRow
+  rdf:type spin:Function ;
+  spin:body [
+      rdf:type sp:Select ;
+      sp:resultVariables (
+          [
+            sp:varName "result"^^xsd:string ;
+          ]
+        ) ;
+      sp:where (
+          [
+            sp:object [
+                sp:varName "stepFunction"^^xsd:string ;
+              ] ;
+            sp:predicate spr:stepFunction ;
+            sp:subject spin:_arg1 ;
+          ]
+          [
+            sp:object [
+                sp:varName "startValue"^^xsd:string ;
+              ] ;
+            sp:predicate spr:startValue ;
+            sp:subject spin:_arg1 ;
+          ]
+          [
+            rdf:type sp:Optional ;
+            sp:elements (
+                [
+                  sp:object [
+                      sp:varName "resultFunction"^^xsd:string ;
+                    ] ;
+                  sp:predicate spr:resultFunction ;
+                  sp:subject spin:_arg1 ;
+                ]
+              ) ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type spr:colCount ;
+                sp:arg1 spin:_arg2 ;
+              ] ;
+            sp:variable [
+                sp:varName "colCount"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type spr:visitRow ;
+                sp:arg1 spin:_arg2 ;
+                sp:arg2 spin:_arg3 ;
+                sp:arg3 0 ;
+                sp:arg4 [
+                    rdf:type sp:sub ;
+                    sp:arg1 [
+                        sp:varName "colCount"^^xsd:string ;
+                      ] ;
+                    sp:arg2 1 ;
+                  ] ;
+                sp:arg5 [
+                    sp:varName "stepFunction"^^xsd:string ;
+                  ] ;
+                sp:arg6 [
+                    sp:varName "startValue"^^xsd:string ;
+                  ] ;
+              ] ;
+            sp:variable [
+                sp:varName "stepped"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type sp:if ;
+                sp:arg1 [
+                    rdf:type sp:bound ;
+                    sp:arg1 [
+                        sp:varName "resultFunction"^^xsd:string ;
+                      ] ;
+                  ] ;
+                sp:arg2 [
+                    rdf:type spif:invoke ;
+                    sp:arg1 [
+                        sp:varName "resultFunction"^^xsd:string ;
+                      ] ;
+                    sp:arg2 [
+                        sp:varName "stepped"^^xsd:string ;
+                      ] ;
+                    sp:arg3 [
+                        sp:varName "colCount"^^xsd:string ;
+                      ] ;
+                  ] ;
+                sp:arg3 [
+                    sp:varName "stepped"^^xsd:string ;
+                  ] ;
+              ] ;
+            sp:variable [
+                sp:varName "result"^^xsd:string ;
+              ] ;
+          ]
+        ) ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate sp:arg3 ;
+      spl:valueType xsd:integer ;
+      rdfs:comment "The row index."^^xsd:string ;
+    ] ;
+  rdfs:comment "Applies the spr:Aggregator ?arg1 to all columns of row ?arg3 of spr:Table ?arg2."^^xsd:string ;
+  rdfs:label "aggregate row"^^xsd:string ;
+  rdfs:subClassOf spr:AggregatorFunctions ;
+.
+spr:cell
+  rdf:type spin:Function ;
+  spin:body [
+      rdf:type sp:Select ;
+      sp:resultVariables (
+          [
+            sp:varName "result"^^xsd:string ;
+          ]
+        ) ;
+      sp:where (
+          [
+            sp:object [
+                sp:varName "tableClass"^^xsd:string ;
+              ] ;
+            sp:predicate rdf:type ;
+            sp:subject spin:_arg1 ;
+          ]
+          [
+            sp:object [
+                sp:varName "function"^^xsd:string ;
+              ] ;
+            sp:predicate spr:cellFunction ;
+            sp:subject [
+                sp:varName "tableClass"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type spif:invoke ;
+                sp:arg1 [
+                    sp:varName "function"^^xsd:string ;
+                  ] ;
+                sp:arg2 spin:_arg1 ;
+                sp:arg3 spin:_arg2 ;
+                sp:arg4 spin:_arg3 ;
+              ] ;
+            sp:variable [
+                sp:varName "result"^^xsd:string ;
+              ] ;
+          ]
+        ) ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate sp:arg1 ;
+      spl:valueType spr:Table ;
+      rdfs:comment "The spr:Table to get the cell value of."^^xsd:string ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate sp:arg2 ;
+      spl:valueType xsd:integer ;
+      rdfs:comment "The row index, starting at 0."^^xsd:string ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate sp:arg3 ;
+      spl:valueType xsd:integer ;
+      rdfs:comment "The column index, starting at 0."^^xsd:string ;
+    ] ;
+  rdfs:comment "Gets the cell value of a given Table (?arg1) at a given row (?arg2) and column (?arg3)."^^xsd:string ;
+  rdfs:label "cell"^^xsd:string ;
+  rdfs:subClassOf spr:CellFunctions ;
+.
+spr:cellFunction
+  rdf:type rdf:Property ;
+  rdfs:domain spr:TableClass ;
+  rdfs:label "cell function"^^xsd:string ;
+  rdfs:range spin:Function ;
+  rdfs:subPropertyOf spr:systemProperty ;
+.
+spr:colCells
+  rdf:type spin:MagicProperty ;
+  spin:body [
+      rdf:type sp:Select ;
+      sp:resultVariables (
+          [
+            sp:varName "value"^^xsd:string ;
+          ]
+          [
+            sp:varName "row"^^xsd:string ;
+          ]
+        ) ;
+      sp:where (
+          [
+            sp:object [
+                sp:varName "row"^^xsd:string ;
+              ] ;
+            sp:predicate spr:rowIndices ;
+            sp:subject spin:_arg1 ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type spr:cell ;
+                sp:arg1 spin:_arg1 ;
+                sp:arg2 [
+                    sp:varName "row"^^xsd:string ;
+                  ] ;
+                sp:arg3 spin:_arg2 ;
+              ] ;
+            sp:variable [
+                sp:varName "value"^^xsd:string ;
+              ] ;
+          ]
+        ) ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate sp:arg1 ;
+      spl:valueType spr:Table ;
+      rdfs:comment "The spr:Table to get the values for."^^xsd:string ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate sp:arg2 ;
+      spl:valueType xsd:integer ;
+      rdfs:comment "The column index, starting at zero."^^xsd:string ;
+    ] ;
+  rdfs:comment "Iterates over all rows of a given table (left side, ?arg1) at column ?arg2 and binds the variable on the right with the cell values. The second variable on the right may be bound to the row index as well."^^xsd:string ;
+  rdfs:label "col cells"^^xsd:string ;
+  rdfs:subClassOf spr:MagicProperties ;
+  rdfs:subPropertyOf spr:systemProperty ;
+.
+spr:colCount
+  rdf:type spin:Function ;
+  spin:body [
+      rdf:type sp:Select ;
+      sp:resultVariables (
+          [
+            sp:varName "result"^^xsd:string ;
+          ]
+        ) ;
+      sp:where (
+          [
+            sp:object [
+                sp:varName "tableClass"^^xsd:string ;
+              ] ;
+            sp:predicate rdf:type ;
+            sp:subject spin:_arg1 ;
+          ]
+          [
+            sp:object [
+                sp:varName "function"^^xsd:string ;
+              ] ;
+            sp:predicate spr:colCountFunction ;
+            sp:subject [
+                sp:varName "tableClass"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type spif:invoke ;
+                sp:arg1 [
+                    sp:varName "function"^^xsd:string ;
+                  ] ;
+                sp:arg2 spin:_arg1 ;
+              ] ;
+            sp:variable [
+                sp:varName "result"^^xsd:string ;
+              ] ;
+          ]
+        ) ;
+    ] ;
+  spin:returnType xsd:integer ;
+  rdfs:comment "Gets the number of columns of a given result set."^^xsd:string ;
+  rdfs:label "column count"^^xsd:string ;
+  rdfs:subClassOf spr:ColCountFunctions ;
+.
+spr:colCountFunction
+  rdf:type rdf:Property ;
+  rdfs:domain spr:TableClass ;
+  rdfs:label "colCount function"^^xsd:string ;
+  rdfs:range spin:Function ;
+  rdfs:subPropertyOf spr:systemProperty ;
+.
+spr:colIndices
+  rdf:type spin:MagicProperty ;
+  spin:body [
+      rdf:type sp:Select ;
+      sp:resultVariables (
+          [
+            sp:varName "index"^^xsd:string ;
+          ]
+        ) ;
+      sp:where (
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type sp:sub ;
+                sp:arg1 [
+                    rdf:type spr:colCount ;
+                    sp:arg1 spin:_arg1 ;
+                  ] ;
+                sp:arg2 1 ;
+              ] ;
+            sp:variable [
+                sp:varName "lastIndex"^^xsd:string ;
+              ] ;
+          ]
+          [
+            sp:object [
+                sp:varName "?0"^^xsd:string ;
+              ] ;
+            sp:predicate <http://www.topbraid.org/tops#for> ;
+            sp:subject [
+                sp:varName "index"^^xsd:string ;
+              ] ;
+          ]
+          [
+            sp:object 0 ;
+            sp:predicate rdf:first ;
+            sp:subject [
+                sp:varName "?0"^^xsd:string ;
+              ] ;
+          ]
+          [
+            sp:object [
+                sp:varName "?1"^^xsd:string ;
+              ] ;
+            sp:predicate rdf:rest ;
+            sp:subject [
+                sp:varName "?0"^^xsd:string ;
+              ] ;
+          ]
+          [
+            sp:object [
+                sp:varName "lastIndex"^^xsd:string ;
+              ] ;
+            sp:predicate rdf:first ;
+            sp:subject [
+                sp:varName "?1"^^xsd:string ;
+              ] ;
+          ]
+          [
+            sp:object () ;
+            sp:predicate rdf:rest ;
+            sp:subject [
+                sp:varName "?1"^^xsd:string ;
+              ] ;
+          ]
+        ) ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate sp:arg1 ;
+      spl:valueType spr:Table ;
+      rdfs:comment "The spr:Table to get the row indexes of."^^xsd:string ;
+    ] ;
+  rdfs:comment "Iterates over all columns of a given table (left side, ?arg1) and binds the variable on the right with the index of the columns."^^xsd:string ;
+  rdfs:label "row indices"^^xsd:string ;
+  rdfs:subClassOf spr:MagicProperties ;
+  rdfs:subPropertyOf spr:systemProperty ;
+.
+spr:colName
+  rdf:type spin:Function ;
+  spin:body [
+      rdf:type sp:Select ;
+      sp:resultVariables (
+          [
+            sp:varName "result"^^xsd:string ;
+          ]
+        ) ;
+      sp:where (
+          [
+            sp:object [
+                sp:varName "tableClass"^^xsd:string ;
+              ] ;
+            sp:predicate rdf:type ;
+            sp:subject spin:_arg1 ;
+          ]
+          [
+            sp:object [
+                sp:varName "function"^^xsd:string ;
+              ] ;
+            sp:predicate spr:colNameFunction ;
+            sp:subject [
+                sp:varName "tableClass"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type spif:invoke ;
+                sp:arg1 [
+                    sp:varName "function"^^xsd:string ;
+                  ] ;
+                sp:arg2 spin:_arg1 ;
+                sp:arg3 spin:_arg2 ;
+              ] ;
+            sp:variable [
+                sp:varName "result"^^xsd:string ;
+              ] ;
+          ]
+        ) ;
+    ] ;
+  spin:returnType xsd:string ;
+  rdfs:comment "Gets the name of a column in a given result set. The name is usually derived from the variable name, but may also originate from spin:Columns attached to the table data provider."^^xsd:string ;
+  rdfs:label "column name"^^xsd:string ;
+  rdfs:subClassOf spr:ColNameFunctions ;
+.
+spr:colNameFunction
+  rdf:type rdf:Property ;
+  rdfs:domain spr:TableClass ;
+  rdfs:label "colName function"^^xsd:string ;
+  rdfs:range spin:Function ;
+  rdfs:subPropertyOf spr:systemProperty ;
+.
+spr:colType
+  rdf:type spin:Function ;
+  spin:body [
+      rdf:type sp:Select ;
+      sp:resultVariables (
+          [
+            sp:varName "result"^^xsd:string ;
+          ]
+        ) ;
+      sp:where (
+          [
+            sp:object [
+                sp:varName "tableClass"^^xsd:string ;
+              ] ;
+            sp:predicate rdf:type ;
+            sp:subject spin:_arg1 ;
+          ]
+          [
+            sp:object [
+                sp:varName "function"^^xsd:string ;
+              ] ;
+            sp:predicate spr:colTypeFunction ;
+            sp:subject [
+                sp:varName "tableClass"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type spif:invoke ;
+                sp:arg1 [
+                    sp:varName "function"^^xsd:string ;
+                  ] ;
+                sp:arg2 spin:_arg1 ;
+                sp:arg3 spin:_arg2 ;
+              ] ;
+            sp:variable [
+                sp:varName "result"^^xsd:string ;
+              ] ;
+          ]
+        ) ;
+    ] ;
+  spin:returnType rdfs:Class ;
+  rdfs:comment "Gets the (data) type of a column, if this information is present. The datatype may be derived from spin:Columns attached to the table data provider."^^xsd:string ;
+  rdfs:label "column type"^^xsd:string ;
+  rdfs:subClassOf spr:ColTypeFunctions ;
+.
+spr:colTypeFunction
+  rdf:type rdf:Property ;
+  rdfs:domain spr:TableClass ;
+  rdfs:label "colType function"^^xsd:string ;
+  rdfs:range spin:Function ;
+  rdfs:subPropertyOf spr:systemProperty ;
+.
+spr:colWidth
+  rdf:type spin:Function ;
+  spin:body [
+      rdf:type sp:Select ;
+      sp:resultVariables (
+          [
+            sp:varName "result"^^xsd:string ;
+          ]
+        ) ;
+      sp:where (
+          [
+            sp:object [
+                sp:varName "tableClass"^^xsd:string ;
+              ] ;
+            sp:predicate rdf:type ;
+            sp:subject spin:_arg1 ;
+          ]
+          [
+            sp:object [
+                sp:varName "function"^^xsd:string ;
+              ] ;
+            sp:predicate spr:colWidthFunction ;
+            sp:subject [
+                sp:varName "tableClass"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type spif:invoke ;
+                sp:arg1 [
+                    sp:varName "function"^^xsd:string ;
+                  ] ;
+                sp:arg2 spin:_arg1 ;
+                sp:arg3 spin:_arg2 ;
+              ] ;
+            sp:variable [
+                sp:varName "result"^^xsd:string ;
+              ] ;
+          ]
+        ) ;
+    ] ;
+  spin:returnType xsd:integer ;
+  rdfs:comment "Gets the width (in pixels) of a given column. This may have been derived from spin:Columns attached to the table data provider."^^xsd:string ;
+  rdfs:label "column width"^^xsd:string ;
+  rdfs:subClassOf spr:ColWidthFunctions ;
+.
+spr:colWidthFunction
+  rdf:type rdf:Property ;
+  rdfs:domain spr:TableClass ;
+  rdfs:label "colWidth function"^^xsd:string ;
+  rdfs:range spin:Function ;
+  rdfs:subPropertyOf spr:systemProperty ;
+.
+spr:colWithName
+  rdf:type spin:Function ;
+  spin:body [
+      rdf:type sp:Select ;
+      sp:resultVariables (
+          [
+            sp:varName "colIndex"^^xsd:string ;
+          ]
+        ) ;
+      sp:where (
+          (
+            [
+              sp:object [
+                  sp:varName "colIndex"^^xsd:string ;
+                ] ;
+              sp:predicate spr:colIndices ;
+              sp:subject spin:_arg1 ;
+            ]
+            [
+              rdf:type sp:Bind ;
+              sp:expression [
+                  rdf:type spr:colName ;
+                  sp:arg1 spin:_arg1 ;
+                  sp:arg2 [
+                      sp:varName "colIndex"^^xsd:string ;
+                    ] ;
+                ] ;
+              sp:variable [
+                  sp:varName "colName"^^xsd:string ;
+                ] ;
+            ]
+          )
+          [
+            rdf:type sp:Filter ;
+            sp:expression [
+                rdf:type sp:eq ;
+                sp:arg1 [
+                    sp:varName "colName"^^xsd:string ;
+                  ] ;
+                sp:arg2 spin:_arg2 ;
+              ] ;
+          ]
+        ) ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate sp:arg1 ;
+      spl:valueType spr:Table ;
+      rdfs:comment "The spr:Table to iterate over."^^xsd:string ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate sp:arg2 ;
+      spl:valueType xsd:string ;
+      rdfs:comment "The name of the col to get."^^xsd:string ;
+    ] ;
+  spin:returnType xsd:integer ;
+  rdfs:comment "Gets the index of a column with a given name."^^xsd:string ;
+  rdfs:label "col with name"^^xsd:string ;
+  rdfs:subClassOf spr:Functions ;
+.
+spr:hasCell
+  rdf:type spin:Function ;
+  spin:body [
+      rdf:type sp:Ask ;
+      sp:where (
+          [
+            sp:object [
+                sp:varName "tableClass"^^xsd:string ;
+              ] ;
+            sp:predicate rdf:type ;
+            sp:subject spin:_arg1 ;
+          ]
+          [
+            sp:object [
+                sp:varName "function"^^xsd:string ;
+              ] ;
+            sp:predicate spr:cellFunction ;
+            sp:subject [
+                sp:varName "tableClass"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type spif:invoke ;
+                sp:arg1 [
+                    sp:varName "function"^^xsd:string ;
+                  ] ;
+                sp:arg2 spin:_arg1 ;
+                sp:arg3 spin:_arg2 ;
+                sp:arg4 spin:_arg3 ;
+              ] ;
+            sp:variable [
+                sp:varName "result"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Filter ;
+            sp:expression [
+                rdf:type sp:bound ;
+                sp:arg1 [
+                    sp:varName "result"^^xsd:string ;
+                  ] ;
+              ] ;
+          ]
+        ) ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate sp:arg1 ;
+      spl:valueType spr:Table ;
+      rdfs:comment "The spr:Table to get the cell value of."^^xsd:string ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate sp:arg2 ;
+      spl:valueType xsd:integer ;
+      rdfs:comment "The row index, starting at 0."^^xsd:string ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate sp:arg3 ;
+      spl:valueType xsd:integer ;
+      rdfs:comment "The column index, starting at 0."^^xsd:string ;
+    ] ;
+  spin:returnType xsd:boolean ;
+  rdfs:comment "Checks if there is a cell value in a given Table (?arg1) at a given row (?arg2) and column (?arg3)."^^xsd:string ;
+  rdfs:label "hasCell"^^xsd:string ;
+  rdfs:subClassOf spr:CellFunctions ;
+.
+spr:isEmpty
+  rdf:type spin:Function ;
+  spin:body [
+      rdf:type sp:Ask ;
+      sp:where (
+          [
+            rdf:type sp:Filter ;
+            sp:expression [
+                rdf:type sp:eq ;
+                sp:arg1 [
+                    rdf:type spr:rowCount ;
+                    sp:arg1 spin:_arg1 ;
+                  ] ;
+                sp:arg2 0 ;
+              ] ;
+          ]
+        ) ;
+    ] ;
+  spin:returnType xsd:boolean ;
+  rdfs:comment "Checks whether a given SPR table has zero rows."^^xsd:string ;
+  rdfs:label "is empty"^^xsd:string ;
+  rdfs:subClassOf spr:RowCountFunctions ;
+.
+spr:resultFunction
+  rdf:type rdf:Property ;
+  rdfs:comment "The URI of the SPIN Function that shall be called at the end of the steps."^^xsd:string ;
+  rdfs:domain spr:Aggregator ;
+  rdfs:label "result function"^^xsd:string ;
+  rdfs:range spin:Function ;
+  rdfs:subPropertyOf spr:systemProperty ;
+.
+spr:rowCells
+  rdf:type spin:MagicProperty ;
+  spin:body [
+      rdf:type sp:Select ;
+      sp:resultVariables (
+          [
+            sp:varName "value"^^xsd:string ;
+          ]
+          [
+            sp:varName "col"^^xsd:string ;
+          ]
+        ) ;
+      sp:where (
+          [
+            sp:object [
+                sp:varName "col"^^xsd:string ;
+              ] ;
+            sp:predicate spr:colIndices ;
+            sp:subject spin:_arg1 ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type spr:cell ;
+                sp:arg1 spin:_arg1 ;
+                sp:arg2 spin:_arg2 ;
+                sp:arg3 [
+                    sp:varName "col"^^xsd:string ;
+                  ] ;
+              ] ;
+            sp:variable [
+                sp:varName "value"^^xsd:string ;
+              ] ;
+          ]
+        ) ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate sp:arg1 ;
+      spl:valueType spr:Table ;
+      rdfs:comment "The spr:Table to get the values for."^^xsd:string ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate sp:arg2 ;
+      spl:valueType xsd:integer ;
+      rdfs:comment "The row index, starting at zero."^^xsd:string ;
+    ] ;
+  rdfs:comment "Iterates over all columns of a given table (left side, ?arg1) at row ?arg2 and binds the variable on the right with the cell values. The second variable on the right may be bound to the column index as well."^^xsd:string ;
+  rdfs:label "row cells"^^xsd:string ;
+  rdfs:subClassOf spr:MagicProperties ;
+  rdfs:subPropertyOf spr:systemProperty ;
+.
+spr:rowCount
+  rdf:type spin:Function ;
+  spin:body [
+      rdf:type sp:Select ;
+      sp:resultVariables (
+          [
+            sp:varName "result"^^xsd:string ;
+          ]
+        ) ;
+      sp:where (
+          [
+            sp:object [
+                sp:varName "tableClass"^^xsd:string ;
+              ] ;
+            sp:predicate rdf:type ;
+            sp:subject spin:_arg1 ;
+          ]
+          [
+            sp:object [
+                sp:varName "function"^^xsd:string ;
+              ] ;
+            sp:predicate spr:rowCountFunction ;
+            sp:subject [
+                sp:varName "tableClass"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type spif:invoke ;
+                sp:arg1 [
+                    sp:varName "function"^^xsd:string ;
+                  ] ;
+                sp:arg2 spin:_arg1 ;
+              ] ;
+            sp:variable [
+                sp:varName "result"^^xsd:string ;
+              ] ;
+          ]
+        ) ;
+    ] ;
+  spin:returnType xsd:integer ;
+  rdfs:comment "Gets the number of rows in a given table."^^xsd:string ;
+  rdfs:label "row count"^^xsd:string ;
+  rdfs:subClassOf spr:RowCountFunctions ;
+.
+spr:rowCountFunction
+  rdf:type rdf:Property ;
+  rdfs:domain spr:TableClass ;
+  rdfs:label "rowCount function"^^xsd:string ;
+  rdfs:range spin:Function ;
+  rdfs:subPropertyOf spr:systemProperty ;
+.
+spr:rowIndices
+  rdf:type spin:MagicProperty ;
+  spin:body [
+      rdf:type sp:Select ;
+      sp:resultVariables (
+          [
+            sp:varName "index"^^xsd:string ;
+          ]
+        ) ;
+      sp:where (
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type sp:sub ;
+                sp:arg1 [
+                    rdf:type spr:rowCount ;
+                    sp:arg1 spin:_arg1 ;
+                  ] ;
+                sp:arg2 1 ;
+              ] ;
+            sp:variable [
+                sp:varName "lastIndex"^^xsd:string ;
+              ] ;
+          ]
+          [
+            sp:object [
+                sp:varName "?0"^^xsd:string ;
+              ] ;
+            sp:predicate <http://www.topbraid.org/tops#for> ;
+            sp:subject [
+                sp:varName "index"^^xsd:string ;
+              ] ;
+          ]
+          [
+            sp:object 0 ;
+            sp:predicate rdf:first ;
+            sp:subject [
+                sp:varName "?0"^^xsd:string ;
+              ] ;
+          ]
+          [
+            sp:object [
+                sp:varName "?1"^^xsd:string ;
+              ] ;
+            sp:predicate rdf:rest ;
+            sp:subject [
+                sp:varName "?0"^^xsd:string ;
+              ] ;
+          ]
+          [
+            sp:object [
+                sp:varName "lastIndex"^^xsd:string ;
+              ] ;
+            sp:predicate rdf:first ;
+            sp:subject [
+                sp:varName "?1"^^xsd:string ;
+              ] ;
+          ]
+          [
+            sp:object () ;
+            sp:predicate rdf:rest ;
+            sp:subject [
+                sp:varName "?1"^^xsd:string ;
+              ] ;
+          ]
+        ) ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate sp:arg1 ;
+      spl:valueType spr:Table ;
+      rdfs:comment "The spr:Table to get the row indexes of."^^xsd:string ;
+    ] ;
+  rdfs:comment "Iterates over all rows of a given table (left side, ?arg1) and binds the variable on the right with the index of the rows."^^xsd:string ;
+  rdfs:label "row indices"^^xsd:string ;
+  rdfs:subClassOf spr:MagicProperties ;
+  rdfs:subPropertyOf spr:systemProperty ;
+.
+spr:startValue
+  rdf:type rdf:Property ;
+  rdfs:domain spr:Aggregator ;
+  rdfs:label "start value"^^xsd:string ;
+  rdfs:subPropertyOf spr:systemProperty ;
+.
+spr:stepFunction
+  rdf:type rdf:Property ;
+  rdfs:comment "The URI of the SPIN Function that shall be called at each step."^^xsd:string ;
+  rdfs:domain spr:Aggregator ;
+  rdfs:label "step function"^^xsd:string ;
+  rdfs:range spin:Function ;
+  rdfs:subPropertyOf spr:systemProperty ;
+.
+spr:systemProperty
+  rdf:type rdf:Property ;
+  rdfs:comment "An \"abstract\" base property that groups together those system properties that the user will hardly ever need to see in property trees. This property may be dropped in future versions of this ontology - right now it's mainly here for convenience."^^xsd:string ;
+  rdfs:label "system property"^^xsd:string ;
+.
+spr:visitCol
+  rdf:type spin:Function ;
+  spin:body [
+      rdf:type sp:Select ;
+      sp:resultVariables (
+          [
+            sp:varName "result"^^xsd:string ;
+          ]
+        ) ;
+      sp:where (
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type spr:cell ;
+                sp:arg1 spin:_arg1 ;
+                sp:arg2 spin:_arg3 ;
+                sp:arg3 spin:_arg2 ;
+              ] ;
+            sp:variable [
+                sp:varName "value"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type sp:if ;
+                sp:arg1 [
+                    rdf:type sp:bound ;
+                    sp:arg1 [
+                        sp:varName "value"^^xsd:string ;
+                      ] ;
+                  ] ;
+                sp:arg2 [
+                    rdf:type spif:invoke ;
+                    sp:arg1 spin:_arg5 ;
+                    sp:arg2 [
+                        sp:varName "arg6"^^xsd:string ;
+                      ] ;
+                    sp:arg3 [
+                        sp:varName "value"^^xsd:string ;
+                      ] ;
+                  ] ;
+                sp:arg3 [
+                    sp:varName "arg6"^^xsd:string ;
+                  ] ;
+              ] ;
+            sp:variable [
+                sp:varName "next"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type sp:if ;
+                sp:arg1 [
+                    rdf:type sp:lt ;
+                    sp:arg1 spin:_arg3 ;
+                    sp:arg2 spin:_arg4 ;
+                  ] ;
+                sp:arg2 [
+                    rdf:type spr:visitCol ;
+                    sp:arg1 spin:_arg1 ;
+                    sp:arg2 spin:_arg2 ;
+                    sp:arg3 [
+                        rdf:type sp:add ;
+                        sp:arg1 spin:_arg3 ;
+                        sp:arg2 1 ;
+                      ] ;
+                    sp:arg4 spin:_arg4 ;
+                    sp:arg5 spin:_arg5 ;
+                    sp:arg6 [
+                        sp:varName "next"^^xsd:string ;
+                      ] ;
+                  ] ;
+                sp:arg3 [
+                    sp:varName "next"^^xsd:string ;
+                  ] ;
+              ] ;
+            sp:variable [
+                sp:varName "result"^^xsd:string ;
+              ] ;
+          ]
+        ) ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate sp:arg1 ;
+      spl:valueType spr:Table ;
+      rdfs:comment "The spr:Table to iterate over."^^xsd:string ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate sp:arg2 ;
+      spl:valueType xsd:integer ;
+      rdfs:comment "The row to iterate over."^^xsd:string ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate sp:arg3 ;
+      spl:valueType xsd:integer ;
+      rdfs:comment "The current step index."^^xsd:string ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate sp:arg4 ;
+      spl:valueType xsd:integer ;
+      rdfs:comment "The max number of steps to make."^^xsd:string ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate sp:arg5 ;
+      spl:valueType spin:Function ;
+      rdfs:comment "The step function."^^xsd:string ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate sp:arg6 ;
+      rdfs:comment "The current aggregate value."^^xsd:string ;
+    ] ;
+  rdfs:comment "Visits a given column ?arg2 of Table ?arg1 with a given spr:AggregatorStepFunction (?arg5) and then calls itself recursively until the last value index (?arg4) has been reached. ?arg6 is the result of the previous step."^^xsd:string ;
+  rdfs:label "visit row"^^xsd:string ;
+  rdfs:subClassOf spr:Functions ;
+.
+spr:visitRow
+  rdf:type spin:Function ;
+  spin:body [
+      rdf:type sp:Select ;
+      sp:resultVariables (
+          [
+            sp:varName "result"^^xsd:string ;
+          ]
+        ) ;
+      sp:where (
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type spr:cell ;
+                sp:arg1 spin:_arg1 ;
+                sp:arg2 spin:_arg2 ;
+                sp:arg3 spin:_arg3 ;
+              ] ;
+            sp:variable [
+                sp:varName "value"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type sp:if ;
+                sp:arg1 [
+                    rdf:type sp:bound ;
+                    sp:arg1 [
+                        sp:varName "value"^^xsd:string ;
+                      ] ;
+                  ] ;
+                sp:arg2 [
+                    rdf:type spif:invoke ;
+                    sp:arg1 spin:_arg5 ;
+                    sp:arg2 [
+                        sp:varName "arg6"^^xsd:string ;
+                      ] ;
+                    sp:arg3 [
+                        sp:varName "value"^^xsd:string ;
+                      ] ;
+                  ] ;
+                sp:arg3 [
+                    sp:varName "arg6"^^xsd:string ;
+                  ] ;
+              ] ;
+            sp:variable [
+                sp:varName "next"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type sp:if ;
+                sp:arg1 [
+                    rdf:type sp:lt ;
+                    sp:arg1 [
+                        rdf:type sp:add ;
+                        sp:arg1 spin:_arg3 ;
+                        sp:arg2 1 ;
+                      ] ;
+                    sp:arg2 spin:_arg4 ;
+                  ] ;
+                sp:arg2 [
+                    rdf:type spr:visitRow ;
+                    sp:arg1 spin:_arg1 ;
+                    sp:arg2 spin:_arg2 ;
+                    sp:arg3 [
+                        rdf:type sp:add ;
+                        sp:arg1 spin:_arg3 ;
+                        sp:arg2 1 ;
+                      ] ;
+                    sp:arg4 spin:_arg4 ;
+                    sp:arg5 spin:_arg5 ;
+                    sp:arg6 [
+                        sp:varName "next"^^xsd:string ;
+                      ] ;
+                  ] ;
+                sp:arg3 [
+                    sp:varName "next"^^xsd:string ;
+                  ] ;
+              ] ;
+            sp:variable [
+                sp:varName "result"^^xsd:string ;
+              ] ;
+          ]
+        ) ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate sp:arg1 ;
+      spl:valueType spr:Table ;
+      rdfs:comment "The spr:Table to iterate over."^^xsd:string ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate sp:arg2 ;
+      spl:valueType xsd:integer ;
+      rdfs:comment "The row to iterate over."^^xsd:string ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate sp:arg3 ;
+      spl:valueType xsd:integer ;
+      rdfs:comment "The current step index."^^xsd:string ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate sp:arg4 ;
+      spl:valueType xsd:integer ;
+      rdfs:comment "The max number of steps to make."^^xsd:string ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate sp:arg5 ;
+      spl:valueType spin:Function ;
+      rdfs:comment "The step function."^^xsd:string ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate sp:arg6 ;
+      rdfs:comment "The current aggregate value."^^xsd:string ;
+    ] ;
+  rdfs:comment "Visits a given row ?arg2 of Table ?arg1 with a given spr:AggregatorStepFunction (?arg5) and then calls itself recursively until the last value index (?arg4) has been reached. ?arg6 is the result of the previous step."^^xsd:string ;
+  rdfs:label "visit row"^^xsd:string ;
+  rdfs:subClassOf spr:Functions ;
+.

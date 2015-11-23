@@ -1,0 +1,69 @@
+# baseURI: http://topbraid.org/spin/spinhydra
+# imports: http://spinrdf.org/spl
+# imports: http://www.w3.org/ns/hydra/core#
+
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sp: <http://spinrdf.org/sp#> .
+@prefix spin: <http://spinrdf.org/spin#> .
+@prefix spinhydra: <http://topbraid.org/spin/spinhydra#> .
+@prefix spl: <http://spinrdf.org/spl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://topbraid.org/spin/spinhydra>
+  rdf:type owl:Ontology ;
+  rdfs:comment "Proof-of-concept of an implementation of hydra:SupportedProperty as SPIN constraints. Reports constraint violations on instances where a required property is missing."^^xsd:string ;
+  owl:imports <http://spinrdf.org/spl> ;
+  owl:imports <http://www.w3.org/ns/hydra/core#> ;
+  owl:versionInfo "0.1.0"^^xsd:string ;
+.
+<http://www.w3.org/ns/hydra/core#SupportedProperty>
+  rdf:type spin:ConstructTemplate ;
+  spin:body [
+      rdf:type sp:Construct ;
+      sp:text """
+        CONSTRUCT {
+            _:cv a spin:ConstraintViolation ;
+                 spin:violationRoot ?this ;
+                 spin:violationPath ?property ;
+                 rdfs:label \"Missing required property\" .
+        }
+        WHERE {
+            FILTER (?required && NOT EXISTS {
+                ?this ?property ?any .
+            }) .
+        }"""^^xsd:string ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:optional "true"^^xsd:boolean ;
+      spl:predicate <http://www.w3.org/ns/hydra/core#readonly> ;
+      spl:valueType xsd:boolean ;
+      rdfs:comment "True if the property is read-only, false otherwise."^^xsd:string ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:optional "true"^^xsd:boolean ;
+      spl:predicate <http://www.w3.org/ns/hydra/core#required> ;
+      spl:valueType xsd:boolean ;
+      rdfs:comment "Indicates whether this property is required or not. Default is false."^^xsd:string ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:optional "true"^^xsd:boolean ;
+      spl:predicate <http://www.w3.org/ns/hydra/core#writeonly> ;
+      spl:valueType xsd:boolean ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate <http://www.w3.org/ns/hydra/core#property> ;
+      spl:valueType rdf:Property ;
+      rdfs:comment "The property being constrained."^^xsd:string ;
+    ] ;
+  spin:labelTemplate "Supported property {?property} (Required: {?required})"^^xsd:string ;
+  rdfs:subClassOf spin:ConstructTemplates ;
+.
+<http://www.w3.org/ns/hydra/core#supportedProperty>
+  rdfs:subPropertyOf spin:constraint ;
+.

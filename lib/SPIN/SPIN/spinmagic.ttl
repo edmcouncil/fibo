@@ -1,0 +1,109 @@
+# baseURI: http://spinrdf.org/spinmagic
+# imports: http://spinrdf.org/spin
+
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix spin: <http://spinrdf.org/spin#> .
+@prefix spinmagic: <http://spinrdf.org/spinmagic#> .
+@prefix spl: <http://spinrdf.org/spl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+spin:inverseBody
+  rdf:type rdf:Property ;
+  rdfs:comment "An optional \"inverse\" of the spin:body attached to a magic property. The inverse body is assumed to be executed \"from right to left\", i.e. the object is pre-bound while the subject is left blank. For execution, the variable ?arg1 is pre-bound as the object, and the SELECT query is assumed to return all matching subjects."^^xsd:string ;
+  rdfs:domain spin:MagicProperty ;
+  rdfs:label "inverse body"^^xsd:string ;
+  rdfs:range <http://spinrdf.org/sp#Select> ;
+  rdfs:subPropertyOf spin:query ;
+.
+<http://spinrdf.org/spinmagic>
+  rdf:type owl:Ontology ;
+  rdfs:comment "An extension of SPIN that can be used to define virtual RDF graphs that compute all their triples dynamically using magic properties. The namespace defines new properties that are attached to magic properties to instruct the engine on how to retrieve and update those triples."^^xsd:string ;
+  owl:imports <http://spinrdf.org/spin> ;
+  owl:versionInfo "0.1.0"^^xsd:string ;
+.
+spinmagic:MagicProperties
+  rdf:type spinmagic:MagicProperty ;
+  spin:abstract "true"^^xsd:boolean ;
+  rdfs:label "Magic properties"^^xsd:string ;
+  rdfs:subClassOf spin:MagicProperties ;
+.
+spinmagic:MagicProperty
+  rdf:type rdfs:Class ;
+  rdfs:comment "Metaclass of magic properties that are interpreted on the base model of the surrounding magic graph."^^xsd:string ;
+  rdfs:label "Magic property"^^xsd:string ;
+  rdfs:subClassOf spin:MagicProperty ;
+.
+spinmagic:addUpdate
+  rdf:type rdf:Property ;
+  rdfs:comment "An UPDATE command (usually an INSERT) that shall be executed when a magic property \"triple\" has been added to a magic SPIN graph. In the UPDATE, the variable ?arg1 will point to the subject, and ?value will point to the value that was added."^^xsd:string ;
+  rdfs:domain spin:MagicProperty ;
+  rdfs:label "add update"^^xsd:string ;
+  rdfs:range <http://spinrdf.org/sp#Update> ;
+  rdfs:subPropertyOf spin:command ;
+.
+spinmagic:baseGraph
+  rdf:type rdf:Property ;
+  rdfs:comment "The graph containing the base triples. The magic properties are executed over that graph."^^xsd:string ;
+  rdfs:domain owl:Ontology ;
+  rdfs:label "base graph"^^xsd:string ;
+  rdfs:range rdfs:Resource ;
+.
+spinmagic:deleteUpdate
+  rdf:type rdf:Property ;
+  rdfs:comment "An UPDATE command (usually a DELETE) that shall be executed when a magic property \"triple\" has been deleted from a magic SPIN graph. In the UPDATE, the variable ?arg1 will point to the subject, and ?value will point to the value that was deleted."^^xsd:string ;
+  rdfs:domain spin:MagicProperty ;
+  rdfs:label "delete update"^^xsd:string ;
+  rdfs:range <http://spinrdf.org/sp#Update> ;
+  rdfs:subPropertyOf spin:command ;
+.
+spinmagic:instanceCreatedUpdate
+  rdf:type rdf:Property ;
+  rdfs:comment "An UPDATE command (usually an INSERT) that shall be executed when a new instance of the associated class (domain) has been added to a magic SPIN graph. In the UPDATE, the variable ?arg1 will point to the instance."^^xsd:string ;
+  rdfs:domain rdfs:Class ;
+  rdfs:label "instance created update"^^xsd:string ;
+  rdfs:range <http://spinrdf.org/sp#Update> ;
+  rdfs:subPropertyOf spin:command ;
+.
+spinmagic:instanceDeletedUpdate
+  rdf:type rdf:Property ;
+  rdfs:comment "An UPDATE command (usually an INSERT) that shall be executed when an instance of the associated class (domain) has lost its rdf:type triple in a magic SPIN graph. In the UPDATE, the variable ?arg1 will point to the instance."^^xsd:string ;
+  rdfs:domain rdfs:Class ;
+  rdfs:label "instance deleted update"^^xsd:string ;
+  rdfs:range <http://spinrdf.org/sp#Update> ;
+  rdfs:subPropertyOf spin:command ;
+.
+spinmagic:instancesMagicProperty
+  rdf:type rdf:Property ;
+  rdfs:comment "A magic property for class that delivers all instances and can be used to verify that a given resource is indeed an instance. The magic property must take one (optional) argument, which has the same valueType as the class that it's associated with. The body of the magic property must be able to cope with the fact that the variable may be unbound: if unbound, it must return all instances, if bound it needs to verify whether the resource is indeed an instance of the class."^^xsd:string ;
+  rdfs:domain rdfs:Class ;
+  rdfs:label "instances magic property"^^xsd:string ;
+  rdfs:range spin:MagicProperty ;
+.
+spinmagic:magicGraph
+  rdf:type rdf:Property ;
+  rdfs:comment "The graph containing the magic properties."^^xsd:string ;
+  rdfs:domain owl:Ontology ;
+  rdfs:label "magic graph"^^xsd:string ;
+  rdfs:range rdfs:Resource ;
+.
+spinmagic:magicGraphURI
+  rdf:type spin:Function ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate <http://spinrdf.org/sp#arg1> ;
+      spl:valueType rdfs:Resource ;
+      rdfs:comment "The graph containing the magic properties."^^xsd:string ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate <http://spinrdf.org/sp#arg2> ;
+      spl:valueType rdfs:Resource ;
+      rdfs:comment "The graph containing the base triples."^^xsd:string ;
+    ] ;
+  spin:returnType rdfs:Resource ;
+  rdfs:comment "Creates a graph URI that will be recognized to be a magic graph by TopBraid. Use in conjunction with GRAPH in SPARQL. In addition to the two declared arguments, this function can take additional graph resources that will become owl:imports of the magic graph."^^xsd:string ;
+  rdfs:label "magic graph URI"^^xsd:string ;
+  rdfs:subClassOf spin:Functions ;
+.
