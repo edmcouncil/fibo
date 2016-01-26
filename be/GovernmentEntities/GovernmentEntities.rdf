@@ -67,6 +67,7 @@ Copyright (c) 2015 Object Management Group, Inc.</sm:copyright>
         <owl:imports rdf:resource="http://www.omg.org/spec/EDMC-FIBO/FND/Parties/Roles/"/>
         <owl:imports rdf:resource="http://www.omg.org/spec/EDMC-FIBO/FND/Relations/Relations/"/>
         <owl:imports rdf:resource="http://www.omg.org/spec/EDMC-FIBO/FND/Utilities/AnnotationVocabulary/"/>
+        <owl:imports rdf:resource="http://www.omg.org/spec/LCC/Countries/CountryRepresentation/"/>
     </owl:Ontology>
     
 
@@ -86,7 +87,7 @@ Copyright (c) 2015 Object Management Group, Inc.</sm:copyright>
 
     <owl:ObjectProperty rdf:about="&fibo-be-ge-ge;hasFullSovereigntyOver">
         <rdfs:label>has full sovereignty over</rdfs:label>
-        <skos:definition>absolute, supreme and ultimate dominion and authority of a political state subject to no higher power, expressed within its territory in full self-government and in complete freedom from any outside influence.</skos:definition>
+        <skos:definition>relates a polity to a geopolitical entity where the polity has absolute, supreme and ultimate dominion and authority of a political state subject to no higher power, expressed within its territory in full self-government and in complete freedom from any outside influence.</skos:definition>
         <rdfs:subPropertyOf rdf:resource="&fibo-be-ge-ge;hasSovereigntyOver"/>
     </owl:ObjectProperty>
     
@@ -131,6 +132,8 @@ Copyright (c) 2015 Object Management Group, Inc.</sm:copyright>
     <!-- http://www.omg.org/spec/EDMC-FIBO/BE/GovernmentEntities/GovernmentEntities/hasPartialSovereigntyOver -->
 
     <owl:ObjectProperty rdf:about="&fibo-be-ge-ge;hasPartialSovereigntyOver">
+        <rdfs:label>has partial sovereignty over</rdfs:label>
+        <skos:definition>relates a polity to a geopolitical entity where the polity exercises partial dominion and authority of a political state.</skos:definition>
         <rdfs:subPropertyOf rdf:resource="&fibo-be-ge-ge;hasSovereigntyOver"/>
     </owl:ObjectProperty>
     
@@ -139,6 +142,8 @@ Copyright (c) 2015 Object Management Group, Inc.</sm:copyright>
     <!-- http://www.omg.org/spec/EDMC-FIBO/BE/GovernmentEntities/GovernmentEntities/hasSharedSovereigntyOver -->
 
     <owl:ObjectProperty rdf:about="&fibo-be-ge-ge;hasSharedSovereigntyOver">
+        <rdfs:label>has shared sovereignty over</rdfs:label>
+        <skos:definition>relates a polity to a geopolitical entity where the polity exercises shared dominion and authority of a political state.</skos:definition>
         <rdfs:subPropertyOf rdf:resource="&fibo-be-ge-ge;hasSovereigntyOver"/>
     </owl:ObjectProperty>
     
@@ -149,7 +154,7 @@ Copyright (c) 2015 Object Management Group, Inc.</sm:copyright>
     <owl:ObjectProperty rdf:about="&fibo-be-ge-ge;hasSovereigntyOver">
         <rdfs:label>has sovereignty over</rdfs:label>
         <fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.businessdictionary.com/definition/sovereignty.html</fibo-fnd-utl-av:adaptedFrom>
-        <skos:definition>dominion and authority of a political state.</skos:definition>
+        <skos:definition>relates a polity to a geopolitical entity where the polity exercises dominion and authority of a political state.</skos:definition>
         <rdfs:domain rdf:resource="&fibo-be-ge-ge;Polity"/>
         <rdfs:range rdf:resource="http://www.omg.org/spec/EDMC-FIBO/FND/Places/Countries/GeopoliticalEntity"/>
     </owl:ObjectProperty>
@@ -172,6 +177,16 @@ Copyright (c) 2015 Object Management Group, Inc.</sm:copyright>
     <owl:ObjectProperty rdf:about="&fibo-be-ge-ge;isElectedBy">
         <rdfs:label>is elected by</rdfs:label>
         <skos:definition>chooses someone to hold office or some other position by voting</skos:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.omg.org/spec/EDMC-FIBO/BE/GovernmentEntities/GovernmentEntities/isRepresentedBy -->
+
+    <owl:ObjectProperty rdf:about="&fibo-be-ge-ge;isRepresentedBy">
+        <rdfs:label>is represented by</rdfs:label>
+        <fibo-fnd-utl-av:definitionOrigin rdf:datatype="&xsd;anyURI">http://dictionary.reference.com/browse/representative</fibo-fnd-utl-av:definitionOrigin>
+        <skos:definition>of or relating to a system of governance by chosen representatives</skos:definition>
     </owl:ObjectProperty>
     
 
@@ -222,6 +237,50 @@ Copyright (c) 2015 Object Management Group, Inc.</sm:copyright>
         </rdfs:subClassOf>
         <fibo-fnd-utl-av:explanatoryNote rdf:datatype="&xsd;string">A federation is a political entity characterized by a union of partially self-governing states or regions under a central (federal) government. In a federation, the self-governing status of the component states, as well as the division of power between them and the central government, are typically constitutionally entrenched and may not be altered by a unilateral decision of either party, the states or the federal political body</fibo-fnd-utl-av:explanatoryNote>
         <skos:definition rdf:datatype="&xsd;string">a union of states under a central government distinct from the individual governments of the separate states</skos:definition>
+        <fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://en.wikipedia.org/wiki/Federation</fibo-fnd-utl-av:adaptedFrom>
+    </owl:Class>
+    
+
+
+    <!-- http://www.omg.org/spec/EDMC-FIBO/BE/GovernmentEntities/GovernmentEntities/Federation -->
+
+    <owl:Class rdf:about="&fibo-be-ge-ge;Federation">
+        <rdfs:label>federation</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&fibo-be-ge-ge;SovereignState"/>
+        <rdfs:subClassOf>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="&fibo-be-ge-ge;isRepresentedBy"/>
+                        <owl:onClass rdf:resource="&fibo-be-ge-ge;RegionalGovernment"/>
+                        <owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">2</owl:minQualifiedCardinality>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="&fibo-be-ge-ge;isRepresentedBy"/>
+                        <owl:onClass rdf:resource="&fibo-be-ge-ge;FederalGovernment"/>
+                        <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="&fibo-be-ge-ge;hasFullSovereigntyOver"/>
+                        <owl:onClass rdf:resource="http://www.omg.org/spec/LCC/Countries/CountryRepresentation/Country"/>
+                        <owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:minQualifiedCardinality>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="&fibo-be-ge-ge;hasSharedSovereigntyOver"/>
+                        <owl:onClass rdf:resource="http://www.omg.org/spec/EDMC-FIBO/FND/Places/Countries/FederalState"/>
+                        <owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">2</owl:minQualifiedCardinality>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </rdfs:subClassOf>
+        <fibo-fnd-utl-av:explanatoryNote rdf:datatype="&xsd;string">Federal entity in the sense of a legal entity, that is, what it is that incurs debt for a federal government, i.e. the Federal entity in the sense of the legal entity, as distinct from the Federal government. It is identified as a legal entity because it is able to incur debt in its own right.</fibo-fnd-utl-av:explanatoryNote>
+        <skos:definition rdf:datatype="&xsd;string">a political entity characterized by a union of partially self-governing states or regions under a central (federal) government.</skos:definition>
         <fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://en.wikipedia.org/wiki/Federation</fibo-fnd-utl-av:adaptedFrom>
     </owl:Class>
     
@@ -360,6 +419,7 @@ Copyright (c) 2015 Object Management Group, Inc.</sm:copyright>
         <rdfs:label>government instrumentality as private corporation</rdfs:label>
         <rdfs:subClassOf rdf:resource="http://www.omg.org/spec/EDMC-FIBO/BE/Corporations/Corporations/PrivatelyHeldCompany"/>
         <rdfs:subClassOf rdf:resource="&fibo-be-ge-ge;GovernmentInstrumentality"/>
+        <skos:definition rdf:datatype="&xsd;string">an instrumentality that is a private company. </skos:definition>
         <fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.investopedia.com/terms/i/instrumentality.asp</fibo-fnd-utl-av:adaptedFrom>
     </owl:Class>
     
@@ -513,6 +573,18 @@ Copyright (c) 2015 Object Management Group, Inc.</sm:copyright>
     <owl:Class rdf:about="&fibo-be-ge-ge;Polity">
         <rdfs:label>polity</rdfs:label>
         <rdfs:subClassOf rdf:resource="&fibo-be-le-lp;JuridicalPerson"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&fibo-be-ge-ge;isRepresentedBy"/>
+                <owl:someValuesFrom rdf:resource="&fibo-be-ge-ge;Government"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&fibo-be-ge-ge;hasSovereigntyOver"/>
+                <owl:someValuesFrom rdf:resource="http://www.omg.org/spec/EDMC-FIBO/FND/Places/Countries/GeopoliticalEntity"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
         <fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://en.wikipedia.org/wiki/Polity</fibo-fnd-utl-av:adaptedFrom>
         <skos:definition>a state or one of its subordinate civil authorities, such as a province, prefecture, county, municipality, city, or district.</skos:definition>
     </owl:Class>
@@ -524,9 +596,102 @@ Copyright (c) 2015 Object Management Group, Inc.</sm:copyright>
     <owl:Class rdf:about="&fibo-be-ge-ge;RegionalGovernment">
         <rdfs:label>regional government</rdfs:label>
         <rdfs:subClassOf rdf:resource="&fibo-be-ge-ge;Government"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&fibo-fnd-rel-rel;governs"/>
+                <owl:someValuesFrom rdf:resource="http://www.omg.org/spec/LCC/Countries/CountryRepresentation/CountrySubdivision"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
         <fibo-fnd-utl-av:explanatoryNote rdf:datatype="&xsd;string">A local government will typically only have control over their specific geographical region, and can not pass or enforce laws that will affect a wider area. Local governments can elect officials, enact taxes, and do many other things that a national government would do, just on a smaller scale.</fibo-fnd-utl-av:explanatoryNote>
         <skos:definition rdf:datatype="&xsd;string">an administrative body for a small geographic area, such as a city, town, county, or state.</skos:definition>
         <fibo-fnd-utl-av:definitionOrigin rdf:datatype="&xsd;anyURI">http://www.businessdictionary.com/definition/local-government.html</fibo-fnd-utl-av:definitionOrigin>
+    </owl:Class>
+    
+
+
+    <!-- http://www.omg.org/spec/EDMC-FIBO/BE/GovernmentEntities/GovernmentEntities/RegionalState -->
+
+    <owl:Class rdf:about="&fibo-be-ge-ge;RegionalState">
+        <rdfs:label>regional state</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&fibo-be-ge-ge;Polity"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&fibo-be-ge-ge;isRepresentedBy"/>
+                <owl:onClass rdf:resource="&fibo-be-ge-ge;RegionalGovernment"/>
+                <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&fibo-be-ge-ge;hasSharedSovereigntyOver"/>
+                <owl:someValuesFrom rdf:resource="http://www.omg.org/spec/EDMC-FIBO/FND/Places/Countries/FederalState"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <skos:example rdf:datatype="&xsd;string">A country may be divided into provinces, which, in turn, are divided into counties, which, in turn, may be divided in whole or in part into municipalities; and so on.
+</skos:example>
+        <fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://en.wikipedia.org/wiki/Administrative_division </fibo-fnd-utl-av:adaptedFrom>
+        <skos:definition rdf:datatype="&xsd;string">the legal entity that corresponds to an administrative division, administrative unit, administrative entity or country subdivision (or, sometimes, geopolitical division or subnational entity), that has the capacity to incur debt, issue contracts, and enter into relations with other similar entities
+</skos:definition>
+    </owl:Class>
+    
+
+
+    <!-- http://www.omg.org/spec/EDMC-FIBO/BE/GovernmentEntities/GovernmentEntities/SovereignState -->
+
+    <owl:Class rdf:about="&fibo-be-ge-ge;SovereignState">
+        <rdfs:label>sovereign state</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&fibo-be-ge-ge;Polity"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&fibo-be-ge-ge;isRepresentedBy"/>
+                <owl:someValuesFrom rdf:resource="&fibo-be-ge-ge;NationalGovernment"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&fibo-be-ge-ge;hasFullSovereigntyOver"/>
+                <owl:someValuesFrom rdf:resource="http://www.omg.org/spec/LCC/Countries/CountryRepresentation/Country"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <fibo-fnd-utl-av:explanatoryNote rdf:datatype="&xsd;string">A legal entity that is represented by one centralized government, has a permanent population, defined territory, and the capacity to enter into relations with other sovereign states.  It is identified as a legal entity as well as the setter of laws because it is able to incur debt in its own right and enter into contracts.</fibo-fnd-utl-av:explanatoryNote>
+        <skos:definition rdf:datatype="&xsd;string">a nonphysical juridical entity that is represented by one centralized government that has sovereignty over a geographic area. </skos:definition>
+        <fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.businessdictionary.com/definition/sovereign-authority.html </fibo-fnd-utl-av:adaptedFrom>
+    </owl:Class>
+    
+
+
+    <!-- http://www.omg.org/spec/EDMC-FIBO/BE/GovernmentEntities/GovernmentEntities/TribalArea -->
+
+    <owl:Class rdf:about="&fibo-be-ge-ge;TribalArea">
+        <rdfs:label>tribal area</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.omg.org/spec/LCC/Countries/CountryRepresentation/CountrySubdivision"/>
+        <skos:definition rdf:datatype="&xsd;string">designation of land reserved and managed for a tribe</skos:definition>
+        <fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://en.wikipedia.org/wiki/Indian_reservation</fibo-fnd-utl-av:adaptedFrom>
+    </owl:Class>
+    
+
+
+    <!-- http://www.omg.org/spec/EDMC-FIBO/BE/GovernmentEntities/GovernmentEntities/TribalEntity -->
+
+    <owl:Class rdf:about="&fibo-be-ge-ge;TribalEntity">
+        <rdfs:label>tribal entity</rdfs:label>
+        <rdfs:subClassOf rdf:resource="&fibo-be-ge-ge;Polity"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&fibo-be-ge-ge;isRepresentedBy"/>
+                <owl:someValuesFrom rdf:resource="&fibo-be-ge-ge;TribalGovernment"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&fibo-be-ge-ge;hasPartialSovereigntyOver"/>
+                <owl:someValuesFrom rdf:resource="&fibo-be-ge-ge;TribalArea"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <fibo-fnd-utl-av:explanatoryNote rdf:datatype="&xsd;string">Any indigenous group or community which is recognized as having rights and obligations independent to the central government</fibo-fnd-utl-av:explanatoryNote>
+        <fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://en.wikipedia.org/wiki/List_of_federally_recognized_tribes_by_state</fibo-fnd-utl-av:adaptedFrom>
+        <skos:definition>a fundamental unit of sovereign tribal government.
+</skos:definition>
     </owl:Class>
     
 
@@ -536,9 +701,57 @@ Copyright (c) 2015 Object Management Group, Inc.</sm:copyright>
     <owl:Class rdf:about="&fibo-be-ge-ge;TribalGovernment">
         <rdfs:label rdf:datatype="&xsd;string">tribal government</rdfs:label>
         <rdfs:subClassOf rdf:resource="&fibo-be-ge-ge;Government"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&fibo-fnd-rel-rel;governs"/>
+                <owl:someValuesFrom rdf:resource="&fibo-be-ge-ge;TribalArea"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
         <skos:definition rdf:datatype="&xsd;string">any organization that is put in place to maintain control of a tribal entity.</skos:definition>
         <fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.businessdictionary.com/definition/local-government.html</fibo-fnd-utl-av:adaptedFrom>
     </owl:Class>
+    
+
+
+    <!-- http://www.omg.org/spec/EDMC-FIBO/FND/Places/Countries/Country -->
+
+    <rdf:Description rdf:about="http://www.omg.org/spec/EDMC-FIBO/FND/Places/Countries/Country">
+        <owl:equivalentClass rdf:resource="http://www.omg.org/spec/LCC/Countries/CountryRepresentation/Country"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://www.omg.org/spec/EDMC-FIBO/FND/Places/Countries/GeopoliticalEntity -->
+
+    <rdf:Description rdf:about="http://www.omg.org/spec/EDMC-FIBO/FND/Places/Countries/GeopoliticalEntity">
+        <owl:equivalentClass rdf:resource="http://www.omg.org/spec/LCC/Countries/CountryRepresentation/GeopoliticalEntity"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://www.omg.org/spec/EDMC-FIBO/FND/Places/Locations/Location -->
+
+    <rdf:Description rdf:about="http://www.omg.org/spec/EDMC-FIBO/FND/Places/Locations/Location">
+        <owl:equivalentClass rdf:resource="http://www.omg.org/spec/LCC/Countries/CountryRepresentation/Location"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://www.omg.org/spec/LCC/Countries/CountryRepresentation/Country -->
+
+    <rdf:Description rdf:about="http://www.omg.org/spec/LCC/Countries/CountryRepresentation/Country"/>
+    
+
+
+    <!-- http://www.omg.org/spec/LCC/Countries/CountryRepresentation/GeopoliticalEntity -->
+
+    <rdf:Description rdf:about="http://www.omg.org/spec/LCC/Countries/CountryRepresentation/GeopoliticalEntity"/>
+    
+
+
+    <!-- http://www.omg.org/spec/LCC/Countries/CountryRepresentation/Location -->
+
+    <rdf:Description rdf:about="http://www.omg.org/spec/LCC/Countries/CountryRepresentation/Location"/>
 </rdf:RDF>
 
 
