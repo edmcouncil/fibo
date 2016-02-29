@@ -15,6 +15,7 @@
     <!ENTITY fibo-fnd-dt-fd "http://spec.edmcouncil.org/fibo/FND/DatesAndTimes/FinancialDates/" >
     <!ENTITY fibo-fnd-acc-cur "http://spec.edmcouncil.org/fibo/FND/Accounting/CurrencyAmount/" >
     <!ENTITY fibo-fnd-law-jur "http://spec.edmcouncil.org/fibo/FND/Law/Jurisdiction/" >
+    <!ENTITY fibo-be-le-lp "http://spec.edmcouncil.org/fibo/BE/LegalEntities/LegalPersons/" >
     <!ENTITY fibo-be-le-fbo "http://spec.edmcouncil.org/fibo/BE/LegalEntities/FormalBusinessOrganizations/" >
     <!ENTITY fibo-be-le-cb "http://spec.edmcouncil.org/fibo/BE/LegalEntities/CorporateBodies/" >
     <!ENTITY fibo-be-corp-corp "http://spec.edmcouncil.org/fibo/BE/Corporations/Corporations/" >
@@ -35,6 +36,7 @@ xmlns:sm="http://www.omg.org/techprocess/ab/SpecificationMetadata/"
      xmlns:fibo-fnd-dt-fd="http://spec.edmcouncil.org/fibo/FND/DatesAndTimes/FinancialDates/"
      xmlns:fibo-fnd-acc-cur="http://spec.edmcouncil.org/fibo/FND/Accounting/CurrencyAmount/"     
      xmlns:fibo-fnd-law-jur="http://spec.edmcouncil.org/fibo/FND/Law/Jurisdiction/"
+     xmlns:fibo-be-le-lp="http://spec.edmcouncil.org/fibo/BE/LegalEntities/LegalPersons/"
      xmlns:fibo-be-le-fbo="http://spec.edmcouncil.org/fibo/BE/LegalEntities/FormalBusinessOrganizations/"
      xmlns:fibo-be-le-cb="http://spec.edmcouncil.org/fibo/BE/LegalEntities/CorporateBodies/"
      xmlns:fibo-be-corp-corp="http://spec.edmcouncil.org/fibo/BE/Corporations/Corporations/">
@@ -46,8 +48,8 @@ xmlns:sm="http://www.omg.org/techprocess/ab/SpecificationMetadata/"
 
     <!-- Curation and Rights Metadata for the FIBO BE Corporations Ontology -->
 
-        <sm:copyright rdf:datatype="&xsd;string">Copyright (c) 2013-2015 EDM Council, Inc.
-Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
+        <sm:copyright rdf:datatype="&xsd;string">Copyright (c) 2013-2016 EDM Council, Inc.
+Copyright (c) 2013-2016 Object Management Group, Inc.</sm:copyright>
         <dct:license rdf:datatype="&xsd;anyURI">http://www.omg.org/techprocess/ab/SpecificationMetadata/MITLicense</dct:license>
 
 
@@ -55,11 +57,12 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
 
         <sm:filename rdf:datatype="&xsd;string">Corporations.rdf</sm:filename>
         <sm:fileAbbreviation rdf:datatype="&xsd;string">fibo-be-corp-corp</sm:fileAbbreviation>
-        <owl:versionIRI rdf:resource="http://spec.edmcouncil.org/fibo/BE/20150201/Corporations/Corporations/"/>
+        <owl:versionIRI rdf:resource="http://spec.edmcouncil.org/fibo/BE/20160201/Corporations/Corporations/"/>
         <sm:fileAbstract rdf:datatype="&xsd;string">This ontology defines the fundamental concepts for companies incorporated by the issuance of shares. Terms defined in this ontology are those which are applicable to all such entities. Many of these concepts form the basis of the relationships of ownership and control which obtain between entities of this type.</sm:fileAbstract>
 
-        <skos:changeNote rdf:datatype="&xsd;string">The http://www.omg.org/spec/EDMC-FIBO/BE/20131101/Corporations/Corporations.rdf version of this ontology was modified per the issue resolutions identified in the FIBO BE 1.0 FTF report.</skos:changeNote>
+        <skos:changeNote rdf:datatype="&xsd;string">The http://spec.edmcouncil.org/fibo/BE/20131101/Corporations/Corporations.rdf version of this ontology was modified per the issue resolutions identified in the FIBO BE 1.0 FTF report.</skos:changeNote>
         <sm:dependsOn rdf:datatype="&xsd;anyURI">http://spec.edmcouncil.org/fibo/FND/</sm:dependsOn>
+        <sm:dependsOn rdf:datatype="&xsd;anyURI">http://spec.edmcouncil.org/fibo/BE/LegalEntities/LegalPersons/</sm:dependsOn>
         <sm:dependsOn rdf:datatype="&xsd;anyURI">http://spec.edmcouncil.org/fibo/BE/LegalEntities/FormalBusinessOrganizations/</sm:dependsOn>
         <sm:dependsOn rdf:datatype="&xsd;anyURI">http://spec.edmcouncil.org/fibo/BE/LegalEntities/CorporateBodies/</sm:dependsOn>
 
@@ -77,6 +80,7 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
         <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/FND/DatesAndTimes/FinancialDates/"/>
         <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/FND/Accounting/CurrencyAmount/"/>
         <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/FND/Law/Jurisdiction/"/>
+        <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/BE/LegalEntities/LegalPersons/"/>
         <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/BE/LegalEntities/FormalBusinessOrganizations/"/>
         <owl:imports rdf:resource="http://spec.edmcouncil.org/fibo/BE/LegalEntities/CorporateBodies/"/>
 
@@ -172,12 +176,11 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
         </rdfs:subClassOf>
     </owl:Class>
 
-    <owl:Class rdf:about="&fibo-be-le-cb;GeneralStockCorporation">
+    <owl:Class rdf:about="&fibo-be-le-cb;StockCorporation">
         <rdfs:subClassOf>
             <owl:Restriction>
                 <owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isGovernedBy"/>
-                <owl:onClass rdf:resource="&fibo-be-corp-corp;BoardAgreement"/>
-                <owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:minQualifiedCardinality>
+                <owl:someValuesFrom rdf:resource="&fibo-be-corp-corp;BoardAgreement"/>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
@@ -230,7 +233,7 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
 2. In the US, a corporation with unlimited liability for the shareholders. Investors in a US joint stock company receive stock (shares) which can be transferred, and can elect a board of directors, but are jointly-and-severally liable for companys debts and obligations. A US joint stock company cannot hold title to a real property.</skos:definition>
         <fibo-fnd-utl-av:definitionOrigin rdf:datatype="&xsd;anyURI">http://www.businessdictionary.com/definition/joint-stock-company.html</fibo-fnd-utl-av:definitionOrigin>
         <skos:editorialNote rdf:datatype="&xsd;string">There are two kinds of joint stock company. The private company kind and the open market. The shares are usually only held by the directors and Company Secretary.</skos:editorialNote>
-        <rdfs:subClassOf rdf:resource="&fibo-be-le-cb;GeneralStockCorporation"/>
+        <rdfs:subClassOf rdf:resource="&fibo-be-le-cb;StockCorporation"/>
     </owl:Class>
 
     <owl:Class rdf:about="&fibo-be-corp-corp;PrivatelyHeldCompany">
@@ -240,13 +243,27 @@ Copyright (c) 2013-2015 Object Management Group, Inc.</sm:copyright>
         <skos:definition rdf:datatype="&xsd;string">A firm whose issued shares are all held by a family or a small group of investors and, therefore, cannot be bought by the public.</skos:definition>
         <fibo-fnd-utl-av:definitionOrigin rdf:datatype="&xsd;anyURI">http://www.businessdictionary.com/definition/closed-corporation.html</fibo-fnd-utl-av:definitionOrigin>
         <skos:editorialNote rdf:datatype="&xsd;string">Wikipedia: definition for British or Commonwealth version: A private company limited by shares is a type of company incorporated under the laws of England and Wales, Scotland, that of certain Commonwealth countries and the Republic of Ireland. It has shareholders with limited liability and its shares may not be offered to the general public, unlike those of public limited companies. Additional notes from Wikipedia: Limited by shares means that the company has shareholders, and that the liability of the shareholders to creditors of the company is limited to the capital originally invested, i.e. the nominal value of the shares and any premium paid in return for the issue of the shares by the company. A shareholders personal assets are thereby protected in the event of the companys insolvency, but money invested in the company will be lost. A limited company may be private or public. A private limited companys disclosure requirements are lighter, but for this reason its shares may not be offered to the general public (and therefore cannot be traded on a public stock exchange). This is the major distinguishing feature between a private limited company and a public limited company. Most companies, particularly small companies, are private. Private companies limited by shares are required to have the suffix Limited (often written Ltd or Ltd.) or Incorporated (Inc.) as part of their name, though the latter cannot be used in the UK or the Republic of Ireland. In the Republic of Ireland, Teoranta (Teo.) may be used instead, largely by Gaeltacht companies. Cyfyngedig (Cyf.) may be used by Welsh companies in a similar fashion.</skos:editorialNote>
-        <rdfs:subClassOf rdf:resource="&fibo-be-le-cb;GeneralStockCorporation"/>
+        <rdfs:subClassOf rdf:resource="&fibo-be-le-cb;StockCorporation"/>
     </owl:Class>
 
     <owl:Class rdf:about="&fibo-be-corp-corp;PubliclyHeldCompany">
         <rdfs:label>publicly held company</rdfs:label>
         <skos:definition rdf:datatype="&xsd;string">a company whose shares are traded and held publicly</skos:definition>
-        <rdfs:subClassOf rdf:resource="&fibo-be-le-cb;GeneralStockCorporation"/>
+        <rdfs:subClassOf rdf:resource="&fibo-be-le-cb;StockCorporation"/>
+    </owl:Class>
+
+    <owl:Class rdf:about="&fibo-be-corp-corp;ReligiousCorporation">
+        <rdfs:label>religious corporation</rdfs:label>
+        <skos:definition rdf:datatype="&xsd;string">a not for profit organization whose objective is specific to some fundamental set of beliefs and practices generally agreed upon by a number of people, and that is incorporated under the law</skos:definition>
+        <fibo-fnd-utl-av:explanatoryNote rdf:datatype="&xsd;string">Often religious corporations are recognized under the law on a sub-national level, for instance by a state or provincial government. The government agency responsible for regulating such corporations is usually the official holder of records, for instance a state department of corporations.</fibo-fnd-utl-av:explanatoryNote>
+        <fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://en.wikipedia.org/wiki/Religious_corporation</fibo-fnd-utl-av:adaptedFrom>
+        <rdfs:subClassOf rdf:resource="&fibo-be-le-cb;NotForProfitCorporation"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="&fibo-be-le-lp;hasObjective"/>
+                <owl:someValuesFrom rdf:resource="&fibo-be-le-lp;ReligiousObjective"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
     </owl:Class>
 
 </rdf:RDF>
