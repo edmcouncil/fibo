@@ -1,0 +1,387 @@
+# baseURI: http://www.edmcouncil.org/skosify
+# imports: http://spinrdf.org/spin
+# imports: http://www.omg.org/spec/EDMC-FIBO/FND/Utilities/AnnotationVocabulary/
+# imports: http://www.w3.org/2004/02/skos/core
+
+@prefix afn: <http://jena.hpl.hp.com/ARQ/function#> .
+@prefix fn: <http://www.w3.org/2005/xpath-functions#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix smf: <http://topbraid.org/sparqlmotionfunctions#> .
+@prefix sp: <http://spinrdf.org/sp#> .
+@prefix spif: <http://spinrdf.org/spif#> .
+@prefix spin: <http://spinrdf.org/spin#> .
+@prefix spl: <http://spinrdf.org/spl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+afn:Select_1
+  rdf:type sp:Select ;
+  rdfs:label "Select 1"^^xsd:string ;
+.
+afn:Select_2
+  rdf:type sp:Select ;
+  rdfs:label "Select 2"^^xsd:string ;
+.
+<http://spinrdf.org/arg#text>
+  rdf:type rdf:Property ;
+  rdfs:subPropertyOf sp:arg ;
+.
+<http://www.edmcouncil.org/skosify>
+  rdf:type owl:Ontology ;
+  owl:imports <http://spinrdf.org/spin> ;
+  owl:imports <http://www.omg.org/spec/EDMC-FIBO/FND/Utilities/AnnotationVocabulary/> ;
+  owl:imports <http://www.w3.org/2004/02/skos/core> ;
+.
+rdf:Property
+  spin:rule [
+      rdf:type sp:Construct ;
+      sp:text """# Rule 11
+CONSTRUCT {
+    ?object ?predicate2 ?subject .
+    ?subject skos:historyNote \"Rule11 S\" .
+    ?object skos:historyNote \"Rule 11 O\" .
+}
+WHERE {
+    ?pp a owl:ObjectProperty .
+    ?pp skos:historyNote ?hn .
+    FILTER regex(?hn, \"^Rule\") .
+    ?subject ?pp ?object .
+    ?predicate2 owl:inverseOf ?pp .
+}"""^^xsd:string ;
+    ] ;
+.
+owl:Class
+  spin:rule [
+      rdf:type sp:Construct ;
+      sp:text """# Classes and Datatypes become Concepts
+CONSTRUCT {
+    ?skentity a skos:Concept .
+    ?skentity rdfs:isDefinedBy ?entity .
+    ?skentity skos:historyNote \"Classes and Datatypes become Concepts (01)\" .
+}
+WHERE {
+    {
+        {
+            ?entity a owl:Class .
+        }
+        UNION
+        {
+            ?entity a rdfs:Datatype .
+        } .
+    } .
+    skos:Concept <http://www.edmcouncil.org/skosify#px> ?px .
+    OPTIONAL {
+        ?entity rdfs:label ?oldlabel .
+    } .
+    FILTER REGEX (xsd:string (?entity), \"edmc\", \"i\") .
+    BIND (REPLACE(str(?entity), \"^.*(#|/)\", \"\") AS ?lentity) .
+    BIND (REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(?lentity, \"”\", \"\\\"\"), \"“\", \"\\\"\"), \"–\", \"-\"), \"’\", \"'\"), \"‘\", \"'\") AS ?altlabel) .
+    BIND (REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(?oldlabel, \"”\", \"\\\"\"), \"“\", \"\\\"\"), \"–\", \"-\"), \"’\", \"'\"), \"‘\", \"'\") AS ?preflabel) .
+    BIND (REPLACE(REPLACE(str(?entity), \"(/|#)[^/]*$\", \"\"), \"^.*/\", \"\") AS ?module) .
+    BIND (URI(REPLACE(CONCAT(?px, ENCODE_FOR_URI(str(?lentity))), \"[{]M[}]\", ?module)) AS ?skentity) .
+}"""^^xsd:string ;
+    ] ;
+  spin:rule [
+      rdf:type sp:Construct ;
+      sp:text """# Rule 2
+CONSTRUCT {
+    ?skentity skos:prefLabel ?titLabel .
+    ?skentity rdfs:isDefinedBy ?entity .
+    ?skentity skos:historyNote \"rdfs:label becomes skos:prefLabel.  If none avilable, make one from the localname. (02)\" .
+}
+WHERE {
+       {
+        {
+            ?entity a owl:Class .
+        }
+        UNION
+        {
+            ?entity a rdfs:Datatype .
+        } .
+    } .
+    skos:Concept <http://www.edmcouncil.org/skosify#px> ?px .
+    FILTER (!isBlank(?entity)) .
+    OPTIONAL {
+        ?entity rdfs:label ?label .
+    } .
+    FILTER REGEX (xsd:string(?entity), \"edmc\", \"i\") .
+    BIND (REPLACE(str(?entity), \"^.*(#|/)\", \"\") AS ?lentity) .
+    BIND (REPLACE(REPLACE(str(?entity), \"(/|#)[^/]*$\", \"\"), \"^.*/\", \"\") AS ?module) .
+    BIND (COALESCE(?label, ?lentity) AS ?prefLabel) .
+    BIND (STRLANG (REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(?prefLabel, \"”\", \"\\\"\"), \"“\", \"\\\"\"), \"–\", \"-\"), \"’\", \"'\"), \"‘\", \"'\"), \"( .)|(^.)\", \"uc($1$2)\"), \"en\") AS ?titLabel) .
+    BIND (URI(REPLACE(CONCAT(?px, ENCODE_FOR_URI(str(?lentity))), \"[{]M[}]\", ?module)) AS ?skentity) .
+}"""^^xsd:string ;
+    ] ;
+.
+owl:Thing
+  spin:rule [
+      rdf:type sp:Construct ;
+      sp:text """# Rule 10
+CONSTRUCT {
+    ?sksubject a owl:ObjectProperty .
+    ?sksubject skos:historyNote \"Inverse properties become subproperties of skos:related (10)\" .
+    ?sksubject rdfs:subPropertyOf skos:related .
+    ?skobject a owl:ObjectProperty .
+    ?skobject skos:historyNote \"Inverse properties become subproperties of skos:related (10)\" .
+    ?skobject rdfs:subPropertyOf skos:related .
+    ?sksubject skos:prefLabel ?titsubject .
+    ?skobject skos:prefLabel ?titobject .
+    ?sksubject owl:inverseOf ?skobject .
+    ?skobject owl:inverseOf ?sksubject .
+    ?sksubject rdfs:isDefinedBy ?subject .
+    ?skobject rdfs:isDefinedBy ?object .
+}
+WHERE {
+    ?subject owl:inverseOf ?object .
+    skos:Concept <http://www.edmcouncil.org/skosify#px> ?px .
+    FILTER (!regex(str(?subject), CONCAT(\"^\", REPLACE(?px, \"[{]M[}]\", \".*\")))) .
+    FILTER (!regex(str(?object), CONCAT(\"^\", REPLACE(?px, \"[{]M[}]\", \".*\")))) .
+    FILTER (!isBlank(?subject)) .
+    OPTIONAL {
+        ?subject rdfs:label ?slabel .
+    } .
+    OPTIONAL {
+        ?object rdfs:label ?olabel .
+    } .
+    BIND (REPLACE(str(?subject), \"^.*(#|/)\", \"\") AS ?lsubject) .
+    BIND (REPLACE(str(?object), \"^.*(#|/)\", \"\") AS ?lobject) .
+    BIND (COALESCE(?slabel, ?lsubject) AS ?psubject) .
+    BIND (COALESCE(?olabel, ?lobject) AS ?pobject) .
+    BIND (STRLANG (REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(?psubject, \"”\", \"\\\"\"), \"“\", \"\\\"\"), \"–\", \"-\"), \"’\", \"'\"), \"‘\", \"'\"), \"en\") AS ?titsubject) .
+    BIND (STRLANG (REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(?pobject, \"”\", \"\\\"\"), \"“\", \"\\\"\"), \"–\", \"-\"), \"’\", \"'\"), \"‘\", \"'\"), \"en\") AS ?titobject) .
+    BIND (REPLACE(REPLACE(str(?subject), \"(/|#)[^/]*$\", \"\"), \"^.*/\", \"\") AS ?smodule) .
+    BIND (URI(REPLACE(CONCAT(?px, ENCODE_FOR_URI(str(?lsubject))), \"[{]M[}]\", ?smodule)) AS ?sksubject) .
+    BIND (REPLACE(REPLACE(str(?object), \"(/|#)[^/]*$\", \"\"), \"^.*/\", \"\") AS ?omodule) .
+    BIND (URI(REPLACE(CONCAT(?px, ENCODE_FOR_URI(str(?lobject))), \"[{]M[}]\", ?omodule)) AS ?skobject) .
+    FILTER (?sksubject != ?subject) .
+    FILTER (?skobject != ?object) .
+}"""^^xsd:string ;
+    ] ;
+  spin:rule [
+      rdf:type sp:Construct ;
+      sp:text """# Rule 13
+CONSTRUCT {
+    ?skpprop a owl:ObjectProperty .
+    ?skdomain ?skpprop ?skrange .
+    ?skdomain skos:historyNote \"domain/range become subject/object (13)\" .
+    ?skpprop skos:historyNote \"domain/range become subject/object (13)\" .
+    ?skpprop rdfs:subPropertyOf skos:related .
+    ?skpprop rdfs:isDefinedBy ?p .
+}
+WHERE {
+    skos:Concept <http://www.edmcouncil.org/skosify#px> ?px .
+    ?p a owl:ObjectProperty .
+FILTER NOT EXISTS {?p rdfs:isDefinedBy []}
+    OPTIONAL {
+        ?p rdfs:domain ?d .
+        ?d a _:0 .
+    } .
+    OPTIONAL {
+        ?p rdfs:range ?r .
+        ?r a _:1 .
+    } .
+    BIND (REPLACE(str(?p), \"^.*(#|/)\", \"\") AS ?pStr) .
+    BIND (REPLACE(REPLACE(str(?p), \"(/|#)[^/]*$\", \"\"), \"^.*/\", \"\") AS ?pmodule) .
+    BIND (URI(REPLACE(CONCAT(?px, ENCODE_FOR_URI(str(?pStr))), \"[{]M[}]\", ?pmodule)) AS ?skpprop) .
+    BIND (REPLACE(str(?d), \"^.*(#|/)\", \"\") AS ?dStr) .
+    BIND (REPLACE(REPLACE(str(?d), \"(/|#)[^/]*$\", \"\"), \"^.*/\", \"\") AS ?dmodule) .
+    BIND (URI(REPLACE(CONCAT(?px, ENCODE_FOR_URI(str(?dStr))), \"[{]M[}]\", ?dmodule)) AS ?skdomain) .
+    BIND (REPLACE(str(?r), \"^.*(#|/)\", \"\") AS ?rStr) .
+    BIND (REPLACE(REPLACE(str(?r), \"(/|#)[^/]*$\", \"\"), \"^.*/\", \"\") AS ?rmodule) .
+    BIND (URI(REPLACE(CONCAT(?px, ENCODE_FOR_URI(str(?rStr))), \"[{]M[}]\", ?rmodule)) AS ?skrange) .
+}"""^^xsd:string ;
+    ] ;
+  spin:rule [
+      rdf:type sp:Construct ;
+      sp:text """# Rule 4
+# It looks as if some of these are daisy-chains. Here we turn restrictions into direct links.
+# This looks as if we have two branches, one for isPlayedBy and one for playsRole - why are they separate?
+# I think property paths will simplify this a lot,perhaps obviating the need for the union.
+CONSTRUCT {
+    ?skpprop a owl:ObjectProperty .
+    ?skpprop skos:historyNote \"Rule 4 a\" .
+    ?skpprop rdfs:subPropertyOf skos:related .
+    ?skpprop skos:prefLabel ?predx .
+    ?skpprop rdfs:isDefinedBy ?w .
+    ?skpsubject ?skpprop ?skpobject .
+    ?skpsubject skos:historyNote \"Rule 4 b\" .
+    ?skpobject rdfs:isDefinedBy ?p .
+    ?skpobject skos:historyNote \"Rule 4 c\" .
+    ?skpsubject rdfs:isDefinedBy ?s .
+    ?skpsubject skos:historyNote \"Rule 4 d\" .
+}
+WHERE {
+    {
+        ?s rdfs:subClassOf ?x .
+        skos:Concept <http://www.edmcouncil.org/skosify#px> ?px .
+        ?x a owl:Restriction .
+        ?x (owl:someValuesFrom|owl:allValuesFrom)|owl:onClass ?z .
+        ?x owl:onProperty ?y .
+        FILTER (?y = <http://spec.edmcouncil.org/fibo/FND/Parties/Roles/isPlayedBy>) .
+        OPTIONAL {
+            ?y rdfs:label ?yL .
+        } .
+        ?z owl:onProperty ?w .
+        ?z ((owl:someValuesFrom|owl:allValuesFrom)|owl:onClass)|owl:onDataRange ?p .
+        FILTER (?p != owl:Thing) .
+        BIND (REPLACE(str(?w), \"^.*(#|/)\", \"\") AS ?wStr) .
+        BIND (REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(COALESCE(?wL, ?yStr), \"”\", \"\\\"\"), \"“\", \"\\\"\"), \"–\", \"-\"), \"’\", \"'\"), \"‘\", \"'\") AS ?predx) .
+        BIND (REPLACE(str(?p), \"^.*(#|/)\", \"\") AS ?xpobject) .
+        BIND (REPLACE(str(?s), \"^.*(#|/)\", \"\") AS ?xpsubject) .
+        BIND (REPLACE(REPLACE(str(?p), \"(/|#)[^/]*$\", \"\"), \"^.*/\", \"\") AS ?pmodule) .
+        BIND (URI(REPLACE(CONCAT(?px, ENCODE_FOR_URI(str(?xpobject))), \"[{]M[}]\", ?pmodule)) AS ?skpobject) .
+        BIND (REPLACE(REPLACE(str(?s), \"(/|#)[^/]*$\", \"\"), \"^.*/\", \"\") AS ?smodule) .
+        BIND (URI(REPLACE(CONCAT(?px, ENCODE_FOR_URI(str(?xpsubject))), \"[{]M[}]\", ?smodule)) AS ?skpsubject) .
+        BIND (REPLACE(REPLACE(str(?w), \"(/|#)[^/]*$\", \"\"), \"^.*/\", \"\") AS ?wmodule) .
+        BIND (URI(REPLACE(CONCAT(?px, ENCODE_FOR_URI(str(?wStr))), \"[{]M[}]\", ?module)) AS ?skpprop) .
+    }
+    UNION
+    {
+        ?s rdfs:subClassOf ?x .
+        ?x a owl:Restriction .
+        ?x ((owl:someValuesFrom|owl:allValuesFrom)|owl:onClass)|owl:onDataRange ?z .
+        ?x owl:onProperty ?w .
+        OPTIONAL {
+            ?w rdfs:label ?wL .
+        } .
+        ?z owl:onProperty ?y .
+        FILTER (?y = <http://spec.edmcouncil.org/fibo/FND/Parties/Roles/playsRole>) .
+        ?z (owl:someValuesFrom|owl:allValuesFrom)|owl:onClass ?p .
+        BIND (REPLACE(str(?w), \"^.*(#|/)\", \"\") AS ?wStr) .
+        BIND (REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(COALESCE(?wL, ?yStr), \"”\", \"\\\"\"), \"“\", \"\\\"\"), \"–\", \"-\"), \"’\", \"'\"), \"‘\", \"'\") AS ?predx) .
+        BIND (REPLACE(str(?p), \"^.*(#|/)\", \"\") AS ?xpobject) .
+        BIND (REPLACE(str(?s), \"^.*(#|/)\", \"\") AS ?xpsubject) .
+        BIND (REPLACE(REPLACE(str(?p), \"(/|#)[^/]*$\", \"\"), \"^.*/\", \"\") AS ?pmodule) .
+        BIND (URI(REPLACE(CONCAT(?px, ENCODE_FOR_URI(str(?xpobject))), \"[{]M[}]\", ?pmodule)) AS ?skpobject) .
+        BIND (REPLACE(REPLACE(str(?s), \"(/|#)[^/]*$\", \"\"), \"^.*/\", \"\") AS ?smodule) .
+        BIND (URI(REPLACE(CONCAT(?px, ENCODE_FOR_URI(str(?xpsubject))), \"[{]M[}]\", ?smodule)) AS ?skpsubject) .
+        BIND (REPLACE(REPLACE(str(?w), \"(/|#)[^/]*$\", \"\"), \"^.*/\", \"\") AS ?wmodule) .
+        BIND (URI(REPLACE(CONCAT(?px, ENCODE_FOR_URI(str(?wStr))), \"[{]M[}]\", ?module)) AS ?skpprop) .
+    } .
+}"""^^xsd:string ;
+    ] ;
+  spin:rule [
+      rdf:type sp:Construct ;
+      sp:text """# Rule 6
+CONSTRUCT {
+    <http://www.edmcouncil.org/skos/vocabulary> owl:imports <http://www.w3.org/2004/02/skos/core> .
+    <http://www.edmcouncil.org/skos/vocabulary> a owl:Ontology .
+}
+WHERE {
+
+}"""^^xsd:string ;
+    ] ;
+  spin:rule [
+      rdf:type sp:Construct ;
+      sp:text """# Rule 7
+CONSTRUCT {
+    ?skchild skos:broader ?skparent .
+    ?skchild skos:historyNote \"subclass becomes broader (07)\" .
+    ?skchild rdfs:isDefinedBy ?child .
+    ?skparent rdfs:isDefinedBy ?parent .
+    ?skparent skos:historyNote \"subclass becomes broader (07)\" .
+}
+WHERE {
+    ?child rdfs:subClassOf ?parent .
+    skos:Concept <http://www.edmcouncil.org/skosify#px> ?px .
+    FILTER (!isBlank(?parent)) .
+    BIND (REPLACE(str(?parent), \"^.*(#|/)\", \"\") AS ?lparent) .
+    BIND (REPLACE(str(?child), \"^.*(#|/)\", \"\") AS ?lchild) .
+    BIND (REPLACE(REPLACE(str(?parent), \"(/|#)[^/]*$\", \"\"), \"^.*/\", \"\") AS ?pmodule) .
+    BIND (URI(REPLACE(CONCAT(?px, ENCODE_FOR_URI(str(?lparent))), \"[{]M[}]\", ?pmodule)) AS ?skparent) .
+    BIND (REPLACE(REPLACE(str(?child), \"(/|#)[^/]*$\", \"\"), \"^.*/\", \"\") AS ?cmodule) .
+    BIND (URI(REPLACE(CONCAT(?px, ENCODE_FOR_URI(str(?lchild))), \"[{]M[}]\", ?cmodule)) AS ?skchild) .
+}"""^^xsd:string ;
+    ] ;
+  spin:rule [
+      rdf:type sp:Construct ;
+      sp:text """# Rule 8 changeNote
+CONSTRUCT {
+    ?skentity ?thep ?note .
+    ?skentity skos:historyNote ?hist .
+    ?skentity rdfs:isDefinedBy ?x .
+}
+WHERE {
+    skos:Concept <http://www.edmcouncil.org/skosify#px> ?px .
+    ?x ?thep ?it .
+FILTER (?thep IN (skos:changeNote, skos:definition, skos:historyNote, skos:editorialNote, skos:example, skos:note, skos:scopeNote, fibo-fnd-utl-av:adaptedFrom, fibo-fnd-utl-av:definitionOrigin, fibo-fnd-utl-av:synonym) )
+
+    FILTER NOT EXISTS {
+        ?x a owl:NamedIndividual .
+    } .
+    BIND (REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(xsd:string (?it), \"”\", \"\\\"\"), \"“\", \"\\\"\"), \"–\", \"-\"), \"’\", \"'\"), \"‘\", \"'\") AS ?note) .
+LET (?hist := CONCAT (\"Copy values for \", REPLACE(str(?thep), \"^.*(#|/)\", \"\"), \"(08)\"))
+    BIND (REPLACE(str(?x), \"^.*(#|/)\", \"\") AS ?lentity) .
+    BIND (REPLACE(REPLACE(str(?x), \"(/|#)[^/]*$\", \"\"), \"^.*/\", \"\") AS ?module) .
+    BIND (URI(REPLACE(CONCAT(?px, ENCODE_FOR_URI(str(?lentity))), \"[{]M[}]\", ?module)) AS ?skentity) .
+    FILTER (?x != ?skentity) .
+    FILTER (!regex(str(?x), CONCAT(\"^\", REPLACE(?px, \"[{]M[}]\", \".*\")))) .
+    FILTER NOT EXISTS {
+        ?x rdfs:isDefinedBy _:0 .
+    } .
+    FILTER NOT EXISTS {
+        ?x a <http://www.omg.org/techprocess/ab/SpecificationMetadata/SpecificationVersion> .
+    } .
+    ?x a ?type .
+    FILTER (?type NOT IN (owl:AnnotationProperty, owl:DatatypeProperty, owl:FunctionalProperty)) .
+}"""^^xsd:string ;
+    ] ;
+  spin:rule [
+      rdf:type sp:Construct ;
+      sp:text """# Rule 9
+CONSTRUCT {
+    ?skpprop a owl:ObjectProperty .
+    ?skpprop skos:historyNote ?hist .
+    ?skpprop rdfs:subPropertyOf skos:related .
+    ?skpprop rdfs:label  ?predx .
+    ?skpprop rdfs:isDefinedBy ?y .
+    ?skpsubject ?skpprop ?skpobject .
+    ?skpsubject skos:historyNote ?hist .
+    ?skpsubject rdfs:isDefinedBy ?s .
+    ?skpobject rdfs:isDefinedBy ?z .
+    ?skpobject skos:historyNote ?hist .
+}
+WHERE {
+    skos:Concept <http://www.edmcouncil.org/skosify#px> ?px .
+    ?s rdfs:subClassOf|owl:equivalentClass ?x .
+    ?x a owl:Restriction .
+    ?x owl:onProperty ?y .
+    ?y a owl:ObjectProperty .
+    OPTIONAL {
+        ?y rdfs:label ?yL .
+    } .
+    ?x ((owl:onClass|owl:someValuesFrom)|owl:allValuesFrom)|owl:onDataRange ?z .
+    ?z a _:0 .
+    FILTER (!isBlank(?z)) .
+    BIND (REPLACE(str(?y), \"^.*(#|/)\", \"\") AS ?yStr) .
+    BIND (REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(COALESCE(?yL, ?yStr), \"”\", \"\\\"\"), \"“\", \"\\\"\"), \"–\", \"-\"), \"’\", \"'\"), \"‘\", \"'\") AS ?predx) .
+    BIND (REPLACE(str(?z), \"^.*(#|/)\", \"\") AS ?xpobject) .
+    BIND (REPLACE(str(?s), \"^.*(#|/)\", \"\") AS ?xpsubject) .
+    BIND (REPLACE(REPLACE(str(?z), \"(/|#)[^/]*$\", \"\"), \"^.*/\", \"\") AS ?zmodule) .
+    BIND (URI(REPLACE(CONCAT(?px, ENCODE_FOR_URI(str(?xpobject))), \"[{]M[}]\", ?zmodule)) AS ?skpobject) .
+    BIND (REPLACE(REPLACE(str(?s), \"(/|#)[^/]*$\", \"\"), \"^.*/\", \"\") AS ?smodule) .
+    BIND (URI(REPLACE(CONCAT(?px, ENCODE_FOR_URI(str(?xpsubject))), \"[{]M[}]\", ?smodule)) AS ?skpsubject) .
+    BIND (REPLACE(REPLACE(str(?y), \"(/|#)[^/]*$\", \"\"), \"^.*/\", \"\") AS ?ymodule) .
+    BIND (URI(REPLACE(CONCAT(?px, ENCODE_FOR_URI(str(?yStr))), \"[{]M[}]\", ?ymodule)) AS ?skpprop) .
+LET (?hist := CONCAT (?xpsubject, \" <- \", \" has a restriction involving \", ?yStr, \" and \", ?xpobject))
+}"""^^xsd:string ;
+    ] ;
+  spin:rule [
+      rdf:type sp:Construct ;
+      sp:text """CONSTRUCT {
+    ?cs a skos:ConceptScheme .
+}
+WHERE {
+    skos:Concept <http://www.edmcouncil.org/skosify#px> ?px .
+    BIND (URI(REPLACE(CONCAT(?px, \"FIBO-CS\"), \"[{]M[}]\", \"core\")) AS ?cs) .
+}"""^^xsd:string ;
+    ] ;
+.
+skos:Concept
+  <http://www.edmcouncil.org/skosify#domain> "be" ;
+  <http://www.edmcouncil.org/skosify#domain> "fbc" ;
+  <http://www.edmcouncil.org/skosify#domain> "fnd" ;
+  <http://www.edmcouncil.org/skosify#px> "http://www.edmcouncil.org/skos/vocabulary/{M}#"^^xsd:string ;
+.
