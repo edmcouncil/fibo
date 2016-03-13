@@ -10,6 +10,12 @@ We are in the process of setting up the FIBO Development & Test Environment.
 
 Progress on actual technical steps can be followed here: [progress.md](progress.md)
 
+## Amazon Web Services
+
+All our machines run in the Amazon cloud, also known as "Amazon Web Services".
+
+See also [AWS](./aws/README.md)
+
 ## Jenkins
 
 Jenkins is our mail gatekeeper in our "Test Driven Development" (TDD) based "Software Development Life Cycle" (SDLC). All changes go via a git repository where each change triggers one or more Jenkins jobs.
