@@ -1,4 +1,5 @@
-fibo-infra
-==========
+# FIBO Infra
 
-Infrastructural scripts, settings, documentation etc
+This repository contains all infrastructural scripts, settings, documentation etc.
+
+See also [Jenkins](./jenkins/README.md)
