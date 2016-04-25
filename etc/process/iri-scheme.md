@@ -17,27 +17,51 @@ This scheme is strict because:
 - we need to be able to support versioned artifacts next to "latest" artifacts
   - Similar in concept to the difference between "tags & branches" in git
 
-## Families
+## The IRI Scheme
+
+### Proposal 1
+
+```
+https://<flavor>.fibo.org/<release>/<artifact>
+```
+As you can see, there's no `<family>` component in this IRI, assuming that all we ever publish on `fibo.org` is obviously part of the fibo "family". (See [Families](#families) below)
+
+### Proposal 2
+
+```
+https://spec.edmcouncil.org/<family>/<flavor>/<release>/<artifact>
+```
+
+Where:
+
+| IRI Element  | Options |
+| ------------ | ------- |
+| `<family>`   | is either `FIBO` or `DCAM`, see [Families](#families) below |
+| `<flavor>`   | is (currently) one of `ontology`, `vocabulary`, `uml` or `schema`, see [Flavors](#flavors) below |
+| `<release>`  | A release identifier uniquely identifies a specific release of an artifact, consisting of a `<color>` and a `<version>` identifier. See [Releases](#releases) below. |
+| `<artifact>` | x |
+
+### Families
 
 The EDM Council has two product families:
 
 * FIBO - Financial Industry Business Ontology
 * DCAM - Data Management Capability Model
 
-### Notes
+#### Notes
 
 - We could perhaps call this just "product line" which is a more common term than "family" for a line of products?
 - The original idea was to embed the product family name in the IRI like `https://spec.edmcouncil.org/fibo/bla`.
   This would allow the council to publish many other product families in the future, basically becoming a standards
   organization itself, like OMG or W3C, where the brand name of the EDM Council was supposed to be part of the IRI
-  as {{edmcouncil.org}} showing the authoritative source.
+  as `edmcouncil.org` showing the authoritative source.
   However, that distracts from the brand name FIBO itself. Which message do you want to convey to the market, which name
   are we going invest our marketing efforts for? FIBO or EDM Council or both? From a marketing perspective just focussing on
   one easy to remember brand name like FIBO is obviously more effective. We can embed the name EDM Council as copyright
   holder and authoritative source in all kinds of places in each and every published artifact.
 - DCAM (it's a model right?) should perhaps be modelled as an ontology itself? And become part of FIBO?
 
-## Flavors
+### Flavors
 
 The flavors are the "products" in the FIBO "family". We currently have four, but many others will follow:
 
@@ -55,10 +79,64 @@ Other flavors could be:
   - We would end up with multiple types of documentation, all within the same IRI scheme therefore every vendor or every tool
     gets its own flavor name like `topbraid-evn` or `stardog-x` or `ontotext-y`.
 
-### Notes
+#### Notes
 
 - We could perhaps call this just "product" which is a more common term than "flavor"?
--
+- ..
+
+### Releases
+
+A `<release>` consists of:
+
+```
+<color>.<version>
+```
+
+### Colors
+
+### Versions
+
+`<version>` is either a tagged version of FIBO or the latest edition of a given color:
+
+- Tagged version: '<major>.<minor>.<fix>`
+- 
+
+### Artifacts
+
+For each `<flavor>`, the `<artifact>` part in the IRI has its own scheme. For the four major flavors we have the following `<artifact>` IRI schemes:
+
+#### Ontology Artifacts
+
+`<artifact>' for the FIBO ontologies can either be an artifact as a file or an axiom identifier as defined in an OWL ontology, so there are two forms:
+
+* `<domain>/<ontology>.<format>[.<compression>]` - File
+* `<domain>/<ontology>/<axiom identifier>` - Axiom
+
+- `<domain`
+- `<ontology>` can consist of two or three parts, such as
+  - `AgentsAndPeople/Person` or
+  - `FunctionalEntities/USJurisdiction/USExampleIndividuals`
+- `<axiom identifier>`
+
+#### Vocabulary Artifacts
+
+#### UML Artifacts
+
+#### Schema.org Artifacts
 
 
-## 
+## Examples
+
+The ontology axiom IRI that identifies the class Person:
+
+```
+https://ontology.fibo.org/pink/latest/FND/AgentsAndPeople/Agents/Person
+```
+
+The ontology file name for the OWL file, in RDF/XML format (`.rdf`) that defines the previous axiom:
+
+```
+https://ontology.fibo.org/pink/latest/FND/AgentsAndPeople/Agents/Person.rdf
+```
+
+
