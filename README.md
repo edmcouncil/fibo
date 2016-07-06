@@ -14,7 +14,6 @@ Progress on actual technical steps can be followed here: [progress.md](progress.
 
 All our machines run in the Amazon cloud, also known as "Amazon Web Services".
 
-
 See also [AWS](./aws/README.md)
 
 ## Jenkins
