@@ -231,12 +231,15 @@ format.
 Here's the IRI scheme:
 
 ```
-https://spec.edmcouncil.org/<family>/<product>/<branch|tag>/<domain>/<sub-domain>[/<sub-sub-domain>]/<artifact>[.<format>[.<compression>]]
+<protocol>://<host>/<family>/<product>/<branch|tag>/<domain>/<sub-domain>[/<sub-sub-domain>]/<artifact>[.<format>[.<compression>]]
 ```
 
 Where:
 
 | Element           | Description |
+|-------------------|-------------|
+| `protocol`        | Is always `https`, we do NOT support `http`, please be aware of the fact that the difference between using `http` and `https`, even though its only one letter, is in many cases significant. Two OWL axioms that only differ with this single letter are actually not the same thing. |
+| `host`            | Is always `spec.edmcouncil.org` although the OMG ratified version of FIBO will be (also) published on the OMG site but they have as slightly different IRI scheme |
 | `family`          | .. |
 | `branch` or `tag` | .. |
 | `domain`          | .. |
