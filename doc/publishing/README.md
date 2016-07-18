@@ -243,7 +243,7 @@ Here's the IRI scheme for the `vocabulary` artifacts:
 Where:
 
 | Element           | Description |
-|-------------------|-------------|
+|:------------------|:------------|
 | `protocol`        | Is always `https`, we do NOT support `http`, please be aware of the fact that the difference between using `http` and `https`, even though its only one letter, is in many cases significant. Two OWL axioms that only differ with this single letter are actually not the same thing. |
 | `host`            | Is always `spec.edmcouncil.org` although the OMG ratified version of FIBO will be (also) published on the OMG site but they have as slightly different IRI scheme |
 | `family`          | Is always `fibo` (lowercase), it could be that the EDM Council will publish other product lines like this as well such as DCAM |
@@ -274,7 +274,7 @@ Accept: application/rdf+xml
 If you want the same file as Turtle, specify this:
 
 ```
-Accept: text/turtle`
+Accept: text/turtle
 ```
 
 See the paragraph "File extensions & MIME Types" below for a listing of the supported values of the Accept header (see column MIME Type)
@@ -282,17 +282,25 @@ See the paragraph "File extensions & MIME Types" below for a listing of the supp
 
 ## Accept-encoding
 
+If you want a compressed version of the artifact then you can do that either by specifying the full file name and adding the `.gz` extension, or
+by specifying the Accept-encoding request-header as follows:
+
+```
+Accept-encoding: gzip
+```
+
 # File extensions & MIME Types
 
 | Extension | MIME Type                                  | Description          |
-|-----------|--------------------------------------------|----------------------|
+|-----------|:-------------------------------------------|:---------------------|
 | `rdf`     | `application/rdf+xml` or `application/xml` | RDF/XML format       |
 | `owl`     | Not supported via accept header            | OWL/XML format       |
-| 'ttl'     | `text/turtle` or `application/x-turtle`    | Turtle format        |
+| `ttl`     | `text/turtle` or `application/x-turtle`    | Turtle format        |
 | `nt`      | `application/n-triples`                    | N-Triples format     |
 | `n3`      | `text/n3` or `text/rdf+n3`                 | N3/Notation 3 format |
 | `jsonld`  | `application/ld+json`                      | JSON-LD format       |
 | `nq`      | `application/n-quads`                      | N-Quads format       |
+
 
 
 
