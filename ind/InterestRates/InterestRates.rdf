@@ -42,8 +42,8 @@ xmlns:sm="http://www.omg.org/techprocess/ab/SpecificationMetadata/"
 
     <!-- Curation and Rights Metadata for the FIBO IND Interest Rates Ontology -->
 
-        <sm:copyright rdf:datatype="&xsd;string">Copyright (c) 2014-2015 EDM Council, Inc.
-Copyright (c) 2014-2015 Object Management Group, Inc.</sm:copyright>
+        <sm:copyright rdf:datatype="&xsd;string">Copyright (c) 2014-2016 EDM Council, Inc.
+Copyright (c) 2014-2016 Object Management Group, Inc.</sm:copyright>
         <dct:license rdf:datatype="&xsd;anyURI">http://www.omg.org/techprocess/ab/SpecificationMetadata/MITLicense</dct:license>
 
 
@@ -51,10 +51,11 @@ Copyright (c) 2014-2015 Object Management Group, Inc.</sm:copyright>
 
         <sm:filename rdf:datatype="&xsd;string">InterestRates.rdf</sm:filename>
         <sm:fileAbbreviation rdf:datatype="&xsd;string">fibo-ind-ir-ir</sm:fileAbbreviation>
-        <owl:versionIRI rdf:resource="http://spec.edmcouncil.org/fibo/IND/20150501/InterestRates/InterestRates/"/>
+        <owl:versionIRI rdf:resource="http://spec.edmcouncil.org/fibo/IND/20160501/InterestRates/InterestRates/"/>
         <sm:fileAbstract rdf:datatype="&xsd;string">This ontology provides the basic types of interest rate which are recognized in the financial markets, and the relationships between these where applicable. THese include bank base rates, inter-bank offer rates, overnight rates of interest and the US Federal Funds rate which is widely used as a rate of reference. It also includes the concept of a market rate spread between two interest rates.</sm:fileAbstract>
 
-        <skos:changeNote rdf:datatype="&xsd;string">The http://spec.edmcouncil.org/fibo/IND/20140601/InterestRates/InterestRates.rdf version of this ontology was modified per the issue resolutions identified in the FIBO IND 1.0 FTF report.</skos:changeNote>
+        <skos:changeNote rdf:datatype="&xsd;string">The http://spec.edmcouncil.org/fibo/IND/20150501/InterestRates/InterestRates.rdf version of this ontology was modified per the issue resolutions identified in the FIBO IND 1.0 FTF 2 report.</skos:changeNote>
+        <skos:changeNote rdf:datatype="&xsd;string">The http://spec.edmcouncil.org/fibo/IND/20140601/InterestRates/InterestRates.rdf version of this ontology was modified per the issue resolutions identified in the FIBO IND 1.0 FTF 1 report.</skos:changeNote>
         <sm:dependsOn rdf:datatype="&xsd;anyURI">http://spec.edmcouncil.org/fibo/FND/</sm:dependsOn>
         <sm:dependsOn rdf:datatype="&xsd;anyURI">http://spec.edmcouncil.org/fibo/IND/Indicators/Indicators/</sm:dependsOn>
 
@@ -87,19 +88,19 @@ Copyright (c) 2014-2015 Object Management Group, Inc.</sm:copyright>
 
     <owl:ObjectProperty rdf:about="&fibo-ind-ir-ir;hasQuotationDate">
         <rdfs:label>has quotation date</rdfs:label>
-        <rdfs:domain rdf:resource="&fibo-ind-ir-ir;ReferenceRate"/>
-        <rdfs:range rdf:resource="&fibo-fnd-dt-fd;Date"/>
+        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
         <rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDate"/>
+        <owl:equivalentProperty rdf:resource="&fibo-ind-ind-ind;hasQuotationDate"/>
+        <rdfs:range rdf:resource="&fibo-fnd-dt-fd;Date"/>
         <skos:definition rdf:datatype="&xsd;string">relates a reference rate to the date it was quoted on</skos:definition>
     </owl:ObjectProperty>
     
     <owl:ObjectProperty rdf:about="&fibo-ind-ir-ir;hasReferenceCurrency">
         <rdfs:label>has reference currency</rdfs:label>
-        <rdfs:domain rdf:resource="&fibo-ind-ir-ir;ReferenceRate"/>
+        <rdfs:domain rdf:resource="&fibo-ind-ir-ir;ReferenceInterestRate"/>
         <rdfs:range rdf:resource="&fibo-fnd-acc-cur;Currency"/>
-        <rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;has"/>
+        <rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasCurrency"/>
         <skos:definition rdf:datatype="&xsd;string">relates a reference rate to the currency it is based on</skos:definition>
-        <skos:editorialNote rdf:datatype="&xsd;string">This was not modeled as a subproperty of hasCurrency due to the domain for hasCurrency of MonetaryAmount.</skos:editorialNote>
     </owl:ObjectProperty>
 
 
@@ -144,73 +145,59 @@ Copyright (c) 2014-2015 Object Management Group, Inc.</sm:copyright>
 
     <owl:Class rdf:about="&fibo-ind-ir-ir;BaseRate">
         <rdfs:label>base rate</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&fibo-ind-ir-ir;ReferenceRate"/>
+        <rdfs:subClassOf rdf:resource="&fibo-ind-ir-ir;ReferenceInterestRate"/>
         <fibo-fnd-utl-av:explanatoryNote rdf:datatype="&xsd;string">This is set at intervals.</fibo-fnd-utl-av:explanatoryNote>
         <skos:definition rdf:datatype="&xsd;string">a reference rate that is the base rate set by a central bank for a given currency</skos:definition>
     </owl:Class>
-    
 
     <owl:Class rdf:about="&fibo-ind-ir-ir;FederalFundsRate">
         <skos:prefLabel rdf:datatype="&xsd;string">US federal funds rate</skos:prefLabel>
         <skos:altLabel rdf:datatype="&xsd;string">fed funds rate</skos:altLabel>
         <rdfs:label>federal funds rate</rdfs:label>
         <rdfs:subClassOf rdf:resource="&fibo-ind-ir-ir;OvernightRate"/>
+        <skos:definition rdf:datatype="&xsd;string">a reference rate that is the interest rate at which a depository institution lends funds maintained at the Federal Reserve to another depository institution overnight</skos:definition>
         <fibo-fnd-utl-av:explanatoryNote rdf:datatype="&xsd;string">By trading government securities, the New York Fed affects the federal funds rate, which is the interest rate at which depository institutions lend balances to each other overnight. The Federal Open Market Committee establishes the target rate for trading in the federal funds market.</fibo-fnd-utl-av:explanatoryNote>
         <fibo-fnd-utl-av:explanatoryNote rdf:datatype="&xsd;string">The federal funds rate is generally only applicable to the most creditworthy institutions when they borrow and lend overnight funds to each other. The federal funds rate is one of the most influential interest rates in the U.S. economy, since it affects monetary and financial conditions, which in turn have a bearing on key aspects of the broad economy including employment, growth and inflation. The Federal Open Market Committee (FOMC), which is the Federal Reserve&apos;s primary monetary policymaking body, telegraphs its desired target for the federal funds rate through open market operations.</fibo-fnd-utl-av:explanatoryNote>
-        <skos:definition rdf:datatype="&xsd;string">a reference rate that is the interest rate at which a depository institution lends funds maintained at the Federal Reserve to another depository institution overnight.</skos:definition>
         <rdfs:seeAlso rdf:resource="http://www.newyorkfed.org/markets/omo/dmm/fedfundsdata.cfm"/>
     </owl:Class>
     
-
     <owl:Class rdf:about="&fibo-ind-ir-ir;InterbankBidRate">
         <rdfs:label>interbank bid rate</rdfs:label>
         <rdfs:subClassOf rdf:resource="&fibo-ind-ir-ir;InterbankRate"/>
-        <fibo-fnd-utl-av:explanatoryNote rdf:datatype="&xsd;string">Unlike an interbank offered rate, which is the rate at which banks lend money, an interbank bid rate is the rate at which banks ask to borrow.</fibo-fnd-utl-av:explanatoryNote>
         <skos:definition rdf:datatype="&xsd;string">an interbank rate that is the interest rate at which participating banks are willing to borrow deposits from other banks</skos:definition>
+        <fibo-fnd-utl-av:explanatoryNote rdf:datatype="&xsd;string">Unlike an interbank offered rate, which is the rate at which banks lend money, an interbank bid rate is the rate at which banks ask to borrow.</fibo-fnd-utl-av:explanatoryNote>
     </owl:Class>
     
-
     <owl:Class rdf:about="&fibo-ind-ir-ir;InterbankMidRate">
         <rdfs:label>interbank mid rate</rdfs:label>
         <rdfs:subClassOf rdf:resource="&fibo-ind-ir-ir;InterbankRate"/>
         <skos:definition rdf:datatype="&xsd;string">an interbank rate that represents the mid-point between bid and offer rates</skos:definition>
     </owl:Class>
     
-
     <owl:Class rdf:about="&fibo-ind-ir-ir;InterbankOfferedRate">
         <rdfs:label>interbank offered rate</rdfs:label>
         <rdfs:subClassOf rdf:resource="&fibo-ind-ir-ir;InterbankRate"/>
         <skos:definition rdf:datatype="&xsd;string">an interbank rate that is the interest rate at which participating banks lend money</skos:definition>
     </owl:Class>
-    
 
     <owl:Class rdf:about="&fibo-ind-ir-ir;InterbankRate">
         <rdfs:label>interbank rate</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&fibo-ind-ir-ir;ReferenceRate"/>
+        <rdfs:subClassOf rdf:resource="&fibo-ind-ir-ir;ReferenceInterestRate"/>
         <fibo-fnd-utl-av:explanatoryNote rdf:datatype="&xsd;string">Banks borrow and lend money in the interbank market in order to manage liquidity and meet the requirements placed on them. The interest rate charged depends on the availability of money in the market, on prevailing rates and on the specific terms of the contract, such as term length.</fibo-fnd-utl-av:explanatoryNote>
         <skos:definition rdf:datatype="&xsd;string">a reference rate that is the rate of interest charged on short-term loans between banks</skos:definition>
     </owl:Class>
     
-
     <owl:Class rdf:about="&fibo-ind-ir-ir;OvernightRate">
         <rdfs:label>overnight rate</rdfs:label>
-        <rdfs:subClassOf rdf:resource="&fibo-ind-ir-ir;ReferenceRate"/>
-        <fibo-fnd-utl-av:explanatoryNote rdf:datatype="&xsd;string">The overnight rate is the lowest available interest rate, and as such, it is only available to the most creditworthy institutions. It is the underlying rate for Overnight Interest Rate Swaps (IOS).</fibo-fnd-utl-av:explanatoryNote>
+        <rdfs:subClassOf rdf:resource="&fibo-ind-ir-ir;ReferenceInterestRate"/>
         <skos:definition rdf:datatype="&xsd;string">a reference rate that is an interest rate at which a depository institution lends funds to another depository institution (short-term), or the interest rate the central bank charges a financial institution to borrow money overnight</skos:definition>
+        <fibo-fnd-utl-av:explanatoryNote rdf:datatype="&xsd;string">The overnight rate is the lowest available interest rate, and as such, it is only available to the most creditworthy institutions. It is the underlying rate for Overnight Interest Rate Swaps (IOS).</fibo-fnd-utl-av:explanatoryNote>
     </owl:Class>
     
-
-    <owl:Class rdf:about="&fibo-ind-ir-ir;ReferenceRate">
-        <rdfs:label>reference rate</rdfs:label>
+    <owl:Class rdf:about="&fibo-ind-ir-ir;ReferenceInterestRate">
+        <rdfs:label>reference interest rate</rdfs:label>
         <rdfs:subClassOf rdf:resource="&fibo-ind-ind-ind;MarketRate"/>
-        <rdfs:subClassOf rdf:resource="&fibo-fnd-utl-bt;Percentage"/>
-        <rdfs:subClassOf>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="&fibo-ind-ir-ir;hasQuotationDate"/>
-                <owl:onClass rdf:resource="&fibo-fnd-dt-fd;Date"/>
-                <owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-            </owl:Restriction>
-        </rdfs:subClassOf>
+        <rdfs:subClassOf rdf:resource="&fibo-fnd-acc-cur;InterestRate"/>
         <rdfs:subClassOf>
             <owl:Restriction>
                 <owl:onProperty rdf:resource="&fibo-ind-ir-ir;hasReferenceCurrency"/>
@@ -223,8 +210,16 @@ Copyright (c) 2014-2015 Object Management Group, Inc.</sm:copyright>
                 <owl:allValuesFrom rdf:resource="&fibo-fnd-utl-bt;text"/>
             </owl:Restriction>
         </rdfs:subClassOf>
-        <fibo-fnd-utl-av:explanatoryNote rdf:datatype="&xsd;string">The reference rate is a moving index such as LIBOR, the prime rate or the rate on benchmark U.S. Treasuries.</fibo-fnd-utl-av:explanatoryNote>
         <skos:definition rdf:datatype="&xsd;string">a market rate that is a rate of interest paid by or agreed among some bank or set of banks</skos:definition>
+        <fibo-fnd-utl-av:explanatoryNote rdf:datatype="&xsd;string">The reference rate is a moving index such as LIBOR, the prime rate or the rate on benchmark U.S. Treasuries.</fibo-fnd-utl-av:explanatoryNote>
     </owl:Class>
     
+    <owl:Class rdf:about="&fibo-ind-ir-ir;ReferenceRate">
+        <rdfs:label>reference rate</rdfs:label>
+        <owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+        <owl:equivalentClass rdf:resource="&fibo-ind-ir-ir;ReferenceInterestRate"/>
+        <skos:definition rdf:datatype="&xsd;string">a market rate that is a rate of interest paid by or agreed among some bank or set of banks</skos:definition>
+        <fibo-fnd-utl-av:explanatoryNote rdf:datatype="&xsd;string">The reference rate is a moving index such as LIBOR, the prime rate or the rate on benchmark U.S. Treasuries.</fibo-fnd-utl-av:explanatoryNote>
+    </owl:Class>
+
 </rdf:RDF>
