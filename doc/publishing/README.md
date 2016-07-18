@@ -57,24 +57,27 @@ And so forth. As you can see, at the top level we have the FIBO
 FIBO itself is a "product family" or a "product line" that consists of
 a number of products which we usually call "flavors":
 
-- `ontology`
+1. `ontology`
 
-  The primary product, the core OWL ontologies that are the foundation
-  for any of the other flavors of FIBO.
-- `vocabulary`
+   The primary product, the core OWL ontologies that are the foundation
+   for any of the other flavors of FIBO.
 
-  The "FIBO-V" flavor, the vocabulary, which is based on the SKOS standard,
-  a vocabulary or taxonomy or "concept scheme" that is built up from all
-  the terms in the OWL ontologies.
-- `schema.org`
+2. `vocabulary`
 
-  A "flattened down" version of the FIBO ontologies, made suitable for
-  use in search engines like Google and Bing, as an extension to schema.org,
-  this is the "fibo.schema.org" source.
+   The "FIBO-V" flavor, the vocabulary, which is based on the SKOS standard,
+   a vocabulary or taxonomy or "concept scheme" that is built up from all
+   the terms in the OWL ontologies.
+
+3. `schema.org`
+
+   A "flattened down" version of the FIBO ontologies, made suitable for
+   use in search engines like Google and Bing, as an extension to schema.org,
+   this is the "fibo.schema.org" source.
+
+4. `uml`
   
-- `uml`
-  The UML representations of the models that are represented in the OWL
-  ontologies.
+   The UML representations of the models that are represented in the OWL
+   ontologies.
 
 These are the four "flavor keys", as they're also used in the URLs that
 are published on https://spec.edmcouncil.org:
@@ -165,10 +168,59 @@ Building the artifacts and storing them on https://spec.edmcouncil.org,
 thereby making them visible publically, is also called "publishing".
 
 So the artifact builder is also called "the publisher" where for each
-"flavor" of FIBO we might have different programs that take care of the 
-specifics of generating the flavor-specific artifacts in the
+"flavor" of FIBO we
+ight have different programs that take care of the 
+specifics of generating the flavor-specific artifacts.
 
-Once the publication 
+Since every approved change, coming in via "code reviewed" and accepted
+pull request in the main FIBO repository, needs to be tested by automated
+processes and needs to be evaluated by humans, we need to publish each
+and every change and generate all artifacts with their own version
+number or branch color. Actually, the publisher process itself is one
+of those tests, a major one even. If it gets through the publisher
+without any warnings or errors, your change was probably valid.
+
+## Types of Artifacts
+
+- RDF and OWL files (see Serialization Formats below)
+- HTML, CSS and Javascript files
+- UML files
+- Graphviz files and other images
 
 # Serialization Formats
+
+For the `ontology` and `vocabulary` flavors of FIBO, the primary publishing
+format is RDF. Even the OWL files are usually stored as RDF (although not all
+OWL formats are actually RDF).
+
+The main RDF serialization formats are:
+
+- [RDF 1.1 Turtle](https://www.w3.org/TR/turtle/)
+- [RDF 1.1 N-Triples](https://www.w3.org/TR/n-triples/)
+- [RDF 1.1 N-Quads](https://www.w3.org/TR/n-quads/)
+- [RDF 1.1 XML-Syntax](https://www.w3.org/TR/rdf-syntax-grammar/) (also called `RDF/XML`)
+- [RDF 1.1 TriG](https://www.w3.org/TR/trig/) (an extension to the Turtle format supporting named graphs)
+- [JSON-LD 1.0](https://www.w3.org/TR/json-ld/)
+- [RDF 1.1 JSON Alternate Serialization (RDF/JSON)](https://www.w3.org/TR/rdf-json/) (An alternative to JSON-LD which is the recommended format)
+- [Notation 3 (N3)](https://www.w3.org/TeamSubmission/n3/)
+- [TriX)[https://en.wikipedia.org/wiki/TriX_(syntax)] (Triples in XML)
+- [RDFa](https://www.w3.org/TR/rdfa-primer/) (with several flavors, like RDFa 1.1 Core, RDFa 1.1 Lite etc)
+- [RDF Thrift](http://afs.github.io/rdf-thrift/rdf-binary-thrift.html) (a binary RDF serialization format)
+- [HDT](http://www.rdfhdt.org/) (yet another binary RDF serialization format, see also [W3C submission](https://www.w3.org/Submission/HDT/))
+
+The main OWL serialization formats are:
+
+- RDF/XML
+- [OWL/XML](https://www.w3.org/TR/owl2-xml-serialization/)
+  - Notational variant of the Functional Style Syntax.
+  - Does not use RDF triples, but simply XML tree structure
+- Turtle
+- [OWL 2 Functional-style Syntax](https://www.w3.org/TR/owl2-syntax/#Functional-Style_Syntax)
+  – Prefix-syntax, given as formal grammar
+  – Clean, adjustable, modifiable, easily parsable
+  – Used for defining OWL 2 in the W3C Specs.
+- [Manchester Syntax](https://www.w3.org/TR/owl2-manchester-syntax/)
+  – User-friendly syntax, used in tools like Protégé
+
+
 
