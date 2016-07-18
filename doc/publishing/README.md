@@ -228,10 +228,16 @@ format.
 
 # IRI scheme for all the Artifacts
 
-Here's the IRI scheme:
+Here's the IRI scheme for the `ontology` artifacts:
 
 ```
 <protocol>://<host>/<family>/<product>/<branch|tag>/<domain>/<sub-domain>[/<sub-sub-domain>]/<artifact>[.<format>[.<compression>]]
+```
+
+Here's the IRI scheme for the `vocabulary` artifacts:
+
+```
+<protocol>://<host>/<family>/<product>/<branch|tag>/<artifact>[.<format>[.<compression>]]
 ```
 
 Where:
@@ -240,9 +246,9 @@ Where:
 |-------------------|-------------|
 | `protocol`        | Is always `https`, we do NOT support `http`, please be aware of the fact that the difference between using `http` and `https`, even though its only one letter, is in many cases significant. Two OWL axioms that only differ with this single letter are actually not the same thing. |
 | `host`            | Is always `spec.edmcouncil.org` although the OMG ratified version of FIBO will be (also) published on the OMG site but they have as slightly different IRI scheme |
-| `family`          | .. |
-| `branch` or `tag` | .. |
-| `domain`          | .. |
+| `family`          | Is always `fibo` (lowercase), it could be that the EDM Council will publish other product lines like this as well such as DCAM |
+| `branch` or `tag` | In case of a git branch name like `pink` or `BE-123` just use the exact same name in the exact same "case". In case of a tag, when the tag starts with `v` then remove the `v`, so `v1.2.3` becomes `1.2.3` |
+| `domain`          | A top level domain, same as the directory names in the root of the fibo repository, such as `be`, `fnd` and so forth. |
 | `sub-domain`      | .. |
 | `sub-sub-domain`  | .. |
 | `artifact`        | .. |
