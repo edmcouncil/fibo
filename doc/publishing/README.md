@@ -58,16 +58,20 @@ FIBO itself is a "product family" or a "product line" that consists of
 a number of products which we usually call "flavors":
 
 - `ontology`
+
   The primary product, the core OWL ontologies that are the foundation
   for any of the other flavors of FIBO.
 - `vocabulary`
+
   The "FIBO-V" flavor, the vocabulary, which is based on the SKOS standard,
   a vocabulary or taxonomy or "concept scheme" that is built up from all
   the terms in the OWL ontologies.
 - `schema.org`
+
   A "flattened down" version of the FIBO ontologies, made suitable for
   use in search engines like Google and Bing, as an extension to schema.org,
   this is the "fibo.schema.org" source.
+  
 - `uml`
   The UML representations of the models that are represented in the OWL
   ontologies.
@@ -113,16 +117,18 @@ See for a more detailed explanation below
 
 Then, as another dimension cross-cutting through the git repository,
 you can use the git tagging facility to set a tag in the current
-checked out branch in your local clone of the repository. Since pull
+checked-out branch in your local clone of the repository. Since pull
 requests can only contain commits, tags cannot go via the standard
 pull request process. So tags can only be set by the members of the
 Owners-group of the root/main FIBO repository which currently is set
 to only the members of the FLT (FIBO Leadership Team).
 
 We use tags to signify important milestones in the development of FIBO,
-this corresponds with Versions and Releases. The term version comes
+this corresponds with Versions and Releases. The term "version" comes
 from JIRA, where we can define versions and associate issues with
-these versions. Once a version is actually "tagged" as such, it becomes
+these versions. 
+
+Once a version is actually "tagged" as such, it becomes
 a release which is a term that is also shown in Github itself.
 So tag, milestone, version and release all more or less mean the same
 thing, the technical way to establish it is to set a tag.
