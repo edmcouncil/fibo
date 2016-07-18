@@ -222,5 +222,74 @@ The main OWL serialization formats are:
 - [Manchester Syntax](https://www.w3.org/TR/owl2-manchester-syntax/)
   – User-friendly syntax, used in tools like Protégé
 
+We're "probably" not going to support ALL of these formats but only the most popular ones.
+It shouldn't really matter though to add a few more, whenever there's a customer with a preference for a given
+format.
+
+# IRI scheme for all the Artifacts
+
+Here's the IRI scheme:
+
+```
+https://spec.edmcouncil.org/<family>/<product>/<branch|tag>/<domain>/<sub-domain>[/<sub-sub-domain>]/<artifact>[.<format>[.<compression>]]
+```
+
+Where:
+
+| Element           | Description |
+| `family`          | .. |
+| `branch` or `tag` | .. |
+| `domain`          | .. |
+| `sub-domain`      | .. |
+| `sub-sub-domain`  | .. |
+| `artifact`        | .. |
+| `format`          | The file extension representing the serialization format, see the table of file extensions below |
+| `compression`     | The compression encoding that should be used by the server, currently only `gz` is supported, see also the paragraph Accept-encoding below |
+
+# HTTP Request headers
+
+## Accept header
+
+When `<format>` (and therefore also the `<compression>` part) are not part of the URL then the HTTP headers can be used to specify which format needs to be returned by the server. The so-called "Accept Request-header" can specify a list of MIME types, where each MIME type corresponds with one of the supported formats, for instance if you want the RDF/XML version of an ontology:
+
+```
+https://spec.edmcouncil.org/fibo/ontology/pink/be/LegalEntities/LegalPersons
+```
+
+Then specify the following HTTP header:
+
+```
+Accept: application/rdf+xml
+```
+
+If you want the same file as Turtle, specify this:
+
+```
+Accept: text/turtle`
+```
+
+See the paragraph "File extensions & MIME Types" below for a listing of the supported values of the Accept header (see column MIME Type)
+
+
+## Accept-encoding
+
+# File extensions & MIME Types
+
+| Extension | MIME Type                                  | Description          |
+|-----------|--------------------------------------------|----------------------|
+| `rdf`     | `application/rdf+xml` or `application/xml` | RDF/XML format       |
+| `owl`     | Not supported via accept header            | OWL/XML format       |
+| 'ttl'     | `text/turtle` or `application/x-turtle`    | Turtle format        |
+| `nt`      | `application/n-triples`                    | N-Triples format     |
+| `n3`      | `text/n3` or `text/rdf+n3`                 | N3/Notation 3 format |
+| `jsonld`  | `application/ld+json`                      | JSON-LD format       |
+| `nq`      | `application/n-quads`                      | N-Quads format       |
+
+
+
+
+
+
+
 
 
