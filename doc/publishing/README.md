@@ -304,10 +304,20 @@ Here's the continued IRI scheme for the `doc` artifacts:
 /<artifact>[.<format>[.<compression>]]
 ```
 
-TODO: this could actually be a shadow of the other product IRI schemes, one OWL class IRI could be backed by a documentation page as follows:
+### Proposed layout for the ontology documentation
+
+The documentation "site" could actually be a shadow of the other product IRI schemes, 
+for instance one OWL class IRI could be backed by a documentation page as follows:
 
 ```
-https://spec.edmcouncil.org/fibo/fnd/
+https://spec.edmcouncil.org/fibo/ontology/pink/fnd/AgentsAndPeople/People/Adult
+```
+
+The above OWL class IRI could be represented in the documentation as follows:
+
+```
+https://spec.edmcouncil.org/fibo/doc/pink/fnd/AgentsAndPeople/People/Adult.html
+```
 
 ## Static files IRI scheme
 
