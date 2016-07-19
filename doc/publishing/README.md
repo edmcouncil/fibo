@@ -55,7 +55,9 @@ And so forth. As you can see, at the top level we have the FIBO
 # Products and Flavors
 
 FIBO itself is a "product family" or a "product line" that consists of
-a number of products which we usually call "flavors":
+a number of products which we usually call "flavors", here are the four primary
+products and their product keys (as they're used in the IRI/URL and directory
+names):
 
 1. `ontology`
 
@@ -79,13 +81,39 @@ a number of products which we usually call "flavors":
    The UML representations of the models that are represented in the OWL
    ontologies.
 
-These are the four "flavor keys", as they're also used in the URLs that
+These are the four "product keys", as they're also used in the URLs that
 are published on https://spec.edmcouncil.org:
 
 - `https://spec.edmcouncil.org/fibo/ontology/...`
 - `https://spec.edmcouncil.org/fibo/vocabulary/...`
 - `https://spec.edmcouncil.org/fibo/schema.org/...`
 - `https://spec.edmcouncil.org/fibo/uml/...`
+
+Then actually, we do also have a few other "products" that can be treated in the same
+way as the four primary products, so we assign product keys to them as well:
+
+5. `doc`
+
+   The primary generated FIBO documentation. Special software, still to be developed
+   (although parts already exist), will be used to generate an HTML5 website with the
+   full documentation of all the various components of FIBO.
+
+   >Next to product keys like
+   >'doc' we can support vendor specific product keys like `vendor-adaptive`, 
+   >`vendor-topquadrant`, `vendor-complexible`, `vendor-ontotext` and so forth.
+   >Whatever they want to deliver or add to the overall site can be placed here, where
+   >the council will forward all traffic to a host of their specification.
+
+6. `static`
+
+   All static content such as logos, javascript, stylesheets and the like.
+
+Examples:
+
+- `https://spec.edmcouncil.org/fibo/doc/` (the main documentation page)
+- `https://spec.edmcouncil.org/fibo/vendor-topquadrant/evn` (TopQuadrant's EVN setup showing FIBO-V)
+- `https://spec.edmcouncil.org/fibo/static/image/edmcouncil.jpg` (the logo)
+
 
 # Branches and Colors
 
@@ -228,19 +256,68 @@ format.
 
 # IRI scheme for all the Artifacts
 
-Here's the IRI scheme for the `ontology` artifacts:
+Here's the first part of the IRI scheme for all artifacts:
+
+## Base IRI Scheme
 
 ```
-<protocol>://<host>/<family>/<product>/<branch|tag>/<domain>/<sub-domain>[/<sub-sub-domain>]/<artifact>[.<format>[.<compression>]]
+<protocol>://<host>/<family>/<product>/<branch|tag>/...
 ```
 
-Here's the IRI scheme for the `vocabulary` artifacts:
+## Ontology IRI Scheme
+
+Here's the continued IRI scheme for the `ontology` artifacts:
 
 ```
-<protocol>://<host>/<family>/<product>/<branch|tag>/<artifact>[.<format>[.<compression>]]
+.../<domain>/<sub-domain>[/<sub-sub-domain>]/<artifact>[.<format>[.<compression>]]
 ```
 
-Where:
+## Vocabulary IRI Scheme
+
+Here's the continued IRI scheme for the `vocabulary` artifacts:
+
+```
+/<artifact>[.<format>[.<compression>]]
+```
+
+## Schema.org IRI Scheme
+
+Here's the continued IRI scheme for the `schema.org` artifacts:
+
+```
+/<artifact>[.<format>[.<compression>]]
+```
+
+## UML IRI Scheme
+
+Here's the continued IRI scheme for the `uml` artifacts:
+
+```
+/<artifact>[.<format>[.<compression>]]
+```
+
+## Documentation IRI Scheme
+
+Here's the continued IRI scheme for the `doc` artifacts:
+
+```
+/<artifact>[.<format>[.<compression>]]
+```
+
+TODO: this could actually be a shadow of the other product IRI schemes, one OWL class IRI could be backed by a documentation page as follows:
+
+```
+https://spec.edmcouncil.org/fibo/fnd/
+
+## Static files IRI scheme
+
+Here's the continued IRI scheme for the `static` artifacts:
+
+```
+/<artifact-type>/<artifact>[.<format>]
+```
+
+## Where:
 
 | Element           | Description |
 |:------------------|:------------|
@@ -249,11 +326,15 @@ Where:
 | `family`          | Is always `fibo` (lowercase), it could be that the EDM Council will publish other product lines like this as well such as DCAM |
 | `branch` or `tag` | In case of a git branch name like `pink` or `BE-123` just use the exact same name in the exact same "case". In case of a tag, when the tag starts with `v` then remove the `v`, so `v1.2.3` becomes `1.2.3` |
 | `domain`          | A top level domain, same as the directory names in the root of the fibo repository, such as `be`, `fnd` and so forth. |
-| `sub-domain`      | .. |
-| `sub-sub-domain`  | .. |
-| `artifact`        | .. |
-| `format`          | The file extension representing the serialization format, see the table of file extensions below |
+| `sub-domain`      | A sub-domain as it is used (exactly) as a directory name at the second level in the repo's directory hierarchy. So this must be UpperCamelCase. |
+| `sub-sub-domain`  | Same as `sub-domain` but then at the 3rd level. In the `ontology` product this field is optional. |
+| `artifact`        | The meaning of the field `artifact` changes per product. In the `ontology` product this is the actual file name, without extension, of the OWL ontology (assuming that we only have 1 ontology per file). See the various artifact tables below for all possible values. |
+| `artifact-type`   | For static files, this is `image` for all images, `javascript` for all Javascript and `css` for all CSS stylesheets. |
+| `format`          | For RDF files: the file extension representing the serialization format, see the table of file extensions below. For any other files this is just the standard file extension like `.jpg` and `.gif` |
 | `compression`     | The compression encoding that should be used by the server, currently only `gz` is supported, see also the paragraph Accept-encoding below |
+
+
+# Where `
 
 # HTTP Request headers
 
