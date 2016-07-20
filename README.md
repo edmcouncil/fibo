@@ -24,6 +24,8 @@ See also [Jenkins](./jenkins/README.md)
 
 ## JIRA
 
+Changes are submitted to the FIBO teams for consideration for editing by creating new issues in JIRA. 
+
 ## Confluence (Wiki)
 
 ## Stardog
