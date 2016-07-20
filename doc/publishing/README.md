@@ -184,24 +184,23 @@ Tags have a name, for that name we have the following convention:
 # Artifacts
 
 Artifacts are deliverables, single files that are produced by a build
-process by an automated "continuous integration" (CI) platform like
-Jenkins, from the original git-based authoritative sources.
+process by an automated ["continuous integration" (CI)](https://www.thoughtworks.com/continuous-integration)
+platform like Jenkins, from the original git-based authoritative sources.
 
 The artifacts, and NOT the sources themselves, are the "things" that
 need to be tested and evaluated on a continuous basis. FIBO end users
 will only be exposed to the artifacts so that's what we need to test,
 not the sources.
 
-Building the artifacts and storing them on https://spec.edmcouncil.org,
+Building the artifacts and storing them on `https://spec.edmcouncil.org`,
 thereby making them visible publically, is also called "publishing".
 
 So the artifact builder is also called "the publisher" where for each
-"flavor" of FIBO we
-ight have different programs that take care of the 
+"flavor" of FIBO we might have different programs that take care of the 
 specifics of generating the flavor-specific artifacts.
 
-Since every approved change, coming in via "code reviewed" and accepted
-pull request in the main FIBO repository, needs to be tested by automated
+Since every approved change, coming in via a "code-reviewed" and accepted
+pull-request into the main FIBO repository, needs to be tested by automated
 processes and needs to be evaluated by humans, we need to publish each
 and every change and generate all artifacts with their own version
 number or branch color. Actually, the publisher process itself is one
@@ -343,9 +342,6 @@ Here's the continued IRI scheme for the `static` artifacts:
 | `format`          | For RDF files: the file extension representing the serialization format, see the table of file extensions below. For any other files this is just the standard file extension like `.jpg` and `.gif` |
 | `compression`     | The compression encoding that should be used by the server, currently only `gz` is supported, see also the paragraph Accept-encoding below |
 
-
-# Where `
-
 # HTTP Request headers
 
 ## Accept header
@@ -393,9 +389,12 @@ Accept-encoding: gzip
 | `nq`      | `application/n-quads`                      | N-Quads format       |
 
 
+# How it's done
 
-
-
+The primary HTTP server running on `https://spec.edmcouncil.org` receives all the traffic, all the HTTP requests to any
+of the artifacts but does not necessarily process the full request itself. In other words, the content can come from
+other servers, where the main HTTP server is merely passing requests through.
+This primary server is an NGINX server (the [open source version](https://nginx.org/en/)).
 
 
 
