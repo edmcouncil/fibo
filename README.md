@@ -28,6 +28,8 @@ Changes are submitted to the FIBO teams for consideration for editing by creatin
 
 ## Confluence (Wiki)
 
+We use the wiki to track tasks and discussions for all FCTs and the FLT. 
+
 ## Stardog
 
 Currently runs on http://stardog.edmcouncil.org/
