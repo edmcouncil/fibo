@@ -196,7 +196,7 @@ Copyright (c) 2016 Object Management Group, Inc.</sm:copyright>
 				<owl:allValuesFrom
 					rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
 				<owl:onProperty
-					rdf:resource="&fibo-fbc-dae-dbt;hasCurrentAmount"/>
+					rdf:resource="&fibo-fbc-dae-dbt;hasOutstandingAmount"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -384,7 +384,7 @@ Copyright (c) 2016 Object Management Group, Inc.</sm:copyright>
 				<owl:allValuesFrom
 					rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
 				<owl:onProperty
-					rdf:resource="&fibo-fbc-dae-dbt;hasCurrentAmount"/>
+					rdf:resource="&fibo-fbc-dae-dbt;hasOutstandingAmount"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -551,7 +551,7 @@ Copyright (c) 2016 Object Management Group, Inc.</sm:copyright>
 		rdf:about="&fibo-fbc-dae-dbt;governsPaymentOf">
 		<rdfs:subPropertyOf
 			rdf:resource="&fibo-fnd-rel-rel;governs"/>
-		<rdfs:label>governs</rdfs:label>
+		<rdfs:label>governs payment of</rdfs:label>
 		<rdfs:domain
 			rdf:resource="&fibo-fbc-dae-dbt;DebtInterestPaymentTerms"/>
 		<rdfs:range
@@ -561,7 +561,7 @@ Copyright (c) 2016 Object Management Group, Inc.</sm:copyright>
 	<owl:ObjectProperty
 		rdf:about="&fibo-fbc-dae-dbt;hasAccrualBasis">
 		<rdfs:subPropertyOf
-			rdf:resource="&fibo-fnd-rel-rel;has"/>
+			rdf:resource="&fibo-fnd-agr-ctr;hasTerms"/>
 		<rdfs:label>has accrual basis</rdfs:label>
 		<rdfs:domain
 			rdf:resource="&fibo-fbc-dae-dbt;DebtInterestPaymentTerms"/>
@@ -572,20 +572,39 @@ Copyright (c) 2016 Object Management Group, Inc.</sm:copyright>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty
-		rdf:about="&fibo-fbc-dae-dbt;hasCurrentAmount">
+		rdf:about="&fibo-fbc-dae-dbt;hasDebtAmount">
 		<rdfs:subPropertyOf
 			rdf:resource="&fibo-fnd-rel-rel;has"/>
-		<rdfs:label>has current amount</rdfs:label>
+		<rdfs:label>has debt amount</rdfs:label>
+		<fibo-fnd-utl-av:explanatoryNote
+			rdf:datatype="&xsd;string">Represents the total debt amount including principal and interest</fibo-fnd-utl-av:explanatoryNote>
+		<rdfs:domain
+			rdf:resource="&fibo-fbc-fi-fi;DebtInstrument"/>
 		<rdfs:range
 			rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
 		<skos:definition
-			rdf:datatype="&xsd;string">an amount of money representing the principal, interest, or other amount owed at a specific point in time</skos:definition>
+			rdf:datatype="&xsd;string">indicates the monetary amount of the debt</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty
+		rdf:about="&fibo-fbc-dae-dbt;hasDenomination">
+		<rdfs:subPropertyOf
+			rdf:resource="&fibo-fnd-rel-rel;has"/>
+		<rdfs:label>has denomination</rdfs:label>
+		<fibo-fnd-utl-av:adaptedFrom
+			rdf:datatype="&xsd;string">Barron&apos;s Dictionary of Business and Economics Terms, Fifth Edition, 2012</fibo-fnd-utl-av:adaptedFrom>
+		<rdfs:domain
+			rdf:resource="&fibo-fbc-fi-fi;Security"/>
+		<rdfs:range
+			rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
+		<skos:definition
+			rdf:datatype="&xsd;string">the face value of currency units, coins, or securities</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty
 		rdf:about="&fibo-fbc-dae-dbt;hasInterestRate">
 		<rdfs:subPropertyOf
-			rdf:resource="&fibo-fnd-rel-rel;has"/>
+			rdf:resource="&fibo-fnd-agr-ctr;hasTerms"/>
 		<rdfs:label>has interest rate</rdfs:label>
 		<rdfs:range
 			rdf:resource="&fibo-fnd-acc-cur;InterestRate"/>
@@ -594,14 +613,27 @@ Copyright (c) 2016 Object Management Group, Inc.</sm:copyright>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty
+		rdf:about="&fibo-fbc-dae-dbt;hasOutstandingAmount">
+		<rdfs:subPropertyOf
+			rdf:resource="&fibo-fnd-rel-rel;has"/>
+		<rdfs:label>has current amount</rdfs:label>
+		<rdfs:range
+			rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
+		<skos:definition
+			rdf:datatype="&xsd;string">indicates an amount of money representing the principal, interest, or other amount owed at a specific point in time</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty
 		rdf:about="&fibo-fbc-dae-dbt;hasPrincipalAmount">
 		<rdfs:subPropertyOf
 			rdf:resource="&fibo-fnd-rel-rel;has"/>
 		<rdfs:label>has principal amount</rdfs:label>
+		<fibo-fnd-utl-av:adaptedFrom
+			rdf:datatype="&xsd;string">Barron&apos;s Dictionary of Business and Economics Terms, Fifth Edition, 2012</fibo-fnd-utl-av:adaptedFrom>
 		<rdfs:range
 			rdf:resource="&fibo-fbc-dae-dbt;PrincipalAmount"/>
 		<skos:definition
-			rdf:datatype="&xsd;string">an amount of money extended as debt from one party to the other</skos:definition>
+			rdf:datatype="&xsd;string">indicates the face value of an obligation, such as a bond or loan, that must be repaid at maturity, i.e., the base amount raised by a mortgage or other debt instrument</skos:definition>
 		<skos:editorialNote
 			rdf:datatype="&xsd;string">This is not the balance of the debt at a point in time, but the amount drawn down at a specific point in time, after which (for interest bearing debts) interest becomes payable. Semantic Modeling note This term is over-ridden for specific kinds of debt (securities, loans) and is therefore not needed in any data model. It is included here to define part of the meaning of the Debt Finance term. It is a Relationship Fact and strictly speaking should be regarded as being specialized and over-ridden by the terms in the Loan and Security classes, however it is modeled here as a &quot;Referenceable Archetype&quot; meaning that it appears in diagrams as a textual entry not a relationship line, and so it is not possible to formally show this specialization.</skos:editorialNote>
 	</owl:ObjectProperty>
