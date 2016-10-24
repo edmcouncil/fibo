@@ -12,6 +12,7 @@ Directory     | Purpose
 :------------ |:-------
 [/etc](./etc) | Everything that is not a published OWL ontology in a financial domain
 [/be](./be)   | FIBO Business Entities
+[/fbc](./fbc) | FIBO Financial Business and Commerce
 [/fnd](./fnd) | FIBO Foundations
 [/ind](./ind) | FIBO Indices & Indicators
 
