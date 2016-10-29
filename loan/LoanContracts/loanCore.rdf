@@ -182,6 +182,10 @@
 		rdf:about="&fibo-fnd-org-fm;Organization">
 	</owl:Class>
 	
+	<owl:ObjectProperty
+		rdf:about="&fibo-fnd-oac-own;isOwnedBy">
+	</owl:ObjectProperty>
+	
 	<owl:Class
 		rdf:about="&fibo-fnd-pty-pty;IndependentParty">
 	</owl:Class>
@@ -919,9 +923,9 @@
 				<owl:minQualifiedCardinality
 					rdf:datatype="&xs;nonNegativeInteger">0</owl:minQualifiedCardinality>
 				<owl:onClass
-					rdf:resource="&loan;UniversalLoanIdentifier"/>
+					rdf:resource="&loan;SecurityAgreement"/>
 				<owl:onProperty
-					rdf:resource="&fibo-fnd-aap-agt;isIdentifiedBy"/>
+					rdf:resource="&fibo-fnd-rel-rel;has"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -929,9 +933,9 @@
 				<owl:minQualifiedCardinality
 					rdf:datatype="&xs;nonNegativeInteger">0</owl:minQualifiedCardinality>
 				<owl:onClass
-					rdf:resource="&lnu;fbc-SecurityAgreement"/>
+					rdf:resource="&loan;UniversalLoanIdentifier"/>
 				<owl:onProperty
-					rdf:resource="&fibo-fnd-rel-rel;has"/>
+					rdf:resource="&fibo-fnd-aap-agt;isIdentifiedBy"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -1127,7 +1131,7 @@
 												<owl:intersectionOf>
 													<rdf:Description>
 														<rdf:first
-															rdf:resource="&lnu;fbc-SecurityAgreement"/>
+															rdf:resource="&loan;SecurityAgreement"/>
 														<rdf:rest>
 															<rdf:Description>
 																<rdf:first>
@@ -1463,7 +1467,7 @@ As needed, use the worksFor property to connect appraisers to the appraisal mana
 										<owl:onProperty
 											rdf:resource="&fibo-fnd-rel-rel;hasPart"/>
 										<owl:someValuesFrom
-											rdf:resource="&lnu;fbc-SecurityAgreement"/>
+											rdf:resource="&loan;SecurityAgreement"/>
 									</owl:Restriction>
 								</rdf:first>
 								<rdf:rest
@@ -1476,6 +1480,82 @@ As needed, use the worksFor property to connect appraisers to the appraisal mana
 		</owl:equivalentClass>
 		<skos:definition
 			rdf:datatype="&xs;string">A loan contract that is secured by some collateral.</skos:definition>
+	</owl:Class>
+	
+	<owl:Class
+		rdf:about="&loan;SecurityAgreement">
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty
+					rdf:resource="&fibo-fnd-rel-rel;isClassifiedBy"/>
+				<owl:someValuesFrom
+					rdf:resource="&loan;LenderLienPosition"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty
+					rdf:resource="&fibo-fnd-rel-rel;isPartOf"/>
+				<owl:someValuesFrom
+					rdf:resource="&loan;LoanContract"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<fibo-fnd-utl-av:explanatoryNote
+			rdf:datatype="&xs;string">NOTE: Collateral is more than just an economic resource, it has to in fact be owned. Hence it is an Asset.</fibo-fnd-utl-av:explanatoryNote>
+		<owl:equivalentClass>
+			<owl:Class>
+				<owl:intersectionOf>
+					<rdf:Description>
+						<rdf:first
+							rdf:resource="&fibo-fnd-agr-ctr;WrittenContract"/>
+						<rdf:rest>
+							<rdf:Description>
+								<rdf:first>
+									<owl:Restriction>
+										<owl:onProperty
+											rdf:resource="&loan;hasCollateral"/>
+										<owl:someValuesFrom>
+											<owl:Class>
+												<owl:intersectionOf>
+													<rdf:Description>
+														<rdf:first>
+															<owl:Restriction>
+																<owl:onProperty
+																	rdf:resource="&lnu;cur-hasEstimatedValue"/>
+																<owl:someValuesFrom
+																	rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
+															</owl:Restriction>
+														</rdf:first>
+														<rdf:rest>
+															<rdf:Description>
+																<rdf:first>
+																	<owl:Restriction>
+																		<owl:onProperty
+																			rdf:resource="&fibo-fnd-oac-own;isOwnedBy"/>
+																		<owl:someValuesFrom
+																			rdf:resource="&fibo-fnd-pty-pty;IndependentParty"/>
+																	</owl:Restriction>
+																</rdf:first>
+																<rdf:rest
+																	rdf:resource="&rdf;nil"/>
+															</rdf:Description>
+														</rdf:rest>
+													</rdf:Description>
+												</owl:intersectionOf>
+											</owl:Class>
+										</owl:someValuesFrom>
+									</owl:Restriction>
+								</rdf:first>
+								<rdf:rest
+									rdf:resource="&rdf;nil"/>
+							</rdf:Description>
+						</rdf:rest>
+					</rdf:Description>
+				</owl:intersectionOf>
+			</owl:Class>
+		</owl:equivalentClass>
+		<skos:definition
+			rdf:datatype="&xs;string">Agreement between two trading parties that contains information about their relative duties and rights regarding the disposition of a specified asset that has been used as collateral.  Adapted from ISO 20022.</skos:definition>
 	</owl:Class>
 	
 	<owl:Class
@@ -1865,10 +1945,6 @@ As needed, use the worksFor property to connect appraisers to the appraisal mana
 	<owl:ObjectProperty
 		rdf:about="&lnu;dataSourcedFrom">
 	</owl:ObjectProperty>
-	
-	<owl:Class
-		rdf:about="&lnu;fbc-SecurityAgreement">
-	</owl:Class>
 	
 	<owl:Class
 		rdf:about="&lnu;fnd-Request">
