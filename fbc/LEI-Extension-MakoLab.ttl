@@ -1,0 +1,648 @@
+@prefix : <http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix sm: <http://www.omg.org/techprocess/ab/SpecificationMetadata/> .
+@prefix lcc-cr: <http://www.omg.org/spec/LCC/Countries/CountryRepresentation/> .
+@prefix fibo-fnd-utl-av: <http://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/> .
+@prefix fibo-fnd-rel-rel: <http://spec.edmcouncil.org/fibo/FND/Relations/Relations/> .
+@prefix fibo-be-le-lp: <http://spec.edmcouncil.org/fibo/BE/LegalEntities/LegalPersons/> .
+@prefix fibo-be-le-lei: <http://spec.edmcouncil.org/fibo/BE/LegalEntities/LEIEntities/> .
+@prefix fibo-fnd-dt-fd: <http://spec.edmcouncil.org/fibo/FND/DatesAndTimes/FinancialDates/> .
+@prefix fibo-fbc-fct-breg: <http://spec.edmcouncil.org/fibo/FBC/FunctionalEntities/BusinessRegistries/> .
+@prefix fibo-fbc-fct-ra: <http://spec.edmcouncil.org/fibo/FBC/FunctionalEntities/RegistrationAuthorities/> .
+@prefix fibo-fnd-aap-agt: <http://spec.edmcouncil.org/fibo/FND/AgentsAndPeople/Agents/> .
+@prefix fibo-be-corp-corp: <http://spec.edmcouncil.org/fibo/BE/Corporations/Corporations/> .
+
+
+
+<http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/> a owl:Ontology ;
+	owl:versionIRI <http://spec.edmcouncil.org/fibo/FBC/20161112/LEI-Extension-MakoLab/> ;
+	owl:imports <http://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/> ,
+		<http://spec.edmcouncil.org/fibo/FND/Relations/Relations/> ,
+		<http://spec.edmcouncil.org/fibo/BE/LegalEntities/LegalPersons/> ,
+		<http://spec.edmcouncil.org/fibo/BE/LegalEntities/LEIEntities/> ,
+		<http://spec.edmcouncil.org/fibo/FND/DatesAndTimes/FinancialDates/> ,
+		<http://spec.edmcouncil.org/fibo/FBC/FunctionalEntities/BusinessRegistries/> ,
+ 		<http://spec.edmcouncil.org/fibo/FBC/FunctionalEntities/RegistrationAuthorities/> ,
+ 		<http://spec.edmcouncil.org/fibo/FND/AgentsAndPeople/Agents/>  ,
+ 		<http://spec.edmcouncil.org/fibo/BE/Corporations/Corporations/> ;
+ sm:contentLanguage "http://www.omg.org/spec/ODM/"^^xsd:anyURI ;
+	sm:copyright """Copyright (c) 2015-2016 EDM Council, Inc.
+Copyright (c) 2015-2016 Object Management Group, Inc."""^^xsd:string ;
+	sm:filename "LEI-Extension-MakoLab.ttl"^^xsd:string ;
+	sm:contentLanguage "http://www.w3.org/standards/techs/owl#w3c_all"^^xsd:anyURI ;
+	sm:publicationDate "2016-11-12T10:00:00"^^xsd:dateTime ;
+	dct:license "http://www.omg.org/techprocess/ab/SpecificationMetadata/MITLicense"^^xsd:anyURI ;
+	rdfs:label "MakoLab's extension of LEI representation in FIBO"^^xsd:dateTime .
+# 
+# 
+# #################################################################
+# #
+# #    Object Properties
+# #
+# #################################################################
+# 
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/hasAssociatedEntity
+
+:hasAssociatedEntity a owl:ObjectProperty ;
+	rdfs:subPropertyOf fibo-fnd-rel-rel:has ;
+	rdfs:domain fibo-be-le-lp:LegalEntity ;
+	rdfs:range fibo-be-le-lp:LegalEntity ;
+	rdfs:comment "Element name (in LEI Data File Format 1.0): AssociatedEntity"@en ;
+	rdfs:isDefinedBy "LEI Data File Format 1.0, section: 3.3.1."@en , "https://www.gleif.org/_documents/lei-data-file-format.xsd"^^xsd:anyURI , "https://www.gleif.org/content/4-events-and-media/1-press-releases/7-lei-data-file-format-1-0/lou-20140620.pdf"^^xsd:anyURI ;
+	rdfs:label "has associated entity"@en ;
+	skos:definition "The property assigns some legal entity (fund family or fund manager) associated with this legal entity to place it in an appropriate context."@en .
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/hasExpirationReason
+
+:hasExpirationReason a owl:ObjectProperty ;
+	rdfs:subPropertyOf :hasQualitativeValue ;
+	rdfs:domain fibo-be-le-lp:LegalEntity ;
+	rdfs:range :LegalEntityExpirationReason ;
+	rdfs:comment "Element name (in LEI Data File Format 1.0): EntityExpirationReason"@en ;
+	rdfs:isDefinedBy "LEI Data File Format 1.0, section: 3.3.1."@en , "https://www.gleif.org/_documents/lei-data-file-format.xsd"^^xsd:anyURI , "https://www.gleif.org/content/4-events-and-media/1-press-releases/7-lei-data-file-format-1-0/lou-20140620.pdf"^^xsd:anyURI ;
+	rdfs:label "has expiration reason"@en ;
+	skos:definition "The property assigns to legal entity the reason that it ceased to operate."@en ;
+	skos:scopeNote """This element shall be present if entity expiration date is assigned by means of hasEntityExpirationDate datatype property to LE, and omitted otherwise.
+
+See also LegalEntityExpirationReason class and hasExpirationDate datatype property."""@en .
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/hasFundFamily
+
+:hasFundFamily a owl:ObjectProperty ;
+	rdfs:subPropertyOf :hasAssociatedEntity ;
+	rdfs:label "has fund family"@en .
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/hasFundManager
+
+:hasFundManager a owl:ObjectProperty ;
+	rdfs:subPropertyOf :hasAssociatedEntity ;
+	rdfs:label "has fund manager"@en .
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/hasGLEIRegistrationStatus
+
+:hasGLEIRegistrationStatus a owl:ObjectProperty ;
+	rdfs:subPropertyOf :hasQualitativeValue ;
+	rdfs:domain fibo-be-le-lei:LegalEntityIdentifier ;
+	rdfs:range :RegistrationStatus ;
+	rdfs:comment "Element name (in LEI Data File Format 1.0): RegistrationStatus"@en ;
+	rdfs:isDefinedBy "LEI Data File Format 1.0, section: 3.3.2."@en , "https://www.gleif.org/_documents/lei-data-file-format.xsd"^^xsd:anyURI , "https://www.gleif.org/content/4-events-and-media/1-press-releases/7-lei-data-file-format-1-0/lou-20140620.pdf"^^xsd:anyURI ;
+	rdfs:label "has registration status"@en ;
+	skos:definition "The property assigns the status of the LEI registration (from RegistrationStatus class) to LEI."@en ;
+	skos:scopeNote "This is not to be confused with the status of the legal entity itself; see hasLegalEntityStatus."@en .
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/hasJurisdictionOfLegalFormationAndRegistration
+
+:hasJurisdictionOfLegalFormationAndRegistration a owl:ObjectProperty ;
+	rdfs:subPropertyOf fibo-fnd-rel-rel:has ;
+	rdfs:domain fibo-be-le-lp:LegalEntity ;
+	rdfs:range _:genid1 .
+
+_:genid1 a owl:Class ;
+	owl:unionOf _:genid3 .
+
+_:genid3 a rdf:List ;
+	rdf:first lcc-cr:Country ;
+	rdf:rest _:genid2 .
+
+_:genid2 a rdf:List ;
+	rdf:first lcc-cr:CountrySubdivision ;
+	rdf:rest rdf:nil .
+
+:hasJurisdictionOfLegalFormationAndRegistration rdfs:comment "Element name (in LEI Data File Format 1.0): LegalJurisdiction"@en ;
+	rdfs:isDefinedBy "LEI Data File Format 1.0, sections: 3.3.1, 3.4.6"@en , "https://www.gleif.org/_documents/lei-data-file-format.xsd"^^xsd:anyURI , "https://www.gleif.org/content/4-events-and-media/1-press-releases/7-lei-data-file-format-1-0/lou-20140620.pdf"^^xsd:anyURI ;
+	rdfs:label "has jurisdiction of legal formation and registration"@en ;
+	skos:definition "The jurisdiction (location or territory) of legal formation and registration of the legal entity."@en .
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/hasLegalEntityStatus
+
+:hasLegalEntityStatus a owl:ObjectProperty ;
+	rdfs:subPropertyOf :hasQualitativeValue ;
+	rdfs:domain fibo-be-le-lp:LegalEntity ;
+	rdfs:range :LegalEntityStatus ;
+	rdfs:comment "Element name (in LEI Data File Format 1.0): EntityStatus"@en ;
+	rdfs:isDefinedBy "LEI Data File Format 1.0, section: 3.3.1."@en , "https://www.gleif.org/_documents/lei-data-file-format.xsd"^^xsd:anyURI , "https://www.gleif.org/content/4-events-and-media/1-press-releases/7-lei-data-file-format-1-0/lou-20140620.pdf"^^xsd:anyURI ;
+	rdfs:label "has status"@en ;
+	skos:definition "The property assigns the status (from the class LegalEntityStatus) to legal entity."@en .
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/hasQualitativeValue
+
+:hasQualitativeValue a owl:ObjectProperty ;
+	rdfs:subPropertyOf fibo-fnd-rel-rel:has ;
+	rdfs:comment "has qualitative value"@en .
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/hasSuccessorEntity
+
+:hasSuccessorEntity a owl:ObjectProperty ;
+	rdfs:subPropertyOf fibo-fnd-rel-rel:has ;
+	rdfs:comment "Element name (in LEI Data File Format 1.0): SuccessorEntity"@en ;
+	rdfs:isDefinedBy "LEI Data File Format 1.0, section: 3.3.1, 3.4.13."@en , "https://www.gleif.org/_documents/lei-data-file-format.xsd"^^xsd:anyURI , "https://www.gleif.org/content/4-events-and-media/1-press-releases/7-lei-data-file-format-1-0/lou-20140620.pdf"^^xsd:anyURI ;
+	rdfs:label "has successor entity"@en ;
+	skos:definition "The property assigns to a legal entity (a general legal entity identifier) other legal entity (general legal entity identifier) that supersedes or subsumes it."@en .
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/hasSuccessorGLEI
+
+:hasSuccessorGLEI a owl:ObjectProperty ;
+	rdfs:subPropertyOf :hasSuccessorEntity ;
+	rdfs:domain fibo-be-le-lei:LegalEntityIdentifier ;
+	rdfs:range fibo-be-le-lei:LegalEntityIdentifier ;
+	rdfs:comment "Element name (in LEI Data File Format 1.0): SuccessorLEI"@en ;
+	rdfs:isDefinedBy "LEI Data File Format 1.0, section: 3.3.1, 3.4.13."@en , "https://www.gleif.org/_documents/lei-data-file-format.xsd"^^xsd:anyURI , "https://www.gleif.org/content/4-events-and-media/1-press-releases/7-lei-data-file-format-1-0/lou-20140620.pdf"^^xsd:anyURI ;
+	rdfs:label "has successor GLEI"@en ;
+	skos:definition "The property assigns to a global legal entity identifier other global legal entity identifier that supersedes or subsumes it."@en .
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/hasSuccessorLegalEntity
+
+:hasSuccessorLegalEntity a owl:ObjectProperty ;
+	rdfs:subPropertyOf :hasSuccessorEntity ;
+	rdfs:domain fibo-be-le-lp:LegalEntity ;
+	rdfs:range fibo-be-le-lp:LegalEntity ;
+	rdfs:comment "Element name (in LEI Data File Format 1.0): Successor" ;
+	rdfs:isDefinedBy "LEI Data File Format 1.0, section: 3.4.13"@en , "https://www.gleif.org/_documents/lei-data-file-format.xsd"^^xsd:anyURI , "https://www.gleif.org/content/4-events-and-media/1-press-releases/7-lei-data-file-format-1-0/lou-20140620.pdf"^^xsd:anyURI ;
+	rdfs:label "has successor legal entity"@en ;
+	skos:definition "The property assigns to a legal entity other legal entity that supersedes or subsumes this legal entity." .
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/hasValidationSource
+
+:hasValidationSource a owl:ObjectProperty ;
+	rdfs:subPropertyOf :hasQualitativeValue ;
+	rdfs:domain fibo-be-le-lei:LegalEntityIdentifier ;
+	rdfs:range :ValidationSource ;
+	rdfs:comment "Element name (in LEI Data File Format 1.0): ValidationSources"@en ;
+	rdfs:isDefinedBy "LEI Data File Format 1.0, section: 3.3.2."@en , "https://www.gleif.org/_documents/lei-data-file-format.xsd"^^xsd:anyURI , "https://www.gleif.org/content/4-events-and-media/1-press-releases/7-lei-data-file-format-1-0/lou-20140620.pdf"^^xsd:anyURI ;
+	rdfs:label "has validation source"@en ;
+	skos:definition "The property assigns the current validation status (from ValidationSource class) to this LEI record."@en ;
+	skos:scopeNote """It is omitted if the validation status is not known or not revealed.
+
+See also ValidationSource class."""@en .
+# 
+# 
+# 
+# #################################################################
+# #
+# #    Data properties
+# #
+# #################################################################
+# 
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/hasAutoTransliteratedLegalName
+
+:hasAutoTransliteratedLegalName a owl:DatatypeProperty ;
+	rdfs:subPropertyOf fibo-fnd-rel-rel:hasLegalName ;
+	rdfs:comment "Element names (in LEI Data File Format 1.0): OtherEntityNames, AUTO_ASCII_TRANSLITERATED_LEGAL" ;
+	rdfs:isDefinedBy "LEI Data File Format 1.0, sections: 3.3.1, 3.5.5"@en , "https://www.gleif.org/_documents/lei-data-file-format.xsd"^^xsd:anyURI , "https://www.gleif.org/content/4-events-and-media/1-press-releases/7-lei-data-file-format-1-0/lou-20140620.pdf"^^xsd:anyURI ;
+	rdfs:label "has auto transliterated legal name"@en ;
+	skos:definition "Legal name of the entity transliterated to ASCII characters, auto-transliterated by the managing local operating unit."@en .
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/hasExpirationDate
+
+:hasExpirationDate a owl:DatatypeProperty ;
+	rdfs:subPropertyOf fibo-fnd-dt-fd:hasDateTimeStampValue ;
+	a owl:FunctionalProperty ;
+	rdfs:domain fibo-be-le-lp:LegalEntity ;
+	rdfs:comment "Element names (in LEI Data File Format 1.0): EntityExpirationDate"@en ;
+	rdfs:isDefinedBy "LEI Data File Format 1.0, section: 3.3.1."@en , "https://www.gleif.org/_documents/lei-data-file-format.xsd"^^xsd:anyURI , "https://www.gleif.org/content/4-events-and-media/1-press-releases/7-lei-data-file-format-1-0/lou-20140620.pdf"^^xsd:anyURI ;
+	rdfs:label "has expiration date"@en ;
+	skos:definition "The property assigns the date that the legal entity ceased to operate."@en ;
+	skos:scopeNote """Omitted if the legal entity has not ceased to operate.
+
+If the legal entity ceased to operate (due to dissolution, merger or acquisition), them it is required to point out the expiration reason. Use hasExpirationReason object property."""@en .
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/hasISOCode
+
+:hasISOCode a owl:DatatypeProperty ;
+	rdfs:subPropertyOf fibo-fnd-rel-rel:hasUniqueIdentifier ;
+	a owl:FunctionalProperty ;
+	rdfs:domain _:genid4 .
+
+_:genid4 a owl:Class ;
+	owl:unionOf _:genid6 .
+
+_:genid6 a rdf:List ;
+	rdf:first lcc-cr:Country ;
+	rdf:rest _:genid5 .
+
+_:genid5 a rdf:List ;
+	rdf:first lcc-cr:CountrySubdivision ;
+	rdf:rest rdf:nil .
+
+:hasISOCode rdfs:range xsd:string ;
+	rdfs:isDefinedBy <http://www.iso.org/iso/home/standards/country_codes.htm> ;
+	rdfs:label "has ISO code"@en ;
+	skos:definition "The code of country or subdivision defined in ISO 3166 standard."@en .
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/hasInitialRegistrationDate
+
+:hasInitialRegistrationDate a owl:DatatypeProperty ;
+	rdfs:subPropertyOf fibo-fnd-dt-fd:hasDateTimeStampValue ;
+	a owl:FunctionalProperty ;
+	rdfs:domain fibo-be-le-lei:LegalEntityIdentifier ;
+	rdfs:comment "Element names (in LEI Data File Format 1.0): InitialRegistrationDate"@en ;
+	rdfs:isDefinedBy "LEI Data File Format 1.0, section: 3.3.2."@en , "https://www.gleif.org/_documents/lei-data-file-format.xsd"^^xsd:anyURI , "https://www.gleif.org/content/4-events-and-media/1-press-releases/7-lei-data-file-format-1-0/lou-20140620.pdf"^^xsd:anyURI ;
+	rdfs:label "has initial registration date"@en ;
+	skos:definition "The property assigns date/time the record of general legal entity identifier was created."@en .
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/hasLastUpdateDate
+
+:hasLastUpdateDate a owl:DatatypeProperty ;
+	rdfs:subPropertyOf fibo-fnd-dt-fd:hasDateTimeStampValue ;
+	a owl:FunctionalProperty ;
+	rdfs:domain fibo-be-le-lei:LegalEntityIdentifier ;
+	rdfs:comment "Element names (in LEI Data File Format 1.0): LastUpdateDate"@en ;
+	rdfs:isDefinedBy "LEI Data File Format 1.0, section: 3.3.2."@en , "https://www.gleif.org/_documents/lei-data-file-format.xsd"^^xsd:anyURI , "https://www.gleif.org/content/4-events-and-media/1-press-releases/7-lei-data-file-format-1-0/lou-20140620.pdf"^^xsd:anyURI ;
+	rdfs:label "has last update date"@en ;
+	skos:definition "The property assigns date and time the record of general legal entity identifier was most recently updated."@en .
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/hasNextRenewalDate
+
+:hasNextRenewalDate a owl:DatatypeProperty ;
+	rdfs:subPropertyOf fibo-fnd-dt-fd:hasDateTimeStampValue ;
+	a owl:FunctionalProperty ;
+	rdfs:domain fibo-be-le-lei:LegalEntityIdentifier ;
+	rdfs:comment "Element names (in LEI Data File Format 1.0): NextRenewalDate"@en ;
+	rdfs:isDefinedBy "LEI Data File Format 1.0, section: 3.3.2."@en , "https://www.gleif.org/_documents/lei-data-file-format.xsd"^^xsd:anyURI , "https://www.gleif.org/content/4-events-and-media/1-press-releases/7-lei-data-file-format-1-0/lou-20140620.pdf"^^xsd:anyURI ;
+	rdfs:label "has next renewal date"@en ;
+	skos:definition "The property assigning to general legal entity identifier the next date by which this identifier registration should be renewed and re-certified by the legal entity."@en .
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/hasPreferredTransliteratedLegalName
+
+:hasPreferredTransliteratedLegalName a owl:DatatypeProperty ;
+	rdfs:subPropertyOf fibo-fnd-rel-rel:hasLegalName ;
+	rdfs:comment "Element names (in LEI Data File Format 1.0): OtherEntityNames, PREFERRED_ASCII_TRANSLITERATED_LEGAL"@en ;
+	rdfs:isDefinedBy "LEI Data File Format 1.0, sections: 3.3.1, 3.5.5"@en , "https://www.gleif.org/_documents/lei-data-file-format.xsd"^^xsd:anyURI , "https://www.gleif.org/content/4-events-and-media/1-press-releases/7-lei-data-file-format-1-0/lou-20140620.pdf"^^xsd:anyURI ;
+	rdfs:label "has preferred transliterated legal name"@en ;
+	skos:definition "Legal name of the entity transliterated to ASCII characters, provided by the entity for this purpose"@en .
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/hasStreetAddress
+
+:hasStreetAddress a owl:DatatypeProperty ;
+	rdfs:domain fibo-fbc-fct-breg:RegistrationAddress ;
+	rdfs:range xsd:string .
+# 
+# 
+# 
+# #################################################################
+# #
+# #    Classes
+# #
+# #################################################################
+# 
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/LEIQualitativeValue
+
+:LEIQualitativeValue a owl:Class ;
+	rdfs:subClassOf :QualitativeValue ;
+	rdfs:label "global legal entity identifier qualitative value"@en ;
+	skos:definition "qualitative value of global legal entity identifier registration"^^xsd:string .
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/LegalEntityExpirationReason
+
+:LegalEntityExpirationReason a owl:Class ;
+	rdfs:subClassOf :LegalEntityQualitativeValue ;
+	rdfs:comment "Element name (in LEI Data File Format 1.0): EntityExpirationReason"@en ;
+	rdfs:isDefinedBy "LEI Data File Format 1.0, sections: 3.3.1, 3.5.4"@en , "https://www.gleif.org/_documents/lei-data-file-format.xsd"^^xsd:anyURI , "https://www.gleif.org/content/4-events-and-media/1-press-releases/7-lei-data-file-format-1-0/lou-20140620.pdf"^^xsd:anyURI ;
+	rdfs:label "legal entity expiration reason"@en ;
+	skos:definition """A legal entity expiration reason is a reason that a legal entity ceased to operate. 
+
+Expiration reason shall be assigned to a legal entity if the legal entity expired and omitted otherwise. 
+
+If a legal entity expired, then the entity expiration reason shall be assigned to the legal entity together with its expiration date (see hasEntityExpirationDate data property)."""@en .
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/LegalEntityQualitativeValue
+
+:LegalEntityQualitativeValue a owl:Class ;
+	rdfs:subClassOf :QualitativeValue ;
+	rdfs:label "legal entity qualitative value"@en ;
+	skos:definition "qualitative value of legal entity registered in some LEI registry"@en .
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/LegalEntityStatus
+
+:LegalEntityStatus a owl:Class ;
+	rdfs:subClassOf :LegalEntityQualitativeValue ;
+	rdfs:comment "Element name (in LEI Data File Format 1.0): EntityStatus"@en ;
+	rdfs:isDefinedBy "LEI Data File Format 1.0, sections: 3.3.1, 3.5.6"@en , "https://www.gleif.org/_documents/lei-data-file-format.xsd"^^xsd:anyURI , "https://www.gleif.org/content/4-events-and-media/1-press-releases/7-lei-data-file-format-1-0/lou-20140620.pdf"^^xsd:anyURI ;
+	rdfs:label "legal entity status"@en ;
+	skos:definition """A legal entity status is a status of the legal entity. There are two possible values of the status: \"active\" or \"inactive\". 
+
+This is not to be confused with the status of the general legal entity identifier registration (see RegistrationStatus). 
+
+If a legal entity is related by hasSuccessorLegalEntity with other legal entity, then its legal entity status is the last status of the legal entity."""@en .
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/LocalOperatingUnit
+
+:LocalOperatingUnit a owl:Class ;
+	rdfs:subClassOf fibo-fbc-fct-ra:RegistrationAuthority ;
+	fibo-fnd-utl-av:abbreviation "LOU"@en ;
+	rdfs:comment "Element name (in LEI Data File Format 1.0): ManagingLOU"@en ;
+	rdfs:isDefinedBy "LEI Data File Format 1.0, sections: 3.3, 3.3.2" , "https://www.gleif.org/_documents/lei-data-file-format.xsd"^^xsd:anyURI , "https://www.gleif.org/content/4-events-and-media/1-press-releases/7-lei-data-file-format-1-0/lou-20140620.pdf"^^xsd:anyURI ;
+	rdfs:label "Local Operating Unit"@en ;
+	skos:definition "Local operating unit is a registration authority that is responsible for assigning LEIs, their validation and  maintenance of reference data."@en .
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/QualitativeValue
+
+:QualitativeValue a owl:Class ;
+	rdfs:label "qualitative value"@en ;
+	rdfs:seeAlso "http://schema.org/QualitativeValue"^^xsd:anyURI ;
+	skos:definition "A predefined value for an entity."^^xsd:string .
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/RegistrationStatus
+
+:RegistrationStatus a owl:Class ;
+	rdfs:subClassOf :LEIQualitativeValue ;
+	rdfs:comment "Element name (in LEI Data File Format 1.0): RegistrationStatus"@en ;
+	rdfs:isDefinedBy "LEI Data File Format 1.0, sections: 3.3.2, 3.5.7" , "https://www.gleif.org/_documents/lei-data-file-format.xsd"^^xsd:anyURI , "https://www.gleif.org/content/4-events-and-media/1-press-releases/7-lei-data-file-format-1-0/lou-20140620.pdf"^^xsd:anyURI ;
+	rdfs:label "registration status"@en ;
+	skos:definition "A registration status is a status of the global legal entity identifier registration. This is not to be confused with the status of the legal entity itself (see LegalEntityStatus)."@en .
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/ValidationSource
+
+:ValidationSource a owl:Class ;
+	rdfs:subClassOf :LEIQualitativeValue ;
+	rdfs:comment "Element name (in LEI Data File Format 1.0): ValidationSource"@en ;
+	rdfs:isDefinedBy "LEI Data File Format 1.0, sections: 3.3.2, 3.5.8"@en , "https://www.gleif.org/_documents/lei-data-file-format.xsd"^^xsd:anyURI , "https://www.gleif.org/content/4-events-and-media/1-press-releases/7-lei-data-file-format-1-0/lou-20140620.pdf"^^xsd:anyURI ;
+	rdfs:label "validation source"@en ;
+	skos:definition "A validation source is a validation status of the general legal entity identifier record. It can be omitted if the validation status is not known or not revealed."@en .
+
+# 
+# 
+# 
+# #################################################################
+# #
+# #    Individuals
+# #
+# #################################################################
+# 
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/Active
+
+:Active a owl:NamedIndividual , :LegalEntityStatus ;
+	rdfs:isDefinedBy "LEI Data File Format 1.0, section: 3.5.6." , "https://www.gleif.org/_documents/lei-data-file-format.xsd"^^xsd:anyURI , "https://www.gleif.org/content/4-events-and-media/1-press-releases/7-lei-data-file-format-1-0/lou-20140620.pdf"^^xsd:anyURI ;
+	rdfs:label "Active"@en ;
+	skos:definition "The legal entity is reported that it is legally registered and operating."@en .
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/Annulled
+
+:Annulled a owl:NamedIndividual , :RegistrationStatus ;
+	rdfs:isDefinedBy "LEI Data File Format 1.0, section: 3.5.7." , "https://www.gleif.org/_documents/lei-data-file-format.xsd"^^xsd:anyURI , "https://www.gleif.org/content/4-events-and-media/1-press-releases/7-lei-data-file-format-1-0/lou-20140620.pdf"^^xsd:anyURI ;
+	rdfs:label "Annulled"@en ;
+	skos:definition "The global legal entity identifier registration that was marked as erroneous or invalid after it was issued."@en .
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/Cancelled
+
+:Cancelled a owl:NamedIndividual , :RegistrationStatus ;
+	rdfs:isDefinedBy "LEI Data File Format 1.0, section: 3.5.7." , "https://www.gleif.org/_documents/lei-data-file-format.xsd"^^xsd:anyURI , "https://www.gleif.org/content/4-events-and-media/1-press-releases/7-lei-data-file-format-1-0/lou-20140620.pdf"^^xsd:anyURI ;
+	rdfs:label "Cancelled"@en ;
+	skos:definition "The global legal entity identifier registration that was abandoned prior to issuance of a global legal entity identifier."@en .
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/CorporateAction
+
+:CorporateAction a owl:NamedIndividual , :LegalEntityExpirationReason ;
+	rdfs:isDefinedBy "LEI Data File Format 1.0, section: 3.5.4." , "https://www.gleif.org/_documents/lei-data-file-format.xsd"^^xsd:anyURI , "https://www.gleif.org/content/4-events-and-media/1-press-releases/7-lei-data-file-format-1-0/lou-20140620.pdf"^^xsd:anyURI ;
+	rdfs:label "Corporate Action"@en ;
+	skos:definition "The legal entity was acquired or merged with another legal entity."@en .
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/Dissolved
+
+:Dissolved a owl:NamedIndividual , :LegalEntityExpirationReason ;
+	rdfs:isDefinedBy "LEI Data File Format 1.0, section: 3.5.4." , "https://www.gleif.org/_documents/lei-data-file-format.xsd"^^xsd:anyURI , "https://www.gleif.org/content/4-events-and-media/1-press-releases/7-lei-data-file-format-1-0/lou-20140620.pdf"^^xsd:anyURI ;
+	rdfs:label "Dissolved"@en ;
+	skos:definition "The legal entity ceased to operate."@en .
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/Duplicate
+
+:Duplicate a owl:NamedIndividual , :RegistrationStatus ;
+	rdfs:isDefinedBy "LEI Data File Format 1.0, section: 3.5.7." , "https://www.gleif.org/_documents/lei-data-file-format.xsd"^^xsd:anyURI , "https://www.gleif.org/content/4-events-and-media/1-press-releases/7-lei-data-file-format-1-0/lou-20140620.pdf"^^xsd:anyURI ;
+	rdfs:label "Duplicate"@en ;
+	skos:definition "The global legal entity identifier registration that has been determined to be a duplicate registration of the same legal entity as another global legal entity identifier registration."@en ;
+	skos:scopeNote """The Duplicate status is assigned to the non-surviving registration (i.e., the LEI that should no longer be used). 
+
+Only one of the potential multiple identifiers will survive; for all other duplicate registrations:
+1. The RegistrationStatus is set to Duplicate
+2. The LEI of the surviving LEI Registration is set in the successor LEI data element of (each) duplicate LEI registration (see hasSuccessorGLEI object property)
+3. The LastUpdateDate is set to reflect the date of this update
+4. No further updates of the Duplicate registration record will occur""" .
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/FullyCorroborated
+
+:FullyCorroborated a owl:NamedIndividual , :ValidationSource ;
+	rdfs:isDefinedBy "LEI Data File Format 1.0, section: 3.5.8." , "https://www.gleif.org/_documents/lei-data-file-format.xsd"^^xsd:anyURI , "https://www.gleif.org/content/4-events-and-media/1-press-releases/7-lei-data-file-format-1-0/lou-20140620.pdf"^^xsd:anyURI ;
+	rdfs:label "Fully Corroborated"@en ;
+	skos:definition "Based on the validation procedures in use by the local operating unit  responsible for the record, there is sufficient information contained in authoritative public sources to corroborate the information that the submitter has provided for the record."@en .
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/Inactive
+
+:Inactive a owl:NamedIndividual , :LegalEntityStatus ;
+	rdfs:isDefinedBy "LEI Data File Format 1.0, section: 3.5.6." , "https://www.gleif.org/_documents/lei-data-file-format.xsd"^^xsd:anyURI , "https://www.gleif.org/content/4-events-and-media/1-press-releases/7-lei-data-file-format-1-0/lou-20140620.pdf"^^xsd:anyURI ;
+	rdfs:label "Inactive"@en ;
+	skos:definition """It has been determined that the legal entity that was assigned the global legal entity identifier is no longer legally registered and/or operating, whether as a result of:
+1. Business closure
+2. Acquisition by or merger with another (or new) entity
+3. Determination of illegitimacy."""@en .
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/Issued
+
+:Issued a owl:NamedIndividual , :RegistrationStatus ;
+	rdfs:isDefinedBy "LEI Data File Format 1.0, section: 3.5.7." , "https://www.gleif.org/_documents/lei-data-file-format.xsd"^^xsd:anyURI , "https://www.gleif.org/content/4-events-and-media/1-press-releases/7-lei-data-file-format-1-0/lou-20140620.pdf"^^xsd:anyURI ;
+	rdfs:label "Issued"@en ;
+	skos:definition "The global legal entity identifier registration that has been validated and issued, and which identifies an entity that was an operating legal entity as of the last update."@en .
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/Lapsed
+
+:Lapsed a owl:NamedIndividual , :RegistrationStatus ;
+	rdfs:isDefinedBy "LEI Data File Format 1.0, section: 3.5.7." , "https://www.gleif.org/_documents/lei-data-file-format.xsd"^^xsd:anyURI , "https://www.gleif.org/content/4-events-and-media/1-press-releases/7-lei-data-file-format-1-0/lou-20140620.pdf"^^xsd:anyURI ;
+	rdfs:label "Lapsed"@en ;
+	skos:definition "The global legal entity identifier registration that has not been renewed and has exceeded any allowed grace period for renewal."@en ;
+	skos:scopeNote """After being issued an LEI, an entity must regularly do the following:
+- Periodically verify the continued accuracy of its registration reference data that is recorded in the LOU that is responsible for managing the LEI registration of the entity, updating any aspect of the registration reference data that has changed;
+- Periodically renew its LEI registration agreement with the LOU, paying the renewal fee.
+
+(Although both of the above actions are typically performed at the same time, it is certainly possible that the frequency of each action could be different.) If, after being issued an LEI,
+
+- A legal entity fails to renew and re-certify its LEI registration with the LOU responsible to manage the registration by the leiNextRenewalDate, and
+- The legal entity fails to do so for a pre-determined (as yet unspecified) period of time, and
+- The legal entity is not known by public sources to have ceased operation
+
+Then
+1. The leiRegistrationStatus is set to LAPSED,
+2. Updates to the LEI registration are permitted, notably to reinstate the registration to the ISSUED status.""" .
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/Merged
+
+:Merged a owl:NamedIndividual , :RegistrationStatus ;
+	rdfs:isDefinedBy "LEI Data File Format 1.0, section: 3.5.7." , "https://www.gleif.org/_documents/lei-data-file-format.xsd"^^xsd:anyURI , "https://www.gleif.org/content/4-events-and-media/1-press-releases/7-lei-data-file-format-1-0/lou-20140620.pdf"^^xsd:anyURI ;
+	rdfs:label "Merged"@en ;
+	skos:definition "The global legal entity identifier registration for a legal entity that has been merged into another legal entity, such that this legal entity no longer exists as an operating entity."@en ;
+	skos:scopeNote """If
+- After being issued an LEI, the entity is acquired by, or merged with, another legal entity;
+- Per agreements among the parties to the transaction, the LEI of the acquired or merged entity will not be used to identify the surviving entity (or if a new entity is created that is issued a new LEI)
+
+Then
+1. The RegistrationStatus is set to “Merged”,
+2. The LEI of the surviving/new legal entity is set (see hasSuccessorLegalEntity object property); LEI of the merged legal entity is no longer to be used;
+3. The last update date (see hasLastUpdateDate data property) is set to reflect the date of this update,
+4. The legal entity expiration date (see hasExpirationDate data property) is also set to the date of this update,
+5. The LegalEntityExpirationReason is set to “CorporateAction”,
+6. The LegalEntityStatus is set to “Inactive”; and
+7. No further updates of the Merged registration record(s) will occur.""" .
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/Other
+
+:Other a owl:NamedIndividual , :LegalEntityExpirationReason ;
+	rdfs:isDefinedBy "LEI Data File Format 1.0, section: 3.5.4." , "https://www.gleif.org/_documents/lei-data-file-format.xsd"^^xsd:anyURI , "https://www.gleif.org/content/4-events-and-media/1-press-releases/7-lei-data-file-format-1-0/lou-20140620.pdf"^^xsd:anyURI ;
+	rdfs:label "Expiration reason other than corporate action or dissolved."@en ;
+	skos:definition "The reason for expiry is not corporate action or dissolved."@en .
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/PartiallyCorroborated
+
+:PartiallyCorroborated a owl:NamedIndividual , :ValidationSource ;
+	rdfs:isDefinedBy "LEI Data File Format 1.0, section: 3.5.8." , "https://www.gleif.org/_documents/lei-data-file-format.xsd"^^xsd:anyURI , "https://www.gleif.org/content/4-events-and-media/1-press-releases/7-lei-data-file-format-1-0/lou-20140620.pdf"^^xsd:anyURI ;
+	rdfs:label "Fully Corroborated"@en ;
+	skos:definition "Based on the validation procedures in use by the local operating unit responsible for the record, there is sufficient information contained in authoritative public sources to corroborate the information that the submitter has provided for the record."@en .
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/Pending
+
+:Pending a owl:NamedIndividual , :ValidationSource ;
+	rdfs:isDefinedBy "LEI Data File Format 1.0, section: 3.5.8." , "https://www.gleif.org/_documents/lei-data-file-format.xsd"^^xsd:anyURI , "https://www.gleif.org/content/4-events-and-media/1-press-releases/7-lei-data-file-format-1-0/lou-20140620.pdf"^^xsd:anyURI ;
+	rdfs:label "Pending"@en ;
+	skos:definition "The validation of the reference data provided by the registrant has not yet occurred."@en .
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/PendingArchival
+
+:PendingArchival a owl:NamedIndividual , :RegistrationStatus ;
+	rdfs:isDefinedBy "LEI Data File Format 1.0, section: 3.5.7." , "https://www.gleif.org/_documents/lei-data-file-format.xsd"^^xsd:anyURI , "https://www.gleif.org/content/4-events-and-media/1-press-releases/7-lei-data-file-format-1-0/lou-20140620.pdf"^^xsd:anyURI ;
+	rdfs:label "Pending Archival"@en ;
+	skos:definition "The global legal entity identifier registration is about to be transferred to a different local operating unit, after which its registration status will revert to a non-pending status. The pending archival status serves to inform recipients of local operating unit provided data files that the global legal entity identifier record will be removed from that local operating unit’s published file after the transfer is complete."@en .
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/PendingTransfer
+
+:PendingTransfer a owl:NamedIndividual , :RegistrationStatus ;
+	rdfs:isDefinedBy "LEI Data File Format 1.0, section: 3.5.7." , "https://www.gleif.org/_documents/lei-data-file-format.xsd"^^xsd:anyURI , "https://www.gleif.org/content/4-events-and-media/1-press-releases/7-lei-data-file-format-1-0/lou-20140620.pdf"^^xsd:anyURI ;
+	rdfs:label "Pending Transfer"@en ;
+	skos:definition "The global legal entity identifier registration that has been requested to be transferred to another local operating unit. The request is being processed at the sending local operating unit. When the receiving local operating unit is ready, the status will be changed to pending archival by the sending local operating unit prior to completion of the transfer."@en .
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/PendingValidation
+
+:PendingValidation a owl:NamedIndividual , :RegistrationStatus ;
+	rdfs:isDefinedBy "LEI Data File Format 1.0, section: 3.5.7." , "https://www.gleif.org/_documents/lei-data-file-format.xsd"^^xsd:anyURI , "https://www.gleif.org/content/4-events-and-media/1-press-releases/7-lei-data-file-format-1-0/lou-20140620.pdf"^^xsd:anyURI ;
+	rdfs:label "Pending Validation"@en ;
+	skos:definition "An application for a global legal entity identifier that has been submitted and which is being processed and validated. A global legal entity identifier registrations in the pending state are not intended for public release, but could be used internally between local operating units."@en .
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/Retired
+
+:Retired a owl:NamedIndividual , :RegistrationStatus ;
+	rdfs:isDefinedBy "LEI Data File Format 1.0, section: 3.5.7." , "https://www.gleif.org/_documents/lei-data-file-format.xsd"^^xsd:anyURI , "https://www.gleif.org/content/4-events-and-media/1-press-releases/7-lei-data-file-format-1-0/lou-20140620.pdf"^^xsd:anyURI ;
+	rdfs:label "Retired"@en ;
+	skos:definition "The global legal entity identifier registration for an entity that has ceased operation, without having been merged into another entity."@en ;
+	skos:scopeNote """If
+- After being issued an LEI, the entity ceases to operate (goes out of business and/or dissolves its legal standing)
+- The entity informs the LOU of the cessation of business, OR, the managing LOU determines by public sources that the legal entity has been dissolved or ceased to operate (and the LOU seeks to confirm this status through all available channels with the entity)
+
+Then
+1. The RegistrationStatus is set to “Retired”;
+2. The LEI record last update (see hasLastUpdateDate data property) is set to reflect the date of this update;
+3. The legal entity expiration date (see hasExpirationDate data property) is also set to the date of this update;
+4. The LegalEntityExpirationReason is set to “Dissolved”;
+5. The LegalEntityStatus is set to “Inactive”; and
+6. No further updates of the Retired registration record will occur.""" .
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/Transferred
+
+:Transferred a owl:NamedIndividual , :RegistrationStatus ;
+	rdfs:isDefinedBy "LEI Data File Format 1.0, section: 3.5.7." , "https://www.gleif.org/_documents/lei-data-file-format.xsd"^^xsd:anyURI , "https://www.gleif.org/content/4-events-and-media/1-press-releases/7-lei-data-file-format-1-0/lou-20140620.pdf"^^xsd:anyURI ;
+	rdfs:label "Transferred"@en ;
+	skos:definition "The global legal entity identifier registration that has been transferred to a different local operting unit as the managing local operting unit. A record in this state is not published, but may be used internally by the prior local operting unit for audit trail purposes."@en .
+
+
+
+#
+# #################################################################
+# #
+# #    Examples of Individuals
+# #
+# #################################################################
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/MakoLabSA-PL-LD
+
+:MakoLabSA-PL-LD a owl:NamedIndividual , fibo-be-le-lp:LegalEntity ;
+	fibo-be-le-lei:hasAddressOfLegalFormation :MakoLabSALegalAddress ;
+	:hasJurisdictionOfLegalFormationAndRegistration :PL-LD ;
+	:hasLegalEntityStatus :Active ;
+	fibo-fbc-fct-breg:hasHeadquartersAddress :MakoLabSAHeadquartersAddress ;
+	fibo-fnd-aap-agt:isIdentifiedBy :MakoLabSABusinessEntityIdentifier , :MakoLabSALegalEntityIdentifier ;
+	fibo-be-corp-corp:hasLegalFormAbbreviation "Spółka Akcyjna"^^xsd:string ;
+	:hasPreferredTransliteratedLegalName "MAKOLAB SPOLKA AKCYJNA"^^xsd:string ;
+	fibo-fnd-rel-rel:hasLegalName "MAKOLAB SPÓŁKA AKCYJNA"^^xsd:string ;
+	rdfs:label "MakoLab S.A. PL-LD" ;
+	skos:definition "individual representing the MakoLab S.A. legal entity that is ..."^^xsd:string .
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/MakoLabSABusinessEntityIdentifier
+
+:MakoLabSABusinessEntityIdentifier a owl:NamedIndividual , fibo-be-corp-corp:RegistrationIdentifier ;
+	fibo-fbc-fct-ra:isRegisteredBy :PL_1 ;
+	fibo-fnd-aap-agt:identifies :MakoLabSA-PL-LD ;
+	fibo-fnd-rel-rel:hasUniqueIdentifier "0000289179"^^xsd:string ;
+	rdfs:label "business entity identifier for MakoLab S.A."@en ;
+	skos:definition "individual representing the ... business entity identifier for MakoLab S.A."^^xsd:string .
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/MakoLabSAHeadquartersAddress
+
+:MakoLabSAHeadquartersAddress a owl:NamedIndividual , fibo-fbc-fct-breg:RegistrationAddress ;
+	fibo-fbc-fct-breg:hasCountry :PL ;
+	fibo-fbc-fct-breg:hasSubdivision :PL-LD ;
+	:hasStreetAddress "ŁÓDŹ DEMOKRATYCZNA 46"^^xsd:string ;
+	fibo-fbc-fct-breg:hasCity "Łódź"^^xsd:string ;
+	fibo-fbc-fct-breg:hasPostalCode "93-430"^^xsd:string ;
+	rdfs:label "MakoLab S.A. headquarters address"@en ;
+	skos:definition "individual representing the registered headquarters address for MakoLab S.A."^^xsd:string .
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/MakoLabSALegalAddress
+
+:MakoLabSALegalAddress a owl:NamedIndividual , fibo-fbc-fct-breg:RegistrationAddress ;
+	fibo-fbc-fct-breg:hasCountry :PL ;
+	fibo-fbc-fct-breg:hasSubdivision :PL-LD ;
+	:hasStreetAddress "ŁÓDŹ DEMOKRATYCZNA 46"^^xsd:string ;
+	fibo-fbc-fct-breg:hasCity "Łódź"^^xsd:string ;
+	fibo-fbc-fct-breg:hasPostalCode "93-430"^^xsd:string ;
+	rdfs:label "MakoLab S.A. legal address"@en ;
+	skos:definition "individual representing the registered legal address for MakoLab S.A."^^xsd:string .
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/MakoLabSALegalEntityIdentifier
+
+:MakoLabSALegalEntityIdentifier a owl:NamedIndividual , fibo-be-le-lei:LegalEntityIdentifier ;
+	:hasGLEIRegistrationStatus :Issued ;
+	:hasValidationSource :PartiallyCorroborated ;
+	fibo-fbc-fct-ra:isRegisteredBy :KrajowyDepozytPapierowWartosciowychSA ;
+	:hasInitialRegistrationDate "2015-01-21T23:00:00Z"^^xsd:dateTimeStamp ;
+	:hasLastUpdateDate "2016-01-13T18:25:34Z"^^xsd:dateTimeStamp ;
+	:hasNextRenewalDate "2017-01-22T18:20:37+01:00"^^xsd:dateTimeStamp ;
+	fibo-fnd-rel-rel:hasUniqueIdentifier "2594007XIACKNMUAW223"^^xsd:string ;
+	rdfs:label "MakoLab S.A. legal entity identifier"@en ;
+	rdfs:seeAlso "http://lei.info/2594007XIACKNMUAW223"^^xsd:anyURI ;
+	skos:definition "individual representing the legal entity identifier for MakoLab S.A."^^xsd:string .
+#
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/KrajowyDepozytPapierowWartosciowychSA
+
+:KrajowyDepozytPapierowWartosciowychSA a owl:NamedIndividual , :LocalOperatingUnit ;
+	rdfs:label "Krajowy Depozyt Papierów Wartościowych S.A."@pl ;
+	rdfs:seeAlso "http://www.kdpw.pl/en/Pages/Home_en.aspx"^^xsd:anyURI .
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/PL
+
+:PL a owl:NamedIndividual , lcc-cr:Country ;
+	:hasISOCode "PL"^^xsd:string ;
+	rdfs:label "Poland"@en .
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/PL-LD
+
+:PL-LD a owl:NamedIndividual , lcc-cr:CountrySubdivision ;
+	:hasISOCode "PL-LD"^^xsd:string .
+# 
+# http://spec.edmcouncil.org/fibo/FBC/1.0/LEI-Extension-MakoLab/PL_1
+
+:PL_1 a owl:NamedIndividual , fibo-fbc-fct-breg:BusinessRegistrationAuthority .
+# 
