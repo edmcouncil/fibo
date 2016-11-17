@@ -11,8 +11,11 @@
 	<!ENTITY fibo-fnd-agr-agr "http://spec.edmcouncil.org/fibo/FND/Agreements/Agreements/">
 	<!ENTITY fibo-fnd-agr-ctr "http://spec.edmcouncil.org/fibo/FND/Agreements/Contracts/">
 	<!ENTITY fibo-fnd-arr-arr "http://spec.edmcouncil.org/fibo/FND/Arrangements/Arrangements/">
+	<!ENTITY fibo-fnd-arr-cls "http://spec.edmcouncil.org/fibo/FND/Arrangements/ClassificationSchemes/">
 	<!ENTITY fibo-fnd-arr-id "http://spec.edmcouncil.org/fibo/FND/Arrangements/IdentifiersAndIndices/">
+	<!ENTITY fibo-fnd-dt-bd "http://spec.edmcouncil.org/fibo/FND/DatesAndTimes/BusinessDates/">
 	<!ENTITY fibo-fnd-dt-fd "http://spec.edmcouncil.org/fibo/FND/DatesAndTimes/FinancialDates/">
+	<!ENTITY fibo-fnd-dt-oc "http://spec.edmcouncil.org/fibo/FND/DatesAndTimes/Occurrences/">
 	<!ENTITY fibo-fnd-law-jur "http://spec.edmcouncil.org/fibo/FND/Law/Jurisdiction/">
 	<!ENTITY fibo-fnd-law-lcap "http://spec.edmcouncil.org/fibo/FND/Law/LegalCapacity/">
 	<!ENTITY fibo-fnd-oac-own "http://spec.edmcouncil.org/fibo/FND/OwnershipAndControl/Ownership/">
@@ -41,8 +44,11 @@
 	xmlns:fibo-fnd-agr-agr="http://spec.edmcouncil.org/fibo/FND/Agreements/Agreements/"
 	xmlns:fibo-fnd-agr-ctr="http://spec.edmcouncil.org/fibo/FND/Agreements/Contracts/"
 	xmlns:fibo-fnd-arr-arr="http://spec.edmcouncil.org/fibo/FND/Arrangements/Arrangements/"
+	xmlns:fibo-fnd-arr-cls="http://spec.edmcouncil.org/fibo/FND/Arrangements/ClassificationSchemes/"
 	xmlns:fibo-fnd-arr-id="http://spec.edmcouncil.org/fibo/FND/Arrangements/IdentifiersAndIndices/"
+	xmlns:fibo-fnd-dt-bd="http://spec.edmcouncil.org/fibo/FND/DatesAndTimes/BusinessDates/"
 	xmlns:fibo-fnd-dt-fd="http://spec.edmcouncil.org/fibo/FND/DatesAndTimes/FinancialDates/"
+	xmlns:fibo-fnd-dt-oc="http://spec.edmcouncil.org/fibo/FND/DatesAndTimes/Occurrences/"
 	xmlns:fibo-fnd-law-jur="http://spec.edmcouncil.org/fibo/FND/Law/Jurisdiction/"
 	xmlns:fibo-fnd-law-lcap="http://spec.edmcouncil.org/fibo/FND/Law/LegalCapacity/"
 	xmlns:fibo-fnd-oac-own="http://spec.edmcouncil.org/fibo/FND/OwnershipAndControl/Ownership/"
@@ -107,9 +113,15 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<owl:imports
 			rdf:resource="http://spec.edmcouncil.org/fibo/FND/Arrangements/Arrangements/"/>
 		<owl:imports
+			rdf:resource="http://spec.edmcouncil.org/fibo/FND/Arrangements/ClassificationSchemes/"/>
+		<owl:imports
 			rdf:resource="http://spec.edmcouncil.org/fibo/FND/Arrangements/IdentifiersAndIndices/"/>
 		<owl:imports
+			rdf:resource="http://spec.edmcouncil.org/fibo/FND/DatesAndTimes/BusinessDates/"/>
+		<owl:imports
 			rdf:resource="http://spec.edmcouncil.org/fibo/FND/DatesAndTimes/FinancialDates/"/>
+		<owl:imports
+			rdf:resource="http://spec.edmcouncil.org/fibo/FND/DatesAndTimes/Occurrences/"/>
 		<owl:imports
 			rdf:resource="http://spec.edmcouncil.org/fibo/FND/Law/Jurisdiction/"/>
 		<owl:imports
@@ -365,6 +377,101 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 	</owl:Class>
 	
 	<owl:Class
+		rdf:about="&fibo-fbc-pas-fpas;Lifecycle">
+		<rdfs:subClassOf
+			rdf:resource="&fibo-fnd-arr-cls;ClassificationScheme"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty
+					rdf:resource="&fibo-fbc-pas-fpas;hasStage"/>
+				<owl:someValuesFrom
+					rdf:resource="&fibo-fbc-pas-fpas;LifecycleStage"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty
+					rdf:resource="&fibo-fnd-dt-bd;holdsDuring"/>
+				<owl:someValuesFrom
+					rdf:resource="&fibo-fnd-dt-fd;DatePeriod"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>lifecycle</rdfs:label>
+		<fibo-fnd-utl-av:adaptedFrom
+			rdf:datatype="&xsd;anyURI">http://www.businessdictionary.com/definition/life-cycle.html</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:adaptedFrom
+			rdf:datatype="&xsd;anyURI">http://www.investopedia.com/terms/p/product-life-cycle.asp</fibo-fnd-utl-av:adaptedFrom>
+		<skos:definition
+			rdf:datatype="&xsd;string">an arrangement that compares the cyclical nature of families, organizations, processes, products, marketing, and order management, portfolio management or other systems with the cradle to grave life stages (birth, growth, maturity, decay, and death) of living organisms</skos:definition>
+		<skos:example
+			rdf:datatype="&xsd;string">The product life cycle describes the period of time over which an item is developed, brought to market and eventually removed from the market. The cycle is broken into four stages: introduction, growth, maturity and decline. The idea of the product life cycle is used in marketing to decide when it is appropriate to advertise, reduce prices, explore new markets or create new packaging.</skos:example>
+	</owl:Class>
+	
+	<owl:Class
+		rdf:about="&fibo-fbc-pas-fpas;LifecycleEvent">
+		<rdfs:subClassOf
+			rdf:resource="&fibo-fnd-dt-oc;OccurrenceKind"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty
+					rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
+				<owl:someValuesFrom
+					rdf:resource="&fibo-fbc-pas-fpas;Lifecycle"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty
+					rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
+				<owl:someValuesFrom
+					rdf:resource="&fibo-fbc-pas-fpas;LifecycleStage"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>lifecycle event</rdfs:label>
+		<fibo-fnd-utl-av:adaptedFrom
+			rdf:datatype="&xsd;anyURI">http://www.investopedia.com/terms/p/product-life-cycle.asp</fibo-fnd-utl-av:adaptedFrom>
+		<skos:definition
+			rdf:datatype="&xsd;string">an event that occurs during a given stage of some lifecycle, such as a call notification or coupon payment, as a part of a bond lifecycle</skos:definition>
+	</owl:Class>
+	
+	<owl:Class
+		rdf:about="&fibo-fbc-pas-fpas;LifecycleStage">
+		<rdfs:subClassOf
+			rdf:resource="&fibo-fnd-arr-cls;Classifier"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty
+					rdf:resource="&fibo-fbc-pas-fpas;isStageOf"/>
+				<owl:someValuesFrom
+					rdf:resource="&fibo-fbc-pas-fpas;Lifecycle"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty
+					rdf:resource="&fibo-fnd-dt-bd;holdsDuring"/>
+				<owl:someValuesFrom
+					rdf:resource="&fibo-fnd-dt-fd;DatePeriod"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty
+					rdf:resource="&fibo-fnd-rel-rel;comprises"/>
+				<owl:someValuesFrom
+					rdf:resource="&fibo-fbc-pas-fpas;LifecycleEvent"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>lifecycle stage</rdfs:label>
+		<fibo-fnd-utl-av:adaptedFrom
+			rdf:datatype="&xsd;anyURI">http://www.businessdictionary.com/definition/life-cycle.html</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:adaptedFrom
+			rdf:datatype="&xsd;anyURI">http://www.investopedia.com/terms/p/product-life-cycle.asp</fibo-fnd-utl-av:adaptedFrom>
+		<skos:definition
+			rdf:datatype="&xsd;string">a phase in a lifecycle, such as research and development phase of a product lifecycle, the introduction phase in a marketing lifecycle, a growth stage in an economic lifecycle, or the origination phase in the lifecycle of a securities transaction</skos:definition>
+	</owl:Class>
+	
+	<owl:Class
 		rdf:about="&fibo-fbc-pas-fpas;Position">
 		<rdfs:subClassOf
 			rdf:resource="&fibo-fbc-pas-fpas;Holding"/>
@@ -419,17 +526,9 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 	</owl:Class>
 	
 	<owl:Class
-		rdf:about="&fibo-fbc-pas-fpas;SettlementCommitment">
+		rdf:about="&fibo-fbc-pas-fpas;SettlementTerms">
 		<rdfs:subClassOf
-			rdf:resource="&fibo-fnd-agr-agr;Commitment"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:allValuesFrom
-					rdf:resource="&fibo-fbc-pas-fpas;SettlementTerms"/>
-				<owl:onProperty
-					rdf:resource="&fibo-fnd-rel-rel;involves"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
+			rdf:resource="&fibo-fnd-agr-ctr;ContractTermsSet"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:allValuesFrom
@@ -438,30 +537,13 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 					rdf:resource="&fibo-fbc-pas-fpas;hasSettlementDate"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label>settlement commitment</rdfs:label>
+		<rdfs:label>settlement terms</rdfs:label>
 		<fibo-fnd-utl-av:adaptedFrom
 			rdf:datatype="&xsd;string">Barron&apos;s Dictionary of Business and Economics Terms, Fifth Edition, 2012</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:explanatoryNote
 			rdf:datatype="&xsd;string">In general, settlement involves arrangement of disposition of property, typically for legal reasons.  With respect to financial transactions, it involves completion of a trade, either between brokers or agents, or beween a broker and client. This may include settlement in cash, either for the entire transaction or for the cash leg of a transaction, either now or at some specified time in the future.</fibo-fnd-utl-av:explanatoryNote>
 		<skos:definition
-			rdf:datatype="&xsd;string">a commitment to settle one side of a transaction, or if simultaneous, both sides of a transaction</skos:definition>
-	</owl:Class>
-	
-	<owl:Class
-		rdf:about="&fibo-fbc-pas-fpas;SettlementTerms">
-		<rdfs:subClassOf
-			rdf:resource="&fibo-fnd-agr-ctr;ContractTermsSet"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty
-					rdf:resource="&fibo-fnd-rel-rel;embodies"/>
-				<owl:someValuesFrom
-					rdf:resource="&fibo-fbc-pas-fpas;SettlementCommitment"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>settlement terms</rdfs:label>
-		<skos:definition
-			rdf:datatype="&xsd;string">contract terms that specify how the instrument should be settled</skos:definition>
+			rdf:datatype="&xsd;string">contract terms that define the commitment to and mechanism for settling one or more sides of a transaction,</skos:definition>
 	</owl:Class>
 	
 	<owl:Class
@@ -642,6 +724,19 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty
+		rdf:about="&fibo-fbc-pas-fpas;hasStage">
+		<rdfs:subPropertyOf
+			rdf:resource="&fibo-fnd-rel-rel;hasPart"/>
+		<rdfs:label>has stage</rdfs:label>
+		<fibo-fnd-utl-av:adaptedFrom
+			rdf:datatype="&xsd;anyURI">http://www.businessdictionary.com/definition/life-cycle.html</fibo-fnd-utl-av:adaptedFrom>
+		<rdfs:range
+			rdf:resource="&fibo-fbc-pas-fpas;LifecycleStage"/>
+		<skos:definition
+			rdf:datatype="&xsd;string">relates a product lifecycle to a phase or stage in that lifecycle</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty
 		rdf:about="&fibo-fbc-pas-fpas;isConstituentOf">
 		<rdfs:subPropertyOf
 			rdf:resource="&fibo-fnd-rel-rel;isPartOf"/>
@@ -676,6 +771,21 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 			rdf:resource="&fibo-fbc-pas-fpas;facilitates"/>
 		<skos:definition
 			rdf:datatype="&xsd;string">identifies someone or something that expedites some event, transaction, conversation or something else in some context</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty
+		rdf:about="&fibo-fbc-pas-fpas;isStageOf">
+		<rdfs:subPropertyOf
+			rdf:resource="&fibo-fnd-rel-rel;isPartOf"/>
+		<rdfs:label>is stage of</rdfs:label>
+		<fibo-fnd-utl-av:adaptedFrom
+			rdf:datatype="&xsd;anyURI">http://www.businessdictionary.com/definition/life-cycle.html</fibo-fnd-utl-av:adaptedFrom>
+		<rdfs:range
+			rdf:resource="&fibo-fbc-pas-fpas;Lifecycle"/>
+		<owl:inverseOf
+			rdf:resource="&fibo-fbc-pas-fpas;hasStage"/>
+		<skos:definition
+			rdf:datatype="&xsd;string">relates a stage in a product lifecycle to that lifecycle</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:Class
