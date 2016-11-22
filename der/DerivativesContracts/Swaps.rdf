@@ -178,20 +178,22 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:minQualifiedCardinality
-					rdf:datatype="&xsd;nonNegativeInteger">2</owl:minQualifiedCardinality>
 				<owl:onClass
 					rdf:resource="&fibo-der-drc-swp;SwapParty"/>
 				<owl:onProperty
 					rdf:resource="&fibo-fnd-agr-ctr;hasContractParty"/>
+				<owl:qualifiedCardinality
+					rdf:datatype="&xsd;nonNegativeInteger">2</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
+				<owl:onClass
+					rdf:resource="&fibo-der-drc-swp;SwapStreamTerms"/>
 				<owl:onProperty
 					rdf:resource="&fibo-der-drc-swp;exchanges"/>
-				<owl:someValuesFrom
-					rdf:resource="&fibo-der-drc-swp;SwapStreamCommitment"/>
+				<owl:qualifiedCardinality
+					rdf:datatype="&xsd;nonNegativeInteger">2</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>swap contract</rdfs:label>
@@ -202,7 +204,7 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 		<skos:definition
 			rdf:datatype="&xsd;string">a derivative instrument that facilitiates the exchange financial instruments among the parties; the instruments can be almost anything, but most swaps involve cash flows (streams of payments or other commitments over time) based on a notional principal amount that both parties agree to</skos:definition>
 		<skos:editorialNote
-			rdf:datatype="&xsd;string">The most common type is an interest rate swap, in which one party agrees to pay a fixed interest rate in return for receiving a adjustable rate from another party. Review session notes: 10 Mar Helpful to split these according to the assets that are swapped. So for instance there are equity swaps, commodity swaps where you swap different assets. These are not mutually exclusive to labels about Fund Leg, and so on, that are different ways that people trading in those assets distinguish between those legs. For example in IR, we talk Fixed, Floating. capital Index Swap, where the return on oen leg is indexed to an inflation index but it&apos;s still an IR swap where the payment relates to an inflation index. So keeping the 2 legs in some sort of notion balance - example index annuity swap, capital index swap and so on. These terms refer to the behavior of the underlying swap rather than an arbitrary classification of what leg is what. Different structures of swap is less relevant. 17 March: Remember: the contract does not necessarily have 2 legs, but it usually would. The structure is in the &apos;Transactions&apos;, the Commitments embodied in the two sides of those transactions, the &apos;Legs&apos; which are simply the embodiment of those commitments, and so on. Then the details structure is in the &apos;Leg&apos; definitions. Note also that different kinds of leg can have various structures regardless of how or why they are used in a contract.</skos:editorialNote>
+			rdf:datatype="&xsd;string">The most common type is an interest rate swap, in which one party agrees to pay a fixed interest rate in return for receiving a adjustable rate from another party. Review session notes: 10 Mar Helpful to split these according to the assets that are swapped. So for instance there are equity swaps, commodity swaps where you swap different assets. These are not mutually exclusive to labels about Fund Leg, and so on, that are different ways that people trading in those assets distinguish between those legs. For example in IR, we talk Fixed, Floating. capital Index Swap, where the return on oen leg is indexed to an inflation index but it&apos;s still an IR swap where the payment relates to an inflation index. So keeping the 2 legs in some sort of notion balance - example index annuity swap, capital index swap and so on. These terms refer to the behavior of the underlying swap rather than an arbitrary classification of what leg is what. Different structures of swap is less relevant. 17 March: Remember: the contract does not necessarily have 2 legs, but it usually would. The structure is in the transactions, i.e., the commitments embodied in the terms for the two sides of those transactions, the legs which are simply the embodiment of those commitments, and so on. Then the details structure is in the leg definitions. Note also that different kinds of leg can have various structures regardless of how or why they are used in a contract.</skos:editorialNote>
 	</owl:Class>
 	
 	<owl:Class
@@ -316,8 +318,6 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 		<rdfs:subClassOf
 			rdf:resource="&fibo-fnd-pas-psch;Payer"/>
 		<rdfs:label>swap payer party</rdfs:label>
-		<fibo-fnd-utl-av:adaptedFrom
-			rdf:datatype="&xsd;string">FpML</fibo-fnd-utl-av:adaptedFrom>
 		<skos:definition
 			rdf:datatype="&xsd;string">a swap contract party responsible for making payments for a given leg of the transaction as defined in the contract</skos:definition>
 	</owl:Class>
@@ -331,29 +331,8 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 		<rdfs:subClassOf
 			rdf:resource="&fibo-fnd-pas-psch;Payee"/>
 		<rdfs:label>swap receiving party</rdfs:label>
-		<fibo-fnd-utl-av:adaptedFrom
-			rdf:datatype="&xsd;string">FpML</fibo-fnd-utl-av:adaptedFrom>
 		<skos:definition
 			rdf:datatype="&xsd;string">a swap contract party that receives payments for a given leg of the transaction as defined in the contract</skos:definition>
-	</owl:Class>
-	
-	<owl:Class
-		rdf:about="&fibo-der-drc-swp;SwapStreamCommitment">
-		<rdfs:subClassOf
-			rdf:resource="&fibo-fbc-dae-dbt;Debt"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:allValuesFrom
-					rdf:resource="&fibo-der-drc-swp;SwapTerms"/>
-				<owl:onProperty
-					rdf:resource="&fibo-fbc-pas-fpas;isEmbodiedIn"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>swap stream commitment</rdfs:label>
-		<skos:definition
-			rdf:datatype="&xsd;string">commitment to make the cashflow or payment defined in a swap stream or leg</skos:definition>
-		<skos:editorialNote
-			rdf:datatype="&xsd;string">For some swaps this may be a commitment to net up the difference between a strike and an outcome, rather than to make a series of cashflows over time. For credit default swaps there are conditional commitments, contingent on the occurrence of a credit event.</skos:editorialNote>
 	</owl:Class>
 	
 	<owl:Class
@@ -368,27 +347,34 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 	</owl:Class>
 	
 	<owl:Class
-		rdf:about="&fibo-der-drc-swp;SwapStreamStrikeCommitment">
-		<rdfs:subClassOf
-			rdf:resource="&fibo-der-drc-swp;SwapStreamCommitment"/>
-		<rdfs:label>swap stream strike commitment</rdfs:label>
-		<skos:definition
-			rdf:datatype="&xsd;string">a commitment to strike a swap deal as defined in strike leg terms</skos:definition>
-	</owl:Class>
-	
-	<owl:Class
 		rdf:about="&fibo-der-drc-swp;SwapStreamTerms">
 		<rdfs:subClassOf
 			rdf:resource="&fibo-der-drc-bsc;CashflowTerms"/>
 		<rdfs:subClassOf
 			rdf:resource="&fibo-der-drc-swp;SwapTerms"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty
+					rdf:resource="&fibo-fnd-agr-ctr;hasPayerParty"/>
+				<owl:someValuesFrom
+					rdf:resource="&fibo-der-drc-swp;SwapPayerParty"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty
+					rdf:resource="&fibo-fnd-agr-ctr;hasReceivingParty"/>
+				<owl:someValuesFrom
+					rdf:resource="&fibo-der-drc-swp;SwapReceivingParty"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label>swap stream terms</rdfs:label>
 		<fibo-fnd-utl-av:adaptedFrom
 			rdf:datatype="&xsd;string">http://www.investopedia.com/terms/i/interestrateswap.asp</fibo-fnd-utl-av:adaptedFrom>
-		<fibo-fnd-utl-av:termOrigin
-			rdf:datatype="&xsd;string">FpML</fibo-fnd-utl-av:termOrigin>
 		<skos:definition
-			rdf:datatype="&xsd;string">contract terms defining future payments (e.g., interest payments, coupon payments, etc.)for one leg of a swap transaction</skos:definition>
+			rdf:datatype="&xsd;string">contract terms defining and commitment to fulfill the future payment or cashflow requirements (e.g., interest payments, coupon payments, etc.) for one leg of a swap transaction</skos:definition>
+		<skos:editorialNote
+			rdf:datatype="&xsd;string">For some swaps this may be a commitment to net up the difference between a strike and an outcome, rather than to make a series of cashflows over time. For credit default swaps there are conditional commitments, contingent on the occurrence of a credit event.</skos:editorialNote>
 	</owl:Class>
 	
 	<owl:Class
@@ -447,6 +433,28 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 	</rdf:Description>
 	
 	<owl:ObjectProperty
+		rdf:about="&fibo-der-drc-swp;hasLeg">
+		<rdfs:label>has leg</rdfs:label>
+		<fibo-fnd-utl-av:synonym
+			rdf:datatype="&xsd;string">has swap stream</fibo-fnd-utl-av:synonym>
+		<rdfs:domain
+			rdf:resource="&fibo-der-drc-swp;SwapContract"/>
+		<rdfs:range
+			rdf:resource="&fibo-der-drc-swp;SwapStreamTerms"/>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty
+		rdf:about="&fibo-der-drc-swp;hasPayerParty">
+		<rdfs:subPropertyOf
+			rdf:resource="&fibo-fnd-agr-ctr;hasContractParty"/>
+		<rdfs:label>has payer party</rdfs:label>
+		<rdfs:range
+			rdf:resource="&fibo-der-drc-swp;SwapPayerParty"/>
+		<skos:definition
+			rdf:datatype="&xsd;string">defines the payer party for a funding leg of a swap</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty
 		rdf:about="&fibo-der-drc-swp;hasPaymentSchedule">
 		<rdfs:subPropertyOf
 			rdf:resource="&fibo-fnd-rel-rel;has"/>
@@ -460,6 +468,17 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty
+		rdf:about="&fibo-der-drc-swp;hasReceivingParty">
+		<rdfs:subPropertyOf
+			rdf:resource="&fibo-fnd-agr-ctr;hasContractParty"/>
+		<rdfs:label>has receiving party</rdfs:label>
+		<rdfs:range
+			rdf:resource="&fibo-der-drc-swp;SwapReceivingParty"/>
+		<skos:definition
+			rdf:datatype="&xsd;string">defines the recipient for a funding leg of a swap</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty
 		rdf:about="&fibo-der-drc-swp;hasSwapContractIdentifier">
 		<rdfs:subPropertyOf
 			rdf:resource="&fibo-fnd-rel-rel;has"/>
@@ -468,15 +487,6 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 			rdf:resource="&fibo-fbc-fi-fi;FinancialInstrumentIdentifier"/>
 		<skos:definition
 			rdf:datatype="&xsd;string">relates a swap lifecycle event to the identifier for the swap contract</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty
-		rdf:about="&fibo-der-drc-swp;hasSwapStream">
-		<rdfs:label>has swap stream</rdfs:label>
-		<rdfs:domain
-			rdf:resource="&fibo-der-drc-swp;SwapContract"/>
-		<rdfs:range
-			rdf:resource="&fibo-der-drc-swp;SwapStreamTerms"/>
 	</owl:ObjectProperty>
 
 </rdf:RDF>
