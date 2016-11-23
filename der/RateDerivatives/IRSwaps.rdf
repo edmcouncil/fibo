@@ -9,12 +9,14 @@
 	<!ENTITY fibo-fbc-fct-ra "http://spec.edmcouncil.org/fibo/FBC/FunctionalEntities/RegistrationAuthorities/">
 	<!ENTITY fibo-fbc-pas-fpas "http://spec.edmcouncil.org/fibo/FBC/ProductsAndServices/FinancialProductsAndServices/">
 	<!ENTITY fibo-fnd-acc-cur "http://spec.edmcouncil.org/fibo/FND/Accounting/CurrencyAmount/">
+	<!ENTITY fibo-fnd-agr-ctr "http://spec.edmcouncil.org/fibo/FND/Agreements/Contracts/">
 	<!ENTITY fibo-fnd-dt-fd "http://spec.edmcouncil.org/fibo/FND/DatesAndTimes/FinancialDates/">
 	<!ENTITY fibo-fnd-pas-psch "http://spec.edmcouncil.org/fibo/FND/ProductsAndServices/PaymentsAndSchedules/">
 	<!ENTITY fibo-fnd-rel-rel "http://spec.edmcouncil.org/fibo/FND/Relations/Relations/">
 	<!ENTITY fibo-fnd-utl-alx "http://spec.edmcouncil.org/fibo/FND/Utilities/Analytics/">
 	<!ENTITY fibo-fnd-utl-av "http://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/">
 	<!ENTITY fibo-fnd-utl-bt "http://spec.edmcouncil.org/fibo/FND/Utilities/BusinessFacingTypes/">
+	<!ENTITY fibo-ind-ei-ei "http://spec.edmcouncil.org/fibo/IND/EconomicIndicators/EconomicIndicators/">
 	<!ENTITY fibo-ind-ir-ir "http://spec.edmcouncil.org/fibo/IND/InterestRates/InterestRates/">
 	<!ENTITY fibo-sec-sec-isda "http://spec.edmcouncil.org/fibo/SEC/Securities/ISDASchedules/">
 	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
@@ -35,12 +37,14 @@
 	xmlns:fibo-fbc-fct-ra="http://spec.edmcouncil.org/fibo/FBC/FunctionalEntities/RegistrationAuthorities/"
 	xmlns:fibo-fbc-pas-fpas="http://spec.edmcouncil.org/fibo/FBC/ProductsAndServices/FinancialProductsAndServices/"
 	xmlns:fibo-fnd-acc-cur="http://spec.edmcouncil.org/fibo/FND/Accounting/CurrencyAmount/"
+	xmlns:fibo-fnd-agr-ctr="http://spec.edmcouncil.org/fibo/FND/Agreements/Contracts/"
 	xmlns:fibo-fnd-dt-fd="http://spec.edmcouncil.org/fibo/FND/DatesAndTimes/FinancialDates/"
 	xmlns:fibo-fnd-pas-psch="http://spec.edmcouncil.org/fibo/FND/ProductsAndServices/PaymentsAndSchedules/"
 	xmlns:fibo-fnd-rel-rel="http://spec.edmcouncil.org/fibo/FND/Relations/Relations/"
 	xmlns:fibo-fnd-utl-alx="http://spec.edmcouncil.org/fibo/FND/Utilities/Analytics/"
 	xmlns:fibo-fnd-utl-av="http://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/"
 	xmlns:fibo-fnd-utl-bt="http://spec.edmcouncil.org/fibo/FND/Utilities/BusinessFacingTypes/"
+	xmlns:fibo-ind-ei-ei="http://spec.edmcouncil.org/fibo/IND/EconomicIndicators/EconomicIndicators/"
 	xmlns:fibo-ind-ir-ir="http://spec.edmcouncil.org/fibo/IND/InterestRates/InterestRates/"
 	xmlns:fibo-sec-sec-isda="http://spec.edmcouncil.org/fibo/SEC/Securities/ISDASchedules/"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
@@ -103,6 +107,8 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<owl:imports
 			rdf:resource="http://spec.edmcouncil.org/fibo/FND/Accounting/CurrencyAmount/"/>
 		<owl:imports
+			rdf:resource="http://spec.edmcouncil.org/fibo/FND/Agreements/Contracts/"/>
+		<owl:imports
 			rdf:resource="http://spec.edmcouncil.org/fibo/FND/DatesAndTimes/FinancialDates/"/>
 		<owl:imports
 			rdf:resource="http://spec.edmcouncil.org/fibo/FND/ProductsAndServices/PaymentsAndSchedules/"/>
@@ -114,6 +120,8 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 			rdf:resource="http://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports
 			rdf:resource="http://spec.edmcouncil.org/fibo/FND/Utilities/BusinessFacingTypes/"/>
+		<owl:imports
+			rdf:resource="http://spec.edmcouncil.org/fibo/IND/EconomicIndicators/EconomicIndicators/"/>
 		<owl:imports
 			rdf:resource="http://spec.edmcouncil.org/fibo/IND/InterestRates/InterestRates/"/>
 		<owl:imports
@@ -154,6 +162,27 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 			rdf:datatype="&xsd;string">a swap contract in which the two streams of interest payments are in different currencies</skos:definition>
 		<skos:editorialNote
 			rdf:datatype="&xsd;string">Additional modeling constructs would be required to define the classification rule whereby the currency in one leg is different to the currency in the other leg.</skos:editorialNote>
+	</owl:Class>
+	
+	<owl:Class
+		rdf:about="&fibo-der-rtd-irswp;CurrencySwapStreamTerms">
+		<rdfs:subClassOf
+			rdf:resource="&fibo-der-drc-swp;SwapStreamTerms"/>
+		<rdfs:subClassOf
+			rdf:resource="&fibo-fnd-utl-alx;Expression"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onClass
+					rdf:resource="&fibo-fnd-acc-cur;Currency"/>
+				<owl:onProperty
+					rdf:resource="&fibo-fnd-utl-alx;hasArgument"/>
+				<owl:qualifiedCardinality
+					rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>currency swap stream terms</rdfs:label>
+		<skos:definition
+			rdf:datatype="&xsd;string">the terms identifying the currency for a stream of payments involved in a swap stream</skos:definition>
 	</owl:Class>
 	
 	<owl:Class
@@ -328,7 +357,7 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<skos:definition
 			rdf:datatype="&xsd;string">a swap stream that specifies fixed interest amounts and terms for the payment of that interest</skos:definition>
 		<skos:editorialNote
-			rdf:datatype="&xsd;string">This may be the funding leg of some swaps (i.e. one party agrees to pay fixed interest amounts in exchange for whatever is the other leg) or it may be one or both sides of an Interest Rate Swap, where the two parties exchange different interest streams. Note that the FpML term on which this Swapstream term was based, is the one for asset return swaps, where this is the payment leg. Earlier notes: This is a kind of payment leg - see diagram note This is the leg which has interest amounts, interest calculations and calculation dates, and optional stub calculation terms. It should be possible to relate this to the specific interest payments of an underlying if there is one. FpML: The fixed income amounts of the return type swap. In FpML, &apos;This element can be used wherever the following element is referenced: returnSwapLeg&apos; Term origin:FpML = interestLeg</skos:editorialNote>
+			rdf:datatype="&xsd;string">This may be the funding leg of some swaps (i.e. one party agrees to pay fixed interest amounts in exchange for whatever is the other leg) or it may be one or both sides of an Interest Rate Swap, where the two parties exchange different interest streams. Note that the FpML term on which this Swapstream term was based, is the one for asset return swaps, where this is the payment leg. This is the leg which has interest amounts, interest calculations and calculation dates, and optional stub calculation terms. It should be possible to relate this to the specific interest payments of an underlying if there is one.</skos:editorialNote>
 	</owl:Class>
 	
 	<owl:Class
@@ -379,12 +408,12 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 			rdf:resource="&fibo-der-rtd-irswp;InterestRateSwapContract"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:minQualifiedCardinality
-					rdf:datatype="&xsd;nonNegativeInteger">2</owl:minQualifiedCardinality>
 				<owl:onClass
 					rdf:resource="&fibo-der-rtd-irswp;FloatingInterestRateSwapStreamTerms"/>
 				<owl:onProperty
 					rdf:resource="&fibo-der-drc-swp;exchanges"/>
+				<owl:qualifiedCardinality
+					rdf:datatype="&xsd;nonNegativeInteger">2</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>float-float interest rate swap contract</rdfs:label>
@@ -398,12 +427,12 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 							<rdf:Description>
 								<rdf:first>
 									<owl:Restriction>
-										<owl:minQualifiedCardinality
-											rdf:datatype="&xsd;nonNegativeInteger">2</owl:minQualifiedCardinality>
 										<owl:onClass
 											rdf:resource="&fibo-der-rtd-irswp;FloatingInterestRateSwapStreamTerms"/>
 										<owl:onProperty
 											rdf:resource="&fibo-der-drc-swp;hasLeg"/>
+										<owl:qualifiedCardinality
+											rdf:datatype="&xsd;nonNegativeInteger">2</owl:qualifiedCardinality>
 									</owl:Restriction>
 								</rdf:first>
 								<rdf:rest
@@ -518,7 +547,7 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<skos:definition
 			rdf:datatype="&xsd;string">rdf:datatype=&quot;http://www.w3.org/2001/XMLSchema#string&quot;&gt;value of floating interest rate amount during a given calculation period, along with the relevant parameters in its calculation</skos:definition>
 		<skos:editorialNote
-			rdf:datatype="&xsd;string">Forms an explicit set of terms at a point in time, and is part of the explicit schedule information. FpML: &apos;A type defining parameters associated with a floating rate reset. This type forms part of the cashflows representation of a stream.&apos;</skos:editorialNote>
+			rdf:datatype="&xsd;string">Forms an explicit set of terms at a point in time, and is part of the explicit schedule information.</skos:editorialNote>
 	</owl:Class>
 	
 	<owl:Class
@@ -540,11 +569,19 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		rdf:about="&fibo-der-rtd-irswp;InterestRateCurrencySwapContract">
 		<rdfs:subClassOf
 			rdf:resource="&fibo-der-rtd-irswp;InterestRateSwapContract"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onClass
+					rdf:resource="&fibo-der-rtd-irswp;CurrencySwapStreamTerms"/>
+				<owl:onProperty
+					rdf:resource="&fibo-fnd-agr-ctr;hasTerms"/>
+				<owl:qualifiedCardinality
+					rdf:datatype="&xsd;nonNegativeInteger">2</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label>interest rate currency swap contract</rdfs:label>
 		<skos:definition
 			rdf:datatype="&xsd;string">a swap contract in which the two streams of interest payments are in different currencies</skos:definition>
-		<skos:editorialNote
-			rdf:datatype="&xsd;string">This is not formally shown here - additional modeling constructs would be required to define the classificaiton rule whereby the currency in one leg is different to the currency in the other leg. To accommodate this, there may also be a change in the main taxonomy (reflecting that in the IR Swaps Proof of Concept exercise of 2011).</skos:editorialNote>
 	</owl:Class>
 	
 	<owl:Class
@@ -562,12 +599,12 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 			rdf:resource="&fibo-der-rtd-rtd;InterestRateDerivativeInstrument"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:minQualifiedCardinality
-					rdf:datatype="&xsd;nonNegativeInteger">2</owl:minQualifiedCardinality>
 				<owl:onClass
 					rdf:resource="&fibo-der-rtd-irswp;InterestRateSwapStreamTerms"/>
 				<owl:onProperty
 					rdf:resource="&fibo-der-drc-swp;exchanges"/>
+				<owl:qualifiedCardinality
+					rdf:datatype="&xsd;nonNegativeInteger">2</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>interest rate swap contract</rdfs:label>
@@ -581,12 +618,12 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 							<rdf:Description>
 								<rdf:first>
 									<owl:Restriction>
-										<owl:minQualifiedCardinality
-											rdf:datatype="&xsd;nonNegativeInteger">2</owl:minQualifiedCardinality>
 										<owl:onClass
 											rdf:resource="&fibo-der-rtd-irswp;InterestRateSwapStreamTerms"/>
 										<owl:onProperty
 											rdf:resource="&fibo-der-drc-swp;hasLeg"/>
+										<owl:qualifiedCardinality
+											rdf:datatype="&xsd;nonNegativeInteger">2</owl:qualifiedCardinality>
 									</owl:Restriction>
 								</rdf:first>
 								<rdf:rest
@@ -599,8 +636,6 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		</owl:equivalentClass>
 		<skos:definition
 			rdf:datatype="&xsd;string">a swap in which the underlying for one or both legs is an interest rate</skos:definition>
-		<skos:editorialNote
-			rdf:datatype="&xsd;string">FpML: no specific schema for this product class. Review: So far, it looks as though IR swaps have both legs as interest legs - is this is necessarily and always true or can one pay a fixed amount (rather than fixed interest) for a single IR swapstream? Have not seen any of these but it&apos;s logically possible.</skos:editorialNote>
 	</owl:Class>
 	
 	<owl:Class
@@ -732,7 +767,7 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<skos:definition
 			rdf:datatype="&xsd;string">the percentage amount by which the notional changes on each step date</skos:definition>
 		<skos:editorialNote
-			rdf:datatype="&xsd;string">The percentage is either a percentage applied to the initial notional amount or the previous outstanding notional, and may be positive or negative. FpML: The percentage amount by which the notional changes on each step date. The percentage is either a percentage applied to the initial notional amount or the previous outstanding notional, depending on the value of the element stepRelativeTo. The percentage can be either positive or negative. A percentage of 5 percent would be expressed as 0.05 (note that the last part of the FpML full definition deals with the fact that the datatype in FpML is different to the type of the fact in reality, i.e. it uses a number in place of a percentage)</skos:editorialNote>
+			rdf:datatype="&xsd;string">The percentage is either a percentage applied to the initial notional amount or the previous outstanding notional, and may be positive or negative.</skos:editorialNote>
 	</owl:Class>
 	
 	<owl:Class
@@ -741,9 +776,7 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 			rdf:resource="&fibo-fnd-dt-fd;RecurrenceInterval"/>
 		<rdfs:label>notional step period length</rdfs:label>
 		<skos:definition
-			rdf:datatype="&xsd;string">a length of each period in the step schedule, as a period of time</skos:definition>
-		<skos:editorialNote
-			rdf:datatype="&xsd;string">This has to be a multiple of the calculation period length in the regular portions of the Calculation Schedule. This ensures that calculation events are in step with changes to the notional amount. FpML: The frequency at which the step changes occur. This frequency must be a multiple of the stream calculation period frequency.</skos:editorialNote>
+			rdf:datatype="&xsd;string">a recurrence interval indicating the frequency with which step changes occur, which is a multiple of the calculation period in the calculation schedule</skos:definition>
 	</owl:Class>
 	
 	<rdfs:Datatype
@@ -767,7 +800,7 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 			</rdfs:Datatype>
 		</owl:equivalentClass>
 		<skos:definition
-			rdf:datatype="&xsd;string">The specification of whether a percentage rate change, used to calculate a change in notional outstanding, is expressed as a percentage of the initial notional amount or of the previously outstanding notional amount. FpML: &apos;The specification of whether a percentage rate change, used to calculate a change in notional outstanding, is expressed as a percentage of the initial notional amount or of the previously outstanding notional amount.&apos;</skos:definition>
+			rdf:datatype="&xsd;string">a specification of whether a percentage rate change, used to calculate a change in notional outstanding, is expressed as a percentage of the initial notional amount or of the previously outstanding notional amount</skos:definition>
 	</rdfs:Datatype>
 	
 	<owl:Class
@@ -794,13 +827,23 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<skos:definition
 			rdf:datatype="&xsd;string">schedule of changes in the notional amount on which interest is paid, comprising the regular sequence of step events</skos:definition>
 		<skos:editorialNote
-			rdf:datatype="&xsd;string">For the ISDA FpML Notional Step Schedule there are no stubs.</skos:editorialNote>
+			rdf:datatype="&xsd;string">For the Notional Step Schedule there are no stubs.</skos:editorialNote>
 	</owl:Class>
 	
 	<owl:Class
 		rdf:about="&fibo-der-rtd-irswp;SingleCurrencyInterestRateSwapContract">
 		<rdfs:subClassOf
 			rdf:resource="&fibo-der-rtd-irswp;InterestRateCurrencySwapContract"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onClass
+					rdf:resource="&fibo-fnd-acc-cur;Currency"/>
+				<owl:onProperty
+					rdf:resource="&fibo-fbc-fct-ra;specifies"/>
+				<owl:qualifiedCardinality
+					rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 	</owl:Class>
 	
 	<rdfs:Datatype
@@ -837,7 +880,7 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 					rdf:resource="&fibo-der-rtd-irswp;SwapStreamInterestRateResetSchedule"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label>swapstream calculation relative date</rdfs:label>
+		<rdfs:label>swap stream calculation relative date</rdfs:label>
 	</owl:Class>
 	
 	<owl:Class
@@ -877,7 +920,7 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		rdf:about="&fibo-der-rtd-irswp;SwapStreamInterestPayment">
 		<rdfs:subClassOf
 			rdf:resource="&fibo-fnd-pas-psch;Payment"/>
-		<rdfs:label>swapstream interest payment</rdfs:label>
+		<rdfs:label>swap stream interest payment</rdfs:label>
 	</owl:Class>
 	
 	<owl:Class
@@ -886,7 +929,7 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 			rdf:resource="&fibo-fnd-pas-psch;PaymentSchedule"/>
 		<rdfs:subClassOf
 			rdf:resource="&fibo-sec-sec-isda;ISDAFpMLParametricSchedule"/>
-		<rdfs:label>swapstream interest payment schedule</rdfs:label>
+		<rdfs:label>swap stream interest payment schedule</rdfs:label>
 		<skos:definition
 			rdf:datatype="&xsd;string">parametric schedule of payment dates</skos:definition>
 		<skos:editorialNote
@@ -945,7 +988,7 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		rdf:about="&fibo-der-rtd-irswp;SwapstreamInterestPaymentCalculationRelativeDate">
 		<rdfs:subClassOf
 			rdf:resource="&fibo-fnd-dt-fd;RelativeDate"/>
-		<rdfs:label>swapstream interest payment calculation relative date</rdfs:label>
+		<rdfs:label>swap stream interest payment calculation relative date</rdfs:label>
 	</owl:Class>
 	
 	<owl:DatatypeProperty
