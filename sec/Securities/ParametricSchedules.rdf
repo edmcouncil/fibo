@@ -6,7 +6,7 @@
 	<!ENTITY fibo-fnd-dt-oc "http://spec.edmcouncil.org/fibo/FND/DatesAndTimes/Occurrences/">
 	<!ENTITY fibo-fnd-rel-rel "http://spec.edmcouncil.org/fibo/FND/Relations/Relations/">
 	<!ENTITY fibo-fnd-utl-av "http://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/">
-	<!ENTITY fibo-sec-sec-isda "http://spec.edmcouncil.org/fibo/SEC/Securities/ISDASchedules/">
+	<!ENTITY fibo-sec-sec-sch "http://spec.edmcouncil.org/fibo/SEC/Securities/ParametricSchedules/">
 	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
 	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
 	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
@@ -15,14 +15,14 @@
 	<!ENTITY xsd "http://www.w3.org/2001/XMLSchema#">
 ]>
 <rdf:RDF
-	xml:base="http://spec.edmcouncil.org/fibo/SEC/Securities/ISDASchedules/"
+	xml:base="http://spec.edmcouncil.org/fibo/SEC/Securities/ParametricSchedules/"
 	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fibo-fnd-dt-bd="http://spec.edmcouncil.org/fibo/FND/DatesAndTimes/BusinessDates/"
 	xmlns:fibo-fnd-dt-fd="http://spec.edmcouncil.org/fibo/FND/DatesAndTimes/FinancialDates/"
 	xmlns:fibo-fnd-dt-oc="http://spec.edmcouncil.org/fibo/FND/DatesAndTimes/Occurrences/"
 	xmlns:fibo-fnd-rel-rel="http://spec.edmcouncil.org/fibo/FND/Relations/Relations/"
 	xmlns:fibo-fnd-utl-av="http://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/"
-	xmlns:fibo-sec-sec-isda="http://spec.edmcouncil.org/fibo/SEC/Securities/ISDASchedules/"
+	xmlns:fibo-sec-sec-sch="http://spec.edmcouncil.org/fibo/SEC/Securities/ParametricSchedules/"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
@@ -31,8 +31,8 @@
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema#">
 	
 	<owl:Ontology
-		rdf:about="http://spec.edmcouncil.org/fibo/SEC/Securities/ISDASchedules/">
-		<rdfs:label>ISDA Schedules Ontology</rdfs:label>
+		rdf:about="http://spec.edmcouncil.org/fibo/SEC/Securities/ParametricSchedules/">
+		<rdfs:label>Parametric Schedules Ontology</rdfs:label>
 		<dct:license
 			rdf:resource="&sm;MITLicense"/>
 		<sm:contentLanguage
@@ -45,11 +45,11 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn
 			rdf:resource="http://spec.edmcouncil.org/fibo/FND/"/>
 		<sm:fileAbbreviation
-			rdf:datatype="&xsd;string">fibo-sec-sec-isda</sm:fileAbbreviation>
+			rdf:datatype="&xsd;string">fibo-sec-sec-sch</sm:fileAbbreviation>
 		<sm:fileAbstract
-			rdf:datatype="&xsd;string">This ontology defines concepts related to ISDA parametric schedules, including how to represent individual schedules as well as related date periods, explicit dates, and other concepts needed for parametric schedule representation.</sm:fileAbstract>
+			rdf:datatype="&xsd;string">This ontology defines concepts related to parametric schedules, including how to represent individual schedules as well as related date periods, explicit dates, and other concepts needed for parametric schedule representation.</sm:fileAbstract>
 		<sm:filename
-			rdf:datatype="&xsd;string">ISDASchedules.rdf</sm:filename>
+			rdf:datatype="&xsd;string">ParametricSchedules.rdf</sm:filename>
 		<rdfs:seeAlso
 			rdf:resource="http://spec.edmcouncil.org/fibo/AboutTheEDMC-FIBOFamily/"/>
 		<rdfs:seeAlso
@@ -67,7 +67,7 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 		<owl:imports
 			rdf:resource="http://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:versionIRI
-			rdf:resource="http://spec.edmcouncil.org/fibo/SEC/20170201/Securities/ISDASchedules/"/>
+			rdf:resource="http://spec.edmcouncil.org/fibo/SEC/20170201/Securities/ParametricSchedules/"/>
 	</owl:Ontology>
 	
 	<owl:Class
@@ -83,7 +83,7 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 	</owl:Class>
 	
 	<owl:Class
-		rdf:about="&fibo-sec-sec-isda;AuctionDateRule">
+		rdf:about="&fibo-sec-sec-sch;AuctionDateRule">
 		<rdfs:subClassOf
 			rdf:resource="&fibo-fnd-dt-bd;BusinessRecurrenceIntervalConvention"/>
 		<rdfs:label>auction date rule</rdfs:label>
@@ -92,41 +92,91 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 	</owl:Class>
 	
 	<owl:Class
-		rdf:about="&fibo-sec-sec-isda;DateReturnedBySettlementDateRule">
+		rdf:about="&fibo-sec-sec-sch;CalculationPeriod">
 		<rdfs:subClassOf
-			rdf:resource="&fibo-sec-sec-isda;ISDARuleDeterminedDate"/>
+			rdf:resource="&fibo-fnd-dt-fd;DatePeriod"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:maxQualifiedCardinality
+					rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+				<owl:onClass
+					rdf:resource="&fibo-fnd-dt-fd;Date"/>
+				<owl:onProperty
+					rdf:resource="&fibo-fnd-dt-fd;hasEndDate"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:maxQualifiedCardinality
+					rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+				<owl:onClass
+					rdf:resource="&fibo-fnd-dt-fd;Date"/>
+				<owl:onProperty
+					rdf:resource="&fibo-fnd-dt-fd;hasStartDate"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:maxQualifiedCardinality
+					rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+				<owl:onClass
+					rdf:resource="&fibo-sec-sec-sch;CalculationPeriodLength"/>
+				<owl:onProperty
+					rdf:resource="&fibo-fnd-dt-fd;hasDuration"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>calculation period</rdfs:label>
+		<skos:definition
+			rdf:datatype="&xsd;string">a date period defined as the number of days from the start of the calculation period to the scheduled end date of the period</skos:definition>
+		<skos:editorialNote
+			rdf:datatype="&xsd;string">This need not be the same as the length given by the Calculation Period Length (Frequency in FpML) in the parametric schedule.</skos:editorialNote>
+	</owl:Class>
+	
+	<owl:Class
+		rdf:about="&fibo-sec-sec-sch;CalculationPeriodLength">
+		<rdfs:subClassOf
+			rdf:resource="&fibo-fnd-dt-fd;ExplicitDuration"/>
+		<rdfs:label>calculation period length</rdfs:label>
+		<skos:definition
+			rdf:datatype="&xsd;string">an explicit duration defined as the number of days from the adjusted effective or start date to the adjusted termination or end date calculated in accordance with the applicable day count fraction</skos:definition>
+	</owl:Class>
+	
+	<owl:Class
+		rdf:about="&fibo-sec-sec-sch;DateReturnedBySettlementDateRule">
+		<rdfs:subClassOf
+			rdf:resource="&fibo-sec-sec-sch;RuleDeterminedDate"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:allValuesFrom
-					rdf:resource="&fibo-sec-sec-isda;SettlementDateRule"/>
+					rdf:resource="&fibo-sec-sec-sch;SettlementDateRule"/>
 				<owl:onProperty
 					rdf:resource="&fibo-fnd-rel-rel;hasDefinition"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>date returned by settlement date rule</rdfs:label>
 		<skos:definition
-			rdf:datatype="&xsd;string">an ISDA rule-determined date that is a published rule for defining the date returned by settlement date</skos:definition>
+			rdf:datatype="&xsd;string">a rule-determined date that is a published rule for defining the date returned by settlement date</skos:definition>
 	</owl:Class>
 	
 	<owl:Class
-		rdf:about="&fibo-sec-sec-isda;DateReturnedByTradingDateRule">
+		rdf:about="&fibo-sec-sec-sch;DateReturnedByTradingDateRule">
 		<rdfs:subClassOf
-			rdf:resource="&fibo-sec-sec-isda;ISDARuleDeterminedDate"/>
+			rdf:resource="&fibo-sec-sec-sch;RuleDeterminedDate"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:allValuesFrom
-					rdf:resource="&fibo-sec-sec-isda;TradingDateRule"/>
+					rdf:resource="&fibo-sec-sec-sch;TradingDateRule"/>
 				<owl:onProperty
 					rdf:resource="&fibo-fnd-rel-rel;hasDefinition"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>date returned by trading date rule</rdfs:label>
 		<skos:definition
-			rdf:datatype="&xsd;string">an ISDA rule-determined date that is a published rule for defining the date returned by trading date</skos:definition>
+			rdf:datatype="&xsd;string">a rule-determined date that is a published rule for defining the date returned by trading date</skos:definition>
 	</owl:Class>
 	
 	<rdfs:Datatype
-		rdf:about="&fibo-sec-sec-isda;DayTypeSelection">
+		rdf:about="&fibo-sec-sec-sch;DayTypeSelection">
 		<owl:equivalentClass>
 			<rdfs:Datatype>
 				<owl:oneOf>
@@ -170,50 +220,62 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 			</rdfs:Datatype>
 		</owl:equivalentClass>
 		<skos:definition
-			rdf:datatype="&xsd;string">The type of day specified when stating some duration as a number of days between two dates. FpML data element definition: &apos;A day type classification used in counting the number of days between two dates.&apos;</skos:definition>
+			rdf:datatype="&xsd;string">a datatype used to characterize a duration as a number of days between two</skos:definition>
 	</rdfs:Datatype>
 	
 	<owl:Class
-		rdf:about="&fibo-sec-sec-isda;FRNDate">
+		rdf:about="&fibo-sec-sec-sch;FloatingRateNoteDate">
 		<rdfs:subClassOf
 			rdf:resource="&fibo-fnd-dt-fd;CalculatedDate"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onClass
-					rdf:resource="&fibo-sec-sec-isda;FRNDateRule"/>
+					rdf:resource="&fibo-sec-sec-sch;FloatingRateNoteDateRule"/>
 				<owl:onProperty
 					rdf:resource="&fibo-fnd-dt-bd;hasBusinessDayAdjustment"/>
 				<owl:qualifiedCardinality
 					rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label>FRN date</rdfs:label>
+		<rdfs:label>floating-rate note date</rdfs:label>
+		<fibo-fnd-utl-av:abbreviation
+			rdf:datatype="&xsd;string">FRN date</fibo-fnd-utl-av:abbreviation>
+		<fibo-fnd-utl-av:adaptedFrom
+			rdf:datatype="&xsd;anyURI">http://www.investopedia.com/terms/f/frn.asp</fibo-fnd-utl-av:adaptedFrom>
+		<skos:definition
+			rdf:datatype="&xsd;string">a calculated date associated with a floating-rate note, also known as a floater or FRN, which is a debt instrument with a variable interest rate</skos:definition>
 	</owl:Class>
 	
 	<owl:Class
-		rdf:about="&fibo-sec-sec-isda;FRNDateRule">
+		rdf:about="&fibo-sec-sec-sch;FloatingRateNoteDateRule">
 		<rdfs:subClassOf
 			rdf:resource="&fibo-fnd-dt-bd;BusinessDayAdjustment"/>
-		<rdfs:label>FRN date rule</rdfs:label>
+		<rdfs:label>floating-rate note date rule</rdfs:label>
+		<fibo-fnd-utl-av:abbreviation
+			rdf:datatype="&xsd;string">FRN date rule</fibo-fnd-utl-av:abbreviation>
 		<skos:definition
-			rdf:datatype="&xsd;string">a business day adjustment rule applied to FRN instruments as defined in the ISDA definitions of 2000, Section 4.11, for either or both of &apos;FRN Convention&apos; and &apos;Eurodollar Convention&apos;</skos:definition>
+			rdf:datatype="&xsd;string">a business day adjustment rule applied to floating-rate note instruments</skos:definition>
 		<skos:editorialNote
 			rdf:datatype="&xsd;string">FpML definition: &quot;Per 2000 ISDA Definitions, Section 4.11, FRN Convention, Eurodollar Convention.&quot; The above definition is from FpML and does not give the meaning or nature of this rule. FpML notes that this is not strictly a Date Roll Rule (but it may be selected in place of one). On inspection of the ISDA 2000 definition text, this may be because the FRN rule contains within it a specification of the Modified Following date roll rule (Date following rule modified by Modification rule). This rule appears in FpML both in the BusinessDayConventionEnum and the RollConventionEnum (for date roll rules and for scheduled event dates respectively). From FpML definition for BusinessDayConventionEnum: &quot;... Note that FRN is included here as a type of business day convention although it does not strictly fall within ISDA&apos;s definition of a Business Day Convention and does not conform to the simple definition given above.&quot; Note that this FRN rule is also included in the FpML enumeration for &quot;RollConventionEnum&quot;. This is the enumeration of possible Calculation Period End Dates and uses the word &quot;Roll&quot; in a completely different sense (the date that the application of some calculation to some amount is rolled over from one rate to the next). Full definition from ISDA 2000 Section 4.11: Section 4.11. FRN Convention; Eurodollar Convention. &quot;FRN Convention&quot; or &quot;Eurodollar Convention&quot; means, in respect of either Payment Dates or Period End Dates for a Swap Transaction and a party, that the Payment Dates or Period End Dates of that party will be each day during the Term of the Swap Transaction that numerically corresponds to the preceding applicable Payment Date or Period End Date, as the case may be, of that party in the calendar month that is the specified number of months after the month in which the preceding applicable Payment Date or Period End Date occurred (or, in the case of the first applicable Payment Date or the Period End Date, the day that numerically corresponds to the Effective Date in the calendar month that is the specified number of months after the month in which the Effective Date occurred), except that (a) if there is not any such numerically corresponding day in the calendar month in which a Payment Date or Period End Date, as the case may be, of that party should occur, then the Payment Date or Period End Date will be the last day that is a Business Day in that month, (b) if a Payment Date or Period End Date, as the case may be, of the party would otherwise fall on a day that is not a Business Day, then the Payment Date or Period End Date will be the first following day that is a Business Day unless that day falls in the next calendar month, in which case the Payment Date or Period End Date will be the first preceding day that is a Business Day and (c) if the preceding applicable Payment Date or Period End Date, as the case may be, of that party occurred on the last day in a calendar month that was a Business Day, then all subsequent applicable Payment Dates or Period End Dates, as the case may be, of that party prior to the Termination Date will be the last day that is a Business Day in the month that is the specified number of months after the month in which the preceding applicable Payment Date or Period End Date occurred.</skos:editorialNote>
 	</owl:Class>
 	
 	<owl:Class
-		rdf:about="&fibo-sec-sec-isda;IMMAUDTradingDateRule">
+		rdf:about="&fibo-sec-sec-sch;InternationalMoneyMarketAustralianDollarTradingDateRule">
 		<rdfs:subClassOf
-			rdf:resource="&fibo-sec-sec-isda;TradingDateRule"/>
-		<rdfs:label>IMMAUD trading date rule</rdfs:label>
+			rdf:resource="&fibo-sec-sec-sch;TradingDateRule"/>
+		<rdfs:label>International Money Market (IMM) Australian Dollar (AUD) trading date rule</rdfs:label>
+		<fibo-fnd-utl-av:abbreviation
+			rdf:datatype="&xsd;string">IMM AUD trading date rule</fibo-fnd-utl-av:abbreviation>
+		<fibo-fnd-utl-av:adaptedFrom
+			rdf:datatype="&xsd;anyURI">http://www.asx.com.au/documents/products/90-Day-bank-bill-futures-factsheet.pdf</fibo-fnd-utl-av:adaptedFrom>
 		<skos:definition
-			rdf:datatype="&xsd;string">a trading date rule defined as the last trading day of the Sydney Futures Exchanges 90-day Bank Accepted Bills Futures Contract (see www.sfe.com.au/content/sfe/trading/con_specs.pdf), one Sydney business day preceding the second Friday of the relevant settlement month</skos:definition>
+			rdf:datatype="&xsd;string">a trading date rule defined as the last trading day of an Australian Stock Exchange (ASX) 90-Day Bank Accepted Futures and Options product, one Sydney business day preceding the second Friday of the relevant settlement month</skos:definition>
 	</owl:Class>
 	
 	<owl:Class
-		rdf:about="&fibo-sec-sec-isda;IMMCADTradingDateRule">
+		rdf:about="&fibo-sec-sec-sch;InternationalMoneyMarketCanadianDollarTradingDateRule">
 		<rdfs:subClassOf
-			rdf:resource="&fibo-sec-sec-isda;TradingDateRule"/>
+			rdf:resource="&fibo-sec-sec-sch;TradingDateRule"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:hasValue
@@ -222,133 +284,74 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 					rdf:resource="&fibo-fnd-dt-bd;hasBusinessDayConvention"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label>IMMCAD trading date rule</rdfs:label>
+		<rdfs:label>International Money Market (IMM) Canadian Dollar (CAD) trading date rule</rdfs:label>
+		<fibo-fnd-utl-av:abbreviation
+			rdf:datatype="&xsd;string">IMM CAD trading date rule</fibo-fnd-utl-av:abbreviation>
 		<skos:definition
-			rdf:datatype="&xsd;string">a trading date rule defined as the last trading day / expiration day of the Canadian Derivatives Exchange (Bourse do Montreal Inc.), Three Month Bankers&apos; Acceptance Futures (Ticker symbol BAX), the second London banking day prior to the third Wednesday of the contract month</skos:definition>
+			rdf:datatype="&xsd;string">a trading date rule defined as the last trading day / expiration day of the Canadian Derivatives Exchange (Bourse do Montreal Inc.), three month Bankers&apos; Acceptance Futures (Ticker symbol BAX), the second London banking day prior to the third Wednesday of the contract month</skos:definition>
 		<skos:editorialNote
 			rdf:datatype="&xsd;string">(continued within FpML definition): If the determined day is a bourse or bank holiday in Toronto or Montreal, the last trading day shall be the previous bank business day. Per Canadian Derivatives Exchange BAX contract specification. The above description implies a Date Roll Rule which is presumably referenced by referring to this rule, so that when this rule is referenced, there would be no Date Roll Rule defined in the FpML message. Semantically, this is still a Date Roll Rule, specifically a &quot;Roll forward&quot; rule with no modification (the third Wednesday of a month will never roll forward to a day in the following month so no Modified rule is required).</skos:editorialNote>
 	</owl:Class>
 	
 	<owl:Class
-		rdf:about="&fibo-sec-sec-isda;IMMNZDTradingDateRule">
+		rdf:about="&fibo-sec-sec-sch;InternationalMoneyMarketNewZealandDollarTradingDateRule">
 		<rdfs:subClassOf
-			rdf:resource="&fibo-sec-sec-isda;TradingDateRule"/>
+			rdf:resource="&fibo-sec-sec-sch;TradingDateRule"/>
 		<rdfs:label>IMMNZD trading date rule</rdfs:label>
+		<rdfs:label>International Money Market (IMM) New Zealand Dollar (NZD) trading date rule</rdfs:label>
+		<fibo-fnd-utl-av:abbreviation
+			rdf:datatype="&xsd;string">IMM NZD trading date rule</fibo-fnd-utl-av:abbreviation>
 		<skos:definition
-			rdf:datatype="&xsd;string">a trading date rule defined as the last trading day of the Sydney Futures Exchanges NZ 90 day Bank Bill Futures Contract (see www.sfe.com.au/content/sfe/trading/con_specs.pdf), the first Wednesday after the ninth day of the relevant settlement month</skos:definition>
+			rdf:datatype="&xsd;string">a trading date rule defined as the last trading day of an Australian Stock Exchange (ASX) New Zealand (NZ) 90-Day Bank Accepted Futures and Options product, the first Wednesday after the ninth day of the relevant settlement month</skos:definition>
 	</owl:Class>
 	
 	<owl:Class
-		rdf:about="&fibo-sec-sec-isda;IMMSettlementDateRule">
+		rdf:about="&fibo-sec-sec-sch;InternationalMoneyMarketSettlementDateRule">
 		<rdfs:subClassOf
-			rdf:resource="&fibo-sec-sec-isda;SettlementDateRule"/>
-		<rdfs:label>IMM settlement date rule</rdfs:label>
+			rdf:resource="&fibo-sec-sec-sch;SettlementDateRule"/>
+		<rdfs:label>International Money Market (IMM) settlement date rule</rdfs:label>
+		<fibo-fnd-utl-av:abbreviation
+			rdf:datatype="&xsd;string">IMM settlement date rule</fibo-fnd-utl-av:abbreviation>
+		<fibo-fnd-utl-av:adaptedFrom
+			rdf:datatype="&xsd;anyURI">http://www.investopedia.com/terms/i/imm.asp</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:explanatoryNote
+			rdf:datatype="&xsd;string">The International Money Market (IMM) is a division of the Chicago Mercantile Exchange (CME) that deals with the trading of currency and interest rate futures and options.</fibo-fnd-utl-av:explanatoryNote>
 		<skos:definition
-			rdf:datatype="&xsd;string">a settlement date rule as defined in the IMM settlement dates calendar</skos:definition>
+			rdf:datatype="&xsd;string">a settlement date rule as defined in the International Money Market (IMM) settlement dates calendar</skos:definition>
 	</owl:Class>
 	
 	<owl:Class
-		rdf:about="&fibo-sec-sec-isda;ISDACalculationPeriod">
-		<rdfs:subClassOf
-			rdf:resource="&fibo-fnd-dt-fd;DatePeriod"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:maxQualifiedCardinality
-					rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-				<owl:onClass
-					rdf:resource="&fibo-fnd-dt-fd;Date"/>
-				<owl:onProperty
-					rdf:resource="&fibo-fnd-dt-fd;hasEndDate"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:maxQualifiedCardinality
-					rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-				<owl:onClass
-					rdf:resource="&fibo-fnd-dt-fd;Date"/>
-				<owl:onProperty
-					rdf:resource="&fibo-fnd-dt-fd;hasStartDate"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:maxQualifiedCardinality
-					rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-				<owl:onClass
-					rdf:resource="&fibo-sec-sec-isda;ISDACalculationPeriodLength"/>
-				<owl:onProperty
-					rdf:resource="&fibo-fnd-dt-fd;hasDuration"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>ISDA calculation period</rdfs:label>
-		<skos:definition
-			rdf:datatype="&xsd;string">a date period defined as the number of days from the start of the calculation period to the scheduled end date of the period</skos:definition>
-		<skos:editorialNote
-			rdf:datatype="&xsd;string">This need not be the same as the length given by the Calculation Period Length (&quot;Frequency&quot; in FpML) in the parametric schedule.</skos:editorialNote>
-	</owl:Class>
-	
-	<owl:Class
-		rdf:about="&fibo-sec-sec-isda;ISDACalculationPeriodLength">
-		<rdfs:subClassOf
-			rdf:resource="&fibo-fnd-dt-fd;ExplicitDuration"/>
-		<rdfs:label>ISDA calculation period length</rdfs:label>
-		<skos:definition
-			rdf:datatype="&xsd;string">an explicit duration defined as the number of days from the adjusted effective or start date to the adjusted termination or end date calculated in accordance with the applicable day count fraction</skos:definition>
-	</owl:Class>
-	
-	<owl:Class
-		rdf:about="&fibo-sec-sec-isda;ISDAFpMLNonRollingDate">
+		rdf:about="&fibo-sec-sec-sch;NonRollingDate">
 		<rdfs:subClassOf
 			rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
-		<rdfs:label>ISDA FpML non-rolling date</rdfs:label>
+		<rdfs:label>non-rolling date</rdfs:label>
 		<skos:definition
 			rdf:datatype="&xsd;string">an explicit date that equates to a calendar date with no adjustments and with no reference to any date specification</skos:definition>
 	</owl:Class>
 	
 	<owl:Class
-		rdf:about="&fibo-sec-sec-isda;ISDAFpMLParametricSchedule">
+		rdf:about="&fibo-sec-sec-sch;ParametricSchedule">
 		<rdfs:subClassOf
 			rdf:resource="&fibo-fnd-dt-fd;RegularSchedule"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:maxQualifiedCardinality
-					rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
 				<owl:onClass
-					rdf:resource="&fibo-sec-sec-isda;ISDAFpMLStubPeriod"/>
-				<owl:onProperty
-					rdf:resource="&fibo-fnd-dt-fd;hasFinalStub"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:maxQualifiedCardinality
-					rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-				<owl:onClass
-					rdf:resource="&fibo-sec-sec-isda;ISDAFpMLStubPeriod"/>
-				<owl:onProperty
-					rdf:resource="&fibo-fnd-dt-fd;hasInitialStub"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onClass
-					rdf:resource="&fibo-sec-sec-isda;ISDAFpMLPeriodicScheduledEventDate"/>
+					rdf:resource="&fibo-sec-sec-sch;PeriodicScheduledEventDate"/>
 				<owl:onProperty
 					rdf:resource="&fibo-fnd-dt-fd;hasRecurrenceStartDate"/>
 				<owl:qualifiedCardinality
 					rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label>ISDA FpML parametric schedule</rdfs:label>
+		<rdfs:label>parametric schedule</rdfs:label>
 		<skos:definition
-			rdf:datatype="&xsd;string">a parametric schedule as defined and used in FpML messages for swapstreams where interest is accrued and paid</skos:definition>
+			rdf:datatype="&xsd;string">a regular, parameterized schedule typically used for the calculation of payments for coupons, dividends, and interest</skos:definition>
 		<skos:editorialNote
-			rdf:datatype="&xsd;string">This is a schedule for one of the events that occur in a periodic schedule of interest accruals, interest payments, and (for floating rate swapstreams), changes to the interest rate. These may be specified individually but more commonly the &quot;Calculation&quot; event is the one scheduled according to this kind of parametric schedule, with the other dates specified as an offset to these. Here we have allowed for each of the related dates to be independently parametrically scheduled. The notional amount step schedule is a separate kind of schedule, with similar terms but without a period length. For calculation schedules (and possibly payments, resets), there is a different end date to the end /start of the period, since events may be specified as being on specific dates - this is where the &quot;Roll Convention&quot; comes in. This has the same basic concepts as the generic schedule shown as the parent to this. However, where the upper model has &quot;Date&quot; with various applicable sub types (known i.e. calendar, specified or determined). the ISDA FpML schedule has a Specified Date (via a convention), and then has a date roll rule which is specified for the whole schedule and applies to each of the dates returned by the parametric specification of the schedule. It has: A schedule beginning and end; A set of regular repeating periods: the scheduled event takes place once per period; Optionally one or two stubs (one start and one end); these may be longer than the repeating period, or shorter. The precise parameters used are: Start of the overall Schedule period: Effective Date End of the overall Schedule period: Termination Date Start of first regular period: not specified (assume Effective Date?) Length of each regular period: &quot;Frequency&quot; (actually a duration) There are generally three ways in which the regular periods of a parametric schedule may be expressed: first + last first + period length last + period length event date + period length In FpML, &quot;Roll&quot; events (the date that something &quot;rolls over&quot; from the value used in one period to the value used in the next) is defined in a Roll Convention, which may be a day of the month, a day of the week, or some published set of dates, typically the ISDA quarterly dates for these events. This is therefore the date within the regular period (before adjustments) when the event occurs. This is in addition so a date for the start or end of such a period. In general this applies to the Calculation Schedule (i.e. the event is the calculation event) with other dates specified relative to this, however in principle the other related events (payment and reset or refix) are specified relative to this. It is not immediately clear what specification of a date replaces the &quot;Roll&quot; event convention element when this happens.</skos:editorialNote>
+			rdf:datatype="&xsd;string">This is a schedule for one of the events that occur in a periodic schedule of interest accruals, interest payments, and (for floating rate swapstreams), changes to the interest rate. These may be specified individually but more commonly the Calculation event is the one scheduled according to this kind of parametric schedule, with the other dates specified as an offset to these. Here we have allowed for each of the related dates to be independently parametrically scheduled. The notional amount step schedule is a separate kind of schedule, with similar terms but without a period length. For calculation schedules (and possibly payments, resets), there is a different end date to the end /start of the period, since events may be specified as being on specific dates - this is where the Roll Convention comes in. This has the same basic concepts as the generic schedule shown as the parent to this. However, where the upper model has Date with various applicable sub types (known i.e. calendar, specified or determined). For example, an ISDA FpML schedule has a Specified Date (via a convention), and then has a date roll rule which is specified for the whole schedule and applies to each of the dates returned by the parametric specification of the schedule. It has: A schedule beginning and end; A set of regular repeating periods: the scheduled event takes place once per period; Optionally one or two stubs (one start and one end); these may be longer than the repeating period, or shorter. The precise parameters used are: Start of the overall Schedule period: Effective Date End of the overall Schedule period: Termination Date Start of first regular period: not specified (assume Effective Date?) Length of each regular period: Frequency (actually a duration) There are generally three ways in which the regular periods of a parametric schedule may be expressed: first plus last first plus period length last plus period length event date plus period length. In FpML, Roll events (the date that something rolls over from the value used in one period to the value used in the next) is defined in a Roll Convention, which may be a day of the month, a day of the week, or some published set of dates, typically the ISDA quarterly dates for these events. This is therefore the date within the regular period (before adjustments) when the event occurs. This is in addition so a date for the start or end of such a period. In general this applies to the Calculation Schedule (i.e. the event is the calculation event) with other dates specified relative to this, however in principle the other related events (payment and reset or refix) are specified relative to this. It is not immediately clear what specification of a date replaces the Roll event convention element when this happens.</skos:editorialNote>
 	</owl:Class>
 	
 	<owl:Class
-		rdf:about="&fibo-sec-sec-isda;ISDAFpMLPeriodicScheduledEventDate">
+		rdf:about="&fibo-sec-sec-sch;PeriodicScheduledEventDate">
 		<rdfs:subClassOf
 			rdf:resource="&fibo-fnd-dt-fd;Date"/>
 		<rdfs:subClassOf>
@@ -364,15 +367,15 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 								<rdf:rest>
 									<rdf:Description>
 										<rdf:first
-											rdf:resource="&fibo-sec-sec-isda;ISDAFpMLNonRollingDate"/>
+											rdf:resource="&fibo-fnd-dt-bd;EndOfMonth"/>
 										<rdf:rest>
 											<rdf:Description>
 												<rdf:first
-													rdf:resource="&fibo-sec-sec-isda;ISDARuleDeterminedDate"/>
+													rdf:resource="&fibo-sec-sec-sch;NonRollingDate"/>
 												<rdf:rest>
 													<rdf:Description>
 														<rdf:first
-															rdf:resource="&fibo-fnd-dt-bd;EndOfMonth"/>
+															rdf:resource="&fibo-sec-sec-sch;RuleDeterminedDate"/>
 														<rdf:rest
 															rdf:resource="&rdf;nil"/>
 													</rdf:Description>
@@ -387,46 +390,22 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 				</owl:unionOf>
 			</owl:Class>
 		</rdfs:subClassOf>
-		<rdfs:label>ISDA FpML scheduled event date</rdfs:label>
-		<fibo-fnd-utl-av:explanatoryNote
-			rdf:datatype="&xsd;string">This represents the recurrence start date in a regular schedule, in other words.</fibo-fnd-utl-av:explanatoryNote>
+		<rdfs:label>periodic scheduled event date</rdfs:label>
 		<skos:definition
-			rdf:datatype="&xsd;string">the date on which the schedule event occurs in some ISDA FpML parametric schedule specification</skos:definition>
+			rdf:datatype="&xsd;string">the date on which a schedule event occurs in some parametric schedule</skos:definition>
 	</owl:Class>
 	
 	<owl:Class
-		rdf:about="&fibo-sec-sec-isda;ISDAFpMLStubPeriod">
-		<rdfs:subClassOf
-			rdf:resource="&fibo-fnd-dt-fd;ScheduleStub"/>
-		<rdfs:label>ISDA FpML stub period</rdfs:label>
-		<skos:definition
-			rdf:datatype="&xsd;string">irregular first and last periods in an ISDA FpML parametric schedule, which are not part of the regular date periodic sequence</skos:definition>
-		<skos:editorialNote
-			rdf:datatype="&xsd;string">These only exist if there is a difference between the Effective Date and the First Regular Period Start Date, and between the Termination Date and the Last Regular Period End Date. In the event that both start dates exist, there is a first Stub period; in the event that both end dates exist, there is a last Stub period. If these dates are not different (i.e. if there is not such a stub) then the First/Last regular period dates are not specified. This means that there are no date elements in FpML explicitly defining these schedule stub, but rather they are defined by the existence of terms for the first and last regular dates. To model this, we define the stubs as being the differences between these dates if they are specified.</skos:editorialNote>
-	</owl:Class>
-	
-	<owl:Class
-		rdf:about="&fibo-sec-sec-isda;ISDARuleDeterminedDate">
+		rdf:about="&fibo-sec-sec-sch;RuleDeterminedDate">
 		<rdfs:subClassOf
 			rdf:resource="&fibo-fnd-dt-fd;CalculatedDate"/>
-		<rdfs:label>ISDA rule determined date</rdfs:label>
+		<rdfs:label>rule-determined date</rdfs:label>
 		<skos:definition
-			rdf:datatype="&xsd;string">a date determined by the application of some rule cited by ISDA</skos:definition>
-		<skos:editorialNote
-			rdf:datatype="&xsd;string">Most of these rules are not themselves ISDA rules, and can probably be cited more widely than just in FpML schedules.</skos:editorialNote>
+			rdf:datatype="&xsd;string">a date determined by the application of some rule</skos:definition>
 	</owl:Class>
 	
 	<owl:Class
-		rdf:about="&fibo-sec-sec-isda;SFESettlementDateRule">
-		<rdfs:subClassOf
-			rdf:resource="&fibo-fnd-dt-bd;BusinessRecurrenceIntervalConvention"/>
-		<rdfs:label>SFE settlement date rule</rdfs:label>
-		<skos:definition
-			rdf:datatype="&xsd;string">Sydney Futures Exchanges 90 day Bank Accepted Bills Futures settlement dates, the second Friday of the (delivery) month</skos:definition>
-	</owl:Class>
-	
-	<owl:Class
-		rdf:about="&fibo-sec-sec-isda;ScheduledCalculationPeriodEndEvent">
+		rdf:about="&fibo-sec-sec-sch;ScheduledCalculationPeriodEndEvent">
 		<rdfs:subClassOf
 			rdf:resource="&fibo-fnd-dt-oc;OccurrenceKind"/>
 		<rdfs:label>scheduled calculation period end event</rdfs:label>
@@ -437,7 +416,7 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 	</owl:Class>
 	
 	<owl:Class
-		rdf:about="&fibo-sec-sec-isda;ScheduledCalculationPeriodStartEvent">
+		rdf:about="&fibo-sec-sec-sch;ScheduledCalculationPeriodStartEvent">
 		<rdfs:subClassOf
 			rdf:resource="&fibo-fnd-dt-oc;OccurrenceKind"/>
 		<rdfs:label>scheduled calculation period start event</rdfs:label>
@@ -448,18 +427,16 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 	</owl:Class>
 	
 	<owl:Class
-		rdf:about="&fibo-sec-sec-isda;SettlementDateRule">
+		rdf:about="&fibo-sec-sec-sch;SettlementDateRule">
 		<rdfs:subClassOf
 			rdf:resource="&fibo-fnd-dt-bd;BusinessRecurrenceIntervalConvention"/>
 		<rdfs:label>settlement date rule</rdfs:label>
 		<skos:definition
 			rdf:datatype="&xsd;string">a rule for determining dates by reference to some calendar or specification of settlement dates</skos:definition>
-		<skos:editorialNote
-			rdf:datatype="&xsd;string">From the FpML enumeration RollConventionEnum, these are the entries &quot;IMM&quot; and &quot;SFE&quot; which refer to Settlement dates (the others are with reference to trading dates).</skos:editorialNote>
 	</owl:Class>
 	
 	<owl:Class
-		rdf:about="&fibo-sec-sec-isda;TradingDateRule">
+		rdf:about="&fibo-sec-sec-sch;TradingDateRule">
 		<rdfs:subClassOf
 			rdf:resource="&fibo-fnd-dt-bd;BusinessRecurrenceIntervalConvention"/>
 		<rdfs:label>trading date rule</rdfs:label>
@@ -470,9 +447,9 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 	</owl:Class>
 	
 	<owl:Class
-		rdf:about="&fibo-sec-sec-isda;USTBillAuctionDateRule">
+		rdf:about="&fibo-sec-sec-sch;USTreasuryBillAuctionDateRule">
 		<rdfs:subClassOf
-			rdf:resource="&fibo-sec-sec-isda;AuctionDateRule"/>
+			rdf:resource="&fibo-sec-sec-sch;AuctionDateRule"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:hasValue
@@ -481,32 +458,28 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 					rdf:resource="&fibo-fnd-dt-bd;hasBusinessDayConvention"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label>US t-bill auction date rule</rdfs:label>
-		<skos:altLabel
-			rdf:datatype="&xsd;string">US treasury bill auction date rule</skos:altLabel>
-		<skos:prefLabel
-			rdf:datatype="&xsd;string">US t-bill auction date rule</skos:prefLabel>
+		<rdfs:label>US Treasury bill auction date rule</rdfs:label>
 	</owl:Class>
 	
 	<owl:Class
-		rdf:about="&fibo-sec-sec-isda;USTBillDate">
+		rdf:about="&fibo-sec-sec-sch;USTreasuryBillDate">
 		<rdfs:subClassOf
 			rdf:resource="&fibo-fnd-dt-fd;CalculatedDate"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onClass
-					rdf:resource="&fibo-sec-sec-isda;USTBillAuctionDateRule"/>
+					rdf:resource="&fibo-sec-sec-sch;USTreasuryBillAuctionDateRule"/>
 				<owl:onProperty
 					rdf:resource="&fibo-fnd-dt-bd;hasBusinessDayAdjustment"/>
 				<owl:qualifiedCardinality
 					rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label>US T Bill Date</rdfs:label>
+		<rdfs:label>US Treasury bill date</rdfs:label>
 		<skos:definition
-			rdf:datatype="&xsd;string">Auction dates for US 13 week and 26 week Treasury Bills.</skos:definition>
+			rdf:datatype="&xsd;string">an auction date for US 13 week and 26 week Treasury bills</skos:definition>
 		<skos:editorialNote
-			rdf:datatype="&xsd;string">Per FpML notes/definition, this is each Monday except on New York holidays when it will be on a Tuesday.</skos:editorialNote>
+			rdf:datatype="&xsd;string">Per FpML notes/definition, this is every Monday except on New York holidays when it will be on a Tuesday.</skos:editorialNote>
 	</owl:Class>
 
 </rdf:RDF>
