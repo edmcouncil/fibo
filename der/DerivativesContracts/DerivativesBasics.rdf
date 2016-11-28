@@ -238,50 +238,9 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 	</owl:Class>
 	
 	<owl:Class
-		rdf:about="&fibo-der-drc-bsc;DerivativeUnderlying">
+		rdf:about="&fibo-der-drc-bsc;NonPhysicalUnderlier">
 		<rdfs:subClassOf
-			rdf:resource="&fibo-fnd-pty-rl;ThingInRole"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty
-					rdf:resource="&fibo-fnd-rel-rel;hasIdentity"/>
-				<owl:someValuesFrom>
-					<owl:Class>
-						<owl:unionOf>
-							<rdf:Description>
-								<rdf:first
-									rdf:resource="&fibo-fbc-fi-fi;FinancialInstrument"/>
-								<rdf:rest>
-									<rdf:Description>
-										<rdf:first
-											rdf:resource="&fibo-sec-sec-bsk;BasketOfSecurities"/>
-										<rdf:rest>
-											<rdf:Description>
-												<rdf:first
-													rdf:resource="&fibo-der-drc-bsc;NonPhysicalUnderlying"/>
-												<rdf:rest
-													rdf:resource="&rdf;nil"/>
-											</rdf:Description>
-										</rdf:rest>
-									</rdf:Description>
-								</rdf:rest>
-							</rdf:Description>
-						</owl:unionOf>
-					</owl:Class>
-				</owl:someValuesFrom>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>derivative underlying</rdfs:label>
-		<skos:definition
-			rdf:datatype="&xsd;string">the financial instrument(s), index or parameter, or combination thereof, that form the basis for the derivative instrument</skos:definition>
-		<skos:editorialNote
-			rdf:datatype="&xsd;string">The underlying breaks down into two separate meanings: The item which determines the value of the contract (the observable), and the item which is deliverable upon expiry or exercise of the contract. These are usually the same item but in some cases such as index derivatives the exercise takes a different form. Action: Add &apos;Observable&apos; as a distinct term. Then use Deliverable. Is Underlying the union? In a Call Option the Underlying is the Deliverable and is referred to as the Underlying. With an Fx Call Option, the deliverable is the cash value which you are exchanging for the amount in another currency (so this is no difference as cash is instrument). Then take IR Swap where 3mo LIBOR Rate is the Observable, but the delivery is Cash. Then one would refer to the LIBOR as the Observable. Delivers an amount based on the observable, and the delivered cash is the Deliverable. So what we refer to as Underlying may be the Observable or the Deliverable e.g. Call option on IBM the deliverable is the IBM Stock whereas a Swap leg depending on LIBOR, the Deliverable is Cash but the &apos;Underlying&apos; is the Observable. Would be nore accurate not to refer to the Observable not as an Underlying. Therefore there would be nothing referred to as the &quot;Underlying&quot; as such. However, all derivatives have Underlying. Take an IR Cap, would not not refer to it as having an Underlying - the notion of Underlyting becomes fuzzier when you get to higher order derivatives. LIBOR on a list of dates is an &apos;Observable&apos; but is several amounts.</skos:editorialNote>
-	</owl:Class>
-	
-	<owl:Class
-		rdf:about="&fibo-der-drc-bsc;NonPhysicalUnderlying">
-		<rdfs:subClassOf
-			rdf:resource="&fibo-der-drc-bsc;DerivativeUnderlying"/>
+			rdf:resource="&fibo-der-drc-bsc;Underlier"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty
@@ -304,8 +263,14 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 													<rdf:Description>
 														<rdf:first
 															rdf:resource="&fibo-ind-ei-ei;EconomicIndicator"/>
-														<rdf:rest
-															rdf:resource="&rdf;nil"/>
+														<rdf:rest>
+															<rdf:Description>
+																<rdf:first
+																	rdf:resource="&fibo-der-drc-bsc;ObservableValue"/>
+																<rdf:rest
+																	rdf:resource="&rdf;nil"/>
+															</rdf:Description>
+														</rdf:rest>
 													</rdf:Description>
 												</rdf:rest>
 											</rdf:Description>
@@ -318,15 +283,11 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label>non-physical underlying</rdfs:label>
+		<rdfs:label>non-physical underlier</rdfs:label>
 		<fibo-fnd-utl-av:synonym
-			rdf:datatype="&xsd;string">observable underlying</fibo-fnd-utl-av:synonym>
+			rdf:datatype="&xsd;string">observable underlier</fibo-fnd-utl-av:synonym>
 		<skos:definition
-			rdf:datatype="&xsd;string">an underlying that does not represent a deliverable asset</skos:definition>
-		<skos:editorialNote
-			rdf:datatype="&xsd;string">Derivatives that are based on an observable underlying are settled in some way other than by delivery of the underlying, since the underlying is not in the nature of something that can be delivered.</skos:editorialNote>
-		<skos:editorialNote
-			rdf:datatype="&xsd;string">renamed from observable underlying based on review by Nordea Capital Markets SMEs</skos:editorialNote>
+			rdf:datatype="&xsd;string">an underlier that does not represent a deliverable asset</skos:definition>
 	</owl:Class>
 	
 	<owl:Class
@@ -355,6 +316,8 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		rdf:about="&fibo-der-drc-bsc;OTCInstrument">
 		<rdfs:subClassOf
 			rdf:resource="&fibo-fbc-fi-fi;FinancialInstrument"/>
+		<rdfs:subClassOf
+			rdf:resource="&fibo-fnd-agr-ctr;MutualContractualAgreement"/>
 		<rdfs:label>over-the-counter (OTC) instrument</rdfs:label>
 		<fibo-fnd-utl-av:adaptedFrom
 			rdf:datatype="&xsd;string">Barron&apos;s Dictionary of Finance and Investment Terms, Ninth Edition, 2014</fibo-fnd-utl-av:adaptedFrom>
@@ -452,6 +415,12 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<rdfs:subClassOf
 			rdf:resource="&fibo-fnd-qt-qtu;QuantityValue"/>
 		<rdfs:label>observable value</rdfs:label>
+		<fibo-fnd-utl-av:explanatoryNote
+			rdf:datatype="&xsd;string">Derivatives, such as certain exotics, can be based on values ascribed to virtually anything, including weather.  Typically, however, an observable value refers to something that can be readily observed in the marketplace, such as a quoted rate (e.g., interest rate, exchange rate), index value, commodity price, stock price, economic indicator, or something similar as of some point in time.</fibo-fnd-utl-av:explanatoryNote>
+		<rdfs:seeAlso
+			rdf:resource="https://en.wikipedia.org/wiki/Fair_value"/>
+		<skos:definition
+			rdf:datatype="&xsd;string">a value for something that can be observed in the marketplace</skos:definition>
 	</owl:Class>
 	
 	<owl:Class
@@ -469,6 +438,47 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<rdfs:label>parametric cashflow terms</rdfs:label>
 		<skos:definition
 			rdf:datatype="&xsd;string">terms for a set of cashflows defined according to a mathematical formula</skos:definition>
+	</owl:Class>
+	
+	<owl:Class
+		rdf:about="&fibo-der-drc-bsc;Underlier">
+		<rdfs:subClassOf
+			rdf:resource="&fibo-fnd-pty-rl;ThingInRole"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty
+					rdf:resource="&fibo-fnd-rel-rel;hasIdentity"/>
+				<owl:someValuesFrom>
+					<owl:Class>
+						<owl:unionOf>
+							<rdf:Description>
+								<rdf:first
+									rdf:resource="&fibo-fbc-fi-fi;FinancialInstrument"/>
+								<rdf:rest>
+									<rdf:Description>
+										<rdf:first
+											rdf:resource="&fibo-sec-sec-bsk;BasketOfSecurities"/>
+										<rdf:rest>
+											<rdf:Description>
+												<rdf:first
+													rdf:resource="&fibo-der-drc-bsc;NonPhysicalUnderlier"/>
+												<rdf:rest
+													rdf:resource="&rdf;nil"/>
+											</rdf:Description>
+										</rdf:rest>
+									</rdf:Description>
+								</rdf:rest>
+							</rdf:Description>
+						</owl:unionOf>
+					</owl:Class>
+				</owl:someValuesFrom>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>underlier</rdfs:label>
+		<skos:definition
+			rdf:datatype="&xsd;string">the financial instrument(s), index or parameter, or combination thereof, that form the basis for the derivative instrument</skos:definition>
+		<skos:editorialNote
+			rdf:datatype="&xsd;string">The underlier breaks down into two separate meanings: The item which determines the value of the contract (the observable), and the item that is deliverable upon expiry or exercise of the contract (if there is one). These are usually the same item but in some cases such as index derivatives the exercise takes a different form. Action: Add &apos;Observable&apos; as a distinct term. Then use Deliverable. Is Underlier the union? In a Call Option the Underlier is the Deliverable and is referred to as the Underlier. With an Fx Call Option, the deliverable is the cash value which you are exchanging for the amount in another currency (so this is no difference as cash is instrument). Then take IR Swap where 3mo LIBOR Rate is the Observable, but the delivery is Cash. Then one would refer to the LIBOR as the Observable. Delivers an amount based on the observable, and the delivered cash is the Deliverable. So what we refer to as Underlier may be the Observable or the Deliverable e.g. Call option on IBM the deliverable is the IBM Stock whereas a Swap leg depending on LIBOR, the Deliverable is Cash but the &apos;Underlier&apos; is the Observable. Would be nore accurate not to refer to the Observable not as an Underlier. Therefore there would be nothing referred to as the &apos;Underlier&apos; as such. However, all derivatives have Underlier. Take an IR Cap, would not not refer to it as having an Underlier - the notion of Underlier becomes fuzzier when you get to higher order derivatives. LIBOR on a list of dates is an &apos;Observable&apos; but is several amounts.</skos:editorialNote>
 	</owl:Class>
 	
 	<owl:ObjectProperty
@@ -489,13 +499,13 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty
-		rdf:about="&fibo-der-drc-bsc;hasUnderlying">
+		rdf:about="&fibo-der-drc-bsc;hasUnderlier">
 		<rdfs:subPropertyOf
 			rdf:resource="&fibo-fnd-rel-rel;has"/>
 		<rdfs:domain
 			rdf:resource="&fibo-fbc-fi-fi;DerivativeInstrument"/>
 		<rdfs:range
-			rdf:resource="&fibo-der-drc-bsc;DerivativeUnderlying"/>
+			rdf:resource="&fibo-der-drc-bsc;Underlier"/>
 	</owl:ObjectProperty>
 	
 	<owl:Class
@@ -503,9 +513,9 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty
-					rdf:resource="&fibo-der-drc-bsc;hasUnderlying"/>
+					rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
 				<owl:someValuesFrom
-					rdf:resource="&fibo-der-drc-bsc;DerivativeUnderlying"/>
+					rdf:resource="&fibo-der-drc-bsc;Underlier"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
