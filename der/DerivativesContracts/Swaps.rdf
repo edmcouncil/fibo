@@ -113,9 +113,9 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 	</owl:Ontology>
 	
 	<owl:Class
-		rdf:about="&fibo-der-drc-swp;FixedPaymentStreamTerms">
+		rdf:about="&fibo-der-drc-swp;FixedPaymentLeg">
 		<rdfs:subClassOf
-			rdf:resource="&fibo-der-drc-swp;SwapStreamTerms"/>
+			rdf:resource="&fibo-der-drc-swp;SwapLeg"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:allValuesFrom
@@ -124,9 +124,11 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 					rdf:resource="&fibo-der-drc-swp;hasPaymentSchedule"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label>fixed payment stream terms</rdfs:label>
+		<rdfs:label>fixed payment leg</rdfs:label>
+		<fibo-fnd-utl-av:synonym
+			rdf:datatype="&xsd;string">fixed payment stream terms</fibo-fnd-utl-av:synonym>
 		<skos:definition
-			rdf:datatype="&xsd;string">a payment stream for the fixed payment leg of a swap such as a dividend swap, or for any swap that has a fixed leg, including, for example, a single stock swap</skos:definition>
+			rdf:datatype="&xsd;string">the terms for the fixed payment leg of a swap such as a dividend swap, or for any swap that has a fixed leg, including, for example, a single stock swap</skos:definition>
 	</owl:Class>
 	
 	<owl:Class
@@ -146,9 +148,9 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onClass
-					rdf:resource="&fibo-der-drc-swp;SwapParty"/>
+					rdf:resource="&fibo-der-drc-swp;SwapLeg"/>
 				<owl:onProperty
-					rdf:resource="&fibo-fnd-agr-ctr;hasContractParty"/>
+					rdf:resource="&fibo-der-drc-swp;exchanges"/>
 				<owl:qualifiedCardinality
 					rdf:datatype="&xsd;nonNegativeInteger">2</owl:qualifiedCardinality>
 			</owl:Restriction>
@@ -156,9 +158,9 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onClass
-					rdf:resource="&fibo-der-drc-swp;SwapStreamTerms"/>
+					rdf:resource="&fibo-der-drc-swp;SwapParty"/>
 				<owl:onProperty
-					rdf:resource="&fibo-der-drc-swp;exchanges"/>
+					rdf:resource="&fibo-fnd-agr-ctr;hasContractParty"/>
 				<owl:qualifiedCardinality
 					rdf:datatype="&xsd;nonNegativeInteger">2</owl:qualifiedCardinality>
 			</owl:Restriction>
@@ -224,6 +226,43 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 			rdf:datatype="&xsd;string">A swap execution facility would allow for greater transparency and would be a significant shift in the way derivative trading is made. The Dodd-Frank Act lays the foundation for this change of derivative execution.</fibo-fnd-utl-av:explanatoryNote>
 		<skos:definition
 			rdf:datatype="&xsd;string">an exchange, trading system, or platform that enables many participants to execute or trade swaps</skos:definition>
+	</owl:Class>
+	
+	<owl:Class
+		rdf:about="&fibo-der-drc-swp;SwapLeg">
+		<rdfs:subClassOf
+			rdf:resource="&fibo-der-drc-bsc;CashflowTerms"/>
+		<rdfs:subClassOf
+			rdf:resource="&fibo-der-drc-swp;SwapTerms"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onClass
+					rdf:resource="&fibo-der-drc-swp;SwapPayingParty"/>
+				<owl:onProperty
+					rdf:resource="&fibo-der-drc-swp;hasPayingParty"/>
+				<owl:qualifiedCardinality
+					rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onClass
+					rdf:resource="&fibo-der-drc-swp;SwapReceivingParty"/>
+				<owl:onProperty
+					rdf:resource="&fibo-der-drc-swp;hasReceivingParty"/>
+				<owl:qualifiedCardinality
+					rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>swap leg</rdfs:label>
+		<fibo-fnd-utl-av:adaptedFrom
+			rdf:datatype="&xsd;string">http://www.investopedia.com/terms/i/interestrateswap.asp</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:synonym
+			rdf:datatype="&xsd;string">swap stream terms</fibo-fnd-utl-av:synonym>
+		<skos:definition
+			rdf:datatype="&xsd;string">terms defining and commitment to fulfill the future payment or cashflow requirements (e.g., interest payments, coupon payments, etc.) for one leg of a swap transaction</skos:definition>
+		<skos:editorialNote
+			rdf:datatype="&xsd;string">For some swaps this may be a commitment to net up the difference between a strike and an outcome, rather than to make a series of cashflows over time. For credit default swaps there are conditional commitments, contingent on the occurrence of a credit event.</skos:editorialNote>
 	</owl:Class>
 	
 	<owl:Class
@@ -351,41 +390,6 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 	</owl:Class>
 	
 	<owl:Class
-		rdf:about="&fibo-der-drc-swp;SwapStreamTerms">
-		<rdfs:subClassOf
-			rdf:resource="&fibo-der-drc-bsc;CashflowTerms"/>
-		<rdfs:subClassOf
-			rdf:resource="&fibo-der-drc-swp;SwapTerms"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onClass
-					rdf:resource="&fibo-der-drc-swp;SwapPayingParty"/>
-				<owl:onProperty
-					rdf:resource="&fibo-der-drc-swp;hasPayingParty"/>
-				<owl:qualifiedCardinality
-					rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onClass
-					rdf:resource="&fibo-der-drc-swp;SwapReceivingParty"/>
-				<owl:onProperty
-					rdf:resource="&fibo-der-drc-swp;hasReceivingParty"/>
-				<owl:qualifiedCardinality
-					rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>swap stream terms</rdfs:label>
-		<fibo-fnd-utl-av:adaptedFrom
-			rdf:datatype="&xsd;string">http://www.investopedia.com/terms/i/interestrateswap.asp</fibo-fnd-utl-av:adaptedFrom>
-		<skos:definition
-			rdf:datatype="&xsd;string">terms defining and commitment to fulfill the future payment or cashflow requirements (e.g., interest payments, coupon payments, etc.) for one leg of a swap transaction</skos:definition>
-		<skos:editorialNote
-			rdf:datatype="&xsd;string">For some swaps this may be a commitment to net up the difference between a strike and an outcome, rather than to make a series of cashflows over time. For credit default swaps there are conditional commitments, contingent on the occurrence of a credit event.</skos:editorialNote>
-	</owl:Class>
-	
-	<owl:Class
 		rdf:about="&fibo-der-drc-swp;SwapTerms">
 		<rdfs:subClassOf
 			rdf:resource="&fibo-der-drc-bsc;DerivativeTransactionTerms"/>
@@ -442,7 +446,7 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 		<rdfs:domain
 			rdf:resource="&fibo-der-drc-swp;Swap"/>
 		<rdfs:range
-			rdf:resource="&fibo-der-drc-swp;SwapStreamTerms"/>
+			rdf:resource="&fibo-der-drc-swp;SwapLeg"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty
