@@ -114,12 +114,12 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 		rdf:about="&fibo-fbc-fi-fi;DebtInstrument">
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:minQualifiedCardinality
-					rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
-				<owl:onClass
-					rdf:resource="&fibo-sec-dbt-dbti;DebtOffering"/>
 				<owl:onProperty
 					rdf:resource="&fibo-sec-sec-iss;hasOffering"/>
+				<owl:onClass
+					rdf:resource="&fibo-sec-dbt-dbti;DebtOffering"/>
+				<owl:minQualifiedCardinality
+					rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 	</owl:Class>
@@ -202,10 +202,10 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 			rdf:resource="&fibo-sec-dbt-dbti;TradableDebtInstrumentRedemptionProvision"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:allValuesFrom
-					rdf:resource="&fibo-sec-dbt-dbti;CallWindow"/>
 				<owl:onProperty
 					rdf:resource="&fibo-fnd-dt-fd;hasDatePeriod"/>
+				<owl:allValuesFrom
+					rdf:resource="&fibo-sec-dbt-dbti;CallWindow"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>call notification provision</rdfs:label>
@@ -257,18 +257,13 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 					rdf:resource="&fibo-fnd-rel-rel;comprises"/>
 				<owl:someValuesFrom>
 					<owl:Class>
-						<owl:unionOf>
-							<rdf:Description>
-								<rdf:first
-									rdf:resource="&fibo-sec-dbt-dbti;CallPremium"/>
-								<rdf:rest>
-									<rdf:Description>
-										<rdf:first
-											rdf:resource="&fibo-sec-dbt-dbti;CallPrice"/>
-										<rdf:rest
-											rdf:resource="&rdf;nil"/>
-									</rdf:Description>
-								</rdf:rest>
+						<owl:unionOf
+							rdf:parseType="Collection">
+							<rdf:Description
+								rdf:about="http://spec.edmcouncil.org/fibo/SEC/Debt/DebtInstruments/CallPremium">
+							</rdf:Description>
+							<rdf:Description
+								rdf:about="http://spec.edmcouncil.org/fibo/SEC/Debt/DebtInstruments/CallPrice">
 							</rdf:Description>
 						</owl:unionOf>
 					</owl:Class>
@@ -294,13 +289,23 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 	<owl:Class
 		rdf:about="&fibo-sec-dbt-dbti;DebtOffering">
 		<rdfs:subClassOf
-			rdf:resource="&fibo-sec-sec-iss;Offering"/>
+			rdf:resource="&fibo-sec-sec-iss;SecuritiesOffering"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:allValuesFrom
-					rdf:resource="&fibo-sec-dbt-dbti;CallFeature"/>
 				<owl:onProperty
 					rdf:resource="&fibo-sec-dbt-dbti;hasCallFeature"/>
+				<owl:allValuesFrom
+					rdf:resource="&fibo-sec-dbt-dbti;CallFeature"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty
+					rdf:resource="&fibo-sec-dbt-dbti;hasRedemptionProvision"/>
+				<owl:onClass
+					rdf:resource="&fibo-fbc-dae-dbt;RedemptionProvision"/>
+				<owl:minQualifiedCardinality
+					rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -322,9 +327,9 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty
-					rdf:resource="&fibo-sec-dbt-dbti;hasRedemptionProvision"/>
+					rdf:resource="&fibo-sec-dbt-dbti;hasRepaymentTerms"/>
 				<owl:someValuesFrom
-					rdf:resource="&fibo-fbc-dae-dbt;RedemptionProvision"/>
+					rdf:resource="&fibo-fbc-dae-dbt;PrincipalRepaymentTerms"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>debt offering</rdfs:label>
@@ -338,18 +343,18 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 			rdf:resource="&fibo-fbc-dae-dbt;Debt"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:allValuesFrom
-					rdf:resource="&fibo-fbc-fi-fi;DebtInstrument"/>
 				<owl:onProperty
 					rdf:resource="&fibo-fnd-rel-rel;isConferredBy"/>
+				<owl:allValuesFrom
+					rdf:resource="&fibo-fbc-fi-fi;DebtInstrument"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:allValuesFrom
-					rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
 				<owl:onProperty
 					rdf:resource="&fibo-fbc-dae-dbt;hasDebtAmount"/>
+				<owl:allValuesFrom
+					rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>issued debt</rdfs:label>
@@ -379,8 +384,16 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 		<rdfs:subClassOf
 			rdf:resource="&fibo-fnd-agr-ctr;MutualContractualAgreement"/>
 		<rdfs:label>non-tradable debt instrument</rdfs:label>
+		<fibo-fnd-utl-av:adaptedFrom
+			rdf:datatype="&xsd;string">Non-Tradeable. (n.d.) Farlex Financial Dictionary. (2009). Retrieved December 16 2016 from http://financial-dictionary.thefreedictionary.com/Non-Tradeable</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:explanatoryNote
+			rdf:datatype="&xsd;string">Generally, a nonnegotiable instrument may be redeemed by the issuer, but this is often subject to some limitations.</fibo-fnd-utl-av:explanatoryNote>
 		<owl:disjointWith
 			rdf:resource="&fibo-sec-dbt-dbti;TradableDebtInstrument"/>
+		<skos:definition
+			rdf:datatype="&xsd;string">a debt instrument that may not be bought or sold</skos:definition>
+		<skos:example
+			rdf:datatype="&xsd;string">Low-risk instruments such as savings bonds are examples of nonnegotiable debt instruments.</skos:example>
 	</owl:Class>
 	
 	<owl:Class
@@ -417,10 +430,10 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 			rdf:resource="&fibo-sec-dbt-dbti;IssuedDebt"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:allValuesFrom
-					rdf:resource="&fibo-sec-dbt-dbti;TradableDebtInstrument"/>
 				<owl:onProperty
 					rdf:resource="&fibo-fnd-rel-rel;isConferredBy"/>
+				<owl:allValuesFrom
+					rdf:resource="&fibo-sec-dbt-dbti;TradableDebtInstrument"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>publicly issued debt</rdfs:label>
@@ -460,12 +473,12 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 		<rdfs:label>put feature</rdfs:label>
 		<fibo-fnd-utl-av:adaptedFrom
 			rdf:datatype="&xsd;string">Barron&apos;s Dictionary of Business and Economics Terms, Fifth Edition, 2012</fibo-fnd-utl-av:adaptedFrom>
-		<fibo-fnd-utl-av:explanatoryNote
-			rdf:datatype="&xsd;string">FIBIM has term &quot;Putable Date&quot; which (by implication, and comparing with definition for &quot;Next Call Date&quot;) is presumably a single calendar date in the future, at a given point in time. That does not cover the definition of formal terms defining when and how the issue may be put, which is what is modeled here.</fibo-fnd-utl-av:explanatoryNote>
 		<fibo-fnd-utl-av:synonym
 			rdf:datatype="&xsd;string">put provision</fibo-fnd-utl-av:synonym>
 		<skos:definition
 			rdf:datatype="&xsd;string">a redemption provision giving the holder the right, but not the obligation, to sell a specified amount of the debt instrument (i.e., redeem it), prior to maturity</skos:definition>
+		<skos:editorialNote
+			rdf:datatype="&xsd;string">FIBIM has term &quot;Putable Date&quot; which (by implication, and comparing with definition for &quot;Next Call Date&quot;) is presumably a single calendar date in the future, at a given point in time. That does not cover the definition of formal terms defining when and how the issue may be put, which is what is modeled here.</skos:editorialNote>
 	</owl:Class>
 	
 	<owl:Class
@@ -474,10 +487,10 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 			rdf:resource="&fibo-sec-dbt-dbti;TradableDebtInstrumentRedemptionProvision"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:allValuesFrom
-					rdf:resource="&fibo-sec-dbt-dbti;PutWindow"/>
 				<owl:onProperty
 					rdf:resource="&fibo-fnd-dt-fd;hasDatePeriod"/>
+				<owl:allValuesFrom
+					rdf:resource="&fibo-sec-dbt-dbti;PutWindow"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>put notification provision</rdfs:label>
@@ -529,18 +542,13 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 					rdf:resource="&fibo-fnd-rel-rel;comprises"/>
 				<owl:someValuesFrom>
 					<owl:Class>
-						<owl:unionOf>
-							<rdf:Description>
-								<rdf:first
-									rdf:resource="&fibo-sec-dbt-dbti;PutPremium"/>
-								<rdf:rest>
-									<rdf:Description>
-										<rdf:first
-											rdf:resource="&fibo-sec-dbt-dbti;PutPrice"/>
-										<rdf:rest
-											rdf:resource="&rdf;nil"/>
-									</rdf:Description>
-								</rdf:rest>
+						<owl:unionOf
+							rdf:parseType="Collection">
+							<rdf:Description
+								rdf:about="http://spec.edmcouncil.org/fibo/SEC/Debt/DebtInstruments/PutPremium">
+							</rdf:Description>
+							<rdf:Description
+								rdf:about="http://spec.edmcouncil.org/fibo/SEC/Debt/DebtInstruments/PutPrice">
 							</rdf:Description>
 						</owl:unionOf>
 					</owl:Class>
@@ -569,7 +577,7 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 		rdf:about="&fibo-sec-dbt-dbti;RelativePrice">
 		<rdfs:subClassOf
 			rdf:resource="&fibo-fnd-acc-cur;MonetaryPrice"/>
-		<rdfs:label>relative market price</rdfs:label>
+		<rdfs:label>relative price</rdfs:label>
 		<fibo-fnd-utl-av:adaptedFrom
 			rdf:datatype="&xsd;string">http://www.investopedia.com/terms/m/market-price.asp</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:adaptedFrom
@@ -586,12 +594,12 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 			rdf:resource="&fibo-fbc-fi-fi;Security"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:maxQualifiedCardinality
-					rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-				<owl:onClass
-					rdf:resource="&fibo-sec-dbt-dbti;TradableDebtInstrument"/>
 				<owl:onProperty
 					rdf:resource="&fibo-sec-dbt-dbti;mayBeSubordinatedTo"/>
+				<owl:onClass
+					rdf:resource="&fibo-sec-dbt-dbti;TradableDebtInstrument"/>
+				<owl:maxQualifiedCardinality
+					rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -671,10 +679,8 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 	<owl:ObjectProperty
 		rdf:about="&fibo-sec-dbt-dbti;hasInterestPaymentTerms">
 		<rdfs:subPropertyOf
-			rdf:resource="&fibo-fnd-agr-ctr;hasTerms"/>
+			rdf:resource="&fibo-fnd-agr-ctr;hasContractualElement"/>
 		<rdfs:label>has interest payment terms</rdfs:label>
-		<rdfs:domain
-			rdf:resource="&fibo-sec-dbt-dbti;DebtOffering"/>
 		<rdfs:range
 			rdf:resource="&fibo-fbc-dae-dbt;InterestPaymentTerms"/>
 	</owl:ObjectProperty>
@@ -697,8 +703,6 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 		<rdfs:subPropertyOf
 			rdf:resource="&fibo-fnd-dt-bd;hasBusinessRecurrenceIntervalConvention"/>
 		<rdfs:label>has price and yield day count convention</rdfs:label>
-		<rdfs:domain
-			rdf:resource="&fibo-sec-dbt-dbti;DebtOffering"/>
 		<rdfs:range
 			rdf:resource="&fibo-fbc-dae-dbt;DayCountConvention"/>
 		<skos:definition
@@ -708,10 +712,8 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 	<owl:ObjectProperty
 		rdf:about="&fibo-sec-dbt-dbti;hasRedemptionProvision">
 		<rdfs:subPropertyOf
-			rdf:resource="&fibo-fnd-agr-ctr;hasTerms"/>
+			rdf:resource="&fibo-fnd-agr-ctr;hasContractualElement"/>
 		<rdfs:label>has redemption terms</rdfs:label>
-		<rdfs:domain
-			rdf:resource="&fibo-sec-dbt-dbti;DebtOffering"/>
 		<rdfs:range
 			rdf:resource="&fibo-fbc-dae-dbt;RedemptionProvision"/>
 	</owl:ObjectProperty>
@@ -741,10 +743,8 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 	<owl:ObjectProperty
 		rdf:about="&fibo-sec-dbt-dbti;hasRepaymentTerms">
 		<rdfs:subPropertyOf
-			rdf:resource="&fibo-fnd-agr-ctr;hasTerms"/>
+			rdf:resource="&fibo-fnd-agr-ctr;hasContractualElement"/>
 		<rdfs:label>has repayment terms</rdfs:label>
-		<rdfs:domain
-			rdf:resource="&fibo-sec-dbt-dbti;DebtOffering"/>
 		<rdfs:range
 			rdf:resource="&fibo-fbc-dae-dbt;PrincipalRepaymentTerms"/>
 	</owl:ObjectProperty>
