@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+	<!ENTITY fibo-fnd-bus-bg "https://spec.edmcouncil.org/fibo/FND/Business/BusinessGoals/">
+	<!ENTITY fibo-fnd-math-math "https://spec.edmcouncil.org/fibo/FND/Math/Math/">
+	<!ENTITY fibo-fnd-risk-risk "https://spec.edmcouncil.org/fibo/FND/Risk/Risk/">
+	<!ENTITY fibo-fnd-utl-av "http://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/">
+	<!ENTITY fibo-uo-lat "https://spec.edmcouncil.org/fibo/UO/Lattice/">
+	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
+	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY skos "http://www.w3.org/2004/02/skos/core/">
+	<!ENTITY xsd "http://www.w3.org/2001/XMLSchema#">
+]>
+<rdf:RDF
+	xml:base="https://spec.edmcouncil.org/fibo/FND/Risk/Risk/"
+	xmlns="https://spec.edmcouncil.org/fibo/FND/Risk/Risk/"
+	xmlns:fibo-fnd-bus-bg="https://spec.edmcouncil.org/fibo/FND/Business/BusinessGoals/"
+	xmlns:fibo-fnd-math-math="https://spec.edmcouncil.org/fibo/FND/Math/Math/"
+	xmlns:fibo-fnd-risk-risk="https://spec.edmcouncil.org/fibo/FND/Risk/Risk/"
+	xmlns:fibo-fnd-utl-av="http://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/"
+	xmlns:fibo-uo-lat="https://spec.edmcouncil.org/fibo/UO/Lattice/"
+	xmlns:owl="http://www.w3.org/2002/07/owl#"
+	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+	xmlns:skos="http://www.w3.org/2004/02/skos/core/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema#">
+	
+	<owl:Ontology
+		rdf:about="https://spec.edmcouncil.org/fibo/FND/Risk/Risk/">
+		<rdfs:label
+			rdf:datatype="&rdf;langString"
+			xml:lang="en">Risk</rdfs:label>
+		<owl:imports
+			rdf:resource="http://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/"/>
+		<owl:imports
+			rdf:resource="http://www.w3.org/2004/02/skos/core"/>
+		<owl:imports
+			rdf:resource="https://spec.edmcouncil.org/fibo/FND/Business/BusinessGoals/"/>
+		<owl:imports
+			rdf:resource="https://spec.edmcouncil.org/fibo/FND/Math/Math/"/>
+		<owl:imports
+			rdf:resource="https://spec.edmcouncil.org/fibo/UO/Lattice/"/>
+	</owl:Ontology>
+	
+	<owl:Class
+		rdf:about="&fibo-fnd-risk-risk;Consequence">
+		<rdfs:subClassOf
+			rdf:resource="&fibo-uo-lat;OccurrentThing"/>
+		<rdfs:label
+			rdf:datatype="&rdf;langString"
+			xml:lang="en">consequence</rdfs:label>
+	</owl:Class>
+	
+	<owl:Class
+		rdf:about="&fibo-fnd-risk-risk;CreditRisk">
+		<rdfs:subClassOf
+			rdf:resource="&fibo-fnd-risk-risk;FinancialRisk"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty
+					rdf:resource="&fibo-fnd-risk-risk;impact"/>
+				<owl:someValuesFrom
+					rdf:resource="&fibo-fnd-risk-risk;LossGivenDefault"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty
+					rdf:resource="&fibo-fnd-risk-risk;probability"/>
+				<owl:someValuesFrom
+					rdf:resource="&fibo-fnd-risk-risk;ProbabilityOfDefault"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label
+			rdf:datatype="&rdf;langString"
+			xml:lang="en">credit risk</rdfs:label>
+	</owl:Class>
+	
+	<owl:Class
+		rdf:about="&fibo-fnd-risk-risk;FinancialRisk">
+		<rdfs:subClassOf
+			rdf:resource="&fibo-fnd-risk-risk;Risk"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty
+					rdf:resource="&fibo-fnd-risk-risk;impact.1"/>
+				<owl:someValuesFrom
+					rdf:resource="&fibo-fnd-risk-risk;FinancialRiskConsequence"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label
+			rdf:datatype="&rdf;langString"
+			xml:lang="en">financial risk</rdfs:label>
+	</owl:Class>
+	
+	<owl:Class
+		rdf:about="&fibo-fnd-risk-risk;FinancialRiskConsequence">
+		<rdfs:subClassOf
+			rdf:resource="&fibo-fnd-risk-risk;Impact"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty
+					rdf:resource="&fibo-fnd-risk-risk;impactsUpon"/>
+				<owl:someValuesFrom
+					rdf:resource="&fibo-fnd-bus-bg;InvestmentGoal"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label
+			rdf:datatype="&rdf;langString"
+			xml:lang="en">financial risk consequence</rdfs:label>
+	</owl:Class>
+	
+	<owl:Class
+		rdf:about="&fibo-fnd-risk-risk;FinancialTransactionRisk">
+		<rdfs:subClassOf
+			rdf:resource="&fibo-fnd-risk-risk;FinancialRisk"/>
+		<rdfs:subClassOf
+			rdf:resource="&fibo-fnd-risk-risk;OperationalRisk"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty
+					rdf:resource="&fibo-fnd-risk-risk;impact.2"/>
+				<owl:someValuesFrom
+					rdf:resource="&fibo-fnd-risk-risk;TransactionFailure"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label
+			rdf:datatype="&rdf;langString"
+			xml:lang="en">financial transaction risk</rdfs:label>
+	</owl:Class>
+	
+	<owl:Class
+		rdf:about="&fibo-fnd-risk-risk;Impact">
+		<rdfs:subClassOf
+			rdf:resource="&fibo-fnd-risk-risk;Consequence"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty
+					rdf:resource="&fibo-fnd-risk-risk;impactsUpon"/>
+				<owl:someValuesFrom
+					rdf:resource="&fibo-fnd-bus-bg;BusinessGoal"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label
+			rdf:datatype="&rdf;langString"
+			xml:lang="en">impact</rdfs:label>
+	</owl:Class>
+	
+	<owl:Class
+		rdf:about="&fibo-fnd-risk-risk;LossGivenDefault">
+		<rdfs:subClassOf
+			rdf:resource="&fibo-fnd-risk-risk;Impact"/>
+		<rdfs:label
+			rdf:datatype="&rdf;langString"
+			xml:lang="en">loss given default</rdfs:label>
+		<skos:definition
+			rdf:datatype="&rdf;langString"
+			xml:lang="en">The loss given some default.</skos:definition>
+	</owl:Class>
+	
+	<owl:Class
+		rdf:about="&fibo-fnd-risk-risk;OperationalRisk">
+		<rdfs:subClassOf
+			rdf:resource="&fibo-fnd-risk-risk;Risk"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty
+					rdf:resource="&fibo-fnd-risk-risk;impact.1"/>
+				<owl:someValuesFrom
+					rdf:resource="&fibo-fnd-risk-risk;OperationalRiskConsequence"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label
+			rdf:datatype="&rdf;langString"
+			xml:lang="en">operational risk</rdfs:label>
+	</owl:Class>
+	
+	<owl:Class
+		rdf:about="&fibo-fnd-risk-risk;OperationalRiskConsequence">
+		<rdfs:subClassOf
+			rdf:resource="&fibo-fnd-risk-risk;Impact"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty
+					rdf:resource="&fibo-fnd-risk-risk;impactsUpon"/>
+				<owl:someValuesFrom
+					rdf:resource="&fibo-fnd-bus-bg;CorporateGoal"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label
+			rdf:datatype="&rdf;langString"
+			xml:lang="en">operational risk consequence</rdfs:label>
+	</owl:Class>
+	
+	<owl:Class
+		rdf:about="&fibo-fnd-risk-risk;PerceptionOfRisk">
+		<rdfs:subClassOf
+			rdf:resource="&fibo-uo-lat;Abstract"/>
+		<rdfs:label
+			rdf:datatype="&rdf;langString"
+			xml:lang="en">perception of risk</rdfs:label>
+	</owl:Class>
+	
+	<owl:Class
+		rdf:about="&fibo-fnd-risk-risk;ProbabilityOfDefault">
+		<rdfs:subClassOf
+			rdf:resource="&fibo-fnd-math-math;Probability"/>
+		<rdfs:label
+			rdf:datatype="&rdf;langString"
+			xml:lang="en">probability of default</rdfs:label>
+		<skos:definition
+			rdf:datatype="&rdf;langString"
+			xml:lang="en">The probability of some default on some obligation.</skos:definition>
+	</owl:Class>
+	
+	<owl:Class
+		rdf:about="&fibo-fnd-risk-risk;ProjectRisk">
+		<rdfs:subClassOf
+			rdf:resource="&fibo-fnd-risk-risk;Risk"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty
+					rdf:resource="&fibo-fnd-risk-risk;impact.1"/>
+				<owl:someValuesFrom
+					rdf:resource="&fibo-fnd-risk-risk;ProjectRiskConsequence"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label
+			rdf:datatype="&rdf;langString"
+			xml:lang="en">project risk</rdfs:label>
+	</owl:Class>
+	
+	<owl:Class
+		rdf:about="&fibo-fnd-risk-risk;ProjectRiskConsequence">
+		<rdfs:subClassOf
+			rdf:resource="&fibo-fnd-risk-risk;Impact"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty
+					rdf:resource="&fibo-fnd-risk-risk;impactsUpon"/>
+				<owl:someValuesFrom
+					rdf:resource="&fibo-fnd-bus-bg;ProjectGoal"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label
+			rdf:datatype="&rdf;langString"
+			xml:lang="en">project risk consequence</rdfs:label>
+	</owl:Class>
+	
+	<owl:Class
+		rdf:about="&fibo-fnd-risk-risk;Risk">
+		<rdfs:subClassOf
+			rdf:resource="&fibo-uo-lat;Abstract"/>
+		<rdfs:subClassOf
+			rdf:resource="&fibo-uo-lat;RelativeThing"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty
+					rdf:resource="&fibo-fnd-risk-risk;impact.1"/>
+				<owl:someValuesFrom
+					rdf:resource="&fibo-fnd-risk-risk;Impact"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty
+					rdf:resource="&fibo-fnd-risk-risk;isRiskOf"/>
+				<owl:someValuesFrom
+					rdf:resource="&fibo-fnd-risk-risk;RiskStateTransition"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty
+					rdf:resource="&fibo-fnd-risk-risk;probability"/>
+				<owl:someValuesFrom
+					rdf:resource="&fibo-fnd-math-math;Probability"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label
+			rdf:datatype="&rdf;langString"
+			xml:lang="en">risk</rdfs:label>
+	</owl:Class>
+	
+	<owl:Class
+		rdf:about="&fibo-fnd-risk-risk;RiskStateTransition">
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty
+					rdf:resource="&fibo-fnd-risk-risk;eventHasConsequence"/>
+				<owl:someValuesFrom
+					rdf:resource="&fibo-fnd-risk-risk;Consequence"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label
+			rdf:datatype="&rdf;langString"
+			xml:lang="en">risk state transition</rdfs:label>
+	</owl:Class>
+	
+	<owl:Class
+		rdf:about="&fibo-fnd-risk-risk;TransactionFailure">
+		<rdfs:subClassOf
+			rdf:resource="&fibo-fnd-risk-risk;OperationalRiskConsequence"/>
+		<rdfs:label
+			rdf:datatype="&rdf;langString"
+			xml:lang="en">transaction failure</rdfs:label>
+	</owl:Class>
+	
+	<owl:ObjectProperty
+		rdf:about="&fibo-fnd-risk-risk;eventHasConsequence">
+		<rdfs:label
+			rdf:datatype="&rdf;langString"
+			xml:lang="en">event has consequence</rdfs:label>
+		<rdfs:domain
+			rdf:resource="&fibo-fnd-risk-risk;RiskStateTransition"/>
+		<rdfs:range
+			rdf:resource="&fibo-fnd-risk-risk;Consequence"/>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty
+		rdf:about="&fibo-fnd-risk-risk;impact">
+		<rdfs:label
+			rdf:datatype="&rdf;langString"
+			xml:lang="en">impact</rdfs:label>
+		<rdfs:domain
+			rdf:resource="&fibo-fnd-risk-risk;CreditRisk"/>
+		<rdfs:range
+			rdf:resource="&fibo-fnd-risk-risk;LossGivenDefault"/>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty
+		rdf:about="&fibo-fnd-risk-risk;impact.1">
+		<rdfs:label
+			rdf:datatype="&rdf;langString"
+			xml:lang="en">impact</rdfs:label>
+		<rdfs:domain
+			rdf:resource="&fibo-fnd-risk-risk;Risk"/>
+		<rdfs:range
+			rdf:resource="&fibo-fnd-risk-risk;Impact"/>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty
+		rdf:about="&fibo-fnd-risk-risk;impact.2">
+		<rdfs:label
+			rdf:datatype="&rdf;langString"
+			xml:lang="en">impact</rdfs:label>
+		<rdfs:domain
+			rdf:resource="&fibo-fnd-risk-risk;FinancialTransactionRisk"/>
+		<rdfs:range
+			rdf:resource="&fibo-fnd-risk-risk;TransactionFailure"/>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty
+		rdf:about="&fibo-fnd-risk-risk;impactsUpon">
+		<rdfs:label
+			rdf:datatype="&rdf;langString"
+			xml:lang="en">impacts upon</rdfs:label>
+		<rdfs:domain
+			rdf:resource="&fibo-fnd-risk-risk;Impact"/>
+		<rdfs:range
+			rdf:resource="&fibo-fnd-bus-bg;BusinessGoal"/>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty
+		rdf:about="&fibo-fnd-risk-risk;isRiskOf">
+		<rdfs:label
+			rdf:datatype="&rdf;langString"
+			xml:lang="en">is risk of</rdfs:label>
+		<rdfs:domain
+			rdf:resource="&fibo-fnd-risk-risk;Risk"/>
+		<rdfs:range
+			rdf:resource="&fibo-fnd-risk-risk;RiskStateTransition"/>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty
+		rdf:about="&fibo-fnd-risk-risk;probability">
+		<rdfs:label
+			rdf:datatype="&rdf;langString"
+			xml:lang="en">probability</rdfs:label>
+		<rdfs:domain
+			rdf:resource="&fibo-fnd-risk-risk;Risk"/>
+		<rdfs:range
+			rdf:resource="&fibo-fnd-math-math;Probability"/>
+	</owl:ObjectProperty>
+
+</rdf:RDF>
