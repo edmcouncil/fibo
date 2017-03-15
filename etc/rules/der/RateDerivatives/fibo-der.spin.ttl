@@ -1,0 +1,96 @@
+@prefix fibo-der-rtd-irswp: <http://spec.edmcouncil.org/fibo/DER/RateDerivatives/IRSwaps/> .
+@prefix fibo-der-drc-swp: <http://spec.edmcouncil.org/fibo/DER/DerivativesContracts/Swaps/> .
+@prefix fibo-ind-ir-ir: <http://spec.edmcouncil.org/fibo/IND/InterestRates/InterestRates/> .
+@prefix ex:    <http://www.example.org/time#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix spin:  <http://spinrdf.org/spin#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sp:    <http://spinrdf.org/sp#> .
+
+owl:Thing spin:rule [ a sp:Construct ;
+	  		  sp:text """
+			  CONSTRUCT {?s a fibo-der-rtd-irswp:FixedFloatInterestRateSwapContract}
+			  WHERE {?s a fibo-der-rtd-irswp:InterestRateSwapContract.
+			         ?s fibo-der-drc-swp:hasSwapStream ?ss1 .
+ 				 ?ss1 a fibo-der-rtd-irswp:FixedInterestRateSwapStreamCashflowTerms .
+ 				 ?s fibo-der-drc-swp:hasSwapStream ?ss2 .
+ 				 ?ss2 a fibo-der-rtd-irswp:FloatingInterestRateSwapStreamCashflowTerms .
+ 				 }
+ 				 """ ] ;
+          spin:rule [ a sp:Construct ;			  
+	  		  sp:text """
+			  CONSTRUCT {?s a fibo-der-rtd-irswp:FloatFloatInterestRateSwapContract}
+			  WHERE {?s a fibo-der-rtd-irswp:InterestRateSwapContract.
+ 			         ?s fibo-der-drc-swp:hasSwapStream ?ss1 .
+ 				 ?ss1 a fibo-der-rtd-irswp:FloatingInterestRateSwapStreamCashflowTerms .	
+ 				 ?s fibo-der-drc-swp:hasSwapStream ?ss2 .
+ 				 ?ss2 a fibo-der-rtd-irswp:FloatingInterestRateSwapStreamCashflowTerms .
+ 				 FILTER (?ss1 != ?ss2)}""" ] ;
+          spin:rule [ a sp:Construct ;			  
+	  		  sp:text """
+			  CONSTRUCT {?s a fibo-der-rtd-irswp:InterestRateSwapContract}
+			  WHERE {?s a fibo-der-drc-swp:SwapContract.
+			  ?s fibo-der-drc-swp:hasSwapStream ?ss1 .
+			  ?ss1 a fibo-der-rtd-irswp:InterestRateSwapStreamCashflowTerms .
+			  ?s fibo-der-drc-swp:hasSwapStream ?ss2 .
+			  ?ss2 a fibo-der-rtd-irswp:InterestRateSwapStreamCashflowTerms .
+			  FILTER (?ss1 != ?ss2)}""" ] ;
+          spin:rule [ a sp:Construct ;			  
+	  		  sp:text """
+			  CONSTRUCT {?s a fibo-der-rtd-irswp:InterestRateSwapStreamCashflowTerms}
+			  WHERE {?s a fibo-der-drc-swp:SwapStreamCashflowTerms.
+			  ?s  fibo-der-rtd-irswp:hasInterestRateSwapSreamBasis ?ss1 .
+			  ?ss1 a fibo-ind-ir-ir:InterestRate .
+			  }""" ] ;
+          spin:rule [ a sp:Construct ;			  
+	  		  sp:text """CONSTRUCT {?s a fibo-der-rtd-irswp:FixedInterestRateSwapStreamCashflowTerms}
+			  WHERE {?s a fibo-der-rtd-irswp:InterestRateSwapStreamCashflowTerms.
+			  ?s  fibo-der-rtd-irswp:hasInterestRateSwapStreamBasis ?ss1 .
+			  ?ss1 a fibo-ind-ir-ir:FixedInterestRate .
+			  }""" ] ;
+          spin:rule [ a sp:Construct ;			  
+	  		  sp:text """CONSTRUCT {?s a fibo-der-rtd-irswp:FloatingInterestRateSwapStreamCashflowTerms}
+			  WHERE {?s a fibo-der-rtd-irswp:InterestRateSwapStreamCashflowTerms.
+			  ?s  fibo-der-rtd-irswp:hasInterestRateSwapStreamBasis ?ss1 .
+			  ?ss1 a fibo-ind-ir-ir:FloatingInterestRate .
+			  } """ ] ;
+			  
+          spin:rule [ a sp:Construct ;			  
+sp:text """
+CONSTRUCT {?x a fibo-der-rtd-irswp:CrossCurrencyInterestRateSwapContract }
+
+WHERE {
+ ?x a  fibo-der-drc-swp:SwapContract .
+ ?x fibo-der-drc-swp:hasSwapStream ?ss1 .
+ ?x fibo-der-drc-swp:hasSwapStream ?ss2 .
+ ?ss1 fibo-der-rtd-irswp:hasNotionalStepSchedule ?nss1 .
+ ?ss2 fibo-der-rtd-irswp:hasNotionalStepSchedule ?nss2 .
+ ?nss1 fibo-der-rtd-irswp:specifies ?nsa1 .
+ ?nss2 fibo-der-rtd-irswp:specifies ?nsa2 .
+ ?nsa1 fibo-fnd-acc-cur:hasBaseMoneyUnit ?cur1 .
+ ?nsa2 fibo-fnd-acc-cur:hasBaseMoneyUnit ?cur2 .
+ FILTER (?cur1 !=  ?cur2 ).
+ FILTER (?ss1 !=   ?ss2 )
+}
+"""] ;
+
+          spin:rule [ a sp:Construct ;			  
+sp:text """
+CONSTRUCT {?x a fibo-der-rtd-irswp:SingleCurrencyInterestRateSwapContract }
+
+WHERE {
+ ?x a  fibo-der-drc-swp:SwapContract .
+ ?x fibo-der-drc-swp:hasSwapStream ?ss1 .
+ ?x fibo-der-drc-swp:hasSwapStream ?ss2 .
+ ?ss1 fibo-der-rtd-irswp:hasNotionalStepSchedule ?nss1 .
+ ?ss2 fibo-der-rtd-irswp:hasNotionalStepSchedule ?nss2 .
+ ?nss1 fibo-der-rtd-irswp:specifies ?nsa1 .
+ ?nss2 fibo-der-rtd-irswp:specifies ?nsa2 .
+ ?nsa1 fibo-fnd-acc-cur:hasBaseMoneyUnit ?cur1 .
+ ?nsa2 fibo-fnd-acc-cur:hasBaseMoneyUnit ?cur2 .
+ FILTER (?cur1 =  ?cur2 ).
+ FILTER (?ss1 !=   ?ss2 )
+}
+"""] .
