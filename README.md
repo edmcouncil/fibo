@@ -4,7 +4,7 @@ __Financial Industry Business Ontology__
 
 ## Intro
 
-Yellow FIBOs have entered the OMG Process. They comply with the OMG rules for documentation and public comment.
+Yellow FIBOs have entered the OMG Process. They comply with the OMG rules for documentation and public comment.x
 
 ## Directories
 
