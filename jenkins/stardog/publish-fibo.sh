@@ -15,9 +15,9 @@ stardog_vcs=""
 function initWorkspaceVars() {
 
   fibo_root="${WORKSPACE}/fibo"
-  echo fibo_root=${fibo_root}
+  echo "fibo_root=${fibo_root}"
 
-  if [ ! -d "${fibo_root}"] ; then
+  if [ ! -d "${fibo_root}" ] ; then
     echo "ERROR: fibo_root directory not found (${fibo_root})"
     return 1
   fi
@@ -25,7 +25,7 @@ function initWorkspaceVars() {
   export fibo_infra_root="${WORKSPACE}/fibo-infra"
   echo fibo_infra_root=${fibo_infra_root}
 
-  if [ ! -d "${fibo_infra_root}"] ; then
+  if [ ! -d "${fibo_infra_root}" ] ; then
     echo "ERROR: fibo_infra_root directory not found (${fibo_infra_root})"
     return 1
   fi
