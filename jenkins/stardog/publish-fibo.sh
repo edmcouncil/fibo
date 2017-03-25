@@ -79,7 +79,32 @@ function initStardogVars() {
 
 function copyRdfToTarget() {
 
-  cp -v ${fibo_root}/**/*.rdf ${branch_root}/
+  cp -v --parents ${fibo_root}/**/*.{rdf,ttl,md} ${branch_root}/
+}
+
+function replaceBaseIri() {
+
+  find \
+    ${branch_root}/ \
+    -exec sed \
+    's@http://spec.edmcouncil.org/fibo/@https://spec.edmcouncil.org/fibo/ontology/${GIT_BRANCH}/@g' \
+    {} \;
+
+  return 0
+}
+
+function storeVersionInStardog() {
+
+  echo "Commit to Stardog..."
+  ${stardog_vcs} commit --add $(find ${branch_root} -name "*.rdf") -m "$GIT_COMMENT" -u obkhan -p stardogadmin ${GIT_BRANCH}
+  SVERSION=$(${stardog_vcs} list --committer obkhan --limit 1 ${GIT_BRANCH} | sed -n -e 's/^.*Version:   //p')
+  ${stardog_vcs} tag --drop $JIRA_ISSUE ${GIT_BRANCH} || true
+  ${stardog_vcs} tag --create $JIRA_ISSUE --version $SVERSION ${GIT_BRANCH}
+}
+
+function generateSpecIndex() {
+
+  tree -H ${spec_root} > ${spec_root}/index.html
 }
 
 function main() {
@@ -90,13 +115,9 @@ function main() {
   initStardogVars || return $?
 
   copyRdfToTarget || return $?
-
-  echo "Commit to Stardog..."
-  ${stardog_vcs} commit --add $(find ${branch_root} -name "*.rdf") -m "$GIT_COMMENT" -u obkhan -p stardogadmin ${GIT_BRANCH}
-  SVERSION=$(${stardog_vcs} list --committer obkhan --limit 1 ${GIT_BRANCH} | sed -n -e 's/^.*Version:   //p')
-  ${stardog_vcs} tag --drop $JIRA_ISSUE ${GIT_BRANCH} || true
-  ${stardog_vcs} tag --create $JIRA_ISSUE --version $SVERSION ${GIT_BRANCH}
-  tree -H ${spec_root} > ${spec_root}/index.html
+  storeVersionInStardog || return $?
+  replaceBaseIri || return $?
+  generateSpecIndex || return $?
 }
 
 main $@
