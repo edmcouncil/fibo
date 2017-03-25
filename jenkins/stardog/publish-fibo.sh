@@ -86,7 +86,7 @@ function replaceBaseIri() {
 
   find \
     ${branch_root}/ \
-    -exec sed \
+    -exec sed -i '' \
     's@http://spec.edmcouncil.org/fibo/@https://spec.edmcouncil.org/fibo/ontology/${GIT_BRANCH}/@g' \
     {} \;
 
