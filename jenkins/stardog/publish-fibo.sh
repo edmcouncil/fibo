@@ -142,7 +142,7 @@ function convertMarkdownToHtml() {
   (
     set -x
     cd "${branch_root}"
-    find . -type -f -name '*.md' -exec pandoc --standalone --from markdown --to html -o {}.html {} \;
+    find . -type f -name '*.md' -exec pandoc --standalone --from markdown --to html -o {}.html {} \;
   )
 
   return 0
