@@ -8,6 +8,7 @@
 # - fibo-infra (in ${WORKSPACE}/fibo-infra directory)
 #
 #
+tmpdir="
 fibo_root=""
 fibo_infra_root=""
 
@@ -18,9 +19,13 @@ branch_root=""
 
 stardog_vcs=""
 
-shopt -s globstar
+shopt -s globstar"
+
+trap "rm -rf ${tmpdir} >/dev/null 2>&1" EXIT
 
 function initWorkspaceVars() {
+
+  tmpdir=$(mktemp -d "${TMPDIR:-/tmp/}$(basename 0).XXXXXXXXXXXX")
 
   fibo_root="${WORKSPACE}/fibo"
   echo "fibo_root=${fibo_root}"
@@ -82,13 +87,15 @@ function copyRdfToTarget() {
   cp -v --parents ${fibo_root}/**/*.{rdf,ttl,md} ${branch_root}/
 }
 
-function replaceBaseIri() {
+function searchAndReplaceStuffInRdf() {
 
-  find \
-    ${branch_root}/ \
-    -exec sed -i '' \
-    's@http://spec.edmcouncil.org/fibo/@https://spec.edmcouncil.org/fibo/ontology/${GIT_BRANCH}/@g' \
-    {} \;
+  local sedfile=$(mktemp ${tmpdir}/sed.XXXXXX)
+  
+  cat > "${sedfile}" << __HERE__
+s@http://spec.edmcouncil.org/fibo/@https://spec.edmcouncil.org/fibo/ontology/${GIT_BRANCH}/@g  
+__HERE__
+
+  find ${branch_root}/ -exec sed -i '' -f ${sedfile} {} \;
 
   return 0
 }
@@ -116,7 +123,7 @@ function main() {
 
   copyRdfToTarget || return $?
   #storeVersionInStardog || return $?
-  replaceBaseIri || return $?
+  searchAndReplaceStuffInRdf || return $?
   generateSpecIndex || return $?
 }
 
