@@ -8,7 +8,7 @@
 # - fibo-infra (in ${WORKSPACE}/fibo-infra directory)
 #
 #
-tmpdir="
+tmp_dir="/tmp"
 fibo_root=""
 fibo_infra_root=""
 
@@ -19,13 +19,14 @@ branch_root=""
 
 stardog_vcs=""
 
-shopt -s globstar"
+shopt -s globstar
 
-trap "rm -rf ${tmpdir} >/dev/null 2>&1" EXIT
+trap "rm -rf ${tmp_dir} >/dev/null 2>&1" EXIT
 
 function initWorkspaceVars() {
 
-  tmpdir=$(mktemp -d "${TMPDIR:-/tmp/}$(basename 0).XXXXXXXXXXXX")
+  tmp_dir=$(mktemp -d "${tmp_dir:-/tmp}/$(basename 0).XXXXXXXXXXXX")
+  echo tmp_dir=${tmp_dir}
 
   fibo_root="${WORKSPACE}/fibo"
   echo "fibo_root=${fibo_root}"
@@ -89,7 +90,7 @@ function copyRdfToTarget() {
 
 function searchAndReplaceStuffInRdf() {
 
-  local sedfile=$(mktemp ${tmpdir}/sed.XXXXXX)
+  local sedfile=$(mktemp ${tmp_dir}/sed.XXXXXX)
   
   cat > "${sedfile}" << __HERE__
 s@http://spec.edmcouncil.org/fibo/@https://spec.edmcouncil.org/fibo/ontology/${GIT_BRANCH}/@g  
