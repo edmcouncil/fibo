@@ -99,7 +99,12 @@ function searchAndReplaceStuffInRdf() {
 s@http://spec.edmcouncil.org/fibo/@https://spec.edmcouncil.org/fibo/ontology/${GIT_BRANCH}/@g  
 __HERE__
 
-  find ${branch_root}/ -type f -exec sed -i '' -f ${sedfile} {} \;
+  cat "${sedfile}"
+
+  (
+    set -x
+    find ${branch_root}/ -type f -exec sed -i '' -f ${sedfile} {} \;
+  )
 
   return 0
 }
