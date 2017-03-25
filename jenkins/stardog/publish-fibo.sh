@@ -85,9 +85,20 @@ function initStardogVars() {
 
 function copyRdfToTarget() {
 
+  echo "Copying all artifacts that we publish straight from git into target directory"
+
   (
     cd ${fibo_root}
-    cp -v **/*.{rdf,ttl,md} --parents ${branch_root}/
+    cp **/*.{rdf,ttl,md} --parents ${branch_root}/
+  )
+
+  (
+    cd ${branch_root}
+    for domain in * ; do
+      [ -d ${domain} ] || continue
+      [ "${domain}" == "etc" ] && continue
+      echo Domain is ${domain}
+    done
   )
 }
 
@@ -98,7 +109,16 @@ function searchAndReplaceStuffInRdf() {
   local sedfile=$(mktemp ${tmp_dir}/sed.XXXXXX)
   
   cat > "${sedfile}" << __HERE__
+#
+# First replace all http:// urls to https:// if that's not already done
+#
 s@http://spec.edmcouncil.org@https://spec.edmcouncil.org@g
+#
+# Apparently there are some FND urls that are wrong in the git source:
+#  - https://spec.edmcouncil.org/FND should be
+#  - https://spec.edmcouncil.org/fibo/FND
+#
+s@https://spec.edmcouncil.org/FND/@https://spec.edmcouncil.org/fibo/FND@g
 s@\(https://spec.edmcouncil.org/fibo/\)@\1ontology/${GIT_BRANCH}/@g
 __HERE__
 
@@ -120,7 +140,10 @@ function storeVersionInStardog() {
 
 function generateSpecIndex() {
 
-  tree -H ${spec_root} > ${spec_root}/index.html
+  (
+    cd ${spec_root}
+    tree -H . > ${spec_root}/index.html
+  )
 }
 
 function main() {
