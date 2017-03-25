@@ -115,7 +115,7 @@ function main() {
   initStardogVars || return $?
 
   copyRdfToTarget || return $?
-  storeVersionInStardog || return $?
+  #storeVersionInStardog || return $?
   replaceBaseIri || return $?
   generateSpecIndex || return $?
 }
