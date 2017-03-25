@@ -93,18 +93,18 @@ function copyRdfToTarget() {
 
 function searchAndReplaceStuffInRdf() {
 
+  echo "Replacing stuff in RDF files"
+
   local sedfile=$(mktemp ${tmp_dir}/sed.XXXXXX)
   
   cat > "${sedfile}" << __HERE__
-s@http://spec.edmcouncil.org/fibo/@https://spec.edmcouncil.org/fibo/ontology/${GIT_BRANCH}/@g  
+s@http://spec.edmcouncil.org@https://spec.edmcouncil.org@g
+s@\(https://spec.edmcouncil.org/fibo/\)@\1ontology/${GIT_BRANCH}/@g
 __HERE__
 
   cat "${sedfile}"
 
-  (
-    set -x
-    find ${branch_root}/ -type f -exec sed -i '' -f ${sedfile} {} \;
-  )
+  find ${branch_root}/ -type f -exec sed -i\  -f ${sedfile} {} \;
 
   return 0
 }
