@@ -127,7 +127,10 @@ __HERE__
 
   cat "${sedfile}"
 
-  find ${branch_root}/ -type f -exec sed -i -f ${sedfile} {} \;
+  (
+    set -x
+    find ${branch_root}/ -type f -exec sed -i -f ${sedfile} {} \;
+  )
 
   return 0
 }
@@ -154,7 +157,7 @@ function main() {
   initWorkspaceVars || return $?
   initGitVars || return $?
   initJiraVars || return $?
-  initStardogVars || return $?
+  #initStardogVars || return $?
 
   copyRdfToTarget || return $?
   #storeVersionInStardog || return $?
