@@ -85,7 +85,10 @@ function initStardogVars() {
 
 function copyRdfToTarget() {
 
-  cp -v --parents ${fibo_root}/**/*.{rdf,ttl,md} ${branch_root}/
+  (
+    cd ${fibo_root}
+    cp -v **/*.{rdf,ttl,md} --parents ${branch_root}/
+  )
 }
 
 function searchAndReplaceStuffInRdf() {
@@ -96,7 +99,7 @@ function searchAndReplaceStuffInRdf() {
 s@http://spec.edmcouncil.org/fibo/@https://spec.edmcouncil.org/fibo/ontology/${GIT_BRANCH}/@g  
 __HERE__
 
-  find ${branch_root}/ -exec sed -i '' -f ${sedfile} {} \;
+  find ${branch_root}/ -type f -exec sed -i '' -f ${sedfile} {} \;
 
   return 0
 }
