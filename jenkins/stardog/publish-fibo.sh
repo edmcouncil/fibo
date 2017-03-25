@@ -137,10 +137,15 @@ __HERE__
 
 function convertMarkdownToHtml() {
 
+  echo "Convert Markdown to HTML"
+
   (
+    set -x
     cd "${branch_root}"
     find . -type -f -name '*.md' -exec pandoc --standalone --from markdown --to html -o {}.html {} \;
   )
+
+  return 0
 }
 
 function storeVersionInStardog() {
@@ -162,6 +167,7 @@ function main() {
   copyRdfToTarget || return $?
   #storeVersionInStardog || return $?
   searchAndReplaceStuffInRdf || return $?
+
   convertMarkdownToHtml || return $?
 }
 
