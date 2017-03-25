@@ -127,7 +127,7 @@ __HERE__
 
   cat "${sedfile}"
 
-  find ${branch_root}/ -type f -exec sed -i\  -f ${sedfile} {} \;
+  find ${branch_root}/ -type f -exec sed -i -f ${sedfile} {} \;
 
   return 0
 }
@@ -149,6 +149,30 @@ function generateSpecIndex() {
   )
 }
 
+function generateFamilyIndex() {
+
+  (
+    cd ${family_root}
+    tree -H . > ${family_root}/index.html
+  )
+}
+
+function generateProductIndex() {
+
+  (
+    cd ${product_root}
+    tree -H . > ${product_root}/index.html
+  )
+}
+
+function generateBranchIndex() {
+
+  (
+    cd ${branch_root}
+    tree -H . > ${branch_root}/index.html
+  )
+}
+
 function main() {
 
   initWorkspaceVars || return $?
@@ -160,6 +184,9 @@ function main() {
   #storeVersionInStardog || return $?
   searchAndReplaceStuffInRdf || return $?
   generateSpecIndex || return $?
+  generateFamilyIndex || return $?
+  generateProductIndex || return $?
+  generateBranchIndex || return $?
 }
 
 main $@
