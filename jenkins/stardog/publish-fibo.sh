@@ -97,7 +97,10 @@ function copyRdfToTarget() {
     for domain in * ; do
       [ -d ${domain} ] || continue
       [ "${domain}" == "etc" ] && continue
-      echo Domain is ${domain}
+      upperDomain=$(echo ${domain} | tr '[:lower:]' '[:upper:]')
+      [ "${domain}" == "${upperDomain}" ] && continue
+      echo Domain is ${domain} should be ${upperDomain}
+      mv ${domain} ${upperDomain}
     done
   )
 }
