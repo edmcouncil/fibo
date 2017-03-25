@@ -132,6 +132,14 @@ __HERE__
   return 0
 }
 
+function convertMarkdownToHtml() {
+
+  (
+    cd "${branch_root}"
+    find . -type -f -name '*.md' -exec pandoc --standalone --from markdown --to html -o {}.html {} \;
+  )
+}
+
 function storeVersionInStardog() {
 
   echo "Commit to Stardog..."
@@ -139,38 +147,6 @@ function storeVersionInStardog() {
   SVERSION=$(${stardog_vcs} list --committer obkhan --limit 1 ${GIT_BRANCH} | sed -n -e 's/^.*Version:   //p')
   ${stardog_vcs} tag --drop $JIRA_ISSUE ${GIT_BRANCH} || true
   ${stardog_vcs} tag --create $JIRA_ISSUE --version $SVERSION ${GIT_BRANCH}
-}
-
-function generateSpecIndex() {
-
-  (
-    cd ${spec_root}
-    tree -H . > ${spec_root}/index.html
-  )
-}
-
-function generateFamilyIndex() {
-
-  (
-    cd ${family_root}
-    tree -H . > ${family_root}/index.html
-  )
-}
-
-function generateProductIndex() {
-
-  (
-    cd ${product_root}
-    tree -H . > ${product_root}/index.html
-  )
-}
-
-function generateBranchIndex() {
-
-  (
-    cd ${branch_root}
-    tree -H . > ${branch_root}/index.html
-  )
 }
 
 function main() {
@@ -183,10 +159,7 @@ function main() {
   copyRdfToTarget || return $?
   #storeVersionInStardog || return $?
   searchAndReplaceStuffInRdf || return $?
-  generateSpecIndex || return $?
-  generateFamilyIndex || return $?
-  generateProductIndex || return $?
-  generateBranchIndex || return $?
+  convertMarkdownToHtml || return $?
 }
 
 main $@
