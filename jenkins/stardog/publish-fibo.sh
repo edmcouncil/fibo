@@ -94,7 +94,7 @@ function copyRdfToTarget() {
 
   (
     cd ${fibo_root}
-    cp **/*.{rdf,ttl,md} --parents ${branch_root}/
+    cp **/*.{rdf,ttl,md,jpg,png} --parents ${branch_root}/
   )
 
   (
@@ -102,6 +102,7 @@ function copyRdfToTarget() {
     for domain in * ; do
       [ -d ${domain} ] || continue
       [ "${domain}" == "etc" ] && continue
+      [ "${domain}" == "ext" ] && continue
       upperDomain=$(echo ${domain} | tr '[:lower:]' '[:upper:]')
       [ "${domain}" == "${upperDomain}" ] && continue
       echo Domain is ${domain} should be ${upperDomain}
@@ -134,7 +135,7 @@ __HERE__
 
   (
     set -x
-    find ${branch_root}/ -type f -exec sed -i -f ${sedfile} {} \;
+    find ${branch_root}/ -type f \( -name '*.rdf' -o -name '*.ttl' -o -name '*.md' \) -exec sed -i -f ${sedfile} {} \;
   )
 
   return 0
