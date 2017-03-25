@@ -23,6 +23,11 @@ shopt -s globstar
 
 trap "rm -rf ${tmp_dir} >/dev/null 2>&1" EXIT
 
+#
+# This is for tools like pandoc
+#
+. /home/ec2-user/.nix-profile/etc/profile.d/nix.sh
+
 function initWorkspaceVars() {
 
   tmp_dir=$(mktemp -d "${tmp_dir:-/tmp}/$(basename 0).XXXXXXXXXXXX")
