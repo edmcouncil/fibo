@@ -91,7 +91,8 @@ function initStardogVars() {
 function createAboutFile () {
    (
        cd ${fibo_root}
-       local aboutfile=$(mktemp ${tmp_dir}/ABOUT.XXXXXX)       
+#       local aboutfile=$(mktemp ${tmp_dir}/ABOUT.XXXXXX)
+       local aboutfile=temp.ttl
        cat >${aboutfile} <<__HERE__
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
