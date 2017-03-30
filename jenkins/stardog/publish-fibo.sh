@@ -105,7 +105,7 @@ __HERE__
 CONSTRUCT {?s ?p ?o} WHERE {?s ?p ?o}
 EOF
        arq --data=${aboutfile}  --query=${echo} --results=RDF >AboutFIBO.rdf
-       
+       )
 }
 
 
