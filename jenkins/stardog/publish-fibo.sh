@@ -100,12 +100,12 @@ function createAboutFile () {
 <http://spec.edmcouncil.org/fibo/AboutFIBO> a owl:Ontology;
 __HERE__
        grep -r "xml:base" $(find  . -mindepth 1  -maxdepth 1 -type d -print | grep -vE "(etc)|(git)") | grep -v catalog | sed 's/^.*xml:base="/owl:imports </;s/" *$/> ;/' >> ${aboutfile}
-       local echo=$(mktemp ${tmp_dir}/echo.sqxxxx)
+       local echoq=$(mktemp ${tmp_dir}/echo.sqxxxxxx)
        cat >${echo} <<EOF
 CONSTRUCT {?s ?p ?o} WHERE {?s ?p ?o}
 EOF
-       find / -name 'arq.*' -print 
-       arq --data=${aboutfile}  --query=${echo} --results=RDF >AboutFIBO.rdf
+
+       ${fibo_infra_root}/bin/apache-jena-3.0.1/bin/arq --data=${aboutfile}  --query=${echoq} --results=RDF >AboutFIBO.rdf
        )
 }
 
