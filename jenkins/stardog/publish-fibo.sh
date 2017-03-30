@@ -14,7 +14,7 @@ fibo_infra_root=""
 
 spec_root="${WORKSPACE}/target"
 family_root="${spec_root}/fibo"
-product_root="${family_root}/ontology"
+product_root="${family_root}/test"
 branch_root=""
 
 stardog_vcs=""
@@ -87,6 +87,27 @@ function initStardogVars() {
 
   stardog_vcs="${STARDOG_BIN}/stardog vcs"
 }
+
+function createAboutFile () {
+   (
+       cd ${fibo_root}
+       local aboutfile=$(mktemp ${tmp_dir}/ABOUT.XXXXXX)       
+       cat >${aboutfile} <<__HERE__
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+@prefix owl: <http://www.w3.org/2002/07/owl#> 
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>
+<http://spec.edmcouncil.org/fibo/AboutFIBO> a owl:Ontology;
+__HERE__
+       grep -r "xml:base" $(find  . -mindepth 1  -maxdepth 1 -type d -print | grep -vE "(etc)|(git)") | grep -v catalog | sed 's/^.*xml:base="/owl:imports </;s/" *$/> ;/' >> ${aboutfile}
+       local echo=$(mktemp ${tmp_dir}/echo.sqxxxx)
+       cat >${echo} <<EOF
+CONSTRUCT {?s ?p ?o} WHERE {?s ?p ?o}
+EOF
+       arq --data=${aboutfile}  --query=${echo} --results=RDF >AboutFIBO.rdf
+       
+}
+
 
 function copyRdfToTarget() {
 
@@ -171,6 +192,7 @@ function main() {
   #initStardogVars || return $?
 
   copyRdfToTarget || return $?
+  createAboutFile || return $?
   #storeVersionInStardog || return $?
   searchAndReplaceStuffInRdf || return $?
 
