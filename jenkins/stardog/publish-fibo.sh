@@ -104,7 +104,7 @@ __HERE__
        cat >${echoq} <<EOF
 CONSTRUCT {?s ?p ?o} WHERE {?s ?p ?o}
 EOF
-
+       chmod a+x ${fibo_infra_root}/bin/apache-jena-3.0.1/bin/arq
        ${fibo_infra_root}/bin/apache-jena-3.0.1/bin/arq --data=${aboutfile}  --query=${echoq} --results=RDF >AboutFIBO.rdf
        )
 }
