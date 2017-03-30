@@ -104,6 +104,7 @@ __HERE__
        cat >${echo} <<EOF
 CONSTRUCT {?s ?p ?o} WHERE {?s ?p ?o}
 EOF
+       find / -name 'arq.*' -print 
        arq --data=${aboutfile}  --query=${echo} --results=RDF >AboutFIBO.rdf
        )
 }
