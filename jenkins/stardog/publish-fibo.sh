@@ -191,8 +191,8 @@ function main() {
   initJiraVars || return $?
   #initStardogVars || return $?
 
-  copyRdfToTarget || return $?
   createAboutFile || return $?
+  copyRdfToTarget || return $?
   #storeVersionInStardog || return $?
   searchAndReplaceStuffInRdf || return $?
 
