@@ -101,7 +101,7 @@ function createAboutFile () {
 __HERE__
        grep -r "xml:base" $(find  . -mindepth 1  -maxdepth 1 -type d -print | grep -vE "(etc)|(git)") | grep -v catalog | sed 's/^.*xml:base="/owl:imports </;s/" *$/> ;/' >> ${aboutfile}
        local echoq=$(mktemp ${tmp_dir}/echo.sqxxxxxx)
-       cat >${echo} <<EOF
+       cat >${echoq} <<EOF
 CONSTRUCT {?s ?p ?o} WHERE {?s ?p ?o}
 EOF
 
