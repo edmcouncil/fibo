@@ -8,6 +8,9 @@
 # - fibo-infra (in ${WORKSPACE}/fibo-infra directory)
 #
 #
+
+echo "This is the version for INFRA-143"
+
 tmp_dir="/tmp"
 fibo_root=""
 fibo_infra_root=""
