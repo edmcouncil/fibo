@@ -18,8 +18,13 @@ jena_arq=""
 
 spec_root="${WORKSPACE}/target"
 family_root="${spec_root}/fibo"
-product_root="${family_root}/test"
+product_root="${family_root}/ontology"
 branch_root=""
+
+spec_root_url="https://spec.edmcouncil.org"
+family_root_url="${spec_root_url}/fibo"
+product_root_url="${family_root_url}/ontology"
+branch_root_url=""
 
 stardog_vcs=""
 
@@ -87,6 +92,7 @@ function initGitVars() {
   echo "GIT_BRANCH=${GIT_BRANCH}"
 
   branch_root="${product_root}/${GIT_BRANCH}"
+  branch_root_url="${product_root_url}/${GIT_BRANCH}"
 
   rm -rf "${branch_root}" >/dev/null 2>&1
   mkdir "${branch_root}"
@@ -108,20 +114,29 @@ function initStardogVars() {
   stardog_vcs="${STARDOG_BIN}/stardog vcs"
 }
 
+#
+# Create an about file.
+#
+# TODO: Generate this at each directory level in the tree
+#
+# TODO: Should be done for each serialization format
+#
+# TODO: Deal with tag based URLs as well rather than just branch_root_url
+#
 function createAboutFile () {
 
   local aboutfile=$(mktemp ${tmp_dir}/ABOUT.XXXXXX.ttl)
   local echoq=$(mktemp ${tmp_dir}/echo.sqXXXXXX)
 
   (
-    cd ${family_root}
+    cd ${branch_root}
 
     cat > "${aboutfile}" << __HERE__
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
 @prefix owl: <http://www.w3.org/2002/07/owl#> 
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#>
-<http://spec.edmcouncil.org/fibo/AboutFIBO> a owl:Ontology;
+<${branch_root_url}/AboutFIBO> a owl:Ontology;
 __HERE__
 
     grep \
@@ -183,13 +198,13 @@ function searchAndReplaceStuffInRdf() {
 #
 # First replace all http:// urls to https:// if that's not already done
 #
-s@http://spec.edmcouncil.org@https://spec.edmcouncil.org@g
+s@http://spec.edmcouncil.org@${spec_root_url}@g
 #
 # Apparently there are some FND urls that are wrong in the git source:
 #  - https://spec.edmcouncil.org/FND/ should be
 #  - https://spec.edmcouncil.org/fibo/FND/
 #
-s@https://spec.edmcouncil.org/FND/@https://spec.edmcouncil.org/fibo/FND/@g
+s@https://spec.edmcouncil.org/FND/@${family_root_url}/FND/@g
 s@\(https://spec.edmcouncil.org/fibo/\)@\1ontology/${GIT_BRANCH}/@g
 __HERE__
 
@@ -208,9 +223,11 @@ function convertMarkdownToHtml() {
   echo "Convert Markdown to HTML"
 
   (
-    set -x
-    cd "${branch_root}"
-    find . -type f -name '*.md' -exec pandoc --standalone --from markdown --to html -o {}.html {} \;
+    cd ${branch_root}
+    for markdownFile in **/*.md ; do
+      echo "Convert ${markdownFile} to html"
+      pandoc --standalone --from markdown --to html -o "${markdownFile/.md/.html}" "${markdownFile}"
+    done
   )
 
   return 0
@@ -234,8 +251,6 @@ function convertRdfXmlTo() {
   local rc=0
   local logfile=$(mktemp ${tmp_dir}/convertRdfXmlTo.XXXXXX)
 
-  echo "Converting ${rdfFile} to \"${targetFormat}\""
-
   java \
     -jar "${rdftoolkit_jar}" \
     --source "${rdfFile}" \
@@ -244,11 +259,10 @@ function convertRdfXmlTo() {
     --target-format ${targetFormat} \
     > "${logfile}" 2>&1
   rc=$?
-  cat "${logfile}"
-  echo "rc=${rc}"
 
   if grep -q "ERROR" "${logfile}"; then
-    echo "Found errors during conversion of ${rdfFile} to \"${targetFormat}\""
+    echo "Found errors during conversion of ${rdfFile} to \"${targetFormat}\":"
+    cat "${logfile}"
     rm "${logfile}"
     return 1
   fi
@@ -287,12 +301,13 @@ function main() {
   initJiraVars || return $?
   #initStardogVars || return $?
 
-  createAboutFile || return $?
   copyRdfToTarget || return $?
   #storeVersionInStardog || return $?
   searchAndReplaceStuffInRdf || return $?
 
   convertRdfXmlToAllFormats || return $?
+
+  createAboutFile || return $?
 
   convertMarkdownToHtml || return $?
 }
