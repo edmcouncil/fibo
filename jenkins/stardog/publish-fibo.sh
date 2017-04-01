@@ -188,18 +188,24 @@ function convertRdfXmlTo() {
   local targetFormat="$2"
   local rdfFileNoExtension="${rdfFile/.rdf/}"
   local targetFile="${rdfFileNoExtension}"
+  local rc=0
 
   echo "Converting ${rdfFile} to ${targetFormat}"
 
-  java -cp "${rdftoolkit_jar}" org.edmcouncil.rdf_toolkit.SesameRdfFormatter \
-    --source "${rdfFile}" \
-    --source-format rdf-xml \
-    --target "${targetFile}" \
-    --target-format "${targetFormat}"
-  rc=$?
-  echo "rc=${rc}"
+  (
+    set -x
+    java \
+      -cp "${rdftoolkit_jar}" \
+      "org.edmcouncil.rdf_toolkit.SesameRdfFormatter" \
+      --source "${rdfFile}" \
+      --source-format rdf-xml \
+      --target "${targetFile}" \
+      --target-format "${targetFormat}"
+    rc=$?
+    echo "rc=${rc}"
+  )
 
-  return 0
+  return ${rc}
 }
 
 #
@@ -216,10 +222,12 @@ function convertRdfXmlToAllFormats() {
 
     for rdfFile in **/*.rdf ; do
       for format in json-ld, n-triples, rdf-json, turtle ; do
-        convertRdfXmlTo "${rdfFile}" "${format}"
-      done
-    done
+        convertRdfXmlTo "${rdfFile}" "${format}" || return $?
+      done || return $?
+    done || return $?
   )
+
+  return $?
 }
 
 function main() {
