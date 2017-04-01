@@ -223,7 +223,7 @@ function convertMarkdownToHtml() {
   echo "Convert Markdown to HTML"
 
   (
-    cd ${branch_root}
+    cd "${branch_root}"
     for markdownFile in **/*.md ; do
       echo "Convert ${markdownFile} to html"
       pandoc --standalone --from markdown --to html -o "${markdownFile/.md/.html}" "${markdownFile}"
@@ -282,7 +282,7 @@ function convertRdfXmlTo() {
 function convertRdfXmlToAllFormats() {
 
   (
-    cd fibo
+    cd "${branch_root}"
 
     for rdfFile in **/*.rdf ; do
       for format in json-ld turtle ; do
