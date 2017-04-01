@@ -191,7 +191,9 @@ function convertRdfXmlTo() {
       --target-format "${targetFormat}"
     rc=$?
     echo "rc=${rc}"
-  )
+  ) || rc2=$?
+  echo "rc=${rc} 2 rc2=$rc2"
+
 
   return ${rc}
 }
