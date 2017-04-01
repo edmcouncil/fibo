@@ -176,7 +176,7 @@ function downloadRdfToolkitJar() {
 
   curl \
     --verbose \
-    --output "${rdftoolkit_jar}"
+    --output "${rdftoolkit_jar}" \
     "${jarUrl}"
 
   test -f "${rdftoolkit_jar}"
