@@ -8,13 +8,16 @@
 # - fibo-infra (in ${WORKSPACE}/fibo-infra directory)
 #
 #
+
+echo "This is the version for INFRA-143"
+
 tmp_dir="/tmp"
 fibo_root=""
 fibo_infra_root=""
 
 spec_root="${WORKSPACE}/target"
 family_root="${spec_root}/fibo"
-product_root="${family_root}/ontology"
+product_root="${family_root}/test"
 branch_root=""
 
 stardog_vcs=""
@@ -94,6 +97,29 @@ function initStardogVars() {
 
   stardog_vcs="${STARDOG_BIN}/stardog vcs"
 }
+
+function createAboutFile () {
+   (
+       cd ${fibo_root}
+
+       local aboutfile=$(mktemp ${tmp_dir}/ABOUT.XXXXXX.ttl)
+       cat >${aboutfile} <<__HERE__
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+@prefix owl: <http://www.w3.org/2002/07/owl#> 
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>
+<http://spec.edmcouncil.org/fibo/AboutFIBO> a owl:Ontology;
+__HERE__
+       grep -r "xml:base" $(find  . -mindepth 1  -maxdepth 1 -type d -print | grep -vE "(etc)|(git)") | grep -v catalog | sed 's/^.*xml:base="/owl:imports </;s/" *$/> ;/' >> ${aboutfile}
+       local echoq=$(mktemp ${tmp_dir}/echo.sqXXXXXX)
+       cat >${echoq} <<EOF
+CONSTRUCT {?s ?p ?o} WHERE {?s ?p ?o}
+EOF
+       chmod a+x ${fibo_infra_root}/bin/apache-jena-3.0.1/bin/arq
+       ${fibo_infra_root}/bin/apache-jena-3.0.1/bin/arq --data=${aboutfile}  --query=${echoq} --results=RDF >AboutFIBO.rdf
+       )
+}
+
 
 function copyRdfToTarget() {
 
@@ -240,6 +266,7 @@ function main() {
   initJiraVars || return $?
   #initStardogVars || return $?
 
+  createAboutFile || return $?
   copyRdfToTarget || return $?
   #storeVersionInStardog || return $?
   searchAndReplaceStuffInRdf || return $?
