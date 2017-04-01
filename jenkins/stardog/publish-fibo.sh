@@ -19,6 +19,8 @@ branch_root=""
 
 stardog_vcs=""
 
+rdftoolkit_jar="${WORKSPACE}/rdf-toolkit.jar"
+
 shopt -s globstar
 
 trap "rm -rf ${tmp_dir} >/dev/null 2>&1" EXIT
@@ -51,6 +53,11 @@ function initWorkspaceVars() {
 
   rm -rf "${product_root}" >/dev/null 2>&1
   mkdir -p "${product_root}"
+
+  if [ ! -f "${rdftoolkit_jar}" ] ; then
+    echo "ERROR: Put the rdf-toolkit.jar in the workspace as a pre-build step"
+    return 1
+  fi
 
   return 0
 }
@@ -94,7 +101,7 @@ function copyRdfToTarget() {
 
   (
     cd ${fibo_root}
-    cp **/*.{rdf,ttl,md,jpg,png} --parents ${branch_root}/
+    cp **/*.{rdf,ttl,md,jpg,png,docx,pdf,sq} --parents ${branch_root}/
   )
 
   (
@@ -109,6 +116,14 @@ function copyRdfToTarget() {
       mv ${domain} ${upperDomain}
     done
   )
+
+  #
+  # Clean up a few things
+  #
+  rm ${branch_root}/etc/cm >/dev/null 2>&1
+  rm ${branch_root}/etc/source   >/dev/null 2>&1
+  rm ${branch_root}/etc/infra >/dev/null 2>&1
+  rm -vrf ${branch_root}/**/archive >/dev/null 2>&1
 }
 
 function searchAndReplaceStuffInRdf() {
@@ -163,6 +178,61 @@ function storeVersionInStardog() {
   ${stardog_vcs} tag --create $JIRA_ISSUE --version $SVERSION ${GIT_BRANCH}
 }
 
+function convertRdfXmlTo() {
+
+  local rdfFile="$1"
+  local targetFormat="$2"
+  local rdfFileNoExtension="${rdfFile/.rdf/}"
+  local targetFile="${rdfFileNoExtension}"
+  local rc=0
+  local logfile=$(mktemp ${tmp_dir}/convertRdfXmlTo.XXXXXX)
+
+  echo "Converting ${rdfFile} to \"${targetFormat}\""
+
+  java \
+    -jar "${rdftoolkit_jar}" \
+    --source "${rdfFile}" \
+    --source-format rdf-xml \
+    --target "${targetFile}" \
+    --target-format ${targetFormat} \
+    > "${logfile}" 2>&1
+  rc=$?
+  cat "${logfile}"
+  echo "rc=${rc}"
+
+  if grep -q "ERROR" "${logfile}"; then
+    echo "Found errors during conversion of ${rdfFile} to \"${targetFormat}\""
+    rm "${logfile}"
+    return 1
+  fi
+  rm "${logfile}"
+  echo "Conversion of ${rdfFile} to \"${targetFormat}\" was successful"
+
+  return ${rc}
+}
+
+#
+# Now use the rdf-toolkit serializer to create copies of all .rdf files in all the supported RDF formats
+#
+# Using the Sesame serializer, here' the documentation:
+#
+# https://github.com/edmcouncil/rdf-toolkit/blob/master/docs/SesameRdfFormatter.md
+#
+function convertRdfXmlToAllFormats() {
+
+  (
+    cd fibo
+
+    for rdfFile in **/*.rdf ; do
+      for format in json-ld turtle ; do
+        convertRdfXmlTo "${rdfFile}" "${format}" || return $?
+      done || return $?
+    done || return $?
+  )
+
+  return $?
+}
+
 function main() {
 
   initWorkspaceVars || return $?
@@ -173,6 +243,8 @@ function main() {
   copyRdfToTarget || return $?
   #storeVersionInStardog || return $?
   searchAndReplaceStuffInRdf || return $?
+
+  convertRdfXmlToAllFormats || return $?
 
   convertMarkdownToHtml || return $?
 }
