@@ -14,6 +14,7 @@ echo "This is the version for INFRA-143"
 tmp_dir="/tmp"
 fibo_root=""
 fibo_infra_root=""
+jena_arq=""
 
 spec_root="${WORKSPACE}/target"
 family_root="${spec_root}/fibo"
@@ -62,6 +63,15 @@ function initWorkspaceVars() {
     return 1
   fi
 
+  jena_arq="${fibo_infra_root}/bin/apache-jena-3.0.1/bin/arq"
+
+  if [ ! -f "${jena_arq}" ] ; then
+    echo "ERROR: ${jena_arq} not found"
+    return 1
+  fi
+
+  chmod a+x "${jena_arq}"
+
   return 0
 }
 
@@ -99,25 +109,37 @@ function initStardogVars() {
 }
 
 function createAboutFile () {
-   (
-       cd ${fibo_root}
 
-       local aboutfile=$(mktemp ${tmp_dir}/ABOUT.XXXXXX.ttl)
-       cat >${aboutfile} <<__HERE__
+  local aboutfile=$(mktemp ${tmp_dir}/ABOUT.XXXXXX.ttl)
+  local echoq=$(mktemp ${tmp_dir}/echo.sqXXXXXX)
+
+  (
+    cd ${family_root}
+
+    cat > "${aboutfile}" << __HERE__
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
 @prefix owl: <http://www.w3.org/2002/07/owl#> 
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#>
 <http://spec.edmcouncil.org/fibo/AboutFIBO> a owl:Ontology;
 __HERE__
-       grep -r "xml:base" $(find  . -mindepth 1  -maxdepth 1 -type d -print | grep -vE "(etc)|(git)") | grep -v catalog | sed 's/^.*xml:base="/owl:imports </;s/" *$/> ;/' >> ${aboutfile}
-       local echoq=$(mktemp ${tmp_dir}/echo.sqXXXXXX)
-       cat >${echoq} <<EOF
+
+    grep \
+      -r "xml:base" \
+      $( \
+        find . -mindepth 1  -maxdepth 1 -type d -print | \
+        grep -vE "(etc)|(git)"
+      ) | \
+      grep -v catalog | \
+      sed 's/^.*xml:base="/owl:imports </;s/" *$/> ;/' \
+      >> "${aboutfile}"
+
+    cat > "${echoq}" << __HERE__
 CONSTRUCT {?s ?p ?o} WHERE {?s ?p ?o}
-EOF
-       chmod a+x ${fibo_infra_root}/bin/apache-jena-3.0.1/bin/arq
-       ${fibo_infra_root}/bin/apache-jena-3.0.1/bin/arq --data=${aboutfile}  --query=${echoq} --results=RDF >AboutFIBO.rdf
-       )
+__HERE__
+
+    "{jena_arq}" --data="${aboutfile}" --query="${echoq}" --results=RDF > AboutFIBO.rdf
+  )
 }
 
 
