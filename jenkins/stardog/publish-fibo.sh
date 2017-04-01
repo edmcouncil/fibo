@@ -138,10 +138,9 @@ __HERE__
 CONSTRUCT {?s ?p ?o} WHERE {?s ?p ?o}
 __HERE__
 
-    "{jena_arq}" --data="${aboutfile}" --query="${echoq}" --results=RDF > AboutFIBO.rdf
+    "${jena_arq}" --data="${aboutfile}" --query="${echoq}" --results=RDF > AboutFIBO.rdf
   )
 }
-
 
 function copyRdfToTarget() {
 
