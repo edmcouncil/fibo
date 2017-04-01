@@ -180,20 +180,14 @@ function convertRdfXmlTo() {
 
   echo "Converting ${rdfFile} to ${targetFormat}"
 
-  (
-    set -x
-    java \
-      -cp "${rdftoolkit_jar}" \
-      "org.edmcouncil.rdf_toolkit.SesameRdfFormatter" \
-      --source "${rdfFile}" \
-      --source-format rdf-xml \
-      --target "${targetFile}" \
-      --target-format "${targetFormat}"
-    rc=$?
-    echo "rc=${rc}"
-  ) || rc2=$?
-  echo "rc=${rc} 2 rc2=$rc2"
-
+  java \
+    -jar "${rdftoolkit_jar}" \
+    --source "${rdfFile}" \
+    --source-format rdf-xml \
+    --target "${targetFile}" \
+    --target-format "${targetFormat}"
+  rc=$?
+  echo "rc=${rc}"
 
   return ${rc}
 }
