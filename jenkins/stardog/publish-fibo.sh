@@ -251,6 +251,19 @@ function convertRdfXmlTo() {
   local rc=0
   local logfile=$(mktemp ${tmp_dir}/convertRdfXmlTo.XXXXXX)
 
+  case ${targetFormat} in
+    json-ld)
+      targetFile="${targetFile}.jsonld"
+      ;;
+    turtle)
+      targetFile="${targetFile}.ttl"
+      ;;
+    *)
+      echo "ERROR: Unsupported format ${targetFormat}"
+      return 1
+      ;;
+  esac
+
   java \
     -jar "${rdftoolkit_jar}" \
     --source "${rdfFile}" \
@@ -286,10 +299,12 @@ function convertRdfXmlToAllFormats() {
 
     for rdfFile in **/*.rdf ; do
       for format in json-ld turtle ; do
-        convertRdfXmlTo "${rdfFile}" "${format}" || return $?
+        convertRdfXmlTo "${rdfFile}" "${format}" & # || return $?
       done || return $?
     done || return $?
   )
+
+  wait
 
   return $?
 }
