@@ -299,12 +299,10 @@ function convertRdfXmlToAllFormats() {
 
     for rdfFile in **/*.rdf ; do
       for format in json-ld turtle ; do
-        convertRdfXmlTo "${rdfFile}" "${format}" & # || return $?
+        convertRdfXmlTo "${rdfFile}" "${format}" || return $?
       done || return $?
     done || return $?
   )
-
-  wait
 
   return $?
 }
