@@ -19,6 +19,8 @@ branch_root=""
 
 stardog_vcs=""
 
+rdftoolkit_jar="${WORKSPACE}/rdf-toolkit.jar"
+
 shopt -s globstar
 
 trap "rm -rf ${tmp_dir} >/dev/null 2>&1" EXIT
@@ -163,16 +165,46 @@ function storeVersionInStardog() {
   ${stardog_vcs} tag --create $JIRA_ISSUE --version $SVERSION ${GIT_BRANCH}
 }
 
+#
+# Download the latest and greatest rdf-toolkit.jar file and save it under the name "${rdftoolkit_jar}"
+#
+function downloadRdfToolkitJar() {
+
+  local jarUrl="https://jenkins.edmcouncil.org/view/rdf-toolkit/job/rdf-toolkit-build/lastSuccessfulBuild/artifact/target/scala-2.11/rdf-toolkit.jar"
+
+  rm -f "${rdftoolkit_jar}" >/dev/null 2>&1
+
+  curl \
+    --verbose \
+    --output "${rdftoolkit_jar}"
+    "${jarUrl}"
+
+  test -f "${rdftoolkit_jar}"
+}
+
+#
+# Now use the rdf-toolkit serializer to create copies of all .rdf files in all the supported RDF formats
+#
+function convertRdfToAllFormats() {
+
+  for rdfFile in fibo/**/*.rdf ; do
+    echo "Converting ${rdfFile} to other formats"
+  done
+}
+
 function main() {
 
   initWorkspaceVars || return $?
   initGitVars || return $?
   initJiraVars || return $?
   #initStardogVars || return $?
+  downloadRdfToolkitJar || return $?
 
   copyRdfToTarget || return $?
   #storeVersionInStardog || return $?
   searchAndReplaceStuffInRdf || return $?
+
+  convertRdfToAllFormats || return $?
 
   convertMarkdownToHtml || return $?
 }
