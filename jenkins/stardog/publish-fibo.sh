@@ -182,14 +182,44 @@ function downloadRdfToolkitJar() {
   test -f "${rdftoolkit_jar}"
 }
 
+function convertRdfXmlTo() {
+
+  local rdfFile="$1"
+  local targetFormat="$2"
+  local rdfFileNoExtension="${rdfFile/.rdf/}"
+  local targetFile="${rdfFileNoExtension}"
+
+  echo "Converting ${rdfFile} to ${targetFormat}"
+
+  java -cp "${rdftoolkit_jar}" org.edmcouncil.rdf_toolkit.SesameRdfFormatter \
+    --source "${rdfFile}" \
+    --source-format rdf-xml \
+    --target "${targetFile}" \
+    --target-format "${targetFormat}"
+  rc=$?
+  echo "rc=${rc}"
+
+  return 0
+}
+
 #
 # Now use the rdf-toolkit serializer to create copies of all .rdf files in all the supported RDF formats
 #
-function convertRdfToAllFormats() {
+# Using the Sesame serializer, here' the documentation:
+#
+# https://github.com/edmcouncil/rdf-toolkit/blob/master/docs/SesameRdfFormatter.md
+#
+function convertRdfXmlToAllFormats() {
 
-  for rdfFile in fibo/**/*.rdf ; do
-    echo "Converting ${rdfFile} to other formats"
-  done
+  (
+    cd fibo
+
+    for rdfFile in **/*.rdf ; do
+      for format in json-ld, n-triples, rdf-json, turtle ; do
+        convertRdfXmlTo "${rdfFile}" "${format}"
+      done
+    done
+  )
 }
 
 function main() {
@@ -204,7 +234,7 @@ function main() {
   #storeVersionInStardog || return $?
   searchAndReplaceStuffInRdf || return $?
 
-  convertRdfToAllFormats || return $?
+  convertRdfXmlToAllFormats || return $?
 
   convertMarkdownToHtml || return $?
 }
