@@ -205,7 +205,7 @@ function convertRdfXmlToAllFormats() {
     cd fibo
 
     for rdfFile in **/*.rdf ; do
-      for format in json-ld, n-triples, rdf-json, turtle ; do
+      for format in json-ld n-triples rdf-json turtle ; do
         convertRdfXmlTo "${rdfFile}" "${format}" || return $?
       done || return $?
     done || return $?
