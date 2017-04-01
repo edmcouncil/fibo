@@ -54,6 +54,11 @@ function initWorkspaceVars() {
   rm -rf "${product_root}" >/dev/null 2>&1
   mkdir -p "${product_root}"
 
+  if [ ! -f "${rdftoolkit_jar}" ] ; then
+    echo "ERROR: Put the rdf-toolkit.jar in the workspace as a pre-build step"
+    return 1
+  fi
+
   return 0
 }
 
@@ -165,23 +170,6 @@ function storeVersionInStardog() {
   ${stardog_vcs} tag --create $JIRA_ISSUE --version $SVERSION ${GIT_BRANCH}
 }
 
-#
-# Download the latest and greatest rdf-toolkit.jar file and save it under the name "${rdftoolkit_jar}"
-#
-function downloadRdfToolkitJar() {
-
-  local jarUrl="https://jenkins.edmcouncil.org/view/rdf-toolkit/job/rdf-toolkit-build/lastSuccessfulBuild/artifact/target/scala-2.11/rdf-toolkit.jar"
-
-  rm -f "${rdftoolkit_jar}" >/dev/null 2>&1
-
-  curl \
-    --verbose \
-    --output "${rdftoolkit_jar}" \
-    "${jarUrl}"
-
-  test -f "${rdftoolkit_jar}"
-}
-
 function convertRdfXmlTo() {
 
   local rdfFile="$1"
@@ -236,7 +224,6 @@ function main() {
   initGitVars || return $?
   initJiraVars || return $?
   #initStardogVars || return $?
-  downloadRdfToolkitJar || return $?
 
   copyRdfToTarget || return $?
   #storeVersionInStardog || return $?
