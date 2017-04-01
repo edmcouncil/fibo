@@ -177,17 +177,26 @@ function convertRdfXmlTo() {
   local rdfFileNoExtension="${rdfFile/.rdf/}"
   local targetFile="${rdfFileNoExtension}"
   local rc=0
+  local logfile=$(mktemp ${tmp_dir}/convertRdfXmlTo.XXXXXX)
 
-  echo "Converting ${rdfFile} to ${targetFormat}"
+  echo "Converting ${rdfFile} to \"${targetFormat}\""
 
   java \
     -jar "${rdftoolkit_jar}" \
     --source "${rdfFile}" \
     --source-format rdf-xml \
     --target "${targetFile}" \
-    --target-format "${targetFormat}"
+    --target-format ${targetFormat} \
+    > "${logfile}" 2>&1
   rc=$?
+  cat "${logfile}"
   echo "rc=${rc}"
+
+  if grep -q "ERROR" "${logfile}"; then
+    rm "${logfile}"
+    return 1
+  fi
+  rm "${logfile}"
 
   return ${rc}
 }
