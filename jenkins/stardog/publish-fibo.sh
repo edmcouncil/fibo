@@ -20,11 +20,13 @@ spec_root="${WORKSPACE}/target"
 family_root="${spec_root}/fibo"
 product_root="${family_root}/ontology"
 branch_root=""
+tag_root=""
 
 spec_root_url="https://spec.edmcouncil.org"
 family_root_url="${spec_root_url}/fibo"
 product_root_url="${family_root_url}/ontology"
 branch_root_url=""
+tag_root_url=""
 
 stardog_vcs=""
 
@@ -89,14 +91,32 @@ function initGitVars() {
   export GIT_AUTHOR=$(cd ${fibo_root} ; git show -s --pretty=%an)
   echo "GIT_AUTHOR=${GIT_AUTHOR}"
 
-  export GIT_BRANCH=$(cd ${fibo_root} ; git rev-parse --abbrev-ref HEAD)
+  #
+  # Get the git branch name to be used as directory names and URL fragments and make it
+  # all lower case
+  #
+  export GIT_BRANCH=$(cd ${fibo_root} ; git rev-parse --abbrev-ref HEAD | tr '[:upper:]' '[:lower:]')
   echo "GIT_BRANCH=${GIT_BRANCH}"
 
   branch_root="${product_root}/${GIT_BRANCH}"
   branch_root_url="${product_root_url}/${GIT_BRANCH}"
 
   rm -rf "${branch_root}" >/dev/null 2>&1
-  mkdir "${branch_root}"
+  mkdir -p "${branch_root}" >/dev/null 2>&1
+
+  #
+  # If the current commit has a tag associated to it then the Git Tag Message Plugin in Jenkins will
+  # initialize the GIT_TAG_NAME variable with that tag. Otherwise set it to "latest"
+  #
+  # See https://wiki.jenkins-ci.org/display/JENKINS/Git+Tag+Message+Plugin
+  #
+  export GIT_TAG_NAME="${GIT_TAG_NAME:-latest}"
+  echo "GIT_TAG_NAME=${GIT_TAG_NAME}"
+
+  tag_root="${branch_root}/${GIT_TAG_NAME}"
+  tag_root_url="${branch_root_url}/${GIT_TAG_NAME}"
+
+  mkdir -p "${tag_root}" >/dev/null 2>&1
 
   return 0
 }
@@ -122,22 +142,20 @@ function initStardogVars() {
 #
 # TODO: Should be done for each serialization format
 #
-# TODO: Deal with tag based URLs as well rather than just branch_root_url
-#
 function createAboutFile () {
 
   local aboutfile=$(mktemp ${tmp_dir}/ABOUT.XXXXXX.ttl)
   local echoq=$(mktemp ${tmp_dir}/echo.sqXXXXXX)
 
   (
-    cd ${branch_root}
+    cd ${tag_root}
 
     cat > "${aboutfile}" << __HERE__
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
 @prefix owl: <http://www.w3.org/2002/07/owl#> 
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#>
-<${branch_root_url}/AboutFIBO> a owl:Ontology;
+<${tag_root_url}/AboutFIBO> a owl:Ontology;
 __HERE__
 
     grep \
@@ -164,11 +182,11 @@ function copyRdfToTarget() {
 
   (
     cd ${fibo_root}
-    cp **/*.{rdf,ttl,md,jpg,png,docx,pdf,sq} --parents ${branch_root}/
+    cp **/*.{rdf,ttl,md,jpg,png,docx,pdf,sq} --parents ${tag_root}/
   )
 
   (
-    cd ${branch_root}
+    cd ${tag_root}
     for domain in * ; do
       [ -d ${domain} ] || continue
       [ "${domain}" == "etc" ] && continue
@@ -183,10 +201,10 @@ function copyRdfToTarget() {
   #
   # Clean up a few things
   #
-  rm ${branch_root}/etc/cm >/dev/null 2>&1
-  rm ${branch_root}/etc/source   >/dev/null 2>&1
-  rm ${branch_root}/etc/infra >/dev/null 2>&1
-  rm -vrf ${branch_root}/**/archive >/dev/null 2>&1
+  rm ${tag_root}/etc/cm >/dev/null 2>&1
+  rm ${tag_root}/etc/source   >/dev/null 2>&1
+  rm ${tag_root}/etc/infra >/dev/null 2>&1
+  rm -vrf ${tag_root}/**/archive >/dev/null 2>&1
 }
 
 function searchAndReplaceStuffInRdf() {
@@ -213,7 +231,7 @@ __HERE__
 
   (
     set -x
-    find ${branch_root}/ -type f \( -name '*.rdf' -o -name '*.ttl' -o -name '*.md' \) -exec sed -i -f ${sedfile} {} \;
+    find ${tag_root}/ -type f \( -name '*.rdf' -o -name '*.ttl' -o -name '*.md' \) -exec sed -i -f ${sedfile} {} \;
   )
 
   return 0
@@ -224,7 +242,7 @@ function convertMarkdownToHtml() {
   echo "Convert Markdown to HTML"
 
   (
-    cd "${branch_root}"
+    cd "${tag_root}"
     for markdownFile in **/*.md ; do
       echo "Convert ${markdownFile} to html"
       pandoc --standalone --from markdown --to html -o "${markdownFile/.md/.html}" "${markdownFile}"
@@ -234,10 +252,13 @@ function convertMarkdownToHtml() {
   return 0
 }
 
+#
+# TODO: Omar can you look at this? Do we still need this?
+#
 function storeVersionInStardog() {
 
   echo "Commit to Stardog..."
-  ${stardog_vcs} commit --add $(find ${branch_root} -name "*.rdf") -m "$GIT_COMMENT" -u obkhan -p stardogadmin ${GIT_BRANCH}
+  ${stardog_vcs} commit --add $(find ${tag_root} -name "*.rdf") -m "$GIT_COMMENT" -u obkhan -p stardogadmin ${GIT_BRANCH}
   SVERSION=$(${stardog_vcs} list --committer obkhan --limit 1 ${GIT_BRANCH} | sed -n -e 's/^.*Version:   //p')
   ${stardog_vcs} tag --drop $JIRA_ISSUE ${GIT_BRANCH} || true
   ${stardog_vcs} tag --create $JIRA_ISSUE --version $SVERSION ${GIT_BRANCH}
@@ -296,7 +317,7 @@ function convertRdfXmlTo() {
 function convertRdfXmlToAllFormats() {
 
   (
-    cd "${branch_root}"
+    cd "${tag_root}"
 
     for rdfFile in **/*.rdf ; do
       for format in json-ld turtle ; do
@@ -306,6 +327,15 @@ function convertRdfXmlToAllFormats() {
   )
 
   return $?
+}
+
+#
+# We need to put the output of this job in a directory next to all other branches and never delete any of the
+# other formerly published branches.
+#
+function zipWholeBranch() {
+
+
 }
 
 function main() {
@@ -324,6 +354,8 @@ function main() {
   createAboutFile || return $?
 
   convertMarkdownToHtml || return $?
+
+  zipWholeBranch
 }
 
 main $@
