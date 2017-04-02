@@ -242,6 +242,10 @@ s@\(rdf:about="https://spec.edmcouncil.org/fibo/ontology/\)${GIT_BRANCH}/${GIT_T
 # And all ENTITY statements
 #
 s@\(<!ENTITY.*https://spec.edmcouncil.org/fibo/ontology/\)${GIT_BRANCH}/${GIT_TAG_NAME}/@\1@g
+#
+# And all xmlns:fibo* lines
+#
+s@\(xmlns:fibo.*https://spec.edmcouncil.org/fibo/ontology/\)${GIT_BRANCH}/${GIT_TAG_NAME}/@\1@g
 
 __HERE__
 
