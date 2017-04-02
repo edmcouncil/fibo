@@ -96,6 +96,10 @@ function initGitVars() {
   # all lower case
   #
   export GIT_BRANCH=$(cd ${fibo_root} ; git rev-parse --abbrev-ref HEAD | tr '[:upper:]' '[:lower:]')
+  #
+  # Replace all slashes in a branch name with dashes so that we don't mess up the URLs for the ontologies
+  #
+  GIT_BRANCH="${GIT_BRANCH//\//-}"
   echo "GIT_BRANCH=${GIT_BRANCH}"
 
   branch_root="${product_root}/${GIT_BRANCH}"
@@ -182,7 +186,7 @@ function copyRdfToTarget() {
 
   (
     cd ${fibo_root}
-    cp **/*.{rdf,ttl,md,jpg,png,docx,pdf,sq} --parents ${tag_root}/
+    cp -v **/*.{rdf,ttl,md,jpg,png,docx,pdf,sq} --parents ${tag_root}/
   )
 
   (
@@ -194,16 +198,16 @@ function copyRdfToTarget() {
       upperDomain=$(echo ${domain} | tr '[:lower:]' '[:upper:]')
       [ "${domain}" == "${upperDomain}" ] && continue
       echo Domain is ${domain} should be ${upperDomain}
-      mv ${domain} ${upperDomain}
+      mv -v ${domain} ${upperDomain}
     done
   )
 
   #
   # Clean up a few things
   #
-  rm ${tag_root}/etc/cm >/dev/null 2>&1
-  rm ${tag_root}/etc/source   >/dev/null 2>&1
-  rm ${tag_root}/etc/infra >/dev/null 2>&1
+  rm -v ${tag_root}/etc/cm >/dev/null 2>&1
+  rm -v ${tag_root}/etc/source   >/dev/null 2>&1
+  rm -v ${tag_root}/etc/infra >/dev/null 2>&1
   rm -vrf ${tag_root}/**/archive >/dev/null 2>&1
 }
 
@@ -224,7 +228,7 @@ s@http://spec.edmcouncil.org@${spec_root_url}@g
 #  - https://spec.edmcouncil.org/fibo/FND/
 #
 s@https://spec.edmcouncil.org/FND/@${family_root_url}/FND/@g
-s@\(https://spec.edmcouncil.org/fibo/\)@\1ontology/${GIT_BRANCH}/@g
+s@\(https://spec.edmcouncil.org/fibo/\)@\1ontology/${GIT_BRANCH}/${GIT_TAG_NAME}/@g
 __HERE__
 
   cat "${sedfile}"
