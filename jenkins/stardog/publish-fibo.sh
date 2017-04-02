@@ -186,7 +186,7 @@ function copyRdfToTarget() {
 
   (
     cd ${fibo_root}
-    cp -v **/*.{rdf,ttl,md,jpg,png,docx,pdf,sq} --parents ${tag_root}/
+    cp **/*.{rdf,ttl,md,jpg,png,docx,pdf,sq} --parents ${tag_root}/
   )
 
   (
@@ -198,7 +198,7 @@ function copyRdfToTarget() {
       upperDomain=$(echo ${domain} | tr '[:lower:]' '[:upper:]')
       [ "${domain}" == "${upperDomain}" ] && continue
       echo Domain is ${domain} should be ${upperDomain}
-      mv -v ${domain} ${upperDomain}
+      mv ${domain} ${upperDomain}
     done
   )
 
@@ -341,7 +341,11 @@ function zipWholeTagDir() {
 
   local tarGzFile="${branch_root}/${GIT_TAG_NAME}.tar.gz"
 
-  tar -cvzf "${tarGzFile}" "${tag_root}"
+  (
+    cd ${spec_root}
+    set -x
+    tar -cvzf "${tarGzFile}" "${tag_root/${spec_root}/.}"
+  )
 
   echo "Created ${tarGzFile}:"
   ls -al "${tarGzFile}" || return $?
