@@ -229,6 +229,19 @@ s@http://spec.edmcouncil.org@${spec_root_url}@g
 #
 s@https://spec.edmcouncil.org/FND/@${family_root_url}/FND/@g
 s@\(https://spec.edmcouncil.org/fibo/\)@\1ontology/${GIT_BRANCH}/${GIT_TAG_NAME}/@g
+#
+# Now remove the branch and tag name from all the xml:base statements
+#
+s@\(xml:base="https://spec.edmcouncil.org/fibo/ontology/\)${GIT_BRANCH}/${GIT_TAG_NAME}/@\1@g
+#
+# And from all the rdf:about statements
+#
+s@\(rdf:about="https://spec.edmcouncil.org/fibo/ontology/\)${GIT_BRANCH}/${GIT_TAG_NAME}/@\1@g
+#
+# And all ENTITY statements
+#
+s@\(<!ENTITY .* https://spec.edmcouncil.org/fibo/ontology/\)${GIT_BRANCH}/${GIT_TAG_NAME}/@\1@g
+
 __HERE__
 
   cat "${sedfile}"
