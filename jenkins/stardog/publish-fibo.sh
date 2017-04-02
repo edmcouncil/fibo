@@ -11,7 +11,7 @@
 
 echo "This is the version for INFRA-143"
 
-tmp_dir="/tmp"
+tmp_dir="${WORKSPACE}/tmp"
 fibo_root=""
 fibo_infra_root=""
 jena_arq=""
@@ -41,7 +41,8 @@ trap "rm -rf ${tmp_dir} >/dev/null 2>&1" EXIT
 
 function initWorkspaceVars() {
 
-  tmp_dir=$(mktemp -d "${tmp_dir:-/tmp}/$(basename 0).XXXXXXXXXXXX")
+  #tmp_dir=$(mktemp -d "${tmp_dir:-/tmp}/$(basename 0).XXXXXXXXXXXX")
+  mkdir -p "${tmp_dir}" >/dev/null 2>&1
   echo tmp_dir=${tmp_dir}
 
   fibo_root="${WORKSPACE}/fibo"
