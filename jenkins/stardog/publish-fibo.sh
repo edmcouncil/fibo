@@ -380,6 +380,17 @@ function zipWholeTagDir() {
   return 0
 }
 
+#
+# Copy the static files of the site
+#
+function copySiteFiles() {
+
+  (
+    cd ${fibo_infra_root}/site
+    cp -vr * "${spec_root}/"
+  )
+}
+
 function main() {
 
   initWorkspaceVars || return $?
@@ -394,10 +405,11 @@ function main() {
 
   convertRdfXmlToAllFormats || return $?
 
-
   convertMarkdownToHtml || return $?
 
-  zipWholeTagDir
+  zipWholeTagDir || return $?
+
+  copySiteFiles || return $?
 }
 
 main $@
