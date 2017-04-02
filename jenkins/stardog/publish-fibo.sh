@@ -127,8 +127,8 @@ function initGitVars() {
 
 function initJiraVars() {
 
-  export JIRA_ISSUE=$(echo $GIT_COMMENT | rev | grep -oP '\d+-[A-Z0-9]+(?!-?[a-zA-Z]{1,10})' | rev)
-  echo JIRA_ISSUE=${JIRA_ISSUE}
+  export JIRA_ISSUE="$(echo $GIT_COMMENT | rev | grep -oP '\d+-[A-Z0-9]+(?!-?[a-zA-Z]{1,10})' | rev)"
+  echo JIRA_ISSUE="${JIRA_ISSUE}"
 }
 
 function initStardogVars() {
@@ -140,7 +140,8 @@ function initStardogVars() {
 }
 
 #
-# Create an about file.
+# Create an about file in RDF/XML format, do this BEFORE we convert all .rdf files to the other
+# formats so that this about file will also be converted.
 #
 # TODO: Generate this at each directory level in the tree
 #
@@ -148,13 +149,13 @@ function initStardogVars() {
 #
 function createAboutFile () {
 
-  local aboutfile=$(mktemp ${tmp_dir}/ABOUT.XXXXXX.ttl)
-  local echoq=$(mktemp ${tmp_dir}/echo.sqXXXXXX)
+  local tmpAboutFile="$(mktemp ${tmp_dir}/ABOUT.XXXXXX.ttl)"
+  local echoq="$(mktemp ${tmp_dir}/echo.sqXXXXXX)"
 
   (
     cd ${tag_root}
 
-    cat > "${aboutfile}" << __HERE__
+    cat > "${tmpAboutFile}" << __HERE__
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
 @prefix owl: <http://www.w3.org/2002/07/owl#> 
@@ -170,13 +171,13 @@ __HERE__
       ) | \
       grep -v catalog | \
       sed 's/^.*xml:base="/owl:imports </;s/" *$/> ;/' \
-      >> "${aboutfile}"
+      >> "${tmpAboutFile}"
 
     cat > "${echoq}" << __HERE__
 CONSTRUCT {?s ?p ?o} WHERE {?s ?p ?o}
 __HERE__
 
-    "${jena_arq}" --data="${aboutfile}" --query="${echoq}" --results=RDF > AboutFIBO.rdf
+    "${jena_arq}" --data="${tmpAboutFile}" --query="${echoq}" --results=RDF > AboutFIBO.rdf
   )
 }
 
@@ -186,8 +187,16 @@ function copyRdfToTarget() {
 
   (
     cd ${fibo_root}
-    set -x
-    cp **/*.{rdf,ttl,md,jpg,png,docx,pdf,sq} --parents ${tag_root}/
+    #
+    # Don' copy all files with all extensions at the same time since it gives nasty errors when files without the
+    # given extension are not found.
+    #
+    for extension in rdf ttl md jpg png gif docx pdf sq ; do
+      echo "Copying fibo/**/*.${extension} to ${tag_root/${WORKSPACE}}"
+      cp **/*.${extension} --parents ${tag_root}/
+    done
+
+    #cp **/*.{rdf,ttl,md,jpg,png,docx,pdf,sq} --parents ${tag_root}/
   )
 
   (
@@ -379,12 +388,12 @@ function main() {
   #initStardogVars || return $?
 
   copyRdfToTarget || return $?
+  createAboutFile || return $?
   #storeVersionInStardog || return $?
   searchAndReplaceStuffInRdf || return $?
 
   convertRdfXmlToAllFormats || return $?
 
-  createAboutFile || return $?
 
   convertMarkdownToHtml || return $?
 
