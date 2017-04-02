@@ -385,9 +385,23 @@ function zipWholeTagDir() {
 #
 function copySiteFiles() {
 
+  #
+  # First copy the static files into the jobs target directory
+  #
   (
     cd ${fibo_infra_root}/site
     cp -vr * "${spec_root}/"
+  )
+
+  #
+  # Then copy the whole thing across to the site
+  #
+  (
+    cd ${spec_root}
+    set -x
+    pwd
+    ls
+    cp -vr . /mnt/jenkins-disk/spec.edmcouncil.org/
   )
 }
 
