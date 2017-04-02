@@ -186,6 +186,7 @@ function copyRdfToTarget() {
 
   (
     cd ${fibo_root}
+    set -x
     cp **/*.{rdf,ttl,md,jpg,png,docx,pdf,sq} --parents ${tag_root}/
   )
 
@@ -240,7 +241,7 @@ s@\(rdf:about="https://spec.edmcouncil.org/fibo/ontology/\)${GIT_BRANCH}/${GIT_T
 #
 # And all ENTITY statements
 #
-s@\(<!ENTITY .* https://spec.edmcouncil.org/fibo/ontology/\)${GIT_BRANCH}/${GIT_TAG_NAME}/@\1@g
+s@\(<!ENTITY.*https://spec.edmcouncil.org/fibo/ontology/\)${GIT_BRANCH}/${GIT_TAG_NAME}/@\1@g
 
 __HERE__
 
