@@ -333,9 +333,16 @@ function convertRdfXmlToAllFormats() {
 # We need to put the output of this job in a directory next to all other branches and never delete any of the
 # other formerly published branches.
 #
-function zipWholeBranch() {
+function zipWholeTagDir() {
 
+  local tarGzFile="${branch_root}/${GIT_TAG_NAME}.tar.gz"
 
+  tar -cvzf "${tarGzFile}" "${tag_root}"
+
+  echo "Created ${tarGzFile}:"
+  ls -al "${tarGzFile}" || return $?
+
+  return 0
 }
 
 function main() {
@@ -355,7 +362,7 @@ function main() {
 
   convertMarkdownToHtml || return $?
 
-  zipWholeBranch
+  zipWholeTagDir
 }
 
 main $@
