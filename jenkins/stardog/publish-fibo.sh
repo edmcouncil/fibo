@@ -235,10 +235,20 @@ s@http://spec.edmcouncil.org@${spec_root_url}@g
 #
 # Apparently there are some FND urls that are wrong in the git source:
 #  - https://spec.edmcouncil.org/FND/ should be
-#  - https://spec.edmcouncil.org/fibo/FND/
+#  - https://spec.edmcouncil.org/fibo/ontology/FND/
+#  and
+#  - https://spec.edmcouncil.org/BE/ should be
+#  - https://spec.edmcouncil.org/fibo/ontology/BE/
 #
-s@https://spec.edmcouncil.org/FND/@${family_root_url}/FND/@g
+s@https://spec.edmcouncil.org/FND/@${product_root_url}/FND/@g
 s@\(https://spec.edmcouncil.org/fibo/\)@\1ontology/${GIT_BRANCH}/${GIT_TAG_NAME}/@g
+#
+# Replace
+# - https://spec.edmcouncil.org/fibo/BE/20150201
+# with
+# - https://spec.edmcouncil.org/fibo/ontology/<branch>/<tag>/BE
+#
+s@https://spec.edmcouncil.org/fibo/\([ˆ/]*\)/[0-9]{8}@h${product_root_url}/${GIT_BRANCH}/${GIT_TAG_NAME}/\1@g
 #
 # Now remove the branch and tag name from all the xml:base statements
 #
