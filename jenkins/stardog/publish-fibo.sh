@@ -253,19 +253,19 @@ s@\(${product_root_url}/\)@\1${GIT_BRANCH}/${GIT_TAG_NAME}/@g
 #
 # Now remove the branch and tag name from all the xml:base statements
 #
-s@\(xml:base="${product_root_url}\)${GIT_BRANCH}/${GIT_TAG_NAME}/@\1@g
+s@\(xml:base="${product_root_url}/\)${GIT_BRANCH}/${GIT_TAG_NAME}/@\1@g
 #
 # And from all the rdf:about statements
 #
-s@\(rdf:about="${product_root_url}\)${GIT_BRANCH}/${GIT_TAG_NAME}/@\1@g
+s@\(rdf:about="${product_root_url}/\)${GIT_BRANCH}/${GIT_TAG_NAME}/@\1@g
 #
 # And all ENTITY statements
 #
-s@\(<!ENTITY.*${product_root_url}\)${GIT_BRANCH}/${GIT_TAG_NAME}/@\1@g
+s@\(<!ENTITY.*${product_root_url}/\)${GIT_BRANCH}/${GIT_TAG_NAME}/@\1@g
 #
 # And all xmlns:fibo* lines
 #
-s@\(xmlns:fibo.*${product_root_url}\)${GIT_BRANCH}/${GIT_TAG_NAME}/@\1@g
+s@\(xmlns:fibo.*${product_root_url}/\)${GIT_BRANCH}/${GIT_TAG_NAME}/@\1@g
 
 __HERE__
 
