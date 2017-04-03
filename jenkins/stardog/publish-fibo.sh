@@ -240,31 +240,38 @@ s@http://spec.edmcouncil.org@${spec_root_url}@g
 #  - https://spec.edmcouncil.org/BE/ should be
 #  - https://spec.edmcouncil.org/fibo/ontology/BE/
 #
-s@https://spec.edmcouncil.org/FND/@${product_root_url}/FND/@g
-s@\(https://spec.edmcouncil.org/fibo/\)@\1ontology/${GIT_BRANCH}/${GIT_TAG_NAME}/@g
+s@${spec_root_url}/FND/@${product_root_url}/FND/@g
+s@${spec_root_url}/BE/@${product_root_url}/BE/@g
 #
 # Replace
-# - https://spec.edmcouncil.org/fibo/BE/20150201
+# - https://spec.edmcouncil.org/fibo/BE/20150201/
 # with
-# - https://spec.edmcouncil.org/fibo/ontology/<branch>/<tag>/BE
+# - https://spec.edmcouncil.org/fibo/ontology/BE/
 #
-s@https://spec.edmcouncil.org/fibo/\([ˆ/]*\)/[0-9]{8}@h${product_root_url}/${GIT_BRANCH}/${GIT_TAG_NAME}/\1@g
+s@${family_root_url}/\([A-Z]*\)/[0-9]*/@${product_root_url}/\1/@g
+#
+# Replace all fibo IRIs with a versioned one so
+#
+# - https://spec.edmcouncil.org/fibo/ontology/ becomes
+# - https://spec.edmcouncil.org/fibo/ontology/<branch>/<tag>/
+#
+s@\(${product_root_url}/\)@\1ontology/${GIT_BRANCH}/${GIT_TAG_NAME}/@g
 #
 # Now remove the branch and tag name from all the xml:base statements
 #
-s@\(xml:base="https://spec.edmcouncil.org/fibo/ontology/\)${GIT_BRANCH}/${GIT_TAG_NAME}/@\1@g
+s@\(xml:base="${product_root_url}\)${GIT_BRANCH}/${GIT_TAG_NAME}/@\1@g
 #
 # And from all the rdf:about statements
 #
-s@\(rdf:about="https://spec.edmcouncil.org/fibo/ontology/\)${GIT_BRANCH}/${GIT_TAG_NAME}/@\1@g
+s@\(rdf:about="${product_root_url}\)${GIT_BRANCH}/${GIT_TAG_NAME}/@\1@g
 #
 # And all ENTITY statements
 #
-s@\(<!ENTITY.*https://spec.edmcouncil.org/fibo/ontology/\)${GIT_BRANCH}/${GIT_TAG_NAME}/@\1@g
+s@\(<!ENTITY.*${product_root_url}\)${GIT_BRANCH}/${GIT_TAG_NAME}/@\1@g
 #
 # And all xmlns:fibo* lines
 #
-s@\(xmlns:fibo.*https://spec.edmcouncil.org/fibo/ontology/\)${GIT_BRANCH}/${GIT_TAG_NAME}/@\1@g
+s@\(xmlns:fibo.*${product_root_url}\)${GIT_BRANCH}/${GIT_TAG_NAME}/@\1@g
 
 __HERE__
 
