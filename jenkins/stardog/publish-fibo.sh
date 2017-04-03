@@ -233,29 +233,23 @@ function searchAndReplaceStuffInRdf() {
 #
 s@http://spec.edmcouncil.org@${spec_root_url}@g
 #
-# Apparently there are some FND urls that are wrong in the git source:
-#  - https://spec.edmcouncil.org/FND/ should be
-#  - https://spec.edmcouncil.org/fibo/ontology/FND/
-#  and
-#  - https://spec.edmcouncil.org/BE/ should be
-#  - https://spec.edmcouncil.org/fibo/ontology/BE/
 #
-s@${spec_root_url}/FND/@${product_root_url}/FND/@g
-s@${spec_root_url}/BE/@${product_root_url}/BE/@g
+#
+s@${family_root_url}/\([A-Z]*\)/@${product_root_url}/\1/@g
 #
 # Replace
-# - https://spec.edmcouncil.org/fibo/BE/20150201/
+# - https://spec.edmcouncil.org/fibo/ontology/BE/20150201/
 # with
 # - https://spec.edmcouncil.org/fibo/ontology/BE/
 #
-s@${family_root_url}/\([A-Z]*\)/[0-9]*/@${product_root_url}/\1/@g
+s@${product_root_url}/\([A-Z]*\)/[0-9]*/@${product_root_url}/\1/@g
 #
 # Replace all fibo IRIs with a versioned one so
 #
 # - https://spec.edmcouncil.org/fibo/ontology/ becomes
 # - https://spec.edmcouncil.org/fibo/ontology/<branch>/<tag>/
 #
-s@\(${product_root_url}/\)@\1ontology/${GIT_BRANCH}/${GIT_TAG_NAME}/@g
+s@\(${product_root_url}/\)@\1${GIT_BRANCH}/${GIT_TAG_NAME}/@g
 #
 # Now remove the branch and tag name from all the xml:base statements
 #
