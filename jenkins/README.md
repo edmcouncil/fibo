@@ -21,6 +21,25 @@ store vendor. These vendors could then run the FIBO test jobs on their own hardw
 as it gets. Whenever a change is pulled into the FIBO repository, all sorts of jobs can get triggered on many different
 machines, validating that change.
 
+### fibo-infra repo & directory structure
+
+- [`bin/`](../bin/README.md)
+  
+  The `bin/` directory contains scripts and executable tools (like jena) that
+  can be used on your own computer or in a Jenkins job context.
+  
+- [`jenkins/`](../jenkins/README.md)
+
+  The `jenkins/` directory contains files related to Jenkins, including all scripts
+  that can only run in a Jenkins job context (those are stored under `jenkins/bin/`)
+
+- [`site/`](../site/README.md)
+
+  All static files that are published on `spec.edmcouncil.org`.
+  
+  NOTE: Please do NOT store generated files here!
+  
+
 ## Creating jobs
 
 ### Triggering Jobs
