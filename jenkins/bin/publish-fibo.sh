@@ -116,6 +116,8 @@ function initWorkspaceVars() {
   jena_riot="${jena_bin}/riot"
   chmod a+x ${jena_bin}/*
 
+  export JENA2ROOT="${fibo_infra_root}/bin/apache-jena-2.11.0"
+
   if [ ! -f "${jena_arq}" ] ; then
     echo "ERROR: ${jena_arq} not found"
     return 1
@@ -626,12 +628,14 @@ function spinRunInferences() {
   local inputFile="$1"
   local outputFile="$2"
 
+  require JENA2ROOT || return $?
+
   (
     set -x
     java \
       -Xmx2g \
-      -Dlog4j.configuration="file:${JENAROOT}/jena-log4j.properties" \
-      -cp "${JENAROOT}/lib/*:${fibo_infra_root}/lib:${fibo_infra_root}/lib/SPIN/spin-2.0.0.jar" \
+      -Dlog4j.configuration="file:${JENA2ROOT}/jena-log4j.properties" \
+      -cp "${JENA2ROOT}/lib/*:${fibo_infra_root}/lib:${fibo_infra_root}/lib/SPIN/spin-1.3.3.jar" \
       org.topbraid.spin.tools.RunInferences \
       http://example.org/example \
       "${inputFile}" >> "${outputFile}"
