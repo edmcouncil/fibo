@@ -580,12 +580,18 @@ function glossaryGetPrefixes() {
   touch "${tmp_dir}/prefixes"
 
   find ${module_directories} \
-    -name '*.ttl' -not -name 'About*' | \
-  grep "@prefix fibo-" | \
+    -name '*.ttl' -not -name 'About*'
+
+set -x
+
+  find ${module_directories} \
+    -name '*.ttl' -not -name 'About*' -exec grep "@prefix fibo-" {} \; | \
   while read prefixCmd prefix url ; do
     echo "prefixCmd=${prefixCmd} prefix=${prefix} url=${url}"
     echo "${prefixCmd} ${prefix} ${url}" >> "${tmp_dir}/prefixes"
   done
+
+set +x
 
 #  (
 #    set -x
