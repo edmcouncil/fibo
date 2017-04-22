@@ -86,7 +86,7 @@ function initWorkspaceVars() {
     return 1
   fi
 
-  export fibo_infra_root="cd ${SCRIPT_DIR}/../.. ; pwd -L)"
+  export fibo_infra_root="$(cd ${SCRIPT_DIR}/../.. ; pwd -L)"
   echo fibo_infra_root=${fibo_infra_root}
 
   if [ ! -d "${fibo_infra_root}" ] ; then
