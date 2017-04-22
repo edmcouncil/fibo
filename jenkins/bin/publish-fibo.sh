@@ -619,12 +619,23 @@ function glossaryGetOntologies() {
   require glossary_script_dir || return $?
   require module_directories || return $?
 
+  echo "Get Ontologies"
+
+  set -x
+
   ${jena_arq} \
     $(find  ${module_directories} -name "*.rdf" | sed "s/^/--data=/") \
     --data="${glossary_script_dir}/skosify.ttl" \
     --data="${glossary_script_dir}/datatypes.rdf" \
     --query="${glossary_script_dir}/skosecho.sparql" \
     --results=TTL > "${tmp_dir}/temp0.ttl"
+
+  if [ ${PIPESTATUS[0]} -ne 0 ] ; then
+    error "Could not get ontologies"
+    return 1
+  fi
+
+  set +x
 
 #  ${jena_arq} \
 #    $(find  ${module_directories} -name "*.rdf" | sed "s/^/--data=/") \
@@ -656,6 +667,11 @@ function glossaryRunSpin() {
     org.topbraid.spin.tools.RunInferences \
     http://example.org/example \
     "${tmp_dir}/temp0.ttl" > "${tmp_dir}/temp1.ttl"
+
+  if [ ${PIPESTATUS[0]} -ne 0 ] ; then
+    error "Could not what?"
+    return 1
+  fi
 
   echo "Generated ${tmp_dir}/temp1.ttl:"
 
