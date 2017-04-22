@@ -8,20 +8,27 @@
 # - fibo-infra (in ${WORKSPACE}/fibo-infra directory)
 #
 #
+SCRIPT_DIR="$(cd $(dirname "${BASH_SOURCE[0]}") && pwd -P)"
+
 tmp_dir="${WORKSPACE}/tmp"
 fibo_root=""
 fibo_infra_root=""
 jena_arq=""
 
+#
+# The products that we generate the artifacts for with this script
+#
+products="ontology vocabulary"
+
 spec_root="${WORKSPACE}/target"
 family_root="${spec_root}/fibo"
-product_root="${family_root}/ontology"
 branch_root=""
 tag_root=""
 
 spec_root_url="https://spec.edmcouncil.org"
 family_root_url="${spec_root_url}/fibo"
-product_root_url="${family_root_url}/ontology"
+product_root=""
+product_root_url=""
 branch_root_url=""
 tag_root_url=""
 
@@ -38,6 +45,33 @@ trap "rm -rf ${tmp_dir} >/dev/null 2>&1" EXIT
 #
 . /home/ec2-user/.nix-profile/etc/profile.d/nix.sh
 
+function require() {
+
+  local variableName="$1"
+
+  export | grep -q "declare -x ${variableName}=" && return 0
+
+  set -- $(caller 0)
+
+  echo "ERROR: The function $2() (line $1) (in $3) requires ${variableName}" >&2
+
+  exit 1
+}
+
+function error() {
+
+  local line="$@"
+
+  set -- $(caller 0)
+
+  echo "ERROR: in function $2() (line $1) (in $3): ${line}" >&2
+}
+
+function logRule() {
+
+  echo $(printf '=%.0s' {1..110}) $@ >&2
+}
+
 function initWorkspaceVars() {
 
   #tmp_dir=$(mktemp -d "${tmp_dir:-/tmp}/$(basename 0).XXXXXXXXXXXX")
@@ -52,7 +86,7 @@ function initWorkspaceVars() {
     return 1
   fi
 
-  export fibo_infra_root="${WORKSPACE}/fibo-infra"
+  export fibo_infra_root="cd ${SCRIPT_DIR}/../.. ; pwd -L)"
   echo fibo_infra_root=${fibo_infra_root}
 
   if [ ! -d "${fibo_infra_root}" ] ; then
@@ -60,8 +94,6 @@ function initWorkspaceVars() {
     return 1
   fi
 
-  rm -rf "${product_root}" >/dev/null 2>&1
-  mkdir -p "${product_root}"
 
   if [ ! -f "${rdftoolkit_jar}" ] ; then
     echo "ERROR: Put the rdf-toolkit.jar in the workspace as a pre-build step"
@@ -86,6 +118,42 @@ function initWorkspaceVars() {
   return 0
 }
 
+#
+# Since this script deals with multiple products (ontology, vocabulary etc) we need to be able to switch back
+# and forth, call this function whenever you generate something for another product. The git branch and tag name
+# always remains the same though.
+#
+function setProduct() {
+
+  local product="$1"
+
+  require GIT_BRANCH || return $?
+  require GIT_TAG_NAME || return $?
+
+  product_root="${family_root}/${product}"
+  product_root_url="${family_root_url}/${product}"
+
+  if [ ! -d "${product_root}" ] ; then
+    mkdir -p "${product_root}"
+  fi
+
+  branch_root="${product_root}/${GIT_BRANCH}"
+  branch_root_url="${product_root_url}/${GIT_BRANCH}"
+
+  if [ ! -d "${branch_root}" ] ; then
+    mkdir -p "${branch_root}"
+  fi
+
+  tag_root="${branch_root}/${GIT_TAG_NAME}"
+  tag_root_url="${branch_root_url}/${GIT_TAG_NAME}"
+
+  if [ ! -d "${tag_root}" ] ; then
+    mkdir -p "${tag_root}"
+  fi
+
+  return 0
+}
+
 function initGitVars() {
 
   export GIT_COMMENT=$(cd ${fibo_root} ; git log --format=%B -n 1 ${GIT_COMMIT})
@@ -105,12 +173,6 @@ function initGitVars() {
   GIT_BRANCH="${GIT_BRANCH//\//-}"
   echo "GIT_BRANCH=${GIT_BRANCH}"
 
-  branch_root="${product_root}/${GIT_BRANCH}"
-  branch_root_url="${product_root_url}/${GIT_BRANCH}"
-
-  rm -rf "${branch_root}" >/dev/null 2>&1
-  mkdir -p "${branch_root}" >/dev/null 2>&1
-
   #
   # If the current commit has a tag associated to it then the Git Tag Message Plugin in Jenkins will
   # initialize the GIT_TAG_NAME variable with that tag. Otherwise set it to "latest"
@@ -120,10 +182,10 @@ function initGitVars() {
   export GIT_TAG_NAME="${GIT_TAG_NAME:-latest}"
   echo "GIT_TAG_NAME=${GIT_TAG_NAME}"
 
-  tag_root="${branch_root}/${GIT_TAG_NAME}"
-  tag_root_url="${branch_root_url}/${GIT_TAG_NAME}"
-
-  mkdir -p "${tag_root}" >/dev/null 2>&1
+  #
+  # Set default product
+  #
+  setProduct ontology
 
   return 0
 }
@@ -405,6 +467,24 @@ function copySiteFiles() {
   )
 }
 
+function publishProductOntology() {
+
+  logRule "Publishing the ontology product"
+
+  setProduct ontology || return $?
+
+  copyRdfToTarget || return $?
+  createAboutFile || return $?
+  #storeVersionInStardog || return $?
+  searchAndReplaceStuffInRdf || return $?
+
+  convertRdfXmlToAllFormats || return $?
+
+  convertMarkdownToHtml || return $?
+
+  return 0
+}
+
 #
 # Turns FIBO in to FIBO-V
 #
@@ -420,9 +500,13 @@ function copySiteFiles() {
 #
 # The output is in .ttl form in a file called fibo-v.ttl
 #
-function publishVocabulary() {
+function publishProductVocabulary() {
 
-  cd fibo/etc/infra/SKOS-conversion
+  logRule "Publishing the vocabulary product"
+
+  setProduct vocabulary || return $?
+
+  cd "${SCRIPT_DIR}/fibo-vocabulary" || return $?
 
   #
   # 1) Start the output with the standard prefixes.  They are in a file called skosprefixes.
@@ -430,7 +514,7 @@ function publishVocabulary() {
   pwd
   ls
 
-  echo "# baseURI: https://spec.edmcouncil.org/fibo/vocabulary" > fibo-v1.ttl
+  echo "# baseURI: ${product_root_url}" > fibo-v1.ttl
   #cat skosprefixes >> fibo-v1.ttl
   # echo $JENA_HOME
 
@@ -441,7 +525,7 @@ function publishVocabulary() {
   # JG>Apache jena3 is also installed on the Jenkins server itself, so maybe
   #    no need to have this in the fibs-infra repo.
   #
-  chmod a+x ${fibo_infra_root}/bin/apache-jena-3.0.0/bin/*
+  chmod a+x ${jena_bin}/bin/*
 
   ${jena_arq} --data=./skosify.ttl --query=./getdomain.sq > domain
   export domains=../../../$(grep \" domain | sed s/^[^\"]*\"// | sed s/\".*$// | sed "s/ / ..\/..\/..\//g")
@@ -450,10 +534,8 @@ function publishVocabulary() {
   #
   # 2) Compute the prefixes we'll need.
   #
-
   chmod a+x makepx.sh
   find $domains -name '*.rdf' -not -name 'About*' -exec ./makepx.sh \{} \;  > prefixes
-
 
   #
   # 3) Gather up all the RDF files in those modules.  Include skosify.ttl, since that has the rules
@@ -471,8 +553,7 @@ function publishVocabulary() {
     --results=TTL > MergedOWL.ttl
 
   echo "STARTING SPIN"
-  export JENAROOT=$(realpath ../../../../fibo-infra/bin/apache-jena-2.11.0)
-
+  export JENAROOT=$(cd ${jena_bin}/.. ; pwd -L)
 
   java \
     -Xmx1024M -Dlog4j.configuration="$JENAROOT/jena-log4j.properties" \
@@ -490,7 +571,11 @@ function publishVocabulary() {
     --query=skosecho.sq \
     --results=TTL > temp2.ttl
 
-  java -Xmx1024M -Dlog4j.configuration="file:$JENAROOT/jena-log4j.properties" -cp "$JENAROOT/lib/*:${fibo_infra_root}/lib:${fibo_infra_root}/lib/SPIN/spin-1.3.3.jar" org.topbraid.spin.tools.RunInferences http://example.org/example temp2.ttl >> tc.ttl
+  java \
+    -Xmx1024M \
+    -Dlog4j.configuration="file:$JENAROOT/jena-log4j.properties" \
+    -cp "$JENAROOT/lib/*:${fibo_infra_root}/lib:${fibo_infra_root}/lib/SPIN/spin-1.3.3.jar" \
+    org.topbraid.spin.tools.RunInferences http://example.org/example temp2.ttl >> tc.ttl
 
   echo "ENDING SPIN"
   #
@@ -510,15 +595,11 @@ function publishVocabulary() {
     --query=echo.sq \
     --results=TTL > fibo-v.ttl
 
-
   #
   # Adjust namespaces
   #
-
-
   ${jena_riot} fibo-v.ttl > fibo-v.nt
   cat basicprefixes  prefixes fibo-v.nt | ${jena_riot} --syntax=turtle --output=turtle > fibo-v.ttl
-
 
   #
   # 7) Remove all temp files.
@@ -545,56 +626,19 @@ function publishVocabulary() {
   echo ${repo}
 
   # Go back to the workspace root
-  cd ../../../..
-  export root=$(realpath .)
+  cd ${WORKSPACE}
 
   #
-  # JG>If you have to work with this repo anyway then why not add it in the list of
-  #    repo's in the Jenkins job configuration and use Jenkins credentials for it?
-  #    (rather then user:password)
+  # JG>Dean I didn't find any hygiene*.sq files anywhere
   #
-  if [ ! -d fibo-vocabulary ]; then
-   git clone https://user:password@github.com/edmcouncil/fibo-vocabulary.git
-  fi
-
-  cd fibo-vocabulary
-  git pull
-
-
-  #
-  # JG>This suppresses a git error message
-  #
-  git config --global push.default simple
-
-  [ -d ${repo}/${GIT_BRANCH} ] || mkdir -p ${repo}/${GIT_BRANCH}
-  cd ${repo}/${GIT_BRANCH}
-
-  #
-  # JG>What if the file already exists? The mv will fail then.
-  #
-
   echo "Running tests"
-  find $root/fibo/etc/infra/SKOS-conversion/testing -name 'hygiene*.sq' -print
-  find $root/fibo/etc/infra/SKOS-conversion/testing -name 'hygiene*.sq' -exec /usr/local/jena/bin/arq --data=$root/fibo/etc/infra/SKOS-conversion/fibo-v.ttl --query={} \;
+  find ${SCRIPT_DIR}/fibo-vocabulary/testing -name 'hygiene*.sq' -print
+  find ${SCRIPT_DIR}/fibo-vocabulary/testing -name 'hygiene*.sq' \
+    -exec /usr/local/jena/bin/arq --data=${SCRIPT_DIR}/fibo-vocabulary/fibo-v.ttl --query={} \;
 
 
-  mv $root/fibo/etc/infra/SKOS-conversion/fibo-v.ttl  .
-  git add fibo-v.ttl
+  mv ${SCRIPT_DIR}/fibo-vocabulary/fibo-v.ttl  .
 
-  git commit -am "Add skos files to repo"
-  git push
-
-  #
-  # JG>Added the stuff below, if you copy fibo-v.ttl to the root of the workspace,
-  #    and then publish it from there as a Jenkins artifact, then it will have
-  #    a stable URL that anyone can refer to. We can then forward all traffic
-  #    to https://spec.edmcouncil.org/fibo-v/blabla to that.
-  #
-  #    Both the .ttl and the .ttl.gz version are published. This are the URLs:
-  #
-  #    https://jenkins.edmcouncil.org/job/NewSKOSConversion/lastSuccessfulBuild/artifact/fibo-v.ttl
-  #    https://jenkins.edmcouncil.org/job/NewSKOSConversion/lastSuccessfulBuild/artifact/fibo-v.ttl.gz
-  #
   rm -f ${WORKSPACE}/fibo-v.ttl*
   cp fibo-v.ttl ${WORKSPACE}
   cd ${WORKSPACE}
@@ -609,14 +653,19 @@ function main() {
   initJiraVars || return $?
   #initStardogVars || return $?
 
-  copyRdfToTarget || return $?
-  createAboutFile || return $?
-  #storeVersionInStardog || return $?
-  searchAndReplaceStuffInRdf || return $?
-
-  convertRdfXmlToAllFormats || return $?
-
-  convertMarkdownToHtml || return $?
+  for product in ${products} ; do
+    case ${product} in
+      ontology)
+        publishProductOntology || return $?
+        ;;
+      vocabulary)
+        publishProductVocabulary || return $?
+        ;;
+      *)
+        echo "ERROR: Unknown product ${product}"
+        ;;
+     esac
+  done
 
   zipWholeTagDir || return $?
 
