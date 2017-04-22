@@ -644,18 +644,21 @@ function spinRunInferences() {
   local inputFile="$1"
   local outputFile="$2"
 
-  java \
-    -Xmx1024M \
-    -Dlog4j.configuration="file:${JENAROOT}/jena-log4j.properties" \
-    -cp "${JENAROOT}/lib/*:${fibo_infra_root}/lib:${fibo_infra_root}/lib/SPIN/spin-2.0.0.jar" \
-    org.topbraid.spin.tools.RunInferences \
-    http://example.org/example \
-    "${inputFile}" >> "${outputFile}"
-
-  if [ ${PIPESTATUS[0]} -ne 0 ] ; then
-    error "Could not run spin on ${inputFile}"
-    return 1
-  fi
+  (
+    set -x
+    java \
+      -Xmx2g \
+      -Dlog4j.configuration="file:${JENAROOT}/jena-log4j.properties" \
+      -cp "${JENAROOT}/lib/*:${fibo_infra_root}/lib:${fibo_infra_root}/lib/SPIN/spin-2.0.0.jar" \
+      org.topbraid.spin.tools.RunInferences \
+      http://example.org/example \
+      "${inputFile}" >> "${outputFile}"
+    if [ ${PIPESTATUS[0]} -ne 0 ] ; then
+      error "Could not run spin on ${inputFile}"
+      return 1
+    fi
+  )
+  [ $? -ne 0 ] && return 1
 
   return 0
 }
@@ -677,7 +680,7 @@ function glossaryRunSpin() {
 
   echo "Generated ${tmp_dir}/temp1.ttl:"
 
-  cat "${tmp_dir}/temp1.ttl"
+  head -n50 "${tmp_dir}/temp1.ttl"
 
   return 0
 }
@@ -745,6 +748,7 @@ function publishProductGlossary() {
   glossaryRunSpin || return $?
   glossaryRunSchemifyRules || return $?
 
+  echo "second run of spin"
   spinRunInferences "${tmp_dir}/temp2.ttl" "${tmp_dir}/tc.ttl" || return $?
 
   echo "ENDING SPIN"
