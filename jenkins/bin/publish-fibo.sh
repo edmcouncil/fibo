@@ -215,7 +215,7 @@ function initStardogVars() {
 function createAboutFile () {
 
   local tmpAboutFile="$(mktemp ${tmp_dir}/ABOUT.XXXXXX.ttl)"
-  local echoq="$(mktemp ${tmp_dir}/echo.sqXXXXXX)"
+  local echoq="$(mktemp ${tmp_dir}/echo.sparqlXXXXXX)"
 
   (
     cd ${tag_root}
@@ -528,31 +528,33 @@ function publishProductGlossary() {
   # JG>Apache jena3 is also installed on the Jenkins server itself, so maybe
   #    no need to have this in the fibs-infra repo.
   #
-  chmod a+x ${jena_bin}/bin/*
+  chmod a+x ${jena_bin}/*
+  chmod a+x ./*.sh
 
-  ${jena_arq} --data=./skosify.ttl --query=./getmodule.sq > module
-  export modules=../../../$(grep \" module | sed s/^[^\"]*\"// | sed s/\".*$// | sed "s/ / ..\/..\/..\//g")
-  echo $modules
+  set -x
+  ${jena_arq} --data=./skosify.ttl --query=./get-module.sparql > ${tmp_dir}/module
+  cat ${tmp_dir}/module
+  export modules=../../../$(grep \" ${tmp_dir}/module | sed s/^[^\"]*\"// | sed s/\".*$// | sed "s/ / ..\/..\/..\//g")
+  echo ${modules}
 
   #
   # 2) Compute the prefixes we'll need.
   #
-  chmod a+x makepx.sh
-  find $modules -name '*.rdf' -not -name 'About*' -exec ./makepx.sh \{} \;  > ${tag_root}/prefixes
+  find ${modules} -name '*.rdf' -not -name 'About*' -exec ./makepx.sh \{} \;  > ${tmp_dir}/prefixes
 
   #
   # 3) Gather up all the RDF files in those modules.  Include skosify.ttl, since that has the rules
   #
   ${jena_arq} \
-    $(find  $modules -name "*.rdf" | sed "s/^/--data=/") \
+    $(find  ${modules} -name "*.rdf" | sed "s/^/--data=/") \
     --data=skosify.ttl --data=datatypes.rdf \
-    --query=skosecho.sq \
+    --query=skosecho.sparql \
     --results=TTL > ${tag_root}/temp.ttl
 
   ${jena_arq} \
-    $(find  $modules -name "*.rdf" | sed "s/^/--data=/") \
+    $(find  ${modules} -name "*.rdf" | sed "s/^/--data=/") \
     --data=datatypes.rdf \
-    --query=skosecho.sq \
+    --query=skosecho.sparql \
     --results=TTL > ${tag_root}/MergedOWL.ttl
 
   echo "STARTING SPIN"
@@ -571,7 +573,7 @@ function publishProductGlossary() {
   ${jena_arq} \
     --data=${tag_root}/temp1.ttl \
     --data=schemify.ttl \
-    --query=skosecho.sq \
+    --query=skosecho.sparql \
     --results=TTL > ${tag_root}/temp2.ttl
 
   java \
@@ -588,7 +590,7 @@ function publishProductGlossary() {
   ${jena_arq}  \
     --data=${tag_root}/tc.ttl \
     --data=${tag_root}/temp1.ttl \
-    --query=echo.sq \
+    --query=echo.sparql \
     --results=TTL > ${tag_root}/fibo-uc.ttl
   #
   # 6) Convert upper cases.  We have different naming standards in FIBO-V than in FIBO.
@@ -596,14 +598,14 @@ function publishProductGlossary() {
   cat ${tag_root}/fibo-uc.ttl | sed "s/uc(\([^)]*\))/\U\1/g" >> ${tag_root}/fibo-v1.ttl
   ${jena_arq}  \
     --data=${tag_root}/fibo-v1.ttl \
-    --query=echo.sq \
+    --query=echo.sparql \
     --results=TTL > ${tag_root}/fibo-v.ttl
 
   #
   # Adjust namespaces
   #
   ${jena_riot} ${tag_root}/fibo-v.ttl > ${tag_root}/fibo-v.nt
-  cat basicprefixes  prefixes ${tag_root}/fibo-v.nt | \
+  cat basicprefixes  ${tmp_dir}/prefixes ${tag_root}/fibo-v.nt | \
   ${jena_riot} --syntax=turtle --output=turtle > ${tag_root}/fibo-v.ttl
 
   #
@@ -617,11 +619,11 @@ function publishProductGlossary() {
   rm module
 
   #
-  # JG>Dean I didn't find any hygiene*.sq files anywhere
+  # JG>Dean I didn't find any hygiene*.sparql files anywhere
   #
   echo "Running tests"
-  find ${SCRIPT_DIR}/fibo-glossary/testing -name 'hygiene*.sq' -print
-  find ${SCRIPT_DIR}/fibo-glossary/testing -name 'hygiene*.sq' \
+  find ${SCRIPT_DIR}/fibo-glossary/testing -name 'hygiene*.sparql' -print
+  find ${SCRIPT_DIR}/fibo-glossary/testing -name 'hygiene*.sparql' \
     -exec /usr/local/jena/bin/arq --data=${tag_root}/fibo-v.ttl --query={} \;
 
   gzip --best --stdout ${tag_root}/fibo-v.ttl > ${tag_root}/fibo-v.ttl.gz
