@@ -4,5 +4,6 @@
 # for a file that doesn't have a base URI, or doesn't have a prefix
 # for it.
 #
-grep "xmlns.*=\"$(grep "xml:base=" $1  | sed -e "s/^.*xml:base=\"//" | sed -e "s/\".*$//")" $1  | sed -e "s/^[ 	]*xmlns[^=]*-/@prefix fibo-v-/;s/=\"/: </;s!fibo/.*/\\([^/]*/\\)!fibo/vocabulary/\\1!;s/\\/\">*[ 	
-]*$/#> . /"
+set -x
+grep "xmlns.*=\"$(grep "xml:base=" $1  | sed -e "s/^.*xml:base=\"//" | sed -e "s/\".*$//")" $1  | \
+  sed -e "s/^[ 	]*xmlns[^=]*-/@prefix fibo-v-/;s/=\"/: </;s!fibo/.*/\\([^/]*/\\)!fibo/glossary/\\1!;s/\\/\">*[ 	]*$/#> . /"

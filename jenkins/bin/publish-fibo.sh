@@ -574,15 +574,28 @@ function glossaryGetPrefixes() {
   require ontology_product_tag_root || return $?
   require modules || return $?
 
-  (
-    cd "${ontology_product_tag_root}" || return $?
-    set -x
-    find ${module_directories} \
-      -name '*.rdf' -not -name 'About*' \
-      -exec "${glossary_script_dir}/makepx.sh" \{} \; > \
-      "${tmp_dir}/prefixes"
-  )
-  [ $? -ne 0 ] && return 1
+  echo "Get prefixes"
+
+  rm -f "${tmp_dir}/prefixes"
+  touch "${tmp_dir}/prefixes"
+
+  find ${module_directories} \
+    -name '*.ttl' -not -name 'About*' | \
+  grep "@prefix fibo-" | \
+  while read prefixCmd prefix url ; do
+    echo "prefixCmd=${prefixCmd} prefix=${prefix} url=${url}"
+    echo "${prefixCmd} ${prefix} ${url}" >> "${tmp_dir}/prefixes"
+  end
+
+#  (
+#    set -x
+#    cd "${ontology_product_tag_root}" || return $?
+#    find ${module_directories} \
+#      -name '*.rdf' -not -name 'About*' \
+#      -exec "${glossary_script_dir}/makepx.sh" \{} \; > \
+#      "${tmp_dir}/prefixes"
+#  )
+#  [ $? -ne 0 ] && return 1
 
   echo "Found the following prefixes:"
   cat "${tmp_dir}/prefixes"
@@ -715,7 +728,7 @@ function publishProductGlossary() {
   #
   # 6) Convert upper cases.  We have different naming standards in FIBO-V than in FIBO.
   #
-  cat "${tmp_dir}/fibo-uc.ttl" | sed "s/uc(\([^)]*\))/\U\1/g" >> ${tmp_dir}/fibo-v1.ttl
+  sed "s/uc(\([^)]*\))/\U\1/g" "${tmp_dir}/fibo-uc.ttl" >> ${tmp_dir}/fibo-v1.ttl
   ${jena_arq}  \
     --data="${tmp_dir}/fibo-v1.ttl" \
     --query="${glossary_script_dir}/echo.sparql" \
