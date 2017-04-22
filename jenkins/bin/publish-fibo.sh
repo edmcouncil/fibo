@@ -476,6 +476,11 @@ function publishProductOntology() {
 
   setProduct ontology || return $?
 
+  #
+  # Remove any content of previous run
+  #
+  rm -rf ${tag_root}/* >/dev/null 2>&1
+
   copyRdfToTarget || return $?
   createAboutFile || return $?
   #storeVersionInStardog || return $?
