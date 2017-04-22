@@ -663,7 +663,7 @@ function glossaryRunSpin() {
 
   java \
     -Xmx1024M -Dlog4j.configuration="${JENAROOT}/jena-log4j.properties" \
-    -cp "${fibo_infra_root}/lib:${JENAROOT}/lib/*:${fibo_infra_root}/lib/SPIN/spin-1.3.3.jar" \
+    -cp "${fibo_infra_root}/lib:${JENAROOT}/lib/*:${fibo_infra_root}/lib/SPIN/spin-2.0.0.jar" \
     org.topbraid.spin.tools.RunInferences \
     http://example.org/example \
     "${tmp_dir}/temp0.ttl" > "${tmp_dir}/temp1.ttl"
