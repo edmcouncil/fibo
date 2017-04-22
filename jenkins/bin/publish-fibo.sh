@@ -34,6 +34,9 @@ product_root_url=""
 branch_root_url=""
 tag_root_url=""
 
+modules=""
+module_directories=""
+
 stardog_vcs=""
 
 rdftoolkit_jar="${WORKSPACE}/rdf-toolkit.jar"
@@ -271,6 +274,10 @@ function ontologyCopyRdfToTarget() {
     #cp **/*.{rdf,ttl,md,jpg,png,docx,pdf,sq} --parents ${tag_root}/
   )
 
+  #
+  # Rename the lower case module directories as we have them in the fibo git repo to
+  # upper case directory names as we serve them on spec.edmcouncil.org
+  #
   (
     cd ${tag_root}
     for module in * ; do
@@ -279,12 +286,22 @@ function ontologyCopyRdfToTarget() {
       [ "${module}" == "ext" ] && continue
       upperModule=$(echo ${module} | tr '[:lower:]' '[:upper:]')
       [ "${module}" == "${upperModule}" ] && continue
-      ( set -x ; mv -v ${module} ${upperModule} )
+      mv ${module} ${upperModule}
     done
+    modules=""
+    module_directories=""
+    for module in * ; do
+      [ -d ${module} ] || continue
+      [ "${module}" == "etc" ] && continue
+      [ "${module}" == "ext" ] && continue
+      modules="${modules} ${module}"
+      module_directories="${modules_directories} $(pwd)/${module}"
+    done
+
   )
 
   #
-  # Clean up a few things
+  # Clean up a few things that are too embarrassing to publish
   #
   rm -vrf ${tag_root}/etc >/dev/null 2>&1
 #  rm -vrf ${tag_root}/etc/cm >/dev/null 2>&1
@@ -300,7 +317,7 @@ function ontologyCopyRdfToTarget() {
   rm -vrf ${tag_root}/**/archive >/dev/null 2>&1
   rm -vrf ${tag_root}/**/Bak >/dev/null 2>&1
 
-  find ${tag_root}
+  #find ${tag_root}
 
   return 0
 }
@@ -664,7 +681,7 @@ function publishProductGlossary() {
   echo "# baseURI: ${product_root_url}" > ${tmp_dir}/fibo-v1.ttl
   #cat skosprefixes >> ${tmp_dir}/fibo-v1.ttl
 
-  glossaryGetModules || return $?
+  #glossaryGetModules || return $?
   glossaryGetPrefixes || return $?
   glossaryGetOntologies || return $?
   glossaryRunSpin || return $?
