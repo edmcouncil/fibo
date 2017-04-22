@@ -760,7 +760,7 @@ function publishProductGlossary() {
   #
   ${jena_riot} "${tag_root}/fibo-v.ttl" > "${tag_root}/fibo-v.nt"
   cat \
-    "${glossary_script_dir}/basicprefixes"
+    "${glossary_script_dir}/basicprefixes" \
     "${tmp_dir}/prefixes" \
     "${tag_root}/fibo-v.nt" | \
   ${jena_riot} \
