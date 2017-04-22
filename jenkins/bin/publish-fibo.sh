@@ -107,7 +107,8 @@ function initWorkspaceVars() {
   # We should install Jena on the Jenkins server and not have it in the git-repo, takes up too much space for each
   # release of Jena
   #
-  jena_bin="${fibo_infra_root}/bin/apache-jena-3.0.1/bin"
+  export JENAROOT="${fibo_infra_root}/bin/apache-jena-3.0.1"
+  jena_bin="${JENAROOT}/bin"
   jena_arq="${jena_bin}/arq"
   jena_riot="${jena_bin}/riot"
   chmod a+x ${jena_bin}/*
@@ -281,10 +282,16 @@ function copyRdfToTarget() {
   #
   # Clean up a few things
   #
-  rm -v ${tag_root}/etc/cm >/dev/null 2>&1
-  rm -v ${tag_root}/etc/source   >/dev/null 2>&1
-  rm -v ${tag_root}/etc/infra >/dev/null 2>&1
-  rm -vrf ${tag_root}/**/archive >/dev/null 2>&1
+  rm -v ${tag_root}/etc/cm # >/dev/null 2>&1
+  rm -v ${tag_root}/etc/source # >/dev/null 2>&1
+  rm -v ${tag_root}/etc/infra # >/dev/null 2>&1
+  rm -v ${tag_root}/etc/image # >/dev/null 2>&1
+  rm -v ${tag_root}/etc/odm # >/dev/null 2>&1
+  rm -v ${tag_root}/etc/uml # >/dev/null 2>&1
+  rm -v ${tag_root}/etc/process # >/dev/null 2>&1
+  rm -v ${tag_root}/etc/operational # >/dev/null 2>&1
+  rm -vrf ${tag_root}/**/archive # >/dev/null 2>&1
+  rm -vrf ${tag_root}/**/Bak # >/dev/null 2>&1
 
   find ${tag_root}
 
@@ -513,13 +520,14 @@ function glossaryGetModules() {
   echo "Query the skosify.ttl file for the list of modules (TODO: Should come from rdf-toolkit.ttl)"
   set -x
   ${jena_arq} \
+    --results=CSV \
     --data="${glossary_script_dir}/skosify.ttl" \
-    --query="${glossary_script_dir}/get-module.sparql" > \
+    --query="${glossary_script_dir}/get-module.sparql" | grep -v list > \
     "${tmp_dir}/module"
   echo rc=$?
 
   cat ${tmp_dir}/module
-  export modules="$(grep \" ${tmp_dir}/module | sed s/^[^\"]*\"// | sed s/\".*$// | sed "s/ / ..\/..\/..\//g")"
+  export modules="$(< ${tmp_dir}/module)"
 
   export module_directories=$(for module in ${modules} ; do echo ${ontology_product_tag_root}/module ; done)
 
@@ -530,6 +538,8 @@ function glossaryGetModules() {
 
   echo "Using the following directories:"
   echo ${module_directories}
+
+  rm -f "${tmp_dir}/module"
 
   return 0
 }
@@ -576,14 +586,14 @@ function glossaryGetPrefixes() {
 #
 function publishProductGlossary() {
 
+  require JENAROOT || return $?
+
   logRule "Publishing the glossary product"
 
   setProduct ontology
   ontology_product_tag_root="${tag_root}"
 
   setProduct glossary || return $?
-
-  set -x
 
   cd "${SCRIPT_DIR}/fibo-glossary" || return $?
   glossary_script_dir=$(pwd)
@@ -602,20 +612,19 @@ function publishProductGlossary() {
   # 3) Gather up all the RDF files in those modules.  Include skosify.ttl, since that has the rules
   #
   ${jena_arq} \
-    $(find  ${modules} -name "*.rdf" | sed "s/^/--data=/") \
+    $(find  ${module_directories} -name "*.rdf" | sed "s/^/--data=/") \
     --data="${glossary_script_dir}/skosify.ttl" \
     --data="${glossary_script_dir}/datatypes.rdf" \
     --query="${glossary_script_dir}/skosecho.sparql" \
     --results=TTL > "${tmp_dir}/temp.ttl"
 
-  ${jena_arq} \
-    $(find  ${modules} -name "*.rdf" | sed "s/^/--data=/") \
-    --data="${glossary_script_dir}/datatypes.rdf" \
-    --query="${glossary_script_dir}/skosecho.sparql" \
-    --results=TTL > ${tag_root}/MergedOWL.ttl
+#  ${jena_arq} \
+#    $(find  ${module_directories} -name "*.rdf" | sed "s/^/--data=/") \
+#    --data="${glossary_script_dir}/datatypes.rdf" \
+#    --query="${glossary_script_dir}/skosecho.sparql" \
+#    --results=TTL > ${tmp_dir}/MergedOWL.ttl
 
   echo "STARTING SPIN"
-  export JENAROOT=$(cd ${jena_bin}/.. ; pwd -L)
 
   java \
     -Xmx1024M -Dlog4j.configuration="${JENAROOT}/jena-log4j.properties" \
@@ -637,7 +646,8 @@ function publishProductGlossary() {
     -Xmx1024M \
     -Dlog4j.configuration="file:${JENAROOT}/jena-log4j.properties" \
     -cp "${JENAROOT}/lib/*:${fibo_infra_root}/lib:${fibo_infra_root}/lib/SPIN/spin-1.3.3.jar" \
-    org.topbraid.spin.tools.RunInferences http://example.org/example \
+    org.topbraid.spin.tools.RunInferences \
+    http://example.org/example \
     "${tmp_dir}/temp2.ttl" >> "${tmp_dir}/tc.ttl"
 
   echo "ENDING SPIN"
@@ -647,15 +657,15 @@ function publishProductGlossary() {
   ${jena_arq}  \
     --data="${tmp_dir}/tc.ttl" \
     --data="${tmp_dir}/temp1.ttl" \
-    --query=echo.sparql \
+    --query="${glossary_script_dir}/echo.sparql" \
     --results=TTL > "${tmp_dir}/fibo-uc.ttl"
   #
   # 6) Convert upper cases.  We have different naming standards in FIBO-V than in FIBO.
   #
   cat "${tmp_dir}/fibo-uc.ttl" | sed "s/uc(\([^)]*\))/\U\1/g" >> ${tmp_dir}/fibo-v1.ttl
   ${jena_arq}  \
-    --data=${tmp_dir}/fibo-v1.ttl \
-    --query=echo.sparql \
+    --data="${tmp_dir}/fibo-v1.ttl" \
+    --query="${glossary_script_dir}/echo.sparql" \
     --results=TTL > "${tag_root}/fibo-v.ttl"
 
   #
@@ -677,7 +687,7 @@ function publishProductGlossary() {
   echo "Running tests"
   find ${glossary_script_dir}/testing -name 'hygiene*.sparql' -print
   find ${glossary_script_dir}/testing -name 'hygiene*.sparql' \
-    -exec /usr/local/jena/bin/arq --data="${tag_root}/fibo-v.ttl" --query={} \;
+    -exec ${jena_arq} --data="${tag_root}/fibo-v.ttl" --query={} \;
 
   gzip --best --stdout "${tag_root}/fibo-v.ttl" > "${tag_root}/fibo-v.ttl".gz
 
