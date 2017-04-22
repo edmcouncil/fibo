@@ -408,16 +408,22 @@ function storeVersionInStardog() {
   ${stardog_vcs} tag --create $JIRA_ISSUE --version $SVERSION ${GIT_BRANCH}
 }
 
-function convertRdfXmlTo() {
+function convertRdfFileTo() {
 
-  local rdfFile="$1"
-  local targetFormat="$2"
+  local sourceFormat="$1"
+  local rdfFile="$2"
+  local targetFormat="$3"
   local rdfFileNoExtension="${rdfFile/.rdf/}"
+  local rdfFileNoExtension="${rdfFileNoExtension/.ttl/}"
+  local rdfFileNoExtension="${rdfFileNoExtension/.jsonld/}"
   local targetFile="${rdfFileNoExtension}"
   local rc=0
-  local logfile=$(mktemp ${tmp_dir}/convertRdfXmlTo.XXXXXX)
+  local logfile=$(mktemp ${tmp_dir}/convertRdfFileTo.XXXXXX)
 
   case ${targetFormat} in
+    rdf-xml)
+      targetFile="${targetFile}.rdf"
+      ;;
     json-ld)
       targetFile="${targetFile}.jsonld"
       ;;
@@ -433,9 +439,9 @@ function convertRdfXmlTo() {
   java \
     -jar "${rdftoolkit_jar}" \
     --source "${rdfFile}" \
-    --source-format rdf-xml \
+    --source-format "${sourceFormat}" \
     --target "${targetFile}" \
-    --target-format ${targetFormat} \
+    --target-format "${targetFormat}" \
     > "${logfile}" 2>&1
   rc=$?
 
@@ -464,7 +470,22 @@ function ontologyConvertRdfToAllFormats() {
 
   for rdfFile in **/*.rdf ; do
     for format in json-ld turtle ; do
-      convertRdfXmlTo "${rdfFile}" "${format}" || return $?
+      convertRdfFileTo rdf-xml "${rdfFile}" "${format}" || return $?
+    done || return $?
+  done || return $?
+
+  popd
+
+  return $?
+}
+
+function glossaryConvertTurtleToAllFormats() {
+
+  pushd "${tag_root}"
+
+  for ttlFile in **/*.ttl ; do
+    for format in json-ld rdf-xml ; do
+      convertRdfFileTo turtle "${ttlFile}" "${format}" || return $?
     done || return $?
   done || return $?
 
@@ -579,13 +600,11 @@ function glossaryGetPrefixes() {
   echo "Get prefixes"
 
   pushd ${ontology_product_tag_root}
-  grep -R --include "*.ttl" --no-filename "@prefix fibo-" | sort -u > "${tmp_dir}/prefixes"
+  grep -R --include "*.ttl" --no-filename "@prefix fibo-" | sort -u > "${tmp_dir}/prefixes.ttl"
   popd
 
-set +x
-
   echo "Found the following prefixes:"
-  cat "${tmp_dir}/prefixes"
+  cat "${tmp_dir}/prefixes.ttl"
 
   return 0
 }
@@ -753,16 +772,16 @@ function publishProductGlossary() {
   ${jena_arq}  \
     --data="${tmp_dir}/fibo-v1.ttl" \
     --query="${glossary_script_dir}/echo.sparql" \
-    --results=TTL > "${tag_root}/fibo-v.ttl"
+    --results=TTL > "${tmp_dir}/fibo-v.ttl"
 
   #
   # Adjust namespaces
   #
-  ${jena_riot} "${tag_root}/fibo-v.ttl" > "${tag_root}/fibo-v.nt"
+  ${jena_riot} "${tmp_dir}/fibo-v.ttl" > "${tmp_dir}/fibo-v.nt"
   cat \
-    "${glossary_script_dir}/basicprefixes" \
-    "${tmp_dir}/prefixes" \
-    "${tag_root}/fibo-v.nt" | \
+    "${glossary_script_dir}/basic-prefixes.ttl" \
+    "${tmp_dir}/prefixes.ttl" \
+    "${tmp_dir}/fibo-v.nt" | \
   ${jena_riot} \
     --syntax=turtle \
     --output=turtle > \
@@ -771,12 +790,16 @@ function publishProductGlossary() {
   #
   # JG>Dean I didn't find any hygiene*.sparql files anywhere
   #
-  echo "Running tests"
-  find ${glossary_script_dir}/testing -name 'hygiene*.sparql' -print
-  find ${glossary_script_dir}/testing -name 'hygiene*.sparql' \
-    -exec ${jena_arq} --data="${tag_root}/fibo-v.ttl" --query={} \;
+#  echo "Running tests"
+#  find ${glossary_script_dir}/testing -name 'hygiene*.sparql' -print
+#  find ${glossary_script_dir}/testing -name 'hygiene*.sparql' \
+#    -exec ${jena_arq} --data="${tag_root}/fibo-v.ttl" --query={} \;
 
-  gzip --best --stdout "${tag_root}/fibo-v.ttl" > "${tag_root}/fibo-v.ttl".gz
+  glossaryConvertTurtleToAllFormats || return $?
+
+  gzip --best --stdout "${tag_root}/fibo-v.ttl" > "${tag_root}/fibo-v.ttl.gz"
+  gzip --best --stdout "${tag_root}/fibo-v.rdf" > "${tag_root}/fibo-v.rdf.gz"
+  gzip --best --stdout "${tag_root}/fibo-v.jsonld" > "${tag_root}/fibo-v.jsonld.gz"
 
   echo "Finished publishing the Glossary Product"
 
