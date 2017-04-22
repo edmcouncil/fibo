@@ -249,6 +249,10 @@ __HERE__
   )
 }
 
+#
+# Copy all publishable files from the fibo repo to the appropriate target directory (${tag_root})
+# where they will be converted to publishable artifacts
+#
 function ontologyCopyRdfToTarget() {
 
   echo "Copying all artifacts that we publish straight from git into target directory"
@@ -282,16 +286,19 @@ function ontologyCopyRdfToTarget() {
   #
   # Clean up a few things
   #
-  rm -vrf ${tag_root}/etc/cm # >/dev/null 2>&1
-  rm -vrf ${tag_root}/etc/source # >/dev/null 2>&1
-  rm -vrf ${tag_root}/etc/infra # >/dev/null 2>&1
-  rm -vrf ${tag_root}/etc/image # >/dev/null 2>&1
-  rm -vrf ${tag_root}/etc/odm # >/dev/null 2>&1
-  rm -vrf ${tag_root}/etc/uml # >/dev/null 2>&1
-  rm -vrf ${tag_root}/etc/process # >/dev/null 2>&1
-  rm -vrf ${tag_root}/etc/operational # >/dev/null 2>&1
-  rm -vrf ${tag_root}/**/archive # >/dev/null 2>&1
-  rm -vrf ${tag_root}/**/Bak # >/dev/null 2>&1
+  rm -vrf ${tag_root}/etc >/dev/null 2>&1
+#  rm -vrf ${tag_root}/etc/cm >/dev/null 2>&1
+#  rm -vrf ${tag_root}/etc/source >/dev/null 2>&1
+#  rm -vrf ${tag_root}/etc/infra >/dev/null 2>&1
+#  rm -vrf ${tag_root}/etc/image >/dev/null 2>&1
+#  rm -vrf ${tag_root}/etc/spec >/dev/null 2>&1
+#  rm -vrf ${tag_root}/etc/testing >/dev/null 2>&1
+#  rm -vrf ${tag_root}/etc/odm >/dev/null 2>&1
+#  rm -vrf ${tag_root}/etc/uml >/dev/null 2>&1
+#  rm -vrf ${tag_root}/etc/process >/dev/null 2>&1
+#  rm -vrf ${tag_root}/etc/operational >/dev/null 2>&1
+  rm -vrf ${tag_root}/**/archive >/dev/null 2>&1
+  rm -vrf ${tag_root}/**/Bak >/dev/null 2>&1
 
   find ${tag_root}
 
@@ -477,6 +484,9 @@ function copySiteFiles() {
     cd ${fibo_infra_root}/site
     cp -vr * "${spec_root}/"
   )
+  cp -v ${fibo_infra_root}/LICENSE ${spec_root}
+
+  return 0
 }
 
 function publishProductOntology() {
@@ -510,20 +520,22 @@ function glossaryGetModules() {
   require ontology_product_tag_root || return $?
 
   echo "Query the skosify.ttl file for the list of modules (TODO: Should come from rdf-toolkit.ttl)"
-  set -x
+
   ${jena_arq} \
     --results=CSV \
     --data="${glossary_script_dir}/skosify.ttl" \
     --query="${glossary_script_dir}/get-module.sparql" | grep -v list > \
     "${tmp_dir}/module"
-  echo rc=$?
+
+  if [ ${PIPESTATUS[0]} -ne 0 ] ; then
+    error "Could not get modules"
+    return 1
+  fi
 
   cat ${tmp_dir}/module
   export modules="$(< ${tmp_dir}/module)"
 
   export module_directories="$(for module in ${modules} ; do echo -n "${ontology_product_tag_root}/${module} " ; done)"
-
-  set +x
 
   echo "Found the following modules:"
   echo ${modules}
@@ -546,17 +558,17 @@ function glossaryGetPrefixes() {
   require modules || return $?
 
   (
+    cd "${ontology_product_tag_root}" || return $?
     set -x
-    cd ${ontology_product_tag_root} || return $?
-    find ${modules} \
+    find ${module_directories} \
       -name '*.rdf' -not -name 'About*' \
-      -exec ${glossary_script_dir}/makepx.sh \{} \; > \
-      ${tmp_dir}/prefixes
+      -exec "${glossary_script_dir}/makepx.sh" \{} \; > \
+      "${tmp_dir}/prefixes"
   )
   [ $? -ne 0 ] && return 1
 
   echo "Found the following prefixes:"
-  cat ${tmp_dir}/prefixes
+  cat "${tmp_dir}/prefixes"
 
   return 0
 }
