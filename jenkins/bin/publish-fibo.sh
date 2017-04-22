@@ -258,47 +258,47 @@ __HERE__
 #
 function ontologyCopyRdfToTarget() {
 
+  local module
+  local upperModule
+
   echo "Copying all artifacts that we publish straight from git into target directory"
 
-  (
-    cd ${fibo_root}
-    #
-    # Don' copy all files with all extensions at the same time since it gives nasty errors when files without the
-    # given extension are not found.
-    #
-    for extension in rdf ttl md jpg png gif docx pdf sq ; do
-      echo "Copying fibo/**/*.${extension} to ${tag_root/${WORKSPACE}}"
-      cp **/*.${extension} --parents ${tag_root}/
-    done
+  pushd ${fibo_root}
+  #
+  # Don' copy all files with all extensions at the same time since it gives nasty errors when files without the
+  # given extension are not found.
+  #
+  for extension in rdf ttl md jpg png gif docx pdf sq ; do
+    echo "Copying fibo/**/*.${extension} to ${tag_root/${WORKSPACE}}"
+    cp **/*.${extension} --parents ${tag_root}/
+  done
 
-    #cp **/*.{rdf,ttl,md,jpg,png,docx,pdf,sq} --parents ${tag_root}/
-  )
+  #cp **/*.{rdf,ttl,md,jpg,png,docx,pdf,sq} --parents ${tag_root}/
+  popd
 
   #
   # Rename the lower case module directories as we have them in the fibo git repo to
   # upper case directory names as we serve them on spec.edmcouncil.org
   #
-  (
-    cd ${tag_root}
-    for module in * ; do
-      [ -d ${module} ] || continue
-      [ "${module}" == "etc" ] && continue
-      [ "${module}" == "ext" ] && continue
-      upperModule=$(echo ${module} | tr '[:lower:]' '[:upper:]')
-      [ "${module}" == "${upperModule}" ] && continue
-      mv ${module} ${upperModule}
-    done
-    modules=""
-    module_directories=""
-    for module in * ; do
-      [ -d ${module} ] || continue
-      [ "${module}" == "etc" ] && continue
-      [ "${module}" == "ext" ] && continue
-      modules="${modules} ${module}"
-      module_directories="${modules_directories} $(pwd)/${module}"
-    done
-
-  )
+  pushd ${tag_root}
+  for module in * ; do
+    [ -d ${module} ] || continue
+    [ "${module}" == "etc" ] && continue
+    [ "${module}" == "ext" ] && continue
+    upperModule=$(echo ${module} | tr '[:lower:]' '[:upper:]')
+    [ "${module}" == "${upperModule}" ] && continue
+    mv ${module} ${upperModule}
+  done
+  modules=""
+  module_directories=""
+  for module in * ; do
+    [ -d ${module} ] || continue
+    [ "${module}" == "etc" ] && continue
+    [ "${module}" == "ext" ] && continue
+    modules="${modules} ${module}"
+    module_directories="${modules_directories} $(pwd)/${module}"
+  done
+  popd
 
   #
   # Clean up a few things that are too embarrassing to publish
@@ -384,13 +384,12 @@ function ontologyConvertMarkdownToHtml() {
 
   echo "Convert Markdown to HTML"
 
-  (
-    cd "${tag_root}"
-    for markdownFile in **/*.md ; do
-      echo "Convert ${markdownFile} to html"
-      pandoc --standalone --from markdown --to html -o "${markdownFile/.md/.html}" "${markdownFile}"
-    done
-  )
+  pushd "${tag_root}"
+  for markdownFile in **/*.md ; do
+    echo "Convert ${markdownFile} to html"
+    pandoc --standalone --from markdown --to html -o "${markdownFile/.md/.html}" "${markdownFile}"
+  done
+  popd
 
   return 0
 }
@@ -459,15 +458,15 @@ function convertRdfXmlTo() {
 #
 function ontologyConvertRdfToAllFormats() {
 
-  (
-    cd "${tag_root}"
+  pushd "${tag_root}"
 
-    for rdfFile in **/*.rdf ; do
-      for format in json-ld turtle ; do
-        convertRdfXmlTo "${rdfFile}" "${format}" || return $?
-      done || return $?
+  for rdfFile in **/*.rdf ; do
+    for format in json-ld turtle ; do
+      convertRdfXmlTo "${rdfFile}" "${format}" || return $?
     done || return $?
-  )
+  done || return $?
+
+  popd
 
   return $?
 }
@@ -573,14 +572,17 @@ function glossaryGetPrefixes() {
   require glossary_script_dir || return $?
   require ontology_product_tag_root || return $?
   require modules || return $?
+  require module_directories || return $?
 
   echo "Get prefixes"
 
   rm -f "${tmp_dir}/prefixes"
   touch "${tmp_dir}/prefixes"
 
-  find ${module_directories} \
-    -name '*.ttl' -not -name 'About*'
+  for module_directory in ${module_directories} ; do
+    echo "Searching for prefixes in ${module_directory}:"
+    find ${module_directory} -name '*.ttl' -not -name 'About*'
+  done
 
 set -x
 
