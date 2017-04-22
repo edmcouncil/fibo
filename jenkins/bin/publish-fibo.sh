@@ -215,7 +215,7 @@ function initStardogVars() {
 #
 # TODO: Should be done for each serialization format
 #
-function createAboutFile () {
+function ontologyCreateAboutFiles () {
 
   local tmpAboutFile="$(mktemp ${tmp_dir}/ABOUT.XXXXXX.ttl)"
   local echoq="$(mktemp ${tmp_dir}/echo.sparqlXXXXXX)"
@@ -249,7 +249,7 @@ __HERE__
   )
 }
 
-function copyRdfToTarget() {
+function ontologyCopyRdfToTarget() {
 
   echo "Copying all artifacts that we publish straight from git into target directory"
 
@@ -282,14 +282,14 @@ function copyRdfToTarget() {
   #
   # Clean up a few things
   #
-  rm -v ${tag_root}/etc/cm # >/dev/null 2>&1
-  rm -v ${tag_root}/etc/source # >/dev/null 2>&1
-  rm -v ${tag_root}/etc/infra # >/dev/null 2>&1
-  rm -v ${tag_root}/etc/image # >/dev/null 2>&1
-  rm -v ${tag_root}/etc/odm # >/dev/null 2>&1
-  rm -v ${tag_root}/etc/uml # >/dev/null 2>&1
-  rm -v ${tag_root}/etc/process # >/dev/null 2>&1
-  rm -v ${tag_root}/etc/operational # >/dev/null 2>&1
+  rm -vrf ${tag_root}/etc/cm # >/dev/null 2>&1
+  rm -vrf ${tag_root}/etc/source # >/dev/null 2>&1
+  rm -vrf ${tag_root}/etc/infra # >/dev/null 2>&1
+  rm -vrf ${tag_root}/etc/image # >/dev/null 2>&1
+  rm -vrf ${tag_root}/etc/odm # >/dev/null 2>&1
+  rm -vrf ${tag_root}/etc/uml # >/dev/null 2>&1
+  rm -vrf ${tag_root}/etc/process # >/dev/null 2>&1
+  rm -vrf ${tag_root}/etc/operational # >/dev/null 2>&1
   rm -vrf ${tag_root}/**/archive # >/dev/null 2>&1
   rm -vrf ${tag_root}/**/Bak # >/dev/null 2>&1
 
@@ -298,7 +298,7 @@ function copyRdfToTarget() {
   return 0
 }
 
-function searchAndReplaceStuffInRdf() {
+function ontologySearchAndReplaceStuff() {
 
   echo "Replacing stuff in RDF files"
 
@@ -356,7 +356,7 @@ __HERE__
   return 0
 }
 
-function convertMarkdownToHtml() {
+function ontologyConvertMarkdownToHtml() {
 
   echo "Convert Markdown to HTML"
 
@@ -433,7 +433,7 @@ function convertRdfXmlTo() {
 #
 # https://github.com/edmcouncil/rdf-toolkit/blob/master/docs/SesameRdfFormatter.md
 #
-function convertRdfXmlToAllFormats() {
+function ontologyConvertRdfToAllFormats() {
 
   (
     cd "${tag_root}"
@@ -485,19 +485,11 @@ function publishProductOntology() {
 
   setProduct ontology || return $?
 
-  #
-  # Remove any content of previous run
-  #
-  rm -rf ${tag_root}/* >/dev/null 2>&1
-
-  copyRdfToTarget || return $?
-  createAboutFile || return $?
-  #storeVersionInStardog || return $?
-  searchAndReplaceStuffInRdf || return $?
-
-  convertRdfXmlToAllFormats || return $?
-
-  convertMarkdownToHtml || return $?
+  ontologyCopyRdfToTarget || return $?
+  ontologyCreateAboutFiles || return $?
+  ontologySearchAndReplaceStuff || return $?
+  ontologyConvertRdfToAllFormats || return $?
+  ontologyConvertMarkdownToHtml || return $?
 
   return 0
 }
@@ -529,7 +521,7 @@ function glossaryGetModules() {
   cat ${tmp_dir}/module
   export modules="$(< ${tmp_dir}/module)"
 
-  export module_directories=$(for module in ${modules} ; do echo ${ontology_product_tag_root}/module ; done)
+  export module_directories="$(for module in ${modules} ; do echo -n "${ontology_product_tag_root}/${module} " ; done)"
 
   set +x
 
@@ -565,6 +557,61 @@ function glossaryGetPrefixes() {
 
   echo "Found the following prefixes:"
   cat ${tmp_dir}/prefixes
+
+  return 0
+}
+
+#
+# 3) Gather up all the RDF files in those modules.  Include skosify.ttl, since that has the rules
+#
+# Generates tmp_dir/temp0.ttl
+#
+function glossaryGetOntologies() {
+
+  require glossary_script_dir || return $?
+  require module_directories || return $?
+
+  ${jena_arq} \
+    $(find  ${module_directories} -name "*.rdf" | sed "s/^/--data=/") \
+    --data="${glossary_script_dir}/skosify.ttl" \
+    --data="${glossary_script_dir}/datatypes.rdf" \
+    --query="${glossary_script_dir}/skosecho.sparql" \
+    --results=TTL > "${tmp_dir}/temp0.ttl"
+
+#  ${jena_arq} \
+#    $(find  ${module_directories} -name "*.rdf" | sed "s/^/--data=/") \
+#    --data="${glossary_script_dir}/datatypes.rdf" \
+#    --query="${glossary_script_dir}/skosecho.sparql" \
+#    --results=TTL > ${tmp_dir}/MergedOWL.ttl
+
+  echo "Generated ${tmp_dir}/temp0.ttl:"
+
+  cat "${tmp_dir}/temp0.ttl"
+
+  return 0
+}
+
+#
+# Run SPIN
+#
+# JG>WHat does this do?
+#
+# Generates tmp_dir/temp1.ttl
+#
+function glossaryRunSpin() {
+
+  echo "STARTING SPIN"
+
+  java \
+    -Xmx1024M -Dlog4j.configuration="${JENAROOT}/jena-log4j.properties" \
+    -cp "${fibo_infra_root}/lib:${JENAROOT}/lib/*:${fibo_infra_root}/lib/SPIN/spin-1.3.3.jar" \
+    org.topbraid.spin.tools.RunInferences \
+    http://example.org/example \
+    "${tmp_dir}/temp0.ttl" > "${tmp_dir}/temp1.ttl"
+
+  echo "Generated ${tmp_dir}/temp1.ttl:"
+
+  cat "${tmp_dir}/temp1.ttl"
 
   return 0
 }
@@ -607,31 +654,8 @@ function publishProductGlossary() {
 
   glossaryGetModules || return $?
   glossaryGetPrefixes || return $?
-
-  #
-  # 3) Gather up all the RDF files in those modules.  Include skosify.ttl, since that has the rules
-  #
-  ${jena_arq} \
-    $(find  ${module_directories} -name "*.rdf" | sed "s/^/--data=/") \
-    --data="${glossary_script_dir}/skosify.ttl" \
-    --data="${glossary_script_dir}/datatypes.rdf" \
-    --query="${glossary_script_dir}/skosecho.sparql" \
-    --results=TTL > "${tmp_dir}/temp.ttl"
-
-#  ${jena_arq} \
-#    $(find  ${module_directories} -name "*.rdf" | sed "s/^/--data=/") \
-#    --data="${glossary_script_dir}/datatypes.rdf" \
-#    --query="${glossary_script_dir}/skosecho.sparql" \
-#    --results=TTL > ${tmp_dir}/MergedOWL.ttl
-
-  echo "STARTING SPIN"
-
-  java \
-    -Xmx1024M -Dlog4j.configuration="${JENAROOT}/jena-log4j.properties" \
-    -cp "${fibo_infra_root}/lib:${JENAROOT}/lib/*:${fibo_infra_root}/lib/SPIN/spin-1.3.3.jar" \
-    org.topbraid.spin.tools.RunInferences \
-    http://example.org/example \
-    "${tmp_dir}/temp.ttl" > "${tmp_dir}/temp1.ttl"
+  glossaryGetOntologies || return $?
+  glossaryRunSpin || return $?
 
   #
   # 4) Run the schemify rules.  This adds a ConceptScheme to the output.
@@ -698,10 +722,15 @@ function publishProductGlossary() {
 
 function main() {
 
+  (
+    set -x
+    rm -rf "${spec_root}"
+    mkdir -p "${spec_root}"
+  )
+
   initWorkspaceVars || return $?
   initGitVars || return $?
   initJiraVars || return $?
-  #initStardogVars || return $?
 
   for product in ${products} ; do
     case ${product} in
