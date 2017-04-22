@@ -18,7 +18,7 @@ jena_arq=""
 #
 # The products that we generate the artifacts for with this script
 #
-products="ontology glossary"
+products="glossary ontology"
 
 spec_root="${WORKSPACE}/target"
 family_root="${spec_root}/fibo"
@@ -69,7 +69,7 @@ function error() {
 
 function logRule() {
 
-  echo $(printf '=%.0s' {1..110}) $@ >&2
+  echo $(printf '=%.0s' {1..40}) $@ >&2
 }
 
 function initWorkspaceVars() {
@@ -266,14 +266,13 @@ function copyRdfToTarget() {
 
   (
     cd ${tag_root}
-    for domain in * ; do
-      [ -d ${domain} ] || continue
-      [ "${domain}" == "etc" ] && continue
-      [ "${domain}" == "ext" ] && continue
-      upperDomain=$(echo ${domain} | tr '[:lower:]' '[:upper:]')
-      [ "${domain}" == "${upperDomain}" ] && continue
-      echo Domain is ${domain} should be ${upperDomain}
-      mv ${domain} ${upperDomain}
+    for module in * ; do
+      [ -d ${module} ] || continue
+      [ "${module}" == "etc" ] && continue
+      [ "${module}" == "ext" ] && continue
+      upperModule=$(echo ${module} | tr '[:lower:]' '[:upper:]')
+      [ "${module}" == "${upperModule}" ] && continue
+      ( set -x ; mv -v ${module} ${upperModule} )
     done
   )
 
@@ -284,6 +283,10 @@ function copyRdfToTarget() {
   rm -v ${tag_root}/etc/source   >/dev/null 2>&1
   rm -v ${tag_root}/etc/infra >/dev/null 2>&1
   rm -vrf ${tag_root}/**/archive >/dev/null 2>&1
+
+  find ${tag_root}
+
+  return 0
 }
 
 function searchAndReplaceStuffInRdf() {
@@ -491,7 +494,7 @@ function publishProductOntology() {
 # The translation proceeds with the following steps:
 #
 # 1) Start the output with the standard prefixes.  They are in a file called skosprefixes.
-# 2) Determine which modules will be included. They are kept on a property called <http://www.edmcouncil.org/skosify#domain> in skosify.ttl
+# 2) Determine which modules will be included. They are kept on a property called <http://www.edmcouncil.org/skosify#module> in skosify.ttl
 # 3) Gather up all the RDF files in those modules
 # 4) Run the shemify rules.  This adds a ConceptScheme to the output.
 # 5) Merge the ConceptScheme triples with the SKOS triples
@@ -520,34 +523,34 @@ function publishProductGlossary() {
 
   #
   # 1) Determine which modules will be included. They are kept on a property
-  #    called <http://www.edmcouncil.org/skosify#domain> in skosify.ttl
+  #    called <http://www.edmcouncil.org/skosify#module> in skosify.ttl
   #
   # JG>Apache jena3 is also installed on the Jenkins server itself, so maybe
   #    no need to have this in the fibs-infra repo.
   #
   chmod a+x ${jena_bin}/bin/*
 
-  ${jena_arq} --data=./skosify.ttl --query=./getdomain.sq > domain
-  export domains=../../../$(grep \" domain | sed s/^[^\"]*\"// | sed s/\".*$// | sed "s/ / ..\/..\/..\//g")
-  echo $domains
+  ${jena_arq} --data=./skosify.ttl --query=./getmodule.sq > module
+  export modules=../../../$(grep \" module | sed s/^[^\"]*\"// | sed s/\".*$// | sed "s/ / ..\/..\/..\//g")
+  echo $modules
 
   #
   # 2) Compute the prefixes we'll need.
   #
   chmod a+x makepx.sh
-  find $domains -name '*.rdf' -not -name 'About*' -exec ./makepx.sh \{} \;  > ${tag_root}/prefixes
+  find $modules -name '*.rdf' -not -name 'About*' -exec ./makepx.sh \{} \;  > ${tag_root}/prefixes
 
   #
   # 3) Gather up all the RDF files in those modules.  Include skosify.ttl, since that has the rules
   #
   ${jena_arq} \
-    $(find  $domains -name "*.rdf" | sed "s/^/--data=/") \
+    $(find  $modules -name "*.rdf" | sed "s/^/--data=/") \
     --data=skosify.ttl --data=datatypes.rdf \
     --query=skosecho.sq \
     --results=TTL > ${tag_root}/temp.ttl
 
   ${jena_arq} \
-    $(find  $domains -name "*.rdf" | sed "s/^/--data=/") \
+    $(find  $modules -name "*.rdf" | sed "s/^/--data=/") \
     --data=datatypes.rdf \
     --query=skosecho.sq \
     --results=TTL > ${tag_root}/MergedOWL.ttl
@@ -611,7 +614,7 @@ function publishProductGlossary() {
   rm ${tag_root}/tc.ttl
   # rm fibo-uc.ttl
   # rm fibo-v1.ttl
-  rm domain
+  rm module
 
   #
   # JG>Dean I didn't find any hygiene*.sq files anywhere
