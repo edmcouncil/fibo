@@ -8,9 +8,6 @@
 # - fibo-infra (in ${WORKSPACE}/fibo-infra directory)
 #
 #
-
-echo "This is the version for INFRA-143"
-
 tmp_dir="${WORKSPACE}/tmp"
 fibo_root=""
 fibo_infra_root=""
@@ -71,7 +68,13 @@ function initWorkspaceVars() {
     return 1
   fi
 
-  jena_arq="${fibo_infra_root}/bin/apache-jena-3.0.1/bin/arq"
+  #
+  # We should install Jena on the Jenkins server and not have it in the git-repo, takes up too much space for each
+  # release of Jena
+  #
+  jena_bin="${fibo_infra_root}/bin/apache-jena-3.0.1/bin"
+  jena_arq="${jena_bin}/arq"
+  jena_riot="${jena_bin}/riot"
 
   if [ ! -f "${jena_arq}" ] ; then
     echo "ERROR: ${jena_arq} not found"
@@ -400,6 +403,203 @@ function copySiteFiles() {
     cd ${fibo_infra_root}/site
     cp -vr * "${spec_root}/"
   )
+}
+
+#
+# Turns FIBO in to FIBO-V
+#
+# The translation proceeds with the following steps:
+#
+# 1) Start the output with the standard prefixes.  They are in a file called skosprefixes.
+# 2) Determine which modules will be included. They are kept on a property called <http://www.edmcouncil.org/skosify#domain> in skosify.ttl
+# 3) Gather up all the RDF files in those modules
+# 4) Run the shemify rules.  This adds a ConceptScheme to the output.
+# 5) Merge the ConceptScheme triples with the SKOS triples
+# 6) Convert upper cases.  We have different naming standards in FIBO-V than in FIBO.
+# 7) Remove all temp files.
+#
+# The output is in .ttl form in a file called fibo-v.ttl
+#
+function publishVocabulary() {
+
+  cd fibo/etc/infra/SKOS-conversion
+
+  #
+  # 1) Start the output with the standard prefixes.  They are in a file called skosprefixes.
+  #
+  pwd
+  ls
+
+  echo "# baseURI: https://spec.edmcouncil.org/fibo/vocabulary" > fibo-v1.ttl
+  #cat skosprefixes >> fibo-v1.ttl
+  # echo $JENA_HOME
+
+  #
+  # 1) Determine which modules will be included. They are kept on a property
+  #    called <http://www.edmcouncil.org/skosify#domain> in skosify.ttl
+  #
+  # JG>Apache jena3 is also installed on the Jenkins server itself, so maybe
+  #    no need to have this in the fibs-infra repo.
+  #
+  chmod a+x ${fibo_infra_root}/bin/apache-jena-3.0.0/bin/*
+
+  ${jena_arq} --data=./skosify.ttl --query=./getdomain.sq > domain
+  export domains=../../../$(grep \" domain | sed s/^[^\"]*\"// | sed s/\".*$// | sed "s/ / ..\/..\/..\//g")
+  echo $domains
+
+  #
+  # 2) Compute the prefixes we'll need.
+  #
+
+  chmod a+x makepx.sh
+  find $domains -name '*.rdf' -not -name 'About*' -exec ./makepx.sh \{} \;  > prefixes
+
+
+  #
+  # 3) Gather up all the RDF files in those modules.  Include skosify.ttl, since that has the rules
+  #
+  ${jena_arq} \
+    $(find  $domains -name "*.rdf" | sed "s/^/--data=/") \
+    --data=skosify.ttl --data=datatypes.rdf \
+    --query=skosecho.sq \
+    --results=TTL > temp.ttl
+
+  ${jena_arq} \
+    $(find  $domains -name "*.rdf" | sed "s/^/--data=/") \
+    --data=datatypes.rdf \
+    --query=skosecho.sq \
+    --results=TTL > MergedOWL.ttl
+
+  echo "STARTING SPIN"
+  export JENAROOT=$(realpath ../../../../fibo-infra/bin/apache-jena-2.11.0)
+
+
+  java \
+    -Xmx1024M -Dlog4j.configuration="$JENAROOT/jena-log4j.properties" \
+    -cp "${fibo_infra_root}/lib:$JENAROOT/lib/*:${fibo_infra_root}/lib/SPIN/spin-1.3.3.jar" \
+    org.topbraid.spin.tools.RunInferences \
+    http://example.org/example \
+    temp.ttl > temp1.ttl
+
+  #
+  # 4) Run the schemify rules.  This adds a ConceptScheme to the output.
+  #
+  ${jena_arq} \
+    --data=temp1.ttl \
+    --data=schemify.ttl \
+    --query=skosecho.sq \
+    --results=TTL > temp2.ttl
+
+  java -Xmx1024M -Dlog4j.configuration="file:$JENAROOT/jena-log4j.properties" -cp "$JENAROOT/lib/*:${fibo_infra_root}/lib:${fibo_infra_root}/lib/SPIN/spin-1.3.3.jar" org.topbraid.spin.tools.RunInferences http://example.org/example temp2.ttl >> tc.ttl
+
+  echo "ENDING SPIN"
+  #
+  # 5) Merge the ConceptScheme triples with the SKOS triples
+  #
+  ${jena_arq}  \
+    --data=tc.ttl \
+    --data=temp1.ttl \
+    --query=echo.sq \
+    --results=TTL > fibo-uc.ttl
+  #
+  # 6) Convert upper cases.  We have different naming standards in FIBO-V than in FIBO.
+  #
+  cat fibo-uc.ttl | sed "s/uc(\([^)]*\))/\U\1/g" >> fibo-v1.ttl
+  ${jena_arq}  \
+    --data=fibo-v1.ttl \
+    --query=echo.sq \
+    --results=TTL > fibo-v.ttl
+
+
+  #
+  # Adjust namespaces
+  #
+
+
+  ${jena_riot} fibo-v.ttl > fibo-v.nt
+  cat basicprefixes  prefixes fibo-v.nt | ${jena_riot} --syntax=turtle --output=turtle > fibo-v.ttl
+
+
+  #
+  # 7) Remove all temp files.
+  # rm temp.ttl
+  # rm temp1.ttl
+  rm temp2.ttl
+  rm tc.ttl
+  # rm fibo-uc.ttl
+  # rm fibo-v1.ttl
+  rm domain
+  #
+  # 8) Copy the final file over to the fibo-vocabulary repository
+  #
+  # JG>Why do we have another git repo for that? A generated file in a git repo???
+  #
+  # Find the name of the branch you are in now
+  #
+  echo ${GIT_BRANCH}
+  echo ${GIT_URL_1}
+  echo ${GIT_URL_2}
+  echo ${GIT_URL}
+  export repo=`echo ${GIT_URL} | sed  's!^.*/\(.*\)/fibo.git!\1!'`
+
+  echo ${repo}
+
+  # Go back to the workspace root
+  cd ../../../..
+  export root=$(realpath .)
+
+  #
+  # JG>If you have to work with this repo anyway then why not add it in the list of
+  #    repo's in the Jenkins job configuration and use Jenkins credentials for it?
+  #    (rather then user:password)
+  #
+  if [ ! -d fibo-vocabulary ]; then
+   git clone https://user:password@github.com/edmcouncil/fibo-vocabulary.git
+  fi
+
+  cd fibo-vocabulary
+  git pull
+
+
+  #
+  # JG>This suppresses a git error message
+  #
+  git config --global push.default simple
+
+  [ -d ${repo}/${GIT_BRANCH} ] || mkdir -p ${repo}/${GIT_BRANCH}
+  cd ${repo}/${GIT_BRANCH}
+
+  #
+  # JG>What if the file already exists? The mv will fail then.
+  #
+
+  echo "Running tests"
+  find $root/fibo/etc/infra/SKOS-conversion/testing -name 'hygiene*.sq' -print
+  find $root/fibo/etc/infra/SKOS-conversion/testing -name 'hygiene*.sq' -exec /usr/local/jena/bin/arq --data=$root/fibo/etc/infra/SKOS-conversion/fibo-v.ttl --query={} \;
+
+
+  mv $root/fibo/etc/infra/SKOS-conversion/fibo-v.ttl  .
+  git add fibo-v.ttl
+
+  git commit -am "Add skos files to repo"
+  git push
+
+  #
+  # JG>Added the stuff below, if you copy fibo-v.ttl to the root of the workspace,
+  #    and then publish it from there as a Jenkins artifact, then it will have
+  #    a stable URL that anyone can refer to. We can then forward all traffic
+  #    to https://spec.edmcouncil.org/fibo-v/blabla to that.
+  #
+  #    Both the .ttl and the .ttl.gz version are published. This are the URLs:
+  #
+  #    https://jenkins.edmcouncil.org/job/NewSKOSConversion/lastSuccessfulBuild/artifact/fibo-v.ttl
+  #    https://jenkins.edmcouncil.org/job/NewSKOSConversion/lastSuccessfulBuild/artifact/fibo-v.ttl.gz
+  #
+  rm -f ${WORKSPACE}/fibo-v.ttl*
+  cp fibo-v.ttl ${WORKSPACE}
+  cd ${WORKSPACE}
+  gzip --best --stdout fibo-v.ttl > fibo-v.ttl.gz
+
 }
 
 function main() {
