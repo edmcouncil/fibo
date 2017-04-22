@@ -50,6 +50,7 @@ function require() {
   local variableName="$1"
 
   export | grep -q "declare -x ${variableName}=" && return 0
+  declare | grep -q "^${variableName}="&& return 0
 
   set -- $(caller 0)
 
@@ -107,13 +108,12 @@ function initWorkspaceVars() {
   jena_bin="${fibo_infra_root}/bin/apache-jena-3.0.1/bin"
   jena_arq="${jena_bin}/arq"
   jena_riot="${jena_bin}/riot"
+  chmod a+x ${jena_bin}/*
 
   if [ ! -f "${jena_arq}" ] ; then
     echo "ERROR: ${jena_arq} not found"
     return 1
   fi
-
-  chmod a+x "${jena_arq}"
 
   return 0
 }
@@ -494,6 +494,69 @@ function publishProductOntology() {
 }
 
 #
+# Called by publishProductGlossary(), sets the names of all modules in the global variable modules and their
+# root directories in the global variable module_directories
+#
+# 1) Determine which modules will be included. They are kept on a property
+#    called <http://www.edmcouncil.org/skosify#module> in skosify.ttl
+#
+# JG>Apache jena3 is also installed on the Jenkins server itself, so maybe
+#    no need to have this in the fibs-infra repo.
+#
+function glossaryGetModules() {
+
+  require glossary_script_dir || return $?
+  require ontology_product_tag_root || return $?
+
+  echo "Query the skosify.ttl file for the list of modules (TODO: Should come from rdf-toolkit.ttl)"
+  set -x
+  ${jena_arq} \
+    --data="${glossary_script_dir}/skosify.ttl" \
+    --query="${glossary_script_dir}/get-module.sparql" > \
+    "${tmp_dir}/module"
+  echo rc=$?
+
+  cat ${tmp_dir}/module
+  export modules="$(grep \" ${tmp_dir}/module | sed s/^[^\"]*\"// | sed s/\".*$// | sed "s/ / ..\/..\/..\//g")"
+
+  export module_directories=$(for module in ${modules} ; do echo ${ontology_product_tag_root}/module ; done)
+
+  set +x
+
+  echo "Found the following modules:"
+  echo ${modules}
+  echo "Using the following directories:"
+  echo ${module_directories}
+
+  return 0
+}
+
+#
+# 2) Compute the prefixes we'll need.
+#
+function glossaryGetPrefixes() {
+
+  require glossary_script_dir || return $?
+  require ontology_product_tag_root || return $?
+  require modules || return $?
+
+  (
+    set -x
+    cd ${ontology_product_tag_root} || return $?
+    find ${modules} \
+      -name '*.rdf' -not -name 'About*' \
+      -exec ${glossary_script_dir}/makepx.sh \{} \; > \
+      ${tmp_dir}/prefixes
+  )
+  [ $? -ne 0 ] && return 1
+
+  echo "Found the following prefixes:"
+  cat ${tmp_dir}/prefixes
+
+  return 0
+}
+
+#
 # Turns FIBO in to FIBO-V
 #
 # The translation proceeds with the following steps:
@@ -512,126 +575,106 @@ function publishProductGlossary() {
 
   logRule "Publishing the glossary product"
 
+  setProduct ontology
+  ontology_product_tag_root="${tag_root}"
+
   setProduct glossary || return $?
 
-  cd "${SCRIPT_DIR}/fibo-glossary" || return $?
+  cd "${glossary_script_dir}" || return $?
+  glossary_script_dir=$(pwd)
+  chmod a+x ./*.sh
 
   #
   # 1) Start the output with the standard prefixes.  They are in a file called skosprefixes.
   #
-  pwd
-  ls
+  echo "# baseURI: ${product_root_url}" > ${tmp_dir}/fibo-v1.ttl
+  #cat skosprefixes >> ${tmp_dir}/fibo-v1.ttl
 
-  echo "# baseURI: ${product_root_url}" > ${tag_root}/fibo-v1.ttl
-  #cat skosprefixes >> ${tag_root}/fibo-v1.ttl
-  # echo $JENA_HOME
-
-  #
-  # 1) Determine which modules will be included. They are kept on a property
-  #    called <http://www.edmcouncil.org/skosify#module> in skosify.ttl
-  #
-  # JG>Apache jena3 is also installed on the Jenkins server itself, so maybe
-  #    no need to have this in the fibs-infra repo.
-  #
-  chmod a+x ${jena_bin}/*
-  chmod a+x ./*.sh
-
-  set -x
-  ${jena_arq} --data=./skosify.ttl --query=./get-module.sparql > ${tmp_dir}/module
-  cat ${tmp_dir}/module
-  export modules=../../../$(grep \" ${tmp_dir}/module | sed s/^[^\"]*\"// | sed s/\".*$// | sed "s/ / ..\/..\/..\//g")
-  echo ${modules}
-
-  #
-  # 2) Compute the prefixes we'll need.
-  #
-  find ${modules} -name '*.rdf' -not -name 'About*' -exec ./makepx.sh \{} \;  > ${tmp_dir}/prefixes
+  glossaryGetModules || return $?
+  glossaryGetPrefixes || return $?
 
   #
   # 3) Gather up all the RDF files in those modules.  Include skosify.ttl, since that has the rules
   #
   ${jena_arq} \
     $(find  ${modules} -name "*.rdf" | sed "s/^/--data=/") \
-    --data=skosify.ttl --data=datatypes.rdf \
-    --query=skosecho.sparql \
-    --results=TTL > ${tag_root}/temp.ttl
+    --data="${glossary_script_dir}/skosify.ttl" \
+    --data="${glossary_script_dir}/datatypes.rdf" \
+    --query="${glossary_script_dir}/skosecho.sparql" \
+    --results=TTL > "${tmp_dir}/temp.ttl"
 
   ${jena_arq} \
     $(find  ${modules} -name "*.rdf" | sed "s/^/--data=/") \
-    --data=datatypes.rdf \
-    --query=skosecho.sparql \
+    --data="${glossary_script_dir}/datatypes.rdf" \
+    --query="${glossary_script_dir}/skosecho.sparql" \
     --results=TTL > ${tag_root}/MergedOWL.ttl
 
   echo "STARTING SPIN"
   export JENAROOT=$(cd ${jena_bin}/.. ; pwd -L)
 
   java \
-    -Xmx1024M -Dlog4j.configuration="$JENAROOT/jena-log4j.properties" \
-    -cp "${fibo_infra_root}/lib:$JENAROOT/lib/*:${fibo_infra_root}/lib/SPIN/spin-1.3.3.jar" \
+    -Xmx1024M -Dlog4j.configuration="${JENAROOT}/jena-log4j.properties" \
+    -cp "${fibo_infra_root}/lib:${JENAROOT}/lib/*:${fibo_infra_root}/lib/SPIN/spin-1.3.3.jar" \
     org.topbraid.spin.tools.RunInferences \
     http://example.org/example \
-    ${tag_root}/temp.ttl > ${tag_root}/temp1.ttl
+    "${tmp_dir}/temp.ttl" > "${tmp_dir}/temp1.ttl"
 
   #
   # 4) Run the schemify rules.  This adds a ConceptScheme to the output.
   #
   ${jena_arq} \
-    --data=${tag_root}/temp1.ttl \
-    --data=schemify.ttl \
-    --query=skosecho.sparql \
-    --results=TTL > ${tag_root}/temp2.ttl
+    --data="${tmp_dir}/temp1.ttl" \
+    --data="${glossary_script_dir}/schemify.ttl" \
+    --query="${glossary_script_dir}/skosecho.sparql" \
+    --results=TTL > "${tmp_dir}/temp2.ttl"
 
   java \
     -Xmx1024M \
-    -Dlog4j.configuration="file:$JENAROOT/jena-log4j.properties" \
-    -cp "$JENAROOT/lib/*:${fibo_infra_root}/lib:${fibo_infra_root}/lib/SPIN/spin-1.3.3.jar" \
+    -Dlog4j.configuration="file:${JENAROOT}/jena-log4j.properties" \
+    -cp "${JENAROOT}/lib/*:${fibo_infra_root}/lib:${fibo_infra_root}/lib/SPIN/spin-1.3.3.jar" \
     org.topbraid.spin.tools.RunInferences http://example.org/example \
-    ${tag_root}/temp2.ttl >> ${tag_root}/tc.ttl
+    "${tmp_dir}/temp2.ttl" >> "${tmp_dir}/tc.ttl"
 
   echo "ENDING SPIN"
   #
   # 5) Merge the ConceptScheme triples with the SKOS triples
   #
   ${jena_arq}  \
-    --data=${tag_root}/tc.ttl \
-    --data=${tag_root}/temp1.ttl \
+    --data="${tmp_dir}/tc.ttl" \
+    --data="${tmp_dir}/temp1.ttl" \
     --query=echo.sparql \
-    --results=TTL > ${tag_root}/fibo-uc.ttl
+    --results=TTL > "${tmp_dir}/fibo-uc.ttl"
   #
   # 6) Convert upper cases.  We have different naming standards in FIBO-V than in FIBO.
   #
-  cat ${tag_root}/fibo-uc.ttl | sed "s/uc(\([^)]*\))/\U\1/g" >> ${tag_root}/fibo-v1.ttl
+  cat "${tmp_dir}/fibo-uc.ttl" | sed "s/uc(\([^)]*\))/\U\1/g" >> ${tmp_dir}/fibo-v1.ttl
   ${jena_arq}  \
-    --data=${tag_root}/fibo-v1.ttl \
+    --data=${tmp_dir}/fibo-v1.ttl \
     --query=echo.sparql \
-    --results=TTL > ${tag_root}/fibo-v.ttl
+    --results=TTL > "${tag_root}/fibo-v.ttl"
 
   #
   # Adjust namespaces
   #
-  ${jena_riot} ${tag_root}/fibo-v.ttl > ${tag_root}/fibo-v.nt
-  cat basicprefixes  ${tmp_dir}/prefixes ${tag_root}/fibo-v.nt | \
-  ${jena_riot} --syntax=turtle --output=turtle > ${tag_root}/fibo-v.ttl
-
-  #
-  # 7) Remove all temp files.
-  # rm temp.ttl
-  # rm temp1.ttl
-  rm ${tag_root}/temp2.ttl
-  rm ${tag_root}/tc.ttl
-  # rm fibo-uc.ttl
-  # rm fibo-v1.ttl
-  rm module
+  ${jena_riot} "${tag_root}/fibo-v.ttl" > "${tag_root}/fibo-v.nt"
+  cat \
+    "${glossary_script_dir}/basicprefixes"
+    "${tmp_dir}/prefixes" \
+    "${tag_root}/fibo-v.nt" | \
+  ${jena_riot} \
+    --syntax=turtle \
+    --output=turtle > \
+    "${tag_root}/fibo-v.ttl"
 
   #
   # JG>Dean I didn't find any hygiene*.sparql files anywhere
   #
   echo "Running tests"
-  find ${SCRIPT_DIR}/fibo-glossary/testing -name 'hygiene*.sparql' -print
-  find ${SCRIPT_DIR}/fibo-glossary/testing -name 'hygiene*.sparql' \
-    -exec /usr/local/jena/bin/arq --data=${tag_root}/fibo-v.ttl --query={} \;
+  find ${glossary_script_dir}/testing -name 'hygiene*.sparql' -print
+  find ${glossary_script_dir}/testing -name 'hygiene*.sparql' \
+    -exec /usr/local/jena/bin/arq --data="${tag_root}/fibo-v.ttl" --query={} \;
 
-  gzip --best --stdout ${tag_root}/fibo-v.ttl > ${tag_root}/fibo-v.ttl.gz
+  gzip --best --stdout "${tag_root}/fibo-v.ttl" > "${tag_root}/fibo-v.ttl".gz
 
   echo "Finished publishing the Glossary Product"
 
