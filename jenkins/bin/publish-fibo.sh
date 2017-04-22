@@ -582,16 +582,6 @@ function glossaryGetPrefixes() {
 
 set +x
 
-#  (
-#    set -x
-#    cd "${ontology_product_tag_root}" || return $?
-#    find ${module_directories} \
-#      -name '*.rdf' -not -name 'About*' \
-#      -exec "${glossary_script_dir}/makepx.sh" \{} \; > \
-#      "${tmp_dir}/prefixes"
-#  )
-#  [ $? -ne 0 ] && return 1
-
   echo "Found the following prefixes:"
   cat "${tmp_dir}/prefixes"
 
@@ -608,9 +598,7 @@ function glossaryGetOntologies() {
   require glossary_script_dir || return $?
   require module_directories || return $?
 
-  echo "Get Ontologies"
-
-  set -x
+  echo "Get Ontologies into merged file (temp0.ttl)"
 
   ${jena_arq} \
     $(find  ${module_directories} -name "*.rdf" | sed "s/^/--data=/") \
@@ -626,15 +614,9 @@ function glossaryGetOntologies() {
 
   set +x
 
-#  ${jena_arq} \
-#    $(find  ${module_directories} -name "*.rdf" | sed "s/^/--data=/") \
-#    --data="${glossary_script_dir}/datatypes.rdf" \
-#    --query="${glossary_script_dir}/skosecho.sparql" \
-#    --results=TTL > ${tmp_dir}/MergedOWL.ttl
-
   echo "Generated ${tmp_dir}/temp0.ttl:"
 
-  cat "${tmp_dir}/temp0.ttl"
+  head -n200 "${tmp_dir}/temp0.ttl"
 
   return 0
 }
