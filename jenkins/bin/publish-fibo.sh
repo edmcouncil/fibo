@@ -585,7 +585,7 @@ function glossaryGetPrefixes() {
   while read prefixCmd prefix url ; do
     echo "prefixCmd=${prefixCmd} prefix=${prefix} url=${url}"
     echo "${prefixCmd} ${prefix} ${url}" >> "${tmp_dir}/prefixes"
-  end
+  done
 
 #  (
 #    set -x
