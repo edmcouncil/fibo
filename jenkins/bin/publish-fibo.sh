@@ -18,7 +18,7 @@ jena_arq=""
 #
 # The products that we generate the artifacts for with this script
 #
-products="ontology vocabulary"
+products="ontology glossary"
 
 spec_root="${WORKSPACE}/target"
 family_root="${spec_root}/fibo"
@@ -119,7 +119,7 @@ function initWorkspaceVars() {
 }
 
 #
-# Since this script deals with multiple products (ontology, vocabulary etc) we need to be able to switch back
+# Since this script deals with multiple products (ontology, glossary etc) we need to be able to switch back
 # and forth, call this function whenever you generate something for another product. The git branch and tag name
 # always remains the same though.
 #
@@ -500,13 +500,13 @@ function publishProductOntology() {
 #
 # The output is in .ttl form in a file called fibo-v.ttl
 #
-function publishProductVocabulary() {
+function publishProductGlossary() {
 
-  logRule "Publishing the vocabulary product"
+  logRule "Publishing the glossary product"
 
-  setProduct vocabulary || return $?
+  setProduct glossary || return $?
 
-  cd "${SCRIPT_DIR}/fibo-vocabulary" || return $?
+  cd "${SCRIPT_DIR}/fibo-glossary" || return $?
 
   #
   # 1) Start the output with the standard prefixes.  They are in a file called skosprefixes.
@@ -514,8 +514,8 @@ function publishProductVocabulary() {
   pwd
   ls
 
-  echo "# baseURI: ${product_root_url}" > fibo-v1.ttl
-  #cat skosprefixes >> fibo-v1.ttl
+  echo "# baseURI: ${product_root_url}" > ${tag_root}/fibo-v1.ttl
+  #cat skosprefixes >> ${tag_root}/fibo-v1.ttl
   # echo $JENA_HOME
 
   #
@@ -535,7 +535,7 @@ function publishProductVocabulary() {
   # 2) Compute the prefixes we'll need.
   #
   chmod a+x makepx.sh
-  find $domains -name '*.rdf' -not -name 'About*' -exec ./makepx.sh \{} \;  > prefixes
+  find $domains -name '*.rdf' -not -name 'About*' -exec ./makepx.sh \{} \;  > ${tag_root}/prefixes
 
   #
   # 3) Gather up all the RDF files in those modules.  Include skosify.ttl, since that has the rules
@@ -544,13 +544,13 @@ function publishProductVocabulary() {
     $(find  $domains -name "*.rdf" | sed "s/^/--data=/") \
     --data=skosify.ttl --data=datatypes.rdf \
     --query=skosecho.sq \
-    --results=TTL > temp.ttl
+    --results=TTL > ${tag_root}/temp.ttl
 
   ${jena_arq} \
     $(find  $domains -name "*.rdf" | sed "s/^/--data=/") \
     --data=datatypes.rdf \
     --query=skosecho.sq \
-    --results=TTL > MergedOWL.ttl
+    --results=TTL > ${tag_root}/MergedOWL.ttl
 
   echo "STARTING SPIN"
   export JENAROOT=$(cd ${jena_bin}/.. ; pwd -L)
@@ -560,90 +560,72 @@ function publishProductVocabulary() {
     -cp "${fibo_infra_root}/lib:$JENAROOT/lib/*:${fibo_infra_root}/lib/SPIN/spin-1.3.3.jar" \
     org.topbraid.spin.tools.RunInferences \
     http://example.org/example \
-    temp.ttl > temp1.ttl
+    ${tag_root}/temp.ttl > ${tag_root}/temp1.ttl
 
   #
   # 4) Run the schemify rules.  This adds a ConceptScheme to the output.
   #
   ${jena_arq} \
-    --data=temp1.ttl \
+    --data=${tag_root}/temp1.ttl \
     --data=schemify.ttl \
     --query=skosecho.sq \
-    --results=TTL > temp2.ttl
+    --results=TTL > ${tag_root}/temp2.ttl
 
   java \
     -Xmx1024M \
     -Dlog4j.configuration="file:$JENAROOT/jena-log4j.properties" \
     -cp "$JENAROOT/lib/*:${fibo_infra_root}/lib:${fibo_infra_root}/lib/SPIN/spin-1.3.3.jar" \
-    org.topbraid.spin.tools.RunInferences http://example.org/example temp2.ttl >> tc.ttl
+    org.topbraid.spin.tools.RunInferences http://example.org/example \
+    ${tag_root}/temp2.ttl >> ${tag_root}/tc.ttl
 
   echo "ENDING SPIN"
   #
   # 5) Merge the ConceptScheme triples with the SKOS triples
   #
   ${jena_arq}  \
-    --data=tc.ttl \
-    --data=temp1.ttl \
+    --data=${tag_root}/tc.ttl \
+    --data=${tag_root}/temp1.ttl \
     --query=echo.sq \
-    --results=TTL > fibo-uc.ttl
+    --results=TTL > ${tag_root}/fibo-uc.ttl
   #
   # 6) Convert upper cases.  We have different naming standards in FIBO-V than in FIBO.
   #
-  cat fibo-uc.ttl | sed "s/uc(\([^)]*\))/\U\1/g" >> fibo-v1.ttl
+  cat ${tag_root}/fibo-uc.ttl | sed "s/uc(\([^)]*\))/\U\1/g" >> ${tag_root}/fibo-v1.ttl
   ${jena_arq}  \
-    --data=fibo-v1.ttl \
+    --data=${tag_root}/fibo-v1.ttl \
     --query=echo.sq \
-    --results=TTL > fibo-v.ttl
+    --results=TTL > ${tag_root}/fibo-v.ttl
 
   #
   # Adjust namespaces
   #
-  ${jena_riot} fibo-v.ttl > fibo-v.nt
-  cat basicprefixes  prefixes fibo-v.nt | ${jena_riot} --syntax=turtle --output=turtle > fibo-v.ttl
+  ${jena_riot} ${tag_root}/fibo-v.ttl > ${tag_root}/fibo-v.nt
+  cat basicprefixes  prefixes ${tag_root}/fibo-v.nt | \
+  ${jena_riot} --syntax=turtle --output=turtle > ${tag_root}/fibo-v.ttl
 
   #
   # 7) Remove all temp files.
   # rm temp.ttl
   # rm temp1.ttl
-  rm temp2.ttl
-  rm tc.ttl
+  rm ${tag_root}/temp2.ttl
+  rm ${tag_root}/tc.ttl
   # rm fibo-uc.ttl
   # rm fibo-v1.ttl
   rm domain
-  #
-  # 8) Copy the final file over to the fibo-vocabulary repository
-  #
-  # JG>Why do we have another git repo for that? A generated file in a git repo???
-  #
-  # Find the name of the branch you are in now
-  #
-  echo ${GIT_BRANCH}
-  echo ${GIT_URL_1}
-  echo ${GIT_URL_2}
-  echo ${GIT_URL}
-  export repo=`echo ${GIT_URL} | sed  's!^.*/\(.*\)/fibo.git!\1!'`
-
-  echo ${repo}
-
-  # Go back to the workspace root
-  cd ${WORKSPACE}
 
   #
   # JG>Dean I didn't find any hygiene*.sq files anywhere
   #
   echo "Running tests"
-  find ${SCRIPT_DIR}/fibo-vocabulary/testing -name 'hygiene*.sq' -print
-  find ${SCRIPT_DIR}/fibo-vocabulary/testing -name 'hygiene*.sq' \
-    -exec /usr/local/jena/bin/arq --data=${SCRIPT_DIR}/fibo-vocabulary/fibo-v.ttl --query={} \;
+  find ${SCRIPT_DIR}/fibo-glossary/testing -name 'hygiene*.sq' -print
+  find ${SCRIPT_DIR}/fibo-glossary/testing -name 'hygiene*.sq' \
+    -exec /usr/local/jena/bin/arq --data=${tag_root}/fibo-v.ttl --query={} \;
 
+  gzip --best --stdout ${tag_root}/fibo-v.ttl > ${tag_root}/fibo-v.ttl.gz
 
-  mv ${SCRIPT_DIR}/fibo-vocabulary/fibo-v.ttl  .
+  echo "Finished publishing the Glossary Product"
 
-  rm -f ${WORKSPACE}/fibo-v.ttl*
-  cp fibo-v.ttl ${WORKSPACE}
-  cd ${WORKSPACE}
-  gzip --best --stdout fibo-v.ttl > fibo-v.ttl.gz
-
+  return 0
 }
 
 function main() {
@@ -658,8 +640,8 @@ function main() {
       ontology)
         publishProductOntology || return $?
         ;;
-      vocabulary)
-        publishProductVocabulary || return $?
+      glossary)
+        publishProductGlossary || return $?
         ;;
       *)
         echo "ERROR: Unknown product ${product}"
