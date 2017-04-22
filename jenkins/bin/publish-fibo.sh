@@ -18,7 +18,9 @@ jena_arq=""
 #
 # The products that we generate the artifacts for with this script
 #
-products="glossary ontology"
+# ontology has to come before glossary because glossary depends on it.
+#
+products="ontology glossary"
 
 spec_root="${WORKSPACE}/target"
 family_root="${spec_root}/fibo"
@@ -525,6 +527,7 @@ function glossaryGetModules() {
 
   echo "Found the following modules:"
   echo ${modules}
+
   echo "Using the following directories:"
   echo ${module_directories}
 
@@ -580,7 +583,9 @@ function publishProductGlossary() {
 
   setProduct glossary || return $?
 
-  cd "${glossary_script_dir}" || return $?
+  set -x
+
+  cd "${SCRIPT_DIR}/fibo-glossary" || return $?
   glossary_script_dir=$(pwd)
   chmod a+x ./*.sh
 
