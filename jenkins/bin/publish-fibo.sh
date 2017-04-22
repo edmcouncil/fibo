@@ -576,22 +576,9 @@ function glossaryGetPrefixes() {
 
   echo "Get prefixes"
 
-  rm -f "${tmp_dir}/prefixes"
-  touch "${tmp_dir}/prefixes"
-
-  for module_directory in ${module_directories} ; do
-    echo "Searching for prefixes in ${module_directory}:"
-    find ${module_directory} -name '*.ttl' -not -name 'About*'
-  done
-
-set -x
-
-  find ${module_directories} \
-    -name '*.ttl' -not -name 'About*' -exec grep "@prefix fibo-" {} \; | \
-  while read prefixCmd prefix url ; do
-    echo "prefixCmd=${prefixCmd} prefix=${prefix} url=${url}"
-    echo "${prefixCmd} ${prefix} ${url}" >> "${tmp_dir}/prefixes"
-  done
+  pushd ${ontology_product_tag_root}
+  grep -R --include "*.ttl" --no-filename "@prefix fibo-" | sort -u > "${tmp_dir}/prefixes"
+  popd
 
 set +x
 
@@ -652,6 +639,27 @@ function glossaryGetOntologies() {
   return 0
 }
 
+function spinRunInferences() {
+
+  local inputFile="$1"
+  local outputFile="$2"
+
+  java \
+    -Xmx1024M \
+    -Dlog4j.configuration="file:${JENAROOT}/jena-log4j.properties" \
+    -cp "${JENAROOT}/lib/*:${fibo_infra_root}/lib:${fibo_infra_root}/lib/SPIN/spin-2.0.0.jar" \
+    org.topbraid.spin.tools.RunInferences \
+    http://example.org/example \
+    "${inputFile}" >> "${outputFile}"
+
+  if [ ${PIPESTATUS[0]} -ne 0 ] ; then
+    error "Could not run spin on ${inputFile}"
+    return 1
+  fi
+
+  return 0
+}
+
 #
 # Run SPIN
 #
@@ -663,21 +671,34 @@ function glossaryRunSpin() {
 
   echo "STARTING SPIN"
 
-  java \
-    -Xmx1024M -Dlog4j.configuration="${JENAROOT}/jena-log4j.properties" \
-    -cp "${fibo_infra_root}/lib:${JENAROOT}/lib/*:${fibo_infra_root}/lib/SPIN/spin-2.0.0.jar" \
-    org.topbraid.spin.tools.RunInferences \
-    http://example.org/example \
-    "${tmp_dir}/temp0.ttl" > "${tmp_dir}/temp1.ttl"
+  rm -f "${tmp_dir}/temp1.ttl" >/dev/null 2>&1
 
-  if [ ${PIPESTATUS[0]} -ne 0 ] ; then
-    error "Could not what?"
-    return 1
-  fi
+  spinRunInferences "${tmp_dir}/temp0.ttl" "${tmp_dir}/temp1.ttl" || return $?
 
   echo "Generated ${tmp_dir}/temp1.ttl:"
 
   cat "${tmp_dir}/temp1.ttl"
+
+  return 0
+}
+
+#
+# 4) Run the schemify rules.  This adds a ConceptScheme to the output.
+#
+function glossaryRunSchemifyRules() {
+
+  echo "Run the schemify rules"
+
+  ${jena_arq} \
+    --data="${tmp_dir}/temp1.ttl" \
+    --data="${glossary_script_dir}/schemify.ttl" \
+    --query="${glossary_script_dir}/skosecho.sparql" \
+    --results=TTL > "${tmp_dir}/temp2.ttl"
+
+  if [ ${PIPESTATUS[0]} -ne 0 ] ; then
+    error "Could not run the schemify rules"
+    return 1
+  fi
 
   return 0
 }
@@ -722,23 +743,9 @@ function publishProductGlossary() {
   glossaryGetPrefixes || return $?
   glossaryGetOntologies || return $?
   glossaryRunSpin || return $?
+  glossaryRunSchemifyRules || return $?
 
-  #
-  # 4) Run the schemify rules.  This adds a ConceptScheme to the output.
-  #
-  ${jena_arq} \
-    --data="${tmp_dir}/temp1.ttl" \
-    --data="${glossary_script_dir}/schemify.ttl" \
-    --query="${glossary_script_dir}/skosecho.sparql" \
-    --results=TTL > "${tmp_dir}/temp2.ttl"
-
-  java \
-    -Xmx1024M \
-    -Dlog4j.configuration="file:${JENAROOT}/jena-log4j.properties" \
-    -cp "${JENAROOT}/lib/*:${fibo_infra_root}/lib:${fibo_infra_root}/lib/SPIN/spin-1.3.3.jar" \
-    org.topbraid.spin.tools.RunInferences \
-    http://example.org/example \
-    "${tmp_dir}/temp2.ttl" >> "${tmp_dir}/tc.ttl"
+  spinRunInferences "${tmp_dir}/temp2.ttl" "${tmp_dir}/tc.ttl" || return $?
 
   echo "ENDING SPIN"
   #
