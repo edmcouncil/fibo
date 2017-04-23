@@ -64,9 +64,9 @@ names):
    The primary product, the core OWL ontologies that are the foundation
    for any of the other flavors of FIBO.
 
-2. `vocabulary`
+2. `glossary`
 
-   The "FIBO-V" flavor, the vocabulary, which is based on the SKOS standard,
+   The "FIBO-V" flavor, the glossary or vocabulary, which is based on the SKOS standard,
    a vocabulary or taxonomy or "concept scheme" that is built up from all
    the terms in the OWL ontologies.
 
