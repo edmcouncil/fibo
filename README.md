@@ -11,9 +11,18 @@ Yellow FIBOs have entered the OMG Process. They comply with the OMG rules for do
 Directory     | Purpose
 :------------ |:-------
 [/etc](./etc) | Everything that is not a published OWL ontology in a financial domain
-[/be](./be)   | FIBO Business Entities
-[/fnd](./fnd) | FIBO Foundations
-[/ind](./ind) | FIBO Indices & Indicators
+[/ext](./ext) | 
+[/BE](BE)     | FIBO Business Entities
+[/BP](BP)     | 
+[/CAE](CAE)   | 
+[/CIV](CIV)   | 
+[/DER](DER)   | 
+[/FBC](FBC)   | 
+[/FND](FND)   | FIBO Foundations
+[/IND](IND)   | FIBO Indices & Indicators
+[/LOAN](LOAN) | 
+[/MD](MD)     | 
+[/SEC](SEC)   | 
 
 ## Links
 
