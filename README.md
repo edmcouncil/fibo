@@ -1,4 +1,3 @@
-![EDM Council Logo](etc/image/edmc-logo.jpg)
 # FIBO
 __Financial Industry Business Ontology__
 
