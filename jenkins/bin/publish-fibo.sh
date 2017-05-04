@@ -562,7 +562,7 @@ function publishProductOntology() {
   ontologyCreateAboutFiles || return $?
   ontologySearchAndReplaceStuff || return $?
   ontologyConvertRdfToAllFormats || return $?
-  find ${tag_root}/ -type f -name "*.ttl" | while read file; TCBAnnotate "$file" ; done
+  find ${tag_root}/ -type f -name "*.ttl" | while read file; TCBAnnotate "$file"; done
   ontologyConvertMarkdownToHtml || return $?
 
   return 0
