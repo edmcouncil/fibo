@@ -240,7 +240,7 @@ __HERE__
       -r "xml:base" \
       $( \
         find . -mindepth 1  -maxdepth 1 -type d -print | \
-        grep -vE "(etc)|(git)"
+        grep -vE "(etc)|(git)|(About)"
       ) | \
       grep -v catalog | \
       sed 's/^.*xml:base="/owl:imports </;s/" *$/> ;/' \
