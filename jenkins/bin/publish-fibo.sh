@@ -397,7 +397,7 @@ SELECT ?o WHERE {?o a <http://www.w3.org/2002/07/owl#Ontology> .}
 EOF
 
 
-    uri="#baseURI: $("${jena_arq}" --query="$qf" --data="$1" --results=csv | grep edmcouncil | sed "s@\(https://spec.edmcouncil.org/fibo/ontology/\)@\1${GIT_BRANCH}/${GIT_TAG_NAME}/@")"
+    uri="# baseURI: $("${jena_arq}" --query="$qf" --data="$1" --results=csv | grep edmcouncil | sed "s@\(https://spec.edmcouncil.org/fibo/ontology/\)@\1${GIT_BRANCH}/${GIT_TAG_NAME}/@")"
 #    echo "($uri)"
     sed -i "1s;^;$uri\n;" "$1"
 }
