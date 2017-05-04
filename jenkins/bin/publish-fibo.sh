@@ -378,24 +378,27 @@ __HERE__
     set -x
     find ${tag_root}/ -type f \( -name '*.rdf' -o -name '*.ttl' -o -name '*.md' \) -exec sed -i -f ${sedfile} {} \;
   )
+ 
 
+  
   return 0
 }
 
 function TBCAnnotate() {
         # For the .ttl files, find the ontology, and compute the version IRI from it.  Put it in a cookie where TopBraid will find it. 
-    local GIT_BRANCH=master
-    local GIT_TAG_NAME=latest
-    local product_root_url="https://spec.edmcouncil.org/fibo/ontology/"
-    echo "$1"
+#    local GIT_BRANCH=master
+#    local GIT_TAG_NAME=latest
+#    local product_root_url="https://spec.edmcouncil.org/fibo/ontology/"
+    echo "Annotating $1"
     local qf="$(mktemp ${tmp_dir}/ontXXXXXX.sq)"
 #  local qf=ont.sq
     cat > "$qf" << EOF
 SELECT ?o WHERE {?o a <http://www.w3.org/2002/07/owl#Ontology> .}
 EOF
-    arq --query="$qf" --data="$1" --results=csv | grep edmcouncil
-    uri="#baseURI: $(arq --query="$qf" --data="$1" --results=csv | grep edmcouncil | sed "s@\(https://spec.edmcouncil.org/fibo/ontology/\)@\1${GIT_BRANCH}/${GIT_TAG_NAME}/@")"
-    echo "($uri)"
+
+
+    uri="#baseURI: $("${jena_arq}" --query="$qf" --data="$1" --results=csv | grep edmcouncil | sed "s@\(https://spec.edmcouncil.org/fibo/ontology/\)@\1${GIT_BRANCH}/${GIT_TAG_NAME}/@")"
+#    echo "($uri)"
     sed -i "1s;^;$uri\n;" "$1"
 }
 
@@ -559,6 +562,7 @@ function publishProductOntology() {
   ontologyCreateAboutFiles || return $?
   ontologySearchAndReplaceStuff || return $?
   ontologyConvertRdfToAllFormats || return $?
+  find ${tag_root}/ -type f -name "*.ttl" | while read file; TCBAnnotate "$file" ; done
   ontologyConvertMarkdownToHtml || return $?
 
   return 0
