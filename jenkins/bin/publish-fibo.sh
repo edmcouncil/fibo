@@ -242,7 +242,7 @@ __HERE__
         find . -mindepth 1  -maxdepth 1 -type d -print | \
         grep -vE "(etc)|(git)"
       ) | \
-      grep -v catalog | \
+      grep -vE "(catalog)|(About)" | \
       sed 's/^.*xml:base="/owl:imports </;s/" *$/> ;/' \
       >> "${tmpAboutFile}"
 
