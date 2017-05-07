@@ -18,9 +18,9 @@ jena_arq=""
 #
 # The products that we generate the artifacts for with this script
 #
-# ontology has to come before glossary because glossary depends on it.
+# ontology has to come before vocabulary because vocabulary depends on it.
 #
-products="ontology glossary"
+products="ontology vocabulary"
 
 spec_root="${WORKSPACE}/target"
 family_root="${spec_root}/fibo"
@@ -127,7 +127,7 @@ function initWorkspaceVars() {
 }
 
 #
-# Since this script deals with multiple products (ontology, glossary etc) we need to be able to switch back
+# Since this script deals with multiple products (ontology, vocabulary etc) we need to be able to switch back
 # and forth, call this function whenever you generate something for another product. The git branch and tag name
 # always remains the same though.
 #
@@ -603,7 +603,7 @@ function publishProductOntology() {
 }
 
 #
-# Called by publishProductGlossary(), sets the names of all modules in the global variable modules and their
+# Called by publishProductVocabulary(), sets the names of all modules in the global variable modules and their
 # root directories in the global variable module_directories
 #
 # 1) Determine which modules will be included. They are kept on a property
@@ -792,18 +792,18 @@ function glossaryRunSchemifyRules() {
 #
 # The output is in .ttl form in a file called fibo-v.ttl
 #
-function publishProductGlossary() {
+function publishProductVocabulary() {
 
   require JENAROOT || return $?
 
-  logRule "Publishing the glossary product"
+  logRule "Publishing the vocabulary product"
 
   setProduct ontology
   ontology_product_tag_root="${tag_root}"
 
-  setProduct glossary || return $?
+  setProduct vocabulary || return $?
 
-  cd "${SCRIPT_DIR}/fibo-glossary" || return $?
+  cd "${SCRIPT_DIR}/fibo-vocabulary" || return $?
   glossary_script_dir=$(pwd)
   chmod a+x ./*.sh
 
@@ -866,7 +866,7 @@ function publishProductGlossary() {
   gzip --best --stdout "${tag_root}/fibo-v.rdf" > "${tag_root}/fibo-v.rdf.gz"
   gzip --best --stdout "${tag_root}/fibo-v.jsonld" > "${tag_root}/fibo-v.jsonld.gz"
 
-  echo "Finished publishing the Glossary Product"
+  echo "Finished publishing the Vocabulary Product"
 
   return 0
 }
@@ -888,8 +888,8 @@ function main() {
       ontology)
         publishProductOntology || return $?
         ;;
-      glossary)
-        publishProductGlossary || return $?
+      vocabulary)
+        publishProductVocabulary || return $?
         ;;
       *)
         echo "ERROR: Unknown product ${product}"
