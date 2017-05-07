@@ -379,8 +379,6 @@ __HERE__
     find ${tag_root}/ -type f \( -name '*.rdf' -o -name '*.ttl' -o -name '*.md' \) -exec sed -i -f ${sedfile} {} \;
   )
  
-
-  
   return 0
 }
 
@@ -397,8 +395,8 @@ function fixTopBraidBaseURICookie() {
 
   echo "Annotating ${queryFile}"
 
-  echo CSV output of query is:
-  ${jena_arq}" \
+  echo "CSV output of query is:"
+  "${jena_arq}" \
       --query="${queryFile}" \
       --data="${ontologyFile}" \
       --results=csv
@@ -409,7 +407,7 @@ function fixTopBraidBaseURICookie() {
       --data="${ontologyFile}" \
       --results=csv | \
       grep edmcouncil | \
-      sed "s@\(https://spec.edmcouncil.org/fibo/ontology/\)@\1${GIT_BRANCH}/${GIT_TAG_NAME}/@") \
+      sed "s@\(https://spec.edmcouncil.org/fibo/ontology/\)@\1${GIT_BRANCH}/${GIT_TAG_NAME}/@" \
   )
 
   uri="# baseURI: ${baseURI}"
