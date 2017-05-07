@@ -378,8 +378,66 @@ __HERE__
     set -x
     find ${tag_root}/ -type f \( -name '*.rdf' -o -name '*.ttl' -o -name '*.md' \) -exec sed -i -f ${sedfile} {} \;
   )
+ 
 
+  
   return 0
+}
+
+#
+# For the .ttl files, find the ontology, and compute the version IRI from it.
+# Put it in a cookie where TopBraid will find it.
+#
+function fixTopBraidBaseURICookie() {
+
+  local ontologyFile="$1"
+  local queryFile="$2"
+  local baseURI
+  local uri
+
+  echo "Annotating ${queryFile}"
+
+  echo CSV output of query is:
+  ${jena_arq}" \
+      --query="${queryFile}" \
+      --data="${ontologyFile}" \
+      --results=csv
+
+  baseURI=$( \
+    "${jena_arq}" \
+      --query="${queryFile}" \
+      --data="${ontologyFile}" \
+      --results=csv | \
+      grep edmcouncil | \
+      sed "s@\(https://spec.edmcouncil.org/fibo/ontology/\)@\1${GIT_BRANCH}/${GIT_TAG_NAME}/@") \
+  )
+
+  uri="# baseURI: ${baseURI}"
+
+  sed -i "1s;^;${uri}\n;" "${ontologyFile}"
+}
+
+
+function ontologyGenerateTopBraidFiles() {
+
+  local queryFile="$(mktemp ${tmp_dir}/ontXXXXXX.sq)"
+
+  #
+  # Create a file with a SPARQL query that gets the OntologyIRIs in a given model/file.
+  #
+  cat > "${queryFile}" << __HERE__
+SELECT ?o WHERE {
+  ?o a <http://www.w3.org/2002/07/owl#Ontology> .
+}
+__HERE__
+
+  #
+  # Now iterate through all turtle files that we're going to publish
+  # and call fixTopBraidBaseURICookie() for each.
+  #
+  find ${tag_root}/ -type f -name "*.ttl" | while read file ; do
+    fixTopBraidBaseURICookie "$file" "${queryFile}"
+  done
 }
 
 function ontologyConvertMarkdownToHtml() {
@@ -538,6 +596,7 @@ function publishProductOntology() {
   ontologyCreateAboutFiles || return $?
   ontologySearchAndReplaceStuff || return $?
   ontologyConvertRdfToAllFormats || return $?
+  ontologyGenerateTopBraidFiles || return $?
   ontologyConvertMarkdownToHtml || return $?
 
   return 0
@@ -599,11 +658,18 @@ function glossaryGetPrefixes() {
 
   echo "Get prefixes"
 
+  cat "${glossary_script_dir}/basic-prefixes.ttl" > "${tmp_dir}/prefixes.ttl"
+
   pushd ${ontology_product_tag_root}
-  grep -R --include "*.ttl" --no-filename "@prefix fibo-" | sort -u > "${tmp_dir}/prefixes.ttl"
+  grep -R --include "*.ttl" --no-filename "@prefix fibo-" >> "${tmp_dir}/prefixes.ttl"
   popd
 
-  echo "Found the following prefixes:"
+  #
+  # Sort and filter out duplicates
+  #
+  sort --unique  --output="${tmp_dir}/prefixes.ttl" "${tmp_dir}/prefixes.ttl"
+
+  echo "Found the following namespaces and prefixes:"
   cat "${tmp_dir}/prefixes.ttl"
 
   return 0
@@ -779,7 +845,6 @@ function publishProductGlossary() {
   #
   ${jena_riot} "${tmp_dir}/fibo-v.ttl" > "${tmp_dir}/fibo-v.nt"
   cat \
-    "${glossary_script_dir}/basic-prefixes.ttl" \
     "${tmp_dir}/prefixes.ttl" \
     "${tmp_dir}/fibo-v.nt" | \
   ${jena_riot} \
