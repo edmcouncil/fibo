@@ -393,7 +393,7 @@ function fixTopBraidBaseURICookie() {
   local baseURI
   local uri
 
-  echo "Annotating ${queryFile}"
+  echo "Annotating ${ontologyFile}"
 
   echo "CSV output of query is:"
   "${jena_arq}" \
@@ -415,10 +415,14 @@ function fixTopBraidBaseURICookie() {
   sed -i "1s;^;${uri}\n;" "${ontologyFile}"
 }
 
-
-function ontologyGenerateTopBraidFiles() {
+#
+# Add the '# baseURI' line to the top of all turtle files with the versioned ontology IRI
+#
+function ontologyAnnotateTopBraidBaseURL() {
 
   local queryFile="$(mktemp ${tmp_dir}/ontXXXXXX.sq)"
+
+  echo "Add versioned baseURI to all turtle files"
 
   #
   # Create a file with a SPARQL query that gets the OntologyIRIs in a given model/file.
@@ -429,12 +433,14 @@ SELECT ?o WHERE {
 }
 __HERE__
 
+  cat "${queryFile}"
+
   #
   # Now iterate through all turtle files that we're going to publish
   # and call fixTopBraidBaseURICookie() for each.
   #
   find ${tag_root}/ -type f -name "*.ttl" | while read file ; do
-    fixTopBraidBaseURICookie "$file" "${queryFile}"
+    fixTopBraidBaseURICookie "${file}" "${queryFile}"
   done
 }
 
@@ -594,7 +600,7 @@ function publishProductOntology() {
   ontologyCreateAboutFiles || return $?
   ontologySearchAndReplaceStuff || return $?
   ontologyConvertRdfToAllFormats || return $?
-  ontologyGenerateTopBraidFiles || return $?
+  ontologyAnnotateTopBraidBaseURL || return $?
   ontologyConvertMarkdownToHtml || return $?
 
   return 0
