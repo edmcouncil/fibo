@@ -563,11 +563,17 @@ function glossaryConvertTurtleToAllFormats() {
 function zipWholeTagDir() {
 
   local tarGzFile="${branch_root}/${GIT_TAG_NAME}.tar.gz"
+  local zipttlFile="${branch_root}/${GIT_TAG_NAME}.ttl.zip"
+  local ziprdfFile="${branch_root}/${GIT_TAG_NAME}.rdf.zip"
+  local zipjsonFile="${branch_root}/${GIT_TAG_NAME}.jsonld.zip"
 
   (
     cd ${spec_root}
     set -x
     tar -cvzf "${tarGzFile}" "${tag_root/${spec_root}/.}"
+    zip -r ${zipttlFile} "${tag_root/${spec_root}}" -x \*.rdf \*.jsonld
+    zip -r ${ziprdfFile} "${tag_root/${spec_root}}" -x \*.ttl \*.jsonld
+    zip -r ${zipjsonldFile} "${tag_root/${spec_root}}" -x \*.rdf \*.ttl
   )
 
   echo "Created ${tarGzFile}:"
