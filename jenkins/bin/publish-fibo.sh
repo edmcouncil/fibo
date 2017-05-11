@@ -505,7 +505,7 @@ function convertRdfFileTo() {
     --source-format "${sourceFormat}" \
     --target "${targetFile}" \
     --target-format "${targetFormat}" \
-    --ibn --ibi \
+    -ibn -ibi \
     > "${logfile}" 2>&1
   rc=$?
 
