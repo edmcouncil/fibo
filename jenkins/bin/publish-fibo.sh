@@ -512,7 +512,7 @@ function convertRdfFileTo() {
 
 # For the turtle files, we want the base annotations to be the versionIRI
   if [ "${targetFormat}" == "turtle" ] ; then
-      echo "Adjusting ttl base URI"
+      echo "Adjusting ttl base URI for ${rdfFile}"
       sed -iE "s?^\(\(# baseURI:\)\|\(@base\)\).*ontology/?&${GIT_BRANCH}/${GIT_TAG_NAME}/?" "${rdfFile}"
   fi 
 
