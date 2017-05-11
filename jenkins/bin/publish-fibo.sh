@@ -273,7 +273,7 @@ function ontologyCopyRdfToTarget() {
   for extension in rdf ttl md jpg png gif docx pdf sq ; do
     echo "Copying fibo/**/*.${extension} to ${tag_root/${WORKSPACE}}"
 #    cp **/*.${extension} --parents ${tag_root}/
-    cp be/*.${extension} --parents ${tag_root}/
+    cp be/**/*.${extension} --parents ${tag_root}/
   done
 
   #cp **/*.{rdf,ttl,md,jpg,png,docx,pdf,sq} --parents ${tag_root}/
