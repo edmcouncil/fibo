@@ -505,6 +505,7 @@ function convertRdfFileTo() {
     --source-format "${sourceFormat}" \
     --target "${targetFile}" \
     --target-format "${targetFormat}" \
+    --ibn --ibi \
     > "${logfile}" 2>&1
   rc=$?
 
@@ -617,7 +618,7 @@ function publishProductOntology() {
   ontologyCreateAboutFiles || return $?
   ontologySearchAndReplaceStuff || return $?
   ontologyConvertRdfToAllFormats || return $?
-  ontologyAnnotateTopBraidBaseURL || return $?
+#   ontologyAnnotateTopBraidBaseURL || return $?
   ontologyConvertMarkdownToHtml || return $?
   zipOntologyFiles || return $?
 
