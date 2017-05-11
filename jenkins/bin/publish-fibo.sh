@@ -510,7 +510,7 @@ function convertRdfFileTo() {
   rc=$?
 
 # For the turtle files, we want the base annotations to be the versionIRI
-  if [ "${targetFormat}" == "turtle" ] ;
+  if [ "${targetFormat}" == "turtle" ] ; then
       sed -iE "s?^\(\(# baseURI:\)\|\(@base\)\).*ontology/?&${GIT_BRANCH}/${GIT_TAG_NAME}/?"
   fi 
 
