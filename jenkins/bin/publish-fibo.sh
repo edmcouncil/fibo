@@ -600,9 +600,9 @@ function zipOntologyFiles () {
     
   (
     cd ${spec_root}
-    zip -r ${zipttlFile} "${product_root}" -x \*.rdf \*.jsonld
-    zip -r ${ziprdfFile} "${product_root}" -x \*.ttl \*.jsonld
-    zip -r ${zipjsonldFile} "${product_root}" -x \*.rdf \*.ttl
+    zip -r ${zipttlFile} "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -x \*.rdf \*.jsonld
+    zip -r ${ziprdfFile} "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -x \*.ttl \*.jsonld
+    zip -r ${zipjsonldFile} "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -x \*.ttl \*.rdf
     )
 }
 
