@@ -596,7 +596,7 @@ function copySiteFiles() {
 function zipOntologyFiles () {
     local zipttlFile="${product_root}/${GIT_TAG_NAME}.ttl.zip"
     local ziprdfFile="${product_root}/${GIT_TAG_NAME}.rdf.zip"
-    local zipjsonFile="${product_root}/${GIT_TAG_NAME}.jsonld.zip"
+    local zipjsonldFile="${product_root}/${GIT_TAG_NAME}.jsonld.zip"
     
   (
     cd ${spec_root}
