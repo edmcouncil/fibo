@@ -514,6 +514,8 @@ function convertRdfFileTo() {
   if [ "${targetFormat}" == "turtle" ] ; then
       echo "Adjusting ttl base URI for ${rdfFile}"
       sed -i "s?^\(\(# baseURI:\)\|\(@base\)\).*ontology/?&${GIT_BRANCH}/${GIT_TAG_NAME}/?" "${targetFile}"
+      sed -i "s@${GIT_BRANCH}/${GIT_TAG_NAME}/${GIT_BRANCH}/${GIT_TAG_NAME}/@${GIT_BRANCH}/${GIT_TAG_NAME}/@" \
+	  "${targetFile}"
   fi 
 
   if grep -q "ERROR" "${logfile}"; then
