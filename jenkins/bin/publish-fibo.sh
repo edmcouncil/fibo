@@ -509,6 +509,10 @@ function convertRdfFileTo() {
     > "${logfile}" 2>&1
   rc=$?
 
+# For the turtle files, we want the base annotations to be the versionIRI
+  if [ "${targetFormat}" == "turtle") ;
+      sed -iE "s?^\(\(# baseURI:\)\|\(@base\)\).*ontology/?&${GIT_BRANCH}/${GIT_TAG_NAME}/?"
+
   if grep -q "ERROR" "${logfile}"; then
     echo "Found errors during conversion of ${rdfFile} to \"${targetFormat}\":"
     cat "${logfile}"
