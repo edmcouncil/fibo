@@ -407,7 +407,8 @@ function fixTopBraidBaseURICookie() {
       --data="${ontologyFile}" \
       --results=csv | \
       grep edmcouncil | \
-      sed "s@\(https://spec.edmcouncil.org/fibo/ontology/\)@\1${GIT_BRANCH}/${GIT_TAG_NAME}/@" \
+      sed "s@\(https://spec.edmcouncil.org/fibo/ontology/\)@\1${GIT_BRANCH}/${GIT_TAG_NAME}/@" | \
+      sed "s@${GIT_BRANCH}/${GIT_TAG_NAME}/${GIT_BRANCH}/${GIT_TAG_NAME}/@${GIT_BRANCH}/${GIT_TAG_NAME}/@" \
   )
 
   uri="# baseURI: ${baseURI}"
