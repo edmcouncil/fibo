@@ -937,9 +937,9 @@ EOF
 function ontologyBuildCats () {
 
 # Run build1catalog in each subdirectory except ext, etc and .git
-find ${fibo_root} -maxdepth 1 -mindepth 1 -type d \(  -regex "\(.*/ext\)\|\(.*/etc\)\|\(.*/.git\)$" -prune  -o -print  \) | while read file; do build1catalog "$file" ".."; done
+find ${tag_root} -maxdepth 1 -mindepth 1 -type d \(  -regex "\(.*/ext\)\|\(.*/etc\)\|\(.*/.git\)$" -prune  -o -print  \) | while read file; do build1catalog "$file" ".."; done
 # Run build1catalog in the main directory
-    build1catalog "${fibo_root}" "."
+    build1catalog "${tag_root}" "."
 }
 
 
