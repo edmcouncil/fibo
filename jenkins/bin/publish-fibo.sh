@@ -924,7 +924,7 @@ EOF
 # 
     pwd
     echo "${fibo_rel}"
-    find $fibo_rel  -name '*.rdf' | grep -v etc | sed 's@^.*$@  <uri id="User Entered Import Resolution" uri="&" name="https://spec.edmcouncil.org/fibo/&"/>@;s@.rdf"/>@/"/>@' | sed "s@fibo/${fibo_rel}/\([a-z]*/\)@fibo/${GIT_BRANCH}/${GIT_TAG_NAME}\U\1\E@" >>  catalog-v001.xml
+    find $fibo_rel  -name '*.rdf' | grep -v etc | sed 's@^.*$@  <uri id="User Entered Import Resolution" uri="&" name="https://spec.edmcouncil.org/fibo/&"/>@;s@.rdf"/>@/"/>@' | sed "s@fibo/${fibo_rel}/\([a-zA-Z]*/\)@fibo/${GIT_BRANCH}/${GIT_TAG_NAME}\U\1\E@" >>  catalog-v001.xml
 
 
     cat  >> catalog-v001.xml <<EOF 
