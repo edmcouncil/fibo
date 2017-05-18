@@ -339,7 +339,8 @@ s@http://spec.edmcouncil.org@${spec_root_url}@g
 #
 #
 #
-s@${family_root_url}/\([A-Z]*\)/@${product_root_url}/\1/@g
+# I had to put the a-z in for /ext.  We should take this out, once that has been resolved. 
+s@${family_root_url}/\([A-Za-z]*\)/@${product_root_url}/\1/@g
 #
 # Replace
 # - https://spec.edmcouncil.org/fibo/ontology/BE/20150201/
