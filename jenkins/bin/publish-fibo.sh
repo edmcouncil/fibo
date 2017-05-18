@@ -287,7 +287,7 @@ function ontologyCopyRdfToTarget() {
   for module in * ; do
     [ -d ${module} ] || continue
     [ "${module}" == "etc" ] && continue
-    [ "${module}" == "ext" ] && continue
+#    [ "${module}" == "ext" ] && continue
     upperModule=$(echo ${module} | tr '[:lower:]' '[:upper:]')
     [ "${module}" == "${upperModule}" ] && continue
     mv ${module} ${upperModule}
@@ -297,7 +297,7 @@ function ontologyCopyRdfToTarget() {
   for module in * ; do
     [ -d ${module} ] || continue
     [ "${module}" == "etc" ] && continue
-    [ "${module}" == "ext" ] && continue
+#    [ "${module}" == "ext" ] && continue
     modules="${modules} ${module}"
     module_directories="${modules_directories} $(pwd)/${module}"
   done
