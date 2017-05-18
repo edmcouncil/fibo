@@ -243,7 +243,7 @@ __HERE__
         grep -vE "(etc)|(git)"
       ) | \
       grep -vE "(catalog)|(About)" | \
-	  sed 's/^.*xml:base="/owl:imports </;s/"[ ]*$/> ;/' \
+	  sed 's/^.*xml:base="/owl:imports </;s/"[ 	\n\r]*$/> ;/' \
       >> "${tmpAboutFile}"
 
     cat > "${echoq}" << __HERE__
