@@ -43,7 +43,7 @@ rdftoolkit_jar="${WORKSPACE}/rdf-toolkit.jar"
 
 shopt -s globstar
 
-# trap "rm -rf ${tmp_dir} >/dev/null 2>&1" EXIT
+trap "rm -rf ${tmp_dir} >/dev/null 2>&1" EXIT
 
 #
 # This is for tools like pandoc
