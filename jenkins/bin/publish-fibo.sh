@@ -243,7 +243,7 @@ __HERE__
         grep -vE "(etc)|(git)"
       ) | \
       grep -vE "(catalog)|(About)" | \
-      sed 's/^.*xml:base="/owl:imports </;s/" *$/> ;/' \
+	  sed 's/^.*xml:base="/owl:imports </;s/"[ 	\n\r]*$/> ;/' \
       >> "${tmpAboutFile}"
 
     cat > "${echoq}" << __HERE__
@@ -267,12 +267,13 @@ function ontologyCopyRdfToTarget() {
 
   pushd ${fibo_root}
   #
-  # Don' copy all files with all extensions at the same time since it gives nasty errors when files without the
+  # Don't copy all files with all extensions at the same time since it gives nasty errors when files without the
   # given extension are not found.
   #
   for extension in rdf ttl md jpg png gif docx pdf sq ; do
     echo "Copying fibo/**/*.${extension} to ${tag_root/${WORKSPACE}}"
     cp **/*.${extension} --parents ${tag_root}/
+
   done
 
   #cp **/*.{rdf,ttl,md,jpg,png,docx,pdf,sq} --parents ${tag_root}/
@@ -286,7 +287,7 @@ function ontologyCopyRdfToTarget() {
   for module in * ; do
     [ -d ${module} ] || continue
     [ "${module}" == "etc" ] && continue
-    [ "${module}" == "ext" ] && continue
+#    [ "${module}" == "ext" ] && continue
     upperModule=$(echo ${module} | tr '[:lower:]' '[:upper:]')
     [ "${module}" == "${upperModule}" ] && continue
     mv ${module} ${upperModule}
@@ -296,7 +297,7 @@ function ontologyCopyRdfToTarget() {
   for module in * ; do
     [ -d ${module} ] || continue
     [ "${module}" == "etc" ] && continue
-    [ "${module}" == "ext" ] && continue
+#    [ "${module}" == "ext" ] && continue
     modules="${modules} ${module}"
     module_directories="${modules_directories} $(pwd)/${module}"
   done
@@ -338,7 +339,8 @@ s@http://spec.edmcouncil.org@${spec_root_url}@g
 #
 #
 #
-s@${family_root_url}/\([A-Z]*\)/@${product_root_url}/\1/@g
+# I had to put the a-z in for /ext.  We should take this out, once that has been resolved. 
+s@${family_root_url}/\([A-Za-z]*\)/@${product_root_url}/\1/@g
 #
 # Replace
 # - https://spec.edmcouncil.org/fibo/ontology/BE/20150201/
@@ -407,7 +409,8 @@ function fixTopBraidBaseURICookie() {
       --data="${ontologyFile}" \
       --results=csv | \
       grep edmcouncil | \
-      sed "s@\(https://spec.edmcouncil.org/fibo/ontology/\)@\1${GIT_BRANCH}/${GIT_TAG_NAME}/@" \
+      sed "s@\(https://spec.edmcouncil.org/fibo/ontology/\)@\1${GIT_BRANCH}/${GIT_TAG_NAME}/@" | \
+      sed "s@${GIT_BRANCH}/${GIT_TAG_NAME}/${GIT_BRANCH}/${GIT_TAG_NAME}/@${GIT_BRANCH}/${GIT_TAG_NAME}/@" \
   )
 
   uri="# baseURI: ${baseURI}"
@@ -504,8 +507,17 @@ function convertRdfFileTo() {
     --source-format "${sourceFormat}" \
     --target "${targetFile}" \
     --target-format "${targetFormat}" \
+    -ibn -ibi \
     > "${logfile}" 2>&1
   rc=$?
+
+# For the turtle files, we want the base annotations to be the versionIRI
+  if [ "${targetFormat}" == "turtle" ] ; then
+      echo "Adjusting ttl base URI for ${rdfFile}"
+      sed -i "s?^\(\(# baseURI:\)\|\(@base\)\).*ontology/?&${GIT_BRANCH}/${GIT_TAG_NAME}/?" "${targetFile}"
+      sed -i "s@${GIT_BRANCH}/${GIT_TAG_NAME}/${GIT_BRANCH}/${GIT_TAG_NAME}/@${GIT_BRANCH}/${GIT_TAG_NAME}/@" \
+	  "${targetFile}"
+  fi 
 
   if grep -q "ERROR" "${logfile}"; then
     echo "Found errors during conversion of ${rdfFile} to \"${targetFormat}\":"
@@ -563,6 +575,9 @@ function glossaryConvertTurtleToAllFormats() {
 function zipWholeTagDir() {
 
   local tarGzFile="${branch_root}/${GIT_TAG_NAME}.tar.gz"
+  local zipttlFile="${branch_root}/${GIT_TAG_NAME}.ttl.zip"
+  local ziprdfFile="${branch_root}/${GIT_TAG_NAME}.rdf.zip"
+  local zipjsonFile="${branch_root}/${GIT_TAG_NAME}.jsonld.zip"
 
   (
     cd ${spec_root}
@@ -590,6 +605,19 @@ function copySiteFiles() {
   return 0
 }
 
+function zipOntologyFiles () {
+    local zipttlFile="${product_root}/${GIT_TAG_NAME}.ttl.zip"
+    local ziprdfFile="${product_root}/${GIT_TAG_NAME}.rdf.zip"
+    local zipjsonldFile="${product_root}/${GIT_TAG_NAME}.jsonld.zip"
+    
+  (
+    cd ${spec_root}
+    zip -r ${zipttlFile} "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -x \*.rdf \*.jsonld
+    zip -r ${ziprdfFile} "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -x \*.ttl \*.jsonld
+    zip -r ${zipjsonldFile} "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -x \*.ttl \*.rdf
+    )
+}
+
 function publishProductOntology() {
 
   logRule "Publishing the ontology product"
@@ -597,11 +625,14 @@ function publishProductOntology() {
   setProduct ontology || return $?
 
   ontologyCopyRdfToTarget || return $?
+  ontologyBuildCats  || return $?
   ontologyCreateAboutFiles || return $?
   ontologySearchAndReplaceStuff || return $?
   ontologyConvertRdfToAllFormats || return $?
-  ontologyAnnotateTopBraidBaseURL || return $?
+#   ontologyAnnotateTopBraidBaseURL || return $?
   ontologyConvertMarkdownToHtml || return $?
+  zipOntologyFiles || return $?
+
 
   return 0
 }
@@ -874,6 +905,45 @@ function publishProductVocabulary() {
 
   return 0
 }
+
+
+# Stuff for building catlog files
+
+function build1catalog () {
+
+(   
+    cd "$1"     # Build the catalog in this directory
+    echo "building catalog in $1"
+    local fibo_rel="${2}"
+    cat  > catalog-v001.xml <<EOF
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog prefer="public" xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+EOF
+
+# 
+# Find all the rdf files in fibo, and create catalog lines for them based on their location. 
+# 
+    pwd
+    echo "${fibo_rel}"
+    find $fibo_rel  -name '*.rdf' | grep -v etc | sed 's@^.*$@  <uri id="User Entered Import Resolution" uri="&" name="https://spec.edmcouncil.org/fibo/&"/>@;s@.rdf"/>@/"/>@' | sed "s@fibo/${fibo_rel}/\([a-zA-Z]*/\)@fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}/\U\1\E@" >>  catalog-v001.xml
+
+
+    cat  >> catalog-v001.xml <<EOF 
+<!-- Automatically built by EDMC infrastructure -->
+</catalog>
+EOF
+)    
+}
+
+function ontologyBuildCats () {
+
+# Run build1catalog in each subdirectory except ext, etc and .git
+find ${tag_root} -maxdepth 1 -mindepth 1 -type d \(  -regex "\(.*/ext\)\|\(.*/etc\)\|\(.*/.git\)$" -prune  -o -print  \) | while read file; do build1catalog "$file" ".."; done
+# Run build1catalog in the main directory
+    build1catalog "${tag_root}" "."
+}
+
+
 
 function main() {
 
