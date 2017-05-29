@@ -12,7 +12,7 @@
     var service_id = "amazon_ses";
     var template_id = "spec_edmcouncil_org_feedback_form";
 
-    emailjs.sendForm(service_id,template_id,"myform")
+    emailjs.sendForm(service_id,template_id,"form#mail-form")
       .then(function(){
         alert("Sent!");
          myform.find("button").text("Send");
