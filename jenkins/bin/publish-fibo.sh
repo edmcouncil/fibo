@@ -620,11 +620,11 @@ function zipOntologyFiles () {
     zip -r ${ziprdfDevFile} "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -x \*.ttl \*.jsonld
     zip -r ${zipjsonldDevFile} "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -x \*.ttl \*.rdf
 
-# Try to trigger this to run
 
-    grep -r 'utl-av[;.]Release' "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" | grep -F ".ttl" | sed 's/:.*$//' | xargs zip -r ${zipttlProdFile}
-    grep -r 'utl-av[;.]Release' "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" | grep -F ".rdf" | sed 's/:.*$//' | xargs zip -r ${ziprdfProdFile}
-    grep -r 'utl-av[;.]Release' "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" | grep -F ".jsonld" | sed 's/:.*$//' | xargs zip -r ${zipjsonldProdFile}
+
+    grep -r 'utl-av[:.]Release' "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" | grep -F ".ttl" | sed 's/:.*$//' | xargs zip -r ${zipttlProdFile}
+    grep -r 'utl-av[:.]Release' "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" | grep -F ".rdf" | sed 's/:.*$//' | xargs zip -r ${ziprdfProdFile}
+    grep -r 'utl-av[:.]Release' "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" | grep -F ".jsonld" | sed 's/:.*$//' | xargs zip -r ${zipjsonldProdFile}
 
 
 
