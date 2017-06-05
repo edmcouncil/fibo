@@ -606,15 +606,26 @@ function copySiteFiles() {
 }
 
 function zipOntologyFiles () {
-    local zipttlFile="${product_root}/${GIT_TAG_NAME}.ttl.zip"
-    local ziprdfFile="${product_root}/${GIT_TAG_NAME}.rdf.zip"
-    local zipjsonldFile="${product_root}/${GIT_TAG_NAME}.jsonld.zip"
+    local zipttlDevFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/dev.ttl.zip"
+    local ziprdfDevFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/dev.rdf.zip"
+    local zipjsonldDevFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/dev.jsonld.zip"
+
+    local zipttlProdFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/prod.ttl.zip"
+    local ziprdfProdFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/prod.rdf.zip"
+    local zipjsonldProdFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/prod.jsonld.zip"
     
   (
     cd ${spec_root}
-    zip -r ${zipttlFile} "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -x \*.rdf \*.jsonld
-    zip -r ${ziprdfFile} "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -x \*.ttl \*.jsonld
-    zip -r ${zipjsonldFile} "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -x \*.ttl \*.rdf
+    zip -r ${zipttlDevFile} "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -x \*.rdf \*.jsonld
+    zip -r ${ziprdfDevFile} "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -x \*.ttl \*.jsonld
+    zip -r ${zipjsonldDevFile} "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -x \*.ttl \*.rdf
+
+    grep -r 'utl-av[;.]Release' "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" | grep -F ".ttl" | sed 's/:.*$//' | xargs zip -r ${zipttlProdFile}
+    grep -r 'utl-av[;.]Release' "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" | grep -F ".rdf" | sed 's/:.*$//' | xargs zip -r ${ziprdfProdFile}
+    grep -r 'utl-av[;.]Release' "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" | grep -F ".jsonld" | sed 's/:.*$//' | xargs zip -r ${zipjsonldProdFile}
+
+
+
     )
 }
 
