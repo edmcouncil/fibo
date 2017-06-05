@@ -622,9 +622,9 @@ function zipOntologyFiles () {
 
 
 
-    grep -r 'utl-av[:.]Release' "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" | grep -F ".ttl" | sed 's/:.*$//' | xargs zip -r ${zipttlProdFile}
-    grep -r 'utl-av[:.]Release' "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" | grep -F ".rdf" | sed 's/:.*$//' | xargs zip -r ${ziprdfProdFile}
-    grep -r 'utl-av[:.]Release' "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" | grep -F ".jsonld" | sed 's/:.*$//' | xargs zip -r ${zipjsonldProdFile}
+    grep -r 'utl-av[:;.]Release' "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" | grep -F ".ttl" | sed 's/:.*$//' | xargs zip -r ${zipttlProdFile}
+    grep -r 'utl-av[:;.]Release' "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" | grep -F ".rdf" | sed 's/:.*$//' | xargs zip -r ${ziprdfProdFile}
+    grep -r 'utl-av[:;.]Release' "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" | grep -F ".jsonld" | sed 's/:.*$//' | xargs zip -r ${zipjsonldProdFile}
 
 
 
