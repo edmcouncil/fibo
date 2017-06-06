@@ -919,6 +919,28 @@ function publishProductVocabulary() {
   return 0
 }
 
+# Stuff for building nquads files
+
+function quadify () {
+  local tmpont="$(mktemp ${tmp_dir}/ontology.XXXXXX.sq)"
+  cat >"${tmpont}" <<EOF
+SELECT ?o WHERE {?o a <http://www.w3.org/2002/07/owl#Ontology> }
+EOF
+
+    
+  ${jena_riot} "$1" | sed "s@[.]\$@ <$(${jena_arq} --results=csv --data=$1 --query=${tmpont} | grep -v '^o' | tr -d '\n\r')> .@"
+}
+
+function buildquads () {
+
+    local ProdQuadsFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/dev.fibo.nquads"    
+    local DevQuadsFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/prod.fibo.nquads"    
+    find . -name '*.rdf' -print | while read file; do quadify "$file"; done   >  "${DevQuadsFile}"
+    grep -r 'utl-av[:;.]Release' "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" | grep -F ".rdf" | sed 's/:.*$//' | hwile read file; do quadify $file; done  > ${ProdQuadsFile}
+
+
+    }
+
 
 # Stuff for building catlog files
 
