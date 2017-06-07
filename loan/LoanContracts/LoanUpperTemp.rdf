@@ -136,13 +136,16 @@
 	</owl:Class>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-agr-ctr;hasEffectiveDate">
-		<rdfs:subPropertyOf rdf:resource="&fibo-ln-ln-up;asOfDate"/>
+		<rdfs:subPropertyOf rdf:resource="&fibo-ln-ln-up;hasAsOfDate"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-rel-rel;isComprisedOf">
 		<owl:inverseOf rdf:resource="&fibo-fnd-rel-rel;comprises"/>
 		<skos:editorialNote>Topic: FND Adding inverse of comprises called isComprisedOf</skos:editorialNote>
 	</owl:ObjectProperty>
+	
+	<owl:AnnotationProperty rdf:about="&fibo-fnd-utl-av;editorialNote">
+	</owl:AnnotationProperty>
 	
 	<owl:Class rdf:about="&fibo-ln-ln-up;Application">
 		<rdfs:subClassOf rdf:resource="&fibo-ln-ln-up;fnd-Request"/>
@@ -338,7 +341,7 @@ Not using psch:PaymentSchedule because it uses PaymentEvent which is an Occurren
 		<rdfs:subClassOf rdf:resource="&fibo-ln-ln-up;alx-Measurement"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-ln-ln-up;thingBeingValued"/>
+				<owl:onProperty rdf:resource="&fibo-ln-ln-up;hasThingBeingValued"/>
 				<owl:minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:minCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -378,13 +381,6 @@ Not using psch:PaymentSchedule because it uses PaymentEvent which is an Occurren
 		<fibo-fnd-utl-av:explanatoryNote>TODO: model this out properly, add to analytics (alx) ontology.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;asOfDate">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDate"/>
-		<rdfs:label>as of date</rdfs:label>
-		<skos:definition>relates something to the date on which it is accurate or valid (e.g. a credit report has an asOfDate that means the date when the information was drawn)</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote>It is different from the creation date and need not be the last date of the DatePeriod covered.</fibo-fnd-utl-av:explanatoryNote>
-	</owl:ObjectProperty>
-	
 	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;conformsTo">
 		<rdfs:label>conforms to</rdfs:label>
 		<rdfs:range rdf:resource="&fibo-ln-ln-up;Specification"/>
@@ -402,11 +398,6 @@ Not using psch:PaymentSchedule because it uses PaymentEvent which is an Occurren
 		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
 		<skos:definition>relates something to a monetary amount (e.g. credit limit, notional amount)</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote>This could be a loan amount, or a limit for a credit line.</fibo-fnd-utl-av:explanatoryNote>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;dataSourcedFrom">
-		<rdfs:label>has estimated value</rdfs:label>
-		<skos:definition>a source of data, in a given context (e.g. Experian provides data for a CreditReport)</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;dt-fd-coversPeriod">
@@ -473,10 +464,22 @@ Not using psch:PaymentSchedule because it uses PaymentEvent which is an Occurren
 		<skos:definition>relates e.g. an appraisal, to a party that plays the role of conducting a property appraisal</skos:definition>
 	</owl:ObjectProperty>
 	
+	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;hasAsOfDate">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDate"/>
+		<rdfs:label>as of date</rdfs:label>
+		<skos:definition>relates something to the date on which it is accurate or valid (e.g. a credit report has an asOfDate that means the date when the information was drawn)</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>It is different from the creation date and need not be the last date of the DatePeriod covered.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:ObjectProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;hasCreationDate">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasStartDate"/>
 		<rdfs:label>has creation date</rdfs:label>
 		<skos:definition>relates something to the date when it came into existence</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;hasDataSource">
+		<rdfs:label>has estimated value</rdfs:label>
+		<skos:definition>relates an informational entity to a source of data used to produce it (e.g. Experian provides data for a CreditReport)</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;hasDateReceived">
@@ -561,9 +564,19 @@ Not using psch:PaymentSchedule because it uses PaymentEvent which is an Occurren
 		<skos:definition>relates e.g. an appraisal to the appraiser with seniority or supervisory responsibilities</skos:definition>
 	</owl:ObjectProperty>
 	
+	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;hasThingBeingValued">
+		<rdfs:label>thing being valued</rdfs:label>
+		<skos:definition>relates a valuation to the thing being valued</skos:definition>
+	</owl:ObjectProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;instantiates">
 		<rdfs:label>instantiates</rdfs:label>
 		<skos:definition>relates something to that which it is an instance of (e.g. a template, offer or form)</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;isPerformedBy">
+		<rdfs:subPropertyOf rdf:resource="&fibo-ln-ln-up;hasParticipant"/>
+		<skos:definition>relates an occurrence to a party that fully or partially performs the activity or process corresponding to the occurrence (e.g. who performed an inspection)</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;opty-isGuaranteedBy">
@@ -642,11 +655,6 @@ Not using psch:PaymentSchedule because it uses PaymentEvent which is an Occurren
 		<skos:definition>relates an item to its unit cost</skos:definition>
 	</owl:ObjectProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;performedBy">
-		<rdfs:subPropertyOf rdf:resource="&fibo-ln-ln-up;hasParticipant"/>
-		<skos:definition>relates an occurrence to a party that fully or partially performs the activity or process corresponding to the occurrence (e.g. who performed an inspection)</skos:definition>
-	</owl:ObjectProperty>
-	
 	<owl:DatatypeProperty rdf:about="&fibo-ln-ln-up;rel-hasCount">
 		<rdfs:label>has count</rdfs:label>
 		<rdfs:range rdf:resource="&xsd;positiveInteger"/>
@@ -692,11 +700,6 @@ Not using psch:PaymentSchedule because it uses PaymentEvent which is an Occurren
 	
 	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;rel-produces_I">
 		<rdfs:label>produces (i)</rdfs:label>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;thingBeingValued">
-		<rdfs:label>thing being valued</rdfs:label>
-		<skos:definition>relates a valuation to the thing being valued</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;worksFor">
