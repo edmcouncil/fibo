@@ -649,19 +649,19 @@ function zipOntologyFiles () {
     
   (
     cd ${spec_root}
-    zip -r ${zipttlDevFile} "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -x \*.rdf \*.jsonld AboutFiboProd.*
-    zip -r ${ziprdfDevFile} "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -x \*.ttl \*.jsonld AboutFiboProd.*
-    zip -r ${zipjsonldDevFile} "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -x \*.ttl \*.rdf AboutFiboProd.*
+    zip -r ${zipttlDevFile} "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -x \*.rdf \*.jsonld AboutFiboProd.\*
+    zip -r ${ziprdfDevFile} "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -x \*.ttl \*.jsonld AboutFiboProd.\*
+    zip -r ${zipjsonldDevFile} "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -x \*.ttl \*.rdf AboutFiboProd.\*
 
 
 
     grep -r 'utl-av[:;.]Release' "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" | grep -F ".ttl" | sed 's/:.*$//' | xargs zip -r ${zipttlProdFile}
-    find  "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -name '*About*.ttl' -print | grep -vF "AboutFiboDev.ttl" |  xargs zip ${zipttlProdFile}
+    find  "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -name '*About*.ttl' -print | grep -v "AboutFiboDev.ttl" |  xargs zip ${zipttlProdFile}
     find  "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -name '*catalog*.xml' -print | xargs zip ${zipttlProdFile}
-    grep -r 'utl-av[:;.]Release' "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" | grep -F ".rdf" |  grep -vF "AboutFiboDev.rdf" | sed 's/:.*$//' | xargs zip -r ${ziprdfProdFile}
+    grep -r 'utl-av[:;.]Release' "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" | grep -F ".rdf" |  grep -v "AboutFiboDev.rdf" | sed 's/:.*$//' | xargs zip -r ${ziprdfProdFile}
     find  "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -name '*About*.rdf' -print | xargs zip ${ziprdfProdFile}
     find  "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -name '*catalog*.xml' -print | xargs zip ${ziprdfProdFile}
-    grep -r 'utl-av[:;.]Release' "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" | grep -F ".jsonld" | grep -vF "AboutFiboDev.jsonld" |  sed 's/:.*$//' | xargs zip -r ${zipjsonldProdFile}
+    grep -r 'utl-av[:;.]Release' "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" | grep -F ".jsonld" | grep -v "AboutFiboDev.jsonld" |  sed 's/:.*$//' | xargs zip -r ${zipjsonldProdFile}
     find  "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -name '*About*.jsonld' -print | xargs zip ${zipjsonldProdFile}
     find  "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -name '*catalog*.xml' -print | xargs zip ${zipjsonldProdFile}
 
