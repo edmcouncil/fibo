@@ -690,6 +690,7 @@ function publishProductOntology() {
   setProduct ontology || return $?
 
   ontologyCopyRdfToTarget || return $?
+  buildIndex  || return $?
   ontologyBuildCats  || return $?
   ontologyCreateAboutFiles || return $?
   ontologySearchAndReplaceStuff || return $?
