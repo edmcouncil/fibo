@@ -127,6 +127,19 @@ function initWorkspaceVars() {
 }
 
 #
+# The "index" of fibo is a list of all the ontology files, in their
+# directory structure.  This is an attempt to automatically produce
+# this.
+#
+function buildIndex () {
+    (
+	cd ${tag_root}
+	tree -P '*.rdf' -H https://spec.edmcouncil.org/fibo/ontology/master/latest | sed "s@latest\(/[^/]*/\)@latest/\\U\\1@" > tree.html
+        cp ${spec_root}/tree.html 
+	)
+}
+
+#
 # Since this script deals with multiple products (ontology, vocabulary etc) we need to be able to switch back
 # and forth, call this function whenever you generate something for another product. The git branch and tag name
 # always remains the same though.
