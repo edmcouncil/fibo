@@ -127,6 +127,19 @@ function initWorkspaceVars() {
 }
 
 #
+# The "index" of fibo is a list of all the ontology files, in their
+# directory structure.  This is an attempt to automatically produce
+# this.
+#
+function buildIndex () {
+    (
+	cd ${tag_root}
+	tree -P '*.rdf' -H https://spec.edmcouncil.org/fibo/ontology/master/latest | sed "s@latest\(/[^/]*/\)@latest/\\U\\1@" > tree.html
+        cp ${tag_root}/tree.html ${spec_root}/index.html 
+	)
+}
+
+#
 # Since this script deals with multiple products (ontology, vocabulary etc) we need to be able to switch back
 # and forth, call this function whenever you generate something for another product. The git branch and tag name
 # always remains the same though.
@@ -222,13 +235,43 @@ function initStardogVars() {
 #
 function ontologyCreateAboutFiles () {
 
-  local tmpAboutFile="$(mktemp ${tmp_dir}/ABOUT.XXXXXX.ttl)"
+  local tmpAboutFileDev="$(mktemp ${tmp_dir}/ABOUTD.XXXXXX.ttl)"
+  local tmpAboutFileProd="$(mktemp ${tmp_dir}/ABOUTP.XXXXXX.ttl)"
   local echoq="$(mktemp ${tmp_dir}/echo.sparqlXXXXXX)"
 
   (
     cd ${tag_root}
 
-    cat > "${tmpAboutFile}" << __HERE__
+    cat > "${tmpAboutFileProd}" << __HERE__
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+@prefix owl: <http://www.w3.org/2002/07/owl#> 
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>
+<${tag_root_url}/AboutFIBO> a owl:Ontology;
+__HERE__
+
+
+    grep \
+	-r 'utl-av[:;.]Release' . | \
+	grep -F ".rdf" | \
+	sed 's/:.*$//'  | \
+	while read file; do
+	    grep "xml:base" "${file}";
+        done | \
+	sed 's/^.*xml:base="/owl:imports </;s/"[\t \n\r]*$/> ;/' \
+	    >> "${tmpAboutFileProd}"
+
+    cat > "${echoq}" << __HERE__
+CONSTRUCT {?s ?p ?o} WHERE {?s ?p ?o}
+__HERE__
+
+    "${jena_arq}" --data="${tmpAboutFileProd}" --query="${echoq}" --results=RDF > AboutFIBOProd.rdf
+  )
+
+  (
+    cd ${tag_root}
+
+    cat > "${tmpAboutFileDev}" << __HERE__
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
 @prefix owl: <http://www.w3.org/2002/07/owl#> 
@@ -244,14 +287,17 @@ __HERE__
       ) | \
       grep -vE "(catalog)|(About)" | \
 	  sed 's/^.*xml:base="/owl:imports </;s/"[ 	\n\r]*$/> ;/' \
-      >> "${tmpAboutFile}"
+      >> "${tmpAboutFileDev}"
 
     cat > "${echoq}" << __HERE__
 CONSTRUCT {?s ?p ?o} WHERE {?s ?p ?o}
 __HERE__
 
-    "${jena_arq}" --data="${tmpAboutFile}" --query="${echoq}" --results=RDF > AboutFIBO.rdf
+    "${jena_arq}" --data="${tmpAboutFileDev}" --query="${echoq}" --results=RDF > AboutFIBODev.rdf
   )
+
+
+
 }
 
 #
@@ -606,15 +652,34 @@ function copySiteFiles() {
 }
 
 function zipOntologyFiles () {
-    local zipttlFile="${product_root}/${GIT_TAG_NAME}.ttl.zip"
-    local ziprdfFile="${product_root}/${GIT_TAG_NAME}.rdf.zip"
-    local zipjsonldFile="${product_root}/${GIT_TAG_NAME}.jsonld.zip"
+    local zipttlDevFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/dev.ttl.zip"
+    local ziprdfDevFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/dev.rdf.zip"
+    local zipjsonldDevFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/dev.jsonld.zip"
+
+    local zipttlProdFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/prod.ttl.zip"
+    local ziprdfProdFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/prod.rdf.zip"
+    local zipjsonldProdFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/prod.jsonld.zip"
     
   (
     cd ${spec_root}
-    zip -r ${zipttlFile} "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -x \*.rdf \*.jsonld
-    zip -r ${ziprdfFile} "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -x \*.ttl \*.jsonld
-    zip -r ${zipjsonldFile} "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -x \*.ttl \*.rdf
+    zip -r ${zipttlDevFile} "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -x \*.rdf \*.zip  \*.jsonld \*AboutFIBOProd.ttl
+    zip -r ${ziprdfDevFile} "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -x \*.ttl \*.zip \*.jsonld \*AboutFIBOProd.rdf
+    zip -r ${zipjsonldDevFile} "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -x \*.ttl \*.zip \*.rdf \*AboutFIBOProd.jsonld
+
+
+
+    grep -r 'utl-av[:;.]Release' "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" | grep -F ".ttl" | sed 's/:.*$//' | xargs zip -r ${zipttlProdFile}
+    find  "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -name '*About*.ttl' -print | grep -v "AboutFIBODev.ttl" |  xargs zip ${zipttlProdFile}
+    find  "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -name '*catalog*.xml' -print | xargs zip ${zipttlProdFile}
+    grep -r 'utl-av[:;.]Release' "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" | grep -F ".rdf" |   sed 's/:.*$//' | xargs zip -r ${ziprdfProdFile}
+    find  "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -name '*About*.rdf' -print | grep -v "AboutFIBODev.rdf" | xargs zip ${ziprdfProdFile}
+    find  "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -name '*catalog*.xml' -print | xargs zip ${ziprdfProdFile}
+    grep -r 'utl-av[:;.]Release' "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" | grep -F ".jsonld" |   sed 's/:.*$//' | xargs zip -r ${zipjsonldProdFile}
+    find  "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -name '*About*.jsonld' -print | grep -v "AboutFIBODev.jsonld" | xargs zip ${zipjsonldProdFile}
+    find  "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -name '*catalog*.xml' -print | xargs zip ${zipjsonldProdFile}
+
+
+
     )
 }
 
@@ -625,6 +690,7 @@ function publishProductOntology() {
   setProduct ontology || return $?
 
   ontologyCopyRdfToTarget || return $?
+  buildIndex  || return $?
   ontologyBuildCats  || return $?
   ontologyCreateAboutFiles || return $?
   ontologySearchAndReplaceStuff || return $?
@@ -632,6 +698,7 @@ function publishProductOntology() {
 #   ontologyAnnotateTopBraidBaseURL || return $?
   ontologyConvertMarkdownToHtml || return $?
   zipOntologyFiles || return $?
+  buildquads || return $?
 
 
   return 0
@@ -905,6 +972,29 @@ function publishProductVocabulary() {
 
   return 0
 }
+
+# Stuff for building nquads files
+
+function quadify () {
+  local tmpont="$(mktemp ${tmp_dir}/ontology.XXXXXX.sq)"
+  cat >"${tmpont}" <<EOF
+SELECT ?o WHERE {?o a <http://www.w3.org/2002/07/owl#Ontology> }
+EOF
+
+    
+  ${jena_riot} "$1" | sed "s@[.]\$@ <$(${jena_arq} --results=csv --data=$1 --query=${tmpont} | grep -v '^o' | tr -d '\n\r')> .@"
+}
+
+function buildquads () {
+    (cd ${spec_root}
+	local ProdQuadsFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/prod.fibo.nquads"    
+	local DevQuadsFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/dev.fibo.nquads"    
+	find . -name '*.rdf' -print | while read file; do quadify "$file"; done   >  "${DevQuadsFile}"
+	grep -r 'utl-av[:;.]Release' "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" | grep -F ".rdf" | sed 's/:.*$//' | while read file; do quadify $file; done  > ${ProdQuadsFile}
+	zip ${ProdQuadsFile}.zip ${ProdQuadsFile}
+    )
+
+    }
 
 
 # Stuff for building catlog files
