@@ -135,7 +135,7 @@ function buildIndex () {
     (
 	cd ${tag_root}
 	tree -P '*.rdf' -H https://spec.edmcouncil.org/fibo/ontology/master/latest | sed "s@latest\(/[^/]*/\)@latest/\\U\\1@" > tree.html
-        cp ${spec_root}/tree.html 
+        cp ${tag_root}/tree.html ${spec_root}/index.html 
 	)
 }
 
