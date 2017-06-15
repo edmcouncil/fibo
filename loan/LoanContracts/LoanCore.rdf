@@ -97,6 +97,7 @@
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema#">
 	
 	<owl:Ontology rdf:about="https://spec.edmcouncil.org/fibo/LOAN/LoanContracts/LoanCore/">
+		<rdf:type rdf:resource="&owl;NamedIndividual"/>
 		<rdfs:label>Loan Core Ontology</rdfs:label>
 		<owl:imports rdf:resource="http://www.w3.org/2004/02/skos/core"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/BE/LegalEntities/LEIEntities/"/>
@@ -823,6 +824,18 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-ln-ln-ln;hasTotalClosingCosts"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-ln-ln-ln;hasTotalPointsAndFees"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-ln-ln-up;cur-hasMonetaryAmount"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
 			</owl:Restriction>
@@ -1220,6 +1233,21 @@ As needed, use the worksFor property to connect appraisers to the appraisal mana
 		<skos:definition>a charge for an appraisal</skos:definition>
 	</fibo-ln-ln-up:ChargeCategory>
 	
+	<fibo-ln-ln-up:ChargeCategory rdf:about="&fibo-ln-ln-ln;_ChargeCategory_discountPoints">
+		<rdf:type rdf:resource="&owl;NamedIndividual"/>
+		<rdfs:label>discount points</rdfs:label>
+		<skos:definition>a charge for lowering your interest rate</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>https://www.consumerfinance.gov/askcfpb/136/what-are-discount-points-and-lender-credits-and-how-do-they-work.html</fibo-fnd-utl-av:adaptedFrom>
+	</fibo-ln-ln-up:ChargeCategory>
+	
+	<fibo-ln-ln-up:ChargeCategory rdf:about="&fibo-ln-ln-ln;_ChargeCategory_lenderCredits">
+		<rdf:type rdf:resource="&owl;NamedIndividual"/>
+		<rdfs:label>lender credits</rdfs:label>
+		<skos:definition>a credit whereby the lender reduces closing costs in exchange for a higher interest rate.</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>https://www.consumerfinance.gov/askcfpb/136/what-are-discount-points-and-lender-credits-and-how-do-they-work.html</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:usageNote>This needs to be treated as a negative charge.</fibo-fnd-utl-av:usageNote>
+	</fibo-ln-ln-up:ChargeCategory>
+	
 	<fibo-ln-ln-up:ChargeCategory rdf:about="&fibo-ln-ln-ln;_ChargeCategory_originationFee">
 		<rdf:type rdf:resource="&owl;NamedIndividual"/>
 		<rdfs:label>origination fee</rdfs:label>
@@ -1550,6 +1578,20 @@ As needed, use the worksFor property to connect appraisers to the appraisal mana
 		<rdfs:subPropertyOf rdf:resource="&fibo-ln-ln-up;cur-hasMonetaryAmount"/>
 		<rdfs:label>has requested amount</rdfs:label>
 		<skos:definition>relates e.g. a request for a loan  to the amount of funds requested (e.g. regarding a loan)</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-ln-ln-ln;hasTotalClosingCosts">
+		<rdfs:subPropertyOf rdf:resource="&fibo-ln-ln-up;pas-hasCost"/>
+		<rdfs:label>has total closing costs</rdfs:label>
+		<skos:definition>relates to he amount of total loan costs, as disclosed pursuant to Regulation Z, 12 CFR 1026.38(f)(4).</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>2015 Revised HMDA regulation</fibo-fnd-utl-av:adaptedFrom>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-ln-ln-ln;hasTotalPointsAndFees">
+		<rdfs:subPropertyOf rdf:resource="&fibo-ln-ln-up;pas-hasCost"/>
+		<rdfs:label>has total points and fees</rdfs:label>
+		<skos:definition>relates to the total amount of points and fees, expressed in dollars, calculated in accordance with Regulation Z, Truth in Lending.</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>2015 Revised HMDA regulation</fibo-fnd-utl-av:adaptedFrom>
 	</owl:ObjectProperty>
 
 </rdf:RDF>
