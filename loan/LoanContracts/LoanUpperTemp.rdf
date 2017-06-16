@@ -5,6 +5,7 @@
 	<!ENTITY fibo-be-le-lei "https://spec.edmcouncil.org/fibo/BE/LegalEntities/LEIEntities/">
 	<!ENTITY fibo-be-le-lp "https://spec.edmcouncil.org/fibo/BE/LegalEntities/LegalPersons/">
 	<!ENTITY fibo-be-oac-opty "https://spec.edmcouncil.org/fibo/BE/OwnershipAndControl/OwnershipParties/">
+	<!ENTITY fibo-fbc-dae-dbt "https://spec.edmcouncil.org/fibo/FBC/DebtAndEquities/Debt/">
 	<!ENTITY fibo-fbc-fct-breg "https://spec.edmcouncil.org/fibo/FBC/FunctionalEntities/BusinessRegistries/">
 	<!ENTITY fibo-fbc-fct-rga "https://spec.edmcouncil.org/fibo/FBC/FunctionalEntities/RegulatoryAgencies/">
 	<!ENTITY fibo-fbc-fi-fi "https://spec.edmcouncil.org/fibo/FBC/FinancialInstruments/FinancialInstruments/">
@@ -52,6 +53,7 @@
 	xmlns:fibo-be-le-lei="https://spec.edmcouncil.org/fibo/BE/LegalEntities/LEIEntities/"
 	xmlns:fibo-be-le-lp="https://spec.edmcouncil.org/fibo/BE/LegalEntities/LegalPersons/"
 	xmlns:fibo-be-oac-opty="https://spec.edmcouncil.org/fibo/BE/OwnershipAndControl/OwnershipParties/"
+	xmlns:fibo-fbc-dae-dbt="https://spec.edmcouncil.org/fibo/FBC/DebtAndEquities/Debt/"
 	xmlns:fibo-fbc-fct-breg="https://spec.edmcouncil.org/fibo/FBC/FunctionalEntities/BusinessRegistries/"
 	xmlns:fibo-fbc-fct-rga="https://spec.edmcouncil.org/fibo/FBC/FunctionalEntities/RegulatoryAgencies/"
 	xmlns:fibo-fbc-fi-fi="https://spec.edmcouncil.org/fibo/FBC/FinancialInstruments/FinancialInstruments/"
@@ -120,6 +122,10 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/IND/EconomicIndicators/EconomicIndicators/"/>
 		<owl:versionInfo>Created with e6Tools Graphical OWL Editor from D:\SEMANTIC-ARTS\NAS\ClientsAndPartners\EDM Council\fibo ontologies\LoanOntology\loans.vsdx Page:loanUpper</owl:versionInfo>
 	</owl:Ontology>
+	
+	<rdf:Description rdf:about="&fibo-fbc-dae-dbt;hasOutstandingAmount">
+		<fibo-fnd-utl-av:synonym>has actual unpaid balance</fibo-fnd-utl-av:synonym>
+	</rdf:Description>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-fct-breg;isSubdivisionOf">
 		<owl:inverseOf rdf:resource="&fibo-fbc-fct-breg;hasSubdivision"/>
@@ -260,14 +266,14 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-doc;Record"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasMember"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-pas-psch;Payment"/>
+				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;hasOutstandingAmount"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-ln-ln-up;hasActualUnpaidBalance"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasMember"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-pas-psch;Payment"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>payment history</rdfs:label>
@@ -454,14 +460,6 @@ Not using psch:PaymentSchedule because it uses PaymentEvent which is an Occurren
 		<rdfs:domain rdf:resource="&fibo-fnd-dt-oc;Occurrence"/>
 		<rdfs:range rdf:resource="&fibo-fnd-dt-oc;Occurrence"/>
 		<skos:definition>relates an occurrence to another occurrence that it is a response to, most often in the context of communication</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;hasActualUnpaidBalance">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;has"/>
-		<rdfs:label>has actual unpaid balance</rdfs:label>
-		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
-		<skos:definition>relates to the actual balance is after a payment is made</skos:definition>
-		<skos:editorialNote>Topic: Payments</skos:editorialNote>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;hasAppraiser">
