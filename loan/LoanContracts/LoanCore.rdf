@@ -97,6 +97,7 @@
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema#">
 	
 	<owl:Ontology rdf:about="https://spec.edmcouncil.org/fibo/LOAN/LoanContracts/LoanCore/">
+		<rdf:type rdf:resource="&owl;NamedIndividual"/>
 		<rdfs:label>Loan Core Ontology</rdfs:label>
 		<owl:imports rdf:resource="http://www.w3.org/2004/02/skos/core"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/BE/LegalEntities/LEIEntities/"/>
@@ -170,6 +171,24 @@
 				<owl:someValuesFrom rdf:resource="&fibo-ln-ln-ln;DwellingCapacity"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isClassifiedBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-ln-ln-ln;ManufacturedHomeLegalClassification"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-ln-ln-ln;hasNumberOfAffordableDwellingUnits"/>
+				<owl:someValuesFrom rdf:resource="&xsd;positiveInteger"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-ln-ln-ln;hasNumberOfDwellingUnits"/>
+				<owl:someValuesFrom rdf:resource="&xsd;positiveInteger"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ln-ln-ln;AmortizationSchedule">
@@ -178,6 +197,11 @@
 		<skos:definition>a schedule which specifies changes in the scheduled balance of loan principal over time</skos:definition>
 		<skos:editorialNote>If needed, we can extend this to include the idea of an AmortizationScheduledPayment which includes interest and principal and many of which comprise an AmortizationSchedule</skos:editorialNote>
 		<fibo-fnd-utl-av:explanatoryNote>For simplicity, this definition assums that &apos;month n&apos; &apos; on an AmortizationSchedule corresoponds to a CalculatedDate.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-ln-ln-ln;AmortizationType">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-cls;Classifier"/>
+		<rdfs:label>a category indicating how the loan amortizes</rdfs:label>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ln-ln-ln;CashOutStatus">
@@ -297,7 +321,12 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-ln-ln-up;rel-isTo"/>
-				<owl:someValuesFrom rdf:resource="&fibo-ln-ln-ln;CreditRepository_I"/>
+				<owl:someValuesFrom>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="https://spec.edmcouncil.org/fibo/FND/Parties/Roles/playsRole"/>
+						<owl:someValuesFrom rdf:resource="&fibo-ln-ln-ln;CreditRepository"/>
+					</owl:Restriction>
+				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>credit inquiry</rdfs:label>
@@ -371,6 +400,12 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-pas-pas;isProducedBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-ln-ln-ln;CreditReportingAgency"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;comprises"/>
 				<owl:someValuesFrom rdf:resource="&fibo-ln-ln-ln;CreditMessage"/>
 			</owl:Restriction>
@@ -402,19 +437,18 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-ln-ln-up;hasDataSource"/>
-				<owl:someValuesFrom rdf:resource="&fibo-ln-ln-ln;CreditRepository_I"/>
+				<owl:someValuesFrom>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="https://spec.edmcouncil.org/fibo/FND/Parties/Roles/playsRole"/>
+						<owl:someValuesFrom rdf:resource="&fibo-ln-ln-ln;CreditRepository"/>
+					</owl:Restriction>
+				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-ln-ln-up;instantiates"/>
 				<owl:someValuesFrom rdf:resource="&fibo-ln-ln-ln;CreditReportProduct"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-ln-ln-up;rel-isProducedBy_I"/>
-				<owl:someValuesFrom rdf:resource="&fibo-ln-ln-ln;CreditReportingAgency_I"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>credit report</rdfs:label>
@@ -460,10 +494,14 @@
 				<owl:someValuesFrom>
 					<owl:Class>
 						<owl:unionOf rdf:parseType="Collection">
-							<rdf:Description rdf:about="&fibo-ln-ln-ln;CreditReportingAgency_I">
-							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-ln-ln-ln;CreditRepository_I">
-							</rdf:Description>
+							<owl:Restriction>
+								<owl:onProperty rdf:resource="https://spec.edmcouncil.org/fibo/FND/Parties/Roles/playsRole"/>
+								<owl:someValuesFrom rdf:resource="&fibo-ln-ln-ln;CreditReportingAgency"/>
+							</owl:Restriction>
+							<owl:Restriction>
+								<owl:onProperty rdf:resource="https://spec.edmcouncil.org/fibo/FND/Parties/Roles/playsRole"/>
+								<owl:someValuesFrom rdf:resource="&fibo-ln-ln-ln;CreditRepository"/>
+							</owl:Restriction>
 						</owl:unionOf>
 					</owl:Class>
 				</owl:someValuesFrom>
@@ -497,19 +535,17 @@
 		<skos:definition>the act of responding to a credit report request</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-ln-ln-ln;CreditReportingAgency_I">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-pty-pty;IndependentParty"/>
+	<owl:Class rdf:about="&fibo-ln-ln-ln;CreditReportingAgency">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;FinancialServiceProvider"/>
 		<rdfs:label>credit reporting agency (i)</rdfs:label>
 		<skos:definition>an organization that provides credit reports</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote>This is the independent party, not the functional entity.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-ln-ln-ln;CreditRepository_I">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-pty-pty;IndependentParty"/>
+	<owl:Class rdf:about="&fibo-ln-ln-ln;CreditRepository">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;FinancialServiceProvider"/>
 		<rdfs:label>credit repository (i)</rdfs:label>
 		<skos:definition>a credit reporting agency that is a clearinghouse for information on the credit rating of individuals or firms</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom>myFICO glossary of credit terms</fibo-fnd-utl-av:adaptedFrom>
-		<fibo-fnd-utl-av:explanatoryNote>This is the independent party, not the functional entity.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ln-ln-ln;CreditRiskAssessment">
@@ -723,6 +759,13 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;hasInterestRate"/>
+				<owl:onClass rdf:resource="&fibo-fnd-acc-cur;InterestRate"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;confers"/>
 				<owl:onClass rdf:resource="&fibo-ln-ln-ln;CommitmentToPay"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
@@ -793,20 +836,72 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-ln-ln-ln;hasFirstRateChangeTerm"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;ExplicitDuration"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-ln-ln-ln;hasLender"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fnd-pty-pty;IndependentParty"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-ln-ln-ln;hasLoanMaturityPeriod"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;ExplicitDuration"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-ln-ln-ln;hasOriginatorCompany"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-org-fm;FormalOrganization"/>
+				<owl:someValuesFrom>
+					<owl:Class>
+						<owl:intersectionOf rdf:parseType="Collection">
+							<rdf:Description rdf:about="&fibo-fnd-org-fm;FormalOrganization">
+							</rdf:Description>
+							<owl:Restriction>
+								<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;has"/>
+								<owl:someValuesFrom rdf:resource="&fibo-ln-ln-ln;NMLSR_ID"/>
+							</owl:Restriction>
+						</owl:intersectionOf>
+					</owl:Class>
+				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-ln-ln-ln;hasOriginatorPerson"/>
-				<owl:someValuesFrom rdf:resource="&fibo-be-le-lp;NaturalPerson"/>
+				<owl:someValuesFrom>
+					<owl:Class>
+						<owl:intersectionOf rdf:parseType="Collection">
+							<rdf:Description rdf:about="&fibo-be-le-lp;NaturalPerson">
+							</rdf:Description>
+							<owl:Restriction>
+								<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;has"/>
+								<owl:someValuesFrom rdf:resource="&fibo-ln-ln-ln;NMLSR_ID"/>
+							</owl:Restriction>
+						</owl:intersectionOf>
+					</owl:Class>
+				</owl:someValuesFrom>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-ln-ln-ln;hasPrePaymentPenaltyTerm"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;ExplicitDuration"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-ln-ln-ln;hasTotalClosingCosts"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-ln-ln-ln;hasTotalPointsAndFees"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -824,6 +919,7 @@
 		<rdfs:label>loan contract</rdfs:label>
 		<skos:definition>an agreement whereby one party extends money or credit to another party with the agreement that the borrowed money will be repaid according to specific terms</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom>http://financial-dictionary.thefreedictionary.com/Loan</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:explanatoryNote>Not all loan contracts are debt instruments, the latter requires that the debt obligations are transferable. See: http://www.investopedia.com/terms/d/debtinstrument.asp</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ln-ln-ln;LoanMarketCategory">
@@ -856,6 +952,13 @@
 		<rdfs:label>loan product</rdfs:label>
 		<skos:definition>a type of loan that a borrower may acquire from a lending institution with specific characteristics and terms</skos:definition>
 		<skos:editorialNote>TODO: It may be good to flesh this out a bit, closely related to schema.org.</skos:editorialNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-ln-ln-ln;ManufacturedHomeLegalClassification">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-cls;Classifier"/>
+		<rdfs:label>manufactured home legal classification</rdfs:label>
+		<skos:definition>a category indicating whether the covered loan is secured by a manufactured home only or with land as well</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>the 2015 Revised HMDA regulation.</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ln-ln-ln;MortgageLoanContract">
@@ -907,6 +1010,14 @@
 		<skos:definition>the purpose for which mortgage loan proceeds will be used, such as real property purchase, dwelling construction, or loan refinancing</skos:definition>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-ln-ln-ln;NMLSR_ID">
+		<rdfs:subClassOf rdf:resource="https://spec.edmcouncil.org/fibo/FND/Law/LegalCapacity/LicenseIdentifier"/>
+		<rdfs:label>Nationwide Mortgage Licensing System and Registry Identifier</rdfs:label>
+		<skos:definition>the number permanently assigned by the Nationwide Mortgage Licensing System and Registry (NMLS) for each company, branch, and individual that maintains a single account on NMLS.</skos:definition>
+		<fibo-fnd-utl-av:abbreviation>NMLSR ID</fibo-fnd-utl-av:abbreviation>
+		<fibo-fnd-utl-av:adaptedFrom>http://mortgage.nationwidelicensingsystem.org/about/Pages/NMLSID.aspx</fibo-fnd-utl-av:adaptedFrom>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-ln-ln-ln;OpenEndLoanContract">
 		<rdfs:subClassOf rdf:resource="&fibo-ln-ln-ln;LoanContract"/>
 		<rdfs:subClassOf>
@@ -921,6 +1032,15 @@
 		<fibo-fnd-utl-av:adaptedFrom>Cambridge Business English Dictionary.</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:explanatoryNote>In summary, open ended means not having fixed maturity date and scheduled repayments.</fibo-fnd-utl-av:explanatoryNote>
 		<fibo-fnd-utl-av:explanatoryNote>There is a credit limit most of the time. The exception is reverse mortgage with tenure payment.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-ln-ln-ln;OwnershipInterestType">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-cls;Classifier"/>
+		<rdfs:label>ownership interest type</rdfs:label>
+		<skos:definition>a category indicating the nature of the applicant&apos;s or borrower&apos;s ownership or leasehold interest in the land where the manufactured home is located.</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>the 2015 Revised HMDA regulation.</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:editorialNote>It would be possible to create a subclas of this for other called something like CustomOwnershipType if it was necessary to keep the standard options separate.</fibo-fnd-utl-av:editorialNote>
+		<fibo-fnd-utl-av:usageNote>The &apos;other&apos; category with a custom description can be handled by creating another instance of this class.</fibo-fnd-utl-av:usageNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ln-ln-ln;PreApprovalContract">
@@ -1146,6 +1266,10 @@ As needed, use the worksFor property to connect appraisers to the appraisal mana
 									<rdf:Description rdf:about="&fibo-fbc-dae-dbt;Collateral">
 									</rdf:Description>
 									<owl:Restriction>
+										<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isClassifiedBy"/>
+										<owl:someValuesFrom rdf:resource="&fibo-ln-ln-ln;OwnershipInterestType"/>
+									</owl:Restriction>
+									<owl:Restriction>
 										<owl:onProperty rdf:resource="&fibo-ln-ln-up;cur-hasEstimatedValue"/>
 										<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
 									</owl:Restriction>
@@ -1181,6 +1305,57 @@ As needed, use the worksFor property to connect appraisers to the appraisal mana
 		<fibo-fnd-utl-av:explanatoryNote>In the US, the structure of this identifier is defined in the 2015 revision to the Home Mortgage Disclosure Act.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
+	<fibo-ln-ln-ln:AmortizationType rdf:about="&fibo-ln-ln-ln;_AmortizationType_adjustableRate">
+		<rdf:type rdf:resource="&owl;NamedIndividual"/>
+		<rdfs:label>adjustable rate</rdfs:label>
+		<skos:definition>a loan that allows the lender to periodically adjust the interest rate in accordance with a specified index</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>the 2015 Revised HMDA regulation.</fibo-fnd-utl-av:adaptedFrom>
+	</fibo-ln-ln-ln:AmortizationType>
+	
+	<fibo-ln-ln-ln:AmortizationType rdf:about="&fibo-ln-ln-ln;_AmortizationType_fixedRate">
+		<rdf:type rdf:resource="&owl;NamedIndividual"/>
+		<rdfs:label>fixed rate</rdfs:label>
+		<skos:definition>a loan in which the interest rate and payments remain the same for the life of the loan</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>the 2015 Revised HMDA regulation.</fibo-fnd-utl-av:adaptedFrom>
+	</fibo-ln-ln-ln:AmortizationType>
+	
+	<fibo-ln-ln-ln:AmortizationType rdf:about="&fibo-ln-ln-ln;_AmortizationType_graduatedPayment">
+		<rdf:type rdf:resource="&owl;NamedIndividual"/>
+		<rdfs:label>graduated payment</rdfs:label>
+		<skos:definition>a flexible payment loan where the payments increase for a specified period of time and then level off</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>the 2015 Revised HMDA regulation.</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:explanatoryNote>Usually involves negative amortization.</fibo-fnd-utl-av:explanatoryNote>
+	</fibo-ln-ln-ln:AmortizationType>
+	
+	<fibo-ln-ln-ln:AmortizationType rdf:about="&fibo-ln-ln-ln;_AmortizationType_graduatedPaymentAdjustable">
+		<rdf:type rdf:resource="&owl;NamedIndividual"/>
+		<rdfs:label>graduated payment adjustable</rdfs:label>
+		<skos:definition>a loan for which there are periodic payments/rate changes with additional specified principal and interest changes as documented in the Security Instruments.</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>the 2015 Revised HMDA regulation.</fibo-fnd-utl-av:adaptedFrom>
+	</fibo-ln-ln-ln:AmortizationType>
+	
+	<fibo-ln-ln-ln:AmortizationType rdf:about="&fibo-ln-ln-ln;_AmortizationType_growingEquity">
+		<rdf:type rdf:resource="&owl;NamedIndividual"/>
+		<rdfs:label>growing equity</rdfs:label>
+		<skos:definition>A graduated payment loan in which increases in a borrowers loan payments are used to accelerate reduction of principal on the mortgage</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>the 2015 Revised HMDA regulation.</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:explanatoryNote>Due to increased payment, the borrower acquires equity more rapidly and retires the debt earlier.</fibo-fnd-utl-av:explanatoryNote>
+	</fibo-ln-ln-ln:AmortizationType>
+	
+	<fibo-ln-ln-ln:AmortizationType rdf:about="&fibo-ln-ln-ln;_AmortizationType_rateImprovement">
+		<rdf:type rdf:resource="&owl;NamedIndividual"/>
+		<rdfs:label>rate improvement</rdfs:label>
+		<skos:definition>a type of flexible loan where the interest rate may decrease based on payment history.</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>the 2015 Revised HMDA regulation.</fibo-fnd-utl-av:adaptedFrom>
+	</fibo-ln-ln-ln:AmortizationType>
+	
+	<fibo-ln-ln-ln:AmortizationType rdf:about="&fibo-ln-ln-ln;_AmortizationType_step">
+		<rdf:type rdf:resource="&owl;NamedIndividual"/>
+		<rdfs:label>step</rdfs:label>
+		<skos:definition>a loan with fixed periodic payment/rate changes without subsidy or negative amortization.</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>the 2015 Revised HMDA regulation.</fibo-fnd-utl-av:adaptedFrom>
+	</fibo-ln-ln-ln:AmortizationType>
+	
 	<fibo-ln-ln-ln:CashOutStatus rdf:about="&fibo-ln-ln-ln;_CashOutStatus_CashOut">
 		<rdf:type rdf:resource="&owl;NamedIndividual"/>
 		<rdf:type rdf:resource="&owl;Thing"/>
@@ -1206,6 +1381,21 @@ As needed, use the worksFor property to connect appraisers to the appraisal mana
 		<rdf:type rdf:resource="&owl;NamedIndividual"/>
 		<rdfs:label>appraisal fee</rdfs:label>
 		<skos:definition>a charge for an appraisal</skos:definition>
+	</fibo-ln-ln-up:ChargeCategory>
+	
+	<fibo-ln-ln-up:ChargeCategory rdf:about="&fibo-ln-ln-ln;_ChargeCategory_discountPoints">
+		<rdf:type rdf:resource="&owl;NamedIndividual"/>
+		<rdfs:label>discount points</rdfs:label>
+		<skos:definition>a charge for lowering your interest rate</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>https://www.consumerfinance.gov/askcfpb/136/what-are-discount-points-and-lender-credits-and-how-do-they-work.html</fibo-fnd-utl-av:adaptedFrom>
+	</fibo-ln-ln-up:ChargeCategory>
+	
+	<fibo-ln-ln-up:ChargeCategory rdf:about="&fibo-ln-ln-ln;_ChargeCategory_lenderCredits">
+		<rdf:type rdf:resource="&owl;NamedIndividual"/>
+		<rdfs:label>lender credits</rdfs:label>
+		<skos:definition>a credit whereby the lender reduces closing costs in exchange for a higher interest rate.</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>https://www.consumerfinance.gov/askcfpb/136/what-are-discount-points-and-lender-credits-and-how-do-they-work.html</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:usageNote>This needs to be treated as a negative charge.</fibo-fnd-utl-av:usageNote>
 	</fibo-ln-ln-up:ChargeCategory>
 	
 	<fibo-ln-ln-up:ChargeCategory rdf:about="&fibo-ln-ln-ln;_ChargeCategory_originationFee">
@@ -1343,7 +1533,27 @@ As needed, use the worksFor property to connect appraisers to the appraisal mana
 	<fibo-ln-ln-ln:LoanMarketCategory rdf:about="&fibo-ln-ln-ln;_LoanMarketCategory_SmallBusiness">
 		<rdf:type rdf:resource="&owl;NamedIndividual"/>
 		<rdfs:label>small business loan</rdfs:label>
+		<fibo-fnd-utl-av:explanatoryNote>This is related to the mortgage loan purpose: &apos;business or commercial&apos;.</fibo-fnd-utl-av:explanatoryNote>
 	</fibo-ln-ln-ln:LoanMarketCategory>
+	
+	<fibo-ln-ln-ln:ManufacturedHomeLegalClassification rdf:about="&fibo-ln-ln-ln;_ManufacturedHomeLegalClassification_personalProperty">
+		<rdf:type rdf:resource="&owl;NamedIndividual"/>
+		<rdfs:label>personal property</rdfs:label>
+		<skos:definition>the covered loan is secured by a manufactured home but not land</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>the 2015 Revised HMDA regulation.</fibo-fnd-utl-av:adaptedFrom>
+	</fibo-ln-ln-ln:ManufacturedHomeLegalClassification>
+	
+	<fibo-ln-ln-ln:ManufacturedHomeLegalClassification rdf:about="&fibo-ln-ln-ln;_ManufacturedHomeLegalClassification_realProperty">
+		<rdf:type rdf:resource="&owl;NamedIndividual"/>
+		<rdfs:label>real property</rdfs:label>
+		<skos:definition>the covered loan is secured by a manufactured home and land</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>the 2015 Revised HMDA regulation.</fibo-fnd-utl-av:adaptedFrom>
+	</fibo-ln-ln-ln:ManufacturedHomeLegalClassification>
+	
+	<fibo-ln-ln-ln:MortgageLoanPurpose rdf:about="&fibo-ln-ln-ln;_MortgageLoanPurpose_BusinessOrCommercial">
+		<rdf:type rdf:resource="&owl;NamedIndividual"/>
+		<rdfs:label>business or commercial</rdfs:label>
+	</fibo-ln-ln-ln:MortgageLoanPurpose>
 	
 	<fibo-ln-ln-ln:MortgageLoanPurpose rdf:about="&fibo-ln-ln-ln;_MortgageLoanPurpose_DwellingConstruction">
 		<rdf:type rdf:resource="&owl;NamedIndividual"/>
@@ -1369,6 +1579,20 @@ As needed, use the worksFor property to connect appraisers to the appraisal mana
 		<rdf:type rdf:resource="&owl;NamedIndividual"/>
 		<rdfs:label>real property purchase</rdfs:label>
 	</fibo-ln-ln-ln:MortgageLoanPurpose>
+	
+	<fibo-ln-ln-ln:OwnershipInterestType rdf:about="&fibo-ln-ln-ln;_OwnershipInterestType_feeSimple">
+		<rdf:type rdf:resource="&owl;NamedIndividual"/>
+		<rdfs:label></rdfs:label>
+		<skos:definition>a category indicating the highest type of ownership that a real property holder can have; it inclues the right to sell, leave to beneficiaries, make changes etc.</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>http://www.investopedia.com/terms/r/real-property.asp#ixzz4k7GyyR3w</fibo-fnd-utl-av:adaptedFrom>
+	</fibo-ln-ln-ln:OwnershipInterestType>
+	
+	<fibo-ln-ln-ln:OwnershipInterestType rdf:about="&fibo-ln-ln-ln;_OwnershipInterestType_fractional">
+		<rdf:type rdf:resource="&owl;NamedIndividual"/>
+		<rdfs:label>fractional</rdfs:label>
+		<skos:definition>a category indicating that several parties can share in, and mitigate the risk of, ownership of a high-value tangible asset</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>https://en.wikipedia.org/wiki/Fractional_ownership</fibo-fnd-utl-av:adaptedFrom>
+	</fibo-ln-ln-ln:OwnershipInterestType>
 	
 	<fibo-ln-ln-ln:PropertyUsage rdf:about="&fibo-ln-ln-ln;_PropertyUsage_investment">
 		<rdf:type rdf:resource="&owl;NamedIndividual"/>
@@ -1496,6 +1720,14 @@ As needed, use the worksFor property to connect appraisers to the appraisal mana
 		<skos:definition>relates something to a party which is prodiving credit report(s) e.g. needed to assess the risk of a loan</skos:definition>
 	</owl:ObjectProperty>
 	
+	<owl:ObjectProperty rdf:about="&fibo-ln-ln-ln;hasFirstRateChangeTerm">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDuration"/>
+		<rdfs:label>has first rate change term</rdfs:label>
+		<skos:definition>relates a loan contract to a period of time in months after origination during which the interest rate cannot change.</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>the 2015 Revised HMDA regulation.</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:usageNote>This does not apply if the loan has fixed rate.</fibo-fnd-utl-av:usageNote>
+	</owl:ObjectProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-ln-ln-ln;hasItemInspected">
 		<rdfs:subPropertyOf rdf:resource="&fibo-ln-ln-up;hasParticipant"/>
 		<rdfs:label>has item inspected</rdfs:label>
@@ -1508,11 +1740,34 @@ As needed, use the worksFor property to connect appraisers to the appraisal mana
 		<skos:definition>relates something to an actual or potential lender. .e.g. a LoanContract to the lending party, or a pre-approval request to a potential lender</skos:definition>
 	</owl:ObjectProperty>
 	
+	<owl:ObjectProperty rdf:about="&fibo-ln-ln-ln;hasLoanMaturityPeriod">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDuration"/>
+		<rdfs:label>has loan maturity period</rdfs:label>
+		<skos:definition>the scheduled period of time expressed as a number of a specific time period unit after which the loan will mature.</skos:definition>
+		<skos:example>360M denotes that the loan matures after 360 monthly periods</skos:example>
+		<skos:example rdf:resource="https://spec.edmcouncil.org/fibo/IND/InterestRates/InterestRates/ThreeHundredSixtyMonths"/>
+		<fibo-fnd-utl-av:adaptedFrom>the 2015 Revised HMDA regulation.</fibo-fnd-utl-av:adaptedFrom>
+	</owl:ObjectProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-ln-ln-ln;hasNoteAmount">
 		<rdfs:subPropertyOf rdf:resource="&fibo-ln-ln-up;cur-hasMonetaryAmount"/>
 		<rdfs:label>has note amount</rdfs:label>
 		<skos:definition>relates something to an amount to be paid as specified on an executed promissory note</skos:definition>
 	</owl:ObjectProperty>
+	
+	<owl:DatatypeProperty rdf:about="&fibo-ln-ln-ln;hasNumberOfAffordableDwellingUnits">
+		<rdfs:subPropertyOf rdf:resource="&fibo-ln-ln-ln;hasNumberOfDwellingUnits"/>
+		<rdfs:label>has number of affordable dwelling units</rdfs:label>
+		<skos:definition>relates real estate to the number of dwelling units it contains that are income-restricted under Federal, State, or local affordable housing programs.</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>the 2015 Revised HMDA regulation.</fibo-fnd-utl-av:adaptedFrom>
+	</owl:DatatypeProperty>
+	
+	<owl:DatatypeProperty rdf:about="&fibo-ln-ln-ln;hasNumberOfDwellingUnits">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasCount"/>
+		<rdfs:label>has number of dwelling units</rdfs:label>
+		<skos:definition>relates real estate to the number of dwelling units it contains</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>the 2015 Revised HMDA regulation.</fibo-fnd-utl-av:adaptedFrom>
+	</owl:DatatypeProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-ln-ln-ln;hasOriginatorCompany">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-pty-pty;hasParty"/>
@@ -1534,10 +1789,32 @@ As needed, use the worksFor property to connect appraisers to the appraisal mana
 		<skos:definition>is a party for which a credit report is being or has been requested</skos:definition>
 	</owl:ObjectProperty>
 	
+	<owl:ObjectProperty rdf:about="&fibo-ln-ln-ln;hasPrePaymentPenaltyTerm">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDuration"/>
+		<rdfs:label>has prepayment penalty term</rdfs:label>
+		<skos:definition>relates a loan contract to a period of time in months after which there is no prepayment penalty.</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>http://www.investopedia.com/terms/p/prepaymentpenalty.asp</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:usageNote>A value of zero means no prepayment penalty; thi s avoids need for a separate boolean property about whether there is a prepayment penalty.</fibo-fnd-utl-av:usageNote>
+	</owl:ObjectProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-ln-ln-ln;hasRequestedAmount">
 		<rdfs:subPropertyOf rdf:resource="&fibo-ln-ln-up;cur-hasMonetaryAmount"/>
 		<rdfs:label>has requested amount</rdfs:label>
 		<skos:definition>relates e.g. a request for a loan  to the amount of funds requested (e.g. regarding a loan)</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-ln-ln-ln;hasTotalClosingCosts">
+		<rdfs:subPropertyOf rdf:resource="&fibo-ln-ln-up;pas-hasCost"/>
+		<rdfs:label>has total closing costs</rdfs:label>
+		<skos:definition>relates to he amount of total loan costs, as disclosed pursuant to Regulation Z, 12 CFR 1026.38(f)(4).</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>2015 Revised HMDA regulation</fibo-fnd-utl-av:adaptedFrom>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-ln-ln-ln;hasTotalPointsAndFees">
+		<rdfs:subPropertyOf rdf:resource="&fibo-ln-ln-up;pas-hasCost"/>
+		<rdfs:label>has total points and fees</rdfs:label>
+		<skos:definition>relates to the total amount of points and fees, expressed in dollars, calculated in accordance with Regulation Z, Truth in Lending.</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>2015 Revised HMDA regulation</fibo-fnd-utl-av:adaptedFrom>
 	</owl:ObjectProperty>
 
 </rdf:RDF>
