@@ -159,7 +159,7 @@
 	</fibo-fnd-dt-fd:ExplicitDuration>
 	
 	<owl:Class rdf:about="&fibo-ln-ln-up;Application">
-		<rdfs:subClassOf rdf:resource="&fibo-ln-ln-up;fnd-Request"/>
+		<rdfs:subClassOf rdf:resource="&fibo-ln-ln-up;Request"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-ln-ln-up;hasDateReceived"/>
@@ -246,10 +246,11 @@
 		<fibo-fnd-utl-av:editorialNote>Future consideration: move this property to Addresses ontology (fibo-fnd-plc-adr).</fibo-fnd-utl-av:editorialNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-ln-ln-up;FND-InformationProduct">
+	<owl:Class rdf:about="&fibo-ln-ln-up;InformationProduct">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-pas;Product"/>
 		<rdfs:label>information product</rdfs:label>
 		<skos:definition>a product that is informational in nature, rather than physical</skos:definition>
+		<skos:editorialNote>Future consideration: move this property to ProductsAndServices ontology (fibo-fnd-pas-pas).</skos:editorialNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ln-ln-up;PaymentHistory">
@@ -268,7 +269,6 @@
 		</rdfs:subClassOf>
 		<rdfs:label>payment history</rdfs:label>
 		<skos:definition>a record of actual payments of principal, interest, and other related amounts made by a borrower to a lender or servicer in order to fulfill their re-payment obligation</skos:definition>
-		<skos:editorialNote>Topic: Payments</skos:editorialNote>
 		<fibo-fnd-utl-av:explanatoryNote>Just like a PaymentSchedule except that the dates and amounts are actuals.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
@@ -325,6 +325,37 @@ Not using psch:PaymentSchedule because it uses PaymentEvent which is an Occurren
 		<skos:definition>a body of information organized in a narrative, graphic, or tabular form, prepared on ad hoc, periodic, recurring, regular, or as required basis. Reports may refer to specific periods, events, occurrences, or subjects, and may be communicated or presented in oral or written form</skos:definition>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-ln-ln-up;Request">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-oc;Occurrence"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-ln-ln-up;isRequestFor"/>
+				<owl:minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:minCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-ln-ln-up;rel-isFrom"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-aap-agt;AutonomousAgent"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-ln-ln-up;rel-isTo"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-aap-agt;AutonomousAgent"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>request</rdfs:label>
+		<skos:definition>an occurrence whereby an agent asks another agent for something or to do something</skos:definition>
+		<fibo-fnd-utl-av:editorialNote>Future consideration: move this property to somewhere in FND.</fibo-fnd-utl-av:editorialNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-ln-ln-up;RiskAssessment">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-oc;Occurrence"/>
+		<rdfs:label>risk assessment</rdfs:label>
+		<skos:definition>the occurrence of assessing the risk of something</skos:definition>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-ln-ln-up;ScheduledPayment">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-fd;AdHocScheduleEntry"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-psch;PaymentObligation"/>
@@ -346,7 +377,6 @@ Not using psch:PaymentSchedule because it uses PaymentEvent which is an Occurren
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ln-ln-up;Valuation">
-		<rdfs:subClassOf rdf:resource="&fibo-ln-ln-up;alx-Measurement"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-ln-ln-up;isEvaluationOf"/>
@@ -358,61 +388,12 @@ Not using psch:PaymentSchedule because it uses PaymentEvent which is an Occurren
 		<fibo-fnd-utl-av:editorialNote>Future consideration: move this to FND, perhaps to the analytics ontology (fibo-fnd-utl-alx).</fibo-fnd-utl-av:editorialNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-ln-ln-up;alx-Measurement">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-oc;Occurrence"/>
-		<rdfs:label>measurement</rdfs:label>
-		<skos:definition>the act of measuring an aspect of something using some procedure giving a result typically expressed in some units (e.g. a valuation measuring the value of an asset expressedin USD)</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote>Future consideration: move this to FND, perhaps to the analytics ontology (fibo-fnd-utl-alx).</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
-	
 	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;dt-fd-coversPeriod">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDatePeriod"/>
 		<rdfs:label>covers period</rdfs:label>
 		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;DatePeriod"/>
 		<skos:definition>relates something to the period of time which it covers (e.g. for a report)</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:Class rdf:about="&fibo-ln-ln-up;fnd-Request">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-oc;Occurrence"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-ln-ln-up;fnd-isRequestFor"/>
-				<owl:minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:minCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-ln-ln-up;rel-isFrom"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-aap-agt;AutonomousAgent"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-ln-ln-up;rel-isTo"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-aap-agt;AutonomousAgent"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>request</rdfs:label>
-		<skos:definition>an occurrence whereby an agent asks another agent for something or to do something</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-ln-ln-up;fnd-RiskAssessment">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-oc;Occurrence"/>
-		<rdfs:label>risk assessment</rdfs:label>
-		<skos:definition>the occurrence of assessing the risk of something</skos:definition>
-	</owl:Class>
-	
-	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;fnd-isRequestFor">
-		<rdfs:subPropertyOf rdf:resource="&fibo-ln-ln-up;hasParticipant"/>
-		<rdfs:label>is request for</rdfs:label>
-		<skos:definition>relates a request to that which is being requested, e.g. a report</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;fnd-rel-isResponseTo">
-		<rdfs:label>is response to</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-dt-oc;Occurrence"/>
-		<rdfs:range rdf:resource="&fibo-fnd-dt-oc;Occurrence"/>
-		<skos:definition>relates an occurrence to another occurrence that it is a response to, most often in the context of communication</skos:definition>
+		<fibo-fnd-utl-av:editorialNote>Future consideration: move this property to FinancialDates ontology (fibo-fnd-dt-fd).</fibo-fnd-utl-av:editorialNote>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;hasAppraiser">
@@ -531,6 +512,13 @@ Not using psch:PaymentSchedule because it uses PaymentEvent which is an Occurren
 		<skos:definition>relates an occurrence to a party that fully or partially performs the activity or process corresponding to the occurrence (e.g. who performed an inspection)</skos:definition>
 	</owl:ObjectProperty>
 	
+	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;isRequestFor">
+		<rdfs:subPropertyOf rdf:resource="&fibo-ln-ln-up;hasParticipant"/>
+		<rdfs:label>is request for</rdfs:label>
+		<skos:definition>relates a request to that which is being requested, e.g. a report</skos:definition>
+		<skos:editorialNote>Future consideration: move this property to somewhere in FND.</skos:editorialNote>
+	</owl:ObjectProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;offersItem">
 		<rdfs:subPropertyOf rdf:resource="&fibo-ln-ln-up;hasParticipant"/>
 		<rdfs:label>offers item</rdfs:label>
@@ -613,6 +601,14 @@ Not using psch:PaymentSchedule because it uses PaymentEvent which is an Occurren
 		<owl:inverseOf rdf:resource="&fibo-ln-ln-up;rel-produces_I"/>
 		<skos:definition>relates something to who or what produced it</skos:definition>
 		<skos:editorialNote>Ideally, this would be a superproperty of pas:isProducedBy in products and services ontology, but that is reserved for use with ThingInRole.  This property is therefore a superproperty of an unnamed property chain from the thing produced  to the independent producing thing that goes through an instance of a class that means PartyInProducerRole.</skos:editorialNote>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;rel-isResponseTo">
+		<rdfs:label>is response to</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fnd-dt-oc;Occurrence"/>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-oc;Occurrence"/>
+		<skos:definition>relates an occurrence to another occurrence that it is a response to, most often in the context of communication</skos:definition>
+		<fibo-fnd-utl-av:editorialNote>Future consideration: move this property to somewhere in FND.</fibo-fnd-utl-av:editorialNote>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;rel-isSubmittedBy">
