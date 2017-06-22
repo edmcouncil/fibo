@@ -253,6 +253,54 @@
 		<skos:editorialNote>Future consideration: move this property to ProductsAndServices ontology (fibo-fnd-pas-pas).</skos:editorialNote>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-ln-ln-up;LineItem">
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-ln-ln-up;hasUnitCost"/>
+				<owl:onClass rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-qt-qtu;hasNumericValue"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+				<owl:onDataRange rdf:resource="&xsd;decimal"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;has"/>
+				<owl:someValuesFrom>
+					<owl:Class>
+						<owl:unionOf rdf:parseType="Collection">
+							<rdf:Description rdf:about="&fibo-fnd-pas-pas;Product">
+							</rdf:Description>
+							<rdf:Description rdf:about="&fibo-ln-ln-up;ChargeCategory">
+							</rdf:Description>
+						</owl:unionOf>
+					</owl:Class>
+				</owl:someValuesFrom>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-ln-ln-up;hasCost"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>line item</rdfs:label>
+		<skos:definition>a description of a product or service including its unit cost, number of units and total cost</skos:definition>
+		<skos:editorialNote>Future consideration: move this property to ProductsAndServices ontology (fibo-fnd-pas-pas).</skos:editorialNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-ln-ln-up;Offer">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-agr;Commitment"/>
+		<rdfs:label>offer</rdfs:label>
+		<skos:definition>a commitment to provide a product or service for an agreed price, if a buyer comes along</skos:definition>
+		<skos:editorialNote>Future consideration: move this property to ProductsAndServices ontology (fibo-fnd-pas-pas).</skos:editorialNote>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-ln-ln-up;PaymentHistory">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-doc;Record"/>
 		<rdfs:subClassOf>
@@ -409,6 +457,14 @@ Not using psch:PaymentSchedule because it uses PaymentEvent which is an Occurren
 		<fibo-fnd-utl-av:explanatoryNote>It is different from the creation date and need not be the last date of the DatePeriod covered.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:ObjectProperty>
 	
+	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;hasCost">
+		<rdfs:subPropertyOf rdf:resource="&fibo-ln-ln-up;hasMonetaryAmount"/>
+		<rdfs:label>has cost</rdfs:label>
+		<skos:definition>relates an item to its cost</skos:definition>
+		<skos:editorialNote>Future consideration: move this property to ProductsAndServices ontology (fibo-fnd-pas-pas).</skos:editorialNote>
+		<fibo-fnd-utl-av:explanatoryNote>This can entail adding up other costs (e.g. 4 units * a unit price)</fibo-fnd-utl-av:explanatoryNote>
+	</owl:ObjectProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;hasDataSource">
 		<rdfs:label>has estimated value</rdfs:label>
 		<skos:definition>relates an informational entity to a source of data used to produce it (e.g. Experian provides data for a CreditReport)</skos:definition>
@@ -491,6 +547,13 @@ Not using psch:PaymentSchedule because it uses PaymentEvent which is an Occurren
 		<skos:definition>relates e.g. an appraisal to the appraiser with seniority or supervisory responsibilities</skos:definition>
 	</owl:ObjectProperty>
 	
+	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;hasUnitCost">
+		<rdfs:subPropertyOf rdf:resource="&fibo-ln-ln-up;hasMonetaryAmount"/>
+		<rdfs:label>has unit cost</rdfs:label>
+		<skos:definition>relates an item to its unit cost</skos:definition>
+		<skos:editorialNote>Future consideration: move this property to ProductsAndServices ontology (fibo-fnd-pas-pas).</skos:editorialNote>
+	</owl:ObjectProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;isEvaluationOf">
 		<rdfs:label>is evaluation of</rdfs:label>
 		<skos:definition>relates a valuation to the thing being valued</skos:definition>
@@ -523,66 +586,6 @@ Not using psch:PaymentSchedule because it uses PaymentEvent which is an Occurren
 		<rdfs:subPropertyOf rdf:resource="&fibo-ln-ln-up;hasParticipant"/>
 		<rdfs:label>offers item</rdfs:label>
 		<skos:definition>relates an offer to the item on offer</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:Class rdf:about="&fibo-ln-ln-up;pas-LineItem">
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-ln-ln-up;pas-hasUnitCost"/>
-				<owl:onClass rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-qt-qtu;hasNumericValue"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
-				<owl:onDataRange rdf:resource="&xsd;decimal"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;has"/>
-				<owl:someValuesFrom>
-					<owl:Class>
-						<owl:unionOf rdf:parseType="Collection">
-							<rdf:Description rdf:about="&fibo-fnd-pas-pas;Product">
-							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-ln-ln-up;ChargeCategory">
-							</rdf:Description>
-						</owl:unionOf>
-					</owl:Class>
-				</owl:someValuesFrom>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-ln-ln-up;pas-hasCost"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>line item</rdfs:label>
-		<skos:definition>a description of a product or service including its unit cost, number of units and total cost</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-ln-ln-up;pas-Offer">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-agr;Commitment"/>
-		<rdfs:label>offer</rdfs:label>
-		<skos:definition>a commitment to provide a product or service for an agreed price, if a buyer comes along</skos:definition>
-		<skos:editorialNote>Future consideration: move to the products and services ontology.</skos:editorialNote>
-	</owl:Class>
-	
-	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;pas-hasCost">
-		<rdfs:subPropertyOf rdf:resource="&fibo-ln-ln-up;hasMonetaryAmount"/>
-		<rdfs:label>has cost</rdfs:label>
-		<skos:definition>relates an item to its cost</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote>This can entail adding up other costs (e.g. 4 units * a unit price)</fibo-fnd-utl-av:explanatoryNote>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;pas-hasUnitCost">
-		<rdfs:subPropertyOf rdf:resource="&fibo-ln-ln-up;hasMonetaryAmount"/>
-		<rdfs:label>has unit cost</rdfs:label>
-		<skos:definition>relates an item to its unit cost</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-ln-ln-up;rel-hasVersion">
