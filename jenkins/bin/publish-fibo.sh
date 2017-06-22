@@ -460,7 +460,7 @@ EOF
 
   local outfile=$(mktemp ${tmp_dir}/out.XXXXXX)
 
-  arq --query="${sqfile}" --data="$1" --results=RDF > "${outfile}"
+  "${jena_arq}" --query="${sqfile}" --data="$1" --results=RDF > "${outfile}"
   mv -f "${outfile}" "$1"
 
 }
