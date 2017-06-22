@@ -987,8 +987,8 @@ EOF
 
 function buildquads () {
     (cd ${spec_root}
-	local ProdQuadsFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/prod.fibo.nquads"    
-	local DevQuadsFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/dev.fibo.nquads"    
+	local ProdQuadsFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/prod.fibo.nq"    
+	local DevQuadsFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/dev.fibo.nq"    
 	find . -name '*.rdf' -print | while read file; do quadify "$file"; done   >  "${DevQuadsFile}"
 	grep -r 'utl-av[:;.]Release' "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" | grep -F ".rdf" | sed 's/:.*$//' | while read file; do quadify $file; done  > ${ProdQuadsFile}
 	zip ${ProdQuadsFile}.zip ${ProdQuadsFile}
