@@ -352,13 +352,13 @@ Not using psch:PaymentSchedule because it uses PaymentEvent which is an Occurren
 		<rdfs:subClassOf rdf:resource="&fibo-ln-ln-up;alx-Measurement"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-ln-ln-up;hasThingBeingValued"/>
+				<owl:onProperty rdf:resource="&fibo-ln-ln-up;isEvaluationOf"/>
 				<owl:minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:minCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>valuation</rdfs:label>
 		<skos:definition>a measurement to assess the value of something expressed in some currency</skos:definition>
-		<fibo-fnd-utl-av:editorialNote>TODO: model this out properly, add to analytics (alx) ontology, put it somewhere (in FBC?).</fibo-fnd-utl-av:editorialNote>
+		<fibo-fnd-utl-av:editorialNote>Future consideration: move this to FND, perhaps to the analytics ontology (fibo-fnd-utl-alx).</fibo-fnd-utl-av:editorialNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ln-ln-up;adr-EmailAddress">
@@ -389,7 +389,7 @@ Not using psch:PaymentSchedule because it uses PaymentEvent which is an Occurren
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-oc;Occurrence"/>
 		<rdfs:label>measurement</rdfs:label>
 		<skos:definition>the act of measuring an aspect of something using some procedure giving a result typically expressed in some units (e.g. a valuation measuring the value of an asset expressedin USD)</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote>TODO: model this out properly, add to analytics (alx) ontology.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:explanatoryNote>Future consideration: move this to FND, perhaps to the analytics ontology (fibo-fnd-utl-alx).</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;conformsTo">
@@ -400,6 +400,7 @@ Not using psch:PaymentSchedule because it uses PaymentEvent which is an Occurren
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;cur-hasEstimatedValue">
+		<rdfs:subPropertyOf rdf:resource="&fibo-ln-ln-up;cur-hasMonetaryAmount"/>
 		<rdfs:label>has estimated value</rdfs:label>
 		<skos:definition>relates something to its estimated value</skos:definition>
 	</owl:ObjectProperty>
@@ -423,7 +424,7 @@ Not using psch:PaymentSchedule because it uses PaymentEvent which is an Occurren
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-oc;Occurrence"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-ln-ln-up;fnd-hasThingRequested"/>
+				<owl:onProperty rdf:resource="&fibo-ln-ln-up;fnd-isRequestFor"/>
 				<owl:minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:minCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -449,9 +450,9 @@ Not using psch:PaymentSchedule because it uses PaymentEvent which is an Occurren
 		<skos:definition>the occurrence of assessing the risk of something</skos:definition>
 	</owl:Class>
 	
-	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;fnd-hasThingRequested">
+	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;fnd-isRequestFor">
 		<rdfs:subPropertyOf rdf:resource="&fibo-ln-ln-up;hasParticipant"/>
-		<rdfs:label>has thing requested</rdfs:label>
+		<rdfs:label>is request for</rdfs:label>
 		<skos:definition>relates a request to that which is being requested, e.g. a report</skos:definition>
 	</owl:ObjectProperty>
 	
@@ -513,12 +514,6 @@ Not using psch:PaymentSchedule because it uses PaymentEvent which is an Occurren
 		<skos:editorialNote>Topic: Payments</skos:editorialNote>
 	</owl:ObjectProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;hasItemOffered">
-		<rdfs:subPropertyOf rdf:resource="&fibo-ln-ln-up;hasParticipant"/>
-		<rdfs:label>has item offered</rdfs:label>
-		<skos:definition>relates an offer to the item on offer</skos:definition>
-	</owl:ObjectProperty>
-	
 	<owl:DatatypeProperty rdf:about="&fibo-ln-ln-up;hasNumberOfEntries">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasCount"/>
 		<rdfs:label>has number of entries</rdfs:label>
@@ -560,14 +555,14 @@ Not using psch:PaymentSchedule because it uses PaymentEvent which is an Occurren
 		<skos:definition>relates e.g. an appraisal to the appraiser with seniority or supervisory responsibilities</skos:definition>
 	</owl:ObjectProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;hasThingBeingValued">
-		<rdfs:label>thing being valued</rdfs:label>
-		<skos:definition>relates a valuation to the thing being valued</skos:definition>
-	</owl:ObjectProperty>
-	
 	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;instantiates">
 		<rdfs:label>instantiates</rdfs:label>
 		<skos:definition>relates something to that which it is an instance of (e.g. a template, offer or form)</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;isEvaluationOf">
+		<rdfs:label>is evaluation of</rdfs:label>
+		<skos:definition>relates a valuation to the thing being valued</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;isInputOn">
@@ -584,6 +579,12 @@ Not using psch:PaymentSchedule because it uses PaymentEvent which is an Occurren
 		<rdfs:subPropertyOf rdf:resource="&fibo-ln-ln-up;hasParticipant"/>
 		<rdfs:label>is performed by</rdfs:label>
 		<skos:definition>relates an occurrence to a party that fully or partially performs the activity or process corresponding to the occurrence (e.g. who performed an inspection)</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;offersItem">
+		<rdfs:subPropertyOf rdf:resource="&fibo-ln-ln-up;hasParticipant"/>
+		<rdfs:label>offers item</rdfs:label>
+		<skos:definition>relates an offer to the item on offer</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;opty-isGuaranteedBy">
@@ -644,7 +645,7 @@ Not using psch:PaymentSchedule because it uses PaymentEvent which is an Occurren
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-agr;Commitment"/>
 		<rdfs:label>offer</rdfs:label>
 		<skos:definition>a commitment to provide a product or service for an agreed price, if a buyer comes along</skos:definition>
-		<skos:editorialNote>TODO: model this out properly, add to products and services ontology.</skos:editorialNote>
+		<skos:editorialNote>Future consideration: move to the products and services ontology.</skos:editorialNote>
 	</owl:Class>
 	
 	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;pas-hasCost">
@@ -663,7 +664,7 @@ Not using psch:PaymentSchedule because it uses PaymentEvent which is an Occurren
 	<owl:DatatypeProperty rdf:about="&fibo-ln-ln-up;rel-hasVersion">
 		<rdfs:label>has version</rdfs:label>
 		<rdfs:range rdf:resource="&xsd;string"/>
-		<skos:definition>realtes something to its version</skos:definition>
+		<skos:definition>relates something to its version</skos:definition>
 	</owl:DatatypeProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;rel-isFrom">
