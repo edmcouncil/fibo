@@ -350,14 +350,14 @@ Not using psch:PaymentSchedule because it uses PaymentEvent which is an Occurren
 	<owl:Class rdf:about="&fibo-ln-ln-up;Report">
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-ln-ln-up;rel-isProducedBy_I"/>
+				<owl:onProperty rdf:resource="&fibo-ln-ln-up;isProducedBy_I"/>
 				<owl:onClass rdf:resource="&fibo-fnd-aap-agt;AutonomousAgent"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-ln-ln-up;dt-fd-coversPeriod"/>
+				<owl:onProperty rdf:resource="&fibo-ln-ln-up;coversPeriod"/>
 				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;DatePeriod"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
@@ -383,13 +383,13 @@ Not using psch:PaymentSchedule because it uses PaymentEvent which is an Occurren
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-ln-ln-up;rel-isFrom"/>
+				<owl:onProperty rdf:resource="&fibo-ln-ln-up;isFrom"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fnd-aap-agt;AutonomousAgent"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-ln-ln-up;rel-isTo"/>
+				<owl:onProperty rdf:resource="&fibo-ln-ln-up;isTo"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fnd-aap-agt;AutonomousAgent"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -436,7 +436,7 @@ Not using psch:PaymentSchedule because it uses PaymentEvent which is an Occurren
 		<fibo-fnd-utl-av:editorialNote>Future consideration: move this to FND, perhaps to the analytics ontology (fibo-fnd-utl-alx).</fibo-fnd-utl-av:editorialNote>
 	</owl:Class>
 	
-	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;dt-fd-coversPeriod">
+	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;coversPeriod">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDatePeriod"/>
 		<rdfs:label>covers period</rdfs:label>
 		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;DatePeriod"/>
@@ -554,9 +554,22 @@ Not using psch:PaymentSchedule because it uses PaymentEvent which is an Occurren
 		<skos:editorialNote>Future consideration: move this property to ProductsAndServices ontology (fibo-fnd-pas-pas).</skos:editorialNote>
 	</owl:ObjectProperty>
 	
+	<owl:DatatypeProperty rdf:about="&fibo-ln-ln-up;hasVersion">
+		<rdfs:label>has version</rdfs:label>
+		<rdfs:range rdf:resource="&xsd;string"/>
+		<skos:definition>relates something to its version</skos:definition>
+		<skos:editorialNote>Future consideration: move this property to the Relations ontology (fibo-fnd-rel-rel).</skos:editorialNote>
+	</owl:DatatypeProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;isEvaluationOf">
 		<rdfs:label>is evaluation of</rdfs:label>
 		<skos:definition>relates a valuation to the thing being valued</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;isFrom">
+		<rdfs:label>is from</rdfs:label>
+		<skos:definition>relates something to its source or origin (e.g. the agent originating a request)</skos:definition>
+		<skos:editorialNote>Future consideration: move this property to the Relations ontology (fibo-fnd-rel-rel).</skos:editorialNote>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;isInputOn">
@@ -575,11 +588,48 @@ Not using psch:PaymentSchedule because it uses PaymentEvent which is an Occurren
 		<skos:definition>relates an occurrence to a party that fully or partially performs the activity or process corresponding to the occurrence (e.g. who performed an inspection)</skos:definition>
 	</owl:ObjectProperty>
 	
+	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;isProducedBy_I">
+		<rdfs:label>is produced by (i)</rdfs:label>
+		<owl:inverseOf rdf:resource="&fibo-ln-ln-up;produces_I"/>
+		<skos:definition>relates something to who or what produced it</skos:definition>
+		<skos:editorialNote>Future consideration: move this property to the Relations ontology (fibo-fnd-rel-rel).</skos:editorialNote>
+		<skos:editorialNote>Ideally, this would be a superproperty of pas:isProducedBy in products and services ontology, but that is reserved for use with ThingInRole.  This property is therefore a superproperty of an unnamed property chain from the thing produced  to the independent producing thing that goes through an instance of a class that means PartyInProducerRole.</skos:editorialNote>
+	</owl:ObjectProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;isRequestFor">
 		<rdfs:subPropertyOf rdf:resource="&fibo-ln-ln-up;hasParticipant"/>
 		<rdfs:label>is request for</rdfs:label>
 		<skos:definition>relates a request to that which is being requested, e.g. a report</skos:definition>
 		<skos:editorialNote>Future consideration: move this property to somewhere in FND.</skos:editorialNote>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;isResponseTo">
+		<rdfs:label>is response to</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fnd-dt-oc;Occurrence"/>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-oc;Occurrence"/>
+		<skos:definition>relates an occurrence to another occurrence that it is a response to, most often in the context of communication</skos:definition>
+		<fibo-fnd-utl-av:editorialNote>Future consideration: move this property to somewhere in FND.</fibo-fnd-utl-av:editorialNote>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;isSubmittedBy">
+		<rdfs:label>is submitted by</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fnd-aap-agt;AutonomousAgent"/>
+		<skos:definition>relates something to that agent that provided or submitted it (e.g. the person or organization that submitted a report)</skos:definition>
+		<skos:editorialNote>Future consideration: move this property to the Relations ontology (fibo-fnd-rel-rel).</skos:editorialNote>
+		<skos:editorialNote>Ideally, this would be a subproperty of isProvidedBy, but that is reserved for use with ThingInRole.  This property is therefore a subproperty of an unnamed property chain from the thing submitted to the submitting institution that goes through an instance of a class that means PartyInProviderRole.</skos:editorialNote>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;isSubmittedTo">
+		<rdfs:label>is submitted to</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fnd-aap-agt;AutonomousAgent"/>
+		<skos:definition>relates something to which it is submitted (e.g. the organization receiving a report)</skos:definition>
+		<skos:editorialNote>Future consideration: move this property to the Relations ontology (fibo-fnd-rel-rel).</skos:editorialNote>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;isTo">
+		<rdfs:label>is to</rdfs:label>
+		<skos:definition>relates something to a target or destination (e.g. the agent receiving a request)</skos:definition>
+		<skos:editorialNote>Future consideration: move this property to the Relations ontology (fibo-fnd-rel-rel).</skos:editorialNote>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;offersItem">
@@ -588,53 +638,10 @@ Not using psch:PaymentSchedule because it uses PaymentEvent which is an Occurren
 		<skos:definition>relates an offer to the item on offer</skos:definition>
 	</owl:ObjectProperty>
 	
-	<owl:DatatypeProperty rdf:about="&fibo-ln-ln-up;rel-hasVersion">
-		<rdfs:label>has version</rdfs:label>
-		<rdfs:range rdf:resource="&xsd;string"/>
-		<skos:definition>relates something to its version</skos:definition>
-	</owl:DatatypeProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;rel-isFrom">
-		<rdfs:label>is from</rdfs:label>
-		<skos:definition>relates something to its source or origin (e.g. the agent originating a request)</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;rel-isProducedBy_I">
-		<rdfs:label>is produced by (i)</rdfs:label>
-		<owl:inverseOf rdf:resource="&fibo-ln-ln-up;rel-produces_I"/>
-		<skos:definition>relates something to who or what produced it</skos:definition>
-		<skos:editorialNote>Ideally, this would be a superproperty of pas:isProducedBy in products and services ontology, but that is reserved for use with ThingInRole.  This property is therefore a superproperty of an unnamed property chain from the thing produced  to the independent producing thing that goes through an instance of a class that means PartyInProducerRole.</skos:editorialNote>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;rel-isResponseTo">
-		<rdfs:label>is response to</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-dt-oc;Occurrence"/>
-		<rdfs:range rdf:resource="&fibo-fnd-dt-oc;Occurrence"/>
-		<skos:definition>relates an occurrence to another occurrence that it is a response to, most often in the context of communication</skos:definition>
-		<fibo-fnd-utl-av:editorialNote>Future consideration: move this property to somewhere in FND.</fibo-fnd-utl-av:editorialNote>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;rel-isSubmittedBy">
-		<rdfs:label>is submitted by</rdfs:label>
-		<rdfs:range rdf:resource="&fibo-fnd-aap-agt;AutonomousAgent"/>
-		<skos:definition>relates something to that agent that provided or submitted it (e.g. the person or organization that submitted a report)</skos:definition>
-		<skos:editorialNote>Ideally, this would be a subproperty of isProvidedBy, but that is reserved for use with ThingInRole.  This property is therefore a subproperty of an unnamed property chain from the thing submitted to the submitting institution that goes through an instance of a class that means PartyInProviderRole.</skos:editorialNote>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;rel-isSubmittedTo">
-		<rdfs:label>is submitted to</rdfs:label>
-		<rdfs:range rdf:resource="&fibo-fnd-aap-agt;AutonomousAgent"/>
-		<skos:definition>relates something to which it is submitted (e.g. the organization receiving a report)</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;rel-isTo">
-		<rdfs:label>is to</rdfs:label>
-		<skos:definition>relates something to a target or destination (e.g. the agent receiving a request)</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;rel-produces_I">
+	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;produces_I">
 		<rdfs:label>produces (i)</rdfs:label>
 		<skos:definition>inverse of is produced by</skos:definition>
+		<skos:editorialNote>Future consideration: move this property to the Relations ontology (fibo-fnd-rel-rel).</skos:editorialNote>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-ln-ln-up;worksFor">
