@@ -502,6 +502,7 @@ function fixTopBraidBaseURICookie() {
 #
 # Add the '# baseURI' line to the top of all turtle files with the versioned ontology IRI
 #
+
 function ontologyAnnotateTopBraidBaseURL() {
 
   local queryFile="$(mktemp ${tmp_dir}/ontXXXXXX.sq)"
