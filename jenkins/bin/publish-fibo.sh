@@ -426,8 +426,43 @@ __HERE__
     set -x
     find ${tag_root}/ -type f \( -name '*.rdf' -o -name '*.ttl' -o -name '*.md' \) -exec sed -i -f ${sedfile} {} \;
   )
+
+
+# We want to add in a rdfs:isDefinedBy link from every class back to the ontology. 
+
+  find ${tag_root}/ -type f  -name '*.rdf' -print | while read file ; do
+    addIsDefinedBy "${file}"
+  done
  
   return 0
+}
+
+# 
+# Add isDefinedBy triples to a single file
+#
+function addIsDefinedBy () {
+
+  local sqfile=$(mktemp ${tmp_dir}/sq.XXXXXX)
+  
+  cat > "${sqfile}" <<EOF
+PREFIX owl: <http://www.w3.org/2002/07/owl#> 
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+CONSTRUCT {?s ?p ?o . ?cl rdfs:isDefinedBy ?ont . ?pr rdfs:isDefinedBy ?ont}
+WHERE {?s ?p ?o . 
+?ont a owl:Ontology . 
+?cl a owl:Class .
+?pr  a ?x .
+FILTER (?x IN (owl:AnnotationProperty,owl:AsymmetricProperty,owl:DatatypeProperty,owl:DeprecatedProperty,owl:FunctionalProperty,owl:InverseFunctionalProperty,owl:IrreflexiveProperty,owl:ObjectProperty,owl:OntologyProperty,owl:ReflexiveProperty,owl:SymmetricProperty,owl:TransitiveProperty,rdf:Property,rdfs:ContainerMembershipProperty))
+}
+EOF
+
+
+  local outfile=$(mktemp ${tmp_dir}/out.XXXXXX)
+
+  arq --query="${sqfile}" --data="$1" --results=RDF > "${outfile}"
+  mv -f "${outfile}" "$1"
+
 }
 
 #
