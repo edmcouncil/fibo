@@ -31,6 +31,7 @@
 	<!ENTITY fibo-fnd-plc-cty "https://spec.edmcouncil.org/fibo/FND/Places/Countries/">
 	<!ENTITY fibo-fnd-plc-loc "https://spec.edmcouncil.org/fibo/FND/Places/Locations/">
 	<!ENTITY fibo-fnd-pty-pty "https://spec.edmcouncil.org/fibo/FND/Parties/Parties/">
+	<!ENTITY fibo-fnd-pty-rl "https://spec.edmcouncil.org/fibo/FND/Parties/Roles/">
 	<!ENTITY fibo-fnd-qt-qtu "https://spec.edmcouncil.org/fibo/FND/Quantities/QuantitiesAndUnits/">
 	<!ENTITY fibo-fnd-rel-rel "https://spec.edmcouncil.org/fibo/FND/Relations/Relations/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/">
@@ -79,6 +80,7 @@
 	xmlns:fibo-fnd-plc-cty="https://spec.edmcouncil.org/fibo/FND/Places/Countries/"
 	xmlns:fibo-fnd-plc-loc="https://spec.edmcouncil.org/fibo/FND/Places/Locations/"
 	xmlns:fibo-fnd-pty-pty="https://spec.edmcouncil.org/fibo/FND/Parties/Parties/"
+	xmlns:fibo-fnd-pty-rl="https://spec.edmcouncil.org/fibo/FND/Parties/Roles/"
 	xmlns:fibo-fnd-qt-qtu="https://spec.edmcouncil.org/fibo/FND/Quantities/QuantitiesAndUnits/"
 	xmlns:fibo-fnd-rel-rel="https://spec.edmcouncil.org/fibo/FND/Relations/Relations/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/"
@@ -350,15 +352,15 @@ Not using psch:PaymentSchedule because it uses PaymentEvent which is an Occurren
 	<owl:Class rdf:about="&fibo-ln-ln-lgn;Report">
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-ln-ln-lgn;isProducedBy_I"/>
-				<owl:onClass rdf:resource="&fibo-fnd-aap-agt;AutonomousAgent"/>
+				<owl:onProperty rdf:resource="&fibo-ind-ei-ei;hasReportingPeriod"/>
+				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;DatePeriod"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-ind-ei-ei;hasReportingPeriod"/>
-				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;DatePeriod"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-pas-pas;isProducedBy"/>
+				<owl:onClass rdf:resource="&fibo-fnd-pty-rl;AgentInRole"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -574,14 +576,6 @@ Not using psch:PaymentSchedule because it uses PaymentEvent which is an Occurren
 		<skos:definition>relates an occurrence to a party that fully or partially performs the activity or process corresponding to the occurrence (e.g. who performed an inspection)</skos:definition>
 	</owl:ObjectProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-ln-ln-lgn;isProducedBy_I">
-		<rdfs:label>is produced by (i)</rdfs:label>
-		<owl:inverseOf rdf:resource="&fibo-ln-ln-lgn;produces_I"/>
-		<skos:definition>relates something to who or what produced it</skos:definition>
-		<skos:editorialNote>Future consideration: move this property to the Relations ontology (fibo-fnd-rel-rel).</skos:editorialNote>
-		<skos:editorialNote>Ideally, this would be a superproperty of pas:isProducedBy in products and services ontology, but that is reserved for use with ThingInRole.  This property is therefore a superproperty of an unnamed property chain from the thing produced  to the independent producing thing that goes through an instance of a class that means PartyInProducerRole.</skos:editorialNote>
-	</owl:ObjectProperty>
-	
 	<owl:ObjectProperty rdf:about="&fibo-ln-ln-lgn;isRequestFor">
 		<rdfs:subPropertyOf rdf:resource="&fibo-ln-ln-lgn;hasParticipant"/>
 		<rdfs:label>is request for</rdfs:label>
@@ -622,12 +616,6 @@ Not using psch:PaymentSchedule because it uses PaymentEvent which is an Occurren
 		<rdfs:subPropertyOf rdf:resource="&fibo-ln-ln-lgn;hasParticipant"/>
 		<rdfs:label>offers item</rdfs:label>
 		<skos:definition>relates an offer to the item on offer</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-ln-ln-lgn;produces_I">
-		<rdfs:label>produces (i)</rdfs:label>
-		<skos:definition>inverse of is produced by</skos:definition>
-		<skos:editorialNote>Future consideration: move this property to the Relations ontology (fibo-fnd-rel-rel).</skos:editorialNote>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-ln-ln-lgn;worksFor">
