@@ -80,12 +80,6 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-accx-dtt;Amortization">
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-accx-dtt;isAmortizationOf"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-accx-dtt;DebtFinance"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">amortization</rdfs:label>
 	</owl:Class>
 	
@@ -140,38 +134,6 @@
 		<rdfs:label xml:lang="en">debt terms</rdfs:label>
 		<skos:definition xml:lang="en">Terms setting out the formal rights and obligations of borrower and lender under a contract in which funds are lent from the one party to the other.</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">These may be terms in a Loan Contract (incliding for example Mportage ContracT) or they may be the contractual terms of a Debt security.</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-fnd-accx-dtt;DebtFinance">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-accx-dtt;MoniesOwing"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-ptyx-prc;RelationshipContext"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-accx-dtt;collateralizedBy"/>
-				<owl:onClass rdf:resource="&fibo-fnd-accx-dtt;Collateral"/>
-				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-accx-dtt;hasBorrowingParty"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-accx-dtt;Borrower"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-accx-dtt;hasLendingParty"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-accx-dtt;Lender"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-accx-dtt;hasfibo-fnd-accx-dtt"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-accx-dtt;DebtContractTermsSet"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">debt finance</rdfs:label>
-		<skos:definition xml:lang="en">Funds loaned or extended from one party to another for some purpose. Further notes: This is a loan or a debt security principal amount. This term is distinguished from &quot;Debt&quot; or &quot;Credit&quot; in that the latter are balances at a point in time; however it is also referred to as debt for example in debt securities, since a loaned or securitized amount constitutes a debt when it is advanced (and ceases to constitute a debt when it is paid off). As such, this usually has interest payable and may have collateral. In Islamic products there is no interest. This may be a loan (realized as a draw-down on a credit facillity) or it may be a debt set up as part of the issuance of a debt security.</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-accx-dtt;DebtInterest">
@@ -304,15 +266,9 @@
 		<rdfs:range rdf:resource="&fibo-fnd-accx-dtt;Interest"/>
 	</owl:ObjectProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-fnd-accx-dtt;collateralizedBy">
-		<rdfs:label xml:lang="en">collateralized by</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-accx-dtt;DebtFinance"/>
-		<rdfs:range rdf:resource="&fibo-fnd-accx-dtt;Collateral"/>
-	</owl:ObjectProperty>
-	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-accx-dtt;debtAmount">
 		<rdfs:label xml:lang="en">debt amount</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-accx-dtt;DebtFinance"/>
+		<rdfs:domain rdf:resource="https://spec.edmcouncil.org/fibo/SEC/Debt/DebtFoundations/DebtFinance/DebtFinance"/>
 		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
 		<skos:definition xml:lang="en">The amount of the finance extended as debt from one party to the other. Further notes: This is not the balance of the debt at a point in time, but the amount drawn down at a specific point in time, after which (for interest bearing debts) interest becomes payable. Semantic Modeling note This term is over-ridden for specific kinds of debt (securities, loans) and is therefore not needed in any data model. It is included here to define part of the meaning of the Debt Finance term. It is a Relationship Fact and strictly speaking should be regarded as being specialized and over-ridden by the terms in the Loan and Security classes, however it is modeled here as a &quot;Referenceable Archetype&quot; meaning that it appears in diagrams as a textual entry not a relationship line, and so it is not possible to formally show this specialization.</skos:definition>
 	</owl:ObjectProperty>
@@ -330,29 +286,11 @@
 		<skos:definition xml:lang="en">The basis on which interest accrues on the debt, that is the number of days in a month and days in a year that are counted when performing interest accrual calculations.</skos:definition>
 	</owl:ObjectProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-fnd-accx-dtt;hasBorrowingParty">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-ptyx-prc;hasPartyInRole"/>
-		<rdfs:label xml:lang="en">has borrowing party</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-accx-dtt;DebtFinance"/>
-		<rdfs:range rdf:resource="&fibo-fnd-accx-dtt;Borrower"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-fnd-accx-dtt;hasDebtTerms">
-		<rdfs:label>has debt terms</rdfs:label>
-	</owl:ObjectProperty>
-	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-accx-dtt;hasInterestRate">
 		<rdfs:label xml:lang="en">has interest rate</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fnd-accx-dtt;DebtInterestPaymentTermsSet"/>
 		<rdfs:range rdf:resource="https://spec.edmcouncil.org/fibo/FND/Utilities/BusinessFacingTypes/percentage"/>
 		<skos:definition xml:lang="en">The rate of annual interest that is to be paid by the debtor to the lender on the debt.</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-fnd-accx-dtt;hasLendingParty">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-ptyx-prc;hasPartyInRole"/>
-		<rdfs:label xml:lang="en">has lending party</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-accx-dtt;DebtFinance"/>
-		<rdfs:range rdf:resource="&fibo-fnd-accx-dtt;Lender"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-accx-dtt;hasPrincipalAmortizationType">
@@ -365,7 +303,7 @@
 	<owl:ObjectProperty rdf:about="&fibo-fnd-accx-dtt;hasfibo-fnd-accx-dtt">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-agr-ctr;contractHasTerms"/>
 		<rdfs:label xml:lang="en">has debt terms</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-accx-dtt;DebtFinance"/>
+		<rdfs:domain rdf:resource="https://spec.edmcouncil.org/fibo/SEC/Debt/DebtFoundations/DebtFinance/DebtFinance"/>
 		<rdfs:range rdf:resource="&fibo-fnd-accx-dtt;DebtContractTermsSet"/>
 	</owl:ObjectProperty>
 	
@@ -376,7 +314,7 @@
 	<owl:ObjectProperty rdf:about="&fibo-fnd-accx-dtt;isAmortizationOf">
 		<rdfs:label xml:lang="en">is amortization of</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fnd-accx-dtt;Amortization"/>
-		<rdfs:range rdf:resource="&fibo-fnd-accx-dtt;DebtFinance"/>
+		<rdfs:range rdf:resource="https://spec.edmcouncil.org/fibo/SEC/Debt/DebtFoundations/DebtFinance/DebtFinance"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-accx-dtt;isInterestOn">
