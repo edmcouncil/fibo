@@ -92,19 +92,24 @@
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Provisional"/>
 	</owl:Ontology>
 	
-	<rdf:Description rdf:about="&fibo-be-oac-cown;Shareholder">
-		<owl:equivalentClass rdf:resource="&fibo-sec-eq-eq;Shareholder"/>
-	</rdf:Description>
+	<owl:Class rdf:about="&fibo-be-oac-cown;Shareholder">
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-be-oac-cown;shareholderHoldsEquity"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-aeq;StockholdersEquity"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-eq-eq;holdsSomeShareholderEquity"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-eq-eq;ShareholderEquity"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">shareholder</rdfs:label>
+		<owl:equivalentClass rdf:resource="&fibo-be-oac-cown;Shareholder"/>
+	</owl:Class>
 	
-	<rdf:Description rdf:about="&fibo-be-oac-opty;ConstitutionalOwner">
-		<owl:equivalentClass rdf:resource="&fibo-sec-eq-eq;ConstitutionalOwner"/>
-	</rdf:Description>
-	
-	<rdf:Description rdf:about="&fibo-be-ptr-ptr;LimitedPartnerEquity">
-		<owl:disjointWith rdf:resource="&fibo-sec-eq-eq;ShareholderEquity"/>
-	</rdf:Description>
-	
-	<owl:Class rdf:about="&fibo-sec-eq-eq;ConstitutionalOwner">
+	<owl:Class rdf:about="&fibo-be-oac-opty;ConstitutionalOwner">
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-be-oac-opty;holdsSomeStockholderEquity"/>
@@ -112,7 +117,12 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">constitutional owner</rdfs:label>
+		<owl:equivalentClass rdf:resource="&fibo-be-oac-opty;ConstitutionalOwner"/>
 	</owl:Class>
+	
+	<rdf:Description rdf:about="&fibo-be-ptr-ptr;LimitedPartnerEquity">
+		<owl:disjointWith rdf:resource="&fibo-sec-eq-eq;ShareholderEquity"/>
+	</rdf:Description>
 	
 	<owl:Class rdf:about="&fibo-sec-eq-eq;DistributionByPayment">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;DividendsDistributionMethod"/>
@@ -333,22 +343,6 @@
 		<skos:definition xml:lang="en">A security that signifies ownership in a corporation and represents a claim on part of the corporation&apos;s assets and earnings. What a share confers: 1. Voting rights 2. Entitlement to Income 3. Entitlements to Assets</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-eq-eq;Shareholder">
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-be-oac-cown;shareholderHoldsEquity"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-aeq;StockholdersEquity"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-eq-eq;holdsSomeShareholderEquity"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-eq-eq;ShareholderEquity"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">shareholder</rdfs:label>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-sec-eq-eq;ShareholderEquity">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-acc-aeq;IssuedEquity"/>
 		<rdfs:subClassOf>
@@ -487,7 +481,7 @@
 	<owl:ObjectProperty rdf:about="&fibo-sec-eq-eq;holdsSomeShareholderEquity">
 		<rdfs:subPropertyOf rdf:resource="&fibo-be-oac-cown;shareholderHoldsEquity"/>
 		<rdfs:label xml:lang="en">holds some shareholder equity</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-eq-eq;Shareholder"/>
+		<rdfs:domain rdf:resource="&fibo-be-oac-cown;Shareholder"/>
 		<rdfs:range rdf:resource="&fibo-sec-eq-eq;ShareholderEquity"/>
 		<skos:definition xml:lang="en">The shareholder holds some of the issued shareholder equity in the company, by way of the shares that they hold.</skos:definition>
 	</owl:ObjectProperty>

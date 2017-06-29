@@ -51,13 +51,21 @@
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Provisional"/>
 	</owl:Ontology>
 	
-	<rdf:Description rdf:about="&fibo-loan-typ-stu;StudentLoan">
-		<owl:equivalentClass rdf:resource="&fibo-loan-tem-sta;StudentLoan"/>
-	</rdf:Description>
+	<owl:Class rdf:about="&fibo-loan-typ-stu;StudentLoan">
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-loan-tem-sta;hasActiveStatus"/>
+				<owl:someValuesFrom rdf:resource="&fibo-loan-tem-sta;StudentLoanActiveStatus"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">student loan</rdfs:label>
+		<owl:equivalentClass rdf:resource="&fibo-loan-typ-stu;StudentLoan"/>
+	</owl:Class>
 	
-	<rdf:Description rdf:about="&fibo-loan-loan-loan;LoanDrawdown">
-		<owl:equivalentClass rdf:resource="&fibo-loan-tem-sta;LoanDrawdown"/>
-	</rdf:Description>
+	<owl:Class rdf:about="&fibo-loan-loan-loan;LoanDrawdown">
+		<rdfs:label xml:lang="en">loan drawdown</rdfs:label>
+		<owl:equivalentClass rdf:resource="&fibo-loan-loan-loan;LoanDrawdown"/>
+	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-tem-sta;ActiveLoanStatus">
 		<rdfs:subClassOf rdf:resource="&fibo-loan-tem-sta;LoanLifecycleStatus"/>
@@ -109,10 +117,6 @@
 		<skos:editorialNote xml:lang="en">Added to enhance Proof of Concept model, which has an aggregation relation from Loan Status to Loan Proceeding. That would not be literally correct as it would make a proceeding (and activity) part of a status. Rather, it must be the status of that proceeding, which is part of this status information set and is reported on at the point in time that the other loan status information may be reported on. Action: Although this &quot;is of&quot; a defined kind of activity called Loan Proceeding, that does not satisfy the need for a dated set of statuses. Need a selection list, based on facts about the Loan Default Proceedings, e.g. Imminent, Pending, Ongoing, Closed. Mabe some of those should be part of a wider list of common terms about all legal proceedings statuses.</skos:editorialNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-loan-tem-sta;LoanDrawdown">
-		<rdfs:label xml:lang="en">loan drawdown</rdfs:label>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-loan-tem-sta;LoanLifecycleStatus">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-inf-tem;Status"/>
 		<rdfs:label xml:lang="en">loan lifecycle status</rdfs:label>
@@ -159,16 +163,6 @@
 		<rdfs:label xml:lang="en">loan status  (please review)</rdfs:label>
 		<skos:definition xml:lang="en">Statuses which occur for a period of time, relating to a loan.</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">The status applies at a period of time, and is applicable across all phases.</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-loan-tem-sta;StudentLoan">
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-loan-tem-sta;hasActiveStatus"/>
-				<owl:someValuesFrom rdf:resource="&fibo-loan-tem-sta;StudentLoanActiveStatus"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">student loan</rdfs:label>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-tem-sta;StudentLoanActiveStatus">
@@ -237,13 +231,13 @@
 	
 	<owl:ObjectProperty rdf:about="&fibo-loan-tem-sta;hasActiveStatus">
 		<rdfs:label xml:lang="en">has active status  (please review)</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-tem-sta;LoanDrawdown"/>
+		<rdfs:domain rdf:resource="&fibo-loan-loan-loan;LoanDrawdown"/>
 		<rdfs:range rdf:resource="&fibo-loan-tem-sta;ActiveLoanStatus"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-loan-tem-sta;hasLifecycleStatus">
 		<rdfs:label xml:lang="en">has lifecycle status  (please review)</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-tem-sta;LoanDrawdown"/>
+		<rdfs:domain rdf:resource="&fibo-loan-loan-loan;LoanDrawdown"/>
 		<rdfs:range rdf:resource="&fibo-loan-tem-sta;LoanLifecycleStatus"/>
 	</owl:ObjectProperty>
 	
@@ -255,7 +249,7 @@
 	
 	<owl:ObjectProperty rdf:about="&fibo-loan-tem-sta;hasSnapshot">
 		<rdfs:label xml:lang="en">has snapshot  (please review)</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-tem-sta;LoanDrawdown"/>
+		<rdfs:domain rdf:resource="&fibo-loan-loan-loan;LoanDrawdown"/>
 		<rdfs:range rdf:resource="&fibo-loan-tem-sta;LoanSnapshotOrStatus"/>
 	</owl:ObjectProperty>
 	

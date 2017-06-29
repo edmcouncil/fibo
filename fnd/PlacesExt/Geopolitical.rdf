@@ -35,9 +35,16 @@
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Informative"/>
 	</owl:Ontology>
 	
-	<rdf:Description rdf:about="&fibo-fnd-plc-cty;Country">
-		<owl:equivalentClass rdf:resource="&fibo-fnd-plcx-gpo;Country"/>
-	</rdf:Description>
+	<owl:Class rdf:about="&fibo-fnd-plc-cty;Country">
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-plcx-gpo;hasCapital"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-plcx-gpo;City"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">country</rdfs:label>
+		<owl:equivalentClass rdf:resource="&fibo-fnd-plc-cty;Country"/>
+	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-plcx-gpo;City">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-plcx-gpo;MunicipalArea"/>
@@ -59,22 +66,12 @@
 		<skos:editorialNote xml:lang="en">Identified the need for a suitable formal definition of a City, in SME Reviews. Taking this further there are requirements for physical city or urban center concepts e.g. for addresses, risk, and requirements for geopolitical concepts of an urban center or cityt e.g. for their relationship to a municipality which issues debt instruments.</skos:editorialNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-fnd-plcx-gpo;Country">
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-plcx-gpo;hasCapital"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-plcx-gpo;City"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">country</rdfs:label>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-fnd-plcx-gpo;GeopoliticalGroup">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-plc-cty;GeopoliticalEntity"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-plcx-gpo;hasMember"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-plcx-gpo;Country"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-plc-cty;Country"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">geopolitical group</rdfs:label>
@@ -103,27 +100,27 @@
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-plcx-gpo;hasBorderWith">
 		<rdfs:label xml:lang="en">has border with</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-plcx-gpo;Country"/>
+		<rdfs:domain rdf:resource="&fibo-fnd-plc-cty;Country"/>
 		<rdfs:range rdf:resource="&fibo-fnd-plc-cty;Country"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-plcx-gpo;hasCapital">
 		<rdfs:label xml:lang="en">has capital</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-plcx-gpo;Country"/>
+		<rdfs:domain rdf:resource="&fibo-fnd-plc-cty;Country"/>
 		<rdfs:range rdf:resource="&fibo-fnd-plcx-gpo;City"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-plcx-gpo;hasMember">
 		<rdfs:label xml:lang="en">has member</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fnd-plcx-gpo;GeopoliticalGroup"/>
-		<rdfs:range rdf:resource="&fibo-fnd-plcx-gpo;Country"/>
+		<rdfs:range rdf:resource="&fibo-fnd-plc-cty;Country"/>
 		<owl:inverseOf rdf:resource="&fibo-fnd-plcx-gpo;isInGroup"/>
 		<skos:editorialNote xml:lang="en">Note: inspired by geopolitical ontology (FAO)</skos:editorialNote>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-plcx-gpo;isInGroup">
 		<rdfs:label xml:lang="en">is in group</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-plcx-gpo;Country"/>
+		<rdfs:domain rdf:resource="&fibo-fnd-plc-cty;Country"/>
 		<rdfs:range rdf:resource="&fibo-fnd-plcx-gpo;GeopoliticalGroup"/>
 	</owl:ObjectProperty>
 	
@@ -144,7 +141,7 @@
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-plcx-gpo;recognizedBy">
 		<rdfs:label xml:lang="en">recognized by</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-plcx-gpo;Country"/>
+		<rdfs:domain rdf:resource="&fibo-fnd-plc-cty;Country"/>
 		<rdfs:range rdf:resource="&fibo-fnd-plc-cty;Country"/>
 		<skos:definition xml:lang="en">Countries which recognize the existence of the Country.</skos:definition>
 		<skos:editorialNote xml:lang="en">Work in progress: relationship between Country and ISO Country (which is a sub-class of Country). when a country first exists, it is recognized by some country - otherwise it&apos;s dubious to call it a country. Only once the UN recognizes a country e.g. South Sudan, it is on the road to becoming an ISO Country (via first being a UN-FAO Territory). Then disputed territories (a UN-FAO term), are recognized by some and not others, e..g Kosovo.</skos:editorialNote>
