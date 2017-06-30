@@ -585,6 +585,8 @@ function convertRdfFileTo() {
       ;;
   esac
 
+  echo "Converting ${rdfFile} to format ${targetFormat}"
+
   java \
     -jar "${rdftoolkit_jar}" \
     --source "${rdfFile}" \
