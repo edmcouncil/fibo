@@ -95,6 +95,13 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 	</owl:Ontology>
 	
 	<owl:Class rdf:about="&fibo-der-drc-swp;Swap">
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-rtd-irswp;isNotional"/>
+				<owl:onDataRange rdf:resource="&xsd;boolean"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-swp;SwapLeg">
@@ -382,21 +389,15 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<rdfs:subClassOf rdf:resource="&fibo-der-drc-swp;SwapLeg"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-fct-ra;specifies"/>
-				<owl:onClass rdf:resource="&fibo-fnd-acc-cur;Currency"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;hasPrincipal"/>
+				<owl:onClass rdf:resource="&fibo-fbc-dae-dbt;Principal"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-drc-swp;hasPaymentSchedule"/>
 				<owl:someValuesFrom rdf:resource="&fibo-der-rtd-irswp;SwapStreamInterestPaymentSchedule"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-rtd-irswp;hasNotionalStepSchedule"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-rtd-irswp;NotionalStepSchedule"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -483,15 +484,15 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<owl:equivalentClass>
 			<rdfs:Datatype>
 				<owl:oneOf>
-					<rdf:Description>
+					<rdf:List>
 						<rdf:first>Initial</rdf:first>
 						<rdf:rest>
-							<rdf:Description>
+							<rdf:List>
 								<rdf:first>Previous</rdf:first>
 								<rdf:rest rdf:resource="&rdf;nil"/>
-							</rdf:Description>
+							</rdf:List>
 						</rdf:rest>
-					</rdf:Description>
+					</rdf:List>
 				</owl:oneOf>
 			</rdfs:Datatype>
 		</owl:equivalentClass>
@@ -532,15 +533,15 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<owl:equivalentClass>
 			<rdfs:Datatype>
 				<owl:oneOf>
-					<rdf:Description>
-						<rdf:first>Money Market Yield</rdf:first>
+					<rdf:List>
+						<rdf:first>Bond Equivalent Yield</rdf:first>
 						<rdf:rest>
-							<rdf:Description>
-								<rdf:first>Bond Equivalent Yield</rdf:first>
+							<rdf:List>
+								<rdf:first>Money Market Yield</rdf:first>
 								<rdf:rest rdf:resource="&rdf;nil"/>
-							</rdf:Description>
+							</rdf:List>
 						</rdf:rest>
-					</rdf:Description>
+					</rdf:List>
 				</owl:oneOf>
 			</rdfs:Datatype>
 		</owl:equivalentClass>
@@ -633,7 +634,7 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 	</owl:Class>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-der-rtd-irswp;firstNotionalStepDate">
-		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Date"/>
+		<rdfs:range rdf:resource="&xsd;date"/>
 	</owl:DatatypeProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-der-rtd-irswp;floatingRateCap">
@@ -681,8 +682,15 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<rdfs:range rdf:resource="&xsd;string"/>
 	</owl:DatatypeProperty>
 	
+	<owl:DatatypeProperty rdf:about="&fibo-der-rtd-irswp;isNotional">
+		<rdfs:label>is notional</rdfs:label>
+		<rdfs:range rdf:resource="&xsd;boolean"/>
+		<skos:definition>when true there is a specified value on which exchanged interest payments are based on</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.investopedia.com/terms/n/notionalvalue.asp</fibo-fnd-utl-av:adaptedFrom>
+	</owl:DatatypeProperty>
+	
 	<owl:DatatypeProperty rdf:about="&fibo-der-rtd-irswp;lastNotionalStepDate">
-		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Date"/>
+		<rdfs:range rdf:resource="&xsd;date"/>
 	</owl:DatatypeProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-der-rtd-irswp;percentageRelativeTo">

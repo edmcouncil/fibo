@@ -2,6 +2,7 @@
 <!DOCTYPE rdf:RDF [
 	<!ENTITY dct "http://purl.org/dc/terms/">
 	<!ENTITY fibo-be-oac-exec "https://spec.edmcouncil.org/fibo/BE/OwnershipAndControl/Executives/">
+	<!ENTITY fibo-fbc-fct-fse "https://spec.edmcouncil.org/fibo/FBC/FunctionalEntities/FinancialServicesEntities/">
 	<!ENTITY fibo-fbc-pas-caa "https://spec.edmcouncil.org/fibo/FBC/ProductsAndServices/ClientsAndAccounts/">
 	<!ENTITY fibo-fbc-pas-fpas "https://spec.edmcouncil.org/fibo/FBC/ProductsAndServices/FinancialProductsAndServices/">
 	<!ENTITY fibo-fnd-aap-agt "https://spec.edmcouncil.org/fibo/FND/AgentsAndPeople/Agents/">
@@ -25,6 +26,7 @@
 <rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/FBC/ProductsAndServices/ClientsAndAccounts/"
 	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fibo-be-oac-exec="https://spec.edmcouncil.org/fibo/BE/OwnershipAndControl/Executives/"
+	xmlns:fibo-fbc-fct-fse="https://spec.edmcouncil.org/fibo/FBC/FunctionalEntities/FinancialServicesEntities/"
 	xmlns:fibo-fbc-pas-caa="https://spec.edmcouncil.org/fibo/FBC/ProductsAndServices/ClientsAndAccounts/"
 	xmlns:fibo-fbc-pas-fpas="https://spec.edmcouncil.org/fibo/FBC/ProductsAndServices/FinancialProductsAndServices/"
 	xmlns:fibo-fnd-aap-agt="https://spec.edmcouncil.org/fibo/FND/AgentsAndPeople/Agents/"
@@ -62,6 +64,7 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<rdfs:seeAlso rdf:resource="https://spec.edmcouncil.org/fibo/FBC/AboutFBC/"/>
 		<rdfs:seeAlso rdf:resource="https://spec.edmcouncil.org/fibo/FBC/ProductsAndServices/AboutProductsAndServices/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/BE/OwnershipAndControl/Executives/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FBC/FunctionalEntities/FinancialServicesEntities/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FBC/ProductsAndServices/FinancialProductsAndServices/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/AgentsAndPeople/Agents/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/Agreements/Contracts/"/>
@@ -145,7 +148,7 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label>account number</rdfs:label>
+		<rdfs:label>account identifier</rdfs:label>
 		<skos:definition>an identifier assigned to each client account for ease in referring to that party&apos;s activity</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom>Barron&apos;s Dictionary of Business and Economics Terms, Fifth Edition, 2012</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
@@ -222,8 +225,111 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<fibo-fnd-utl-av:adaptedFrom>Barron&apos;s Dictionary of Finance and Investment Terms, Ninth Edition, 2014</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-fbc-pas-caa;BankAccount">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-caa;Account"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-aap-agt;isIdentifiedBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-caa;AccountIdentifier"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-pty-pty;hasPartyInRole"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-fct-fse;Bank"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isProvidedBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-fct-fse;Bank"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>bank account</rdfs:label>
+		<skos:definition>an account held or provided by, as a service, a bank</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-pas-caa;BrokerageAccount">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-caa;InvestmentAccount"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-pty-pty;hasPartyInRole"/>
+				<owl:someValuesFrom>
+					<owl:Class>
+						<owl:unionOf rdf:parseType="Collection">
+							<rdf:Description rdf:about="&fibo-fbc-fct-fse;Bank">
+							</rdf:Description>
+							<rdf:Description rdf:about="&fibo-fbc-fct-fse;BrokerageFirm">
+							</rdf:Description>
+							<rdf:Description rdf:about="&fibo-fbc-fct-fse;FuturesCommissionMerchant">
+							</rdf:Description>
+						</owl:unionOf>
+					</owl:Class>
+				</owl:someValuesFrom>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isProvidedBy"/>
+				<owl:someValuesFrom>
+					<owl:Class>
+						<owl:unionOf rdf:parseType="Collection">
+							<rdf:Description rdf:about="&fibo-fbc-fct-fse;Bank">
+							</rdf:Description>
+							<rdf:Description rdf:about="&fibo-fbc-fct-fse;BrokerageFirm">
+							</rdf:Description>
+							<rdf:Description rdf:about="&fibo-fbc-fct-fse;FuturesCommissionMerchant">
+							</rdf:Description>
+						</owl:unionOf>
+					</owl:Class>
+				</owl:someValuesFrom>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>brokerage account</rdfs:label>
+		<skos:definition>an account offered by a broker that allows the investor to deposit funds and place investment orders</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.investopedia.com/terms/b/brokerageaccount.asp</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:explanatoryNote>The investor owns the assets contained in the brokerage account and must usually claim as income any capital gains incurred.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-pas-caa;DepositAccount">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-fse;BankingProduct"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-caa;InvestmentOrDepositAccount"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-pty-pty;hasPartyInRole"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-fct-fse;DepositoryInstitution"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isProvidedBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-fct-fse;DepositoryInstitution"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>deposit account</rdfs:label>
+		<skos:definition>an account that provides a record of money placed with a depository institution for safekeeping and management</skos:definition>
+		<skos:example>Deposit accounts include savings accounts, money market accounts, and transactional accounts, such as demand deposit accounts, among others.</skos:example>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.investopedia.com/terms/b/bank-deposits.asp</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:explanatoryNote>The account holder has the right to withdraw deposited funds, as set forth in the terms and conditions governing the account agreement. Deposit accounts may be insured up to a certain amount, depending on the jurisdiction.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-fbc-pas-caa;FinancialServiceAccount">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-caa;Account"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-pas-caa;realizes"/>
+				<owl:someValuesFrom>
+					<owl:Class>
+						<owl:unionOf rdf:parseType="Collection">
+							<rdf:Description rdf:about="&fibo-fbc-pas-fpas;FinancialProduct">
+							</rdf:Description>
+							<rdf:Description rdf:about="&fibo-fbc-pas-fpas;FinancialService">
+							</rdf:Description>
+						</owl:unionOf>
+					</owl:Class>
+				</owl:someValuesFrom>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-aap-agt;isIdentifiedBy"/>
@@ -268,21 +374,6 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
-				<owl:someValuesFrom>
-					<owl:Class>
-						<owl:unionOf rdf:parseType="Collection">
-							<rdf:Description rdf:about="&fibo-fbc-pas-fpas;FinancialProduct">
-							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-fbc-pas-fpas;FinancialService">
-							</rdf:Description>
-						</owl:unionOf>
-					</owl:Class>
-				</owl:someValuesFrom>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasDefinition"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fnd-pas-pas;ServiceAgreement"/>
 			</owl:Restriction>
@@ -298,6 +389,41 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<fibo-fnd-utl-av:adaptedFrom>Barron&apos;s Dictionary of Business and Economics Terms, Fifth Edition, 2012</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-fbc-pas-caa;InvestmentAccount">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-caa;InvestmentOrDepositAccount"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-pty-pty;hasPartyInRole"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-fct-fse;FinancialInstitution"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isProvidedBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-fct-fse;FinancialInstitution"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>investment account</rdfs:label>
+		<owl:disjointWith rdf:resource="&fibo-fbc-pas-caa;DepositAccount"/>
+		<skos:definition>an account that provides a record of deposits of funds and/or securities held at a financial institution</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.investorwords.com/11655/investment_account.html</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:explanatoryNote>The typical objectives of an investment account are to achieve long term growth, income or capital preservation from the deposited asset portfolio.  Investment accounts are typically not insured.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-pas-caa;InvestmentOrDepositAccount">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-caa;FinancialServiceAccount"/>
+		<rdfs:label>investment or deposit account</rdfs:label>
+		<skos:definition>an account associated with a product or service that requires the account holder to provide funds for management by the account provider</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>The account holder may or may not be entitled to consideration in exchange for providing such funds, for example, interest, depending on the type of account and the terms and conditions associated with it.  Also, there may be fees associated with management services provided by the account provider.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-pas-caa;LoanOrCreditAccount">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-caa;FinancialServiceAccount"/>
+		<rdfs:label>loan or credit account</rdfs:label>
+		<owl:disjointWith rdf:resource="&fibo-fbc-pas-caa;InvestmentOrDepositAccount"/>
+		<skos:definition>an account associated with a service in which the account holder receives funds from the account provider under certain terms and conditions for repayment</skos:definition>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-fbc-pas-caa;RelationshipManager">
 		<rdfs:subClassOf rdf:resource="&fibo-be-oac-exec;ResponsibleParty"/>
 		<rdfs:subClassOf>
@@ -310,5 +436,17 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<skos:definition>a responsible party who manages the client&apos;s account (or portfolio of accounts) and oversees their relationship with the service provider</skos:definition>
 		<fibo-fnd-utl-av:synonym>account manager</fibo-fnd-utl-av:synonym>
 	</owl:Class>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fbc-pas-caa;isRealizedBy">
+		<rdfs:label>is realized by</rdfs:label>
+		<owl:inverseOf rdf:resource="&fibo-fbc-pas-caa;realizes"/>
+		<skos:definition>is made concrete by</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fbc-pas-caa;realizes">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
+		<rdfs:label>realizes</rdfs:label>
+		<skos:definition>makes concrete</skos:definition>
+	</owl:ObjectProperty>
 
 </rdf:RDF>

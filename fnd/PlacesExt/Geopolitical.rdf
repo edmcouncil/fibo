@@ -5,7 +5,7 @@
 	<!ENTITY fibo-fnd-plcx-gph "https://spec.edmcouncil.org/fibo/FND/PlacesExt/Geophysical/">
 	<!ENTITY fibo-fnd-plcx-gpo "https://spec.edmcouncil.org/fibo/FND/PlacesExt/Geopolitical/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/">
-	<!ENTITY fibo-fnd-utl-val "https://spec.edmcouncil.org/fibo/FND/Utilities/Values/">
+	<!ENTITY fibo-fnd-utlx-val "https://spec.edmcouncil.org/fibo/FND/UtilitiesExt/Values/">
 	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
 	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
 	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
@@ -18,7 +18,7 @@
 	xmlns:fibo-fnd-plcx-gph="https://spec.edmcouncil.org/fibo/FND/PlacesExt/Geophysical/"
 	xmlns:fibo-fnd-plcx-gpo="https://spec.edmcouncil.org/fibo/FND/PlacesExt/Geopolitical/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/"
-	xmlns:fibo-fnd-utl-val="https://spec.edmcouncil.org/fibo/FND/Utilities/Values/"
+	xmlns:fibo-fnd-utlx-val="https://spec.edmcouncil.org/fibo/FND/UtilitiesExt/Values/"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
@@ -31,20 +31,27 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/Places/Countries/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/PlacesExt/Geophysical/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/Utilities/Values/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/UtilitiesExt/Values/"/>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Informative"/>
 	</owl:Ontology>
 	
-	<rdf:Description rdf:about="&fibo-fnd-plc-cty;Country">
-		<owl:equivalentClass rdf:resource="&fibo-fnd-plcx-gpo;Country"/>
-	</rdf:Description>
+	<owl:Class rdf:about="&fibo-fnd-plc-cty;Country">
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-plcx-gpo;hasCapital"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-plcx-gpo;City"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">country</rdfs:label>
+		<owl:equivalentClass rdf:resource="&fibo-fnd-plc-cty;Country"/>
+	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-plcx-gpo;City">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-plcx-gpo;MunicipalArea"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-plcx-gpo;officialName"/>
-				<owl:onClass rdf:resource="&fibo-fnd-utl-val;TextValue"/>
+				<owl:onClass rdf:resource="&fibo-fnd-utlx-val;TextValue"/>
 				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -59,22 +66,12 @@
 		<skos:editorialNote xml:lang="en">Identified the need for a suitable formal definition of a City, in SME Reviews. Taking this further there are requirements for physical city or urban center concepts e.g. for addresses, risk, and requirements for geopolitical concepts of an urban center or cityt e.g. for their relationship to a municipality which issues debt instruments.</skos:editorialNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-fnd-plcx-gpo;Country">
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-plcx-gpo;hasCapital"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-plcx-gpo;City"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">country</rdfs:label>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-fnd-plcx-gpo;GeopoliticalGroup">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-plc-cty;GeopoliticalEntity"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-plcx-gpo;hasMember"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-plcx-gpo;Country"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-plc-cty;Country"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">geopolitical group</rdfs:label>
@@ -103,27 +100,27 @@
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-plcx-gpo;hasBorderWith">
 		<rdfs:label xml:lang="en">has border with</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-plcx-gpo;Country"/>
+		<rdfs:domain rdf:resource="&fibo-fnd-plc-cty;Country"/>
 		<rdfs:range rdf:resource="&fibo-fnd-plc-cty;Country"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-plcx-gpo;hasCapital">
 		<rdfs:label xml:lang="en">has capital</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-plcx-gpo;Country"/>
+		<rdfs:domain rdf:resource="&fibo-fnd-plc-cty;Country"/>
 		<rdfs:range rdf:resource="&fibo-fnd-plcx-gpo;City"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-plcx-gpo;hasMember">
 		<rdfs:label xml:lang="en">has member</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fnd-plcx-gpo;GeopoliticalGroup"/>
-		<rdfs:range rdf:resource="&fibo-fnd-plcx-gpo;Country"/>
+		<rdfs:range rdf:resource="&fibo-fnd-plc-cty;Country"/>
 		<owl:inverseOf rdf:resource="&fibo-fnd-plcx-gpo;isInGroup"/>
 		<skos:editorialNote xml:lang="en">Note: inspired by geopolitical ontology (FAO)</skos:editorialNote>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-plcx-gpo;isInGroup">
 		<rdfs:label xml:lang="en">is in group</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-plcx-gpo;Country"/>
+		<rdfs:domain rdf:resource="&fibo-fnd-plc-cty;Country"/>
 		<rdfs:range rdf:resource="&fibo-fnd-plcx-gpo;GeopoliticalGroup"/>
 	</owl:ObjectProperty>
 	
@@ -138,13 +135,13 @@
 	<owl:ObjectProperty rdf:about="&fibo-fnd-plcx-gpo;officialName">
 		<rdfs:label xml:lang="en">official name</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fnd-plcx-gpo;City"/>
-		<rdfs:range rdf:resource="&fibo-fnd-utl-val;TextValue"/>
+		<rdfs:range rdf:resource="&fibo-fnd-utlx-val;TextValue"/>
 		<skos:definition xml:lang="en">The Official Name by which the City is formally referred, if different from the Common Name. Also usually the name of the State Actor.</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-plcx-gpo;recognizedBy">
 		<rdfs:label xml:lang="en">recognized by</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-plcx-gpo;Country"/>
+		<rdfs:domain rdf:resource="&fibo-fnd-plc-cty;Country"/>
 		<rdfs:range rdf:resource="&fibo-fnd-plc-cty;Country"/>
 		<skos:definition xml:lang="en">Countries which recognize the existence of the Country.</skos:definition>
 		<skos:editorialNote xml:lang="en">Work in progress: relationship between Country and ISO Country (which is a sub-class of Country). when a country first exists, it is recognized by some country - otherwise it&apos;s dubious to call it a country. Only once the UN recognizes a country e.g. South Sudan, it is on the road to becoming an ISO Country (via first being a UN-FAO Territory). Then disputed territories (a UN-FAO term), are recognized by some and not others, e..g Kosovo.</skos:editorialNote>

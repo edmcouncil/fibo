@@ -47,20 +47,27 @@
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Informative"/>
 	</owl:Ontology>
 	
-	<rdf:Description rdf:about="&fibo-fnd-agr-ctr;Contract">
-		<owl:equivalentClass rdf:resource="&fibo-fnd-agrx-ele;Contract"/>
-	</rdf:Description>
-	
-	<rdf:Description rdf:about="&fibo-fnd-agr-ctr;ContractualCommitment">
-		<owl:equivalentClass rdf:resource="&fibo-fnd-agrx-ele;ContractualCommitment"/>
-	</rdf:Description>
-	
-	<rdf:Description rdf:about="&fibo-fnd-agr-ctr;WrittenContract">
-		<owl:equivalentClass rdf:resource="&fibo-fnd-agrx-ele;WrittenContract"/>
-	</rdf:Description>
-	
-	<owl:Class rdf:about="&fibo-fnd-agrx-ele;Contract">
+	<owl:Class rdf:about="&fibo-fnd-agr-ctr;Contract">
 		<rdfs:label xml:lang="en">contract</rdfs:label>
+		<owl:equivalentClass rdf:resource="&fibo-fnd-agr-ctr;Contract"/>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-agr-ctr;ContractualCommitment">
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-agrx-ele;definedInClause"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-agrx-ele;ContractClause"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-agrx-ele;definedInSection"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-agrx-ele;ContractSection"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-agr-ctr;WrittenContract">
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-agrx-ele;ContractClause">
@@ -166,22 +173,6 @@
 		<skos:definition xml:lang="en">The identification of any third parties referred to in a contract but not being signatories to that contract. This would for example be the identification of calculation agents in a derivatives contract.</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-fnd-agrx-ele;ContractualCommitment">
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-agrx-ele;definedInClause"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-agrx-ele;ContractClause"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-agrx-ele;definedInSection"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-agrx-ele;ContractSection"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">contractual commitment</rdfs:label>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-fnd-agrx-ele;DRIP">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;MutualContractualAgreement"/>
 		<rdfs:label xml:lang="en">d r i p</rdfs:label>
@@ -216,10 +207,6 @@
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">This is the contract section which formalizes these aspects of the Agreement between the parties.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-fnd-agrx-ele;WrittenContract">
-		<rdfs:label xml:lang="en">written contract</rdfs:label>
-	</owl:Class>
-	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-agrx-ele;clauseContainsTerm">
 		<rdfs:label xml:lang="en">clause contains term</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fnd-agrx-ele;ContractClause"/>
@@ -229,14 +216,14 @@
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-agrx-ele;definedInClause">
 		<rdfs:label xml:lang="en">defined in clause</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-agrx-ele;ContractualCommitment"/>
+		<rdfs:domain rdf:resource="&fibo-fnd-agr-ctr;ContractualCommitment"/>
 		<rdfs:range rdf:resource="&fibo-fnd-agrx-ele;ContractClause"/>
 		<skos:definition xml:lang="en">The individual clause of the contract in which the set of terms is defined, if applicable.</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-agrx-ele;definedInSection">
 		<rdfs:label xml:lang="en">defined in section</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-agrx-ele;ContractualCommitment"/>
+		<rdfs:domain rdf:resource="&fibo-fnd-agr-ctr;ContractualCommitment"/>
 		<rdfs:range rdf:resource="&fibo-fnd-agrx-ele;ContractSection"/>
 		<skos:definition xml:lang="en">The section of the contract in which the contract terms set is defined.</skos:definition>
 	</owl:ObjectProperty>
@@ -251,7 +238,7 @@
 	<owl:ObjectProperty rdf:about="&fibo-fnd-agrx-ele;hasProvisions">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-agr-ctr;hasContractualElement"/>
 		<rdfs:label xml:lang="en">has provisions</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-agrx-ele;WrittenContract"/>
+		<rdfs:domain rdf:resource="&fibo-fnd-agr-ctr;WrittenContract"/>
 		<rdfs:range rdf:resource="&fibo-fnd-agrx-ele;TerminationProvisions"/>
 		<skos:definition xml:lang="en">Termination provisions as contained in the Contract. These set out the conditions under which the contract may be terminated and the rights and obligations of each party in the event of such termination.</skos:definition>
 	</owl:ObjectProperty>
@@ -295,7 +282,7 @@
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-agrx-ele;principalsIdentification">
 		<rdfs:label xml:lang="en">principals identification</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-agrx-ele;Contract"/>
+		<rdfs:domain rdf:resource="&fibo-fnd-agr-ctr;Contract"/>
 		<rdfs:range rdf:resource="&fibo-fnd-agrx-ele;ContractPartyIdentification"/>
 		<skos:definition xml:lang="en">The identification of the principals of the contract.</skos:definition>
 	</owl:ObjectProperty>

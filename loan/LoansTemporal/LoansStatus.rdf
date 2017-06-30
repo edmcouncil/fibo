@@ -5,7 +5,7 @@
 	<!ENTITY fibo-fnd-inf-tem "https://spec.edmcouncil.org/fibo/FND/Information/TemporalInfo/">
 	<!ENTITY fibo-fnd-tim-tim "https://spec.edmcouncil.org/fibo/FND/Time/Time/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/">
-	<!ENTITY fibo-fnd-utl-val "https://spec.edmcouncil.org/fibo/FND/Utilities/Values/">
+	<!ENTITY fibo-fnd-utlx-val "https://spec.edmcouncil.org/fibo/FND/UtilitiesExt/Values/">
 	<!ENTITY fibo-loan-loan-loan "https://spec.edmcouncil.org/fibo/LOAN/Loans/LoanBasicTerms/">
 	<!ENTITY fibo-loan-tem-app "https://spec.edmcouncil.org/fibo/LOAN/LoansTemporal/LoanApplicationsTemporal/">
 	<!ENTITY fibo-loan-tem-ev "https://spec.edmcouncil.org/fibo/LOAN/LoansTemporal/LoansEvents/">
@@ -23,7 +23,7 @@
 	xmlns:fibo-fnd-inf-tem="https://spec.edmcouncil.org/fibo/FND/Information/TemporalInfo/"
 	xmlns:fibo-fnd-tim-tim="https://spec.edmcouncil.org/fibo/FND/Time/Time/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/"
-	xmlns:fibo-fnd-utl-val="https://spec.edmcouncil.org/fibo/FND/Utilities/Values/"
+	xmlns:fibo-fnd-utlx-val="https://spec.edmcouncil.org/fibo/FND/UtilitiesExt/Values/"
 	xmlns:fibo-loan-loan-loan="https://spec.edmcouncil.org/fibo/LOAN/Loans/LoanBasicTerms/"
 	xmlns:fibo-loan-tem-app="https://spec.edmcouncil.org/fibo/LOAN/LoansTemporal/LoanApplicationsTemporal/"
 	xmlns:fibo-loan-tem-ev="https://spec.edmcouncil.org/fibo/LOAN/LoansTemporal/LoansEvents/"
@@ -43,7 +43,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/Information/TemporalInfo/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/Time/Time/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/Utilities/Values/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/UtilitiesExt/Values/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/LOAN/LoanTypes/StudentLoans/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/LOAN/Loans/LoanBasicTerms/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/LOAN/LoansTemporal/LoanApplicationsTemporal/"/>
@@ -51,13 +51,19 @@
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Provisional"/>
 	</owl:Ontology>
 	
-	<rdf:Description rdf:about="&fibo-loan-typ-stu;StudentLoan">
-		<owl:equivalentClass rdf:resource="&fibo-loan-tem-sta;StudentLoan"/>
-	</rdf:Description>
+	<owl:Class rdf:about="&fibo-loan-typ-stu;StudentLoan">
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-loan-tem-sta;hasActiveStatus"/>
+				<owl:someValuesFrom rdf:resource="&fibo-loan-tem-sta;StudentLoanActiveStatus"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+	</owl:Class>
 	
-	<rdf:Description rdf:about="&fibo-loan-loan-loan;LoanDrawdown">
-		<owl:equivalentClass rdf:resource="&fibo-loan-tem-sta;LoanDrawdown"/>
-	</rdf:Description>
+	<owl:Class rdf:about="&fibo-loan-loan-loan;LoanDrawdown">
+		<rdfs:label xml:lang="en">loan drawdown</rdfs:label>
+		<owl:equivalentClass rdf:resource="&fibo-loan-loan-loan;LoanDrawdown"/>
+	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-tem-sta;ActiveLoanStatus">
 		<rdfs:subClassOf rdf:resource="&fibo-loan-tem-sta;LoanLifecycleStatus"/>
@@ -109,10 +115,6 @@
 		<skos:editorialNote xml:lang="en">Added to enhance Proof of Concept model, which has an aggregation relation from Loan Status to Loan Proceeding. That would not be literally correct as it would make a proceeding (and activity) part of a status. Rather, it must be the status of that proceeding, which is part of this status information set and is reported on at the point in time that the other loan status information may be reported on. Action: Although this &quot;is of&quot; a defined kind of activity called Loan Proceeding, that does not satisfy the need for a dated set of statuses. Need a selection list, based on facts about the Loan Default Proceedings, e.g. Imminent, Pending, Ongoing, Closed. Mabe some of those should be part of a wider list of common terms about all legal proceedings statuses.</skos:editorialNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-loan-tem-sta;LoanDrawdown">
-		<rdfs:label xml:lang="en">loan drawdown</rdfs:label>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-loan-tem-sta;LoanLifecycleStatus">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-inf-tem;Status"/>
 		<rdfs:label xml:lang="en">loan lifecycle status</rdfs:label>
@@ -159,16 +161,6 @@
 		<rdfs:label xml:lang="en">loan status  (please review)</rdfs:label>
 		<skos:definition xml:lang="en">Statuses which occur for a period of time, relating to a loan.</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">The status applies at a period of time, and is applicable across all phases.</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-loan-tem-sta;StudentLoan">
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-loan-tem-sta;hasActiveStatus"/>
-				<owl:someValuesFrom rdf:resource="&fibo-loan-tem-sta;StudentLoanActiveStatus"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">student loan</rdfs:label>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-tem-sta;StudentLoanActiveStatus">
@@ -219,31 +211,31 @@
 	<owl:ObjectProperty rdf:about="&fibo-loan-tem-sta;currentLoanRate">
 		<rdfs:label xml:lang="en">current loan rate  (please review)</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-loan-tem-sta;LoanSnapshotOrStatus"/>
-		<rdfs:range rdf:resource="&fibo-fnd-utl-val;PercentageValue"/>
+		<rdfs:range rdf:resource="&fibo-fnd-utlx-val;PercentageValue"/>
 		<skos:definition xml:lang="en">The rate payable on the loan at this point in time.</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-loan-tem-sta;delinquent">
 		<rdfs:label xml:lang="en">delinquent  (please review)</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-loan-tem-sta;LoanArrearsStatus"/>
-		<rdfs:range rdf:resource="&fibo-fnd-utl-val;TrueFalseValue"/>
+		<rdfs:range rdf:resource="&fibo-fnd-utlx-val;TrueFalseValue"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-loan-tem-sta;delinquent.1">
 		<rdfs:label xml:lang="en">delinquent  (please review)</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-loan-tem-sta;LoanPaymentStatus"/>
-		<rdfs:range rdf:resource="&fibo-fnd-utl-val;TrueFalseValue"/>
+		<rdfs:range rdf:resource="&fibo-fnd-utlx-val;TrueFalseValue"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-loan-tem-sta;hasActiveStatus">
 		<rdfs:label xml:lang="en">has active status  (please review)</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-tem-sta;LoanDrawdown"/>
+		<rdfs:domain rdf:resource="&fibo-loan-loan-loan;LoanDrawdown"/>
 		<rdfs:range rdf:resource="&fibo-loan-tem-sta;ActiveLoanStatus"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-loan-tem-sta;hasLifecycleStatus">
 		<rdfs:label xml:lang="en">has lifecycle status  (please review)</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-tem-sta;LoanDrawdown"/>
+		<rdfs:domain rdf:resource="&fibo-loan-loan-loan;LoanDrawdown"/>
 		<rdfs:range rdf:resource="&fibo-loan-tem-sta;LoanLifecycleStatus"/>
 	</owl:ObjectProperty>
 	
@@ -255,7 +247,7 @@
 	
 	<owl:ObjectProperty rdf:about="&fibo-loan-tem-sta;hasSnapshot">
 		<rdfs:label xml:lang="en">has snapshot  (please review)</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-tem-sta;LoanDrawdown"/>
+		<rdfs:domain rdf:resource="&fibo-loan-loan-loan;LoanDrawdown"/>
 		<rdfs:range rdf:resource="&fibo-loan-tem-sta;LoanSnapshotOrStatus"/>
 	</owl:ObjectProperty>
 	
@@ -280,14 +272,14 @@
 	<owl:ObjectProperty rdf:about="&fibo-loan-tem-sta;loanDebtToIncomeRatio">
 		<rdfs:label xml:lang="en">loan debt to income ratio  (please review)</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-loan-tem-sta;LoanSnapshotOrStatus"/>
-		<rdfs:range rdf:resource="&fibo-fnd-utl-val;DecimalValue"/>
+		<rdfs:range rdf:resource="&fibo-fnd-utlx-val;DecimalValue"/>
 		<skos:definition xml:lang="en">The debt to income ratio of the borrower or borrowers.</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-loan-tem-sta;loanInterestOnlyTemporaryProvision">
 		<rdfs:label xml:lang="en">loan interest only temporary provision  (please review)</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-loan-tem-sta;LoanArrearsStatus"/>
-		<rdfs:range rdf:resource="&fibo-fnd-utl-val;TrueFalseValue"/>
+		<rdfs:range rdf:resource="&fibo-fnd-utlx-val;TrueFalseValue"/>
 		<skos:definition xml:lang="en">Whether payments currently pay interest due but no principal on the loan.</skos:definition>
 	</owl:ObjectProperty>
 	
@@ -301,7 +293,7 @@
 	<owl:ObjectProperty rdf:about="&fibo-loan-tem-sta;loanLitigationUnderWay">
 		<rdfs:label xml:lang="en">loan litigation under way  (please review)</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-loan-tem-sta;LoanArrearsStatus"/>
-		<rdfs:range rdf:resource="&fibo-fnd-utl-val;TrueFalseValue"/>
+		<rdfs:range rdf:resource="&fibo-fnd-utlx-val;TrueFalseValue"/>
 		<skos:definition xml:lang="en">Whether Litigation proceedings are currently under way.</skos:definition>
 	</owl:ObjectProperty>
 	
@@ -357,7 +349,7 @@
 	<owl:ObjectProperty rdf:about="&fibo-loan-tem-sta;paymentIdentifier">
 		<rdfs:label xml:lang="en">payment identifier  (please review)</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-loan-tem-sta;LoanPayment"/>
-		<rdfs:range rdf:resource="&fibo-fnd-utl-val;TextValue"/>
+		<rdfs:range rdf:resource="&fibo-fnd-utlx-val;TextValue"/>
 		<skos:definition xml:lang="en">A unique identifier which identifies which scheduled payment this payment is made against.</skos:definition>
 	</owl:ObjectProperty>
 	

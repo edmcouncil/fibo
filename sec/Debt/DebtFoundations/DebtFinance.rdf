@@ -42,9 +42,232 @@
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Provisional"/>
 	</owl:Ontology>
 	
-	<rdf:Description rdf:about="https://spec.edmcouncil.org/fibo/FND/Accounting/DebtTerms/DebtFinance">
+	<rdf:Description rdf:about="https://spec.edmcouncil.org/fibo/FBC/DebtAndEquity/CreditFacilities/CreditFacilityTranche">
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="https://spec.edmcouncil.org/fibo/FBC/DebtAndEquity/CreditFacilities/issuedAs"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-dbt-fin;DebtFinance"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+	</rdf:Description>
+	
+	<rdf:Description rdf:about="https://spec.edmcouncil.org/fibo/LOAN/LoanTypes/CreditProducts/RevolvingLineOfCredit">
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbt-fin;collateralizedBy"/>
+				<owl:onClass rdf:resource="https://spec.edmcouncil.org/fibo/LOAN/Loans/LoansCollateral/LoanCollateral"/>
+				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbt-fin;collateralizedBy"/>
+				<owl:someValuesFrom rdf:resource="https://spec.edmcouncil.org/fibo/LOAN/Loans/LoansCollateral/LoanCollateral"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+	</rdf:Description>
+	
+	<rdf:Description rdf:about="https://spec.edmcouncil.org/fibo/LOAN/LoanTypes/SecuredLoans/CollateralizedSecuredLoan">
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbt-fin;collateralizedBy"/>
+				<owl:onClass rdf:resource="https://spec.edmcouncil.org/fibo/LOAN/Loans/LoansCollateral/LoanCollateral"/>
+				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbt-fin;collateralizedBy"/>
+				<owl:someValuesFrom rdf:resource="https://spec.edmcouncil.org/fibo/LOAN/Loans/LoansCollateral/LoanCollateral"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+	</rdf:Description>
+	
+	<rdf:Description rdf:about="https://spec.edmcouncil.org/fibo/SEC/Debt/AssetBacked/PoolBackedSecurities/CollateralizedDebt">
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbt-fin;collateralizedBy"/>
+				<owl:onClass rdf:resource="https://spec.edmcouncil.org/fibo/SEC/Debt/AssetBacked/PoolBackedSecurities/DebtCollateral"/>
+				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbt-fin;collateralizedBy"/>
+				<owl:someValuesFrom rdf:resource="https://spec.edmcouncil.org/fibo/SEC/Debt/AssetBacked/PoolBackedSecurities/DebtCollateral"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+	</rdf:Description>
+	
+	<owl:Class rdf:about="&fibo-sec-dbt-dbt-fin;Borrower">
+		<rdfs:subClassOf rdf:resource="https://spec.edmcouncil.org/fibo/FBC/DebtAndEquities/Debt/Debtor"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbt-fin;partyTo.1"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-dbt-fin;DebtContractTermsSet"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">borrower</rdfs:label>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-dbt-dbt-fin;Collateral">
+		<rdfs:subClassOf rdf:resource="&owl;Thing"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="https://spec.edmcouncil.org/fibo/FND/AccountingExt/AccountsMain/takesForm"/>
+				<owl:someValuesFrom rdf:resource="https://spec.edmcouncil.org/fibo/FND/OwnershipAndControl/Ownership/Asset"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">collateral</rdfs:label>
+		<skos:definition xml:lang="en">Assets pledged in the provision of debt or loan products or securities.</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">See also &quot;Loan collateral&quot; which is defined specifically in the context of an individual loan or mortage. These terms may be duplicates, depending on whether there is some more abstract meaning for collateralization of securitized debt.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-dbt-dbt-fin;DebtContractTermsSet">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractTermsSet"/>
+		<rdfs:label xml:lang="en">debt terms</rdfs:label>
+		<skos:definition xml:lang="en">Terms setting out the formal rights and obligations of borrower and lender under a contract in which funds are lent from the one party to the other.</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">These may be terms in a Loan Contract (incliding for example Mportage ContracT) or they may be the contractual terms of a Debt security.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-dbt-dbt-fin;DebtFinance">
 		<rdfs:subClassOf rdf:resource="https://spec.edmcouncil.org/fibo/FBC/DebtAndEquities/Debt/Debt"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-ptyx-prc;RelationshipContext"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbt-fin;MoniesOwing"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbt-fin;collateralizedBy"/>
+				<owl:onClass rdf:resource="&fibo-sec-dbt-dbt-fin;Collateral"/>
+				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbt-fin;hasBorrowingParty"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-dbt-fin;Borrower"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbt-fin;hasLendingParty"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-dbt-fin;Lender"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbt-fin;hasfibo-fnd-accx-dtt"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-dbt-fin;DebtContractTermsSet"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">debt finance</rdfs:label>
+		<skos:definition xml:lang="en">Funds loaned or extended from one party to another for some purpose. Further notes: This is a loan or a debt security principal amount. This term is distinguished from &quot;Debt&quot; or &quot;Credit&quot; in that the latter are balances at a point in time; however it is also referred to as debt for example in debt securities, since a loaned or securitized amount constitutes a debt when it is advanced (and ceases to constitute a debt when it is paid off). As such, this usually has interest payable and may have collateral. In Islamic products there is no interest. This may be a loan (realized as a draw-down on a credit facillity) or it may be a debt set up as part of the issuance of a debt security.</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-dbt-dbt-fin;Lender">
+		<rdfs:subClassOf rdf:resource="https://spec.edmcouncil.org/fibo/FBC/DebtAndEquities/Debt/Creditor"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbt-fin;partyTo"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-dbt-fin;DebtContractTermsSet"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">lender</rdfs:label>
+		<skos:editorialNote xml:lang="en">lender: The lender of a loan is some form of Legal Entity.</skos:editorialNote>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">For formal loans, the entity will be an Artificial Person. For loans more generally, it may be any legal entity.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-dbt-dbt-fin;MoniesOwing">
+		<rdfs:subClassOf rdf:resource="https://spec.edmcouncil.org/fibo/FND/Agreements/Agreements/Commitment"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="https://spec.edmcouncil.org/fibo/FND/AccountingExt/AccountsMain/isMeasuredAs"/>
+				<owl:someValuesFrom rdf:resource="https://spec.edmcouncil.org/fibo/FND/AccountingExt/AccountsMain/DatedBalance"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbt-fin;owedBy"/>
+				<owl:someValuesFrom rdf:resource="https://spec.edmcouncil.org/fibo/FBC/DebtAndEquities/Debt/Debtor"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbt-fin;owedTo"/>
+				<owl:someValuesFrom rdf:resource="https://spec.edmcouncil.org/fibo/FBC/DebtAndEquities/Debt/Creditor"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">debt</rdfs:label>
+		<skos:definition xml:lang="en">A sum of money owed by one party to another party.</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">This is an amount of money regarded as a debt by one party, or as credit by another party. Note that the sub terms Credit and Debt are also balance sheet entries, that is these can be anything in which monies are owed by one party to another. Monies Owing may therefore also be goods payable/receivable. This term is therefore independent of the existence of any formal credit facility provided by a credit provider. Change note Reviewed 18 Oct 2012 and determined that Monies Owing is a mediating thing (context0 in which Credit and Debt are defined, and not a common parent of those two things. Credit and Debt changed to be sub classes of Relative Thing and not cub classes of Monies Owing as before. New relationship fact &apos;viewpoint&apos; added to Credit and similarly to Debt, with Monies Owing as the target of that fact, in place of the previous superclass relationship.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-dbt-fin;collateralizedBy">
+		<rdfs:label xml:lang="en">collateralized by</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-dbt-fin;DebtFinance"/>
+		<rdfs:range rdf:resource="&fibo-sec-dbt-dbt-fin;Collateral"/>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-dbt-fin;hasBorrowingParty">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-ptyx-prc;hasPartyInRole"/>
+		<rdfs:label xml:lang="en">has borrowing party</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-dbt-fin;DebtFinance"/>
+		<rdfs:range rdf:resource="&fibo-sec-dbt-dbt-fin;Borrower"/>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-dbt-fin;hasDebtTerms">
+		<rdfs:label>has debt terms</rdfs:label>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-dbt-fin;hasLendingParty">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-ptyx-prc;hasPartyInRole"/>
+		<rdfs:label xml:lang="en">has lending party</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-dbt-fin;DebtFinance"/>
+		<rdfs:range rdf:resource="&fibo-sec-dbt-dbt-fin;Lender"/>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-dbt-fin;hasfibo-fnd-accx-dtt">
+		<rdfs:label xml:lang="en">has debt terms</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-dbt-fin;DebtFinance"/>
+		<rdfs:range rdf:resource="&fibo-sec-dbt-dbt-fin;DebtContractTermsSet"/>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-dbt-fin;isAmortizationOf">
+		<rdfs:label xml:lang="en">is amortization of</rdfs:label>
+		<rdfs:domain rdf:resource="https://spec.edmcouncil.org/fibo/FBC/DebtAndEquities/Debt/Amortization"/>
+		<rdfs:range rdf:resource="&fibo-sec-dbt-dbt-fin;DebtFinance"/>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-dbt-fin;owedBy">
+		<rdfs:label xml:lang="en">owed by</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-dbt-fin;MoniesOwing"/>
+		<rdfs:range rdf:resource="https://spec.edmcouncil.org/fibo/FBC/DebtAndEquities/Debt/Debtor"/>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-dbt-fin;owedTo">
+		<rdfs:label xml:lang="en">owed to</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-dbt-fin;MoniesOwing"/>
+		<rdfs:range rdf:resource="https://spec.edmcouncil.org/fibo/FBC/DebtAndEquities/Debt/Creditor"/>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-dbt-fin;partyTo">
+		<rdfs:label xml:lang="en">party to</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-dbt-fin;Lender"/>
+		<rdfs:range rdf:resource="&fibo-sec-dbt-dbt-fin;DebtContractTermsSet"/>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-dbt-fin;partyTo.1">
+		<rdfs:label xml:lang="en">party to</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-dbt-fin;Borrower"/>
+		<rdfs:range rdf:resource="&fibo-sec-dbt-dbt-fin;DebtContractTermsSet"/>
+	</owl:ObjectProperty>
+	
+	<rdf:Description rdf:about="https://spec.edmcouncil.org/fibo/SEC/Debt/DebtInstruments/NonTradableDebtInstrument">
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="https://spec.edmcouncil.org/fibo/SEC/Debt/DebtFoundationsExt/DebtInstrumentsExt/definesTermsFor"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-dbt-fin;DebtFinance"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 	</rdf:Description>
 
 </rdf:RDF>
