@@ -137,6 +137,7 @@ function buildIndex () {
 	tree -P '*.rdf' -H https://spec.edmcouncil.org/fibo/ontology/master/latest | sed "s@latest\(/[^/]*/\)@latest/\\U\\1@" > tree.html
         sed -i 's/>Directory Tree</>FIBO Ontology file directory</g' tree.html
 	sed -i 's@h1><p>@h1><p>This is the directory structure of FIBO; you can download individual files this way.  To load all of FIBO, please follow the instructions for particular tools at <a href="http://spec.edmcouncil.org/fibo">the main fibo download page</a>.<p/>@' tree.html
+	sed -i 's@<a href=".*>https://spec.edmcouncil.org/.*</a>@@' tree.html
 	)
 }
 
