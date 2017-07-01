@@ -1062,6 +1062,7 @@ function buildquads () {
 	find . -name '*.rdf' -print | while read file; do quadify "$file"; done   >  "${DevQuadsFile}"
 	grep -r 'utl-av[:;.]Release' "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" | grep -F ".rdf" | sed 's/:.*$//' | while read file; do quadify $file; done  > ${ProdQuadsFile}
 	zip ${ProdQuadsFile}.zip ${ProdQuadsFile}
+	zip ${DevQuadsFile}.zip ${DevQuadsFile}
     )
 
     }
