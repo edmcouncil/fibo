@@ -454,12 +454,18 @@ function addIsDefinedBy () {
 PREFIX owl: <http://www.w3.org/2002/07/owl#> 
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
-CONSTRUCT {?s ?p ?o . ?cl rdfs:isDefinedBy ?ont . ?pr rdfs:isDefinedBy ?ont}
-WHERE {?s ?p ?o . 
-?ont a owl:Ontology . 
-?cl a owl:Class .
-?pr  a ?x .
-FILTER (?x IN (owl:AnnotationProperty,owl:AsymmetricProperty,owl:DatatypeProperty,owl:DeprecatedProperty,owl:FunctionalProperty,owl:InverseFunctionalProperty,owl:IrreflexiveProperty,owl:ObjectProperty,owl:OntologyProperty,owl:ReflexiveProperty,owl:SymmetricProperty,owl:TransitiveProperty,rdf:Property,rdfs:ContainerMembershipProperty))
+CONSTRUCT {
+?cl rdfs:isDefinedBy ?ont . ?pr rdfs:isDefinedBy ?ont .
+}
+WHERE {
+?ont a  owl:Ontology .
+FILTER (REGEX (STR (?ont), "spec.edmcouncil"))
+OPTIONAL {?cl a owl:Class .
+FILTER (REGEX (STR (?cl), "spec.edmcouncil"))
+}
+OPTIONAL {?pr  a ?x .
+FILTER (REGEX (STR (?pr), "spec.edmcouncil"))
+?x rdfs:subClassOf* rdf:Property . }
 }
 EOF
 
@@ -468,12 +474,20 @@ EOF
 
   cat "$1"
 
-  "${jena_arq}" --query="${sqfile}" --data="$1" --results=RDF > "${outfile}"
+  "${jena_arq}" --query="${sqfile}" --data="$1" --data=http://www.w3.org/2002/07/owl  --results=RDF > "${outfile}"
   
   cat "${outfile}"
 
-  convertRdfFileTo rdf-xml "${outfile}" "rdf-xml"
-  mv -f "${outfile}" "$1"
+  local outfile2=$(mktemp ${tmp_dir}/out2.XXXXXX)  
+  local echofile=$(mktemp ${tmp_dir}/echo.XXXXXX)
+  
+  "${jena_arq}" --query="${echofile}" --data="$1" --data="${outfile}" --results=RDF 
+  cat "${outfile2}"
+  convertRdfFileTo rdf-xml "${outfile2}" "rdf-xml"
+  mv -f "${outfile2}" "$1"
+  rm "${outfile}"
+  rm "${echofile}"
+  rm "${sqfile}"
 
 
 }
