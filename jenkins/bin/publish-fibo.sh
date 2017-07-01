@@ -446,6 +446,8 @@ __HERE__
 #
 function addIsDefinedBy () {
 
+  echo "add isDefinedBy link to $1"
+
   local sqfile=$(mktemp ${tmp_dir}/sq.XXXXXX)
   
   cat > "${sqfile}" <<EOF
@@ -467,7 +469,7 @@ EOF
   "${jena_arq}" --query="${sqfile}" --data="$1" --results=RDF > "${outfile}"
   convertRdfFileTo rdf-xml ${outfile} "rdf-xml"
   mv -f "${outfile}" "$1"
-  rm "${outfile}"
+
 
 }
 
