@@ -487,9 +487,6 @@ EOF
 
   convertRdfFileTo rdf-xml "${outfile2}.rdf" "rdf-xml"
 
-  echo "here is the output from convertRdfFilTo"
-  cat "${outfile2}.rdf"
-  echo "that's the end of that file"
 
   mv -f "${outfile2}.rdf" "$1"
   rm "${outfile}.rdf"
