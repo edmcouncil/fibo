@@ -252,6 +252,9 @@ function ontologyCreateAboutFiles () {
 <${tag_root_url}/AboutFIBO> a owl:Ontology;
 __HERE__
 
+  # Debug
+  echo "Debug"    
+  find . -name 'Corporations.*' -exec grep -H 'Release' {} \;
 
     grep \
 	-r 'utl-av[:;.]Release' . | \
@@ -323,6 +326,10 @@ function ontologyCopyRdfToTarget() {
     cp **/*.${extension} --parents ${tag_root}/
 
   done
+
+  # Debug
+  echo "Debug"
+  find . -name 'Corporations.*' -exec grep -H 'Release' {} \;
 
   #cp **/*.{rdf,ttl,md,jpg,png,docx,pdf,sq} --parents ${tag_root}/
   popd
@@ -585,7 +592,6 @@ function convertRdfFileTo() {
       ;;
   esac
 
-  echo "Converting ${rdfFile} to format ${targetFormat}"
 
   java \
     -jar "${rdftoolkit_jar}" \
