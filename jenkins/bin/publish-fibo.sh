@@ -484,7 +484,7 @@ EOF
 CONSTRUCT {?s ?p ?o} WHERE {?s ?p ?o}
 EOF
   
-  "${jena_arq}" --query="${echofile}" --data="$1" --data="${outfile}" --results=RDF  > "${outfile2}
+  "${jena_arq}" --query="${echofile}" --data="$1" --data="${outfile}" --results=RDF  > "${outfile2}"
   cat "${outfile2}"
   convertRdfFileTo rdf-xml "${outfile2}" "rdf-xml"
   mv -f "${outfile2}" "$1"
