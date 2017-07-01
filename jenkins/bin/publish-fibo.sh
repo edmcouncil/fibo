@@ -624,14 +624,11 @@ function convertRdfFileTo() {
     --source-format "${sourceFormat}" \
     --target "${targetFile}" \
     --target-format "${targetFormat}" \
-    -ibn -ibi \
+    -ibn -ibi --use-dtd-subset \
     > "${logfile}" 2>&1
   rc=$?
 
 
- echo "Logfile contains"
- cat "${logfile}"
- echo "That was the logfile" 
 
 # For the turtle files, we want the base annotations to be the versionIRI
   if [ "${targetFormat}" == "turtle" ] ; then
