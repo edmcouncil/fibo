@@ -480,6 +480,9 @@ EOF
 
   local outfile2=$(mktemp ${tmp_dir}/out2.XXXXXX)  
   local echofile=$(mktemp ${tmp_dir}/echo.XXXXXX)
+  cat > "${echofile}" <<EOF
+CONSTRUCT {?s ?p ?o} WHERE {?s ?p ?o}
+EOF
   
   "${jena_arq}" --query="${echofile}" --data="$1" --data="${outfile}" --results=RDF 
   cat "${outfile2}"
