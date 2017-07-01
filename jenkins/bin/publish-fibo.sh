@@ -623,6 +623,11 @@ function convertRdfFileTo() {
     > "${logfile}" 2>&1
   rc=$?
 
+
+ echo "Logfile contains"
+ cat "${logfile}"
+ echo "That was the logfile" 
+
 # For the turtle files, we want the base annotations to be the versionIRI
   if [ "${targetFormat}" == "turtle" ] ; then
       echo "Adjusting ttl base URI for ${rdfFile}"
