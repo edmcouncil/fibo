@@ -434,7 +434,7 @@ __HERE__
 
 # We want to add in a rdfs:isDefinedBy link from every class back to the ontology. 
 
-  find ${tag_root}/ -type f  -name '*.rdf' -print | while read file ; do
+  find ${tag_root}/ -type f  -name '*.rdf' -not -name '*About*'  -print | while read file ; do
     addIsDefinedBy "${file}"
   done
  
