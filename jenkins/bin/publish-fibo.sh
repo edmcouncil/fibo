@@ -475,9 +475,9 @@ EOF
   cat "$1"
 
   echo "find the definitions"
-  "${jena_arq}" --query="${sqfile}" --data="$1" --data=http://www.w3.org/2002/07/owl  --results=RDF > "${outfile}"
+  "${jena_arq}" --query="${sqfile}" --data="$1" --data=http://www.w3.org/2002/07/owl  --results=RDF > "${outfile}.rdf"
   
-  cat "${outfile}"
+  cat "${outfile}.rdf"
 
   local outfile2=$(mktemp ${tmp_dir}/out2.XXXXXX)  
   local echofile=$(mktemp ${tmp_dir}/echo.XXXXXX)
@@ -485,12 +485,12 @@ EOF
 CONSTRUCT {?s ?p ?o} WHERE {?s ?p ?o}
 EOF
   echo "merge the definitions with the original"  
-  "${jena_arq}" --query="${echofile}" --data="$1" --data="${outfile}" --results=RDF  > "${outfile2}"
-  cat "${outfile2}"
+  "${jena_arq}" --query="${echofile}" --data="$1" --data="${outfile}.rdf" --results=RDF  > "${outfile2}.rdf"
+  cat "${outfile2}.rdf"
   echo "Convert the result to standar format"
-  convertRdfFileTo rdf-xml "${outfile2}" "rdf-xml"
-  mv -f "${outfile2}" "$1"
-  rm "${outfile}"
+  convertRdfFileTo rdf-xml "${outfile2}.rdf" "rdf-xml"
+  mv -f "${outfile2}.rdf" "$1"
+  rm "${outfile}.rdf"
   rm "${echofile}"
   rm "${sqfile}"
 
