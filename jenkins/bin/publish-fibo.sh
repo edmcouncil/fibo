@@ -466,8 +466,13 @@ EOF
 
   local outfile=$(mktemp ${tmp_dir}/out.XXXXXX)
 
+  cat "$1"
+
   "${jena_arq}" --query="${sqfile}" --data="$1" --results=RDF > "${outfile}"
-  convertRdfFileTo rdf-xml ${outfile} "rdf-xml"
+  
+  cat "${outfile}"
+
+  convertRdfFileTo rdf-xml "${outfile}" "rdf-xml"
   mv -f "${outfile}" "$1"
 
 
