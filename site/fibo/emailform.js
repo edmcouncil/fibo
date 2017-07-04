@@ -1,6 +1,6 @@
 (function(){
 
-  emailjs.init("user_RAOldYPmmpjCfkcGi5jYL");
+  emailjs.init("user_xPsSOXoaPy37HRI3vjCX6");
 
   var myform = $("form#mail-form");
 
