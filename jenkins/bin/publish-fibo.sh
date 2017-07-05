@@ -232,8 +232,9 @@ function initStardogVars() {
 # formats so that this about file will also be converted.
 #
 # TODO: Generate this at each directory level in the tree
+#  I don't think this is correct; the About files at lower levels have curated metadata in them.  -DA
 #
-# TODO: Should be done for each serialization format
+# DONE: Should be done for each serialization format
 #
 function ontologyCreateAboutFiles () {
 
@@ -859,6 +860,7 @@ function glossaryGetOntologies() {
 
   echo "Get Ontologies into merged file (temp0.ttl)"
 
+# Get ontologies for Dev
   ${jena_arq} \
     $(find  ${module_directories} -name "*.rdf" | sed "s/^/--data=/") \
     --data="${glossary_script_dir}/skosify.ttl" \
@@ -867,13 +869,30 @@ function glossaryGetOntologies() {
     --results=TTL > "${tmp_dir}/temp0.ttl"
 
   if [ ${PIPESTATUS[0]} -ne 0 ] ; then
-    error "Could not get ontologies"
+    error "Could not get Dev ontologies"
+    return 1
+  fi
+
+
+# Get ontologies for Prod
+  ${jena_arq} \
+      $(grep -r 'utl-av[:;.]Release' . | sed 's/:.*$//;s/^/--data=/' | grep -F ".rdf") \\
+    --data="${glossary_script_dir}/skosify.ttl" \
+    --data="${glossary_script_dir}/datatypes.rdf" \
+    --query="${glossary_script_dir}/skosecho.sparql" \
+      --results=TTL > "${tmp_dir}/temp1.ttl"
+
+
+
+  if [ ${PIPESTATUS[0]} -ne 0 ] ; then
+    error "Could not get Prod ontologies"
     return 1
   fi
 
   set +x
 
   echo "Generated ${tmp_dir}/temp0.ttl:"
+  echo "Generated ${tmp_dir}/temp0B.ttl:"
 
   head -n200 "${tmp_dir}/temp0.ttl"
 
@@ -918,10 +937,13 @@ function glossaryRunSpin() {
   echo "STARTING SPIN"
 
   rm -f "${tmp_dir}/temp1.ttl" >/dev/null 2>&1
+  rm -f "${tmp_dir}/temp1B.ttl" >/dev/null 2>&1
 
   spinRunInferences "${tmp_dir}/temp0.ttl" "${tmp_dir}/temp1.ttl" || return $?
+  spinRunInferences "${tmp_dir}/temp0B.ttl" "${tmp_dir}/temp1B.ttl" || return $?
 
   echo "Generated ${tmp_dir}/temp1.ttl:"
+  echo "Generated ${tmp_dir}/temp1B.ttl:"
 
   head -n50 "${tmp_dir}/temp1.ttl"
 
@@ -934,7 +956,7 @@ function glossaryRunSpin() {
 function glossaryRunSchemifyRules() {
 
   echo "Run the schemify rules"
-
+# Dev
   ${jena_arq} \
     --data="${tmp_dir}/temp1.ttl" \
     --data="${glossary_script_dir}/schemify.ttl" \
@@ -942,7 +964,20 @@ function glossaryRunSchemifyRules() {
     --results=TTL > "${tmp_dir}/temp2.ttl"
 
   if [ ${PIPESTATUS[0]} -ne 0 ] ; then
-    error "Could not run the schemify rules"
+    error "Could not run the Dev schemify rules"
+    return 1
+  fi
+
+#Prod
+  ${jena_arq} \
+    --data="${tmp_dir}/temp1B.ttl" \
+    --data="${glossary_script_dir}/schemify.ttl" \
+    --query="${glossary_script_dir}/skosecho.sparql" \
+    --results=TTL > "${tmp_dir}/temp2B.ttl"
+
+
+  if [ ${PIPESTATUS[0]} -ne 0 ] ; then
+    error "Could not run the Prod schemify rules"
     return 1
   fi
 
@@ -993,6 +1028,7 @@ function publishProductVocabulary() {
 
   echo "second run of spin"
   spinRunInferences "${tmp_dir}/temp2.ttl" "${tmp_dir}/tc.ttl" || return $?
+  spinRunInferences "${tmp_dir}/temp2B.ttl" "${tmp_dir}/tcB.ttl" || return $?
 
   echo "ENDING SPIN"
   #
@@ -1003,19 +1039,34 @@ function publishProductVocabulary() {
     --data="${tmp_dir}/temp1.ttl" \
     --query="${glossary_script_dir}/echo.sparql" \
     --results=TTL > "${tmp_dir}/fibo-uc.ttl"
+
+  ${jena_arq}  \
+    --data="${tmp_dir}/tcB.ttl" \
+    --data="${tmp_dir}/temp1B.ttl" \
+    --query="${glossary_script_dir}/echo.sparql" \
+    --results=TTL > "${tmp_dir}/fibo-ucB.ttl"
+
   #
   # 6) Convert upper cases.  We have different naming standards in FIBO-V than in FIBO.
   #
   sed "s/uc(\([^)]*\))/\U\1/g" "${tmp_dir}/fibo-uc.ttl" >> ${tmp_dir}/fibo-v1.ttl
+  sed "s/uc(\([^)]*\))/\U\1/g" "${tmp_dir}/fibo-ucB.ttl" >> ${tmp_dir}/fibo-v1B.ttl
+
   ${jena_arq}  \
     --data="${tmp_dir}/fibo-v1.ttl" \
     --query="${glossary_script_dir}/echo.sparql" \
     --results=TTL > "${tmp_dir}/fibo-v.ttl"
+  ${jena_arq}  \
+    --data="${tmp_dir}/fibo-v1B.ttl" \
+    --query="${glossary_script_dir}/echo.sparql" \
+    --results=TTL > "${tmp_dir}/fibo-vB.ttl"
 
   #
   # Adjust namespaces
   #
   ${jena_riot} "${tmp_dir}/fibo-v.ttl" > "${tmp_dir}/fibo-v.nt"
+  ${jena_riot} "${tmp_dir}/fibo-vB.ttl" > "${tmp_dir}/fibo-vB.nt"
+
   cat \
     "${tmp_dir}/prefixes.ttl" \
     "${tmp_dir}/fibo-v.nt" | \
@@ -1023,6 +1074,16 @@ function publishProductVocabulary() {
     --syntax=turtle \
     --output=turtle > \
     "${tag_root}/fibo-v.ttl"
+
+  cat \
+    "${tmp_dir}/prefixes.ttl" \
+    "${tmp_dir}/fibo-vB.nt" | \
+  ${jena_riot} \
+    --syntax=turtle \
+    --output=turtle > \
+    "${tag_root}/fibo-vB.ttl"
+
+
 
   #
   # JG>Dean I didn't find any hygiene*.sparql files anywhere
@@ -1037,6 +1098,11 @@ function publishProductVocabulary() {
   gzip --best --stdout "${tag_root}/fibo-v.ttl" > "${tag_root}/fibo-v.ttl.gz"
   gzip --best --stdout "${tag_root}/fibo-v.rdf" > "${tag_root}/fibo-v.rdf.gz"
   gzip --best --stdout "${tag_root}/fibo-v.jsonld" > "${tag_root}/fibo-v.jsonld.gz"
+
+  gzip --best --stdout "${tag_root}/fibo-vB.ttl" > "${tag_root}/fibo-vB.ttl.gz"
+  gzip --best --stdout "${tag_root}/fibo-vB.rdf" > "${tag_root}/fibo-vB.rdf.gz"
+  gzip --best --stdout "${tag_root}/fibo-vB.jsonld" > "${tag_root}/fibo-vB.jsonld.gz"
+
 
   echo "Finished publishing the Vocabulary Product"
 
