@@ -876,7 +876,7 @@ function glossaryGetOntologies() {
 
 # Get ontologies for Prod
   ${jena_arq} \
-      $(grep -r 'utl-av[:;.]Release' . | sed 's/:.*$//;s/^/--data=/' | grep -F ".rdf") \\
+      $(grep -r 'utl-av[:;.]Release' . | sed 's/:.*$//;s/^/--data=/' | grep -F ".rdf") \
     --data="${glossary_script_dir}/skosify.ttl" \
     --data="${glossary_script_dir}/datatypes.rdf" \
     --query="${glossary_script_dir}/skosecho.sparql" \
