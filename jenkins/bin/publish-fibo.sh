@@ -456,17 +456,21 @@ PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
 CONSTRUCT {
-?cl rdfs:isDefinedBy ?ont . ?pr rdfs:isDefinedBy ?ont .
+?cl rdfs:isDefinedBy ?clns . ?pr rdfs:isDefinedBy ?clns .
 }
 WHERE {
-?ont a  owl:Ontology .
+?ont a owl:Ontology. 
 FILTER (REGEX (STR (?ont), "spec.edmcouncil"))
 OPTIONAL {?cl a owl:Class .
 FILTER (REGEX (STR (?cl), "spec.edmcouncil"))
+BIND (IRI(afn:namespace(?cl)) as ?clns)
+FILTER (?clns = ?ont)
 }
 OPTIONAL {?pr  a ?x .
 FILTER (REGEX (STR (?pr), "spec.edmcouncil"))
 ?x rdfs:subClassOf* rdf:Property . }
+BIND (IRI(afn:namespace(?pr)) as ?prns)
+FILTER (?prns = ?ont)
 }
 EOF
 
@@ -874,11 +878,11 @@ function glossaryGetOntologies() {
   fi
 
 echo "Here are the files we'll use for prod"
-grep -r 'utl-av[:;.]Release' . | sed 's/:.*$//;s/^/--data=/' | grep -F ".rdf"
+grep -r 'utl-av[:;.]Release' ${module_directories} | sed 's/:.*$//;s/^/--data=/' | grep -F ".rdf"
 
 # Get ontologies for Prod
   ${jena_arq} \
-      $(grep -r 'utl-av[:;.]Release' . | sed 's/:.*$//;s/^/--data=/' | grep -F ".rdf") \
+      $(grep -r 'utl-av[:;.]Release' ${module_directories} | sed 's/:.*$//;s/^/--data=/' | grep -F ".rdf") \
     --data="${glossary_script_dir}/skosify.ttl" \
     --data="${glossary_script_dir}/datatypes.rdf" \
     --query="${glossary_script_dir}/skosecho.sparql" \
@@ -1057,33 +1061,33 @@ function publishProductVocabulary() {
   ${jena_arq}  \
     --data="${tmp_dir}/fibo-v1.ttl" \
     --query="${glossary_script_dir}/echo.sparql" \
-    --results=TTL > "${tmp_dir}/fibo-v.ttl"
+    --results=TTL > "${tmp_dir}/fibo-vD.ttl"
   ${jena_arq}  \
     --data="${tmp_dir}/fibo-v1B.ttl" \
     --query="${glossary_script_dir}/echo.sparql" \
-    --results=TTL > "${tmp_dir}/fibo-vB.ttl"
+    --results=TTL > "${tmp_dir}/fibo-vP.ttl"
 
   #
   # Adjust namespaces
   #
-  ${jena_riot} "${tmp_dir}/fibo-v.ttl" > "${tmp_dir}/fibo-v.nt"
-  ${jena_riot} "${tmp_dir}/fibo-vB.ttl" > "${tmp_dir}/fibo-vB.nt"
+  ${jena_riot} "${tmp_dir}/fibo-vD.ttl" > "${tmp_dir}/fibo-vD.nt"
+  ${jena_riot} "${tmp_dir}/fibo-vP.ttl" > "${tmp_dir}/fibo-vP.nt"
 
   cat \
     "${tmp_dir}/prefixes.ttl" \
-    "${tmp_dir}/fibo-v.nt" | \
+    "${tmp_dir}/fibo-vD.nt" | \
   ${jena_riot} \
     --syntax=turtle \
     --output=turtle > \
-    "${tag_root}/fibo-v.ttl"
+    "${tag_root}/fibo-vD.ttl"
 
   cat \
     "${tmp_dir}/prefixes.ttl" \
-    "${tmp_dir}/fibo-vB.nt" | \
+    "${tmp_dir}/fibo-vP.nt" | \
   ${jena_riot} \
     --syntax=turtle \
     --output=turtle > \
-    "${tag_root}/fibo-vB.ttl"
+    "${tag_root}/fibo-vP.ttl"
 
 
 
@@ -1098,12 +1102,18 @@ function publishProductVocabulary() {
   glossaryConvertTurtleToAllFormats || return $?
 
   gzip --best --stdout "${tag_root}/fibo-v.ttl" > "${tag_root}/fibo-v.ttl.gz"
+  zip -r "${tag_root}/fibo-v.ttl.zip" "${tag_root}/fibo-v.ttl"
   gzip --best --stdout "${tag_root}/fibo-v.rdf" > "${tag_root}/fibo-v.rdf.gz"
+  zip -r "${tag_root}/fibo-v.rdf.gz" "${tag_root}/fibo-v.rdf" 
   gzip --best --stdout "${tag_root}/fibo-v.jsonld" > "${tag_root}/fibo-v.jsonld.gz"
+  zip -r "${tag_root}/fibo-v.jsonld.gz" "${tag_root}/fibo-v.jsonld" 
 
   gzip --best --stdout "${tag_root}/fibo-vB.ttl" > "${tag_root}/fibo-vB.ttl.gz"
+  zip -r "${tag_root}/fibo-vB.ttl.gz" "${tag_root}/fibo-vB.ttl" 
   gzip --best --stdout "${tag_root}/fibo-vB.rdf" > "${tag_root}/fibo-vB.rdf.gz"
+  zip -r "${tag_root}/fibo-vB.rdf.gz" "${tag_root}/fibo-vB.rdf" 
   gzip --best --stdout "${tag_root}/fibo-vB.jsonld" > "${tag_root}/fibo-vB.jsonld.gz"
+  zip -r "${tag_root}/fibo-vB.jsonld.gz" "${tag_root}/fibo-vB.jsonld" 
 
 
   echo "Finished publishing the Vocabulary Product"
