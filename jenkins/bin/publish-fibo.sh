@@ -864,6 +864,7 @@ function glossaryGetOntologies() {
   require module_directories || return $?
 
   echo "Get Ontologies into merged file (temp0.ttl)"
+  echo "Module Directories is ${module_directories}"
 
 # Get ontologies for Dev
   ${jena_arq} \
