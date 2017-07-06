@@ -880,7 +880,7 @@ function glossaryGetOntologies() {
     --data="${glossary_script_dir}/skosify.ttl" \
     --data="${glossary_script_dir}/datatypes.rdf" \
     --query="${glossary_script_dir}/skosecho.sparql" \
-      --results=TTL > "${tmp_dir}/temp1.ttl"
+      --results=TTL > "${tmp_dir}/temp0B.ttl"
 
 
 
