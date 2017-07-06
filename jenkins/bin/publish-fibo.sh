@@ -865,9 +865,16 @@ function glossaryGetOntologies() {
 
   echo "Get Ontologies into merged file (temp0.ttl)"
 
+echo "${tag_root}"
+echo "files that go into dev"
+find  "${tag_root}" -name "*.rdf" | sed "s/^/--data=/"
+
+echo "files that go into prod"
+grep -r 'utl-av[:;.]Release' "${tag_root}" | sed 's/:.*$//;s/^/--data=/' | grep -F ".rdf"
+
 # Get ontologies for Dev
   ${jena_arq} \
-    $(find  ${tag_root} -name "*.rdf" | sed "s/^/--data=/") \
+    $(find  "${tag_root}" -name "*.rdf" | sed "s/^/--data=/") \
     --data="${glossary_script_dir}/skosify.ttl" \
     --data="${glossary_script_dir}/datatypes.rdf" \
     --query="${glossary_script_dir}/skosecho.sparql" \
@@ -881,7 +888,7 @@ function glossaryGetOntologies() {
 
 # Get ontologies for Prod
   ${jena_arq} \
-      $(grep -r 'utl-av[:;.]Release' ${tag_root} | sed 's/:.*$//;s/^/--data=/' | grep -F ".rdf") \
+      $(grep -r 'utl-av[:;.]Release' "${tag_root}" | sed 's/:.*$//;s/^/--data=/' | grep -F ".rdf") \
     --data="${glossary_script_dir}/skosify.ttl" \
     --data="${glossary_script_dir}/datatypes.rdf" \
     --query="${glossary_script_dir}/skosecho.sparql" \
@@ -1100,19 +1107,19 @@ function publishProductVocabulary() {
 
   glossaryConvertTurtleToAllFormats || return $?
 
-  gzip --best --stdout "${tag_root}/fibo-v.ttl" > "${tag_root}/fibo-v.ttl.gz"
-  zip -r "${tag_root}/fibo-v.ttl.zip" "${tag_root}/fibo-v.ttl"
-  gzip --best --stdout "${tag_root}/fibo-v.rdf" > "${tag_root}/fibo-v.rdf.gz"
-  zip -r "${tag_root}/fibo-v.rdf.gz" "${tag_root}/fibo-v.rdf" 
-  gzip --best --stdout "${tag_root}/fibo-v.jsonld" > "${tag_root}/fibo-v.jsonld.gz"
-  zip -r "${tag_root}/fibo-v.jsonld.gz" "${tag_root}/fibo-v.jsonld" 
+  gzip --best --stdout "${tag_root}/fibo-vD.ttl" > "${tag_root}/fibo-v.ttl.gz"
+  zip  "${tag_root}/fibo-vD.ttl.zip" "${tag_root}/fibo-v.ttl"
+  gzip --best --stdout "${tag_root}/fibo-vD.rdf" > "${tag_root}/fibo-v.rdf.gz"
+  zip  "${tag_root}/fibo-vD.rdf.gz" "${tag_root}/fibo-v.rdf" 
+  gzip --best --stdout "${tag_root}/fibo-vD.jsonld" > "${tag_root}/fibo-v.jsonld.gz"
+  zip  "${tag_root}/fibo-vD.jsonld.gz" "${tag_root}/fibo-v.jsonld" 
 
   gzip --best --stdout "${tag_root}/fibo-vB.ttl" > "${tag_root}/fibo-vB.ttl.gz"
-  zip -r "${tag_root}/fibo-vB.ttl.gz" "${tag_root}/fibo-vB.ttl" 
+  zip  "${tag_root}/fibo-vB.ttl.gz" "${tag_root}/fibo-vB.ttl" 
   gzip --best --stdout "${tag_root}/fibo-vB.rdf" > "${tag_root}/fibo-vB.rdf.gz"
-  zip -r "${tag_root}/fibo-vB.rdf.gz" "${tag_root}/fibo-vB.rdf" 
+  zip  "${tag_root}/fibo-vB.rdf.gz" "${tag_root}/fibo-vB.rdf" 
   gzip --best --stdout "${tag_root}/fibo-vB.jsonld" > "${tag_root}/fibo-vB.jsonld.gz"
-  zip -r "${tag_root}/fibo-vB.jsonld.gz" "${tag_root}/fibo-vB.jsonld" 
+  zip  "${tag_root}/fibo-vB.jsonld.gz" "${tag_root}/fibo-vB.jsonld" 
 
 
   echo "Finished publishing the Vocabulary Product"
