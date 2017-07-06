@@ -864,11 +864,10 @@ function glossaryGetOntologies() {
   require module_directories || return $?
 
   echo "Get Ontologies into merged file (temp0.ttl)"
-  echo "Module Directories is ${module_directories}"
 
 # Get ontologies for Dev
   ${jena_arq} \
-    $(find  ${module_directories} -name "*.rdf" | sed "s/^/--data=/") \
+    $(find  ${tag_root} -name "*.rdf" | sed "s/^/--data=/") \
     --data="${glossary_script_dir}/skosify.ttl" \
     --data="${glossary_script_dir}/datatypes.rdf" \
     --query="${glossary_script_dir}/skosecho.sparql" \
@@ -879,12 +878,10 @@ function glossaryGetOntologies() {
     return 1
   fi
 
-echo "Here are the files we'll use for prod"
-grep -r 'utl-av[:;.]Release' ${module_directories} | sed 's/:.*$//;s/^/--data=/' | grep -F ".rdf"
 
 # Get ontologies for Prod
   ${jena_arq} \
-      $(grep -r 'utl-av[:;.]Release' ${module_directories} | sed 's/:.*$//;s/^/--data=/' | grep -F ".rdf") \
+      $(grep -r 'utl-av[:;.]Release' ${tag_root} | sed 's/:.*$//;s/^/--data=/' | grep -F ".rdf") \
     --data="${glossary_script_dir}/skosify.ttl" \
     --data="${glossary_script_dir}/datatypes.rdf" \
     --query="${glossary_script_dir}/skosecho.sparql" \
