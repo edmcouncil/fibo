@@ -865,16 +865,16 @@ function glossaryGetOntologies() {
 
   echo "Get Ontologies into merged file (temp0.ttl)"
 
-echo "${tag_root}"
+echo "${ontology_product_tag_root}"
 echo "files that go into dev"
-find  "${tag_root}" -name "*.rdf" | sed "s/^/--data=/"
+find  "${ontology_product_tag_root}" -name "*.rdf" | sed "s/^/--data=/"
 
 echo "files that go into prod"
-grep -r 'utl-av[:;.]Release' "${tag_root}" | sed 's/:.*$//;s/^/--data=/' | grep -F ".rdf"
+grep -r 'utl-av[:;.]Release' "${ontology_product_tag_root}" | sed 's/:.*$//;s/^/--data=/' | grep -F ".rdf"
 
 # Get ontologies for Dev
   ${jena_arq} \
-    $(find  "${tag_root}" -name "*.rdf" | sed "s/^/--data=/") \
+    $(find  "${ontology_product_tag_root}" -name "*.rdf" | sed "s/^/--data=/") \
     --data="${glossary_script_dir}/skosify.ttl" \
     --data="${glossary_script_dir}/datatypes.rdf" \
     --query="${glossary_script_dir}/skosecho.sparql" \
@@ -888,7 +888,7 @@ grep -r 'utl-av[:;.]Release' "${tag_root}" | sed 's/:.*$//;s/^/--data=/' | grep 
 
 # Get ontologies for Prod
   ${jena_arq} \
-      $(grep -r 'utl-av[:;.]Release' "${tag_root}" | sed 's/:.*$//;s/^/--data=/' | grep -F ".rdf") \
+      $(grep -r 'utl-av[:;.]Release' "${ontology_product_tag_root}" | sed 's/:.*$//;s/^/--data=/' | grep -F ".rdf") \
     --data="${glossary_script_dir}/skosify.ttl" \
     --data="${glossary_script_dir}/datatypes.rdf" \
     --query="${glossary_script_dir}/skosecho.sparql" \
