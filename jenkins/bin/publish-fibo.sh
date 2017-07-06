@@ -873,6 +873,8 @@ function glossaryGetOntologies() {
     return 1
   fi
 
+echo "Here are the files we'll use for prod"
+grep -r 'utl-av[:;.]Release' . | sed 's/:.*$//;s/^/--data=/' | grep -F ".rdf"
 
 # Get ontologies for Prod
   ${jena_arq} \
