@@ -478,6 +478,8 @@ EOF
 
   local outfile=$(mktemp ${tmp_dir}/out.XXXXXX)
 
+# Some configurations of the serializer create XML that arq doesn't like.  This stabilizes them. 
+  convertRdfFileTo rdf-xml "$1" "rdf-xml"
 
   "${jena_arq}" --query="${sqfile}" --data="$1" --data=http://www.w3.org/2002/07/owl  --results=RDF > "${outfile}.rdf"
   
