@@ -289,7 +289,7 @@ __HERE__
         find . -mindepth 1  -maxdepth 1 -type d -print | \
         grep -vE "(etc)|(git)"
       ) | \
-      grep -vE "(catalog)|(About)" | \
+      grep -vE "(catalog)|(About)|(About)" | \
 	  sed 's/^.*xml:base="/owl:imports </;s/"[ 	\n\r]*$/> ;/' \
       >> "${tmpAboutFileDev}"
 
@@ -1116,11 +1116,11 @@ function publishProductVocabulary() {
   (cd "${tag_root}" ; zip  fibo-vD.jsonld.zip fibo-vD.jsonld)
 
 #  gzip --best --stdout "${tag_root}/fibo-vB.ttl" > "${tag_root}/fibo-vP.ttl.gz"
-  (cd "${tag_root}" ; zip  fibo-vB.ttl.zip fibo-vP.ttl)
+  (cd "${tag_root}" ; zip  fibo-vP.ttl.zip fibo-vP.ttl)
 #  gzip --best --stdout "${tag_root}/fibo-vB.rdf" > "${tag_root}/fibo-vP.rdf.gz"
-  (cd "${tag_root}" ; zip  fibo-vB.rdf.zip fibo-vP.rdf)
+  (cd "${tag_root}" ; zip  fibo-vP.rdf.zip fibo-vP.rdf)
 #  gzip --best --stdout "${tag_root}/fibo-vB.jsonld" > "${tag_root}/fibo-vP.jsonld.gz"
-  (cd "${tag_root}" ; zip  fibo-vB.jsonld.zip fibo-vP.jsonld)
+  (cd "${tag_root}" ; zip  fibo-vP.jsonld.zip fibo-vP.jsonld)
 
 
   echo "Finished publishing the Vocabulary Product"
