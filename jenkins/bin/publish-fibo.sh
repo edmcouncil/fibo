@@ -1108,18 +1108,18 @@ function publishProductVocabulary() {
   glossaryConvertTurtleToAllFormats || return $?
 
   gzip --best --stdout "${tag_root}/fibo-vD.ttl" > "${tag_root}/fibo-vD.ttl.gz"
-  zip  "${tag_root}/fibo-vD.ttl.zip" "${tag_root}/fibo-vD.ttl"
+  (cd "${tag_root}" ; zip fibo-vD.ttl.zip fibo-vD.ttl)
   gzip --best --stdout "${tag_root}/fibo-vD.rdf" > "${tag_root}/fibo-vD.rdf.gz"
-  zip  "${tag_root}/fibo-vD.rdf.gz" "${tag_root}/fibo-vD.rdf" 
+  (cd "${tag_root}" ; zip  fibo-vD.rdf.gz fibo-vD.rdf)
   gzip --best --stdout "${tag_root}/fibo-vD.jsonld" > "${tag_root}/fibo-vD.jsonld.gz"
-  zip  "${tag_root}/fibo-vD.jsonld.gz" "${tag_root}/fibo-vD.jsonld" 
+  (cd "${tag_root}" ; zip  fibo-vD.jsonld.gz fibo-vD.jsonld)
 
   gzip --best --stdout "${tag_root}/fibo-vB.ttl" > "${tag_root}/fibo-vP.ttl.gz"
-  zip  "${tag_root}/fibo-vB.ttl.gz" "${tag_root}/fibo-vP.ttl" 
+  (cd "${tag_root}" ; zip  fibo-vB.ttl.gz fibo-vP.ttl)
   gzip --best --stdout "${tag_root}/fibo-vB.rdf" > "${tag_root}/fibo-vP.rdf.gz"
-  zip  "${tag_root}/fibo-vB.rdf.gz" "${tag_root}/fibo-vP.rdf" 
+  (cd "${tag_root}" ; zip  fibo-vB.rdf.gz fibo-vP.rdf)
   gzip --best --stdout "${tag_root}/fibo-vB.jsonld" > "${tag_root}/fibo-vP.jsonld.gz"
-  zip  "${tag_root}/fibo-vB.jsonld.gz" "${tag_root}/fibo-vP.jsonld" 
+  (cd "${tag_root}" ; zip  fibo-vB.jsonld.gz fibo-vP.jsonld)
 
 
   echo "Finished publishing the Vocabulary Product"
