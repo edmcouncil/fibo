@@ -1106,20 +1106,21 @@ function publishProductVocabulary() {
 #    -exec ${jena_arq} --data="${tag_root}/fibo-v.ttl" --query={} \;
 
   glossaryConvertTurtleToAllFormats || return $?
+(cd "${tag_root}"; rm -f **.zip)
 
-  gzip --best --stdout "${tag_root}/fibo-vD.ttl" > "${tag_root}/fibo-vD.ttl.gz"
+#  gzip --best --stdout "${tag_root}/fibo-vD.ttl" > "${tag_root}/fibo-vD.ttl.gz"
   (cd "${tag_root}" ; zip fibo-vD.ttl.zip fibo-vD.ttl)
-  gzip --best --stdout "${tag_root}/fibo-vD.rdf" > "${tag_root}/fibo-vD.rdf.gz"
-  (cd "${tag_root}" ; zip  fibo-vD.rdf.gz fibo-vD.rdf)
-  gzip --best --stdout "${tag_root}/fibo-vD.jsonld" > "${tag_root}/fibo-vD.jsonld.gz"
-  (cd "${tag_root}" ; zip  fibo-vD.jsonld.gz fibo-vD.jsonld)
+#  gzip --best --stdout "${tag_root}/fibo-vD.rdf" > "${tag_root}/fibo-vD.rdf.gz"
+  (cd "${tag_root}" ; zip  fibo-vD.rdf.zip fibo-vD.rdf)
+#  gzip --best --stdout "${tag_root}/fibo-vD.jsonld" > "${tag_root}/fibo-vD.jsonld.gz"
+  (cd "${tag_root}" ; zip  fibo-vD.jsonld.zip fibo-vD.jsonld)
 
-  gzip --best --stdout "${tag_root}/fibo-vB.ttl" > "${tag_root}/fibo-vP.ttl.gz"
-  (cd "${tag_root}" ; zip  fibo-vB.ttl.gz fibo-vP.ttl)
-  gzip --best --stdout "${tag_root}/fibo-vB.rdf" > "${tag_root}/fibo-vP.rdf.gz"
-  (cd "${tag_root}" ; zip  fibo-vB.rdf.gz fibo-vP.rdf)
-  gzip --best --stdout "${tag_root}/fibo-vB.jsonld" > "${tag_root}/fibo-vP.jsonld.gz"
-  (cd "${tag_root}" ; zip  fibo-vB.jsonld.gz fibo-vP.jsonld)
+#  gzip --best --stdout "${tag_root}/fibo-vB.ttl" > "${tag_root}/fibo-vP.ttl.gz"
+  (cd "${tag_root}" ; zip  fibo-vB.ttl.zip fibo-vP.ttl)
+#  gzip --best --stdout "${tag_root}/fibo-vB.rdf" > "${tag_root}/fibo-vP.rdf.gz"
+  (cd "${tag_root}" ; zip  fibo-vB.rdf.zip fibo-vP.rdf)
+#  gzip --best --stdout "${tag_root}/fibo-vB.jsonld" > "${tag_root}/fibo-vP.jsonld.gz"
+  (cd "${tag_root}" ; zip  fibo-vB.jsonld.zip fibo-vP.jsonld)
 
 
   echo "Finished publishing the Vocabulary Product"
