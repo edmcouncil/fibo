@@ -469,9 +469,10 @@ FILTER (?clns = ?ont)
 }
 OPTIONAL {?pr  a ?x .
 FILTER (REGEX (STR (?pr), "spec.edmcouncil"))
-?x rdfs:subClassOf* rdf:Property . }
+?x rdfs:subClassOf* rdf:Property . 
 BIND (IRI(afn:namespace(?pr)) as ?prns)
 FILTER (?prns = ?ont)
+}
 }
 EOF
 
