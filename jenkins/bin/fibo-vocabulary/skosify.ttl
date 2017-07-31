@@ -1,12 +1,12 @@
 # baseURI: http://www.edmcouncil.org/skosify
 # imports: http://spinrdf.org/spin
-# imports: https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/
-# imports: https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/
 # imports: http://www.w3.org/2004/02/skos/core
+# imports: https://spec.edmcouncil.org/fibo/ontology/master/latest/FND/Utilities/AnnotationVocabulary/
 # prefix: skosify
 
 @prefix afn: <http://jena.apache.org/ARQ/function#> .
 @prefix arg: <http://spinrdf.org/arg#> .
+@prefix fibo-fnd-utl-av: <https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/> .
 @prefix fn: <http://www.w3.org/2005/xpath-functions#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -19,7 +19,6 @@
 @prefix spin: <http://spinrdf.org/spin#> .
 @prefix spl: <http://spinrdf.org/spl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix fibo-fnd-utl-av: <https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/> .
 
 afn:Select_1
   rdf:type sp:Select ;
@@ -33,15 +32,11 @@ arg:text
   rdf:type rdf:Property ;
   rdfs:subPropertyOf sp:arg ;
 .
-#
-# TODO: The import statement below for fibo-fnd-utl-av needs to be versioned according to the same version
-#       as we're generating the vocabulary for
-#
 <http://www.edmcouncil.org/skosify>
   rdf:type owl:Ontology ;
   owl:imports <http://spinrdf.org/spin> ;
-  owl:imports <https://spec.edmcouncil.org/fibo/ontology/master/latest/FND/Utilities/AnnotationVocabulary/> ;
   owl:imports <http://www.w3.org/2004/02/skos/core> ;
+  owl:imports <https://spec.edmcouncil.org/fibo/ontology/master/latest/FND/Utilities/AnnotationVocabulary/> ;
 .
 rdf:Property
   spin:rule [
@@ -77,13 +72,6 @@ owl:Class
                 sp:varName "entity"^^xsd:string ;
               ] ;
             sp:predicate rdfs:isDefinedBy ;
-            sp:subject [
-                sp:varName "skentity"^^xsd:string ;
-              ] ;
-          ]
-          [
-            sp:object "Classes and Datatypes become Concepts (01)" ;
-            sp:predicate skos:historyNote ;
             sp:subject [
                 sp:varName "skentity"^^xsd:string ;
               ] ;
@@ -279,13 +267,6 @@ owl:Class
                 sp:varName "entity"^^xsd:string ;
               ] ;
             sp:predicate rdfs:isDefinedBy ;
-            sp:subject [
-                sp:varName "skentity"^^xsd:string ;
-              ] ;
-          ]
-          [
-            sp:object "Classes and Datatypes become Concepts (01)" ;
-            sp:predicate skos:historyNote ;
             sp:subject [
                 sp:varName "skentity"^^xsd:string ;
               ] ;
@@ -496,9 +477,201 @@ owl:Class
                 sp:varName "skentity"^^xsd:string ;
               ] ;
           ]
+        ) ;
+      sp:where (
           [
-            sp:object "rdfs:label becomes skos:prefLabel.  (02)" ;
-            sp:predicate skos:historyNote ;
+            sp:object rdfs:Datatype ;
+            sp:predicate rdf:type ;
+            sp:subject [
+                sp:varName "entity"^^xsd:string ;
+              ] ;
+          ]
+          [
+            sp:object [
+                sp:varName "px"^^xsd:string ;
+              ] ;
+            sp:predicate skosify:px ;
+            sp:subject skos:Concept ;
+          ]
+          [
+            rdf:type sp:Filter ;
+            sp:expression [
+                rdf:type sp:not ;
+                sp:arg1 [
+                    rdf:type sp:isBlank ;
+                    sp:arg1 [
+                        sp:varName "entity"^^xsd:string ;
+                      ] ;
+                  ] ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Optional ;
+            sp:elements (
+                [
+                  sp:object [
+                      sp:varName "label"^^xsd:string ;
+                    ] ;
+                  sp:predicate rdfs:label ;
+                  sp:subject [
+                      sp:varName "entity"^^xsd:string ;
+                    ] ;
+                ]
+              ) ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type sp:replace ;
+                sp:arg1 [
+                    rdf:type sp:str ;
+                    sp:arg1 [
+                        sp:varName "entity"^^xsd:string ;
+                      ] ;
+                  ] ;
+                sp:arg2 "^.*(#|/)" ;
+                sp:arg3 "" ;
+              ] ;
+            sp:variable [
+                sp:varName "lentity"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type sp:replace ;
+                sp:arg1 [
+                    rdf:type sp:replace ;
+                    sp:arg1 [
+                        rdf:type sp:str ;
+                        sp:arg1 [
+                            sp:varName "entity"^^xsd:string ;
+                          ] ;
+                      ] ;
+                    sp:arg2 "(/|#)[^/]*$" ;
+                    sp:arg3 "" ;
+                  ] ;
+                sp:arg2 "^.*/" ;
+                sp:arg3 "" ;
+              ] ;
+            sp:variable [
+                sp:varName "module"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type sp:coalesce ;
+                sp:arg1 [
+                    sp:varName "label"^^xsd:string ;
+                  ] ;
+                sp:arg2 [
+                    sp:varName "lentity"^^xsd:string ;
+                  ] ;
+              ] ;
+            sp:variable [
+                sp:varName "prefLabel"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type sp:strlang ;
+                sp:arg1 [
+                    rdf:type sp:replace ;
+                    sp:arg1 [
+                        rdf:type sp:replace ;
+                        sp:arg1 [
+                            rdf:type sp:replace ;
+                            sp:arg1 [
+                                rdf:type sp:replace ;
+                                sp:arg1 [
+                                    rdf:type sp:replace ;
+                                    sp:arg1 [
+                                        rdf:type sp:replace ;
+                                        sp:arg1 [
+                                            sp:varName "prefLabel"^^xsd:string ;
+                                          ] ;
+                                        sp:arg2 "”" ;
+                                        sp:arg3 "\"" ;
+                                      ] ;
+                                    sp:arg2 "“" ;
+                                    sp:arg3 "\"" ;
+                                  ] ;
+                                sp:arg2 "–" ;
+                                sp:arg3 "-" ;
+                              ] ;
+                            sp:arg2 "’" ;
+                            sp:arg3 "'" ;
+                          ] ;
+                        sp:arg2 "‘" ;
+                        sp:arg3 "'" ;
+                      ] ;
+                    sp:arg2 "( .)|(^.)" ;
+                    sp:arg3 "uc($1$2)" ;
+                  ] ;
+                sp:arg2 "en" ;
+              ] ;
+            sp:variable [
+                sp:varName "titLabel"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type sp:uri ;
+                sp:arg1 [
+                    rdf:type sp:replace ;
+                    sp:arg1 [
+                        rdf:type sp:concat ;
+                        sp:arg1 [
+                            sp:varName "px"^^xsd:string ;
+                          ] ;
+                        sp:arg2 [
+                            rdf:type sp:replace ;
+                            sp:arg1 [
+                                rdf:type sp:encode_for_uri ;
+                                sp:arg1 [
+                                    rdf:type sp:str ;
+                                    sp:arg1 [
+                                        sp:varName "lentity"^^xsd:string ;
+                                      ] ;
+                                  ] ;
+                              ] ;
+                            sp:arg2 "^." ;
+                            sp:arg3 "uc($0)" ;
+                          ] ;
+                      ] ;
+                    sp:arg2 "[{]M[}]" ;
+                    sp:arg3 [
+                        sp:varName "module"^^xsd:string ;
+                      ] ;
+                  ] ;
+              ] ;
+            sp:variable [
+                sp:varName "skentity"^^xsd:string ;
+              ] ;
+          ]
+        ) ;
+      rdfs:comment "Rule 2"^^xsd:string ;
+    ] ;
+  spin:rule [
+      rdf:type sp:Construct ;
+      sp:templates (
+          [
+            sp:object [
+                sp:varName "titLabel"^^xsd:string ;
+              ] ;
+            sp:predicate skos:prefLabel ;
+            sp:subject [
+                sp:varName "skentity"^^xsd:string ;
+              ] ;
+          ]
+          [
+            sp:object [
+                sp:varName "entity"^^xsd:string ;
+              ] ;
+            sp:predicate rdfs:isDefinedBy ;
             sp:subject [
                 sp:varName "skentity"^^xsd:string ;
               ] ;
@@ -688,43 +861,74 @@ owl:Class
         ) ;
       rdfs:comment "Rule 2"^^xsd:string ;
     ] ;
+.
+owl:Thing
   spin:rule [
       rdf:type sp:Construct ;
       sp:templates (
           [
-            sp:object [
-                sp:varName "titLabel"^^xsd:string ;
-              ] ;
-            sp:predicate skos:prefLabel ;
+            sp:object owl:ObjectProperty ;
+            sp:predicate rdf:type ;
             sp:subject [
-                sp:varName "skentity"^^xsd:string ;
+                sp:varName "skpprop"^^xsd:string ;
+              ] ;
+          ]
+          [
+            sp:object skos:related ;
+            sp:predicate rdfs:subPropertyOf ;
+            sp:subject [
+                sp:varName "skpprop"^^xsd:string ;
               ] ;
           ]
           [
             sp:object [
-                sp:varName "entity"^^xsd:string ;
+                sp:varName "predx"^^xsd:string ;
+              ] ;
+            sp:predicate rdfs:label ;
+            sp:subject [
+                sp:varName "skpprop"^^xsd:string ;
+              ] ;
+          ]
+          [
+            sp:object [
+                sp:varName "y"^^xsd:string ;
               ] ;
             sp:predicate rdfs:isDefinedBy ;
             sp:subject [
-                sp:varName "skentity"^^xsd:string ;
+                sp:varName "skpprop"^^xsd:string ;
               ] ;
           ]
           [
-            sp:object "rdfs:label becomes skos:prefLabel.  If none avilable, make one from the localname. (02)" ;
-            sp:predicate skos:historyNote ;
+            sp:object [
+                sp:varName "skpobject"^^xsd:string ;
+              ] ;
+            sp:predicate [
+                sp:varName "skpprop"^^xsd:string ;
+              ] ;
             sp:subject [
-                sp:varName "skentity"^^xsd:string ;
+                sp:varName "skpsubject"^^xsd:string ;
+              ] ;
+          ]
+          [
+            sp:object [
+                sp:varName "s"^^xsd:string ;
+              ] ;
+            sp:predicate rdfs:isDefinedBy ;
+            sp:subject [
+                sp:varName "skpsubject"^^xsd:string ;
+              ] ;
+          ]
+          [
+            sp:object [
+                sp:varName "z"^^xsd:string ;
+              ] ;
+            sp:predicate rdfs:isDefinedBy ;
+            sp:subject [
+                sp:varName "skpobject"^^xsd:string ;
               ] ;
           ]
         ) ;
       sp:where (
-          [
-            sp:object rdfs:Datatype ;
-            sp:predicate rdf:type ;
-            sp:subject [
-                sp:varName "entity"^^xsd:string ;
-              ] ;
-          ]
           [
             sp:object [
                 sp:varName "px"^^xsd:string ;
@@ -733,15 +937,40 @@ owl:Class
             sp:subject skos:Concept ;
           ]
           [
-            rdf:type sp:Filter ;
-            sp:expression [
-                rdf:type sp:not ;
-                sp:arg1 [
-                    rdf:type sp:isBlank ;
-                    sp:arg1 [
-                        sp:varName "entity"^^xsd:string ;
-                      ] ;
-                  ] ;
+            rdf:type sp:TriplePath ;
+            sp:object [
+                sp:varName "x"^^xsd:string ;
+              ] ;
+            sp:path [
+                rdf:type sp:AltPath ;
+                sp:path1 rdfs:subClassOf ;
+                sp:path2 owl:equivalentClass ;
+              ] ;
+            sp:subject [
+                sp:varName "s"^^xsd:string ;
+              ] ;
+          ]
+          [
+            sp:object owl:Restriction ;
+            sp:predicate rdf:type ;
+            sp:subject [
+                sp:varName "x"^^xsd:string ;
+              ] ;
+          ]
+          [
+            sp:object [
+                sp:varName "y"^^xsd:string ;
+              ] ;
+            sp:predicate owl:onProperty ;
+            sp:subject [
+                sp:varName "x"^^xsd:string ;
+              ] ;
+          ]
+          [
+            sp:object owl:ObjectProperty ;
+            sp:predicate rdf:type ;
+            sp:subject [
+                sp:varName "y"^^xsd:string ;
               ] ;
           ]
           [
@@ -749,14 +978,57 @@ owl:Class
             sp:elements (
                 [
                   sp:object [
-                      sp:varName "label"^^xsd:string ;
+                      sp:varName "yL"^^xsd:string ;
                     ] ;
                   sp:predicate rdfs:label ;
                   sp:subject [
-                      sp:varName "entity"^^xsd:string ;
+                      sp:varName "y"^^xsd:string ;
                     ] ;
                 ]
               ) ;
+          ]
+          [
+            rdf:type sp:TriplePath ;
+            sp:object [
+                sp:varName "z"^^xsd:string ;
+              ] ;
+            sp:path [
+                rdf:type sp:AltPath ;
+                sp:path1 [
+                    rdf:type sp:AltPath ;
+                    sp:path1 [
+                        rdf:type sp:AltPath ;
+                        sp:path1 owl:onClass ;
+                        sp:path2 owl:someValuesFrom ;
+                      ] ;
+                    sp:path2 owl:allValuesFrom ;
+                  ] ;
+                sp:path2 owl:onDataRange ;
+              ] ;
+            sp:subject [
+                sp:varName "x"^^xsd:string ;
+              ] ;
+          ]
+          [
+            sp:object [
+                sp:varName "?0"^^xsd:string ;
+              ] ;
+            sp:predicate rdf:type ;
+            sp:subject [
+                sp:varName "z"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Filter ;
+            sp:expression [
+                rdf:type sp:not ;
+                sp:arg1 [
+                    rdf:type sp:isBlank ;
+                    sp:arg1 [
+                        sp:varName "z"^^xsd:string ;
+                      ] ;
+                  ] ;
+              ] ;
           ]
           [
             rdf:type sp:Bind ;
@@ -765,14 +1037,88 @@ owl:Class
                 sp:arg1 [
                     rdf:type sp:str ;
                     sp:arg1 [
-                        sp:varName "entity"^^xsd:string ;
+                        sp:varName "y"^^xsd:string ;
                       ] ;
                   ] ;
                 sp:arg2 "^.*(#|/)" ;
                 sp:arg3 "" ;
               ] ;
             sp:variable [
-                sp:varName "lentity"^^xsd:string ;
+                sp:varName "yStr"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type sp:replace ;
+                sp:arg1 [
+                    rdf:type sp:replace ;
+                    sp:arg1 [
+                        rdf:type sp:replace ;
+                        sp:arg1 [
+                            rdf:type sp:replace ;
+                            sp:arg1 [
+                                rdf:type sp:replace ;
+                                sp:arg1 [
+                                    rdf:type sp:coalesce ;
+                                    sp:arg1 [
+                                        sp:varName "yL"^^xsd:string ;
+                                      ] ;
+                                    sp:arg2 [
+                                        sp:varName "yStr"^^xsd:string ;
+                                      ] ;
+                                  ] ;
+                                sp:arg2 "”" ;
+                                sp:arg3 "\"" ;
+                              ] ;
+                            sp:arg2 "“" ;
+                            sp:arg3 "\"" ;
+                          ] ;
+                        sp:arg2 "–" ;
+                        sp:arg3 "-" ;
+                      ] ;
+                    sp:arg2 "’" ;
+                    sp:arg3 "'" ;
+                  ] ;
+                sp:arg2 "‘" ;
+                sp:arg3 "'" ;
+              ] ;
+            sp:variable [
+                sp:varName "predx"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type sp:replace ;
+                sp:arg1 [
+                    rdf:type sp:str ;
+                    sp:arg1 [
+                        sp:varName "z"^^xsd:string ;
+                      ] ;
+                  ] ;
+                sp:arg2 "^.*(#|/)" ;
+                sp:arg3 "" ;
+              ] ;
+            sp:variable [
+                sp:varName "xpobject"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type sp:replace ;
+                sp:arg1 [
+                    rdf:type sp:str ;
+                    sp:arg1 [
+                        sp:varName "s"^^xsd:string ;
+                      ] ;
+                  ] ;
+                sp:arg2 "^.*(#|/)" ;
+                sp:arg3 "" ;
+              ] ;
+            sp:variable [
+                sp:varName "xpsubject"^^xsd:string ;
               ] ;
           ]
           [
@@ -784,7 +1130,7 @@ owl:Class
                     sp:arg1 [
                         rdf:type sp:str ;
                         sp:arg1 [
-                            sp:varName "entity"^^xsd:string ;
+                            sp:varName "z"^^xsd:string ;
                           ] ;
                       ] ;
                     sp:arg2 "(/|#)[^/]*$" ;
@@ -794,31 +1140,382 @@ owl:Class
                 sp:arg3 "" ;
               ] ;
             sp:variable [
-                sp:varName "module"^^xsd:string ;
+                sp:varName "zmodule"^^xsd:string ;
               ] ;
           ]
           [
             rdf:type sp:Bind ;
             sp:expression [
-                rdf:type sp:coalesce ;
-                sp:arg1 [
-                    sp:varName "label"^^xsd:string ;
-                  ] ;
-                sp:arg2 [
-                    sp:varName "lentity"^^xsd:string ;
-                  ] ;
-              ] ;
-            sp:variable [
-                sp:varName "prefLabel"^^xsd:string ;
-              ] ;
-          ]
-          [
-            rdf:type sp:Bind ;
-            sp:expression [
-                rdf:type sp:strlang ;
+                rdf:type sp:uri ;
                 sp:arg1 [
                     rdf:type sp:replace ;
                     sp:arg1 [
+                        rdf:type sp:concat ;
+                        sp:arg1 [
+                            sp:varName "px"^^xsd:string ;
+                          ] ;
+                        sp:arg2 [
+                            rdf:type sp:encode_for_uri ;
+                            sp:arg1 [
+                                rdf:type sp:str ;
+                                sp:arg1 [
+                                    sp:varName "xpobject"^^xsd:string ;
+                                  ] ;
+                              ] ;
+                          ] ;
+                      ] ;
+                    sp:arg2 "[{]M[}]" ;
+                    sp:arg3 [
+                        sp:varName "zmodule"^^xsd:string ;
+                      ] ;
+                  ] ;
+              ] ;
+            sp:variable [
+                sp:varName "skpobject"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type sp:replace ;
+                sp:arg1 [
+                    rdf:type sp:replace ;
+                    sp:arg1 [
+                        rdf:type sp:str ;
+                        sp:arg1 [
+                            sp:varName "s"^^xsd:string ;
+                          ] ;
+                      ] ;
+                    sp:arg2 "(/|#)[^/]*$" ;
+                    sp:arg3 "" ;
+                  ] ;
+                sp:arg2 "^.*/" ;
+                sp:arg3 "" ;
+              ] ;
+            sp:variable [
+                sp:varName "smodule"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type sp:uri ;
+                sp:arg1 [
+                    rdf:type sp:replace ;
+                    sp:arg1 [
+                        rdf:type sp:concat ;
+                        sp:arg1 [
+                            sp:varName "px"^^xsd:string ;
+                          ] ;
+                        sp:arg2 [
+                            rdf:type sp:encode_for_uri ;
+                            sp:arg1 [
+                                rdf:type sp:str ;
+                                sp:arg1 [
+                                    sp:varName "xpsubject"^^xsd:string ;
+                                  ] ;
+                              ] ;
+                          ] ;
+                      ] ;
+                    sp:arg2 "[{]M[}]" ;
+                    sp:arg3 [
+                        sp:varName "smodule"^^xsd:string ;
+                      ] ;
+                  ] ;
+              ] ;
+            sp:variable [
+                sp:varName "skpsubject"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type sp:replace ;
+                sp:arg1 [
+                    rdf:type sp:replace ;
+                    sp:arg1 [
+                        rdf:type sp:str ;
+                        sp:arg1 [
+                            sp:varName "y"^^xsd:string ;
+                          ] ;
+                      ] ;
+                    sp:arg2 "(/|#)[^/]*$" ;
+                    sp:arg3 "" ;
+                  ] ;
+                sp:arg2 "^.*/" ;
+                sp:arg3 "" ;
+              ] ;
+            sp:variable [
+                sp:varName "ymodule"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type sp:uri ;
+                sp:arg1 [
+                    rdf:type sp:replace ;
+                    sp:arg1 [
+                        rdf:type sp:concat ;
+                        sp:arg1 [
+                            sp:varName "px"^^xsd:string ;
+                          ] ;
+                        sp:arg2 [
+                            rdf:type sp:encode_for_uri ;
+                            sp:arg1 [
+                                rdf:type sp:str ;
+                                sp:arg1 [
+                                    sp:varName "yStr"^^xsd:string ;
+                                  ] ;
+                              ] ;
+                          ] ;
+                      ] ;
+                    sp:arg2 "[{]M[}]" ;
+                    sp:arg3 [
+                        sp:varName "ymodule"^^xsd:string ;
+                      ] ;
+                  ] ;
+              ] ;
+            sp:variable [
+                sp:varName "skpprop"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type sp:concat ;
+                sp:arg1 [
+                    sp:varName "xpsubject"^^xsd:string ;
+                  ] ;
+                sp:arg2 " <- " ;
+                sp:arg3 " has a restriction involving " ;
+                sp:arg4 [
+                    sp:varName "yStr"^^xsd:string ;
+                  ] ;
+                sp:arg5 " and " ;
+                sp:arg6 [
+                    sp:varName "xpobject"^^xsd:string ;
+                  ] ;
+              ] ;
+            sp:variable [
+                sp:varName "hist"^^xsd:string ;
+              ] ;
+          ]
+        ) ;
+      rdfs:comment "Rule 9"^^xsd:string ;
+    ] ;
+  spin:rule [
+      rdf:type sp:Construct ;
+      sp:templates (
+          [
+            sp:object owl:ObjectProperty ;
+            sp:predicate rdf:type ;
+            sp:subject [
+                sp:varName "skpprop"^^xsd:string ;
+              ] ;
+          ]
+          [
+            sp:object "Rule 4 a" ;
+            sp:predicate skos:historyNote ;
+            sp:subject [
+                sp:varName "skpprop"^^xsd:string ;
+              ] ;
+          ]
+          [
+            sp:object skos:related ;
+            sp:predicate rdfs:subPropertyOf ;
+            sp:subject [
+                sp:varName "skpprop"^^xsd:string ;
+              ] ;
+          ]
+          [
+            sp:object [
+                sp:varName "predx"^^xsd:string ;
+              ] ;
+            sp:predicate skos:prefLabel ;
+            sp:subject [
+                sp:varName "skpprop"^^xsd:string ;
+              ] ;
+          ]
+          [
+            sp:object [
+                sp:varName "w"^^xsd:string ;
+              ] ;
+            sp:predicate rdfs:isDefinedBy ;
+            sp:subject [
+                sp:varName "skpprop"^^xsd:string ;
+              ] ;
+          ]
+          [
+            sp:object [
+                sp:varName "skpobject"^^xsd:string ;
+              ] ;
+            sp:predicate [
+                sp:varName "skpprop"^^xsd:string ;
+              ] ;
+            sp:subject [
+                sp:varName "skpsubject"^^xsd:string ;
+              ] ;
+          ]
+          [
+            sp:object [
+                sp:varName "p"^^xsd:string ;
+              ] ;
+            sp:predicate rdfs:isDefinedBy ;
+            sp:subject [
+                sp:varName "skpobject"^^xsd:string ;
+              ] ;
+          ]
+          [
+            sp:object [
+                sp:varName "s"^^xsd:string ;
+              ] ;
+            sp:predicate rdfs:isDefinedBy ;
+            sp:subject [
+                sp:varName "skpsubject"^^xsd:string ;
+              ] ;
+          ]
+        ) ;
+      sp:where (
+          [
+            rdf:type sp:Union ;
+            sp:elements (
+                (
+                  [
+                    sp:object [
+                        sp:varName "x"^^xsd:string ;
+                      ] ;
+                    sp:predicate rdfs:subClassOf ;
+                    sp:subject [
+                        sp:varName "s"^^xsd:string ;
+                      ] ;
+                  ]
+                  [
+                    sp:object [
+                        sp:varName "px"^^xsd:string ;
+                      ] ;
+                    sp:predicate skosify:px ;
+                    sp:subject skos:Concept ;
+                  ]
+                  [
+                    sp:object owl:Restriction ;
+                    sp:predicate rdf:type ;
+                    sp:subject [
+                        sp:varName "x"^^xsd:string ;
+                      ] ;
+                  ]
+                  [
+                    rdf:type sp:TriplePath ;
+                    sp:object [
+                        sp:varName "z"^^xsd:string ;
+                      ] ;
+                    sp:path [
+                        rdf:type sp:AltPath ;
+                        sp:path1 [
+                            rdf:type sp:AltPath ;
+                            sp:path1 owl:someValuesFrom ;
+                            sp:path2 owl:allValuesFrom ;
+                          ] ;
+                        sp:path2 owl:onClass ;
+                      ] ;
+                    sp:subject [
+                        sp:varName "x"^^xsd:string ;
+                      ] ;
+                  ]
+                  [
+                    sp:object [
+                        sp:varName "y"^^xsd:string ;
+                      ] ;
+                    sp:predicate owl:onProperty ;
+                    sp:subject [
+                        sp:varName "x"^^xsd:string ;
+                      ] ;
+                  ]
+                  [
+                    rdf:type sp:Filter ;
+                    sp:expression [
+                        rdf:type sp:eq ;
+                        sp:arg1 [
+                            sp:varName "y"^^xsd:string ;
+                          ] ;
+                        sp:arg2 <http://spec.edmcouncil.org/fibo/FND/Parties/Roles/isPlayedBy> ;
+                      ] ;
+                  ]
+                  [
+                    rdf:type sp:Optional ;
+                    sp:elements (
+                        [
+                          sp:object [
+                              sp:varName "yL"^^xsd:string ;
+                            ] ;
+                          sp:predicate rdfs:label ;
+                          sp:subject [
+                              sp:varName "y"^^xsd:string ;
+                            ] ;
+                        ]
+                      ) ;
+                  ]
+                  [
+                    sp:object [
+                        sp:varName "w"^^xsd:string ;
+                      ] ;
+                    sp:predicate owl:onProperty ;
+                    sp:subject [
+                        sp:varName "z"^^xsd:string ;
+                      ] ;
+                  ]
+                  [
+                    rdf:type sp:TriplePath ;
+                    sp:object [
+                        sp:varName "p"^^xsd:string ;
+                      ] ;
+                    sp:path [
+                        rdf:type sp:AltPath ;
+                        sp:path1 [
+                            rdf:type sp:AltPath ;
+                            sp:path1 [
+                                rdf:type sp:AltPath ;
+                                sp:path1 owl:someValuesFrom ;
+                                sp:path2 owl:allValuesFrom ;
+                              ] ;
+                            sp:path2 owl:onClass ;
+                          ] ;
+                        sp:path2 owl:onDataRange ;
+                      ] ;
+                    sp:subject [
+                        sp:varName "z"^^xsd:string ;
+                      ] ;
+                  ]
+                  [
+                    rdf:type sp:Filter ;
+                    sp:expression [
+                        rdf:type sp:ne ;
+                        sp:arg1 [
+                            sp:varName "p"^^xsd:string ;
+                          ] ;
+                        sp:arg2 owl:Thing ;
+                      ] ;
+                  ]
+                  [
+                    rdf:type sp:Bind ;
+                    sp:expression [
+                        rdf:type sp:replace ;
+                        sp:arg1 [
+                            rdf:type sp:str ;
+                            sp:arg1 [
+                                sp:varName "w"^^xsd:string ;
+                              ] ;
+                          ] ;
+                        sp:arg2 "^.*(#|/)" ;
+                        sp:arg3 "" ;
+                      ] ;
+                    sp:variable [
+                        sp:varName "wStr"^^xsd:string ;
+                      ] ;
+                  ]
+                  [
+                    rdf:type sp:Bind ;
+                    sp:expression [
                         rdf:type sp:replace ;
                         sp:arg1 [
                             rdf:type sp:replace ;
@@ -829,7 +1526,13 @@ owl:Class
                                     sp:arg1 [
                                         rdf:type sp:replace ;
                                         sp:arg1 [
-                                            sp:varName "prefLabel"^^xsd:string ;
+                                            rdf:type sp:coalesce ;
+                                            sp:arg1 [
+                                                sp:varName "wL"^^xsd:string ;
+                                              ] ;
+                                            sp:arg2 [
+                                                sp:varName "yStr"^^xsd:string ;
+                                              ] ;
                                           ] ;
                                         sp:arg2 "”" ;
                                         sp:arg3 "\"" ;
@@ -846,13 +1549,715 @@ owl:Class
                         sp:arg2 "‘" ;
                         sp:arg3 "'" ;
                       ] ;
-                    sp:arg2 "( .)|(^.)" ;
-                    sp:arg3 "uc($1$2)" ;
+                    sp:variable [
+                        sp:varName "predx"^^xsd:string ;
+                      ] ;
+                  ]
+                  [
+                    rdf:type sp:Bind ;
+                    sp:expression [
+                        rdf:type sp:replace ;
+                        sp:arg1 [
+                            rdf:type sp:str ;
+                            sp:arg1 [
+                                sp:varName "p"^^xsd:string ;
+                              ] ;
+                          ] ;
+                        sp:arg2 "^.*(#|/)" ;
+                        sp:arg3 "" ;
+                      ] ;
+                    sp:variable [
+                        sp:varName "xpobject"^^xsd:string ;
+                      ] ;
+                  ]
+                  [
+                    rdf:type sp:Bind ;
+                    sp:expression [
+                        rdf:type sp:replace ;
+                        sp:arg1 [
+                            rdf:type sp:str ;
+                            sp:arg1 [
+                                sp:varName "s"^^xsd:string ;
+                              ] ;
+                          ] ;
+                        sp:arg2 "^.*(#|/)" ;
+                        sp:arg3 "" ;
+                      ] ;
+                    sp:variable [
+                        sp:varName "xpsubject"^^xsd:string ;
+                      ] ;
+                  ]
+                  [
+                    rdf:type sp:Bind ;
+                    sp:expression [
+                        rdf:type sp:replace ;
+                        sp:arg1 [
+                            rdf:type sp:replace ;
+                            sp:arg1 [
+                                rdf:type sp:str ;
+                                sp:arg1 [
+                                    sp:varName "p"^^xsd:string ;
+                                  ] ;
+                              ] ;
+                            sp:arg2 "(/|#)[^/]*$" ;
+                            sp:arg3 "" ;
+                          ] ;
+                        sp:arg2 "^.*/" ;
+                        sp:arg3 "" ;
+                      ] ;
+                    sp:variable [
+                        sp:varName "pmodule"^^xsd:string ;
+                      ] ;
+                  ]
+                  [
+                    rdf:type sp:Bind ;
+                    sp:expression [
+                        rdf:type sp:uri ;
+                        sp:arg1 [
+                            rdf:type sp:replace ;
+                            sp:arg1 [
+                                rdf:type sp:concat ;
+                                sp:arg1 [
+                                    sp:varName "px"^^xsd:string ;
+                                  ] ;
+                                sp:arg2 [
+                                    rdf:type sp:encode_for_uri ;
+                                    sp:arg1 [
+                                        rdf:type sp:str ;
+                                        sp:arg1 [
+                                            sp:varName "xpobject"^^xsd:string ;
+                                          ] ;
+                                      ] ;
+                                  ] ;
+                              ] ;
+                            sp:arg2 "[{]M[}]" ;
+                            sp:arg3 [
+                                sp:varName "pmodule"^^xsd:string ;
+                              ] ;
+                          ] ;
+                      ] ;
+                    sp:variable [
+                        sp:varName "skpobject"^^xsd:string ;
+                      ] ;
+                  ]
+                  [
+                    rdf:type sp:Bind ;
+                    sp:expression [
+                        rdf:type sp:replace ;
+                        sp:arg1 [
+                            rdf:type sp:replace ;
+                            sp:arg1 [
+                                rdf:type sp:str ;
+                                sp:arg1 [
+                                    sp:varName "s"^^xsd:string ;
+                                  ] ;
+                              ] ;
+                            sp:arg2 "(/|#)[^/]*$" ;
+                            sp:arg3 "" ;
+                          ] ;
+                        sp:arg2 "^.*/" ;
+                        sp:arg3 "" ;
+                      ] ;
+                    sp:variable [
+                        sp:varName "smodule"^^xsd:string ;
+                      ] ;
+                  ]
+                  [
+                    rdf:type sp:Bind ;
+                    sp:expression [
+                        rdf:type sp:uri ;
+                        sp:arg1 [
+                            rdf:type sp:replace ;
+                            sp:arg1 [
+                                rdf:type sp:concat ;
+                                sp:arg1 [
+                                    sp:varName "px"^^xsd:string ;
+                                  ] ;
+                                sp:arg2 [
+                                    rdf:type sp:encode_for_uri ;
+                                    sp:arg1 [
+                                        rdf:type sp:str ;
+                                        sp:arg1 [
+                                            sp:varName "xpsubject"^^xsd:string ;
+                                          ] ;
+                                      ] ;
+                                  ] ;
+                              ] ;
+                            sp:arg2 "[{]M[}]" ;
+                            sp:arg3 [
+                                sp:varName "smodule"^^xsd:string ;
+                              ] ;
+                          ] ;
+                      ] ;
+                    sp:variable [
+                        sp:varName "skpsubject"^^xsd:string ;
+                      ] ;
+                  ]
+                  [
+                    rdf:type sp:Bind ;
+                    sp:expression [
+                        rdf:type sp:replace ;
+                        sp:arg1 [
+                            rdf:type sp:replace ;
+                            sp:arg1 [
+                                rdf:type sp:str ;
+                                sp:arg1 [
+                                    sp:varName "w"^^xsd:string ;
+                                  ] ;
+                              ] ;
+                            sp:arg2 "(/|#)[^/]*$" ;
+                            sp:arg3 "" ;
+                          ] ;
+                        sp:arg2 "^.*/" ;
+                        sp:arg3 "" ;
+                      ] ;
+                    sp:variable [
+                        sp:varName "wmodule"^^xsd:string ;
+                      ] ;
+                  ]
+                  [
+                    rdf:type sp:Bind ;
+                    sp:expression [
+                        rdf:type sp:uri ;
+                        sp:arg1 [
+                            rdf:type sp:replace ;
+                            sp:arg1 [
+                                rdf:type sp:concat ;
+                                sp:arg1 [
+                                    sp:varName "px"^^xsd:string ;
+                                  ] ;
+                                sp:arg2 [
+                                    rdf:type sp:encode_for_uri ;
+                                    sp:arg1 [
+                                        rdf:type sp:str ;
+                                        sp:arg1 [
+                                            sp:varName "wStr"^^xsd:string ;
+                                          ] ;
+                                      ] ;
+                                  ] ;
+                              ] ;
+                            sp:arg2 "[{]M[}]" ;
+                            sp:arg3 [
+                                sp:varName "module"^^xsd:string ;
+                              ] ;
+                          ] ;
+                      ] ;
+                    sp:variable [
+                        sp:varName "skpprop"^^xsd:string ;
+                      ] ;
+                  ]
+                )
+                (
+                  [
+                    sp:object [
+                        sp:varName "x"^^xsd:string ;
+                      ] ;
+                    sp:predicate rdfs:subClassOf ;
+                    sp:subject [
+                        sp:varName "s"^^xsd:string ;
+                      ] ;
+                  ]
+                  [
+                    sp:object owl:Restriction ;
+                    sp:predicate rdf:type ;
+                    sp:subject [
+                        sp:varName "x"^^xsd:string ;
+                      ] ;
+                  ]
+                  [
+                    rdf:type sp:TriplePath ;
+                    sp:object [
+                        sp:varName "z"^^xsd:string ;
+                      ] ;
+                    sp:path [
+                        rdf:type sp:AltPath ;
+                        sp:path1 [
+                            rdf:type sp:AltPath ;
+                            sp:path1 [
+                                rdf:type sp:AltPath ;
+                                sp:path1 owl:someValuesFrom ;
+                                sp:path2 owl:allValuesFrom ;
+                              ] ;
+                            sp:path2 owl:onClass ;
+                          ] ;
+                        sp:path2 owl:onDataRange ;
+                      ] ;
+                    sp:subject [
+                        sp:varName "x"^^xsd:string ;
+                      ] ;
+                  ]
+                  [
+                    sp:object [
+                        sp:varName "w"^^xsd:string ;
+                      ] ;
+                    sp:predicate owl:onProperty ;
+                    sp:subject [
+                        sp:varName "x"^^xsd:string ;
+                      ] ;
+                  ]
+                  [
+                    rdf:type sp:Optional ;
+                    sp:elements (
+                        [
+                          sp:object [
+                              sp:varName "wL"^^xsd:string ;
+                            ] ;
+                          sp:predicate rdfs:label ;
+                          sp:subject [
+                              sp:varName "w"^^xsd:string ;
+                            ] ;
+                        ]
+                      ) ;
+                  ]
+                  [
+                    sp:object [
+                        sp:varName "y"^^xsd:string ;
+                      ] ;
+                    sp:predicate owl:onProperty ;
+                    sp:subject [
+                        sp:varName "z"^^xsd:string ;
+                      ] ;
+                  ]
+                  [
+                    rdf:type sp:Filter ;
+                    sp:expression [
+                        rdf:type sp:eq ;
+                        sp:arg1 [
+                            sp:varName "y"^^xsd:string ;
+                          ] ;
+                        sp:arg2 <http://spec.edmcouncil.org/fibo/FND/Parties/Roles/playsRole> ;
+                      ] ;
+                  ]
+                  [
+                    rdf:type sp:TriplePath ;
+                    sp:object [
+                        sp:varName "p"^^xsd:string ;
+                      ] ;
+                    sp:path [
+                        rdf:type sp:AltPath ;
+                        sp:path1 [
+                            rdf:type sp:AltPath ;
+                            sp:path1 owl:someValuesFrom ;
+                            sp:path2 owl:allValuesFrom ;
+                          ] ;
+                        sp:path2 owl:onClass ;
+                      ] ;
+                    sp:subject [
+                        sp:varName "z"^^xsd:string ;
+                      ] ;
+                  ]
+                  [
+                    rdf:type sp:Bind ;
+                    sp:expression [
+                        rdf:type sp:replace ;
+                        sp:arg1 [
+                            rdf:type sp:str ;
+                            sp:arg1 [
+                                sp:varName "w"^^xsd:string ;
+                              ] ;
+                          ] ;
+                        sp:arg2 "^.*(#|/)" ;
+                        sp:arg3 "" ;
+                      ] ;
+                    sp:variable [
+                        sp:varName "wStr"^^xsd:string ;
+                      ] ;
+                  ]
+                  [
+                    rdf:type sp:Bind ;
+                    sp:expression [
+                        rdf:type sp:replace ;
+                        sp:arg1 [
+                            rdf:type sp:replace ;
+                            sp:arg1 [
+                                rdf:type sp:replace ;
+                                sp:arg1 [
+                                    rdf:type sp:replace ;
+                                    sp:arg1 [
+                                        rdf:type sp:replace ;
+                                        sp:arg1 [
+                                            rdf:type sp:coalesce ;
+                                            sp:arg1 [
+                                                sp:varName "wL"^^xsd:string ;
+                                              ] ;
+                                            sp:arg2 [
+                                                sp:varName "yStr"^^xsd:string ;
+                                              ] ;
+                                          ] ;
+                                        sp:arg2 "”" ;
+                                        sp:arg3 "\"" ;
+                                      ] ;
+                                    sp:arg2 "“" ;
+                                    sp:arg3 "\"" ;
+                                  ] ;
+                                sp:arg2 "–" ;
+                                sp:arg3 "-" ;
+                              ] ;
+                            sp:arg2 "’" ;
+                            sp:arg3 "'" ;
+                          ] ;
+                        sp:arg2 "‘" ;
+                        sp:arg3 "'" ;
+                      ] ;
+                    sp:variable [
+                        sp:varName "predx"^^xsd:string ;
+                      ] ;
+                  ]
+                  [
+                    rdf:type sp:Bind ;
+                    sp:expression [
+                        rdf:type sp:replace ;
+                        sp:arg1 [
+                            rdf:type sp:str ;
+                            sp:arg1 [
+                                sp:varName "p"^^xsd:string ;
+                              ] ;
+                          ] ;
+                        sp:arg2 "^.*(#|/)" ;
+                        sp:arg3 "" ;
+                      ] ;
+                    sp:variable [
+                        sp:varName "xpobject"^^xsd:string ;
+                      ] ;
+                  ]
+                  [
+                    rdf:type sp:Bind ;
+                    sp:expression [
+                        rdf:type sp:replace ;
+                        sp:arg1 [
+                            rdf:type sp:str ;
+                            sp:arg1 [
+                                sp:varName "s"^^xsd:string ;
+                              ] ;
+                          ] ;
+                        sp:arg2 "^.*(#|/)" ;
+                        sp:arg3 "" ;
+                      ] ;
+                    sp:variable [
+                        sp:varName "xpsubject"^^xsd:string ;
+                      ] ;
+                  ]
+                  [
+                    rdf:type sp:Bind ;
+                    sp:expression [
+                        rdf:type sp:replace ;
+                        sp:arg1 [
+                            rdf:type sp:replace ;
+                            sp:arg1 [
+                                rdf:type sp:str ;
+                                sp:arg1 [
+                                    sp:varName "p"^^xsd:string ;
+                                  ] ;
+                              ] ;
+                            sp:arg2 "(/|#)[^/]*$" ;
+                            sp:arg3 "" ;
+                          ] ;
+                        sp:arg2 "^.*/" ;
+                        sp:arg3 "" ;
+                      ] ;
+                    sp:variable [
+                        sp:varName "pmodule"^^xsd:string ;
+                      ] ;
+                  ]
+                  [
+                    rdf:type sp:Bind ;
+                    sp:expression [
+                        rdf:type sp:uri ;
+                        sp:arg1 [
+                            rdf:type sp:replace ;
+                            sp:arg1 [
+                                rdf:type sp:concat ;
+                                sp:arg1 [
+                                    sp:varName "px"^^xsd:string ;
+                                  ] ;
+                                sp:arg2 [
+                                    rdf:type sp:encode_for_uri ;
+                                    sp:arg1 [
+                                        rdf:type sp:str ;
+                                        sp:arg1 [
+                                            sp:varName "xpobject"^^xsd:string ;
+                                          ] ;
+                                      ] ;
+                                  ] ;
+                              ] ;
+                            sp:arg2 "[{]M[}]" ;
+                            sp:arg3 [
+                                sp:varName "pmodule"^^xsd:string ;
+                              ] ;
+                          ] ;
+                      ] ;
+                    sp:variable [
+                        sp:varName "skpobject"^^xsd:string ;
+                      ] ;
+                  ]
+                  [
+                    rdf:type sp:Bind ;
+                    sp:expression [
+                        rdf:type sp:replace ;
+                        sp:arg1 [
+                            rdf:type sp:replace ;
+                            sp:arg1 [
+                                rdf:type sp:str ;
+                                sp:arg1 [
+                                    sp:varName "s"^^xsd:string ;
+                                  ] ;
+                              ] ;
+                            sp:arg2 "(/|#)[^/]*$" ;
+                            sp:arg3 "" ;
+                          ] ;
+                        sp:arg2 "^.*/" ;
+                        sp:arg3 "" ;
+                      ] ;
+                    sp:variable [
+                        sp:varName "smodule"^^xsd:string ;
+                      ] ;
+                  ]
+                  [
+                    rdf:type sp:Bind ;
+                    sp:expression [
+                        rdf:type sp:uri ;
+                        sp:arg1 [
+                            rdf:type sp:replace ;
+                            sp:arg1 [
+                                rdf:type sp:concat ;
+                                sp:arg1 [
+                                    sp:varName "px"^^xsd:string ;
+                                  ] ;
+                                sp:arg2 [
+                                    rdf:type sp:encode_for_uri ;
+                                    sp:arg1 [
+                                        rdf:type sp:str ;
+                                        sp:arg1 [
+                                            sp:varName "xpsubject"^^xsd:string ;
+                                          ] ;
+                                      ] ;
+                                  ] ;
+                              ] ;
+                            sp:arg2 "[{]M[}]" ;
+                            sp:arg3 [
+                                sp:varName "smodule"^^xsd:string ;
+                              ] ;
+                          ] ;
+                      ] ;
+                    sp:variable [
+                        sp:varName "skpsubject"^^xsd:string ;
+                      ] ;
+                  ]
+                  [
+                    rdf:type sp:Bind ;
+                    sp:expression [
+                        rdf:type sp:replace ;
+                        sp:arg1 [
+                            rdf:type sp:replace ;
+                            sp:arg1 [
+                                rdf:type sp:str ;
+                                sp:arg1 [
+                                    sp:varName "w"^^xsd:string ;
+                                  ] ;
+                              ] ;
+                            sp:arg2 "(/|#)[^/]*$" ;
+                            sp:arg3 "" ;
+                          ] ;
+                        sp:arg2 "^.*/" ;
+                        sp:arg3 "" ;
+                      ] ;
+                    sp:variable [
+                        sp:varName "wmodule"^^xsd:string ;
+                      ] ;
+                  ]
+                  [
+                    rdf:type sp:Bind ;
+                    sp:expression [
+                        rdf:type sp:uri ;
+                        sp:arg1 [
+                            rdf:type sp:replace ;
+                            sp:arg1 [
+                                rdf:type sp:concat ;
+                                sp:arg1 [
+                                    sp:varName "px"^^xsd:string ;
+                                  ] ;
+                                sp:arg2 [
+                                    rdf:type sp:encode_for_uri ;
+                                    sp:arg1 [
+                                        rdf:type sp:str ;
+                                        sp:arg1 [
+                                            sp:varName "wStr"^^xsd:string ;
+                                          ] ;
+                                      ] ;
+                                  ] ;
+                              ] ;
+                            sp:arg2 "[{]M[}]" ;
+                            sp:arg3 [
+                                sp:varName "module"^^xsd:string ;
+                              ] ;
+                          ] ;
+                      ] ;
+                    sp:variable [
+                        sp:varName "skpprop"^^xsd:string ;
+                      ] ;
+                  ]
+                )
+              ) ;
+          ]
+        ) ;
+      rdfs:comment """Rule 4
+It looks as if some of these are daisy-chains. Here we turn restrictions into direct links.
+This looks as if we have two branches, one for isPlayedBy and one for playsRole - why are they separate?
+I think property paths will simplify this a lot,perhaps obviating the need for the union."""^^xsd:string ;
+    ] ;
+  spin:rule [
+      rdf:type sp:Construct ;
+      sp:templates (
+          [
+            sp:object owl:ObjectProperty ;
+            sp:predicate rdf:type ;
+            sp:subject [
+                sp:varName "skpprop"^^xsd:string ;
+              ] ;
+          ]
+          [
+            sp:object [
+                sp:varName "skrange"^^xsd:string ;
+              ] ;
+            sp:predicate [
+                sp:varName "skpprop"^^xsd:string ;
+              ] ;
+            sp:subject [
+                sp:varName "skdomain"^^xsd:string ;
+              ] ;
+          ]
+          [
+            sp:object skos:related ;
+            sp:predicate rdfs:subPropertyOf ;
+            sp:subject [
+                sp:varName "skpprop"^^xsd:string ;
+              ] ;
+          ]
+          [
+            sp:object [
+                sp:varName "p"^^xsd:string ;
+              ] ;
+            sp:predicate rdfs:isDefinedBy ;
+            sp:subject [
+                sp:varName "skpprop"^^xsd:string ;
+              ] ;
+          ]
+        ) ;
+      sp:where (
+          [
+            sp:object [
+                sp:varName "px"^^xsd:string ;
+              ] ;
+            sp:predicate skosify:px ;
+            sp:subject skos:Concept ;
+          ]
+          [
+            sp:object owl:ObjectProperty ;
+            sp:predicate rdf:type ;
+            sp:subject [
+                sp:varName "p"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Filter ;
+            sp:expression [
+                rdf:type sp:notExists ;
+                sp:elements (
+                    [
+                      sp:object [
+                          sp:varName "?0"^^xsd:string ;
+                        ] ;
+                      sp:predicate rdfs:isDefinedBy ;
+                      sp:subject [
+                          sp:varName "p"^^xsd:string ;
+                        ] ;
+                    ]
+                  ) ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Optional ;
+            sp:elements (
+                [
+                  sp:object [
+                      sp:varName "d"^^xsd:string ;
+                    ] ;
+                  sp:predicate rdfs:domain ;
+                  sp:subject [
+                      sp:varName "p"^^xsd:string ;
+                    ] ;
+                ]
+                [
+                  sp:object [
+                      sp:varName "?1"^^xsd:string ;
+                    ] ;
+                  sp:predicate rdf:type ;
+                  sp:subject [
+                      sp:varName "d"^^xsd:string ;
+                    ] ;
+                ]
+              ) ;
+          ]
+          [
+            rdf:type sp:Optional ;
+            sp:elements (
+                [
+                  sp:object [
+                      sp:varName "r"^^xsd:string ;
+                    ] ;
+                  sp:predicate rdfs:range ;
+                  sp:subject [
+                      sp:varName "p"^^xsd:string ;
+                    ] ;
+                ]
+                [
+                  sp:object [
+                      sp:varName "?2"^^xsd:string ;
+                    ] ;
+                  sp:predicate rdf:type ;
+                  sp:subject [
+                      sp:varName "r"^^xsd:string ;
+                    ] ;
+                ]
+              ) ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type sp:replace ;
+                sp:arg1 [
+                    rdf:type sp:str ;
+                    sp:arg1 [
+                        sp:varName "p"^^xsd:string ;
+                      ] ;
                   ] ;
-                sp:arg2 "en" ;
+                sp:arg2 "^.*(#|/)" ;
+                sp:arg3 "" ;
               ] ;
             sp:variable [
-                sp:varName "titLabel"^^xsd:string ;
+                sp:varName "pStr"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type sp:replace ;
+                sp:arg1 [
+                    rdf:type sp:replace ;
+                    sp:arg1 [
+                        rdf:type sp:str ;
+                        sp:arg1 [
+                            sp:varName "p"^^xsd:string ;
+                          ] ;
+                      ] ;
+                    sp:arg2 "(/|#)[^/]*$" ;
+                    sp:arg3 "" ;
+                  ] ;
+                sp:arg2 "^.*/" ;
+                sp:arg3 "" ;
+              ] ;
+            sp:variable [
+                sp:varName "pmodule"^^xsd:string ;
               ] ;
           ]
           [
@@ -867,48 +2272,174 @@ owl:Class
                             sp:varName "px"^^xsd:string ;
                           ] ;
                         sp:arg2 [
-                            rdf:type sp:replace ;
+                            rdf:type sp:encode_for_uri ;
                             sp:arg1 [
-                                rdf:type sp:encode_for_uri ;
+                                rdf:type sp:str ;
                                 sp:arg1 [
-                                    rdf:type sp:str ;
-                                    sp:arg1 [
-                                        sp:varName "lentity"^^xsd:string ;
-                                      ] ;
+                                    sp:varName "pStr"^^xsd:string ;
                                   ] ;
                               ] ;
-                            sp:arg2 "^." ;
-                            sp:arg3 "uc($0)" ;
                           ] ;
                       ] ;
                     sp:arg2 "[{]M[}]" ;
                     sp:arg3 [
-                        sp:varName "module"^^xsd:string ;
+                        sp:varName "pmodule"^^xsd:string ;
                       ] ;
                   ] ;
               ] ;
             sp:variable [
-                sp:varName "skentity"^^xsd:string ;
+                sp:varName "skpprop"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type sp:replace ;
+                sp:arg1 [
+                    rdf:type sp:str ;
+                    sp:arg1 [
+                        sp:varName "d"^^xsd:string ;
+                      ] ;
+                  ] ;
+                sp:arg2 "^.*(#|/)" ;
+                sp:arg3 "" ;
+              ] ;
+            sp:variable [
+                sp:varName "dStr"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type sp:replace ;
+                sp:arg1 [
+                    rdf:type sp:replace ;
+                    sp:arg1 [
+                        rdf:type sp:str ;
+                        sp:arg1 [
+                            sp:varName "d"^^xsd:string ;
+                          ] ;
+                      ] ;
+                    sp:arg2 "(/|#)[^/]*$" ;
+                    sp:arg3 "" ;
+                  ] ;
+                sp:arg2 "^.*/" ;
+                sp:arg3 "" ;
+              ] ;
+            sp:variable [
+                sp:varName "dmodule"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type sp:uri ;
+                sp:arg1 [
+                    rdf:type sp:replace ;
+                    sp:arg1 [
+                        rdf:type sp:concat ;
+                        sp:arg1 [
+                            sp:varName "px"^^xsd:string ;
+                          ] ;
+                        sp:arg2 [
+                            rdf:type sp:encode_for_uri ;
+                            sp:arg1 [
+                                rdf:type sp:str ;
+                                sp:arg1 [
+                                    sp:varName "dStr"^^xsd:string ;
+                                  ] ;
+                              ] ;
+                          ] ;
+                      ] ;
+                    sp:arg2 "[{]M[}]" ;
+                    sp:arg3 [
+                        sp:varName "dmodule"^^xsd:string ;
+                      ] ;
+                  ] ;
+              ] ;
+            sp:variable [
+                sp:varName "skdomain"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type sp:replace ;
+                sp:arg1 [
+                    rdf:type sp:str ;
+                    sp:arg1 [
+                        sp:varName "r"^^xsd:string ;
+                      ] ;
+                  ] ;
+                sp:arg2 "^.*(#|/)" ;
+                sp:arg3 "" ;
+              ] ;
+            sp:variable [
+                sp:varName "rStr"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type sp:replace ;
+                sp:arg1 [
+                    rdf:type sp:replace ;
+                    sp:arg1 [
+                        rdf:type sp:str ;
+                        sp:arg1 [
+                            sp:varName "r"^^xsd:string ;
+                          ] ;
+                      ] ;
+                    sp:arg2 "(/|#)[^/]*$" ;
+                    sp:arg3 "" ;
+                  ] ;
+                sp:arg2 "^.*/" ;
+                sp:arg3 "" ;
+              ] ;
+            sp:variable [
+                sp:varName "rmodule"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type sp:uri ;
+                sp:arg1 [
+                    rdf:type sp:replace ;
+                    sp:arg1 [
+                        rdf:type sp:concat ;
+                        sp:arg1 [
+                            sp:varName "px"^^xsd:string ;
+                          ] ;
+                        sp:arg2 [
+                            rdf:type sp:encode_for_uri ;
+                            sp:arg1 [
+                                rdf:type sp:str ;
+                                sp:arg1 [
+                                    sp:varName "rStr"^^xsd:string ;
+                                  ] ;
+                              ] ;
+                          ] ;
+                      ] ;
+                    sp:arg2 "[{]M[}]" ;
+                    sp:arg3 [
+                        sp:varName "rmodule"^^xsd:string ;
+                      ] ;
+                  ] ;
+              ] ;
+            sp:variable [
+                sp:varName "skrange"^^xsd:string ;
               ] ;
           ]
         ) ;
-      rdfs:comment "Rule 2"^^xsd:string ;
+      rdfs:comment "Rule 13"^^xsd:string ;
     ] ;
-.
-owl:Thing
   spin:rule [
       rdf:type sp:Construct ;
       sp:templates (
           [
             sp:object owl:ObjectProperty ;
             sp:predicate rdf:type ;
-            sp:subject [
-                sp:varName "sksubject"^^xsd:string ;
-              ] ;
-          ]
-          [
-            sp:object "Inverse properties become subproperties of skos:related (10)" ;
-            sp:predicate skos:historyNote ;
             sp:subject [
                 sp:varName "sksubject"^^xsd:string ;
               ] ;
@@ -923,13 +2454,6 @@ owl:Thing
           [
             sp:object owl:ObjectProperty ;
             sp:predicate rdf:type ;
-            sp:subject [
-                sp:varName "skobject"^^xsd:string ;
-              ] ;
-          ]
-          [
-            sp:object "Inverse properties become subproperties of skos:related (10)" ;
-            sp:predicate skos:historyNote ;
             sp:subject [
                 sp:varName "skobject"^^xsd:string ;
               ] ;
@@ -1376,15 +2900,6 @@ owl:Thing
           ]
           [
             sp:object [
-                sp:varName "hist"^^xsd:string ;
-              ] ;
-            sp:predicate skos:historyNote ;
-            sp:subject [
-                sp:varName "skentity"^^xsd:string ;
-              ] ;
-          ]
-          [
-            sp:object [
                 sp:varName "x"^^xsd:string ;
               ] ;
             sp:predicate rdfs:isDefinedBy ;
@@ -1700,15 +3215,6 @@ owl:Thing
           ]
           [
             sp:object [
-                sp:varName "hist"^^xsd:string ;
-              ] ;
-            sp:predicate skos:historyNote ;
-            sp:subject [
-                sp:varName "skentity"^^xsd:string ;
-              ] ;
-          ]
-          [
-            sp:object [
                 sp:varName "x"^^xsd:string ;
               ] ;
             sp:predicate rdfs:isDefinedBy ;
@@ -1984,18 +3490,17 @@ owl:Thing
           [
             rdf:type sp:Filter ;
             sp:expression [
-                rdf:type sp:notExists ;
-                sp:elements (
-                    [
-                      sp:object [
-                          sp:varName "?0"^^xsd:string ;
-                        ] ;
-                      sp:predicate rdfs:isDefinedBy ;
-                      sp:subject [
-                          sp:varName "x"^^xsd:string ;
-                        ] ;
-                    ]
-                  ) ;
+                rdf:type sp:not ;
+                sp:arg1 [
+                    rdf:type sp:regex ;
+                    sp:arg1 [
+                        rdf:type sp:str ;
+                        sp:arg1 [
+                            sp:varName "x"^^xsd:string ;
+                          ] ;
+                      ] ;
+                    sp:arg2 "vocabulary" ;
+                  ] ;
               ] ;
           ]
           [
@@ -2050,13 +3555,6 @@ owl:Thing
               ] ;
           ]
           [
-            sp:object "subclass becomes broader (07) (child)" ;
-            sp:predicate skos:historyNote ;
-            sp:subject [
-                sp:varName "skchild"^^xsd:string ;
-              ] ;
-          ]
-          [
             sp:object [
                 sp:varName "child"^^xsd:string ;
               ] ;
@@ -2070,13 +3568,6 @@ owl:Thing
                 sp:varName "parent"^^xsd:string ;
               ] ;
             sp:predicate rdfs:isDefinedBy ;
-            sp:subject [
-                sp:varName "skparent"^^xsd:string ;
-              ] ;
-          ]
-          [
-            sp:object "subclass becomes broader (07) (parent)" ;
-            sp:predicate skos:historyNote ;
             sp:subject [
                 sp:varName "skparent"^^xsd:string ;
               ] ;
@@ -2311,109 +3802,6 @@ owl:Thing
     ] ;
   spin:rule [
       rdf:type sp:Construct ;
-      sp:text """# Rule 13
-CONSTRUCT {
-    ?skpprop a owl:ObjectProperty .
-    ?skdomain ?skpprop ?skrange .
-    ?skdomain skos:historyNote \"domain/range become subject/object (13)\" .
-    ?skpprop skos:historyNote \"domain/range become subject/object (13)\" .
-    ?skpprop rdfs:subPropertyOf skos:related .
-    ?skpprop rdfs:isDefinedBy ?p .
-}
-WHERE {
-    skos:Concept <http://www.edmcouncil.org/skosify#px> ?px .
-    ?p a owl:ObjectProperty .
-FILTER NOT EXISTS {?p rdfs:isDefinedBy []}
-    OPTIONAL {
-        ?p rdfs:domain ?d .
-        ?d a _:0 .
-    } .
-    OPTIONAL {
-        ?p rdfs:range ?r .
-        ?r a _:1 .
-    } .
-    BIND (REPLACE(str(?p), \"^.*(#|/)\", \"\") AS ?pStr) .
-    BIND (REPLACE(REPLACE(str(?p), \"(/|#)[^/]*$\", \"\"), \"^.*/\", \"\") AS ?pmodule) .
-    BIND (URI(REPLACE(CONCAT(?px, ENCODE_FOR_URI(str(?pStr))), \"[{]M[}]\", ?pmodule)) AS ?skpprop) .
-    BIND (REPLACE(str(?d), \"^.*(#|/)\", \"\") AS ?dStr) .
-    BIND (REPLACE(REPLACE(str(?d), \"(/|#)[^/]*$\", \"\"), \"^.*/\", \"\") AS ?dmodule) .
-    BIND (URI(REPLACE(CONCAT(?px, ENCODE_FOR_URI(str(?dStr))), \"[{]M[}]\", ?dmodule)) AS ?skdomain) .
-    BIND (REPLACE(str(?r), \"^.*(#|/)\", \"\") AS ?rStr) .
-    BIND (REPLACE(REPLACE(str(?r), \"(/|#)[^/]*$\", \"\"), \"^.*/\", \"\") AS ?rmodule) .
-    BIND (URI(REPLACE(CONCAT(?px, ENCODE_FOR_URI(str(?rStr))), \"[{]M[}]\", ?rmodule)) AS ?skrange) .
-}"""^^xsd:string ;
-    ] ;
-  spin:rule [
-      rdf:type sp:Construct ;
-      sp:text """# Rule 4
-# It looks as if some of these are daisy-chains. Here we turn restrictions into direct links.
-# This looks as if we have two branches, one for isPlayedBy and one for playsRole - why are they separate?
-# I think property paths will simplify this a lot,perhaps obviating the need for the union.
-CONSTRUCT {
-    ?skpprop a owl:ObjectProperty .
-    ?skpprop skos:historyNote \"Rule 4 a\" .
-    ?skpprop rdfs:subPropertyOf skos:related .
-    ?skpprop skos:prefLabel ?predx .
-    ?skpprop rdfs:isDefinedBy ?w .
-    ?skpsubject ?skpprop ?skpobject .
-    ?skpsubject skos:historyNote \"Rule 4 b\" .
-    ?skpobject rdfs:isDefinedBy ?p .
-    ?skpobject skos:historyNote \"Rule 4 c\" .
-    ?skpsubject rdfs:isDefinedBy ?s .
-    ?skpsubject skos:historyNote \"Rule 4 d\" .
-}
-WHERE {
-    {
-        ?s rdfs:subClassOf ?x .
-        skos:Concept <http://www.edmcouncil.org/skosify#px> ?px .
-        ?x a owl:Restriction .
-        ?x (owl:someValuesFrom|owl:allValuesFrom)|owl:onClass ?z .
-        ?x owl:onProperty ?y .
-        FILTER (?y = <http://spec.edmcouncil.org/fibo/FND/Parties/Roles/isPlayedBy>) .
-        OPTIONAL {
-            ?y rdfs:label ?yL .
-        } .
-        ?z owl:onProperty ?w .
-        ?z ((owl:someValuesFrom|owl:allValuesFrom)|owl:onClass)|owl:onDataRange ?p .
-        FILTER (?p != owl:Thing) .
-        BIND (REPLACE(str(?w), \"^.*(#|/)\", \"\") AS ?wStr) .
-        BIND (REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(COALESCE(?wL, ?yStr), \"”\", \"\\\"\"), \"“\", \"\\\"\"), \"–\", \"-\"), \"’\", \"'\"), \"‘\", \"'\") AS ?predx) .
-        BIND (REPLACE(str(?p), \"^.*(#|/)\", \"\") AS ?xpobject) .
-        BIND (REPLACE(str(?s), \"^.*(#|/)\", \"\") AS ?xpsubject) .
-        BIND (REPLACE(REPLACE(str(?p), \"(/|#)[^/]*$\", \"\"), \"^.*/\", \"\") AS ?pmodule) .
-        BIND (URI(REPLACE(CONCAT(?px, ENCODE_FOR_URI(str(?xpobject))), \"[{]M[}]\", ?pmodule)) AS ?skpobject) .
-        BIND (REPLACE(REPLACE(str(?s), \"(/|#)[^/]*$\", \"\"), \"^.*/\", \"\") AS ?smodule) .
-        BIND (URI(REPLACE(CONCAT(?px, ENCODE_FOR_URI(str(?xpsubject))), \"[{]M[}]\", ?smodule)) AS ?skpsubject) .
-        BIND (REPLACE(REPLACE(str(?w), \"(/|#)[^/]*$\", \"\"), \"^.*/\", \"\") AS ?wmodule) .
-        BIND (URI(REPLACE(CONCAT(?px, ENCODE_FOR_URI(str(?wStr))), \"[{]M[}]\", ?module)) AS ?skpprop) .
-    }
-    UNION
-    {
-        ?s rdfs:subClassOf ?x .
-        ?x a owl:Restriction .
-        ?x ((owl:someValuesFrom|owl:allValuesFrom)|owl:onClass)|owl:onDataRange ?z .
-        ?x owl:onProperty ?w .
-        OPTIONAL {
-            ?w rdfs:label ?wL .
-        } .
-        ?z owl:onProperty ?y .
-        FILTER (?y = <http://spec.edmcouncil.org/fibo/FND/Parties/Roles/playsRole>) .
-        ?z (owl:someValuesFrom|owl:allValuesFrom)|owl:onClass ?p .
-        BIND (REPLACE(str(?w), \"^.*(#|/)\", \"\") AS ?wStr) .
-        BIND (REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(COALESCE(?wL, ?yStr), \"”\", \"\\\"\"), \"“\", \"\\\"\"), \"–\", \"-\"), \"’\", \"'\"), \"‘\", \"'\") AS ?predx) .
-        BIND (REPLACE(str(?p), \"^.*(#|/)\", \"\") AS ?xpobject) .
-        BIND (REPLACE(str(?s), \"^.*(#|/)\", \"\") AS ?xpsubject) .
-        BIND (REPLACE(REPLACE(str(?p), \"(/|#)[^/]*$\", \"\"), \"^.*/\", \"\") AS ?pmodule) .
-        BIND (URI(REPLACE(CONCAT(?px, ENCODE_FOR_URI(str(?xpobject))), \"[{]M[}]\", ?pmodule)) AS ?skpobject) .
-        BIND (REPLACE(REPLACE(str(?s), \"(/|#)[^/]*$\", \"\"), \"^.*/\", \"\") AS ?smodule) .
-        BIND (URI(REPLACE(CONCAT(?px, ENCODE_FOR_URI(str(?xpsubject))), \"[{]M[}]\", ?smodule)) AS ?skpsubject) .
-        BIND (REPLACE(REPLACE(str(?w), \"(/|#)[^/]*$\", \"\"), \"^.*/\", \"\") AS ?wmodule) .
-        BIND (URI(REPLACE(CONCAT(?px, ENCODE_FOR_URI(str(?wStr))), \"[{]M[}]\", ?module)) AS ?skpprop) .
-    } .
-}"""^^xsd:string ;
-    ] ;
-  spin:rule [
-      rdf:type sp:Construct ;
       sp:text """# Rule 6
 CONSTRUCT {
     <https://spec.edmcouncil.org/fibo/vocabulary> owl:imports <http://www.w3.org/2004/02/skos/core> .
@@ -2421,46 +3809,6 @@ CONSTRUCT {
 }
 WHERE {
 
-}"""^^xsd:string ;
-    ] ;
-  spin:rule [
-      rdf:type sp:Construct ;
-      sp:text """# Rule 9
-CONSTRUCT {
-    ?skpprop a owl:ObjectProperty .
-    ?skpprop skos:historyNote ?hist .
-    ?skpprop rdfs:subPropertyOf skos:related .
-    ?skpprop rdfs:label  ?predx .
-    ?skpprop rdfs:isDefinedBy ?y .
-    ?skpsubject ?skpprop ?skpobject .
-    ?skpsubject skos:historyNote ?hist .
-    ?skpsubject rdfs:isDefinedBy ?s .
-    ?skpobject rdfs:isDefinedBy ?z .
-    ?skpobject skos:historyNote ?hist .
-}
-WHERE {
-    skos:Concept <http://www.edmcouncil.org/skosify#px> ?px .
-    ?s rdfs:subClassOf|owl:equivalentClass ?x .
-    ?x a owl:Restriction .
-    ?x owl:onProperty ?y .
-    ?y a owl:ObjectProperty .
-    OPTIONAL {
-        ?y rdfs:label ?yL .
-    } .
-    ?x ((owl:onClass|owl:someValuesFrom)|owl:allValuesFrom)|owl:onDataRange ?z .
-    ?z a _:0 .
-    FILTER (!isBlank(?z)) .
-    BIND (REPLACE(str(?y), \"^.*(#|/)\", \"\") AS ?yStr) .
-    BIND (REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(COALESCE(?yL, ?yStr), \"”\", \"\\\"\"), \"“\", \"\\\"\"), \"–\", \"-\"), \"’\", \"'\"), \"‘\", \"'\") AS ?predx) .
-    BIND (REPLACE(str(?z), \"^.*(#|/)\", \"\") AS ?xpobject) .
-    BIND (REPLACE(str(?s), \"^.*(#|/)\", \"\") AS ?xpsubject) .
-    BIND (REPLACE(REPLACE(str(?z), \"(/|#)[^/]*$\", \"\"), \"^.*/\", \"\") AS ?zmodule) .
-    BIND (URI(REPLACE(CONCAT(?px, ENCODE_FOR_URI(str(?xpobject))), \"[{]M[}]\", ?zmodule)) AS ?skpobject) .
-    BIND (REPLACE(REPLACE(str(?s), \"(/|#)[^/]*$\", \"\"), \"^.*/\", \"\") AS ?smodule) .
-    BIND (URI(REPLACE(CONCAT(?px, ENCODE_FOR_URI(str(?xpsubject))), \"[{]M[}]\", ?smodule)) AS ?skpsubject) .
-    BIND (REPLACE(REPLACE(str(?y), \"(/|#)[^/]*$\", \"\"), \"^.*/\", \"\") AS ?ymodule) .
-    BIND (URI(REPLACE(CONCAT(?px, ENCODE_FOR_URI(str(?yStr))), \"[{]M[}]\", ?ymodule)) AS ?skpprop) .
-LET (?hist := CONCAT (?xpsubject, \" <- \", \" has a restriction involving \", ?yStr, \" and \", ?xpobject))
 }"""^^xsd:string ;
     ] ;
   spin:rule [
