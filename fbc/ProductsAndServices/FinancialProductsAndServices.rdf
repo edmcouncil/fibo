@@ -107,6 +107,7 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/FBC/20170801/ProductsAndServices/FinancialProductsAndServices/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/FBC/20150801/ProductsAndServices/FinancialProductsAndServices/ version of this ontology was modified to reflect issue resolutions detailed in the FIBO FBC 1.0 FTF report.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/FBC/20160801/ProductsAndServices/FinancialProductsAndServices/ version of this ontology was modified to reflect issue resolutions detailed in the FIBO FBC 1.1 RTF report, including, but not limited to, the addition of lifecycle events, concepts related to trade settlement, and the definition of a unique trade identifier (UTI).</skos:changeNote>
+		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-fpas;Basket">
@@ -160,6 +161,18 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<skos:definition>a list of goods and/or services available for sale with their description and possibly prices, published as a printed or  electronic document (e-catalog)</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.businessdictionary.com/definition/catalog.html</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
+	
+	<fibo-fbc-pas-fpas:TradeLifecycleStage rdf:about="&fibo-fbc-pas-fpas;ClearedTrade">
+		<rdf:type rdf:resource="&owl;NamedIndividual"/>
+		<rdfs:label>cleared trade</rdfs:label>
+		<skos:definition>individual representing a cleared trade state</skos:definition>
+	</fibo-fbc-pas-fpas:TradeLifecycleStage>
+	
+	<fibo-fbc-pas-fpas:TradeLifecycleStage rdf:about="&fibo-fbc-pas-fpas;ClosedTrade">
+		<rdf:type rdf:resource="&owl;NamedIndividual"/>
+		<rdfs:label>closed trade</rdfs:label>
+		<skos:definition>individual representing a closed trade state</skos:definition>
+	</fibo-fbc-pas-fpas:TradeLifecycleStage>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-fpas;Exposure">
 		<rdfs:label>exposure</rdfs:label>
@@ -292,6 +305,12 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<fibo-fnd-utl-av:adaptedFrom>Barron&apos;s Dictionary of Business and Economics Terms, Fifth Edition, 2012</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
 	
+	<fibo-fbc-pas-fpas:TradeLifecycleStage rdf:about="&fibo-fbc-pas-fpas;MaturedTrade">
+		<rdf:type rdf:resource="&owl;NamedIndividual"/>
+		<rdfs:label>matured trade</rdfs:label>
+		<skos:definition>individual representing a matured trade state</skos:definition>
+	</fibo-fbc-pas-fpas:TradeLifecycleStage>
+	
 	<owl:Class rdf:about="&fibo-fbc-pas-fpas;Offeree">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-pty-pty;PartyInRole"/>
 		<rdfs:subClassOf>
@@ -364,6 +383,12 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<skos:definition>a party that proposes to make something available to someone (i.e., an offeree) based on the terms of the offering</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.merriam-webster.com/dictionary/offer</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
+	
+	<fibo-fbc-pas-fpas:TradeLifecycleStage rdf:about="&fibo-fbc-pas-fpas;OpenTrade">
+		<rdf:type rdf:resource="&owl;NamedIndividual"/>
+		<rdfs:label>open trade</rdfs:label>
+		<skos:definition>individual representing an open trade state</skos:definition>
+	</fibo-fbc-pas-fpas:TradeLifecycleStage>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-fpas;Position">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;Holding"/>
@@ -590,6 +615,12 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<fibo-fnd-utl-av:explanatoryNote>In general, settlement involves arrangement of disposition of property, typically for legal reasons.  With respect to financial transactions, it involves completion of a trade, either between brokers or agents, or beween a broker and client. This may include settlement in cash, either for the entire transaction or for the cash leg of a transaction, either now or at some specified time in the future.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
+	<fibo-fbc-pas-fpas:TradeLifecycleStage rdf:about="&fibo-fbc-pas-fpas;TerminatedTrade">
+		<rdf:type rdf:resource="&owl;NamedIndividual"/>
+		<rdfs:label>open trade</rdfs:label>
+		<skos:definition>individual representing a terminated trade state</skos:definition>
+	</fibo-fbc-pas-fpas:TradeLifecycleStage>
+	
 	<owl:Class rdf:about="&fibo-fbc-pas-fpas;ThirdPartyAgent">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;LegalAgent"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-law-lcap;Licensee"/>
@@ -606,8 +637,29 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-pas;TransactionEvent"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-pas-fpas;relatesTo"/>
+				<owl:onClass rdf:resource="&fibo-fbc-pas-fpas;Trade"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-pas-fpas;succeeds"/>
+				<owl:onClass rdf:resource="&fibo-fbc-pas-fpas;Trade"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-aap-agt;isIdentifiedBy"/>
 				<owl:onClass rdf:resource="&fibo-fbc-pas-fpas;TradeIdentifier"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-be-fct-fct;isCharacterizedBy"/>
+				<owl:onClass rdf:resource="&fibo-fbc-pas-fpas;TradeLifecycle"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -663,6 +715,207 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<skos:definition>an identifier for a trade</skos:definition>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-fbc-pas-fpas;TradeLifecycle">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-cls;ClassificationScheme"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-pas-fpas;hasStage"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-fpas;TradeLifecycleStage"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;characterizes"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-fpas;Trade"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;defines"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-fpas;TradeLifecycleStage"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>trade lifecycle</rdfs:label>
+		<skos:definition>a classification scheme that compares the cyclical nature of a trade with the cradle to grave life stages (birth, growth, maturity, decay, and death) of living organisms</skos:definition>
+		<skos:example>The trade life cycle describes the period of time over which a trade is initiated, typically as a part of a broader deal, consumated, processed and executed, settled or closed for other reasons, and reported.</skos:example>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.businessdictionary.com/definition/life-cycle.html</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.investopedia.com/terms/p/post-trade-processing.asp</fibo-fnd-utl-av:adaptedFrom>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-pas-fpas;TradeLifecycleEvent">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-oc;OccurrenceKind"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-pas-fpas;succeeds"/>
+				<owl:onClass rdf:resource="&fibo-fbc-pas-fpas;TradeLifecycleEvent"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-fpas;TradeLifecycle"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-fpas;TradeLifecycleStage"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>trade lifecycle event</rdfs:label>
+		<skos:definition>a kind of event that occurs during one or more stages of the lifecycle of a trade</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.investopedia.com/terms/p/post-trade-processing.asp</fibo-fnd-utl-av:adaptedFrom>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-pas-fpas;TradeLifecycleEventOccurrence">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-oc;Occurrence"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-pas-fpas;succeeds"/>
+				<owl:onClass rdf:resource="&fibo-fbc-pas-fpas;TradeLifecycleEventOccurrence"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-dt-fd;hasDateTimeStamp"/>
+				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;DateTimeStamp"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-dt-oc;exemplifies"/>
+				<owl:onClass rdf:resource="&fibo-fbc-pas-fpas;TradeLifecycleEvent"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-dt-fd;hasDatePeriod"/>
+				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;DatePeriod"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-fpas;TradeLifecycleOccurrence"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-fpas;TradeLifecycleStageOccurrence"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>trade lifecycle event occurrence</rdfs:label>
+		<skos:definition>an occurrence of an event that occurs during a specific stage of a specific trade lifecycle</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-pas-fpas;TradeLifecycleOccurrence">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-oc;Occurrence"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-dt-oc;exemplifies"/>
+				<owl:onClass rdf:resource="&fibo-fbc-pas-fpas;TradeLifecycle"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-pas-fpas;hasStage"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-fpas;TradeLifecycleStageOccurrence"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-dt-bd;holdsDuring"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;DatePeriod"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>trade lifecycle occurrence</rdfs:label>
+		<skos:definition>a realization of a trade lifecycle</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-pas-fpas;TradeLifecycleStage">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-cls;Classifier"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-pas-fpas;succeeds"/>
+				<owl:onClass rdf:resource="&fibo-fbc-pas-fpas;TradeLifecycleStage"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-pas-fpas;isStageOf"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-fpas;TradeLifecycle"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;classifies"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-fpas;Trade"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;comprises"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-fpas;TradeLifecycleEvent"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasDefinition"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-fpas;TradeLifecycle"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>trade lifecycle stage</rdfs:label>
+		<skos:definition>a phase in the lifecycle of a trade</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.businessdictionary.com/definition/life-cycle.html</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.investopedia.com/terms/p/post-trade-processing.asp</fibo-fnd-utl-av:adaptedFrom>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-pas-fpas;TradeLifecycleStageOccurrence">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-oc;Occurrence"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-pas-fpas;succeeds"/>
+				<owl:onClass rdf:resource="&fibo-fbc-pas-fpas;TradeLifecycleStageOccurrence"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-dt-oc;exemplifies"/>
+				<owl:onClass rdf:resource="&fibo-fbc-pas-fpas;TradeLifecycleStage"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-pas-fpas;isStageOf"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-fpas;TradeLifecycleOccurrence"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-dt-bd;holdsDuring"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;DatePeriod"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;comprises"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-fpas;TradeLifecycleEventOccurrence"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>trade lifecycle stage occurrence</rdfs:label>
+		<skos:definition>an instance of a phase in an occurrence of a given trade lifecycle</skos:definition>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-fbc-pas-fpas;Trader">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-pas;ServiceProvider"/>
 		<rdfs:subClassOf>
@@ -689,6 +942,18 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-fpas;UniqueTradeIdentifier">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;TradeIdentifier"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-pas-fpas;hasTradeRepositoryNamespace"/>
+				<owl:allValuesFrom rdf:resource="&xsd;string"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-pas-fpas;hasTradeRepositoryTransactionIdentifier"/>
+				<owl:allValuesFrom rdf:resource="&xsd;string"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label>unique trade identifier</rdfs:label>
 		<skos:definition>a globally unique identifier for a trade, unique to the transaction known to and used by all relevant parties, as required by various regulatory agencies around the world</skos:definition>
 		<fibo-fnd-utl-av:abbreviation>UTI</fibo-fnd-utl-av:abbreviation>
@@ -765,10 +1030,14 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 					</rdf:Description>
 					<rdf:Description rdf:about="&fibo-fbc-pas-fpas;ProductLifecycleStageOccurrence">
 					</rdf:Description>
+					<rdf:Description rdf:about="&fibo-fbc-pas-fpas;TradeLifecycleStage">
+					</rdf:Description>
+					<rdf:Description rdf:about="&fibo-fbc-pas-fpas;TradeLifecycleStageOccurrence">
+					</rdf:Description>
 				</owl:unionOf>
 			</owl:Class>
 		</rdfs:range>
-		<skos:definition>relates something, such as a product lifecycle or process, to a phase or stage in that lifecycle</skos:definition>
+		<skos:definition>relates something, such as a product or trade lifecycle or related process, to a phase or stage in that lifecycle</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.businessdictionary.com/definition/life-cycle.html</fibo-fnd-utl-av:adaptedFrom>
 	</owl:ObjectProperty>
 	
@@ -779,6 +1048,21 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<skos:definition>a predicate indicating the date on which a security or commodity future trade actually takes place</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom>Barron&apos;s Dictionary of Finance and Investment Terms, Ninth Edition, 2014</fibo-fnd-utl-av:adaptedFrom>
 	</owl:ObjectProperty>
+	
+	<owl:DatatypeProperty rdf:about="&fibo-fbc-pas-fpas;hasTradeRepositoryNamespace">
+		<rdfs:label>has trade repository namespace</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fbc-pas-fpas;UniqueTradeIdentifier"/>
+		<rdfs:range rdf:resource="&xsd;string"/>
+		<skos:definition>indicates the trade repository namespace component of a unique trade identifier</skos:definition>
+	</owl:DatatypeProperty>
+	
+	<owl:DatatypeProperty rdf:about="&fibo-fbc-pas-fpas;hasTradeRepositoryTransactionIdentifier">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;hasUniqueIdentifier"/>
+		<rdfs:label>has trade repository transaction identifier</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fbc-pas-fpas;UniqueTradeIdentifier"/>
+		<rdfs:range rdf:resource="&xsd;string"/>
+		<skos:definition>indicates the transaction identifier component of a unique trade identifier, which is unique at the repository level</skos:definition>
+	</owl:DatatypeProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-pas-fpas;isConstituentOf">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;isPartOf"/>
@@ -819,12 +1103,37 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 					</rdf:Description>
 					<rdf:Description rdf:about="&fibo-fbc-pas-fpas;ProductLifecycleStageOccurrence">
 					</rdf:Description>
+					<rdf:Description rdf:about="&fibo-fbc-pas-fpas;TradeLifecycleStage">
+					</rdf:Description>
+					<rdf:Description rdf:about="&fibo-fbc-pas-fpas;TradeLifecycleStageOccurrence">
+					</rdf:Description>
 				</owl:unionOf>
 			</owl:Class>
 		</rdfs:domain>
 		<owl:inverseOf rdf:resource="&fibo-fbc-pas-fpas;hasStage"/>
-		<skos:definition>relates a stage in a product lifecycle or process to the lifecycle or process that it is a stage of</skos:definition>
+		<skos:definition>relates a stage in a product or trade lifecycle or process to the lifecycle or process that it is a stage of</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.businessdictionary.com/definition/life-cycle.html</fibo-fnd-utl-av:adaptedFrom>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fbc-pas-fpas;precedes">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fbc-pas-fpas;relatesTo"/>
+		<rdfs:label>precedes</rdfs:label>
+		<skos:definition>relates a stage in a lifecycle, an event, or occurrence, such as a trade, to one that occurs before it</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.merriam-webster.com/dictionary/precede</fibo-fnd-utl-av:adaptedFrom>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fbc-pas-fpas;relatesTo">
+		<rdfs:label>relates to</rdfs:label>
+		<skos:definition>has a logical or causal connection with</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.merriam-webster.com/dictionary/relates</fibo-fnd-utl-av:adaptedFrom>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fbc-pas-fpas;succeeds">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fbc-pas-fpas;relatesTo"/>
+		<rdfs:label>succeeds</rdfs:label>
+		<owl:inverseOf rdf:resource="&fibo-fbc-pas-fpas;precedes"/>
+		<skos:definition>relates a stage in a lifecycle, an event, or occurrence, such as a trade, to one that occurs after it</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.merriam-webster.com/dictionary/succeed</fibo-fnd-utl-av:adaptedFrom>
 	</owl:ObjectProperty>
 	
 	<owl:Class rdf:about="&fibo-fnd-pas-pas;Product">
