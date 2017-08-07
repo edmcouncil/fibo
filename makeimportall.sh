@@ -1,3 +1,7 @@
+#!/usr/bin/env bash
+#
+# JG>DA, could this file be moved to fibo-infra or to etc/bin?
+#
 cat >all.ttl <<EOF
 # baseURI: https://spec.edmcounci.org/FIBO 
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>  .
