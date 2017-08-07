@@ -19,17 +19,19 @@ jena_arq=""
 # The products that we generate the artifacts for with this script
 #
 # ontology has to come before vocabulary because vocabulary depends on it.
-#
+#"
+family="fibo"
 products="ontology vocabulary"
 
 spec_root="${WORKSPACE}/target"
-family_root="${spec_root}/fibo"
+family_root="${spec_root}/${family}"
+product_root=""
 branch_root=""
 tag_root=""
+product_branch_tag=""
 
 spec_root_url="https://spec.edmcouncil.org"
-family_root_url="${spec_root_url}/fibo"
-product_root=""
+family_root_url="${spec_root_url}/${family}"
 product_root_url=""
 branch_root_url=""
 tag_root_url=""
@@ -100,7 +102,6 @@ function initWorkspaceVars() {
     return 1
   fi
 
-
   if [ ! -f "${rdftoolkit_jar}" ] ; then
     echo "ERROR: Put the rdf-toolkit.jar in the workspace as a pre-build step"
     return 1
@@ -139,8 +140,8 @@ function buildIndex () {
       sed "s@${GIT_TAG_NAME}\(/[^/]*/\)@${GIT_TAG_NAME}/\\U\\1@" > tree.html
 
     sed -i 's/>Directory Tree</>FIBO Ontology file directory</g' tree.html
-    sed -i 's@h1><p>@h1><p>This is the directory structure of FIBO; you can download individual files this way.  To load all of FIBO, please follow the instructions for particular tools at <a href="http://spec.edmcouncil.org/fibo">the main fibo download page</a>.<p/>@' tree.html
-    sed -i 's@<a href=".*>https://spec.edmcouncil.org/.*</a>@@' tree.html
+    sed -i 's@h1><p>@h1><p>This is the directory structure of FIBO; you can download individual files this way. To load all of FIBO, please follow the instructions for particular tools at <a href="http://spec.edmcouncil.org/fibo">the main fibo download page</a>.<p/>@' tree.html
+    sed -i "s@<a href=\".*>${spec_root_url}/.*</a>@@" tree.html
 	)
 }
 
@@ -177,6 +178,9 @@ function setProduct() {
     mkdir -p "${tag_root}"
   fi
 
+  product_branch_tag="${product}/${GIT_BRANCH}/${GIT_TAG_NAME}"
+  family_product_branch_tag="${family}/${product_branch_tag}"
+
   return 0
 }
 
@@ -198,6 +202,13 @@ function initGitVars() {
   #
   GIT_BRANCH="${GIT_BRANCH//\//-}"
   echo "GIT_BRANCH=${GIT_BRANCH}"
+
+  #
+  # Strip the "heads-tags-" prefix from the Branch name if its in there. 
+  #
+  if [[ "${GIT_BRANCH}" =~ ^heads-tags-(.*)$ ]] ; then
+    GIT_BRANCH="${BASH_REMATCH[0]}"
+  fi
 
   #
   # If the current commit has a tag associated to it then the Git Tag Message Plugin in Jenkins will
@@ -561,7 +572,7 @@ function fixTopBraidBaseURICookie() {
       --data="${ontologyFile}" \
       --results=csv | \
       grep edmcouncil | \
-      sed "s@\(https://spec.edmcouncil.org/fibo/ontology/\)@\1${GIT_BRANCH}/${GIT_TAG_NAME}/@" | \
+      sed "s@\(${product_root_url}/\)@\1${GIT_BRANCH}/${GIT_TAG_NAME}/@" | \
       sed "s@${GIT_BRANCH}/${GIT_TAG_NAME}/${GIT_BRANCH}/${GIT_TAG_NAME}/@${GIT_BRANCH}/${GIT_TAG_NAME}/@" \
   )
 
@@ -669,9 +680,9 @@ function convertRdfFileTo() {
 
 # For the turtle files, we want the base annotations to be the versionIRI
   if [ "${targetFormat}" == "turtle" ] ; then
-      echo "Adjusting ttl base URI for ${rdfFile}"
-      sed -i "s?^\(\(# baseURI:\)\|\(@base\)\).*ontology/?&${GIT_BRANCH}/${GIT_TAG_NAME}/?" "${targetFile}"
-      sed -i "s@${GIT_BRANCH}/${GIT_TAG_NAME}/${GIT_BRANCH}/${GIT_TAG_NAME}/@${GIT_BRANCH}/${GIT_TAG_NAME}/@" \
+    echo "Adjusting ttl base URI for ${rdfFile}"
+    sed -i "s?^\(\(# baseURI:\)\|\(@base\)\).*ontology/?&${GIT_BRANCH}/${GIT_TAG_NAME}/?" "${targetFile}"
+    sed -i "s@${GIT_BRANCH}/${GIT_TAG_NAME}/${GIT_BRANCH}/${GIT_TAG_NAME}/@${GIT_BRANCH}/${GIT_TAG_NAME}/@" \
 	  "${targetFile}"
   fi 
 
@@ -763,29 +774,29 @@ function copySiteFiles() {
 
 function zipOntologyFiles () {
 
-  local zipttlDevFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/dev.ttl.zip"
-  local ziprdfDevFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/dev.rdf.zip"
-  local zipjsonldDevFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/dev.jsonld.zip"
+  local zipttlDevFile="${tag_root}/dev.ttl.zip"
+  local ziprdfDevFile="${tag_root}/dev.rdf.zip"
+  local zipjsonldDevFile="${tag_root}/dev.jsonld.zip"
 
-  local zipttlProdFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/prod.ttl.zip"
-  local ziprdfProdFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/prod.rdf.zip"
-  local zipjsonldProdFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/prod.jsonld.zip"
+  local zipttlProdFile="${tag_root}/prod.ttl.zip"
+  local ziprdfProdFile="${tag_root}/prod.rdf.zip"
+  local zipjsonldProdFile="${tag_root}/prod.jsonld.zip"
     
   (
     cd ${spec_root}
-    zip -r ${zipttlDevFile} "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -x \*.rdf \*.zip  \*.jsonld \*AboutFIBOProd.ttl
-    zip -r ${ziprdfDevFile} "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -x \*.ttl \*.zip \*.jsonld \*AboutFIBOProd.rdf
-    zip -r ${zipjsonldDevFile} "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -x \*.ttl \*.zip \*.rdf \*AboutFIBOProd.jsonld
+    zip -r ${zipttlDevFile} "${family_product_branch_tag}" -x \*.rdf \*.zip  \*.jsonld \*AboutFIBOProd.ttl
+    zip -r ${ziprdfDevFile} "${family_product_branch_tag}" -x \*.ttl \*.zip \*.jsonld \*AboutFIBOProd.rdf
+    zip -r ${zipjsonldDevFile} "${family_product_branch_tag}" -x \*.ttl \*.zip \*.rdf \*AboutFIBOProd.jsonld
 
-    grep -r 'utl-av[:;.]Release' "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" | grep -F ".ttl" | sed 's/:.*$//' | xargs zip -r ${zipttlProdFile}
-    find  "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -name '*About*.ttl' -print | grep -v "AboutFIBODev.ttl" |  xargs zip ${zipttlProdFile}
-    find  "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -name '*catalog*.xml' -print | xargs zip ${zipttlProdFile}
-    grep -r 'utl-av[:;.]Release' "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" | grep -F ".rdf" |   sed 's/:.*$//' | xargs zip -r ${ziprdfProdFile}
-    find  "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -name '*About*.rdf' -print | grep -v "AboutFIBODev.rdf" | xargs zip ${ziprdfProdFile}
-    find  "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -name '*catalog*.xml' -print | xargs zip ${ziprdfProdFile}
-    grep -r 'utl-av[:;.]Release' "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" | grep -F ".jsonld" |   sed 's/:.*$//' | xargs zip -r ${zipjsonldProdFile}
-    find  "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -name '*About*.jsonld' -print | grep -v "AboutFIBODev.jsonld" | xargs zip ${zipjsonldProdFile}
-    find  "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -name '*catalog*.xml' -print | xargs zip ${zipjsonldProdFile}
+    grep -r 'utl-av[:;.]Release' "${family_product_branch_tag}" | grep -F ".ttl" | sed 's/:.*$//' | xargs zip -r ${zipttlProdFile}
+    find  "${family_product_branch_tag}" -name '*About*.ttl' -print | grep -v "AboutFIBODev.ttl" |  xargs zip ${zipttlProdFile}
+    find  "${family_product_branch_tag}" -name '*catalog*.xml' -print | xargs zip ${zipttlProdFile}
+    grep -r 'utl-av[:;.]Release' "${family_product_branch_tag}" | grep -F ".rdf" |   sed 's/:.*$//' | xargs zip -r ${ziprdfProdFile}
+    find  "${family_product_branch_tag}" -name '*About*.rdf' -print | grep -v "AboutFIBODev.rdf" | xargs zip ${ziprdfProdFile}
+    find  "${family_product_branch_tag}" -name '*catalog*.xml' -print | xargs zip ${ziprdfProdFile}
+    grep -r 'utl-av[:;.]Release' "${family_product_branch_tag}" | grep -F ".jsonld" |   sed 's/:.*$//' | xargs zip -r ${zipjsonldProdFile}
+    find  "${family_product_branch_tag}" -name '*About*.jsonld' -print | grep -v "AboutFIBODev.jsonld" | xargs zip ${zipjsonldProdFile}
+    find  "${family_product_branch_tag}" -name '*catalog*.xml' -print | xargs zip ${zipjsonldProdFile}
   )
 }
 
@@ -1185,12 +1196,12 @@ function buildquads () {
   (
     cd ${spec_root}
 	  
-	  local ProdQuadsFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/prod.fibo.nq"    
-	  local DevQuadsFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/dev.fibo.nq"    
+	  local ProdQuadsFile="${tag_root}/prod.fibo.nq"
+	  local DevQuadsFile="${tag_root}/dev.fibo.nq"
 	
 	  find . -name '*.rdf' -print | while read file; do quadify "$file"; done > "${DevQuadsFile}"
 	  
-	  grep -r 'utl-av[:;.]Release' "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" | \
+	  grep -r 'utl-av[:;.]Release' "${family_product_branch_tag}" | \
 	    grep -F ".rdf" | \
 	    sed 's/:.*$//' | \
 	    while read file ; do quadify $file ; done > ${ProdQuadsFile}
@@ -1207,7 +1218,7 @@ function build1catalog () {
 
   (   
     cd "$1"     # Build the catalog in this directory
-    echo "building catalog in $1"
+    echo "building catalog in $(pwd)"
     local fibo_rel="${2}"
     cat  > catalog-v001.xml << __HERE__
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -1222,7 +1233,7 @@ __HERE__
     find $fibo_rel  -name '*.rdf' | \
       grep -v etc | \
       sed 's@^.*$@  <uri id="User Entered Import Resolution" uri="&" name="https://spec.edmcouncil.org/fibo/&"/>@;s@.rdf"/>@/"/>@' | \
-      sed "s@fibo/${fibo_rel}/\([a-zA-Z]*/\)@fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}/\U\1\E@" >> catalog-v001.xml
+      sed "s@fibo/${fibo_rel}/\([a-zA-Z]*/\)@${family_product_branch_tag}/\U\1\E@" >> catalog-v001.xml
 
     cat  >> catalog-v001.xml << __HERE__
 <!-- Automatically built by EDMC infrastructure -->
