@@ -227,82 +227,8 @@ function initStardogVars() {
   stardog_vcs="${STARDOG_BIN}/stardog vcs"
 }
 
-#
-# Create an about file in RDF/XML format, do this BEFORE we convert all .rdf files to the other
-# formats so that this about file will also be converted.
-#
-# TODO: Generate this at each directory level in the tree
-#  I don't think this is correct; the About files at lower levels have curated metadata in them.  -DA
-#
-# DONE: Should be done for each serialization format
-#
-function ontologyCreateAboutFiles () {
+source $(dirname $0)/build-about.sh
 
-  local tmpAboutFileDev="$(mktemp ${tmp_dir}/ABOUTD.XXXXXX.ttl)"
-  local tmpAboutFileProd="$(mktemp ${tmp_dir}/ABOUTP.XXXXXX.ttl)"
-  local echoq="$(mktemp ${tmp_dir}/echo.sparqlXXXXXX)"
-
-  (
-    cd ${tag_root}
-
-    cat > "${tmpAboutFileProd}" << __HERE__
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
-@prefix owl: <http://www.w3.org/2002/07/owl#> 
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#>
-<${tag_root_url}/AboutFIBO> a owl:Ontology;
-__HERE__
-
-
-
-    grep \
-	-r 'utl-av[:;.]Release' . | \
-	grep -F ".rdf" | \
-	sed 's/:.*$//'  | \
-	while read file; do
-	    grep "xml:base" "${file}";
-        done | \
-	sed 's/^.*xml:base="/owl:imports </;s/"[\t \n\r]*$/> ;/' \
-	    >> "${tmpAboutFileProd}"
-
-    cat > "${echoq}" << __HERE__
-CONSTRUCT {?s ?p ?o} WHERE {?s ?p ?o}
-__HERE__
-
-    "${jena_arq}" --data="${tmpAboutFileProd}" --query="${echoq}" --results=RDF > AboutFIBOProd.rdf
-  )
-
-  (
-    cd ${tag_root}
-
-    cat > "${tmpAboutFileDev}" << __HERE__
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
-@prefix owl: <http://www.w3.org/2002/07/owl#> 
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#>
-<${tag_root_url}/AboutFIBO> a owl:Ontology;
-__HERE__
-
-    grep \
-      -r "xml:base" \
-      $( \
-        find . -mindepth 1  -maxdepth 1 -type d -print | \
-        grep -vE "(etc)|(git)"
-      ) | \
-      grep -vE "(catalog)|(About)|(About)" | \
-	  sed 's/^.*xml:base="/owl:imports </;s/"[ 	\n\r]*$/> ;/' \
-      >> "${tmpAboutFileDev}"
-
-    cat > "${echoq}" << __HERE__
-CONSTRUCT {?s ?p ?o} WHERE {?s ?p ?o}
-__HERE__
-
-    "${jena_arq}" --data="${tmpAboutFileDev}" --query="${echoq}" --results=RDF > AboutFIBODev.rdf
-  )
-
-
-
-}
 
 #
 # Copy all publishable files from the fibo repo to the appropriate target directory (${tag_root})
@@ -1157,41 +1083,7 @@ function buildquads () {
     }
 
 
-# Stuff for building catlog files
-
-function build1catalog () {
-
-(   
-    cd "$1"     # Build the catalog in this directory
-    echo "building catalog in $1"
-    local fibo_rel="${2}"
-    cat  > catalog-v001.xml <<EOF
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<catalog prefer="public" xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
-EOF
-
-# 
-# Find all the rdf files in fibo, and create catalog lines for them based on their location. 
-# 
-    pwd
-    echo "${fibo_rel}"
-    find $fibo_rel  -name '*.rdf' | grep -v etc | sed 's@^.*$@  <uri id="User Entered Import Resolution" uri="&" name="https://spec.edmcouncil.org/fibo/&"/>@;s@.rdf"/>@/"/>@' | sed "s@fibo/${fibo_rel}/\([a-zA-Z]*/\)@fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}/\U\1\E@" >>  catalog-v001.xml
-
-
-    cat  >> catalog-v001.xml <<EOF 
-<!-- Automatically built by EDMC infrastructure -->
-</catalog>
-EOF
-)    
-}
-
-function ontologyBuildCats () {
-
-# Run build1catalog in each subdirectory except ext, etc and .git
-find ${tag_root} -maxdepth 1 -mindepth 1 -type d \(  -regex "\(.*/ext\)\|\(.*/etc\)\|\(.*/.git\)$" -prune  -o -print  \) | while read file; do build1catalog "$file" ".."; done
-# Run build1catalog in the main directory
-    build1catalog "${tag_root}" "."
-}
+source $(dirname $0)/build-cats.sh
 
 
 
