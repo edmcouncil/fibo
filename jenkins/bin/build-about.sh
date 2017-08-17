@@ -1,4 +1,3 @@
-
 #
 # Create an about file in RDF/XML format, do this BEFORE we convert all .rdf files to the other
 # formats so that this about file will also be converted.
