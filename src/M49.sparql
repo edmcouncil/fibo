@@ -1,0 +1,121 @@
+     prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+     prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+     prefix xsd: <http://www.w3.org/2001/XMLSchema#>
+     prefix owl: <http://www.w3.org/2002/07/owl#>
+     prefix dct: <http://purl.org/dc/terms/>
+     prefix skos: <http://www.w3.org/2004/02/skos/core#>
+     prefix sm: <http://www.omg.org/techprocess/ab/SpecificationMetadata/>
+     prefix lcc-lr: <http://www.omg.org/spec/LCC/Languages/LanguageRepresentation/>
+     prefix lcc-cr: <http://www.omg.org/spec/LCC/Countries/CountryRepresentation/>             
+     prefix lcc-3166-1: <http://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/>
+     prefix lcc-m49: <http://www.omg.org/spec/LCC/Countries/UN-M49-RegionCodes/>
+
+# Process CSV downloaded from M49 site. Manually replace spaces and hypen names in the column headers first     
+
+construct 
+  {?ireg a owl:NamedIndividual; 
+    rdf:type lcc-cr:GeographicRegion; 
+    rdfs:label ?IntermediateRegionName;
+    skos:definition 'IntermediateRegion';
+    lcc-cr:hasEnglishShortname ?name;
+    lcc-cr:hasNumericRegionCode ?IntermediateRegionCode; 
+    lcc-cr:isSubregionOf ?sreg;
+    rdfs:isDefinedBy lcc-m49:
+  } 
+where 
+  {
+   BIND (URI(concat('http://www.omg.org/spec/LCC/Countries/UN-M49-RegionCodes/', replace(?IntermediateRegionName, ' ', '_'))) as ?ireg). 
+   BIND (STRLANG(?IntermediateRegionName, 'en') as ?name).
+   BIND (URI(concat('http://www.omg.org/spec/LCC/Countries/UN-M49-RegionCodes/', replace(?SubregionName, ' ', '_'))) as ?sreg).
+   } 
+
+construct 
+  {?sreg a owl:NamedIndividual; 
+    rdf:type lcc-cr:GeographicRegion; 
+    rdfs:label ?SubregionName;
+    skos:definition 'Subregion';
+    lcc-cr:hasEnglishShortname ?name;
+    lcc-cr:hasNumericRegionCode ?SubregionCode; 
+    lcc-cr:isSubregionOf ?reg;
+    rdfs:isDefinedBy lcc-m49:
+  } 
+where 
+  {
+   BIND (URI(concat('http://www.omg.org/spec/LCC/Countries/UN-M49-RegionCodes/', replace(?SubregionName, ' ', '_'))) as ?sreg). 
+   BIND (STRLANG(?SubregionName, 'en') as ?name).
+   BIND (URI(concat('http://www.omg.org/spec/LCC/Countries/UN-M49-RegionCodes/', replace(?RegionName, ' ', '_'))) as ?reg). 
+   } 
+
+construct 
+  {?reg a owl:NamedIndividual; 
+    rdf:type lcc-cr:GeographicRegion; 
+    rdfs:label ?RegionName;
+    skos:definition 'Region';
+    lcc-cr:hasEnglishShortname ?name;
+    lcc-cr:hasNumericRegionCode ?RegionCode; 
+    lcc-cr:isSubregionOf ?wreg;
+    rdfs:isDefinedBy lcc-m49:    
+  } 
+where 
+  {
+   BIND (URI(concat('http://www.omg.org/spec/LCC/Countries/UN-M49-RegionCodes/', replace(?RegionName, ' ', '_'))) as ?reg). 
+   BIND (STRLANG(?RegionName, 'en') as ?name).
+   BIND (URI(concat('http://www.omg.org/spec/LCC/Countries/UN-M49-RegionCodes/', replace(?GlobalName, ' ', '_'))) as ?wreg). 
+   } 
+   
+construct 
+  {?wreg a owl:NamedIndividual; 
+    rdf:type lcc-cr:GeographicRegion; 
+    rdfs:label ?GlobalName;
+    skos:definition 'Global';
+    lcc-cr:hasEnglishShortname ?name;
+    lcc-cr:hasNumericRegionCode ?GlobalCode; 
+    rdfs:isDefinedBy lcc-m49:
+  } 
+where 
+  {
+   BIND (URI(concat('http://www.omg.org/spec/LCC/Countries/UN-M49-RegionCodes/', replace(?GlobalName, ' ', '_'))) as ?wreg). 
+   BIND (STRLANG(?IGlobalName, 'en') as ?name).
+   } 
+   
+construct 
+  {
+  ?country lcc-cr:isSubregionOf ?creg.
+  } 
+where 
+  {
+   BIND (URI(concat('http://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/', ?ISOalpha3Code)) as ?country).
+   FILTER (?IntermediateRegionName != ''). BIND (URI(concat('http://www.omg.org/spec/LCC/Countries/UN-M49-RegionCodes/', replace(?IntermediateRegionName, ' ', '_'))) as ?creg). 
+   } 
+
+construct 
+  {
+  ?country lcc-cr:isSubregionOf ?creg.
+  } 
+where 
+  {
+   BIND (URI(concat('http://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/', ?ISOalpha3Code)) as ?country).
+   FILTER (!BOUND(?IntermediateRegionName)). FILTER (?SubregionName != ''). BIND (URI(concat('http://www.omg.org/spec/LCC/Countries/UN-M49-RegionCodes/', replace(?SubregionName, ' ', '_'))) as ?creg). 
+   } 
+
+construct 
+  {
+  ?country lcc-cr:isSubregionOf ?creg.
+  } 
+where 
+  {
+   BIND (URI(concat('http://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/', ?ISOalpha3Code)) as ?country).
+   FILTER (!BOUND(?IntermediateRegionName)). FILTER (!BOUND(?SubregionName)). FILTER (?RegionName != ''). BIND (URI(concat('http://www.omg.org/spec/LCC/Countries/UN-M49-RegionCodes/', replace(?RegionName, ' ', '_'))) as ?creg)
+   } 
+
+construct 
+  {
+  ?country lcc-cr:isSubregionOf ?creg.
+  } 
+where 
+  {
+   BIND (URI(concat('http://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/', ?ISOalpha3Code)) as ?country).
+   FILTER (!BOUND(?IntermediateRegionName)). FILTER (!BOUND(?SubregionName)). FILTER (!BOUND(?RegionName)). BIND (URI(concat('http://www.omg.org/spec/LCC/Countries/UN-M49-RegionCodes/', replace(?GlobalName, ' ', '_'))) as ?creg)
+   } 
+
+# "GlobalCode","GlobalName","RegionCode","RegionName","SubregionCode","SubregionName","IntermediateRegionCode","IntermediateRegionName","CountryorArea","M49Code","ISOalpha3Code"
