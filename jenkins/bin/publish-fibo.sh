@@ -82,9 +82,12 @@ function logRule() {
 
 function initWorkspaceVars() {
 
-  #tmp_dir=$(mktemp -d "${tmp_dir:-/tmp}/$(basename 0).XXXXXXXXXXXX")
+  #
+  # Make sure we have an empty tmp dir
+  #
+  [ -d "${tmp_dir}" ] && rm -rf "${tmp_dir}"
   mkdir -p "${tmp_dir}" >/dev/null 2>&1
-  echo tmp_dir=${tmp_dir}
+  echo "tmp_dir=${tmp_dir}"
 
   fibo_root="${WORKSPACE}/fibo"
   echo "fibo_root=${fibo_root}"
@@ -204,7 +207,7 @@ function initGitVars() {
   echo "GIT_BRANCH=${GIT_BRANCH}"
 
   #
-  # Strip the "heads-tags-" prefix from the Branch name if its in there. 
+  # Strip the "heads-tags-" prefix from the Branch name if its in there.
   #
   if [[ "${GIT_BRANCH}" =~ ^heads-tags-(.*)$ ]] ; then
     GIT_BRANCH="${BASH_REMATCH[0]}"
@@ -364,9 +367,7 @@ function ontologyCopyRdfToTarget() {
   for extension in rdf ttl md jpg png gif docx pdf sq ; do
     echo "Copying fibo/**/*.${extension} to ${tag_root/${WORKSPACE}}"
     cp **/*.${extension} --parents ${tag_root}/
-
   done
-
 
   #cp **/*.{rdf,ttl,md,jpg,png,docx,pdf,sq} --parents ${tag_root}/
   popd
@@ -767,7 +768,12 @@ function copySiteFiles() {
     cd ${fibo_infra_root}/site
     cp -vr * "${spec_root}/"
   )
-  cp -v ${fibo_infra_root}/LICENSE ${spec_root}
+  cp -v ${fibo_infra_root}/LICENSE "${spec_root}"
+
+  (
+    cd "${spec_root}"
+    chmod -R g+r,o+r .
+  )
 
   return 0
 }
@@ -783,7 +789,12 @@ function zipOntologyFiles () {
   local zipjsonldProdFile="${tag_root}/prod.jsonld.zip"
     
   (
-    cd ${spec_root}
+    cd "${spec_root}"
+    #
+    # Make sure that everything is world readable before we zip it
+    #
+    chmod -R g+r,o+r .
+    #
     zip -r ${zipttlDevFile} "${family_product_branch_tag}" -x \*.rdf \*.zip  \*.jsonld \*AboutFIBOProd.ttl
     zip -r ${ziprdfDevFile} "${family_product_branch_tag}" -x \*.ttl \*.zip \*.jsonld \*AboutFIBOProd.rdf
     zip -r ${zipjsonldDevFile} "${family_product_branch_tag}" -x \*.ttl \*.zip \*.rdf \*AboutFIBOProd.jsonld
@@ -812,11 +823,10 @@ function publishProductOntology() {
   ontologyCreateAboutFiles || return $?
   ontologySearchAndReplaceStuff || return $?
   ontologyConvertRdfToAllFormats || return $?
-#   ontologyAnnotateTopBraidBaseURL || return $?
+# ontologyAnnotateTopBraidBaseURL || return $?
   ontologyConvertMarkdownToHtml || return $?
   zipOntologyFiles || return $?
   buildquads || return $?
-
 
   return 0
 }
