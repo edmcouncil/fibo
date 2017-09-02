@@ -9,6 +9,7 @@
 	<!ENTITY fibo-fnd-agr-ctr "https://spec.edmcouncil.org/fibo/FND/Agreements/Contracts/">
 	<!ENTITY fibo-fnd-arr-cls "https://spec.edmcouncil.org/fibo/FND/Arrangements/ClassificationSchemes/">
 	<!ENTITY fibo-fnd-arr-doc "https://spec.edmcouncil.org/fibo/FND/Arrangements/Documents/">
+	<!ENTITY fibo-fnd-com-com "https://spec.edmcouncil.org/fibo/FND/Communication/Communication/">
 	<!ENTITY fibo-fnd-dt-fd "https://spec.edmcouncil.org/fibo/FND/DatesAndTimes/FinancialDates/">
 	<!ENTITY fibo-fnd-dt-oc "https://spec.edmcouncil.org/fibo/FND/DatesAndTimes/Occurrences/">
 	<!ENTITY fibo-fnd-org-fm "https://spec.edmcouncil.org/fibo/FND/Organizations/FormalOrganizations/">
@@ -40,6 +41,7 @@
 	xmlns:fibo-fnd-agr-ctr="https://spec.edmcouncil.org/fibo/FND/Agreements/Contracts/"
 	xmlns:fibo-fnd-arr-cls="https://spec.edmcouncil.org/fibo/FND/Arrangements/ClassificationSchemes/"
 	xmlns:fibo-fnd-arr-doc="https://spec.edmcouncil.org/fibo/FND/Arrangements/Documents/"
+	xmlns:fibo-fnd-com-com="https://spec.edmcouncil.org/fibo/FND/Communication/Communication/"
 	xmlns:fibo-fnd-dt-fd="https://spec.edmcouncil.org/fibo/FND/DatesAndTimes/FinancialDates/"
 	xmlns:fibo-fnd-dt-oc="https://spec.edmcouncil.org/fibo/FND/DatesAndTimes/Occurrences/"
 	xmlns:fibo-fnd-org-fm="https://spec.edmcouncil.org/fibo/FND/Organizations/FormalOrganizations/"
@@ -106,6 +108,31 @@
 		<skos:editorialNote>This should be added to the BusinessRegistries ontology</skos:editorialNote>
 	</owl:ObjectProperty>
 	
+	<owl:Class rdf:about="&fibo-fnd-com-com;Request">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-oc;Occurrence"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-ln-ln-lgn;isRequestFor"/>
+				<owl:minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:minCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-ln-ln-lgn;isFrom"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-aap-agt;AutonomousAgent"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-ln-ln-lgn;isTo"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-aap-agt;AutonomousAgent"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>request</rdfs:label>
+		<skos:definition>an occurrence whereby an agent asks another agent for something or to do something</skos:definition>
+		<fibo-fnd-utl-av:editorialNote>Future consideration: move this property to somewhere in FND.</fibo-fnd-utl-av:editorialNote>
+	</owl:Class>
+	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-rel-rel;isComprisedOf">
 		<owl:inverseOf rdf:resource="&fibo-fnd-rel-rel;comprises"/>
 		<skos:editorialNote>Topic: FND Adding inverse of comprises called isComprisedOf</skos:editorialNote>
@@ -124,7 +151,7 @@
 	</fibo-fnd-dt-fd:ExplicitDuration>
 	
 	<owl:Class rdf:about="&fibo-ln-ln-lgn;Application">
-		<rdfs:subClassOf rdf:resource="&fibo-ln-ln-lgn;Request"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-com-com;Request"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-dt-fd;hasDateReceived"/>
@@ -303,31 +330,6 @@ Not using psch:PaymentSchedule because it uses PaymentEvent which is an Occurren
 		<rdfs:label>phone number</rdfs:label>
 		<skos:definition>a virtual address for communication via phone</skos:definition>
 		<fibo-fnd-utl-av:editorialNote>Future consideration: move this property to Addresses ontology (fibo-fnd-plc-adr).</fibo-fnd-utl-av:editorialNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-ln-ln-lgn;Request">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-oc;Occurrence"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-ln-ln-lgn;isRequestFor"/>
-				<owl:minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:minCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-ln-ln-lgn;isFrom"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-aap-agt;AutonomousAgent"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-ln-ln-lgn;isTo"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-aap-agt;AutonomousAgent"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>request</rdfs:label>
-		<skos:definition>an occurrence whereby an agent asks another agent for something or to do something</skos:definition>
-		<fibo-fnd-utl-av:editorialNote>Future consideration: move this property to somewhere in FND.</fibo-fnd-utl-av:editorialNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ln-ln-lgn;ScheduledPayment">
