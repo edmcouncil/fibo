@@ -1,0 +1,950 @@
+#import("NLGTool", "com.nomagic.reports.NaturalLanguageGlossaryTool")
+#macro(spellDigit, $digit)
+	#set($digitList = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'])
+	#if($digit gt -1 && $digit lt 10 )
+		$digitList[$digit]
+	#else
+		$digit
+	#end
+#end
+#macro(setMultiplicityString, $lower, $upper, $isUnspecified, $isDatatype)
+	#set($multiplicityString = '')
+	#if($isUnspecified)
+		#set($lower = 0)
+		#set($upper = -1)
+	#end
+	#if($isDatatype)
+		#set($instanceString = 'value')
+	#else
+		#set($instanceString = 'occurrence')
+	#end
+	#set($lowerString = "#spellDigit($lower)")
+	#if($upper == -1)
+		#set($upperString = 'many')
+	#else
+		#set($upperString = "#spellDigit($upper)")
+	#end
+	#set($lowerString = $lowerString.trim())
+	#set($upperString = $upperString.trim())
+	#if(!(($lower == 0 && $upper == 1) || ($lower == 1 && ($upper == 1 || $upper == -1))))
+		#set($instanceString = "${instanceString}s")
+	#end
+	#if($lower == $upper)
+		#set($multiplicityString = "exactly $lowerString $instanceString")
+	#elseif($lower == 0)
+		#if($upper == -1)
+			#set($multiplicityString = "any number of $instanceString")
+		#else
+			#set($multiplicityString = "at most $upperString $instanceString")
+		#end
+	#elseif($upper == -1)
+		#set($multiplicityString = "at least $lowerString $instanceString")
+	#else
+		#set($multiplicityString = "$lowerString to $upperString $instanceString")
+	#end
+#end
+#macro(setSufficientFlag, $attribute)
+	#set($sufficientFlag = false)
+	#foreach($constraint in $attribute.get_constraintOfConstrainedElement())
+		#if ($constraint.name == 'sufficient')
+			#set($sufficientFlag = true)
+			#break
+		#end
+	#end
+#end
+#macro(setMainEntryIsAnythingFlag, $class)
+	#set($mainEntryIsAnythingFlag = false)
+	#foreach($stereotype in $class.appliedStereotype)
+		#if($stereotype.name == 'Anything')
+			#set($mainEntryIsAnythingFlag = true)
+			#break
+		#end
+	#end
+#end
+#macro(setPropertyTypeAnythingFlag, $class)
+	#set($propertyTypeAnythingFlag = false)
+	#foreach($stereotype in $class.appliedStereotype)
+		#if($stereotype.name == 'Anything')
+			#set($propertyTypeAnythingFlag = true)
+			#break
+		#end
+	#end
+#end
+#macro(setSuperClassIsAnythingFlag, $class)
+	#set($superClassIsAnythingFlag = false)
+	#foreach($stereotype in $class.appliedStereotype)
+		#if($stereotype.name == 'Anything')
+			#set($superClassIsAnythingFlag = true)
+			#break
+		#end
+	#end
+#end
+#macro(setPropertyTypeIsUnionFlag, $class)
+	#set($propertyTypeIsUnionFlag = false)
+	#foreach($stereotype in $class.appliedStereotype)
+		#if($stereotype.name == 'Union')
+			#set($propertyTypeIsUnionFlag = true)
+			#break
+		#end
+	#end
+#end
+#macro(setPropertyTypeIsEnumerationFlag, $class)
+	#set($propertyTypeIsEnumerationFlag = false)
+	#if($class.elementType == 'enumeration')
+		#set($propertyTypeIsEnumerationFlag = true)
+	#end
+#end
+#macro(setSuperClassIsUnionFlag, $class)
+	#set($superClassIsUnionFlag = false)
+	#foreach($stereotype in $class.appliedStereotype)
+		#if($stereotype.name == 'Union')
+			#set($superClassIsUnionFlag = true)
+			#break
+		#end
+	#end
+#end
+#macro(setMainEntryIsUnionFlag, $class)
+	#set($mainEntryIsUnionFlag = false)
+	#foreach($stereotype in $class.appliedStereotype)
+		#if($stereotype.name == 'Union')
+			#set($mainEntryIsUnionFlag = true)
+			#break
+		#end
+	#end
+#end
+#macro(setEquivalentClassStereotypeFlag, $class)
+	#set($equivalentClassStereotypeFlag = false)
+	#foreach($stereotype in $class.appliedStereotype)
+		#if($stereotype.name == 'Equivalent Class')
+			#set($equivalentClassStereotypeFlag = true)
+			#break
+		#end
+	#end
+#end
+#macro(setIsPropertyDefinitionDesired)
+	#set($isPropertyDefinitionDesiredFlag = false)
+	#if($NLGTool.getPropertyDefinitionsDesiredProjectOption())
+		#set($isPropertyDefinitionDesiredFlag = true)
+	#end
+#end
+#macro(addToPropertyLists,$property)
+	#if($property.navigable)
+		#setPropertyTypeIsUnionFlag($property.type)
+		#if($property.lower == 0 || $property.multiplicity.isEmpty() || ($property.type.name.isEmpty() && !$propertyTypeIsUnionFlag))
+			#set($void = $unnecessaryPropertyList.add($property))
+		#else
+			#setSufficientFlag($property)
+			#if($sufficientFlag)
+				#set($void = $sufficientPropertyList.add($property))
+			#else
+				#set($void = $necessaryPropertyList.add($property))
+			#end
+		#end
+	#end
+	#set($propertyTypeIsUnionFlag = false)
+#end
+#macro(setPropertyLists,$class)
+	#set($subsettedProperties = $array.createArray())
+	#foreach($property in $class.ownedAttribute)
+		#if($property.type.elementType != 'enumeration')
+			#addToPropertyLists($property)
+			#if($property.hasSubsettedProperty())
+				#set($void = $subsettedProperties.add($property.subsettedProperty[0]))
+			#end
+		#end
+	#end
+	#foreach($association in $report.getRelationship($class))
+		#if($association.elementType == 'association')
+			#foreach($property in $association.memberEnd)
+				#if($property.elementType == 'property' && ($property.type != $class || $list.size($association.relatedElement) == 1))
+					#set($void = $unnecessaryPropertyList.remove($property))
+					#set($void = $sufficientPropertyList.remove($property))
+					#set($void = $necessaryPropertyList.remove($property))				
+					#addToPropertyLists($property)
+				#end
+			#end
+		#end
+	#end
+	#if($list.size($subsettedProperties) > 0)
+		#foreach($property in $subsettedProperties)
+			#set($void = $unnecessaryPropertyList.remove($property))
+			#set($void = $sufficientPropertyList.remove($property))
+			#set($void = $necessaryPropertyList.remove($property))
+		#end
+	#end
+#end
+#macro(createGeneralizationList, $class)
+#set($size = $list.size($class.generalization))
+	#foreach($generalization in $sorter.sort($class.generalization,"general"))
+		##Check the generalizations general classifier for the Union stereotype.
+		#setSuperClassIsUnionFlag($generalization.general)
+		#setSuperClassIsAnythingFlag($generalization.general)
+		#setEquivalentClassStereotypeFlag($generalization)
+		#if(!($superClassIsUnionFlag || $superClassIsAnythingFlag) && !$equivalentClassStereotypeFlag && !$generalizationList.contains($generalization.general))
+			##Generalizations general classifier does not have a Union or Anything stereotype and is not in Equivalent class relation.
+			#set($void = $generalizationList.add($generalization.general))
+		#end
+	#end
+	#if($list.isEmpty($generalizationList))
+		## The super class was a union or property holder, setting generalizationFlag back to false.
+		#set($generalizationFlag = false)
+	#end
+#end
+#macro(prepareForConditionRendering, $property)
+	##Check the property type for the Anything stereotype
+	#setPropertyTypeAnythingFlag($property.type)
+	#setPropertyTypeIsUnionFlag($property.type)
+	#setPropertyTypeIsEnumerationFlag($property.type)
+	#if($property.hasSubsettedProperty() && ($property.name.isEmpty() || $property.name == $property.subsettedProperty[0].name))
+		#set($qualifiedConstraintFlag = true)
+	#else
+		#set($qualifiedConstraintFlag = false)
+	#end
+	#if($qualifiedConstraintFlag)
+		#set($umlProperty = $property.subsettedProperty[0])
+	#elseif($property.hasRedefinedProperty() && $property.name.isEmpty())
+		#set($umlProperty = $property.redefinedProperty[0])
+	#else
+		#set($umlProperty = $property)
+	#end
+	#if($property.type.name.isEmpty())
+		#set($propertyTypeName = '(Unnamed Class)')
+		#set($propertyTypeID = '(Unnamed Class)')
+	#else
+		#set($propertyTypeName = $property.type.name)
+		#set($propertyTypeID = $property.type.QualifiedName)
+	#end
+	#set($unspecifiedFlag = $property.multiplicity.isEmpty())
+	#set($datatypeFlag = $property.type.elementType != 'class')
+	#setMultiplicityString($property.lower, $property.upper, $unspecifiedFlag, $datatypeFlag)
+	#if($datatypeFlag)
+		#set($propertyTypeStyleName = 'datatype')
+	#else
+		#set($propertyTypeStyleName = 'classname')
+	#end
+#end
+#macro(createHyperlink, $classList, $punctuationMark, $conjunction)
+	#foreach($class in $classList)
+		#if($class.isEmpty())
+			#set($hyperlinkTarget = '(Unnamed Class)')
+			#set($id = $hyperlinkTarget)
+		#else
+			#set($hyperlinkTarget = $class.name)
+			#set($id = $class.QualifiedName)
+		#end
+#if($foreach.count == 1)
+#if($list.size($classList) == 1)
+
+<span class='classname'><a href="#$id">$hyperlinkTarget</a></span>$punctuationMark##
+#elseif($list.size($classList) == 2)
+
+<span class='classname'><a href="#$id">$hyperlinkTarget</a></span>
+#else
+
+<span class='classname'><a href="#$id">$hyperlinkTarget</a></span>,
+#end
+#else
+#if($foreach.count == $list.size($classList))
+
+$conjunction <span class='classname'><a href="#$id">$hyperlinkTarget</a></span>$punctuationMark##
+#else
+		 
+<span class='classname'><a href="#$id">$hyperlinkTarget</a></span>,
+#end
+#end
+#end
+#end
+#macro(displayNameOfEnumerationLiteral, $enumerationName, $enumerationLinkID, $enumerationLiteralList)
+	#foreach($enumerationLiteral in $enumerationLiteralList)
+		#if($enumerationLiteral.isEmpty())
+			#set($allowedValue = '(Unnamed Enumeration Literal)')
+		#else
+			#set($allowedValue = $enumerationLiteral)
+		#end
+		#if($foreach.count == 1)
+
+			<span class='enumerationName'><a href="#$enumerationLinkID">$enumerationName</a></span>, which is allowed to be
+			#if($list.size($enumerationLiteralList) == 1)
+				$allowedValue.
+			#elseif($list.size($enumerationLiteralList) == 2)
+				$allowedValue
+			#else
+				$allowedValue,
+			#end
+		#else
+			#if($foreach.count == $list.size($enumerationLiteralList))
+				or $allowedValue.
+			#elseif($foreach.count == 4)
+				etc.
+				#break
+			#else
+				$allowedValue,
+			#end
+		#end
+	#end
+#end
+#macro(displayNameOfSuperTypeWithHyperlink, $generalizationList, $punctuationMark)
+#set($classList = $array.createArray())
+	#foreach($generalization in $generalizationList)
+		#set($void = $classList.add($generalization))
+	#end
+	#createHyperlink($classList, $punctuationMark, "and")
+#end
+#macro(displayNameOfSubClassOfUnionWithHyperlink, $class, $punctuationMark)
+	#set($classList = $array.createArray())
+	#foreach($generalization in $class.get_generalizationOfGeneral())
+		#set($void = $classList.add($generalization.specific))
+	#end
+	#createHyperlink($classList, $punctuationMark, "or")
+#end
+#macro(displayAllowedValueOfEnumeration, $enumeration)
+	#if($enumeration.name.isEmpty())
+		#set($enumerationName = '(Unnamed Enumeration)')
+	#else
+		#set($enumerationName = $enumeration.name)
+	#end
+	#if($list.size($enumeration.getOwnedLiteral()) > 0)
+		#set($enumerationList = $array.createArray())
+		#foreach($enumerationLiteral in $enumeration.getOwnedLiteral())
+			#set($void = $enumerationList.add($enumerationLiteral.name))
+		#end
+		#displayNameOfEnumerationLiteral($enumerationName, $enumeration.QualifiedName, $enumerationList)
+	#else
+
+		<span class='enumerationName'><a href="#$enumeration.QualifiedName">$enumerationName</a></span>.
+	#end
+#end
+#macro(getAnnotationPropertyList)
+	#set($annotationPropertyList = $NLGTool.getAnnotationPropertyList())
+#end
+#macro(initAnnoPropSectionEmittedMap)
+	#set($isAnnoPropSectionEmittedMap = $map.createHashMap())
+	#foreach($emmitedAnnotationProperty in $annotationPropertyList)
+		#set($void = $isAnnoPropSectionEmittedMap.put($NLGTool.getAnnotationPropertyHumanName($emmitedAnnotationProperty), "0"))
+	#end
+#end
+#macro(displayAnnotationPropertyAndCommentBodyInHTML, $element)
+	#initAnnoPropSectionEmittedMap()
+	#set($annotationPropertyHumanName = '')
+	#foreach($annoProperty in $annotationPropertyList)
+		#set($foundCommentList = $array.createArray())
+		## What if class is not present in the map?
+		#set($foundCommentList = $NLGTool.getElementAnnotations($element, $annoProperty))
+		#set($annotationPropertyHumanName = $NLGTool.getAnnotationPropertyHumanName($annoProperty))
+		#if($isAnnoPropSectionEmittedMap.get($annotationPropertyHumanName) == "0")
+			#set($void = $isAnnoPropSectionEmittedMap.put($annotationPropertyHumanName, "1")) 
+			
+			<p><span class='annoprophumanname'>$annotationPropertyHumanName</span>:
+		#end
+	
+		#if(!$foundCommentList.isEmpty()) ## the array is not empty/null
+			## Any comment that is serving as the documentation for this class should not be in this list.
+			#if($list.size($foundCommentList) == 1)
+				## Output just one on a single line
+				#foreach($umlComment in $foundCommentList) 
+					<span class='classdoc'>$umlComment.body</span>
+				#end
+			#else
+					<ul>
+				## Output several in a list
+				#foreach($umlComment in $foundCommentList)
+
+						<li class='propdesc'>  
+							<span class='classdoc'>$umlComment.body</span>
+						</li>
+				#end
+
+					</ul>
+			#end
+
+			</p>
+		#end
+	#end
+	#initAnnoPropSectionEmittedMap()
+#end
+#macro(addClassAlphabetHeader, $elementType)
+	<center><p id="classAlphabet">
+	#set($classAlphabetHeading = '')
+	#foreach($element in $sorter.sort($elementType))
+		#setMainEntryIsAnythingFlag($element)
+		#setMainEntryIsUnionFlag($element)
+		#if(!$mainEntryIsAnythingFlag && !$mainEntryIsUnionFlag)
+			#if($firstTopEntryFlag || (!$element.name.isEmpty() && $classAlphabetHeading.isEmpty()) || ($element.name.isEmpty() && !$classAlphabetHeading.isEmpty()) || (!$element.name.isEmpty() && ($classAlphabetHeading != $element.Name.substring(0,1).toUpperCase())))
+				#set($firstTopEntryFlag = false)
+				#if(!$element.name.isEmpty())
+					#set($classAlphabetHeading = $element.name.substring(0,1).toUpperCase())
+				#end
+					
+				   <span><a href="#class_heading_$classAlphabetHeading">$classAlphabetHeading</a></span>
+			#end
+		#end
+	#end
+	
+	</p></center>
+	#set($mainEntryIsAnythingFlag = false)
+	#set($mainEntryIsUnionFlag = false)
+#end
+#macro(addPropertyAlphabetHeader, $elementList)
+	<center><p id="propertyAlphabet">
+	#set($propertyAlphabetHeading = '')
+	#foreach($element in $sorter.sort($elementList))
+		#if($firstTopEntryFlag || (!$element.name.isEmpty() && $propertyAlphabetHeading.isEmpty()) || ($element.name.isEmpty() && !$propertyAlphabetHeading.isEmpty()) || (!$element.name.isEmpty() && ($propertyAlphabetHeading != $element.Name.substring(0,1).toUpperCase())))
+			#set($firstTopEntryFlag = false)
+			#if(!$element.name.isEmpty())
+				#set($propertyAlphabetHeading = $element.name.substring(0,1).toUpperCase())
+			#end
+				
+			   <span><a href="#property_heading_$propertyAlphabetHeading">$propertyAlphabetHeading</a></span>
+		#end
+	#end
+	
+	</p></center>
+#end
+#macro(displayPropertyNameWithHTMLLinkWhenPropertyDefinitionDesired, $property, $punctuationMark)
+	#if($isPropertyDefinitionDesiredFlag)
+		<span id="ID_$property.getID()" class='propname'><a href="#$property.getID()">$property.name</a></span>$punctuationMark
+	#else
+		<span id="ID_$property.getID()" class='propname'>$property.name</span>$punctuationMark
+	#end
+#end
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>$title</title>
+		<meta charset="utf-8" />
+		<style>
+			.debug {visibility: hidden;}
+			.generateddesc { margin-left: .5in; }
+			.annoprophumanname {text-decoration: underline;}
+			.propdesc {}
+			.propname {font-style: italic;}
+			.classname {}
+			.datatype {font-style: italic;}
+			.headterm {font-size: large; font-weight: bold;}
+			.groupingterm {font-weight: bold; font-size: x-large;}
+			.title  {font-weight: bold; font-size: x-small; font-style: italic;}
+			.classdoc {font-style: italic;}
+			.topheading {text-align: center;}
+			.Box {background-color:red; width:60px; margin:0px; margin-bottom: 0px; padding:0px;}
+		</style>
+	</head>
+	<body>
+	  <span class="title">$title</span>
+
+
+#############################################
+#############Class Partition#################
+#############################################	
+#setIsPropertyDefinitionDesired()
+	#if($isPropertyDefinitionDesiredFlag)
+	
+		<dl>
+			<span id="classGrouping" class='groupingterm'>Classes</span>
+			<span class='groupingterm'>(jump to <a href="#propertyGrouping">Properties</a>)</span>
+		</dl>
+	#end
+		
+			<dl>
+#set($Class = $NLGTool.getCollapsedClassList($Class))
+#set($firstEntryFlag = true)
+#set($alphabetHeading = '')
+#getAnnotationPropertyList()
+
+#addClassAlphabetHeader($Class)
+#set ($Class = $sorter.sort($Class))
+#set($prevClass = '')
+#foreach($class in $Class)
+	#set($entryClass = $NLGTool.getEntryClass($class))
+	#set($nextClass = '')
+	#if($foreach.hasNext)
+		#set($index = $foreach.index+1)
+		#set($nextClass = $Class.get($index).name)
+	#end
+	#setMainEntryIsAnythingFlag($class)
+	#setMainEntryIsUnionFlag($class)
+	##createAnnotationPropertyMap($class)
+	#if(!$mainEntryIsAnythingFlag && !$mainEntryIsUnionFlag)
+	
+		#if($class.name.isEmpty())
+			#set($className = '(Unnamed Class)')
+		#else
+			#set($className = $class.Name)
+		#end
+		#if($firstEntryFlag || (!$class.name.isEmpty() && $alphabetHeading.isEmpty()) || ($class.name.isEmpty() && !$alphabetHeading.isEmpty()) || (!$class.name.isEmpty() && ($alphabetHeading != $class.Name.substring(0,1).toUpperCase())))
+			#if(!$firstEntryFlag)
+
+				</dl>
+			</dd>
+			#end
+			#set($firstEntryFlag = false)
+			#if($class.name.isEmpty())
+				#set($alphabetHeading = 'Unnamed Classes')
+			#else
+				#set($alphabetHeading = $className.substring(0,1).toUpperCase())
+			#end
+			<dt>
+				<span id="class_heading_$alphabetHeading" class='groupingterm'><a href="#classAlphabet">$alphabetHeading</a></span>
+			</dt>
+			<dd>
+				<dl>
+			#if($class.name.isEmpty())
+				#set($alphabetHeading = '')
+			#end
+		#end
+
+		<dt>
+			<span id="$class.QualifiedName" class="headterm">$className</span>
+			#if ($className == $nextClass || $className == $prevClass)
+			(from package /$class.QualifiedName.replace("::", "/"))
+			#end
+			#set($prevClass = $className)
+		</dt>	
+		#if ($entryClass && !$entryClass.name.equals($class.name))
+			<dd><p>See <span class='enumerationName'><a href="#$entryClass.QualifiedName">$entryClass.name</a></span>.</p></dd>
+		#else
+			#set($sufficientPropertyList = $array.createArray())
+			#set($necessaryPropertyList = $array.createArray())
+			#set($unnecessaryPropertyList = $array.createArray())
+			#set($equivalentClassList = $array.createArray())
+			#set($documentationList = $array.createArray())
+			#set($generalizationList = $array.createArray())
+			#setPropertyLists($class)
+			#if(!$class.documentation.isEmpty())
+				#set($void = $documentationList.add($class.documentation))
+			#end
+			#set($hyperlinkTarget = '')
+			#set($generalizationFlag = $class.hasGeneralization())
+			#if($generalizationFlag)
+				#createGeneralizationList($class)
+			#else
+				#set($superClassIsAnythingFlag = false)
+				#set($superClassIsUnionFlag = false)
+			#end
+			#if ($NLGTool.getEquivalentClasses($class))
+				#foreach ($equivalentClass in $sorter.sort($NLGTool.getEquivalentClasses($class)))
+					#if ($equivalentClass != $class)
+						#setPropertyLists($equivalentClass)
+						#if(!$equivalentClass.documentation.isEmpty())
+							#set($void = $documentationList.add($equivalentClass.documentation))
+						#end
+						#set($generalizationFlag = $equivalentClass.hasGeneralization())
+						#if($generalizationFlag)
+							#createGeneralizationList($equivalentClass)
+						#end 
+					#end
+					#if ($equivalentClass.name != $class.name && $Class.contains($equivalentClass))
+						#set($void = $equivalentClassList.add($equivalentClass))
+					#end
+				#end
+			#end
+			<dd><p><span class='annoprophumanname'>Model-Generated Definition</span>:</p></dd>
+			<div class='generateddesc'>
+			#if ($equivalentClassList.size()>0)
+			<dd><p>
+				Equivalent to #createHyperlink($equivalentClassList, ".", "and")
+			</p><dd>
+			#end
+
+			#if(!$list.isEmpty($sufficientPropertyList))
+				#if($list.size($sufficientPropertyList) == 1)
+					#set($conditionString = 'the following condition')
+				#else
+					#set($conditionString = 'one of the following conditions')
+				#end
+						<dd>
+				#if($generalizationFlag)
+
+							<p>A kind of
+								#displayNameOfSuperTypeWithHyperlink($generalizationList, "")
+							that can be recognized when an occurrence meets $conditionString:</p>
+				#else
+
+							<p>An occurrence can be recognized when it meets $conditionString:</p>
+				#end
+
+							<ul>
+				#foreach($property in $sufficientPropertyList)
+					#prepareForConditionRendering($property)
+
+								<li class='propdesc'>
+					#if($property.type)
+						#if($qualifiedConstraintFlag && !$propertyTypeAnythingFlag)
+
+									#displayPropertyNameWithHTMLLinkWhenPropertyDefinitionDesired($umlProperty, '') $multiplicityString of <span class='$propertyTypeStyleName'><a href="#$propertyTypeID">$propertyTypeName</a></span>.
+						#else
+
+									#displayPropertyNameWithHTMLLinkWhenPropertyDefinitionDesired($umlProperty, '')
+							#if($propertyTypeAnythingFlag)
+									$multiplicityString of any type.
+							#elseif($propertyTypeIsUnionFlag)
+									$multiplicityString of #displayNameOfSubClassOfUnionWithHyperlink($property.type, ".")
+							#elseif($propertyTypeIsEnumerationFlag)
+									$multiplicityString of #displayAllowedValueOfEnumeration($property.type)
+							#else
+									$multiplicityString of <span class='$spanStyle'><a href="#$propertyTypeID">$propertyTypeName</a></span>.
+							#end
+						#end
+					#else
+						#if($property.type.name.isEmpty())
+
+									<span class='propname'>(Unnamed Class)</span>
+						#else
+
+									#displayPropertyNameWithHTMLLinkWhenPropertyDefinitionDesired($umlProperty)
+						#end
+									$multiplicityString of any type.
+					#end
+
+								</li>
+				#end
+
+							</ul>
+						</dd>
+			#end
+			#if(!$list.isEmpty($necessaryPropertyList))
+				#if($list.size($necessaryPropertyList) == 1)
+					#set($conditionString = 'condition')
+				#else
+					#set($conditionString = 'conditions')
+				#end
+						
+						<dd>
+				#if($generalizationFlag && $list.isEmpty($sufficientPropertyList))
+
+							<p>A kind of
+								#displayNameOfSuperTypeWithHyperlink($generalizationList, ".")
+							A valid occurrence satisfies the following necessary $conditionString:</p>
+				#else
+
+							<p>A valid occurrence satisfies the following necessary $conditionString:</p>
+				#end
+
+							<ul>
+				#foreach($property in $necessaryPropertyList)
+					#prepareForConditionRendering($property)
+
+								<li class='propdesc'>
+					#if($property.type)
+						#if($qualifiedConstraintFlag && !$propertyTypeAnythingFlag)
+					
+									#displayPropertyNameWithHTMLLinkWhenPropertyDefinitionDesired($umlProperty, '') $multiplicityString of <span class='$propertyTypeStyleName'><a href="#$propertyTypeID">$propertyTypeName</a></span>.
+						#else
+
+									#displayPropertyNameWithHTMLLinkWhenPropertyDefinitionDesired($umlProperty, '')
+							#if($propertyTypeAnythingFlag)
+									$multiplicityString of any type.
+							#elseif($propertyTypeIsUnionFlag)
+									$multiplicityString of #displayNameOfSubClassOfUnionWithHyperlink($property.type, ".")
+							#elseif($propertyTypeIsEnumerationFlag)
+									$multiplicityString of #displayAllowedValueOfEnumeration($property.type)
+							#else
+									$multiplicityString of <span class='$spanStyle'><a href="#$propertyTypeID">$propertyTypeName</a></span>.
+							#end
+						#end
+					#else
+						#if($property.type.name.isEmpty())
+
+									<span class='propname'>(Unnamed Class)</span>
+						#else
+
+									#displayPropertyNameWithHTMLLinkWhenPropertyDefinitionDesired($umlProperty, '')
+						#end
+									$multiplicityString of any type.
+					#end
+
+								</li>
+				#end
+
+							</ul>
+						</dd>
+			#end
+
+			#if(!$list.isEmpty($unnecessaryPropertyList))
+
+						<dd>
+				#if($generalizationFlag && $list.isEmpty($sufficientPropertyList) && $list.isEmpty($necessaryPropertyList))
+					#if($superClassIsUnionFlag || $superClassIsAnythingFlag)
+
+							<p>A valid occurrence may have the following properties:</p>
+					#else
+
+							<p>A kind of
+								#displayNameOfSuperTypeWithHyperlink($generalizationList, ".")
+							A valid occurrence may have the following properties:</p>
+					#end
+				#elseif(!$generalizationFlag && $list.isEmpty($sufficientPropertyList) && $list.isEmpty($necessaryPropertyList))
+
+							<p>A valid occurrence may have the following properties:</p>
+				#else
+
+							<p>A valid occurrence may also have the following properties:</p>
+				#end
+
+							<ul>
+				#foreach($property in $unnecessaryPropertyList)
+					#prepareForConditionRendering($property)
+								<li class='propdesc'>
+					#if($property.type)
+
+									#displayPropertyNameWithHTMLLinkWhenPropertyDefinitionDesired($umlProperty, '') $multiplicityString
+						#if($propertyTypeAnythingFlag)
+									of any type.
+						#elseif($propertyTypeIsUnionFlag)
+									of #displayNameOfSubClassOfUnionWithHyperlink($property.type, ".")
+						#elseif($propertyTypeIsEnumerationFlag)
+									of #displayAllowedValueOfEnumeration($property.type)
+						#else
+							#if($property.type.name.isEmpty())
+										of <span class='$propertyTypeStyleName'>(Unnamed Class)</span>.
+							#else
+										of <span class='$propertyTypeStyleName'><a href="#$propertyTypeID">$propertyTypeName</a></span>.
+							#end
+						#end
+					#else
+							#if($property.name.isEmpty())
+
+										<span class='propname'>(Unnamed Class)</span>
+							#else
+
+										#displayPropertyNameWithHTMLLinkWhenPropertyDefinitionDesired($umlProperty, '')
+							#end
+										$multiplicityString of any type.
+					#end
+
+								</li>
+				#end
+
+							</ul>
+						</dd>
+			#end
+			#if($generalizationFlag && $list.isEmpty($sufficientPropertyList) && $list.isEmpty($necessaryPropertyList) && $list.isEmpty($unnecessaryPropertyList))
+				#if(!$superClassIsAnythingFlag && !$superClassIsUnionFlag)
+
+						<dd>
+							<p>A kind of
+								#displayNameOfSuperTypeWithHyperlink($generalizationList, ".")</p>
+						</dd>
+				#end
+			#end
+
+						</div>
+						<dd>
+						<p><span class='annoprophumanname'>Definition</span>:
+							#if ($documentationList.size()>0)
+								#if($documentationList.size() == 1)
+									## Output just one on a single line
+									#foreach ($documentation in $documentationList)
+										<span class='classdoc'>$documentation</span>
+									#end
+								#else
+										<ul>
+									## Output several in a list
+									#foreach($documentation in $documentationList)
+
+											<li class='propdesc'>  
+												<span class='classdoc'>$documentation</span>
+											</li>
+									#end
+
+										</ul>
+								#end
+							#end
+							</p>
+							<p>#displayAnnotationPropertyAndCommentBodyInHTML($class)</p>
+						</dd>
+						
+			#end
+		#end
+#end
+
+				</dl>
+			</dd>
+		</dl>
+#macro(setPropertyOwnerIsAnythingFlag, $class)
+	#set($propertyOwnerIsAnythingFlag = false)
+	#foreach($stereotype in $class.appliedStereotype)
+		#if($stereotype.name == 'Anything')
+			#set($propertyOwnerIsAnythingFlag = true)
+			#break
+		#end
+	#end
+#end
+#macro(setPropertyOwnerIsUnionFlag, $class)
+	#set($propertyOwnerIsUnionFlag = false)
+	#foreach($stereotype in $class.appliedStereotype)
+		#if($stereotype.name == 'Union')
+			#set($propertyOwnerIsUnionFlag = true)
+			#break
+		#end
+	#end
+#end
+#macro(setPropertyHasInversePropertyFlag, $property)
+	#set($propertyHasInversePropertyFlag = false)
+	#if($property.navigable && $property.getOpposite().navigable)
+		#if(!$property.getOpposite().getName().isEmpty())
+			#set($propertyHasInversePropertyFlag = true)
+		#end
+	#end
+#end
+#macro(setPropertyHasClientInverseOfDependencyFlag, $property)
+	#set($propertyHasClientInverseOfDependencyFlag = false)
+	#foreach($inverseProperty in $property.getClientDependency())
+		#foreach($stereotype in $inverseProperty.appliedStereotype)
+			#if($stereotype.name == 'Inverse of')
+				#set($propertyHasClientInverseOfDependencyFlag = true)
+				#break
+			#end
+		#end
+	#end
+#end
+#macro(prepareForPropertyConditionRendering)
+	#foreach($property in $Property)
+		#if(!$property.name.isEmpty() 
+			&& $property.owner.elementType != 'association')
+			#if($property.hasSubsettedProperty())
+				#if($property.subsettedProperty[0].name != $property.name)
+					#set($void = $propertyScopeList.add($property))
+				#end
+			#elseif($property.hasRedefinedProperty())
+				#if($property.redefinedProperty[0].name != $property.name)
+					#set($void = $propertyScopeList.add($property))
+				#end
+			#else
+				#set($void = $propertyScopeList.add($property))
+			#end
+		#end
+	#end
+#end
+#macro(createPropertyHyperlinkForPropertyList, $propertyList, $punctuationMark, $conjunction)
+	#set($listOfProperties = $array.createArray())
+		#foreach($property in $propertyList)
+			#set($void = $listOfProperties.add($property))
+		#end
+	#foreach($property in $listOfProperties)
+		#if($property.name.isEmpty())
+		#set($hyperlinkTarget = '(Unnamed Property)')
+		#else
+		#set($hyperlinkTarget = $property.name)
+	#end
+#if($foreach.count == 1)
+#if($list.size($listOfProperties) == 1)
+
+<span class='classname'><a href="#$property.getID()">$hyperlinkTarget</a></span>$punctuationMark##
+#elseif($list.size($listOfProperties) == 2)
+
+<span class='classname'><a href="#$property.getID()">$hyperlinkTarget</a></span>
+#else
+
+<span class='classname'><a href="#$property.getID()">$hyperlinkTarget</a></span>,
+#end
+#else
+
+#if($foreach.count == $list.size($listOfProperties))
+
+$conjunction <span class='classname'><a href="#$property.getID()">$hyperlinkTarget</a></span>$punctuationMark##
+#else
+
+<span class='classname'><a href="#$property.getID()">$hyperlinkTarget</a></span>,
+#end
+#end
+#end
+#end
+#############################################
+#############Property Partition##############
+#############################################		
+## Display property definitions when the property definitions project option is set to true.
+#if($isPropertyDefinitionDesiredFlag)
+#set($propertyScopeList= $array.createArray())
+#prepareForPropertyConditionRendering()
+	<br>
+	#set($firstEntryFlag = true)
+	#set($pAlphabetHeading = '')
+	
+		<dl>
+			<span id="propertyGrouping" class='groupingterm'>Properties</span> 
+			<span class='groupingterm'>(jump to <a href="#classGrouping">Classes</a>)</span>
+		</dl>
+					<dl>
+		#addPropertyAlphabetHeader($propertyScopeList)
+		#foreach($property in $sorter.sort($propertyScopeList))
+			#setPropertyOwnerIsAnythingFlag($property.owner)
+			#setPropertyOwnerIsUnionFlag($property.owner)
+			#setPropertyHasInversePropertyFlag($property)
+			#setPropertyHasClientInverseOfDependencyFlag($property)
+			#set($hyperlinkTarget = '')
+			#set($propertyOwnerName = '')
+			#if($property.owner.name.isEmpty())
+				#set($propertyOwnerName = '(Unnamed Class)')
+				#set($propertyOwnerID = '(Unnamed Class)')
+			#else 
+				#set($propertyOwnerName = $property.owner.name)
+				#set($propertyOwnerID = $property.owner.QualifiedName)
+			#end
+				#if($firstEntryFlag || (!$property.name.isEmpty() && $pAlphabetHeading.isEmpty()) || ($property.name.isEmpty() && !$pAlphabetHeading.isEmpty()) || (!$property.name.isEmpty() && ($pAlphabetHeading != $property.name.substring(0,1).toUpperCase())))
+					#if(!$firstEntryFlag)
+
+						</dl>
+					#end
+					#set($firstEntryFlag = false)
+					#if(!$property.name.isEmpty())
+						#set($pAlphabetHeading = $$property.name.substring(0,1).toUpperCase())
+					#end
+
+					<dt>
+						<span id="property_heading_$pAlphabetHeading" class='groupingterm'><a href="#propertyAlphabet">$pAlphabetHeading</a></span> 
+					</dt>
+					<dd>
+						<dl>
+					#if($property.name.isEmpty())
+						#set($alphabetHeading = '')
+					#end
+				#end
+
+							<dt>
+								<span id="$property.getID()" class="headterm">$property.name</span>
+							</dt>
+							
+							<dd>
+
+##"A property" [ "specializing super-property-list" ] "that " [ "is used by the class owning-class-list " | "can be used by any class " ] [ "and" ] [ "has the inverse inverse-property" ] "."
+<p>A property 
+#if($property.hasSubsettedProperty())
+
+specializing #createPropertyHyperlinkForPropertyList($property.subsettedProperty, "", "and")
+
+#end
+that
+#if($propertyOwnerIsAnythingFlag)
+
+can be used by any class##
+#elseif($propertyOwnerIsUnionFlag)
+
+is used by the class #displayNameOfSubClassOfUnionWithHyperlink($property.owner, "")##
+#else
+
+is used by the class <a href="#$propertyOwnerID">$propertyOwnerName</a>##
+#end
+#if($propertyHasInversePropertyFlag)
+
+and has the inverse <a href="#$property.getOpposite().getID()">$property.getOpposite().getName()</a>##
+#elseif($propertyHasClientInverseOfDependencyFlag)
+
+#set($clientDependencySupplier = $property.clientDependency[0].supplier[0])
+and has the inverse <a href="#$clientDependencySupplier.getID()">$clientDependencySupplier.name</a>##
+#end
+.</p>
+								<p><span class='annoprophumanname'>Definition</span>:
+				#if(!$property.documentation.isEmpty())
+
+								<span class='classdoc'>$property.documentation</span></p>
+				#end
+								</p>
+								<p>#displayAnnotationPropertyAndCommentBodyInHTML($property)</p>
+							</dd>
+	#end
+#end
+				</dl>
+			</dd>
+		</dl>
+	</body>
+</html>	
