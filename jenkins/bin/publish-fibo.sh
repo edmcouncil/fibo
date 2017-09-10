@@ -605,7 +605,7 @@ function ontologyConvertRdfToAllFormats() {
   return $?
 }
 
-function glossaryConvertTurtleToAllFormats() {
+function vocabyConvertTurtleToAllFormats() {
 
   pushd "${tag_root}"
 
@@ -720,17 +720,17 @@ function publishProductOntology() {
 # JG>Apache jena3 is also installed on the Jenkins server itself, so maybe
 #    no need to have this in the fibs-infra repo.
 #
-function glossaryGetModules() {
+function vocabyGetModules() {
 
-  require glossary_script_dir || return $?
+  require vocaby_script_dir || return $?
   require ontology_product_tag_root || return $?
 
   echo "Query the skosify.ttl file for the list of modules (TODO: Should come from rdf-toolkit.ttl)"
 
   ${jena_arq} \
     --results=CSV \
-    --data="${glossary_script_dir}/skosify.ttl" \
-    --query="${glossary_script_dir}/get-module.sparql" | grep -v list > \
+    --data="${vocaby_script_dir}/skosify.ttl" \
+    --query="${vocaby_script_dir}/get-module.sparql" | grep -v list > \
     "${tmp_dir}/module"
 
   if [ ${PIPESTATUS[0]} -ne 0 ] ; then
@@ -757,16 +757,16 @@ function glossaryGetModules() {
 #
 # 2) Compute the prefixes we'll need.
 #
-function glossaryGetPrefixes() {
+function vocabyGetPrefixes() {
 
-  require glossary_script_dir || return $?
+  require vocaby_script_dir || return $?
   require ontology_product_tag_root || return $?
   require modules || return $?
   require module_directories || return $?
 
   echo "Get prefixes"
 
-  cat "${glossary_script_dir}/basic-prefixes.ttl" > "${tmp_dir}/prefixes.ttl"
+  cat "${vocaby_script_dir}/basic-prefixes.ttl" > "${tmp_dir}/prefixes.ttl"
 
   pushd ${ontology_product_tag_root}
   grep -R --include "*.ttl" --no-filename "@prefix fibo-" >> "${tmp_dir}/prefixes.ttl"
@@ -788,9 +788,9 @@ function glossaryGetPrefixes() {
 #
 # Generates tmp_dir/temp0.ttl
 #
-function glossaryGetOntologies() {
+function vocabyGetOntologies() {
 
-  require glossary_script_dir || return $?
+  require vocaby_script_dir || return $?
   require module_directories || return $?
 
   echo "Get Ontologies into merged file (temp0.ttl)"
@@ -805,9 +805,9 @@ grep -r 'utl-av[:;.]Release' "${ontology_product_tag_root}" | sed 's/:.*$//;s/^/
 # Get ontologies for Dev
   ${jena_arq} \
     $(find  "${ontology_product_tag_root}" -name "*.rdf" | sed "s/^/--data=/") \
-    --data="${glossary_script_dir}/skosify.ttl" \
-    --data="${glossary_script_dir}/datatypes.rdf" \
-    --query="${glossary_script_dir}/skosecho.sparql" \
+    --data="${vocaby_script_dir}/skosify.ttl" \
+    --data="${vocaby_script_dir}/datatypes.rdf" \
+    --query="${vocaby_script_dir}/skosecho.sparql" \
     --results=TTL > "${tmp_dir}/temp0.ttl"
 
   if [ ${PIPESTATUS[0]} -ne 0 ] ; then
@@ -819,9 +819,9 @@ grep -r 'utl-av[:;.]Release' "${ontology_product_tag_root}" | sed 's/:.*$//;s/^/
 # Get ontologies for Prod
   ${jena_arq} \
       $(grep -r 'utl-av[:;.]Release' "${ontology_product_tag_root}" | sed 's/:.*$//;s/^/--data=/' | grep -F ".rdf") \
-    --data="${glossary_script_dir}/skosify.ttl" \
-    --data="${glossary_script_dir}/datatypes.rdf" \
-    --query="${glossary_script_dir}/skosecho.sparql" \
+    --data="${vocaby_script_dir}/skosify.ttl" \
+    --data="${vocaby_script_dir}/datatypes.rdf" \
+    --query="${vocaby_script_dir}/skosecho.sparql" \
       --results=TTL > "${tmp_dir}/temp0B.ttl"
 
 
@@ -874,7 +874,7 @@ function spinRunInferences() {
 #
 # Generates tmp_dir/temp1.ttl
 #
-function glossaryRunSpin() {
+function vocabyRunSpin() {
 
   echo "STARTING SPIN"
 
@@ -895,14 +895,14 @@ function glossaryRunSpin() {
 #
 # 4) Run the schemify rules.  This adds a ConceptScheme to the output.
 #
-function glossaryRunSchemifyRules() {
+function vocabyRunSchemifyRules() {
 
   echo "Run the schemify rules"
 # Dev
   ${jena_arq} \
     --data="${tmp_dir}/temp1.ttl" \
-    --data="${glossary_script_dir}/schemify.ttl" \
-    --query="${glossary_script_dir}/skosecho.sparql" \
+    --data="${vocaby_script_dir}/schemify.ttl" \
+    --query="${vocaby_script_dir}/skosecho.sparql" \
     --results=TTL > "${tmp_dir}/temp2.ttl"
 
   if [ ${PIPESTATUS[0]} -ne 0 ] ; then
@@ -913,8 +913,8 @@ function glossaryRunSchemifyRules() {
 #Prod
   ${jena_arq} \
     --data="${tmp_dir}/temp1B.ttl" \
-    --data="${glossary_script_dir}/schemify.ttl" \
-    --query="${glossary_script_dir}/skosecho.sparql" \
+    --data="${vocaby_script_dir}/schemify.ttl" \
+    --query="${vocaby_script_dir}/skosecho.sparql" \
     --results=TTL > "${tmp_dir}/temp2B.ttl"
 
 
@@ -953,7 +953,7 @@ function publishProductVocabulary() {
   setProduct vocabulary || return $?
 
   cd "${SCRIPT_DIR}/fibo-vocabulary" || return $?
-  glossary_script_dir=$(pwd)
+  vocaby_script_dir=$(pwd)
   chmod a+x ./*.sh
 
   #
@@ -962,11 +962,11 @@ function publishProductVocabulary() {
   echo "# baseURI: ${product_root_url}" > ${tmp_dir}/fibo-v1.ttl
   #cat skosprefixes >> ${tmp_dir}/fibo-v1.ttl
 
-  #glossaryGetModules || return $?
-  glossaryGetPrefixes || return $?
-  glossaryGetOntologies || return $?
-  glossaryRunSpin || return $?
-  glossaryRunSchemifyRules || return $?
+  #vocabyGetModules || return $?
+  vocabyGetPrefixes || return $?
+  vocabyGetOntologies || return $?
+  vocabyRunSpin || return $?
+  vocabyRunSchemifyRules || return $?
 
   echo "second run of spin"
   spinRunInferences "${tmp_dir}/temp2.ttl" "${tmp_dir}/tc.ttl" || return $?
@@ -979,13 +979,13 @@ function publishProductVocabulary() {
   ${jena_arq}  \
     --data="${tmp_dir}/tc.ttl" \
     --data="${tmp_dir}/temp1.ttl" \
-    --query="${glossary_script_dir}/echo.sparql" \
+    --query="${vocaby_script_dir}/echo.sparql" \
     --results=TTL > "${tmp_dir}/fibo-uc.ttl"
 
   ${jena_arq}  \
     --data="${tmp_dir}/tcB.ttl" \
     --data="${tmp_dir}/temp1B.ttl" \
-    --query="${glossary_script_dir}/echo.sparql" \
+    --query="${vocaby_script_dir}/echo.sparql" \
     --results=TTL > "${tmp_dir}/fibo-ucB.ttl"
 
   #
@@ -996,11 +996,11 @@ function publishProductVocabulary() {
 
   ${jena_arq}  \
     --data="${tmp_dir}/fibo-v1.ttl" \
-    --query="${glossary_script_dir}/echo.sparql" \
+    --query="${vocaby_script_dir}/echo.sparql" \
     --results=TTL > "${tmp_dir}/fibo-vD.ttl"
   ${jena_arq}  \
     --data="${tmp_dir}/fibo-v1B.ttl" \
-    --query="${glossary_script_dir}/echo.sparql" \
+    --query="${vocaby_script_dir}/echo.sparql" \
     --results=TTL > "${tmp_dir}/fibo-vP.ttl"
 
   #
@@ -1031,11 +1031,11 @@ function publishProductVocabulary() {
   # JG>Dean I didn't find any hygiene*.sparql files anywhere
   #
 #  echo "Running tests"
-#  find ${glossary_script_dir}/testing -name 'hygiene*.sparql' -print
-#  find ${glossary_script_dir}/testing -name 'hygiene*.sparql' \
+#  find ${vocaby_script_dir}/testing -name 'hygiene*.sparql' -print
+#  find ${vocaby_script_dir}/testing -name 'hygiene*.sparql' \
 #    -exec ${jena_arq} --data="${tag_root}/fibo-v.ttl" --query={} \;
 
-  glossaryConvertTurtleToAllFormats || return $?
+  vocabyConvertTurtleToAllFormats || return $?
 (cd "${tag_root}"; rm -f **.zip)
 
 #  gzip --best --stdout "${tag_root}/fibo-vD.ttl" > "${tag_root}/fibo-vD.ttl.gz"
