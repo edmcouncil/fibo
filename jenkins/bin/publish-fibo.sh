@@ -957,7 +957,7 @@ function publishProductVocabulary() {
   chmod a+x ./*.sh
 
   #
-  # 1) Start the output with the standard prefixes.  They are in a file called skosprefixes.
+  # 1) Start the output with the standard prefixes.  We compute these from the files. 
   #
   echo "# baseURI: ${product_root_url}" > ${tmp_dir}/fibo-v1.ttl
   #cat skosprefixes >> ${tmp_dir}/fibo-v1.ttl
