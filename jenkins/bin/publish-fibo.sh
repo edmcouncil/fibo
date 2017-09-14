@@ -689,6 +689,37 @@ function zipOntologyFiles () {
     )
 }
 
+function generateWidocoDocumentation {
+  echo "Generating html documentation for all ontologies from their ttl files"
+
+  ls "$1" | while read i
+  do
+    if [ -d "$1/$i" ]; then
+      echo "Directory: $1/$i"
+      generateWidocoDocumentation "$1/$i" `expr $2 + 1`
+      else
+        if [[ $i =~ \.ttl$ ]]; then
+          echo " running widoco tool on $1/$i to generate documentation. outFolder $1/${i%.*}"
+          java \
+            -jar "${fibo_infra_root}/lib/widoco/widoco-1.4.1-jar-with-dependencies.jar" \
+            -ontFile "$1/$i" \
+            -outFolder "$1/${i%.*}" \
+            -rewriteAll \
+            -lang en  \
+            -getOntologyMetadata \
+            -licensius \
+            -webVowl
+          if [ ${PIPESTATUS[0]} -ne 0 ] ; then
+            error "Could not run widoci\o on $1/$i "
+            return 1
+          fi
+        fi
+    fi
+  done
+
+  return 0
+}
+
 function publishProductOntology() {
 
   logRule "Publishing the ontology product"
@@ -705,7 +736,7 @@ function publishProductOntology() {
   ontologyConvertMarkdownToHtml || return $?
   zipOntologyFiles || return $?
   buildquads || return $?
-
+  generateWidocoDocumentation ${spec_root} || return $?
 
   return 0
 }
