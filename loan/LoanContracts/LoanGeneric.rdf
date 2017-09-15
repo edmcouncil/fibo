@@ -32,6 +32,7 @@
 	<!ENTITY xsd "http://www.w3.org/2001/XMLSchema#">
 ]>
 <rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/LOAN/LoanContracts/LoanGeneric/"
+	xmlns="https://spec.edmcouncil.org/fibo/LOAN/LoanContracts/LoanGeneric/"
 	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fibo-fbc-dae-dbt="https://spec.edmcouncil.org/fibo/FBC/DebtAndEquities/Debt/"
 	xmlns:fibo-fbc-fct-breg="https://spec.edmcouncil.org/fibo/FBC/FunctionalEntities/BusinessRegistries/"
@@ -64,6 +65,7 @@
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema#">
 	
 	<owl:Ontology rdf:about="https://spec.edmcouncil.org/fibo/LOAN/LoanContracts/LoanGeneric/">
+		<rdf:type rdf:resource="&owl;NamedIndividual"/>
 		<rdfs:label>Loan Generic Ontology</rdfs:label>
 		<owl:imports rdf:resource="http://www.omg.org/techprocess/ab/SpecificationMetadata/"/>
 		<owl:imports rdf:resource="http://www.w3.org/2004/02/skos/core"/>
@@ -108,6 +110,42 @@
 		<skos:editorialNote>This should be added to the BusinessRegistries ontology</skos:editorialNote>
 	</owl:ObjectProperty>
 	
+	<owl:Class rdf:about="https://spec.edmcouncil.org/fibo/FND/Utilities/Analytics/Valuation">
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="https://spec.edmcouncil.org/fibo/FND/Utilities/Analytics/isEvaluationOf"/>
+				<owl:minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:minCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-acc-cur;hasMonetaryAmount"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>valuation</rdfs:label>
+		<skos:definition>a measurement to assess the value of something expressed in some currency</skos:definition>
+		<fibo-fnd-utl-av:editorialNote>Future consideration: move this to FND, perhaps to the analytics ontology (fibo-fnd-utl-alx).</fibo-fnd-utl-av:editorialNote>
+	</owl:Class>
+	
+	<owl:ObjectProperty rdf:about="https://spec.edmcouncil.org/fibo/FND/Utilities/Analytics/hasAppraiser">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-pty-pty;hasParty"/>
+		<rdfs:label>has appraiser</rdfs:label>
+		<skos:definition>relates e.g. an appraisal, to a party that plays the role of conducting a property appraisal</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="https://spec.edmcouncil.org/fibo/FND/Utilities/Analytics/hasEstimatedValue">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasMonetaryAmount"/>
+		<rdfs:label>has estimated value</rdfs:label>
+		<skos:definition>relates something to its estimated value</skos:definition>
+		<fibo-fnd-utl-av:editorialNote>Future consideration: move this property to CurrencyAmount ontology (fibo-fnd-add-cur).</fibo-fnd-utl-av:editorialNote>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="https://spec.edmcouncil.org/fibo/FND/Utilities/Analytics/isEvaluationOf">
+		<rdfs:label>is evaluation of</rdfs:label>
+		<skos:definition>relates a valuation to the thing being valued</skos:definition>
+	</owl:ObjectProperty>
+	
 	<fibo-fnd-dt-fd:ExplicitDuration rdf:about="&fibo-ind-ir-ir;OneHundredEightyMonths">
 		<rdf:type rdf:resource="&owl;NamedIndividual"/>
 		<skos:definition>a duration of exactly one hundred eighty (180) months, regardless of the length in days of a given calendar month, but typically 30 days</skos:definition>
@@ -119,6 +157,12 @@
 		<skos:definition>a duration of exactly three hundred sixty (360) months, regardless of the length in days of a given calendar month, but typically 30 days</skos:definition>
 		<fibo-fnd-dt-fd:hasDurationValue>P360M</fibo-fnd-dt-fd:hasDurationValue>
 	</fibo-fnd-dt-fd:ExplicitDuration>
+	
+	<owl:ObjectProperty rdf:about="https://spec.edmcouncil.org/fibo/LOAN/LoanContracts/LoanCore/hasSeniorAppraiser">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-pty-pty;hasParty"/>
+		<rdfs:label>has senior appraiser</rdfs:label>
+		<skos:definition>relates e.g. an appraisal to the appraiser with seniority or supervisory responsibilities</skos:definition>
+	</owl:ObjectProperty>
 	
 	<owl:Class rdf:about="&fibo-ln-ln-lgn;ChargeCategory">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-cls;Classifier"/>
@@ -310,37 +354,12 @@ Not using psch:PaymentSchedule because it uses PaymentEvent which is an Occurren
 		<skos:editorialNote>Topic: Payments</skos:editorialNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-ln-ln-lgn;Valuation">
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-ln-ln-lgn;isEvaluationOf"/>
-				<owl:minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:minCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>valuation</rdfs:label>
-		<skos:definition>a measurement to assess the value of something expressed in some currency</skos:definition>
-		<fibo-fnd-utl-av:editorialNote>Future consideration: move this to FND, perhaps to the analytics ontology (fibo-fnd-utl-alx).</fibo-fnd-utl-av:editorialNote>
-	</owl:Class>
-	
-	<owl:ObjectProperty rdf:about="&fibo-ln-ln-lgn;hasAppraiser">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-pty-pty;hasParty"/>
-		<rdfs:label>has appraiser</rdfs:label>
-		<skos:definition>relates e.g. an appraisal, to a party that plays the role of conducting a property appraisal</skos:definition>
-	</owl:ObjectProperty>
-	
 	<owl:ObjectProperty rdf:about="&fibo-ln-ln-lgn;hasCost">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasMonetaryAmount"/>
 		<rdfs:label>has cost</rdfs:label>
 		<skos:definition>relates an item to its cost</skos:definition>
 		<skos:editorialNote>Future consideration: move this property to ProductsAndServices ontology (fibo-fnd-pas-pas).</skos:editorialNote>
 		<fibo-fnd-utl-av:explanatoryNote>This can entail adding up other costs (e.g. 4 units * a unit price)</fibo-fnd-utl-av:explanatoryNote>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-ln-ln-lgn;hasEstimatedValue">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasMonetaryAmount"/>
-		<rdfs:label>has estimated value</rdfs:label>
-		<skos:definition>relates something to its estimated value</skos:definition>
-		<fibo-fnd-utl-av:editorialNote>Future consideration: move this property to CurrencyAmount ontology (fibo-fnd-add-cur).</fibo-fnd-utl-av:editorialNote>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-ln-ln-lgn;hasIndividualContactInfo">
@@ -365,22 +384,11 @@ Not using psch:PaymentSchedule because it uses PaymentEvent which is an Occurren
 		<skos:editorialNote>Topic: Payments</skos:editorialNote>
 	</owl:ObjectProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-ln-ln-lgn;hasSeniorAppraiser">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-pty-pty;hasParty"/>
-		<rdfs:label>has senior appraiser</rdfs:label>
-		<skos:definition>relates e.g. an appraisal to the appraiser with seniority or supervisory responsibilities</skos:definition>
-	</owl:ObjectProperty>
-	
 	<owl:ObjectProperty rdf:about="&fibo-ln-ln-lgn;hasUnitCost">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasMonetaryAmount"/>
 		<rdfs:label>has unit cost</rdfs:label>
 		<skos:definition>relates an item to its unit cost</skos:definition>
 		<skos:editorialNote>Future consideration: move this property to ProductsAndServices ontology (fibo-fnd-pas-pas).</skos:editorialNote>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-ln-ln-lgn;isEvaluationOf">
-		<rdfs:label>is evaluation of</rdfs:label>
-		<skos:definition>relates a valuation to the thing being valued</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-ln-ln-lgn;worksFor">
