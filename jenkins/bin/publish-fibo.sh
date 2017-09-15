@@ -699,11 +699,13 @@ function generateWidocoDocumentation {
       generateWidocoDocumentation "$1/$i" `expr $2 + 1`
       else
         if [[ $i =~ \.ttl$ ]]; then
-          echo " running widoco tool on $1/$i to generate documentation. outFolder $1/${i%.*}"
+          local outputDir=$(echo "$1" | sed "s/ontology/widoco/")
+          mkdir -p outputDir
+          echo " running widoco tool on $1/$i to generate documentation. outFolder ${outputDir}/${i%.*}"
           java \
             -jar "${fibo_infra_root}/lib/widoco/widoco-1.4.1-jar-with-dependencies.jar" \
             -ontFile "$1/$i" \
-            -outFolder "$1/${i%.*}" \
+            -outFolder "${outputDir}/${i%.*}" \
             -rewriteAll \
             -lang en  \
             -getOntologyMetadata \
