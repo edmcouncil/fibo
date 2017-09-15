@@ -13,6 +13,7 @@
 	<!ENTITY xsd "http://www.w3.org/2001/XMLSchema#">
 ]>
 <rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/FND/Utilities/Analytics/"
+	xmlns="https://spec.edmcouncil.org/fibo/FND/Utilities/Analytics/"
 	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fibo-fnd-dt-fd="https://spec.edmcouncil.org/fibo/FND/DatesAndTimes/FinancialDates/"
 	xmlns:fibo-fnd-rel-rel="https://spec.edmcouncil.org/fibo/FND/Relations/Relations/"
@@ -26,6 +27,7 @@
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema#">
 	
 	<owl:Ontology rdf:about="https://spec.edmcouncil.org/fibo/FND/Utilities/Analytics/">
+		<rdf:type rdf:resource="&owl;NamedIndividual"/>
 		<rdfs:label>Analytics Ontology</rdfs:label>
 		<dct:license rdf:datatype="&xsd;anyURI">http://www.omg.org/techprocess/ab/SpecificationMetadata/MITLicense</dct:license>
 		<sm:contentLanguage rdf:datatype="&xsd;anyURI">http://www.omg.org/spec/ODM/</sm:contentLanguage>
@@ -50,6 +52,15 @@ Copyright (c) 2013-2016 Object Management Group, Inc.</sm:copyright>
 		<skos:changeNote>This ontology was added to Foundations in advance of the June 2014 Boston meeting in support of the IND RFC.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
+	
+	<owl:Class rdf:about="https://spec.edmcouncil.org/fibo/FND/Accounting/CurrencyAmount/MonetaryAmount">
+	</owl:Class>
+	
+	<owl:ObjectProperty rdf:about="https://spec.edmcouncil.org/fibo/FND/Accounting/CurrencyAmount/hasMonetaryAmount">
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="https://spec.edmcouncil.org/fibo/FND/Parties/Parties/hasParty">
+	</owl:ObjectProperty>
 	
 	<owl:Class rdf:about="&fibo-fnd-utl-alx;CalculationFormula">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;Formula"/>
@@ -112,6 +123,24 @@ Copyright (c) 2013-2016 Object Management Group, Inc.</sm:copyright>
 		<fibo-fnd-utl-av:definitionOrigin rdf:datatype="&xsd;anyURI">http://stats.oecd.org/glossary/detail.asp?ID=5068</fibo-fnd-utl-av:definitionOrigin>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-fnd-utl-alx;Valuation">
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;isEvaluationOf"/>
+				<owl:minCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:minCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="https://spec.edmcouncil.org/fibo/FND/Accounting/CurrencyAmount/hasMonetaryAmount"/>
+				<owl:someValuesFrom rdf:resource="https://spec.edmcouncil.org/fibo/FND/Accounting/CurrencyAmount/MonetaryAmount"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>valuation</rdfs:label>
+		<skos:definition>a measurement to assess the value of something expressed in some currency</skos:definition>
+		<fibo-fnd-utl-av:editorialNote>Future consideration: move this to FND, perhaps to the analytics ontology (fibo-fnd-utl-alx).</fibo-fnd-utl-av:editorialNote>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-fnd-utl-alx;Variable">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-rel-rel;Reference"/>
 		<rdfs:label>variable</rdfs:label>
@@ -149,12 +178,25 @@ Copyright (c) 2013-2016 Object Management Group, Inc.</sm:copyright>
 		<skos:definition>a predicate indicating the start of the period for which the statistical measure is applicable</skos:definition>
 	</owl:DatatypeProperty>
 	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-utl-alx;hasAppraiser">
+		<rdfs:subPropertyOf rdf:resource="https://spec.edmcouncil.org/fibo/FND/Parties/Parties/hasParty"/>
+		<rdfs:label>has appraiser</rdfs:label>
+		<skos:definition>relates e.g. an appraisal, to a party that plays the role of conducting a property appraisal</skos:definition>
+	</owl:ObjectProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-utl-alx;hasArgument">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;has"/>
 		<rdfs:label>has argument</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fnd-rel-rel;Reference"/>
 		<rdfs:range rdf:resource="&fibo-fnd-rel-rel;Reference"/>
 		<skos:definition>indicates a specific input to a function, formula or expression, also known as an independent variable</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-utl-alx;hasEstimatedValue">
+		<rdfs:subPropertyOf rdf:resource="https://spec.edmcouncil.org/fibo/FND/Accounting/CurrencyAmount/hasMonetaryAmount"/>
+		<rdfs:label>has estimated value</rdfs:label>
+		<skos:definition>relates something to its estimated value</skos:definition>
+		<fibo-fnd-utl-av:editorialNote>Future consideration: move this property to CurrencyAmount ontology (fibo-fnd-add-cur).</fibo-fnd-utl-av:editorialNote>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-utl-alx;hasExpression">
@@ -195,11 +237,19 @@ Copyright (c) 2013-2016 Object Management Group, Inc.</sm:copyright>
 		<skos:definition>indicates the operand of a mathematical argument, parameter or other similar concept</skos:definition>
 	</owl:ObjectProperty>
 	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-utl-alx;isEvaluationOf">
+		<rdfs:label>is evaluation of</rdfs:label>
+		<skos:definition>relates a valuation to the thing being valued</skos:definition>
+	</owl:ObjectProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-utl-alx;isMeasureOf">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
 		<rdfs:label>is a measure of</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fnd-utl-alx;Measure"/>
 		<skos:definition>a predicate indicating the concept being measured</skos:definition>
 	</owl:ObjectProperty>
+	
+	<owl:AnnotationProperty rdf:about="&fibo-fnd-utl-av;editorialNote">
+	</owl:AnnotationProperty>
 
 </rdf:RDF>
