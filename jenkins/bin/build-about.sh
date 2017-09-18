@@ -1,3 +1,4 @@
+#!/bin/bash
 #
 # Create an about file in RDF/XML format, do this BEFORE we convert all .rdf files to the other
 # formats so that this about file will also be converted.
@@ -7,6 +8,7 @@
 #
 # DONE: Should be done for each serialization format
 #
+
 function ontologyCreateAboutFiles () {
 
   local tmpAboutFileDev="$(mktemp ${tmp_dir}/ABOUTD.XXXXXX.ttl)"
@@ -24,17 +26,14 @@ function ontologyCreateAboutFiles () {
 <${tag_root_url}/AboutFIBO> a owl:Ontology;
 __HERE__
 
-
-
     grep \
-	-r 'utl-av[:;.]Release' . | \
-	grep -F ".rdf" | \
-	sed 's/:.*$//'  | \
-	while read file; do
-	    grep "xml:base" "${file}";
-        done | \
-	sed 's/^.*xml:base="/owl:imports </;s/"[\t \n\r]*$/> ;/' \
-	    >> "${tmpAboutFileProd}"
+    	-r 'utl-av[:;.]Release' . | \
+	    grep -F ".rdf" | \
+	    sed 's/:.*$//'  | \
+	    while read file; do
+	      grep "xml:base" "${file}";
+      done | \
+	    sed 's/^.*xml:base="/owl:imports </;s/"[\t \n\r]*$/> ;/' >> "${tmpAboutFileProd}"
 
     cat > "${echoq}" << __HERE__
 CONSTRUCT {?s ?p ?o} WHERE {?s ?p ?o}
@@ -71,6 +70,5 @@ __HERE__
     "${jena_arq}" --data="${tmpAboutFileDev}" --query="${echoq}" --results=RDF > AboutFIBODev.rdf
   )
 
-
-
+  return 0
 }

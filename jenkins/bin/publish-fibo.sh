@@ -10,6 +10,17 @@
 #
 SCRIPT_DIR="$(cd $(dirname "${BASH_SOURCE[0]}") && pwd -P)"
 
+if [ -f ${SCRIPT_DIR}/build-cats.sh ] ; then
+  source ${SCRIPT_DIR}/build-cats.sh
+else
+  source ./build-cats.sh # This line is only there to make the IntelliJ Bash plugin see build-cats.sh
+fi
+if [ -f ${SCRIPT_DIR}/build-about.sh ] ; then
+  source ${SCRIPT_DIR}/build-about.sh
+else
+  source ./build-about.sh # This line is only there to make the IntelliJ Bash plugin see build-about.sh
+fi
+
 tmp_dir="${WORKSPACE}/tmp"
 fibo_root=""
 fibo_infra_root=""
@@ -132,13 +143,18 @@ function initWorkspaceVars() {
 # this.
 #
 function buildIndex () {
-    (
-	cd ${tag_root}
-	tree -P '*.rdf' -H https://spec.edmcouncil.org/fibo/ontology/master/latest | sed "s@latest\(/[^/]*/\)@latest/\\U\\1@" > tree.html
-        sed -i 's/>Directory Tree</>FIBO Ontology file directory</g' tree.html
-	sed -i 's@h1><p>@h1><p>This is the directory structure of FIBO; you can download individual files this way.  To load all of FIBO, please follow the instructions for particular tools at <a href="http://spec.edmcouncil.org/fibo">the main fibo download page</a>.<p/>@' tree.html
-	sed -i 's@<a href=".*>https://spec.edmcouncil.org/.*</a>@@' tree.html
+
+  echo "Step: buildIndex"
+
+  (
+    cd ${tag_root}
+    tree -P '*.rdf' -H https://spec.edmcouncil.org/fibo/ontology/master/latest | sed "s@latest\(/[^/]*/\)@latest/\\U\\1@" > tree.html
+          sed -i 's/>Directory Tree</>FIBO Ontology file directory</g' tree.html
+    sed -i 's@h1><p>@h1><p>This is the directory structure of FIBO; you can download individual files this way.  To load all of FIBO, please follow the instructions for particular tools at <a href="http://spec.edmcouncil.org/fibo">the main fibo download page</a>.<p/>@' tree.html
+    sed -i 's@<a href=".*>https://spec.edmcouncil.org/.*</a>@@' tree.html
 	)
+
+	return 0
 }
 
 #
@@ -227,9 +243,6 @@ function initStardogVars() {
   stardog_vcs="${STARDOG_BIN}/stardog vcs"
 }
 
-source $(dirname $0)/build-about.sh
-
-
 #
 # Copy all publishable files from the fibo repo to the appropriate target directory (${tag_root})
 # where they will be converted to publishable artifacts
@@ -238,6 +251,8 @@ function ontologyCopyRdfToTarget() {
 
   local module
   local upperModule
+
+  echo "Step: ontologyCopyRdfToTarget"
 
   echo "Copying all artifacts that we publish straight from git into target directory"
 
@@ -658,21 +673,23 @@ function copySiteFiles() {
 }
 
 function zipOntologyFiles () {
-    local zipttlDevFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/dev.ttl.zip"
-    local ziprdfDevFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/dev.rdf.zip"
-    local zipjsonldDevFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/dev.jsonld.zip"
 
-    local zipttlProdFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/prod.ttl.zip"
-    local ziprdfProdFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/prod.rdf.zip"
-    local zipjsonldProdFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/prod.jsonld.zip"
+  echo "Step: zipOntologyFiles"
+
+  local zipttlDevFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/dev.ttl.zip"
+  local ziprdfDevFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/dev.rdf.zip"
+  local zipjsonldDevFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/dev.jsonld.zip"
+
+  local zipttlProdFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/prod.ttl.zip"
+  local ziprdfProdFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/prod.rdf.zip"
+  local zipjsonldProdFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/prod.jsonld.zip"
     
   (
     cd ${spec_root}
+
     zip -r ${zipttlDevFile} "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -x \*.rdf \*.zip  \*.jsonld \*AboutFIBOProd.ttl
     zip -r ${ziprdfDevFile} "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -x \*.ttl \*.zip \*.jsonld \*AboutFIBOProd.rdf
     zip -r ${zipjsonldDevFile} "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -x \*.ttl \*.zip \*.rdf \*AboutFIBOProd.jsonld
-
-
 
     grep -r 'utl-av[:;.]Release' "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" | grep -F ".ttl" | sed 's/:.*$//' | xargs zip -r ${zipttlProdFile}
     find  "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -name '*About*.ttl' -print | grep -v "AboutFIBODev.ttl" |  xargs zip ${zipttlProdFile}
@@ -683,10 +700,11 @@ function zipOntologyFiles () {
     grep -r 'utl-av[:;.]Release' "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" | grep -F ".jsonld" |   sed 's/:.*$//' | xargs zip -r ${zipjsonldProdFile}
     find  "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -name '*About*.jsonld' -print | grep -v "AboutFIBODev.jsonld" | xargs zip ${zipjsonldProdFile}
     find  "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -name '*catalog*.xml' -print | xargs zip ${zipjsonldProdFile}
+  )
 
+  echo "Step: zipOntologyFiles finished"
 
-
-    )
+  return 0
 }
 
 function publishProductOntology() {
@@ -705,7 +723,6 @@ function publishProductOntology() {
   ontologyConvertMarkdownToHtml || return $?
   zipOntologyFiles || return $?
   buildquads || return $?
-
 
   return 0
 }
@@ -1071,21 +1088,28 @@ EOF
 }
 
 function buildquads () {
-    (cd ${spec_root}
-	local ProdQuadsFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/prod.fibo.nq"    
-	local DevQuadsFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/dev.fibo.nq"    
-	find . -name '*.rdf' -print | while read file; do quadify "$file"; done   >  "${DevQuadsFile}"
-	grep -r 'utl-av[:;.]Release' "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" | grep -F ".rdf" | sed 's/:.*$//' | while read file; do quadify $file; done  > ${ProdQuadsFile}
-	zip ${ProdQuadsFile}.zip ${ProdQuadsFile}
-	zip ${DevQuadsFile}.zip ${DevQuadsFile}
-    )
 
-    }
+  local ProdQuadsFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/prod.fibo.nq"
+  local DevQuadsFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/dev.fibo.nq"
 
+  (
+    cd ${spec_root}
 
-source $(dirname $0)/build-cats.sh
+  	find . -name '*.rdf' -print | while read file; do quadify "$file"; done > "${DevQuadsFile}"
 
+	  grep -r 'utl-av[:;.]Release' "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" | \
+	    grep -F ".rdf" | \
+	    sed 's/:.*$//' | \
+	    while read file ; do
+	      quadify $file
+	    done > ${ProdQuadsFile}
 
+	  zip ${ProdQuadsFile}.zip ${ProdQuadsFile}
+	  zip ${DevQuadsFile}.zip ${DevQuadsFile}
+  )
+
+  return 0
+}
 
 function main() {
 
