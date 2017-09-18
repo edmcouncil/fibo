@@ -92,10 +92,11 @@ stage('Build') {
     // Build the artifacts that that need the nomagic installation
     //
     node('nomagic') {
-        //withEnv(['DISPLAY=localhost:10.0']) {
-        withEnv(['DISPLAY=:0']) {
-            sh 'bash -x /home/ec2-user/dev.sh'
-            sh 'bash -x /home/ec2-user/prod.sh'
+        withEnv(['DISPLAY=localhost:10.0']) {
+            sh """#!/bin/bash -x
+              ./home/ec2-user/dev.sh
+              ./home/ec2-user/prod.sh
+            """
         }
         sh 'cp /home/ec2-user/MagicDraw/plugins/com.nomagic.magicdraw.reportwizard/*.html .'
         stash includes: '*.html', name: 'nomagic-output'
