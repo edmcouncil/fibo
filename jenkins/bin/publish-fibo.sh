@@ -189,11 +189,12 @@ function initGitVars() {
   # Get the git branch name to be used as directory names and URL fragments and make it
   # all lower case
   #
-  export GIT_BRANCH=$(cd ${fibo_root} ; git rev-parse --abbrev-ref HEAD | tr '[:upper:]' '[:lower:]')
+  #export GIT_BRANCH=$(cd ${fibo_root} ; git rev-parse --abbrev-ref HEAD | tr '[:upper:]' '[:lower:]')
   #
   # Replace all slashes in a branch name with dashes so that we don't mess up the URLs for the ontologies
   #
-  GIT_BRANCH="${GIT_BRANCH//\//-}"
+  # GIT_BRANCH="${GIT_BRANCH//\//-}"
+  #Just use the value from jenkins - karthik
   echo "GIT_BRANCH=${GIT_BRANCH}"
 
   #
@@ -204,6 +205,10 @@ function initGitVars() {
   #
   export GIT_TAG_NAME="${GIT_TAG_NAME:-latest}"
   echo "GIT_TAG_NAME=${GIT_TAG_NAME}"
+
+  #store the GIT Branch and Tag names under target - so it can be picked up by the triggered jenkins job
+  echo "${GIT_BRANCH}" > "${spec_root}/gitbranch"
+  echo "${GIT_TAG_NAME}" > "${spec_root}/gittagname"
 
   #
   # Set default product
@@ -650,6 +655,14 @@ function copySiteFiles() {
 
   (
     cd ${fibo_infra_root}/site
+
+    #Replace GIT BRANCH and TAG in the glossary index html
+    log "Replacing GIT_BRANCH  $GIT_BRANCH"
+    sed -i "s/GIT_BRANCH/$GIT_BRANCH/g" "fibo/static/glossary/index.html"
+
+    log "Replacing GIT_TAG_NAME  $GIT_TAG_NAME"
+    sed -i "s/GIT_TAG_NAME/$GIT_TAG_NAME/g" "fibo/static/glossary/index.html"
+
     cp -vr * "${spec_root}/"
   )
   cp -v ${fibo_infra_root}/LICENSE ${spec_root}
@@ -1132,19 +1145,19 @@ function main() {
   initGitVars || return $?
   initJiraVars || return $?
 
-  for product in ${products} ; do
-    case ${product} in
-      ontology)
-        publishProductOntology || return $?
-        ;;
-      vocabulary)
-        publishProductVocabulary || return $?
-        ;;
-      *)
-        echo "ERROR: Unknown product ${product}"
-        ;;
-     esac
-  done
+  #for product in ${products} ; do
+  #  case ${product} in
+  #    ontology)
+  #      publishProductOntology || return $?
+  #      ;;
+  #    vocabulary)
+  #      publishProductVocabulary || return $?
+  #      ;;
+  #    *)
+  #      echo "ERROR: Unknown product ${product}"
+  #      ;;
+  #   esac
+  #done
 
   zipWholeTagDir || return $?
 
