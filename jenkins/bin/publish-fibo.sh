@@ -207,6 +207,7 @@ function initGitVars() {
   echo "GIT_TAG_NAME=${GIT_TAG_NAME}"
 
   #store the GIT Branch and Tag names under target - so it can be picked up by the triggered jenkins job
+  echo "Copying git branch to ${spec_root}/gitbranch"
   echo "${GIT_BRANCH}" > "${spec_root}/gitbranch"
   echo "${GIT_TAG_NAME}" > "${spec_root}/gittagname"
 
