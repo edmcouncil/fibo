@@ -1146,19 +1146,19 @@ function main() {
   initGitVars || return $?
   initJiraVars || return $?
 
-  #for product in ${products} ; do
-  #  case ${product} in
-  #    ontology)
-  #      publishProductOntology || return $?
-  #      ;;
-  #    vocabulary)
-  #      publishProductVocabulary || return $?
-  #      ;;
-  #    *)
-  #      echo "ERROR: Unknown product ${product}"
-  #      ;;
-  #   esac
-  #done
+  for product in ${products} ; do
+    case ${product} in
+      ontology)
+        publishProductOntology || return $?
+        ;;
+      vocabulary)
+        publishProductVocabulary || return $?
+        ;;
+      *)
+        echo "ERROR: Unknown product ${product}"
+        ;;
+     esac
+  done
 
   zipWholeTagDir || return $?
 
