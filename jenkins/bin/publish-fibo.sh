@@ -659,10 +659,10 @@ function copySiteFiles() {
 
     #Replace GIT BRANCH and TAG in the glossary index html
     log "Replacing GIT_BRANCH  $GIT_BRANCH"
-    sed -i "s/GIT_BRANCH/$GIT_BRANCH/g" "fibo/static/glossary/index.html"
+    sed -i "s/GIT_BRANCH/$GIT_BRANCH/g" "static/glossary/index.html"
 
     log "Replacing GIT_TAG_NAME  $GIT_TAG_NAME"
-    sed -i "s/GIT_TAG_NAME/$GIT_TAG_NAME/g" "fibo/static/glossary/index.html"
+    sed -i "s/GIT_TAG_NAME/$GIT_TAG_NAME/g" "static/glossary/index.html"
 
     cp -vr * "${spec_root}/"
   )
