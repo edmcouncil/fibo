@@ -816,7 +816,7 @@ function publishProductWidoco() {
 
   buildVowlIndex || return $?
 
-  generateWidocoDocumentation ${spec_root} || return $?
+  #generateWidocoDocumentation ${spec_root} || return $?
 
   return 0
 }
