@@ -31,7 +31,7 @@ jena_arq=""
 #
 # ontology has to come before vocabulary because vocabulary depends on it.
 #
-products="ontology vocabulary widoco"
+products="ontology widoco vocabulary"
 
 spec_root="${WORKSPACE}/target"
 family_root="${spec_root}/fibo"
@@ -170,7 +170,7 @@ function buildVowlIndex () {
   echo "Step: buildVowlIndex"
 
   (
-    cd ${tag_root}
+    cd ${ontology_root}
     echo "Ontology Root :${ontology_root}"
     tree -P '*.rdf' -H https://spec.edmcouncil.org/fibo/widoco/master/latest | sed "s@latest\(/[^/]*/\)@latest/\\U\\1@" > vowltree.html
     sed -i 's@\(https://spec.edmcouncil.org/fibo/widoco/master/latest/.*\)\.rdf\">@\1/webvowl/index.html#ontology\">@' vowltree.html
@@ -180,8 +180,8 @@ function buildVowlIndex () {
 
     sed -i 's@<a href=".*>https://spec.edmcouncil.org/.*</a>@@' vowltree.html
 
-
-	)
+    mv "${ontology_root}/vowltree.html" "${tag_root}"
+  )
 
 	return 0
 }
@@ -794,8 +794,7 @@ function publishProductOntology() {
 
   ontologyCopyRdfToTarget || return $?
   buildIndex  || return $?
-  #Building vowl index here because there seem to be additional RDF files when this method exits
-  buildVowlIndex || return $?
+
 
   ontologyBuildCats  || return $?
   ontologyCreateAboutFiles || return $?
@@ -814,9 +813,10 @@ function publishProductWidoco() {
   logRule "Publishing the widoco product"
 
   setProduct widoco || return $?
-  mv "${ontology_root}/vowltree.html" "${tag_root}"
 
-  #generateWidocoDocumentation ${spec_root} || return $?
+  buildVowlIndex || return $?
+
+  generateWidocoDocumentation ${spec_root} || return $?
 
   return 0
 }
