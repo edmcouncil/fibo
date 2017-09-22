@@ -157,6 +157,30 @@ function buildIndex () {
 	return 0
 }
 
+
+#
+# The vowl "index" of fibo is a list of all the ontology files, in their
+# directory structure and link to the vowl documentation.  This is an attempt to automatically produce
+# this.
+#
+function buildVowlIndex () {
+
+  echo "Step: buildVowlIndex"
+
+  (
+    cd ${tag_root}
+    tree -P '*.rdf' -H https://spec.edmcouncil.org/fibo/widoco/master/latest | sed "s@latest\(/[^/]*/\)@latest/\\U\\1@" > vowltree.html
+    sed -i '' 's@\(https://spec.edmcouncil.org/fibo/widoco/master/latest/.*\)\.rdf\">@\1/webvowl/index.html#ontology\">@' vowltree.html
+    sed -i '' "s@\(.*\).rdf@\1 vowl@" vowltree.html
+    sed -i '' 's/>Directory Tree</>FIBO Ontology file directory</g' vowltree.html
+    sed -i 's@h1><p>@h1><p>This is the directory structure of FIBO; you can see the visualization of each ontology.<p/>@' vowltree.html
+
+    sed -i 's@<a href=".*>https://spec.edmcouncil.org/.*</a>@@' vowltree.html
+	)
+
+	return 0
+}
+
 #
 # Since this script deals with multiple products (ontology, vocabulary etc) we need to be able to switch back
 # and forth, call this function whenever you generate something for another product. The git branch and tag name
@@ -762,6 +786,7 @@ function publishProductOntology() {
 
   ontologyCopyRdfToTarget || return $?
   buildIndex  || return $?
+  buildVowlIndex || return $?
   ontologyBuildCats  || return $?
   ontologyCreateAboutFiles || return $?
   ontologySearchAndReplaceStuff || return $?
