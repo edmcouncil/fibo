@@ -171,6 +171,7 @@ function buildVowlIndex () {
 
   (
     cd ${ontology_root}
+    echo "Ontology Root :${ontology_root}"
     tree -P '*.rdf' -H https://spec.edmcouncil.org/fibo/widoco/master/latest | sed "s@latest\(/[^/]*/\)@latest/\\U\\1@" > vowltree.html
     sed -i '' 's@\(https://spec.edmcouncil.org/fibo/widoco/master/latest/.*\)\.rdf\">@\1/webvowl/index.html#ontology\">@' vowltree.html
     sed -i '' "s@\(.*\).rdf@\1 vowl@" vowltree.html
@@ -213,8 +214,6 @@ function setProduct() {
 
   tag_root="${branch_root}/${GIT_TAG_NAME}"
   tag_root_url="${branch_root_url}/${GIT_TAG_NAME}"
-
-  ontology_root="${tag_root}"
 
   if [ ! -d "${tag_root}" ] ; then
     mkdir -p "${tag_root}"
@@ -790,6 +789,9 @@ function publishProductOntology() {
 
   setProduct ontology || return $?
 
+  ontology_root="${tag_root}"
+  echo "Ontology Root :${ontology_root}"
+
   ontologyCopyRdfToTarget || return $?
   buildIndex  || return $?
 
@@ -807,7 +809,7 @@ function publishProductOntology() {
 
 function publishProductWidoco() {
 
-  logRule "Publishing the ontology product"
+  logRule "Publishing the widoco product"
 
   setProduct widoco || return $?
 
