@@ -170,7 +170,7 @@ function buildVowlIndex () {
   echo "Step: buildVowlIndex"
 
   (
-    cd ${ontology_root}
+    cd ${tag_root}
     echo "Ontology Root :${ontology_root}"
     tree -P '*.rdf' -H https://spec.edmcouncil.org/fibo/widoco/master/latest | sed "s@latest\(/[^/]*/\)@latest/\\U\\1@" > vowltree.html
     sed -i 's@\(https://spec.edmcouncil.org/fibo/widoco/master/latest/.*\)\.rdf\">@\1/webvowl/index.html#ontology\">@' vowltree.html
@@ -180,7 +180,7 @@ function buildVowlIndex () {
 
     sed -i 's@<a href=".*>https://spec.edmcouncil.org/.*</a>@@' vowltree.html
 
-    mv vowltree.html ${tag_root}
+
 	)
 
 	return 0
@@ -794,6 +794,8 @@ function publishProductOntology() {
 
   ontologyCopyRdfToTarget || return $?
   buildIndex  || return $?
+  #Building vowl index here because there seem to be additional RDF files when this method exits
+  buildVowlIndex || return $?
 
   ontologyBuildCats  || return $?
   ontologyCreateAboutFiles || return $?
@@ -812,8 +814,8 @@ function publishProductWidoco() {
   logRule "Publishing the widoco product"
 
   setProduct widoco || return $?
+  mv "${ontology_root}/vowltree.html" "${tag_root}"
 
-  buildVowlIndex || return $?
   #generateWidocoDocumentation ${spec_root} || return $?
 
   return 0
