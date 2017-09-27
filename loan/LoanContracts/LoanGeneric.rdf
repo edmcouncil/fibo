@@ -99,32 +99,95 @@
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Provisional"/>
 	</owl:Ontology>
 	
-	<rdf:Description rdf:about="&fibo-fbc-dae-dbt;hasOutstandingAmount">
+	<owl:ObjectProperty rdf:about="&fibo-fbc-dae-dbt;hasOutstandingAmount">
 		<fibo-fnd-utl-av:synonym>has actual unpaid balance</fibo-fnd-utl-av:synonym>
-	</rdf:Description>
+	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-fct-breg;isSubdivisionOf">
 		<owl:inverseOf rdf:resource="&fibo-fbc-fct-breg;hasSubdivision"/>
 		<skos:editorialNote>This should be added to the BusinessRegistries ontology</skos:editorialNote>
 	</owl:ObjectProperty>
 	
-	<fibo-fnd-dt-fd:ExplicitDuration rdf:about="&fibo-ind-ir-ir;OneHundredEightyMonths">
-		<rdf:type rdf:resource="&owl;NamedIndividual"/>
-		<skos:definition>a duration of exactly one hundred eighty (180) months, regardless of the length in days of a given calendar month, but typically 30 days</skos:definition>
-		<fibo-fnd-dt-fd:hasDurationValue>P180M</fibo-fnd-dt-fd:hasDurationValue>
-	</fibo-fnd-dt-fd:ExplicitDuration>
-	
-	<fibo-fnd-dt-fd:ExplicitDuration rdf:about="&fibo-ind-ir-ir;ThreeHundredSixtyMonths">
-		<rdf:type rdf:resource="&owl;NamedIndividual"/>
-		<skos:definition>a duration of exactly three hundred sixty (360) months, regardless of the length in days of a given calendar month, but typically 30 days</skos:definition>
-		<fibo-fnd-dt-fd:hasDurationValue>P360M</fibo-fnd-dt-fd:hasDurationValue>
-	</fibo-fnd-dt-fd:ExplicitDuration>
-	
 	<owl:Class rdf:about="&fibo-ln-ln-lgn;ChargeCategory">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-cls;Classifier"/>
 		<rdfs:label>charge cateogry</rdfs:label>
 		<skos:definition>a category indicating what a charge is for (e.g. closing costs, interest)</skos:definition>
 		<fibo-fnd-utl-av:usageNote>Use with LineItem, (has ChargeCategory instance), (hasNumericalValue for number of units) and (hasCost for the amount of money)</fibo-fnd-utl-av:usageNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-ln-ln-lgn;ContactInformation">
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;comprises"/>
+				<owl:onClass rdf:resource="&fibo-fnd-aap-ppl;LegallyCapableAdult"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;comprises"/>
+				<owl:onClass rdf:resource="&fibo-fnd-org-fm;FormalOrganization"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;comprises"/>
+				<owl:onClass rdf:resource="&fibo-fnd-plc-adr;PostalAddress"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;comprises"/>
+				<owl:onClass rdf:resource="&fibo-ln-ln-lgn;EmailAddress"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;comprises"/>
+				<owl:onClass rdf:resource="&fibo-ln-ln-lgn;PhoneNumber"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isClassifiedBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-ln-ln-lgn;ContactPurpose"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>contact information</rdfs:label>
+		<skos:definition>a way to make contact with a person or organization for a particular reason regarding something.  The details may be role-specific, so the information cannot always go on the individual or organization</skos:definition>
+		<skos:editorialNote>This approach avoids the need to have multiple properties to connect different things to ContactInformation use for different purposes.</skos:editorialNote>
+		<skos:editorialNote>Topic: BE</skos:editorialNote>
+		<fibo-fnd-utl-av:usageNote>Make sure to check the existing instances of ContactPurpose and use those before creating new ones.</fibo-fnd-utl-av:usageNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-ln-ln-lgn;ContactPurpose">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-cls;Classifier"/>
+		<rdfs:label>contact purpose</rdfs:label>
+		<skos:definition>a virtual address for communication via phone</skos:definition>
+		<fibo-fnd-utl-av:editorialNote>Future consideration: move this property to somewehre in BE.</fibo-fnd-utl-av:editorialNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-ln-ln-lgn;EmailAddress">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-plc-adr;VirtualAddress"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="https://spec.edmcouncil.org/fibo/FND/UtilitiesExt/Values/hasValue"/>
+				<owl:someValuesFrom rdf:resource="&xsd;string"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>email address</rdfs:label>
+		<skos:definition>a virtual address for communication via email</skos:definition>
+		<fibo-fnd-utl-av:editorialNote>Future consideration: move this property to Addresses ontology (fibo-fnd-plc-adr).</fibo-fnd-utl-av:editorialNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-ln-ln-lgn;IndividualContactInformation">
+		<rdfs:subClassOf rdf:resource="&fibo-ln-ln-lgn;ContactInformation"/>
+		<rdfs:label>individual contact information</rdfs:label>
+		<skos:definition>contact information for an individual</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ln-ln-lgn;InformationProduct">
@@ -175,6 +238,12 @@
 		<skos:editorialNote>Future consideration: move this property to ProductsAndServices ontology (fibo-fnd-pas-pas).</skos:editorialNote>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-ln-ln-lgn;OrganizationContactInformation">
+		<rdfs:subClassOf rdf:resource="&fibo-ln-ln-lgn;ContactInformation"/>
+		<rdfs:label>organization contact information</rdfs:label>
+		<skos:definition>contact information for an organization</skos:definition>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-ln-ln-lgn;PaymentHistory">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-doc;Record"/>
 		<rdfs:subClassOf>
@@ -208,6 +277,19 @@
 Not using psch:PaymentSchedule because it uses PaymentEvent which is an OccurrenceKind which does not make sense. Also, it should use hasMember not comprises to put items into a Collection. Ripe for coagulation.</skos:editorialNote>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-ln-ln-lgn;PhoneNumber">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-plc-adr;VirtualAddress"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="https://spec.edmcouncil.org/fibo/FND/UtilitiesExt/Values/hasValue"/>
+				<owl:someValuesFrom rdf:resource="&xsd;string"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>phone number</rdfs:label>
+		<skos:definition>a virtual address for communication via phone</skos:definition>
+		<fibo-fnd-utl-av:editorialNote>Future consideration: move this property to Addresses ontology (fibo-fnd-plc-adr).</fibo-fnd-utl-av:editorialNote>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-ln-ln-lgn;ScheduledPayment">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-fd;AdHocScheduleEntry"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-psch;PaymentObligation"/>
@@ -227,6 +309,12 @@ Not using psch:PaymentSchedule because it uses PaymentEvent which is an Occurren
 		<skos:definition>a scheduled payment occurrence that is part of a payment schedule covering the term of the loan</skos:definition>
 		<skos:editorialNote>Topic: Payments</skos:editorialNote>
 	</owl:Class>
+	
+	<owl:ObjectProperty rdf:about="&fibo-ln-ln-lgn;hasContactInformation">
+		<rdfs:label>has contact information</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-ln-ln-lgn;ContactInformation"/>
+		<skos:definition>relates an individual or an organization to its contact information</skos:definition>
+	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-ln-ln-lgn;hasCost">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasMonetaryAmount"/>
