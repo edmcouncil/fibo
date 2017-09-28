@@ -31,7 +31,7 @@ jena_arq=""
 #
 # ontology has to come before vocabulary because vocabulary depends on it.
 #
-products="ontology widoco vocabulary"
+products="ontology vocabulary"
 
 spec_root="${WORKSPACE}/target"
 family_root="${spec_root}/fibo"
