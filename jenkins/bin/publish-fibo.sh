@@ -31,7 +31,7 @@ jena_arq=""
 #
 # ontology has to come before vocabulary because vocabulary depends on it.
 #
-products="ontology vocabulary"
+products="vocabulary"
 
 spec_root="${WORKSPACE}/target"
 family_root="${spec_root}/fibo"
@@ -1005,11 +1005,14 @@ function vocabyRunSpin() {
 
   #The first three lines contain some WARN statements - removing it to complete the build.
   #JC > Need to check why this happens
-  echo "Removing the first three lines from temp1.ttl"
+  echo "Removing the first three lines from ${tmp_dir}/temp1.ttl"
   sed -i.bak -e '1,3d' "${tmp_dir}/temp1.ttl"
 
-  echo "Printing first 50 lines again"
+  echo "Printing first 50 lines of ${tmp_dir}/temp1.ttl.bak"
   head -n50 "${tmp_dir}/temp1.ttl.bak"
+
+  echo "Printing first 50 lines of ${tmp_dir}/temp1.ttl"
+  head -n50 "${tmp_dir}/temp1.ttl"
 
   rm "${tmp_dir}/temp1.ttl"
   mv "${tmp_dir}/temp1.ttl.bak" "${tmp_dir}/temp1.ttl"
