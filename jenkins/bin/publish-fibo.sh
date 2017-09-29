@@ -31,7 +31,7 @@ jena_arq=""
 #
 # ontology has to come before vocabulary because vocabulary depends on it.
 #
-products="ontology widoco vocabulary"
+products="ontology vocabulary widoco"
 
 spec_root="${WORKSPACE}/target"
 family_root="${spec_root}/fibo"
@@ -1001,7 +1001,25 @@ function vocabyRunSpin() {
   echo "Generated ${tmp_dir}/temp1.ttl:"
   echo "Generated ${tmp_dir}/temp1B.ttl:"
 
+  echo "Printing first 50 lines of ${tmp_dir}/temp1.ttl"
   head -n50 "${tmp_dir}/temp1.ttl"
+
+  echo "Printing first 50 lines of ${tmp_dir}/temp1B.ttl"
+  head -n50 "${tmp_dir}/temp1B.ttl"
+
+  #The first three lines contain some WARN statements - removing it to complete the build.
+  #JC > Need to check why this happens
+  echo "Removing the first three lines from ${tmp_dir}/temp1.ttl"
+  sed -i.bak -e '1,3d' "${tmp_dir}/temp1.ttl"
+  echo "Printing first 50 lines of ${tmp_dir}/temp1.ttl"
+  head -n50 "${tmp_dir}/temp1.ttl"
+
+  echo "Removing the first three lines from ${tmp_dir}/temp1B.ttl"
+  sed -i.bak -e '1,3d' "${tmp_dir}/temp1B.ttl"
+  echo "Printing first 50 lines of ${tmp_dir}/temp1B.ttl"
+  head -n50 "${tmp_dir}/temp1B.ttl"
+
+  ### END Karthik changes
 
   return 0
 }
