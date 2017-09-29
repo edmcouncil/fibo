@@ -43,6 +43,10 @@
 		#set($multiplicityString = "$lowerString to $upperString $instanceString")
 	#end
 #end
+#macro(fixDoc, $doc)
+        #set( $cleandoc = $doc.replace("<br>", "<br/>"))
+	<span class='classdoc2'>$cleandoc</span>
+#end
 #macro(setSufficientFlag, $attribute)
 	#set($sufficientFlag = false)
 	#foreach($constraint in $attribute.get_constraintOfConstrainedElement())
@@ -342,7 +346,7 @@ $conjunction <span class='classname'><a href="#$id">$hyperlinkTarget</a></span>$
 			#if($list.size($foundCommentList) == 1)
 				## Output just one on a single line
 				#foreach($umlComment in $foundCommentList) 
-					<span class='classdoc'>$umlComment.body</span>
+					#fixDoc($umlComment.body)
 				#end
 			#else
 					<ul>
@@ -350,7 +354,7 @@ $conjunction <span class='classname'><a href="#$id">$hyperlinkTarget</a></span>$
 				#foreach($umlComment in $foundCommentList)
 
 						<li class='propdesc'>  
-							<span class='classdoc'>$umlComment.body</span>
+							#fixDoc($umlComment.body)
 						</li>
 				#end
 
@@ -450,7 +454,7 @@ $conjunction <span class='classname'><a href="#$id">$hyperlinkTarget</a></span>$
 #set($alphabetHeading = '')
 #getAnnotationPropertyList()
 
-#set ($Class = $sorter.sort($Class))
+#set($Class = $sorter.sort($Class))
 #set($prevClass = '')
                 <dl>
 #foreach($class in $Class)
@@ -493,7 +497,7 @@ $conjunction <span class='classname'><a href="#$id">$hyperlinkTarget</a></span>$
 		#end
 
 		<dt>
-			<span id="$class.QualifiedName" class="headterm padding-top">$className</span>
+			<span id="$class.QualifiedName" class="headterm padding-top classterm">$className</span>
 #if ($className == $nextClass || $className == $prevClass) <span class="fromPackage">(from package /$class.QualifiedName.replace("::", "/"))</span>#end
 			#set($prevClass = $className)
 		</dt>	
@@ -535,6 +539,33 @@ $conjunction <span class='classname'><a href="#$id">$hyperlinkTarget</a></span>$
 					#end
 				#end
 			#end
+
+						<dd>
+						<p class="defaultannotation"><span class='annoprophumanname'>Definition</span>:
+						#if ($documentationList.size()>0)
+							#if($documentationList.size() == 1)
+								## Output just one on a single line
+								#foreach ($documentation in $documentationList)
+									#fixDoc($documentation)
+								#end
+							#else
+									<ul>
+								## Output several in a list
+								#foreach($documentation in $documentationList)
+
+										<li class='propdesc'>
+										  #fixDoc($documentation)
+										</li>
+								#end
+
+									</ul>
+							#end
+						#end
+						</p>
+						<p class="annoprop">#displayAnnotationPropertyAndCommentBodyInHTML($class)</p>
+						</dd>
+
+
 			<dd class="modeldefinition"><p><span class='annoprophumanname'>Model-Generated Definition</span>:</p></dd>
 			<div class='generateddesc'>
 			#if ($equivalentClassList.size()>0)
@@ -727,31 +758,6 @@ $conjunction <span class='classname'><a href="#$id">$hyperlinkTarget</a></span>$
 			#end
 
 						</div>
-						<dd>
-						<p class="defaultannotation"><span class='annoprophumanname'>Definition</span>:
-						#if ($documentationList.size()>0)
-							#if($documentationList.size() == 1)
-								## Output just one on a single line
-								#foreach ($documentation in $documentationList)
-								        #set( $cleandoc = $documentation.replace("<br>", "<br/>"))
-									<span class='classdoc'>$cleandoc</span>
-								#end
-							#else
-									<ul>
-								## Output several in a list
-								#foreach($documentation in $documentationList)
-
-										<li class='propdesc'>
-											<span class='classdoc'>$documentation</span>
-										</li>
-								#end
-
-									</ul>
-							#end
-						#end
-						</p>
-						<p class="annoprop">#displayAnnotationPropertyAndCommentBodyInHTML($class)</p>
-						</dd>
 						
 			#end
 		#end
@@ -897,7 +903,7 @@ $conjunction <span class='classname'><a href="#$property.getID()">$hyperlinkTarg
 				#end
 
 							<dt>
-								<span id="$property.getID()" class="headterm padding-top">$property.name</span>
+								<span id="$property.getID()" class="headterm padding-top propterm">$property.name</span>
 							</dt>
 							
 							<dd>
@@ -932,7 +938,7 @@ and has the inverse <a href="#$clientDependencySupplier.getID()">$clientDependen
 								<p class="defaultannotation"><span class='annoprophumanname'>Definition</span>:
 				#if(!$property.documentation.isEmpty())
 
-								<span class='classdoc'>$property.documentation</span>
+								#devfixDoc($property.documentation)
 				#end
 								</p>
 								<p class="annoprop">#displayAnnotationPropertyAndCommentBodyInHTML($property)</p>
