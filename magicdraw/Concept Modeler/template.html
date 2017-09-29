@@ -331,10 +331,10 @@ $conjunction <span class='classname'><a href="#$id">$hyperlinkTarget</a></span>$
 		## What if class is not present in the map?
 		#set($foundCommentList = $NLGTool.getElementAnnotations($element, $annoProperty))
 		#set($annotationPropertyHumanName = $NLGTool.getAnnotationPropertyHumanName($annoProperty))
+		<p class="annotation">
 		#if($isAnnoPropSectionEmittedMap.get($annotationPropertyHumanName) == "0")
-			#set($void = $isAnnoPropSectionEmittedMap.put($annotationPropertyHumanName, "1")) 
-			
-			<p><span class='annoprophumanname'>$annotationPropertyHumanName</span>:
+			#set($void = $isAnnoPropSectionEmittedMap.put($annotationPropertyHumanName, "1"))
+			<span class='annoprophumanname'>$annotationPropertyHumanName</span>:
 		#end
 	
 		#if(!$foundCommentList.isEmpty()) ## the array is not empty/null
@@ -356,9 +356,8 @@ $conjunction <span class='classname'><a href="#$id">$hyperlinkTarget</a></span>$
 
 					</ul>
 			#end
-
-			</p>
 		#end
+		</p>
 	#end
 	#initAnnoPropSectionEmittedMap()
 #end
@@ -377,6 +376,9 @@ $conjunction <span class='classname'><a href="#$id">$hyperlinkTarget</a></span>$
 	                                #set($headhidden = "debug")
 	                        #else #set($headhidden = "classname")
 	                        #end
+					
+					
+
 					
 				   <span><a class="$headhidden" href="#class_heading_$classAlphabetHeading">$classAlphabetHeading</a></span>
 			#end
@@ -411,12 +413,6 @@ $conjunction <span class='classname'><a href="#$id">$hyperlinkTarget</a></span>$
 	<head>
 		<title>$Title</title>
 		<meta charset="utf-8" />
-        <link rel="stylesheet" href="resources/style.css">
-        <link rel="stylesheet" href="resources/awesomplete.css">
-        <script type="text/javascript" src="resources/search.js"></script>
-        <script type="text/javascript" src="resources/awesomplete.min.js"></script>
-
-        #set($void = $file.copy('resources'))
 	</head>
 	<body>
 
@@ -427,31 +423,28 @@ $conjunction <span class='classname'><a href="#$id">$hyperlinkTarget</a></span>$
 #set($Class = $NLGTool.getCollapsedClassList($Class))
 #setIsPropertyDefinitionDesired()
 
-<div class="topBar">
-  <div class="wrapper">
-    <div class="topBarCell1 left">$TitlePreamble <b>$Title</b></div>
-    <div class="topBarCell1 right"><input type="text" id="search" onkeyup="filterList()" placeholder="Search"/><br><label>Suppress Model-Generated Definitions: <input type="checkbox" onclick="hideModelGeneratedDefinition(this)"></label></div>
-  </div>
-  <br/>
-  <div class="topBarCell2" id="classAlphabet">
+<div class="top-bar">
+    <div class="wrapper">
+        <div class="title-cell">$TitlePreamble <b>$Title</b></div>
+        <div class="search-cell"><input type="text" id="search" onkeyup="filterList()" placeholder="Search"/><br/><label>Hide Model-Generated Definitions: <input type="checkbox" onclick="hideModelGeneratedDefinition(this)"/></label></div>
+    </div>
+    <div class="alphabet-cell" id="classAlphabet">
 	#if($isPropertyDefinitionDesiredFlag)<span class="paddingRight">Classes: </span>#end
 	#addClassAlphabetHeader($Class)
 	#if($isPropertyDefinitionDesiredFlag)
 		#set($propertyScopeList= $array.createArray())
 		#prepareForPropertyConditionRendering()
-		<br>
-		<span class="paddingRight">Properties: </span>#addPropertyAlphabetHeader($propertyScopeList)
+		<br/>
+		<span class="padding-right">Properties: </span>#addPropertyAlphabetHeader($propertyScopeList)
 	#end
-  </div>
-  
+    </div>
 </div>
 <div class="main">
 #if($isPropertyDefinitionDesiredFlag)
 
-<dl>
+
     <span id="classGrouping" class='groupingterm'>Classes</span>
-    <!--<span class='groupingterm'>(jump to <a href="#propertyGrouping">Properties</a>)</span>-->
-</dl>
+
 #end
 #set($firstEntryFlag = true)
 #set($alphabetHeading = '')
@@ -470,7 +463,7 @@ $conjunction <span class='classname'><a href="#$id">$hyperlinkTarget</a></span>$
 	#setMainEntryIsAnythingFlag($class)
 	#setMainEntryIsUnionFlag($class)
 	##createAnnotationPropertyMap($class)
-	#if(!$mainEntryIsAnythingFlag && !$mainEntryIsUnionFlag && !$class.name.isEmpty() && $class.name.substring(0,1)!="`" && $class.name.substring(0,1)!="<")
+	#if(!$mainEntryIsAnythingFlag && !$mainEntryIsUnionFlag && $class.name.substring(0,1)!="`" && $class.name.substring(0,1)!="<")
 	
 		#if($class.name.isEmpty())
 			#set($className = '(Unnamed Class)')
@@ -490,7 +483,7 @@ $conjunction <span class='classname'><a href="#$id">$hyperlinkTarget</a></span>$
 				#set($alphabetHeading = $className.substring(0,1).toUpperCase())
 			#end
 			<dt>
-				<span id="class_heading_$alphabetHeading" class="groupingterm paddingTop">$alphabetHeading</span>
+				<span id="class_heading_$alphabetHeading" class="groupingterm padding-top">$alphabetHeading</span>
 			</dt>
 			<dd>
 				<dl>
@@ -500,7 +493,7 @@ $conjunction <span class='classname'><a href="#$id">$hyperlinkTarget</a></span>$
 		#end
 
 		<dt>
-			<span id="$class.QualifiedName" class="headterm paddingTop">$className</span>
+			<span id="$class.QualifiedName" class="headterm padding-top">$className</span>
 #if ($className == $nextClass || $className == $prevClass) <span class="fromPackage">(from package /$class.QualifiedName.replace("::", "/"))</span>#end
 			#set($prevClass = $className)
 		</dt>	
@@ -542,32 +535,6 @@ $conjunction <span class='classname'><a href="#$id">$hyperlinkTarget</a></span>$
 					#end
 				#end
 			#end
-						<dd>
-						<p><span class='annoprophumanname'>Definition</span>:
-							#if ($documentationList.size()>0)
-								#if($documentationList.size() == 1)
-									## Output just one on a single line
-									#foreach ($documentation in $documentationList)
-										<span class='classdoc'>$documentation</span>
-									#end
-								#else
-										<ul>
-									## Output several in a list
-									#foreach($documentation in $documentationList)
-
-											<li class='propdesc'>  
-												<span class='classdoc'>$documentation</span>
-											</li>
-									#end
-
-										</ul>
-								#end
-							#end
-							</p>
-							<p>#displayAnnotationPropertyAndCommentBodyInHTML($class)</p>
-						</dd>
-
-
 			<dd class="modeldefinition"><p><span class='annoprophumanname'>Model-Generated Definition</span>:</p></dd>
 			<div class='generateddesc'>
 			#if ($equivalentClassList.size()>0)
@@ -759,10 +726,30 @@ $conjunction <span class='classname'><a href="#$id">$hyperlinkTarget</a></span>$
 			#end
 
 						</div>
-						
+						<dd>
+						<p class="defaultannotation"><span class='annoprophumanname'>Definition</span>:
+						#if ($documentationList.size()>0)
+							#if($documentationList.size() == 1)
+								## Output just one on a single line
+								#foreach ($documentation in $documentationList)
+									<span class='classdoc'>$documentation</span>
+								#end
+							#else
+									<ul>
+								## Output several in a list
+								#foreach($documentation in $documentationList)
 
+										<li class='propdesc'>
+											<span class='classdoc'>$documentation</span>
+										</li>
+								#end
 
-
+									</ul>
+							#end
+						#end
+						</p>
+						<p class="annoprop">#displayAnnotationPropertyAndCommentBodyInHTML($class)</p>
+						</dd>
 						
 			#end
 		#end
@@ -865,14 +852,12 @@ $conjunction <span class='classname'><a href="#$property.getID()">$hyperlinkTarg
 #############################################		
 ## Display property definitions when the property definitions project option is set to true.
 #if($isPropertyDefinitionDesiredFlag)
-	<br>
+	<br/>
 	#set($firstEntryFlag = true)
 	#set($pAlphabetHeading = '')
-	
-		<dl>
-			<span id="propertyGrouping" class='groupingterm'>Properties</span> 
-			<!--<span class='groupingterm'>(jump to <a href="#classGrouping">Classes</a>)</span>-->
-		</dl>
+
+		<span id="propertyGrouping" class='groupingterm'>Properties</span>
+
 					<dl>
 		#foreach($property in $sorter.sort($propertyScopeList))
 			#setPropertyOwnerIsAnythingFlag($property.owner)
@@ -899,7 +884,7 @@ $conjunction <span class='classname'><a href="#$property.getID()">$hyperlinkTarg
 					#end
 
 					<dt>
-						<span id="property_heading_$pAlphabetHeading" class="groupingterm paddingTop">$pAlphabetHeading</span>
+						<span id="property_heading_$pAlphabetHeading" class="groupingterm padding-top">$pAlphabetHeading</span>
 					</dt>
 					<dd>
 						<dl>
@@ -909,7 +894,7 @@ $conjunction <span class='classname'><a href="#$property.getID()">$hyperlinkTarg
 				#end
 
 							<dt>
-								<span id="$property.getID()" class="headterm paddingTop">$property.name</span>
+								<span id="$property.getID()" class="headterm padding-top">$property.name</span>
 							</dt>
 							
 							<dd>
@@ -941,13 +926,13 @@ and has the inverse <a href="#$property.getOpposite().getID()">$property.getOppo
 and has the inverse <a href="#$clientDependencySupplier.getID()">$clientDependencySupplier.name</a>##
 #end
 .</p>
-								<p><span class='annoprophumanname'>Definition</span>:
+								<p class="defaultannotation"><span class='annoprophumanname'>Definition</span>:
 				#if(!$property.documentation.isEmpty())
 
 								<span class='classdoc'>$property.documentation</span></p>
 				#end
 								</p>
-								<p>#displayAnnotationPropertyAndCommentBodyInHTML($property)</p>
+								<p class="annoprop">#displayAnnotationPropertyAndCommentBodyInHTML($property)</p>
 							</dd>
 	#end
 #end
@@ -956,4 +941,120 @@ and has the inverse <a href="#$clientDependencySupplier.getID()">$clientDependen
 		</dl>
     </div>
 	</body>
+
+	<style>
+		.debug {visibility: hidden;}
+		.generateddesc { margin-left: .5in; }
+		.annoprophumanname {text-decoration: underline;}
+		.propdesc {}
+		.propname {font-style: italic;}
+		.classname {}
+		.datatype {font-style: italic;}
+		.headterm {font-size: large; font-weight: bold;}
+		.groupingterm {font-weight: bold; font-size: x-large;}
+		.classdoc {font-style: italic;}
+		.topheading {text-align: center;}
+		.Box {background-color:red; width:60px; margin:0px; margin-bottom: 0px; padding:0px;}
+		.top-bar {background-color: #eee; position: fixed; left: 0; top: 0; width: 100%; border-bottom: solid 1px #aaa; padding: 10px; z-index: 1;}
+		.wrapper {position: relative; height: 180px;}
+		.title-cell {width: 50%; text-align: left; float: left;}
+		.search-cell {width: 49%; text-align: right; float: left;}
+		.alphabet-cell {width: 100%; text-align: center;}
+		.main {top: 240px; position: relative;}
+		.left {text-align: left;}
+		.center {text-align: center;}
+		.right {text-align: right;}
+		.padding-right {padding-right: 10px;}
+		.padding-top {padding-top: 240px;}
+		.highlight {background-color: orange; padding-top: 0;}
+
+		// search box
+		.awesomplete [hidden]{display:none}
+		.awesomplete .visually-hidden{position:absolute;clip:rect(0,0,0,0)}
+		.awesomplete{display:inline-block;position:relative;text-align:left}
+		.awesomplete>input{display:block}
+		.awesomplete>ul{position:absolute;left:0;z-index:100;min-width:100%;box-sizing:border-box;list-style:none;padding:0;border-radius:.3em;margin:.2em 0 0;background:hsla(0,0%,100%,.9);background:linear-gradient(to bottom right,#fff,hsla(0,0%,100%,.8));border:1px solid rgba(0,0,0,.3);box-shadow:.05em .2em .6em rgba(0,0,0,.2);text-shadow:none}
+		.awesomplete>ul:empty{display:none}
+		@supports (transform:scale(0)){
+			.awesomplete>ul{transition:.3s cubic-bezier(.4,.2,.5,1.4);transform-origin:1.43em -.43em}
+			.awesomplete>ul:empty,.awesomplete>ul[hidden]{opacity:0;transform:scale(0);display:block;transition-timing-function:ease}
+		}
+		.awesomplete>ul:before{content:"";position:absolute;top:-.43em;left:1em;width:0;height:0;padding:.4em;background:#fff;border:inherit;border-right:0;border-bottom:0;-webkit-transform:rotate(45deg);transform:rotate(45deg)}
+		.awesomplete>ul>li{position:relative;padding:.2em .5em;cursor:pointer}.awesomplete>ul>li:hover{background:#b7d2e0;color:#000}
+		.awesomplete>ul>li[aria-selected=true]{background:#3d6c8e;color:#fff}
+		.awesomplete mark{background:#e9ff00}
+		.awesomplete li:hover mark{background:#b5d100}
+		.awesomplete li[aria-selected=true] mark{background:#3c6b00;color:inherit}
+	</style>
+	<script type="text/javascript">
+		var input, awesomplete;
+		window.onload = function () {
+			input = document.getElementById("search");
+			awesomplete = new Awesomplete(input, {
+				minChars: 0,
+				replace: function (text){
+					this.input.value = text;
+					goToSelectedTerm(text.value);
+				}
+			});
+		};
+
+		function filterList() {
+			// Declare variables
+			var filter, headterm, i, termsList=[], content, additionalContent;
+			filter = input.value.toUpperCase();
+			headterm = document.getElementsByClassName("headterm");
+			for (i = 0; i < headterm.length; i++){
+				// search terms
+				content = headterm[i].innerHTML;
+				if (content.toUpperCase().indexOf(filter) > -1) {
+					// drop down list
+					content = headterm[i].parentElement.textContent.trim();
+					termsList.push({ label: content, value: headterm[i].id });
+				}
+			}
+			awesomplete.list = termsList;
+			clearHighlight();
+		}
+
+		function goToSelectedTerm (elementID){
+		   var element = document.getElementById(elementID);
+		   if (!!element && element.scrollIntoView) {
+			   element.scrollIntoView();
+			   if (!element.classList.contains("highlight")) {
+					element.classList.add("highlight");
+			   }
+		   }
+		}
+
+		function clearHighlight(){
+			var highlightedTerms = document.getElementsByClassName("highlight");
+			for (i = 0; i < highlightedTerms.length; i++){
+				 highlightedTerms[i].classList.remove("highlight");
+			}
+		}
+
+		function hideModelGeneratedDefinition(checkbox){
+			var element = document.getElementsByClassName("generateddesc");
+			for (i = 0; i < element.length; i++){
+				if (checkbox.checked){
+					element[i].style.display = "none";
+				} else {
+					element[i].style.display = "block";
+				}
+			}
+			var element = document.getElementsByClassName("modeldefinition");
+			for (i = 0; i < element.length; i++){
+				if (checkbox.checked){
+					element[i].style.display = "none";
+				} else {
+					element[i].style.display = "block";
+				}
+			}
+		}
+	</script>
+	<script type="text/javascript">
+		// Awesomplete - Lea Verou - MIT license
+        !function(){function t(t){var e=Array.isArray(t)?{label:t[0],value:t[1]}:"object"==typeof t&&"label"in t&&"value"in t?t:{label:t,value:t};this.label=e.label||e.value,this.value=e.value}function e(t,e,i){for(var n in e){var s=e[n],r=t.input.getAttribute("data-"+n.toLowerCase());"number"==typeof s?t[n]=parseInt(r):!1===s?t[n]=null!==r:s instanceof Function?t[n]=null:t[n]=r,t[n]||0===t[n]||(t[n]=n in i?i[n]:s)}}function i(t,e){return"string"==typeof t?(e||document).querySelector(t):t||null}function n(t,e){return o.call((e||document).querySelectorAll(t))}function s(){n("input.awesomplete").forEach(function(t){new r(t)})}var r=function(t,n){var s=this;Awesomplete.count=(Awesomplete.count||0)+1,this.count=Awesomplete.count,this.isOpened=!1,this.input=i(t),this.input.setAttribute("autocomplete","off"),this.input.setAttribute("aria-owns","awesomplete_list_"+this.count),this.input.setAttribute("role","combobox"),n=n||{},e(this,{minChars:2,maxItems:10,autoFirst:!1,data:r.DATA,filter:r.FILTER_CONTAINS,sort:!1!==n.sort&&r.SORT_BYLENGTH,item:r.ITEM,replace:r.REPLACE},n),this.index=-1,this.container=i.create("div",{className:"awesomplete",around:t}),this.ul=i.create("ul",{hidden:"hidden",role:"listbox",id:"awesomplete_list_"+this.count,inside:this.container}),this.status=i.create("span",{className:"visually-hidden",role:"status","aria-live":"assertive","aria-atomic":!0,inside:this.container,textContent:0!=this.minChars?"Type "+this.minChars+" or more characters for results.":"Begin typing for results."}),this._events={input:{input:this.evaluate.bind(this),blur:this.close.bind(this,{reason:"blur"}),keydown:function(t){var e=t.keyCode;s.opened&&(13===e&&s.selected?(t.preventDefault(),s.select()):27===e?s.close({reason:"esc"}):38!==e&&40!==e||(t.preventDefault(),s[38===e?"previous":"next"]()))}},form:{submit:this.close.bind(this,{reason:"submit"})},ul:{mousedown:function(t){var e=t.target;if(e!==this){for(;e&&!/li/i.test(e.nodeName);)e=e.parentNode;e&&0===t.button&&(t.preventDefault(),s.select(e,t.target))}}}},i.bind(this.input,this._events.input),i.bind(this.input.form,this._events.form),i.bind(this.ul,this._events.ul),this.input.hasAttribute("list")?(this.list="#"+this.input.getAttribute("list"),this.input.removeAttribute("list")):this.list=this.input.getAttribute("data-list")||n.list||[],r.all.push(this)};r.prototype={set list(t){if(Array.isArray(t))this._list=t;else if("string"==typeof t&&t.indexOf(",")>-1)this._list=t.split(/\s*,\s*/);else if((t=i(t))&&t.children){var e=[];o.apply(t.children).forEach(function(t){if(!t.disabled){var i=t.textContent.trim(),n=t.value||i,s=t.label||i;""!==n&&e.push({label:s,value:n})}}),this._list=e}document.activeElement===this.input&&this.evaluate()},get selected(){return this.index>-1},get opened(){return this.isOpened},close:function(t){this.opened&&(this.ul.setAttribute("hidden",""),this.isOpened=!1,this.index=-1,i.fire(this.input,"awesomplete-close",t||{}))},open:function(){this.ul.removeAttribute("hidden"),this.isOpened=!0,this.autoFirst&&-1===this.index&&this.goto(0),i.fire(this.input,"awesomplete-open")},destroy:function(){i.unbind(this.input,this._events.input),i.unbind(this.input.form,this._events.form);var t=this.container.parentNode;t.insertBefore(this.input,this.container),t.removeChild(this.container),this.input.removeAttribute("autocomplete"),this.input.removeAttribute("aria-autocomplete");var e=r.all.indexOf(this);-1!==e&&r.all.splice(e,1)},next:function(){var t=this.ul.children.length;this.goto(this.index<t-1?this.index+1:t?0:-1)},previous:function(){var t=this.ul.children.length,e=this.index-1;this.goto(this.selected&&-1!==e?e:t-1)},goto:function(t){var e=this.ul.children;this.selected&&e[this.index].setAttribute("aria-selected","false"),this.index=t,t>-1&&e.length>0&&(e[t].setAttribute("aria-selected","true"),this.status.textContent=e[t].textContent+", list item "+(t+1)+" of "+e.length,this.input.setAttribute("aria-activedescendant",this.ul.id+"_item_"+this.index),this.ul.scrollTop=e[t].offsetTop-this.ul.clientHeight+e[t].clientHeight,i.fire(this.input,"awesomplete-highlight",{text:this.suggestions[this.index]}))},select:function(t,e){if(t?this.index=i.siblingIndex(t):t=this.ul.children[this.index],t){var n=this.suggestions[this.index];i.fire(this.input,"awesomplete-select",{text:n,origin:e||t})&&(this.replace(n),this.close({reason:"select"}),i.fire(this.input,"awesomplete-selectcomplete",{text:n}))}},evaluate:function(){var e=this,i=this.input.value;i.length>=this.minChars&&this._list.length>0?(this.index=-1,this.ul.innerHTML="",this.suggestions=this._list.map(function(n){return new t(e.data(n,i))}).filter(function(t){return e.filter(t,i)}),!1!==this.sort&&(this.suggestions=this.suggestions.sort(this.sort)),this.suggestions=this.suggestions.slice(0,this.maxItems),this.suggestions.forEach(function(t,n){e.ul.appendChild(e.item(t,i,n))}),0===this.ul.children.length?(this.status.textContent="No results found",this.close({reason:"nomatches"})):(this.open(),this.status.textContent=this.ul.children.length+" results found")):(this.close({reason:"nomatches"}),this.status.textContent="No results found")}},r.all=[],r.FILTER_CONTAINS=function(t,e){return RegExp(i.regExpEscape(e.trim()),"i").test(t)},r.FILTER_STARTSWITH=function(t,e){return RegExp("^"+i.regExpEscape(e.trim()),"i").test(t)},r.SORT_BYLENGTH=function(t,e){return t.length!==e.length?t.length-e.length:t<e?-1:1},r.ITEM=function(t,e,n){return i.create("li",{innerHTML:""===e.trim()?t:t.replace(RegExp(i.regExpEscape(e.trim()),"gi"),"<mark>$&</mark>"),"aria-selected":"false",id:"awesomplete_list_"+this.count+"_item_"+n})},r.REPLACE=function(t){this.input.value=t.value},r.DATA=function(t){return t},Object.defineProperty(t.prototype=Object.create(String.prototype),"length",{get:function(){return this.label.length}}),t.prototype.toString=t.prototype.valueOf=function(){return""+this.label};var o=Array.prototype.slice;i.create=function(t,e){var n=document.createElement(t);for(var s in e){var r=e[s];if("inside"===s)i(r).appendChild(n);else if("around"===s){var o=i(r);o.parentNode.insertBefore(n,o),n.appendChild(o)}else s in n?n[s]=r:n.setAttribute(s,r)}return n},i.bind=function(t,e){if(t)for(var i in e){var n=e[i];i.split(/\s+/).forEach(function(e){t.addEventListener(e,n)})}},i.unbind=function(t,e){if(t)for(var i in e){var n=e[i];i.split(/\s+/).forEach(function(e){t.removeEventListener(e,n)})}},i.fire=function(t,e,i){var n=document.createEvent("HTMLEvents");n.initEvent(e,!0,!0);for(var s in i)n[s]=i[s];return t.dispatchEvent(n)},i.regExpEscape=function(t){return t.replace(/[-\\^$*+?.()|[\]{}]/g,"\\$&")},i.siblingIndex=function(t){for(var e=0;t=t.previousElementSibling;e++);return e},"undefined"!=typeof Document&&("loading"!==document.readyState?s():document.addEventListener("DOMContentLoaded",s)),r.$=i,r.$$=n,"undefined"!=typeof self&&(self.Awesomplete=r),"object"==typeof module&&module.exports&&(module.exports=r)}();
+	</script>
 </html>	
