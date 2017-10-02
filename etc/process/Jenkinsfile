@@ -94,18 +94,54 @@ stage('Build') {
     //
     "nomagic" : {
         node('nomagic') {
+            echo "Executing generate script on the nomagic box"
             sh """#!/bin/bash -x
+
+                export DISPLAY=localhost:10.0
+                whoami
+                pwd
+
+                # JG>DA, what's happening here??
+                #cp -r \
+                #  "~/workspace/NoMagic/fibo-publish-nomagic/magicdraw/Concept Modeler/*" \
+                #  "~/MagicDraw/data/defaults/data/reports/Concept Modeler/"
+
+                /home/ec2-user/dev.sh
+                /home/ec2-user/prod.sh
+
+                cp /home/ec2-user/MagicDraw/plugins/com.nomagic.magicdraw.reportwizard/*.html .
+
+                cp -r /home/ec2-user/MagicDraw/plugins/com.nomagic.magicdraw.reportwizard/resources .
+
+                sed -i DEVELOPMENT.html -e 's!<br>!<br/>!g'
+                sed -i PRODUCTION.html -e 's!<br>!<br/>!g'
+
+                sed -e '/<script /,/<\\/script>/d' DEVELOPMENT.html > DEVIN.html
+                sed -e '/<script /,/<\\/script>/d' PRODUCTION.html > PRODIN.html
+
+                chmod a+x  ~/workspace/NoMagic/fibo-publish-nomagic/bin/SaxonHE9-8-0-4J/*.jar
+
+                java -cp ~/workspace/NoMagic/fibo-publish-nomagic/bin/SaxonHE9-8-0-4J/saxon9he.jar net.sf.saxon.Transform -o:datadictionaryDEV.csv -xsl:./jenkins/bin/glossary-to-csv.xsl DEVIN.html
+                java -cp ~/workspace/NoMagic/fibo-publish-nomagic/bin/SaxonHE9-8-0-4J/saxon9he.jar net.sf.saxon.Transform -o:datadictionaryPROD.csv -xsl:./jenkins/bin/glossary-to-csv.xsl PRODIN.html
+
+                cat /home/ec2-user/dev.sh
+                cat /home/ec2-user/prod.sh
+                cat /home/ec2-user/MagicDraw/plugins/com.nomagic.magicdraw.reportwizard/generate.sh
+
+                exit 0
+                # Below this line is the code that JG put there as an alternative to the above (newer) code
+
                 unset DISPLAY
-                
+
                 if ! cd /home/ec2-user/MagicDraw ; then
                     echo "Could not find MagicDraw directory"
                     exit 1
-                fi 
+                fi
                 if ! cd ./plugins/com.nomagic.magicdraw.reportwizard ; then
                     echo "Could not find MagicDraw report wizard"
                     exit 1
-                fi 
-                
+                fi
+
                 ./generate.sh \
                     -login "EDMCJenkins" \
                     -server "twc184.nomagic.com:3579" \
@@ -116,7 +152,7 @@ stage('Build') {
                     -output "${WORKSPACE}/development.html" \
                     -servertype "twcloud" \
                     -report "Development"
-                
+
                 ./generate.sh \
                     -login "EDMCJenkins" \
                     -server "twc184.nomagic.com:3579" \
