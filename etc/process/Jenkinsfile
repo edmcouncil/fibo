@@ -18,6 +18,13 @@ properties([
 GIT_BRANCH = ""
 GIT_TAG_NAME = ""
 
+environment {
+    NOMAGIC_CREDS = credentials('50cac519-d41c-4765-8563-c43b7f55c877')
+    NOMAGIC_USERID = "${env.NOMAGIC_CREDS_USR}"
+    NOMAGIC_PASSWD = "${env.NOMAGIC_CREDS_PSW}"
+}
+
+
 stage('Prepare') {
     //
     // Run the prepare stage on the stardog node, check out all the repos there
@@ -27,7 +34,15 @@ stage('Prepare') {
     //
     node('stardog') {
         //
-        // First check out the fibo repo' content into the ./fibo directory
+        // Copy the rdf-toolkit.jar file artifact from the rdf-toolkit-build job (pre-requisite for running publish script)
+        //
+        step([$class: 'CopyArtifact', filter: '**/rdf-toolkit.jar', fingerprintArtifacts: true, flatten: true, projectName: 'rdf-toolkit-build'])
+        //
+        // Copy the pellet jar from the build-pellet job
+        //
+        step([$class: 'CopyArtifact', filter: '**/pellet-cli-*.jar', fingerprintArtifacts: true, flatten: true, projectName: 'build-pellet', target: 'pellet'])
+        //
+        // Check out the fibo repo' content into the ./fibo directory
         //
         dir('fibo') {
             checkout scm
@@ -36,24 +51,8 @@ stage('Prepare') {
             dir('etc/process') {
                 stash includes: 'fibo-copy-to-site.sh', name: 'fibo-copy-to-site-script'
             }
-            //GIT_BRANCH = sh returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD'
-            //
-            // Replace all slashes in a branch name with dashes so that we don't mess up the URLs for the ontologies
-            //
-            //GIT_BRANCH = GIT_BRANCH.trim().toLowerCase()
-            //echo "GIT_BRANCH=${GIT_BRANCH}"
 
-            //GIT_BRANCH = GIT_BRANCH.replaceAll('\\\\', '-')
-            //echo "GIT_BRANCH=${GIT_BRANCH}"
-            //
-            // Get the git tag name if the current commit points is pointed to by a tag
-            //
-            //GIT_TAG_NAME = sh returnStdout: true, script: 'set +e ; git describe --contains 2>/dev/null | exit 0'
-            //GIT_TAG_NAME = GIT_TAG_NAME.trim()
-            //if (GIT_TAG_NAME?.trim()) {
-            //    GIT_TAG_NAME = "latest"
-            //}
-            //echo "GIT_TAG_NAME=${GIT_TAG_NAME}"
+            GIT_BRANCH = sh returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD'
         }
         //
         // Then check out the fibo-infra repo content into the ./fibo-infra directory
@@ -74,6 +73,21 @@ stage('Prepare') {
             // Stash all the tools in the bin directory
             //
             stash includes: 'bin/**', name: 'infra-bin'
+            //
+            // The run the init command on the fibo-publish script which will set all the GIT_* vars correctly and
+            // store their values in some .env files.
+            //
+            sh './jenkins/bin/publish-fibo.sh init'
+            stash includes: '*.env', name: 'git-vars'
+
+            GIT_BRANCH = readFile 'git_branch.env'
+            echo "GIT_BRANCH=${GIT_BRANCH}"
+            GIT_TAG_NAME = readFile 'git_tag_name.env'
+            echo "GIT_TAG_NAME=${GIT_TAG_NAME}"
+            GIT_AUTHOR = readFile 'git_author.env'
+            echo "GIT_AUTHOR=${GIT_AUTHOR}"
+            GIT_COMMIT = readFile 'git_commit.env'
+            echo "GIT_COMMIT=${GIT_COMMIT}"
         }
         //
         // Then check out the LCC repo into the ./LCC directory
@@ -83,14 +97,6 @@ stage('Prepare') {
             echo 'Checked out the LCC repo'
         }
         echo 'Checked it all out'
-        //
-        // Then copy the rdf-toolkit.jar file artifact from the rdf-toolkit-build job
-        //
-        step([$class: 'CopyArtifact', filter: '**/rdf-toolkit.jar', fingerprintArtifacts: true, flatten: true, projectName: 'rdf-toolkit-build'])
-        //
-        // Then copy the pellet jar from the build-pellet job
-        //
-        step([$class: 'CopyArtifact', filter: '**/pellet-cli-*.jar', fingerprintArtifacts: true, flatten: true, projectName: 'build-pellet', target: 'pellet'])
     }
 }
 
@@ -103,6 +109,12 @@ stage('Build') {
     //
     parallel "publish-script" : {
         node('stardog') {
+            unstash 'git-vars'
+
+            def GIT_BRANCH = readFile 'git_branch.env'
+            def GIT_TAG_NAME = readFile 'git_tag_name.env'
+            def GIT_AUTHOR = readFile 'git_author.env'
+            def GIT_COMMIT = readFile 'git_commit.env'
             //
             // Execute the publish script
             //
@@ -110,7 +122,7 @@ stage('Build') {
             //
             dir('fibo-infra') {
                 echo "Execute the publish-fibo.sh script:"
-                sh "set -x ; export GIT_BRANCH=${GIT_BRANCH} ; export GIT_TAG_NAME=${GIT_TAG_NAME} ; ./jenkins/bin/publish-fibo.sh"
+                sh "./jenkins/bin/publish-fibo.sh"
             }
             //
             // Archive the artifacts
@@ -127,9 +139,27 @@ stage('Build') {
     //
     "nomagic" : {
         node('nomagic') {
+
+            unstash 'git-vars'
+
+            def GIT_BRANCH = readFile 'git_branch.env'
+            def GIT_TAG_NAME = readFile 'git_tag_name.env'
+            def GIT_AUTHOR = readFile 'git_author.env'
+            def GIT_COMMIT = readFile 'git_commit.env'
+
+            //
+            // Moved these values out of the script to here, next step is to move them
+            // to Jenkins credentials
+            //
             def noMagicServer = "twc184.nomagic.com:3579"
             def noMagicUserid = "EDMCJenkins"
             def noMagicPasswd = "hZ7LQF_kmFV-6N2E"
+
+            //
+            // Show values as they come from Jenkins credentials:
+            //
+            echo "NOMAGIC_USERID=${env.NOMAGIC_USERID}"
+            echo "NOMAGIC_PASSWD=${env.NOMAGIC_PASSWD}"
 
             echo "unstash nomagic-templates"
             unstash 'nomagic-templates'
@@ -166,71 +196,95 @@ stage('Build') {
                 |unset DISPLAY
                 |whoami
                 |pwd
-                |
+                |export GIT_BRANCH=${GIT_BRANCH}
+                |export GIT_TAG_NAME=${GIT_TAG_NAME}
+                |mkdir -p "./target/fibo/glossary/${GIT_BRANCH}/${GIT_TAG_NAME}"
+                |find ./target -ls
+                |report_wizard_dir="/home/ec2-user/MagicDraw/plugins/com.nomagic.magicdraw.reportwizard"
                 |#/home/ec2-user/dev.sh
-                |/home/ec2-user/MagicDraw/plugins/com.nomagic.magicdraw.reportwizard/generate.sh \\
+                |\${report_wizard_dir}/generate.sh \\
                 |    -login "${noMagicUserid}" \\
                 |    -server "${noMagicServer}" \\
                 |    -password "${noMagicPasswd}" \\
                 |    -project "FIBO-Master" \\
                 |    -template "Natural Language Glossary" \\
                 |    -package "Release;Provisional;Informative" \\
-                |    -output "DEVELOPMENT.html" \\
+                |    -output "./target/fibo/glossary/${GIT_BRANCH}/${GIT_TAG_NAME}/development.html" \\
                 |    -servertype "twcloud" \\
                 |    -report "Default Development FIBO"
                 |rc=\$?
                 |echo rc=\${rc}
                 |
                 |#/home/ec2-user/prod.sh
-                |/home/ec2-user/MagicDraw/plugins/com.nomagic.magicdraw.reportwizard/generate.sh \\
+                |\${report_wizard_dir}/generate.sh \\
                 |    -login "${noMagicUserid}" \\
                 |    -server "${noMagicServer}" \\
                 |    -password "${noMagicPasswd}" \\
                 |    -project "FIBO-Master" \\
                 |    -template "Natural Language Glossary" \\
                 |    -package "Release" \\
-                |    -output "PRODUCTION.html" \\
+                |    -output "./target/fibo/glossary/${GIT_BRANCH}/${GIT_TAG_NAME}/production.html" \\
                 |    -servertype "twcloud" \\
                 |    -report "Default Production FIBO"
                 |rc=\$?
                 |echo rc=\${rc}
                 |
-                |cp /home/ec2-user/MagicDraw/plugins/com.nomagic.magicdraw.reportwizard/*.html .
+                |cp \${report_wizard_dir}/*.html .
                 |
-                |cp -r /home/ec2-user/MagicDraw/plugins/com.nomagic.magicdraw.reportwizard/resources .
+                |cp -r \${report_wizard_dir}/resources .
                 |
-                |sed -i DEVELOPMENT.html -e 's!<br>!<br/>!g'
-                |sed -i PRODUCTION.html -e 's!<br>!<br/>!g'
+            """.stripMargin('|')
+
+            dir("target/fibo/glossary") {
+                sh 'pwd ; ls -al'
+                dir("${GIT_BRANCH}/${GIT_TAG_NAME}") {
+                    sh 'pwd ; ls -al'
+                    sh """
+                        |#!/bin/bash -x
+                        |
+                        |#
+                        |# Make sure that lines that do not return 0 do NOT kill this script:
+                        |#
+                        |set +e
+                        |                
+                        |sed -i development.html -e 's!<br>!<br/>!g'
+                        |sed -i production.html -e 's!<br>!<br/>!g'
+                        |
+                        |sed -e '/<script /,/<\\/script>/d' development.html > devin.html
+                        |sed -e '/<script /,/<\\/script>/d' production.html > prodin.html
+                    """.stripMargin('|')
+                }
+            }
+            sh """
+                |#!/bin/bash -x
                 |
-                |sed -e '/<script /,/<\\/script>/d' DEVELOPMENT.html > DEVIN.html
-                |sed -e '/<script /,/<\\/script>/d' PRODUCTION.html > PRODIN.html
-                |
+                |#
+                |# Make sure that lines that do not return 0 do NOT kill this script:
+                |#
+                |set +e
+                |                
                 |chmod a+x ./bin/SaxonHE9-8-0-4J/*.jar
                 |
                 |java \\
                 |    -cp ./bin/SaxonHE9-8-0-4J/saxon9he.jar \\
                 |    net.sf.saxon.Transform \\
-                |    -o:datadictionaryDEV.csv \\
+                |    -o:./target/fibo/glossary/${GIT_BRANCH}/${GIT_TAG_NAME}/datadictionaryDEV.csv \\
                 |    -xsl:./jenkins/bin/glossary-to-csv.xsl \\
-                |    DEVIN.html
+                |    ./target/fibo/glossary/${GIT_BRANCH}/${GIT_TAG_NAME}/devin.html
                 |
                 |java \\
                 |    -cp ./bin/SaxonHE9-8-0-4J/saxon9he.jar \\
                 |    net.sf.saxon.Transform \\
-                |    -o:datadictionaryPROD.csv \\
+                |    -o:./target/fibo/glossary/${GIT_BRANCH}/${GIT_TAG_NAME}/datadictionaryPROD.csv \\
                 |    -xsl:./jenkins/bin/glossary-to-csv.xsl \\
-                |    PRODIN.html
-                |
-                |#cat /home/ec2-user/dev.sh
-                |#cat /home/ec2-user/prod.sh
-                |cat /home/ec2-user/MagicDraw/plugins/com.nomagic.magicdraw.reportwizard/generate.sh
+                |    ./target/fibo/glossary/${GIT_BRANCH}/${GIT_TAG_NAME}/prodin.html
             """.stripMargin('|')
 
             //
             // Now publish the artifacts generated in this stage to the Jenkins master so that they can be unstashed
             // from there into the next stage.
             //
-            stash includes: '*.html, *.csv', name: 'nomagic-output'
+            stash includes: 'target/**', name: 'nomagic-output'
         }
     }
 }
@@ -245,6 +299,17 @@ stage('Publish') {
     //
     //
     node('stardog') {
+
+        unstash 'git-vars'
+
+        GIT_BRANCH = readFile 'git_branch.env'
+        echo "GIT_BRANCH=${GIT_BRANCH}"
+        GIT_TAG_NAME = readFile 'git_tag_name.env'
+        echo "GIT_TAG_NAME=${GIT_TAG_NAME}"
+        GIT_AUTHOR = readFile 'git_author.env'
+        echo "GIT_AUTHOR=${GIT_AUTHOR}"
+        GIT_COMMIT = readFile 'git_commit.env'
+        echo "GIT_COMMIT=${GIT_COMMIT}"
 
         dir('target') {
 
