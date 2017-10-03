@@ -70,6 +70,10 @@ stage('Prepare') {
             // Stash the nomagic templates so that they can be unstashed on the nomagix box
             //
             stash includes: 'magicdraw/Concept Modeler/**', name: 'nomagic-templates'
+            //
+            // Stash all the tools in the bin directory
+            //
+            stash includes: 'bin/**', name: 'infra-bin'
         }
         //
         // Then check out the LCC repo into the ./LCC directory
@@ -123,7 +127,19 @@ stage('Build') {
     //
     "nomagic" : {
         node('nomagic') {
+            def noMagicServer = "twc184.nomagic.com:3579"
+            def noMagicUserid = "EDMCJenkins"
+            def noMagicPasswd = "hZ7LQF_kmFV-6N2E"
+
+            echo "unstash nomagic-templates"
             unstash 'nomagic-templates'
+            sh 'ls -al'
+
+            echo "unstash infra-bin"
+            unstash 'infra-bin'
+            sh 'ls -al'
+            sh 'ls bin/ -al'
+
             echo "Executing generate script on the nomagic box"
             //
             // Copy the nomagic templates (as they are stored in the fibo-infra repo)
@@ -134,19 +150,28 @@ stage('Build') {
                 sh 'find .'
                 sh 'cp -vr . /home/ec2-user/MagicDraw/data/defaults/data/reports/Concept\\ Modeler/'
             }
-
+            //
+            // JG>DA, the string "FIBO-master" in the call to nomagic (the value for the -project arg), is that a
+            //    hardcoded name for the project in NoMagic? Os should that be FIBO-<branch>?
+            //
             sh """
                 |#!/bin/bash -x
                 |
-                |export DISPLAY=localhost:10.0
+                |#
+                |# Make sure that lines that do not return 0 do NOT kill this script:
+                |#
+                |set +e
+                |
+                |#export DISPLAY=localhost:10.0
+                |unset DISPLAY
                 |whoami
                 |pwd
                 |
                 |#/home/ec2-user/dev.sh
                 |/home/ec2-user/MagicDraw/plugins/com.nomagic.magicdraw.reportwizard/generate.sh \\
-                |    -login "EDMCJenkins" \\
-                |    -server "twc184.nomagic.com:3579" \\
-                |    -password "hZ7LQF_kmFV-6N2E" \\
+                |    -login "${noMagicUserid}" \\
+                |    -server "${noMagicServer}" \\
+                |    -password "${noMagicPasswd}" \\
                 |    -project "FIBO-Master" \\
                 |    -template "Natural Language Glossary" \\
                 |    -package "Release;Provisional;Informative" \\
@@ -158,9 +183,9 @@ stage('Build') {
                 |
                 |#/home/ec2-user/prod.sh
                 |/home/ec2-user/MagicDraw/plugins/com.nomagic.magicdraw.reportwizard/generate.sh \\
-                |    -login "EDMCJenkins" \\
-                |    -server "twc184.nomagic.com:3579" \\
-                |    -password "hZ7LQF_kmFV-6N2E" \\
+                |    -login "${noMagicUserid}" \\
+                |    -server "${noMagicServer}" \\
+                |    -password "${noMagicPasswd}" \\
                 |    -project "FIBO-Master" \\
                 |    -template "Natural Language Glossary" \\
                 |    -package "Release" \\
@@ -180,16 +205,17 @@ stage('Build') {
                 |sed -e '/<script /,/<\\/script>/d' DEVELOPMENT.html > DEVIN.html
                 |sed -e '/<script /,/<\\/script>/d' PRODUCTION.html > PRODIN.html
                 |
-                |chmod a+x  ~/workspace/NoMagic/fibo-publish-nomagic/bin/SaxonHE9-8-0-4J/*.jar
+                |chmod a+x ./bin/SaxonHE9-8-0-4J/*.jar
                 |
                 |java \\
-                |    -cp ~/workspace/NoMagic/fibo-publish-nomagic/bin/SaxonHE9-8-0-4J/saxon9he.jar \\
+                |    -cp ./bin/SaxonHE9-8-0-4J/saxon9he.jar \\
                 |    net.sf.saxon.Transform \\
                 |    -o:datadictionaryDEV.csv \\
                 |    -xsl:./jenkins/bin/glossary-to-csv.xsl \\
                 |    DEVIN.html
+                |
                 |java \\
-                |    -cp ~/workspace/NoMagic/fibo-publish-nomagic/bin/SaxonHE9-8-0-4J/saxon9he.jar \\
+                |    -cp ./bin/SaxonHE9-8-0-4J/saxon9he.jar \\
                 |    net.sf.saxon.Transform \\
                 |    -o:datadictionaryPROD.csv \\
                 |    -xsl:./jenkins/bin/glossary-to-csv.xsl \\
@@ -198,42 +224,6 @@ stage('Build') {
                 |#cat /home/ec2-user/dev.sh
                 |#cat /home/ec2-user/prod.sh
                 |cat /home/ec2-user/MagicDraw/plugins/com.nomagic.magicdraw.reportwizard/generate.sh
-                |
-                |#exit 0
-                |## Below this line is the code that JG put there as an alternative to the above (newer) code
-                |
-                |#unset DISPLAY
-                |
-                |#if ! cd /home/ec2-user/MagicDraw ; then
-                |#    echo "Could not find MagicDraw directory"
-                |#    exit 1
-                |#fi
-                |#if ! cd ./plugins/com.nomagic.magicdraw.reportwizard ; then
-                |#    echo "Could not find MagicDraw report wizard"
-                |#    exit 1
-                |#fi
-                |
-                |#./generate.sh \\
-                |#    -login "EDMCJenkins" \\
-                |#    -server "twc184.nomagic.com:3579" \\
-                |#    -password "hZ7LQF_kmFV-6N2E" \\
-                |#    -project "FIBO-Master" \\
-                |#    -template "Natural Language Glossary for FIBO versions" \\
-                |#    -package "Release;Provisional;Informative" \\
-                |#    -output "${WORKSPACE}/development.html" \\
-                |#    -servertype "twcloud" \\
-                |#    -report "Development"
-                |
-                |#./generate.sh \\
-                |#    -login "EDMCJenkins" \\
-                |#    -server "twc184.nomagic.com:3579" \\
-                |#    -password "hZ7LQF_kmFV-6N2E" \\
-                |#    -project "FIBO-Master" \\
-                |#    -template "Natural Language Glossary for FIBO versions" \\
-                |#    -package "Release" \\
-                |#    -output "${WORKSPACE}/production.html" \\
-                |#    -servertype "twcloud" \\
-                |#    -report "Production"
             """.stripMargin('|')
 
             //
