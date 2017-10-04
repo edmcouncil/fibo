@@ -1,8 +1,8 @@
 #!/bin/bash -x
 #
 find .
-export GIT_BRANCH=$(<gitbranch)
-export GIT_TAG_NAME=$(<gittagname)
+export GIT_BRANCH=$(< git_branch.env)
+export GIT_TAG_NAME=$(< git_tag_name.env)
 
 echo GIT_BRANCH=${GIT_BRANCH}
 echo GIT_TAG_NAME=${GIT_TAG_NAME}
