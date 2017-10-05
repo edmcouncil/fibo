@@ -15,314 +15,287 @@ properties([
     pipelineTriggers([])
 ])
 
+echo "env.BRANCH_NAME=${env.BRANCH_NAME} 1"
+
 GIT_BRANCH = ""
 GIT_TAG_NAME = ""
 
-environment {
-    NOMAGIC_CREDS = credentials('50cac519-d41c-4765-8563-c43b7f55c877')
-    NOMAGIC_USERID = "${env.NOMAGIC_CREDS_USR}"
-    NOMAGIC_PASSWD = "${env.NOMAGIC_CREDS_PSW}"
-}
+family = "fibo"
+products = "ontology widoco glossary vocabulary"
+spec_root = "./target"
+family_root = "${spec_root}/${family}"
 
+spec_root_url="https://spec.edmcouncil.org"
 
 stage('Prepare') {
-    //
-    // Run the prepare stage on the stardog node, check out all the repos there
-    //
-    // NOTE: For now it' the stardog node since we have more processing power there and there are things
-    // installed there that we don't have on the jenkins master (such as "nix.sh")
-    //
-    node('stardog') {
-        //
-        // Copy the rdf-toolkit.jar file artifact from the rdf-toolkit-build job (pre-requisite for running publish script)
-        //
-        step([$class: 'CopyArtifact', filter: '**/rdf-toolkit.jar', fingerprintArtifacts: true, flatten: true, projectName: 'rdf-toolkit-build'])
-        //
-        // Copy the pellet jar from the build-pellet job
-        //
-        step([$class: 'CopyArtifact', filter: '**/pellet-cli-*.jar', fingerprintArtifacts: true, flatten: true, projectName: 'build-pellet', target: 'pellet'])
-        //
-        // Check out the fibo repo' content into the ./fibo directory
-        //
-        dir('fibo') {
-            checkout scm
-            echo 'Checked out fibo repo'
-            sh 'ls -al'
-            dir('etc/process') {
-                stash includes: 'fibo-copy-to-site.sh', name: 'fibo-copy-to-site-script'
-            }
 
-            GIT_BRANCH = sh returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD'
-        }
-        //
-        // Then check out the fibo-infra repo content into the ./fibo-infra directory
-        //
-        dir('fibo-infra') {
-            //
-            // If you want to check out a specific version of fibo-infra add the "branch:" parameter
-            //
-            //git branch: 'INFRA-161', credentialsId: 'edmcjenkins_at_edmcouncil.org', url: 'git@github.com:edmcouncil/fibo-infra.git'
-            //
-            git credentialsId: 'edmcjenkins_at_edmcouncil.org', url: 'git@github.com:edmcouncil/fibo-infra.git'
-            echo 'Checked out fibo-infra repo'
-            //
-            // Stash the nomagic templates so that they can be unstashed on the nomagix box
-            //
-            stash includes: 'magicdraw/Concept Modeler/**', name: 'nomagic-templates'
-            //
-            // Stash all the tools in the bin directory
-            //
-            stash includes: 'bin/**', name: 'infra-bin'
-            //
-            // The run the init command on the fibo-publish script which will set all the GIT_* vars correctly and
-            // store their values in some .env files.
-            //
-            sh './jenkins/bin/publish-fibo.sh init'
-            stash includes: '*.env', name: 'git-vars'
+  //setGitHubPullRequestStatus context: 'fibo-publish', message: '', state: 'PENDING'
 
-            GIT_BRANCH = readFile 'git_branch.env'
-            echo "GIT_BRANCH=${GIT_BRANCH}"
-            GIT_TAG_NAME = readFile 'git_tag_name.env'
-            echo "GIT_TAG_NAME=${GIT_TAG_NAME}"
-            GIT_AUTHOR = readFile 'git_author.env'
-            echo "GIT_AUTHOR=${GIT_AUTHOR}"
-            GIT_COMMIT = readFile 'git_commit.env'
-            echo "GIT_COMMIT=${GIT_COMMIT}"
-        }
-        //
-        // Then check out the LCC repo into the ./LCC directory
-        //
-        dir('LCC') {
-            git url: 'https://github.com/edmcouncil/LCC.git', credentialsId: 'edmcjenkins'
-            echo 'Checked out the LCC repo'
-        }
-        echo 'Checked it all out'
+  //
+  // Run the prepare stage on the stardog node, check out all the repos there
+  //
+  // NOTE: For now it' the stardog node since we have more processing power there and there are things
+  // installed there that we don't have on the jenkins master (such as "nix.sh")
+  //
+  node('stardog') {
+    //
+    // Clean the workspace on this node
+    //
+    sh "rm -rf ${spec_root}"
+    sh "mkdir -p ${spec_root}"
+
+    //
+    // Copy the rdf-toolkit.jar file artifact from the rdf-toolkit-build job (pre-requisite for running publish script)
+    //
+    step([$class: 'CopyArtifact', filter: '**/rdf-toolkit.jar', fingerprintArtifacts: true, flatten: true, projectName: 'rdf-toolkit-build'])
+    //
+    // Copy the pellet jar from the build-pellet job
+    //
+    step([$class: 'CopyArtifact', filter: '**/pellet-cli-*.jar', fingerprintArtifacts: true, flatten: true, projectName: 'build-pellet', target: 'pellet'])
+    //
+    // Check out the fibo repo' content into the ./fibo directory
+    //
+    dir('fibo') {
+      checkout scm
+      echo 'Checked out fibo repo'
+      sh 'ls -al'
+      dir('etc/process') {
+        stash includes: 'fibo-copy-to-site.sh', name: 'fibo-copy-to-site-script'
+      }
     }
+    //
+    // Then check out the fibo-infra repo content into the ./fibo-infra directory
+    //
+    dir('fibo-infra') {
+      //
+      // If you want to check out a specific version of fibo-infra add the "branch:" parameter
+      //
+      //git branch: 'INFRA-161', credentialsId: 'edmcjenkins_at_edmcouncil.org', url: 'git@github.com:edmcouncil/fibo-infra.git'
+      //
+      git credentialsId: 'edmcjenkins_at_edmcouncil.org', url: 'git@github.com:edmcouncil/fibo-infra.git'
+      echo 'Checked out fibo-infra repo'
+      //
+      // Stash the nomagic templates so that they can be unstashed on the nomagix box
+      //
+      stash includes: 'magicdraw/Concept Modeler/**', name: 'nomagic-templates'
+      //
+      // Stash all the tools in the bin directory
+      //
+      stash includes: 'bin/**', name: 'infra-bin'
+      //
+      // Stash all the jenkins related stuff in the jenkins directory
+      //
+      stash includes: 'jenkins/**', name: 'infra-jenkins'
+      //
+      // The run the init command on the fibo-publish script which will set all the GIT_* vars correctly and
+      // store their values in some .env files.
+      //
+      sh './jenkins/bin/publish-fibo.sh init'
+      stash includes: '*.env', name: 'git-vars'
+
+      GIT_BRANCH = readFile 'git_branch.env'
+      echo "GIT_BRANCH=${GIT_BRANCH}"
+      GIT_TAG_NAME = readFile 'git_tag_name.env'
+      echo "GIT_TAG_NAME=${GIT_TAG_NAME}"
+      GIT_AUTHOR = readFile 'git_author.env'
+      echo "GIT_AUTHOR=${GIT_AUTHOR}"
+      GIT_COMMIT = readFile 'git_commit.env'
+      echo "GIT_COMMIT=${GIT_COMMIT}"
+    }
+    //
+    // Then check out the LCC repo into the ./LCC directory
+    //
+    dir('LCC') {
+      git url: 'https://github.com/edmcouncil/LCC.git', credentialsId: 'edmcjenkins'
+      echo 'Checked out the LCC repo'
+    }
+    echo 'Checked it all out'
+  }
+
+  node('nomagic') {
+    //
+    // Clean the workspace on this node
+    //
+    sh "rm -rf ${spec_root}"
+    sh "mkdir -p ${spec_root}"
+
+    //
+    // Copy the rdf-toolkit.jar file artifact from the rdf-toolkit-build job (pre-requisite for running publish script)
+    //
+    step([$class: 'CopyArtifact', filter: '**/rdf-toolkit.jar', fingerprintArtifacts: true, flatten: true, projectName: 'rdf-toolkit-build'])
+
+    dir('fibo') {
+      checkout scm
+      echo 'Checked out fibo repo'
+    }
+
+    echo "unstash nomagic-templates"
+    unstash 'nomagic-templates'
+    sh 'ls -al'
+
+    echo "unstash infra-bin"
+    unstash 'infra-bin'
+    sh 'ls -al'
+    sh 'ls bin/ -al'
+
+    echo "unstash infra-jenkins"
+    unstash 'infra-jenkins'
+    sh 'ls -al'
+    sh 'ls jenkins/ -al'
+
+    //
+    // Copy the nomagic templates (as they are stored in the fibo-infra repo)
+    // to the right location
+    //
+    dir('magicdraw/Concept Modeler') {
+      sh 'pwd'
+      sh 'find .'
+      sh 'cp -vr . /home/ec2-user/MagicDraw/data/defaults/data/reports/Concept\\ Modeler/'
+    }
+  }
 }
 
 stage('Build') {
-    //
-    // Run on the stardog node
-    //
-    // NOTE: For now it' the stardog node since we have more processing power there and there are things
-    // installed there that we don't have on the jenkins master (such as "nix.sh")
-    //
-    parallel "publish-script" : {
-        node('stardog') {
-            unstash 'git-vars'
+  //
+  // Run on the stardog node
+  //
+  // NOTE: For now it' the stardog node since we have more processing power there and there are things
+  // installed there that we don't have on the jenkins master (such as "nix.sh")
+  //
+  parallel "publish-script" : {
+    node('stardog') {
 
-            def GIT_BRANCH = readFile 'git_branch.env'
-            def GIT_TAG_NAME = readFile 'git_tag_name.env'
-            def GIT_AUTHOR = readFile 'git_author.env'
-            def GIT_COMMIT = readFile 'git_commit.env'
-            //
-            // Execute the publish script
-            //
-            // TODO: Split this script up in separate "stages" in this repository
-            //
-            dir('fibo-infra') {
-                echo "Execute the publish-fibo.sh script:"
-                sh "./jenkins/bin/publish-fibo.sh"
-            }
-            //
-            // Archive the artifacts
-            //
-            //archiveArtifacts artifacts: 'target/**', fingerprint: true, onlyIfSuccessful: true
-            //
-            // Also via stash. If this works, the archiveArtifacts line abpve is not needed
-            //
-            stash includes: 'target/**', name: 'fibo-publish-script'
+      unstash 'git-vars'
+
+      def GIT_BRANCH    = readFile 'git_branch.env'
+      def GIT_TAG_NAME  = readFile 'git_tag_name.env'
+      def GIT_AUTHOR    = readFile 'git_author.env'
+      def GIT_COMMIT    = readFile 'git_commit.env'
+
+      withEnv(['NODE_LABEL=stardog']) {
+        //
+        // Execute the publish script
+        //
+        // TODO: Split this script up in separate "stages" in this repository
+        //
+        dir('fibo-infra') {
+          echo "Execute the publish-fibo.sh script:"
+          sh "./jenkins/bin/publish-fibo.sh"
         }
-    },
-    //
-    // Build the artifacts that that need the nomagic installation
-    //
-    "nomagic" : {
-        node('nomagic') {
+      }
 
-            unstash 'git-vars'
-
-            def GIT_BRANCH = readFile 'git_branch.env'
-            def GIT_TAG_NAME = readFile 'git_tag_name.env'
-            def GIT_AUTHOR = readFile 'git_author.env'
-            def GIT_COMMIT = readFile 'git_commit.env'
-
-            //
-            // Moved these values out of the script to here, next step is to move them
-            // to Jenkins credentials
-            //
-            def noMagicServer = "twc184.nomagic.com:3579"
-            def noMagicUserid = "EDMCJenkins"
-            def noMagicPasswd = "hZ7LQF_kmFV-6N2E"
-
-            //
-            // Show values as they come from Jenkins credentials:
-            //
-            echo "NOMAGIC_USERID=${env.NOMAGIC_USERID}"
-            echo "NOMAGIC_PASSWD=${env.NOMAGIC_PASSWD}"
-
-            echo "unstash nomagic-templates"
-            unstash 'nomagic-templates'
-            sh 'ls -al'
-
-            echo "unstash infra-bin"
-            unstash 'infra-bin'
-            sh 'ls -al'
-            sh 'ls bin/ -al'
-
-            echo "Executing generate script on the nomagic box"
-            //
-            // Copy the nomagic templates (as they are stored in the fibo-infra repo)
-            // to the right location
-            //
-            dir('magicdraw/Concept Modeler') {
-                sh 'pwd'
-                sh 'find .'
-                sh 'cp -vr . /home/ec2-user/MagicDraw/data/defaults/data/reports/Concept\\ Modeler/'
-            }
-            //
-            // JG>DA, the string "FIBO-master" in the call to nomagic (the value for the -project arg), is that a
-            //    hardcoded name for the project in NoMagic? Os should that be FIBO-<branch>?
-            //
-            sh """
-                |#!/bin/bash -x
-                |
-                |#
-                |# Make sure that lines that do not return 0 do NOT kill this script:
-                |#
-                |set +e
-                |
-                |#export DISPLAY=localhost:10.0
-                |unset DISPLAY
-                |whoami
-                |pwd
-                |export GIT_BRANCH=${GIT_BRANCH}
-                |export GIT_TAG_NAME=${GIT_TAG_NAME}
-                |mkdir -p "./target/fibo/glossary/${GIT_BRANCH}/${GIT_TAG_NAME}"
-                |find ./target -ls
-                |report_wizard_dir="/home/ec2-user/MagicDraw/plugins/com.nomagic.magicdraw.reportwizard"
-                |#/home/ec2-user/dev.sh
-                |\${report_wizard_dir}/generate.sh \\
-                |    -login "${noMagicUserid}" \\
-                |    -server "${noMagicServer}" \\
-                |    -password "${noMagicPasswd}" \\
-                |    -project "FIBO-Master" \\
-                |    -template "Natural Language Glossary" \\
-                |    -package "Release;Provisional;Informative" \\
-                |    -output "./target/fibo/glossary/${GIT_BRANCH}/${GIT_TAG_NAME}/development.html" \\
-                |    -servertype "twcloud" \\
-                |    -report "Default Development FIBO"
-                |rc=\$?
-                |echo rc=\${rc}
-                |
-                |#/home/ec2-user/prod.sh
-                |\${report_wizard_dir}/generate.sh \\
-                |    -login "${noMagicUserid}" \\
-                |    -server "${noMagicServer}" \\
-                |    -password "${noMagicPasswd}" \\
-                |    -project "FIBO-Master" \\
-                |    -template "Natural Language Glossary" \\
-                |    -package "Release" \\
-                |    -output "./target/fibo/glossary/${GIT_BRANCH}/${GIT_TAG_NAME}/production.html" \\
-                |    -servertype "twcloud" \\
-                |    -report "Default Production FIBO"
-                |rc=\$?
-                |echo rc=\${rc}
-                |
-                |cp \${report_wizard_dir}/*.html .
-                |
-                |cp -r \${report_wizard_dir}/resources .
-                |
-            """.stripMargin('|')
-
-            dir("target/fibo/glossary") {
-                sh 'pwd ; ls -al'
-                dir("${GIT_BRANCH}/${GIT_TAG_NAME}") {
-                    sh 'pwd ; ls -al'
-                    sh """
-                        |#!/bin/bash -x
-                        |
-                        |#
-                        |# Make sure that lines that do not return 0 do NOT kill this script:
-                        |#
-                        |set +e
-                        |                
-                        |sed -i development.html -e 's!<br>!<br/>!g'
-                        |sed -i production.html -e 's!<br>!<br/>!g'
-                        |
-                        |sed -e '/<script /,/<\\/script>/d' development.html > devin.html
-                        |sed -e '/<script /,/<\\/script>/d' production.html > prodin.html
-                    """.stripMargin('|')
-                }
-            }
-            sh """
-                |#!/bin/bash -x
-                |
-                |#
-                |# Make sure that lines that do not return 0 do NOT kill this script:
-                |#
-                |set +e
-                |                
-                |chmod a+x ./bin/SaxonHE9-8-0-4J/*.jar
-                |
-                |java \\
-                |    -cp ./bin/SaxonHE9-8-0-4J/saxon9he.jar \\
-                |    net.sf.saxon.Transform \\
-                |    -o:./target/fibo/glossary/${GIT_BRANCH}/${GIT_TAG_NAME}/datadictionaryDEV.csv \\
-                |    -xsl:./jenkins/bin/glossary-to-csv.xsl \\
-                |    ./target/fibo/glossary/${GIT_BRANCH}/${GIT_TAG_NAME}/devin.html
-                |
-                |java \\
-                |    -cp ./bin/SaxonHE9-8-0-4J/saxon9he.jar \\
-                |    net.sf.saxon.Transform \\
-                |    -o:./target/fibo/glossary/${GIT_BRANCH}/${GIT_TAG_NAME}/datadictionaryPROD.csv \\
-                |    -xsl:./jenkins/bin/glossary-to-csv.xsl \\
-                |    ./target/fibo/glossary/${GIT_BRANCH}/${GIT_TAG_NAME}/prodin.html
-            """.stripMargin('|')
-
-            //
-            // Now publish the artifacts generated in this stage to the Jenkins master so that they can be unstashed
-            // from there into the next stage.
-            //
-            stash includes: 'target/**', name: 'nomagic-output'
-        }
+      //
+      // Archive the artifacts generated by the publish-fibo.sh script
+      //
+      dir('target') {
+        stash includes: '**', name: 'publish-script-output-stardog-node'
+      }
     }
+  },
+  //
+  // Build the artifacts that that need the nomagic installation
+  //
+  "nomagic" : {
+    node('nomagic') {
+
+      unstash 'git-vars'
+
+      def GIT_BRANCH    = readFile 'git_branch.env'
+      def GIT_TAG_NAME  = readFile 'git_tag_name.env'
+      def GIT_AUTHOR    = readFile 'git_author.env'
+      def GIT_COMMIT    = readFile 'git_commit.env'
+
+      unstash 'infra-jenkins'
+
+      /* JG>Disabling this now until nomagic process actually gets its input from this job
+
+      withCredentials([
+        usernamePassword(
+          credentialsId: '50cac519-d41c-4765-8563-c43b7f55c877',
+          passwordVariable: 'NOMAGIC_USERID',
+          usernameVariable: 'NOMAGIC_PASSWD'
+        )
+      ]) {
+        echo "inside withCredentials block: NOMAGIC_USERID=${NOMAGIC_USERID}"
+        withEnv([
+          'NODE_LABEL=nomagic',
+          "NOMAGIC_USERID=${env.NOMAGIC_USERID}",
+          "NOMAGIC_PASSWD=${env.NOMAGIC_PASSWD}",
+          "NOMAGIC_SERVER=twc184.nomagic.com:3579"
+        ]) {
+
+          echo "inside withEnv() block:"
+          sh 'echo NODE_LABEL=\${NODE_LABEL}'
+          sh 'echo NOMAGIC_USERID=\${NOMAGIC_USERID}'
+          sh 'echo NOMAGIC_SERVER=\${NOMAGIC_SERVER}'
+          //
+          // Execute the publish script
+          //
+          // TODO: Split this script up in separate "stages" in this repository
+          //
+          echo "Execute the publish-fibo.sh script:"
+          sh "./jenkins/bin/publish-fibo.sh"
+        }
+      }
+      */
+      //
+      // Instead, we're just dumping the artifacts produced by the following job here and
+      // process it further just as if it has been generated here:
+      // https://jenkins.edmcouncil.org/job/NoMagic/job/fibo-publish-nomagic/
+      //
+      step([
+        $class: 'CopyArtifact',
+        excludes: '*.jar, *.csv',
+        filter: '**',
+        projectName: 'NoMagic/fibo-publish-nomagic',
+        target: "target/fibo/glossary/${GIT_BRANCH}/${GIT_TAG_NAME}"
+      ])
+      step([
+        $class: 'CopyArtifact',
+        excludes: '*.jar, *.html, *.css, *.js',
+        filter: '*.csv',
+        projectName: 'NoMagic/fibo-publish-nomagic',
+        target: "target/fibo/datadictionary/${GIT_BRANCH}/${GIT_TAG_NAME}"
+      ])
+
+      //
+      // Archive the artifacts generated by the publish-fibo.sh script
+      //
+      dir('target') {
+        stash includes: '**', name: 'publish-script-output-nomagic-node'
+      }
+    }
+  }
 }
 
 stage('Publish') {
-    //
-    // Run the publish on master by just copying all the generated artifacts right into the workspace
-    // on master and let NGINX just serve it from there.
-    //
-    // This workspace will never be "wiped" so it contains all the older versions as well, wiping this workspace
-    // will be bad because we would lose all previously published versions
-    //
-    //
-    node('stardog') {
+  //
+  // Run the publish on master by just copying all the generated artifacts right into the workspace
+  // on master and let NGINX just serve it from there.
+  //
+  // This workspace will never be "wiped" so it contains all the older versions as well, wiping this workspace
+  // will be bad because we would lose all previously published versions
+  //
+  node('master') {
 
-        unstash 'git-vars'
+    sh "test -d /mnt/jenkins-disk/spec.edmcouncil.org"
+    sh "rm -vrf ."
 
-        GIT_BRANCH = readFile 'git_branch.env'
-        echo "GIT_BRANCH=${GIT_BRANCH}"
-        GIT_TAG_NAME = readFile 'git_tag_name.env'
-        echo "GIT_TAG_NAME=${GIT_TAG_NAME}"
-        GIT_AUTHOR = readFile 'git_author.env'
-        echo "GIT_AUTHOR=${GIT_AUTHOR}"
-        GIT_COMMIT = readFile 'git_commit.env'
-        echo "GIT_COMMIT=${GIT_COMMIT}"
+    echo 'Unstashing the output of the publish-script as it ran on the stardog node'
+    unstash 'publish-script-output-stardog-node'
+    sh 'ls -al'
 
-        dir('target') {
+    /* JG>Disabling this now until nomagic process actually gets its input from this job
+    echo 'Unstashing the output of the publish-script as it ran on the nomagic node'
+    unstash 'publish-script-output-nomagic-node'
+    sh 'ls -al'
+    */
 
-            echo 'Unstashing nomagic output:'
-            unstash 'nomagic-output'
-            sh 'ls -al'
+    echo "Copy all generated content to /mnt/jenkins-disk/spec.edmcouncil.org:"
+    sh 'ls -al /mnt/jenkins-disk/spec.edmcouncil.org/'
+    sh 'cp -vr . /mnt/jenkins-disk/spec.edmcouncil.org/'
 
-            unstash 'fibo-copy-to-site-script'
-            sh './fibo-copy-to-site.sh'
-
-            sh 'ls -al /mnt/jenkins-disk/spec.edmcouncil.org/'
-            sh 'cp -vr . /mnt/jenkins-disk/spec.edmcouncil.org/'
-        }
-    }
+    //setGitHubPullRequestStatus context: 'fibo-publish', message: '', state: 'SUCCESS'
+  }
 }
 
