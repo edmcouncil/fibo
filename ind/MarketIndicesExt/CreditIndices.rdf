@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+	<!ENTITY fibo-fnd-acc-cur "https://spec.edmcouncil.org/fibo/FND/Accounting/CurrencyAmount/">
+	<!ENTITY fibo-fnd-tim-tim "https://spec.edmcouncil.org/fibo/FND/TimeExt/Time/">
+	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/">
+	<!ENTITY fibo-fnd-utlx-val "https://spec.edmcouncil.org/fibo/FND/UtilitiesExt/Values/">
+	<!ENTITY fibo-ind-mkt-cri "https://spec.edmcouncil.org/fibo/IND/MarketIndicesExt/CreditIndices/">
+	<!ENTITY fibo-md-temx-cre "https://spec.edmcouncil.org/fibo/MD/TemporalCore/CreditEvents/">
+	<!ENTITY fibo-md-temx-tem "https://spec.edmcouncil.org/fibo/MD/TemporalCore/TemporalConcepts/">
+	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
+	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
+	<!ENTITY skos "http://www.w3.org/2004/02/skos/core#">
+	<!ENTITY xsd "http://www.w3.org/2001/XMLSchema#">
+]>
+<rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/IND/MarketIndicesExt/CreditIndices/"
+	xmlns:fibo-fnd-acc-cur="https://spec.edmcouncil.org/fibo/FND/Accounting/CurrencyAmount/"
+	xmlns:fibo-fnd-tim-tim="https://spec.edmcouncil.org/fibo/FND/TimeExt/Time/"
+	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/"
+	xmlns:fibo-fnd-utlx-val="https://spec.edmcouncil.org/fibo/FND/UtilitiesExt/Values/"
+	xmlns:fibo-ind-mkt-cri="https://spec.edmcouncil.org/fibo/IND/MarketIndicesExt/CreditIndices/"
+	xmlns:fibo-md-temx-cre="https://spec.edmcouncil.org/fibo/MD/TemporalCore/CreditEvents/"
+	xmlns:fibo-md-temx-tem="https://spec.edmcouncil.org/fibo/MD/TemporalCore/TemporalConcepts/"
+	xmlns:owl="http://www.w3.org/2002/07/owl#"
+	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+	xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema#">
+	
+	<owl:Ontology rdf:about="https://spec.edmcouncil.org/fibo/IND/MarketIndicesExt/CreditIndices/">
+		<rdfs:label xml:lang="en">CreditIndices</rdfs:label>
+		<owl:imports rdf:resource="http://www.w3.org/2004/02/skos/core"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/DER/CreditDerivatives/CreditDefaultSwaps/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FBC/ProductsAndServices/FinancialProductsAndServices/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/Accounting/CurrencyAmount/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/TimeExt/Time/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/UtilitiesExt/Values/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/IND/Indicators/Indicators/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/LOAN/Loans/LoanBasicTerms/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/MD/TemporalCore/CreditEvents/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/MD/TemporalCore/TemporalConcepts/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/SEC/Debt/DebtFoundationsExt/DebtInstrumentsExt/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/IND/MarketIndicesExt/CreditIndices/"/>
+		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Provisional"/>
+	</owl:Ontology>
+	
+	<owl:Class rdf:about="&fibo-ind-mkt-cri;BasketOfCreditRisks">
+		<rdfs:subClassOf rdf:resource="https://spec.edmcouncil.org/fibo/FBC/ProductsAndServices/FinancialProductsAndServices/Basket"/>
+		<rdfs:label xml:lang="en">basket of credit risks  (please review)</rdfs:label>
+		<skos:definition xml:lang="en">A basket of securities and / or legal entities, collected for the purpose of identifying risk.</skos:definition>
+		<skos:editorialNote xml:lang="en">From OTPP: Variety: Criteria for constituent entities is based on sectors (emerging market, financial, sovereign, etc), spread range (investment grade, non-investment grade), or asset type (loan, bond, mortgage-backed, asset-backed), second criteria is based on maturity of protection (2,3,5,7,10 yrs). As a result, I&apos;m aware of over 2000 CDS indexes that Markit manages. Constituents can be on multiple indexes, based on maturity, etc. Because the indexes are maturity specific, it makes sense to have an entity AND an instrument with the corresponding maturity (or close to it) to measure the credit-risk of default. Premiums are standard and set depending on the composite spread at the initiation of the index, with upfront-fees to get into a deal thereafter depending on changes in the MTM of the spread. The payout per constituent credit-event is ~ Notional x weight. Modeling notes: Whereas this may be a basket of securities just like a &quot;Basket&quot; in the sense used in reference indices and in derivatives with basket underlyers, in this instance the constituents of the basket are collected, and are defined as constituents, in the context of the credit risks that they represent and not in the context of their market price as securities.</skos:editorialNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-ind-mkt-cri;CreditIndex">
+		<rdfs:subClassOf rdf:resource="https://spec.edmcouncil.org/fibo/IND/Indicators/Indicators/MarketRate"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-ind-mkt-cri;representsRiskOf"/>
+				<owl:someValuesFrom rdf:resource="&fibo-ind-mkt-cri;BasketOfCreditRisks"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">credit index  (please review)</rdfs:label>
+		<skos:definition xml:lang="en">An index that is a function of credit events. These are Credit events occurring that change the value of an underlying portfolio.</skos:definition>
+		<skos:editorialNote xml:lang="en">Review session notes: Q: How does this differ from a basket of debt securities? A: Basket is defined as part of the contract. Whereas, with the Index, you don&apos;t reference the components. The index is based on a basket of risks (not a basket of debt instruments as such). So this is an indirection not a circularity as it is not an index of CDS contracts but of credit events as these effect a notional portfolio. In could be some form of valuation of underlying CDS (real or imagined). However this &quot;is&quot; the Reference Entity in the sense that it is what you refer to in order to determine the status of the portfolio, Contrast two types of CDS: Single Name and non singlename. With single name CDS: it&apos;s a binary process; if there&apos;s a default it&apos;s all over, as the contingent transaction kicks in. With indices if the index changes there would be partial payouts but the contract continues in existence,. It would pay out a portion of its value. The index indicates that some proportion has defaulted. Would deal with multi names. ALSO Index is not always a static portfolio, there may be proivisions for replacing defaulted securities. Need further research on the details. However, we only need to know them as something with a number and a publisher in order to model the CDS terms. See also: Credit Basket. This is locally defined and does form part of the CDS contract terms, but will have similar details to the index. SME Feedback - details of this term from OTPP: Because the indexes are maturity specific, it makes sense to have an entity AND an instrument with the corresponding maturity (or close to it) to measure the credit-risk of default. Premiums are standard and set depending on the composite spread at the initiation of the index, with upfront-fees to get into a deal thereafter depending on changes in the MTM of the spread. The payout per constituent credit-event is ~ Notional x weight. (cont&apos;d - examples from OTPP): Credit-events and Payouts - Similar to single-name, and triggered by a constituent. The constituent is removed, the Notional*weight is paid, the remaining notional lowered, and the weighting re-balanced. Can be physical or cash settled. Looks like cash settled is becoming more popular. Notionals can be large but the payouts are small because of the small weights. Eg. $250MM Notional, 125 entities, weight is 1/125 for a defaulting entity = $2MM (simplified) transfer.</skos:editorialNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-ind-mkt-cri;CreditIndexReferenceConstituent">
+		<rdfs:subClassOf rdf:resource="https://spec.edmcouncil.org/fibo/FBC/ProductsAndServices/FinancialProductsAndServices/BasketConstituent"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-ind-mkt-cri;isConstituentOf"/>
+				<owl:someValuesFrom rdf:resource="&fibo-ind-mkt-cri;BasketOfCreditRisks"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-ind-mkt-cri;refersTo"/>
+				<owl:someValuesFrom rdf:resource="&fibo-md-temx-cre;CreditEvent"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">credit index reference constituent  (please review)</rdfs:label>
+		<skos:definition xml:lang="en">A constituent of a basket of credit risks, such as that used in a credit index.</skos:definition>
+		<skos:editorialNote xml:lang="en">OTPP Note:: There will be a specific reference entity and a specific instrument per index - and only one instrument per entity, per index. note that a credi index constituent may be in principal also be loans (as with CDS also), in which case some of the terms here would not apply (specifically, the reference security identity if the Reference Entity has not also issued any such), however it&apos;s not clear how this would be treated.</skos:editorialNote>
+	</owl:Class>
+	
+	<owl:ObjectProperty rdf:about="&fibo-ind-mkt-cri;assetType">
+		<rdfs:label xml:lang="en">asset type  (please review)</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-ind-mkt-cri;CreditIndex"/>
+		<rdfs:range rdf:resource="&fibo-fnd-utlx-val;TextValue"/>
+		<skos:definition xml:lang="en">The types of asset which make up the index. Further notes: There is a variety of indices build around different common creiteria, of which this is one. Variety: asset type (loan, bond, mortgage-backed, asset-backed).</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-ind-mkt-cri;currency">
+		<rdfs:label xml:lang="en">currency  (please review)</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-ind-mkt-cri;CreditIndexReferenceConstituent"/>
+		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;Currency"/>
+		<skos:definition xml:lang="en">The currency in which the reference instrument is denominated.</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-ind-mkt-cri;currentNotionalValue">
+		<rdfs:label xml:lang="en">current notional value  (please review)</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-ind-mkt-cri;CreditIndex"/>
+		<rdfs:range rdf:resource="&fibo-md-temx-tem;DatedMonetaryAmount"/>
+		<skos:definition xml:lang="en">The notional amount of the index at the present time or at a defined point in the past.</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-ind-mkt-cri;debtRanking">
+		<rdfs:label xml:lang="en">debt ranking  (please review)</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-ind-mkt-cri;CreditIndexReferenceConstituent"/>
+		<rdfs:range rdf:resource="&fibo-fnd-utlx-val;TextValue"/>
+		<skos:definition xml:lang="en">An indication of the ranking of this debt.</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-ind-mkt-cri;indexConstituentID">
+		<rdfs:label xml:lang="en">index constituent i d  (please review)</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-ind-mkt-cri;CreditIndexReferenceConstituent"/>
+		<rdfs:range rdf:resource="&fibo-fnd-utlx-val;TextValue"/>
+		<skos:definition xml:lang="en">An identifier for this constituent of this index, published by the index provider. Further notes: Example: Markit REDCODE reference entity ID</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-ind-mkt-cri;indexName">
+		<rdfs:label xml:lang="en">index name  (please review)</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-ind-mkt-cri;CreditIndex"/>
+		<rdfs:range rdf:resource="&fibo-fnd-utlx-val;TextValue"/>
+		<skos:definition xml:lang="en">The formal name of the index.</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-ind-mkt-cri;isConstituentOf">
+		<rdfs:label xml:lang="en">is constituent of  (please review)</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-ind-mkt-cri;CreditIndexReferenceConstituent"/>
+		<rdfs:range rdf:resource="&fibo-ind-mkt-cri;BasketOfCreditRisks"/>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-ind-mkt-cri;maturity">
+		<rdfs:label xml:lang="en">maturity  (please review)</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-ind-mkt-cri;CreditIndex"/>
+		<rdfs:range rdf:resource="&fibo-fnd-tim-tim;KnownDateDuration"/>
+		<skos:definition xml:lang="en">The maturity of protection represented by the index as a length of time (dated duration specification).</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-ind-mkt-cri;maturity.1">
+		<rdfs:label xml:lang="en">maturity  (please review)</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-ind-mkt-cri;CreditIndexReferenceConstituent"/>
+		<rdfs:range rdf:resource="&fibo-md-temx-tem;DatedDurationSpecification"/>
+		<skos:definition xml:lang="en">The maturity of the instrument, specified as a length of time (dated duration specification). This is a specified duration, denominated in calendar units.</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-ind-mkt-cri;originalNotional">
+		<rdfs:label xml:lang="en">original notional  (please review)</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-ind-mkt-cri;CreditIndex"/>
+		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
+		<skos:definition xml:lang="en">The notional amount represented by the index when it is first constituted.</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-ind-mkt-cri;premium">
+		<rdfs:label xml:lang="en">premium  (please review)</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-ind-mkt-cri;CreditIndex"/>
+		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
+		<skos:definition xml:lang="en">A premium payable for a contract based on the index.</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-ind-mkt-cri;refersTo">
+		<rdfs:label xml:lang="en">refers to  (please review)</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-ind-mkt-cri;CreditIndexReferenceConstituent"/>
+		<rdfs:range rdf:resource="&fibo-md-temx-cre;CreditEvent"/>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-ind-mkt-cri;representsRiskOf">
+		<rdfs:label xml:lang="en">represents risk of  (please review)</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-ind-mkt-cri;CreditIndex"/>
+		<rdfs:range rdf:resource="&fibo-ind-mkt-cri;BasketOfCreditRisks"/>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-ind-mkt-cri;sector">
+		<rdfs:label xml:lang="en">sector  (please review)</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-ind-mkt-cri;CreditIndex"/>
+		<rdfs:range rdf:resource="&fibo-fnd-utlx-val;TextValue"/>
+		<skos:definition xml:lang="en">The sector from which constituents of the index are all drawn.</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-ind-mkt-cri;spreadRange">
+		<rdfs:label xml:lang="en">spread range  (please review)</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-ind-mkt-cri;CreditIndex"/>
+		<rdfs:range rdf:resource="&fibo-fnd-utlx-val;TextValue"/>
+		<skos:definition xml:lang="en">The range of credit spread for the constituents of the index.</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-ind-mkt-cri;tCM">
+		<rdfs:label xml:lang="en">t c m  (please review)</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-ind-mkt-cri;CreditIndexReferenceConstituent"/>
+		<rdfs:range rdf:resource="&fibo-fnd-utlx-val;TextValue"/>
+		<skos:definition xml:lang="en">Description of the reference instrument in TCM format (ticker-coupon-maturity).</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-ind-mkt-cri;ticker">
+		<rdfs:label xml:lang="en">ticker  (please review)</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-ind-mkt-cri;CreditIndexReferenceConstituent"/>
+		<rdfs:range rdf:resource="&fibo-fnd-utlx-val;TextValue"/>
+		<skos:definition xml:lang="en">A local ticker identifier for the index constituent.</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-ind-mkt-cri;upFrontFee">
+		<rdfs:label xml:lang="en">up front fee  (please review)</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-ind-mkt-cri;CreditIndex"/>
+		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
+		<skos:definition xml:lang="en">A fee payanle by any party that wishes to participate in a contract based on the index after the start of its life.</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-ind-mkt-cri;weight">
+		<rdfs:label xml:lang="en">weight  (please review)</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-ind-mkt-cri;CreditIndexReferenceConstituent"/>
+		<rdfs:range rdf:resource="&fibo-fnd-utlx-val;PercentageValue"/>
+		<skos:definition xml:lang="en">The percentage weight of this constituent in relation to the index as a whole.</skos:definition>
+	</owl:ObjectProperty>
+
+</rdf:RDF>
