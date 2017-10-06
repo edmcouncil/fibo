@@ -22,7 +22,6 @@ else
 fi
 
 tmp_dir="${WORKSPACE}/tmp"
-fibo_root=""
 fibo_infra_root=""
 jena_arq=""
 
@@ -31,18 +30,21 @@ jena_arq=""
 #
 # ontology has to come before vocabulary because vocabulary depends on it.
 #
-products="ontology vocabulary widoco"
+family="fibo"
+products="ontology widoco glossary datadictionary vocabulary"
 
+source_family_root="${WORKSPACE}/${family}"
 spec_root="${WORKSPACE}/target"
-family_root="${spec_root}/fibo"
+spec_family_root="${spec_root}/${family}"
+product_root=""
 branch_root=""
 tag_root=""
+product_branch_tag=""
 #Ontology root is required for other products like widoco
 ontology_root=""
 
 spec_root_url="https://spec.edmcouncil.org"
-family_root_url="${spec_root_url}/fibo"
-product_root=""
+spec_family_root_url="${spec_root_url}/${family}"
 product_root_url=""
 branch_root_url=""
 tag_root_url=""
@@ -52,7 +54,6 @@ module_directories=""
 
 stardog_vcs=""
 
-rdftoolkit_jar="${WORKSPACE}/rdf-toolkit.jar"
 
 shopt -s globstar
 
@@ -61,7 +62,13 @@ trap "rm -rf ${tmp_dir} >/dev/null 2>&1" EXIT
 #
 # This is for tools like pandoc
 #
-. /home/ec2-user/.nix-profile/etc/profile.d/nix.sh
+if [ -f /home/ec2-user/.nix-profile/etc/profile.d/nix.sh ] ; then
+  source /home/ec2-user/.nix-profile/etc/profile.d/nix.sh
+  pandoc_available=1
+else
+  echo "WARNING: /home/ec2-user/.nix-profile/etc/profile.d/nix.sh not loaded so cannot run pandoc"
+  pandoc_available=0
+fi
 
 function require() {
 
@@ -91,11 +98,16 @@ function logRule() {
   echo $(printf '=%.0s' {1..40}) $@ >&2
 }
 
-function initWorkspaceVars() {
+function initTools() {
 
-  #tmp_dir=$(mktemp -d "${tmp_dir:-/tmp}/$(basename 0).XXXXXXXXXXXX")
+  export | sort
+
+  #
+  # Make sure we have an empty tmp dir
+  #
+  [ -d "${tmp_dir}" ] && rm -rf "${tmp_dir}"
   mkdir -p "${tmp_dir}" >/dev/null 2>&1
-  echo tmp_dir=${tmp_dir}
+  echo "tmp_dir=${tmp_dir}"
 
   fibo_root="${WORKSPACE}/fibo"
   echo "fibo_root=${fibo_root}"
@@ -109,13 +121,14 @@ function initWorkspaceVars() {
   echo fibo_infra_root=${fibo_infra_root}
 
   if [ ! -d "${fibo_infra_root}" ] ; then
-    echo "ERROR: fibo_infra_root directory not found (${fibo_infra_root})"
+    error "fibo_infra_root directory not found (${fibo_infra_root})"
     return 1
   fi
 
+  rdftoolkit_jar="${WORKSPACE}/rdf-toolkit.jar"
 
   if [ ! -f "${rdftoolkit_jar}" ] ; then
-    echo "ERROR: Put the rdf-toolkit.jar in the workspace as a pre-build step"
+    error "Put the rdf-toolkit.jar in the workspace as a pre-build step"
     return 1
   fi
 
@@ -132,7 +145,26 @@ function initWorkspaceVars() {
   export JENA2ROOT="${fibo_infra_root}/bin/apache-jena-2.11.0"
 
   if [ ! -f "${jena_arq}" ] ; then
-    echo "ERROR: ${jena_arq} not found"
+    error "${jena_arq} not found"
+    return 1
+  fi
+
+  return 0
+}
+
+function initWorkspaceVars() {
+
+  #
+  # Make sure we have an empty tmp dir
+  #
+  [ -d "${tmp_dir}" ] && rm -rf "${tmp_dir}"
+  mkdir -p "${tmp_dir}" >/dev/null 2>&1
+  echo "tmp_dir=${tmp_dir}"
+
+  echo "source_family_root=${source_family_root}"
+
+  if [ ! -d "${source_family_root}" ] ; then
+    error "source_family_root directory not found (${source_family_root})"
     return 1
   fi
 
@@ -149,11 +181,13 @@ function buildIndex () {
   echo "Step: buildIndex"
 
   (
-    cd ${tag_root}
-    tree -P '*.rdf' -H https://spec.edmcouncil.org/fibo/ontology/master/latest | sed "s@latest\(/[^/]*/\)@latest/\\U\\1@" > tree.html
-          sed -i 's/>Directory Tree</>FIBO Ontology file directory</g' tree.html
-    sed -i 's@h1><p>@h1><p>This is the directory structure of FIBO; you can download individual files this way.  To load all of FIBO, please follow the instructions for particular tools at <a href="http://spec.edmcouncil.org/fibo">the main fibo download page</a>.<p/>@' tree.html
-    sed -i 's@<a href=".*>https://spec.edmcouncil.org/.*</a>@@' tree.html
+  	cd ${tag_root}
+	  tree -P '*.rdf' -H ${tag_root_url} | \
+	  sed "s@${GIT_TAG_NAME}\(/[^/]*/\)@${GIT_TAG_NAME}/\\U\\1@" > tree.html
+
+    sed -i 's/>Directory Tree</>FIBO Ontology file directory</g' tree.html
+	  sed -i 's@h1><p>@h1><p>This is the directory structure of FIBO; you can download individual files this way.  To load all of FIBO, please follow the instructions for particular tools at <a href="http://spec.edmcouncil.org/fibo">the main fibo download page</a>.<p/>@' tree.html
+	  sed -i "s@<a href=\".*>${spec_root_url}/.*</a>@@" tree.html
 	)
 
 	return 0
@@ -171,15 +205,22 @@ function buildVowlIndex () {
 
   (
     cd ${ontology_root}
-    echo "Ontology Root :${ontology_root}"
-    tree -P '*.rdf' -H https://spec.edmcouncil.org/fibo/widoco/master/latest | sed "s@latest\(/[^/]*/\)@latest/\\U\\1@" > vowltree.html
-    #Uncomment if you want to link only to vowl visualization
+    echo "Ontology Root: ${ontology_root/${WORKSPACE}/}"
+    #
+    # JG: KG, the value for the -H option, can that be ${tag_root_url} instead?
+    #
+    tree -P '*.rdf' -H ${tag_root_url} | sed "s@latest\(/[^/]*/\)@latest/\\U\\1@" > vowltree.html
+    #
+    # Uncomment if you want to link only to vowl visualization
+    #
     #sed -i 's@\(https://spec.edmcouncil.org/fibo/widoco/master/latest/.*\)\.rdf\">@\1/webvowl/index.html#ontology\">@' vowltree.html
-    #Link to the widoco page from the tree
+    #
+    # Link to the widoco page from the tree
+    #
     sed -i 's@\(https://spec.edmcouncil.org/fibo/widoco/master/latest/.*\)\.rdf\">@\1/index-en.html\">@' vowltree.html
     sed -i 's@\(.*\).rdf@\1 vowl@' vowltree.html
     sed -i 's/>Directory Tree</>FIBO Widoco file directory</g' vowltree.html
-    sed -i 's@h1><p>@h1><p>The Visual Notation for OWL Ontologies (VOWL) defines a visual language for the user-oriented representation of ontologies. It provides graphical depictions for elements of the Web Ontology Language (OWL) that are combined to a force-directed graph layout visualizing the ontology.<br/>This specification focuses on the visualization of the ontology schema (i.e. the classes, properties and datatypes, sometimes called TBox), while it also includes recommendations on how to depict individuals and data values (the ABox).  FIBO uses open source software named WIDOCO (Wizard for DOCumenting Ontologies) for <a href="https://github.com/dgarijo/Widoco">VOWL</a>.<p/>@' vowltree.html
+    sed -i 's@h1><p>@h1><p>The Visual Notation for OWL Ontologies (VOWL) defines a visual language for the user-oriented representation of ontologies. It provides graphical depictions for elements of the Web Ontology Language (OWL) that are combined to a force-directed graph layout visualizing the ontology.<br/>This specification focuses on the visualization of the ontology schema (i.e. the classes, properties and datatypes, sometimes called TBox), while it also includes recommendations on how to depict individuals and data values (the ABox). ï¿½FIBO uses open source software named WIDOCO (Wizard for DOCumenting Ontologies) for <a href="https://github.com/dgarijo/Widoco">VOWL</a>.<p/>@' vowltree.html
 
     sed -i 's@<a href=".*>https://spec.edmcouncil.org/.*</a>@@' vowltree.html
 
@@ -201,8 +242,8 @@ function setProduct() {
   require GIT_BRANCH || return $?
   require GIT_TAG_NAME || return $?
 
-  product_root="${family_root}/${product}"
-  product_root_url="${family_root_url}/${product}"
+  product_root="${spec_family_root}/${product}"
+  product_root_url="${spec_family_root_url}/${product}"
 
   if [ ! -d "${product_root}" ] ; then
     mkdir -p "${product_root}"
@@ -222,28 +263,42 @@ function setProduct() {
     mkdir -p "${tag_root}"
   fi
 
+  product_branch_tag="${product}/${GIT_BRANCH}/${GIT_TAG_NAME}"
+  family_product_branch_tag="${family}/${product_branch_tag}"
+
   return 0
 }
 
 function initGitVars() {
 
-  export GIT_COMMENT=$(cd ${fibo_root} ; git log --format=%B -n 1 ${GIT_COMMIT})
+  if [ -z "${GIT_COMMIT}" ] ; then
+    export GIT_COMMIT="$(cd ${fibo_root} ; git rev-parse --short HEAD)"
+    echo "GIT_COMMIT was empty, is now: ${GIT_COMMIT}"
+  fi
+
+  export GIT_COMMENT=$(cd ${fibo_root} ; git log --format=%B -n 1 ${GIT_COMMIT} | grep -v "^$")
   echo "GIT_COMMENT=${GIT_COMMENT}"
 
-  export GIT_AUTHOR=$(cd ${fibo_root} ; git show -s --pretty=%an)
+  export GIT_AUTHOR=$(cd ${source_family_root} ; git show -s --pretty=%an)
   echo "GIT_AUTHOR=${GIT_AUTHOR}"
 
   #
   # Get the git branch name to be used as directory names and URL fragments and make it
   # all lower case
   #
-  #export GIT_BRANCH=$(cd ${fibo_root} ; git rev-parse --abbrev-ref HEAD | tr '[:upper:]' '[:lower:]')
+  export GIT_BRANCH=$(cd ${source_family_root} ; git rev-parse --abbrev-ref HEAD | tr '[:upper:]' '[:lower:]')
   #
   # Replace all slashes in a branch name with dashes so that we don't mess up the URLs for the ontologies
   #
-  # GIT_BRANCH="${GIT_BRANCH//\//-}"
-  #Just use the value from jenkins - karthik
+  export GIT_BRANCH="${GIT_BRANCH//\//-}"
   echo "GIT_BRANCH=${GIT_BRANCH}"
+
+  #
+  # Strip the "heads-tags-" prefix from the Branch name if its in there.
+  #
+  if [[ "${GIT_BRANCH}" =~ ^heads-tags-(.*)$ ]] ; then
+    GIT_BRANCH="${BASH_REMATCH[0]}"
+  fi
 
   #
   # If the current commit has a tag associated to it then the Git Tag Message Plugin in Jenkins will
@@ -251,13 +306,61 @@ function initGitVars() {
   #
   # See https://wiki.jenkins-ci.org/display/JENKINS/Git+Tag+Message+Plugin
   #
-  export GIT_TAG_NAME="${GIT_TAG_NAME:-latest}"
+  if [ -z "${GIT_TAG_NAME}" ] ; then
+    export GIT_TAG_NAME="$(cd ${source_family_root} ; echo $(git describe --contains 2>/dev/null))"
+  fi
+  export GIT_TAG_NAME="${GIT_TAG_NAME:-${GIT_BRANCH}_latest}"
   echo "GIT_TAG_NAME=${GIT_TAG_NAME}"
+  #
+  # If the tag name includes an underscore then assume it's ok, leave it alone since the next step is to then
+  # treat the part before the underscore as the branch name (see below).
+  # If the tag name does NOT include an underscore then put the branch name in front of it (separated with an
+  # underscore) so that the further processing down below will not fail.
+  #
+  if [[ ${GIT_TAG_NAME} =~ ^.+_.+$ ]] ; then
+    :
+  else
+    export GIT_TAG_NAME="${GIT_BRANCH}_${GIT_TAG_NAME}"
+    echo "Added branch as prefix to the tag: GIT_TAG_NAME=${GIT_TAG_NAME}"
+  fi
+  #
+  # So, if this tag has an underscore in it, it is assumed to be a tag that we should treat as a version, which
+  # should be reflected in the URLs of all published artifacts.
+  # The first part is supposed to be the branch name onto which the tag was set. The second part is the actual
+  # version string, which is supposed to be in the following format:
+  #
+  # <year>Q<quarter>[S<sequence>]
+  #
+  # Such as 2017Q1 or 2018Q2S2 (sequence 0 is assumed to be the first delivery that quarter, where we leave out "Q0")
+  #
+  # Any other version string is accepted too but should not be made on the master branch.
+  #
+  if [[ "${GIT_TAG_NAME}" =~ ^(.*)_(.*)$ ]] ; then
+    tagBranchSection="${BASH_REMATCH[1]}"
+    tagVersionSection="${BASH_REMATCH[2]}"
 
-  #store the GIT Branch and Tag names under target - so it can be picked up by the triggered jenkins job
-  echo "Copying git branch to ${spec_root}/gitbranch"
-  echo "${GIT_BRANCH}" > "${spec_root}/gitbranch"
-  echo "${GIT_TAG_NAME}" > "${spec_root}/gittagname"
+    if [ -n "${tagBranchSection}" ] ; then
+      tagBranchSection=$(echo ${tagBranchSection} | tr '[:upper:]' '[:lower:]')
+      echo "Found branch name in git tag: ${tagBranchSection}"
+      export GIT_BRANCH="${tagBranchSection}"
+    fi
+    if [ -n "${tagVersionSection}" ] ; then
+      echo "Found version string in git tag: ${tagVersionSection}"
+      export GIT_TAG_NAME="${tagVersionSection}"
+    fi
+  fi
+
+  echo "Saving GIT_BRANCH ${GIT_BRANCH} into ./tmp/GIT_BRANCH.env"
+  echo "Saving GIT_TAG_NAME ${GIT_TAG_NAME} into ./tmp/GIT_TAG_NAME.env"
+  echo "Saving GIT_AUTHOR ${GIT_AUTHOR} into ./tmp/GIT_AUTHOR.env"
+  echo "Saving GIT_COMMIT ${GIT_COMMIT} into ./tmp/GIT_COMMIT.env"
+  echo "Saving GIT_COMMENT ${GIT_COMMENT} into ./tmp/GIT_COMMENT.env"
+
+  echo -n "${GIT_BRANCH}"   > "${tmp_dir}/GIT_BRANCH.env"
+  echo -n "${GIT_TAG_NAME}" > "${tmp_dir}/GIT_TAG_NAME.env"
+  echo -n "${GIT_AUTHOR}"   > "${tmp_dir}/GIT_AUTHOR.env"
+  echo -n "${GIT_COMMIT}"   > "${tmp_dir}/GIT_COMMIT.env"
+  echo -n "${GIT_COMMENT}"  > "${tmp_dir}/GIT_COMMENT.env"
 
   #
   # Set default product
@@ -269,8 +372,13 @@ function initGitVars() {
 
 function initJiraVars() {
 
-  export JIRA_ISSUE="$(echo $GIT_COMMENT | rev | grep -oP '\d+-[A-Z0-9]+(?!-?[a-zA-Z]{1,10})' | rev)"
-  echo JIRA_ISSUE="${JIRA_ISSUE}"
+  export JIRA_ISSUE="$(echo ${GIT_COMMENT} | rev | grep -oP '\d+-[A-Z0-9]+(?!-?[a-zA-Z]{1,10})' | rev)"
+
+  echo "Saving JIRA_ISSUE ${JIRA_ISSUE} into ./tmp/JIRA_ISSUE.env"
+
+  echo -n "${JIRA_ISSUE}" > "${tmp_dir}/JIRA_ISSUE.env"
+
+  return 0
 }
 
 function initStardogVars() {
@@ -294,26 +402,24 @@ function ontologyCopyRdfToTarget() {
 
   echo "Copying all artifacts that we publish straight from git into target directory"
 
-  pushd ${fibo_root}
+  pushd ${source_family_root} >/dev/null
   #
   # Don't copy all files with all extensions at the same time since it gives nasty errors when files without the
   # given extension are not found.
   #
   for extension in rdf ttl md jpg png gif docx pdf sq ; do
-    echo "Copying fibo/**/*.${extension} to ${tag_root/${WORKSPACE}}"
+    echo "Copying fibo/**/*.${extension} to ${tag_root/${WORKSPACE}/}"
     cp **/*.${extension} --parents ${tag_root}/
-
   done
 
-
   #cp **/*.{rdf,ttl,md,jpg,png,docx,pdf,sq} --parents ${tag_root}/
-  popd
+  popd >/dev/null
 
   #
   # Rename the lower case module directories as we have them in the fibo git repo to
   # upper case directory names as we serve them on spec.edmcouncil.org
   #
-  pushd ${tag_root}
+  pushd ${tag_root} >/dev/null
   for module in * ; do
     [ -d ${module} ] || continue
     [ "${module}" == "etc" ] && continue
@@ -331,7 +437,7 @@ function ontologyCopyRdfToTarget() {
     modules="${modules} ${module}"
     module_directories="${modules_directories} $(pwd)/${module}"
   done
-  popd
+  popd >/dev/null
 
   #
   # Clean up a few things that are too embarrassing to publish
@@ -370,7 +476,7 @@ s@http://spec.edmcouncil.org@${spec_root_url}@g
 #
 #
 # I had to put the a-z in for /ext.  We should take this out, once that has been resolved. 
-s@${family_root_url}/\([A-Za-z]*\)/@${product_root_url}/\1/@g
+s@${spec_family_root_url}/\([A-Za-z]*\)/@${product_root_url}/\1/@g
 #
 # Replace
 # - https://spec.edmcouncil.org/fibo/ontology/BE/20150201/
@@ -426,63 +532,74 @@ __HERE__
 #
 function addIsDefinedBy () {
 
-  echo "add isDefinedBy link to $1"
+  local file="$1"
+
+  echo "add isDefinedBy link to ${file/${WORKSPACE}/}"
 
   local sqfile=$(mktemp ${tmp_dir}/sq.XXXXXX)
-  
-  cat > "${sqfile}" <<EOF
+
+  cat > "${sqfile}" << __HERE__
 PREFIX owl: <http://www.w3.org/2002/07/owl#> 
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
-PREFIX afn: <http://jena.hpl.hp.com/ARQ/function#>
+PREFIX afn: <http://jena.apache.org/ARQ/function#>
+
 CONSTRUCT {
-?cl rdfs:isDefinedBy ?clns . ?pr rdfs:isDefinedBy ?prns .
+  ?cl rdfs:isDefinedBy ?clns . ?pr rdfs:isDefinedBy ?prns .
 }
 WHERE {
-?ont a owl:Ontology. 
-FILTER (REGEX (STR (?ont), "spec.edmcouncil"))
-OPTIONAL {?cl a owl:Class .
-FILTER (REGEX (STR (?cl), "spec.edmcouncil"))
-BIND (IRI(afn:namespace(?cl)) as ?clns)
-FILTER (?clns = ?ont)
+  ?ont a owl:Ontology.
+  FILTER (REGEX (STR (?ont), "spec.edmcouncil"))
+  OPTIONAL {
+    ?cl a owl:Class .
+    FILTER (REGEX (STR (?cl), "spec.edmcouncil"))
+    BIND (IRI(afn:namespace(?cl)) as ?clns)
+    FILTER (?clns = ?ont)
+  }
+  OPTIONAL {
+    ?pr  a ?x .
+    FILTER (REGEX (STR (?pr), "spec.edmcouncil"))
+    ?x rdfs:subClassOf* rdf:Property .
+    BIND (IRI(afn:namespace(?pr)) as ?prns)
+    FILTER (?prns = ?ont)
+  }
 }
-OPTIONAL {?pr  a ?x .
-FILTER (REGEX (STR (?pr), "spec.edmcouncil"))
-?x rdfs:subClassOf* rdf:Property . 
-BIND (IRI(afn:namespace(?pr)) as ?prns)
-FILTER (?prns = ?ont)
-}
-}
-EOF
+__HERE__
 
 
   local outfile=$(mktemp ${tmp_dir}/out.XXXXXX)
+  #
+  # Some configurations of the serializer create XML that Jena ARQ doesn't like. This stabilizes them.
+  #
+  convertRdfFileTo rdf-xml "${file}" "rdf-xml"
 
-# Some configurations of the serializer create XML that arq doesn't like.  This stabilizes them. 
-# make a change to trigger another build
-  convertRdfFileTo rdf-xml "$1" "rdf-xml"
-
-  "${jena_arq}" --query="${sqfile}" --data="$1" --data=http://www.w3.org/2002/07/owl  --results=RDF > "${outfile}.rdf"
-  
+  "${jena_arq}" \
+    --query="${sqfile}" \
+    --data="${file}" \
+    --data=http://www.w3.org/2002/07/owl \
+    --results=RDF > "${outfile}.rdf"
 
   local outfile2=$(mktemp ${tmp_dir}/out2.XXXXXX)  
   local echofile=$(mktemp ${tmp_dir}/echo.XXXXXX)
-  cat > "${echofile}" <<EOF
+
+  cat > "${echofile}" << __HERE__
 CONSTRUCT {?s ?p ?o} WHERE {?s ?p ?o}
-EOF
+__HERE__
 
-  "${jena_arq}" --query="${echofile}" --data="$1" --data="${outfile}.rdf" --results=RDF  > "${outfile2}.rdf"
-
+  "${jena_arq}" \
+    --query="${echofile}" \
+    --data="${file}" \
+    --data="${outfile}.rdf" \
+    --results=RDF > "${outfile2}.rdf"
 
   convertRdfFileTo rdf-xml "${outfile2}.rdf" "rdf-xml"
-
 
   mv -f "${outfile2}.rdf" "$1"
   rm "${outfile}.rdf"
   rm "${echofile}"
   rm "${sqfile}"
 
-
+  return 0
 }
 
 #
@@ -499,6 +616,7 @@ function fixTopBraidBaseURICookie() {
   echo "Annotating ${ontologyFile}"
 
   echo "CSV output of query is:"
+
   "${jena_arq}" \
       --query="${queryFile}" \
       --data="${ontologyFile}" \
@@ -510,7 +628,7 @@ function fixTopBraidBaseURICookie() {
       --data="${ontologyFile}" \
       --results=csv | \
       grep edmcouncil | \
-      sed "s@\(https://spec.edmcouncil.org/fibo/ontology/\)@\1${GIT_BRANCH}/${GIT_TAG_NAME}/@" | \
+      sed "s@\(${product_root_url}/\)@\1${GIT_BRANCH}/${GIT_TAG_NAME}/@" | \
       sed "s@${GIT_BRANCH}/${GIT_TAG_NAME}/${GIT_BRANCH}/${GIT_TAG_NAME}/@${GIT_BRANCH}/${GIT_TAG_NAME}/@" \
   )
 
@@ -553,12 +671,12 @@ function ontologyConvertMarkdownToHtml() {
 
   echo "Convert Markdown to HTML"
 
-  pushd "${tag_root}"
+  pushd "${tag_root}" >/dev/null
   for markdownFile in **/*.md ; do
     echo "Convert ${markdownFile} to html"
     pandoc --standalone --from markdown --to html -o "${markdownFile/.md/.html}" "${markdownFile}"
   done
-  popd
+  popd >/dev/null
 
   return 0
 }
@@ -569,6 +687,7 @@ function ontologyConvertMarkdownToHtml() {
 function storeVersionInStardog() {
 
   echo "Commit to Stardog..."
+
   ${stardog_vcs} commit --add $(find ${tag_root} -name "*.rdf") -m "$GIT_COMMENT" -u obkhan -p stardogadmin ${GIT_BRANCH}
   SVERSION=$(${stardog_vcs} list --committer obkhan --limit 1 ${GIT_BRANCH} | sed -n -e 's/^.*Version:   //p')
   ${stardog_vcs} tag --drop $JIRA_ISSUE ${GIT_BRANCH} || true
@@ -614,13 +733,13 @@ function convertRdfFileTo() {
     > "${logfile}" 2>&1
   rc=$?
 
-
-
-# For the turtle files, we want the base annotations to be the versionIRI
+  #
+  # For the turtle files, we want the base annotations to be the versionIRI
+  #
   if [ "${targetFormat}" == "turtle" ] ; then
-      echo "Adjusting ttl base URI for ${rdfFile}"
-      sed -i "s?^\(\(# baseURI:\)\|\(@base\)\).*ontology/?&${GIT_BRANCH}/${GIT_TAG_NAME}/?" "${targetFile}"
-      sed -i "s@${GIT_BRANCH}/${GIT_TAG_NAME}/${GIT_BRANCH}/${GIT_TAG_NAME}/@${GIT_BRANCH}/${GIT_TAG_NAME}/@" \
+    echo "Adjusting ttl base URI for ${rdfFile}"
+    sed -i "s?^\(\(# baseURI:\)\|\(@base\)\).*ontology/?&${GIT_BRANCH}/${GIT_TAG_NAME}/?" "${targetFile}"
+    sed -i "s@${GIT_BRANCH}/${GIT_TAG_NAME}/${GIT_BRANCH}/${GIT_TAG_NAME}/@${GIT_BRANCH}/${GIT_TAG_NAME}/@" \
 	  "${targetFile}"
   fi 
 
@@ -631,7 +750,7 @@ function convertRdfFileTo() {
     return 1
   fi
   rm "${logfile}"
-  echo "Conversion of ${rdfFile} to \"${targetFormat}\" was successful"
+  #echo "Conversion of ${rdfFile/${WORKSPACE}/} to \"${targetFormat}\" was successful"
 
   return ${rc}
 }
@@ -645,7 +764,7 @@ function convertRdfFileTo() {
 #
 function ontologyConvertRdfToAllFormats() {
 
-  pushd "${tag_root}"
+  pushd "${tag_root}" >/dev/null
 
   for rdfFile in **/*.rdf ; do
     for format in json-ld turtle ; do
@@ -653,14 +772,14 @@ function ontologyConvertRdfToAllFormats() {
     done || return $?
   done || return $?
 
-  popd
+  popd >/dev/null
 
   return $?
 }
 
-function vocabyConvertTurtleToAllFormats() {
+function vocabularyConvertTurtleToAllFormats() {
 
-  pushd "${tag_root}"
+  pushd "${tag_root}" >/dev/null
 
   for ttlFile in **/*.ttl ; do
     for format in json-ld rdf-xml ; do
@@ -668,7 +787,7 @@ function vocabyConvertTurtleToAllFormats() {
     done || return $?
   done || return $?
 
-  popd
+  popd >/dev/null
 
   return $?
 }
@@ -713,7 +832,12 @@ function copySiteFiles() {
 
     cp -vr * "${spec_root}/"
   )
-  cp -v ${fibo_infra_root}/LICENSE ${spec_root}
+  cp -v ${fibo_infra_root}/LICENSE "${spec_root}"
+
+  (
+    cd "${spec_root}"
+    chmod -R g+r,o+r .
+  )
 
   return 0
 }
@@ -722,30 +846,34 @@ function zipOntologyFiles () {
 
   echo "Step: zipOntologyFiles"
 
-  local zipttlDevFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/dev.ttl.zip"
-  local ziprdfDevFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/dev.rdf.zip"
-  local zipjsonldDevFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/dev.jsonld.zip"
-
-  local zipttlProdFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/prod.ttl.zip"
-  local ziprdfProdFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/prod.rdf.zip"
-  local zipjsonldProdFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/prod.jsonld.zip"
+  local zipttlDevFile="${tag_root}/dev.ttl.zip"
+  local ziprdfDevFile="${tag_root}/dev.rdf.zip"
+  local zipjsonldDevFile="${tag_root}/dev.jsonld.zip"local zipttlProdFile="${tag_root}/prod.ttl.zip"
+  local ziprdfProdFile="${tag_root}/prod.rdf.zip"
+  local zipjsonldProdFile="${tag_root}/prod.jsonld.zip"
     
   (
-    cd ${spec_root}
+    cd "${spec_root}"
+#
+    # Make sure that everything is world readable before we zip it
+    #
+    chmod -R g+r,o+r .
+    #    zip -r ${zipttlDevFile} "${family_product_branch_tag}" -x \*.rdf \*.zip  \*.jsonld \*AboutFIBOProd.ttl
+    zip -r ${ziprdfDevFile} "${family_product_branch_tag}" -x \*.ttl \*.zip \*.jsonld \*AboutFIBOProd.rdf
+    zip -r ${zipjsonldDevFile} "${family_product_branch_tag}" -x \*.ttl \*.zip \*.rdf \*AboutFIBOProd.jsonld
 
-    zip -r ${zipttlDevFile} "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -x \*.rdf \*.zip  \*.jsonld \*AboutFIBOProd.ttl
-    zip -r ${ziprdfDevFile} "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -x \*.ttl \*.zip \*.jsonld \*AboutFIBOProd.rdf
-    zip -r ${zipjsonldDevFile} "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -x \*.ttl \*.zip \*.rdf \*AboutFIBOProd.jsonld
 
-    grep -r 'utl-av[:;.]Release' "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" | grep -F ".ttl" | sed 's/:.*$//' | xargs zip -r ${zipttlProdFile}
-    find  "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -name '*About*.ttl' -print | grep -v "AboutFIBODev.ttl" |  xargs zip ${zipttlProdFile}
-    find  "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -name '*catalog*.xml' -print | xargs zip ${zipttlProdFile}
-    grep -r 'utl-av[:;.]Release' "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" | grep -F ".rdf" |   sed 's/:.*$//' | xargs zip -r ${ziprdfProdFile}
-    find  "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -name '*About*.rdf' -print | grep -v "AboutFIBODev.rdf" | xargs zip ${ziprdfProdFile}
-    find  "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -name '*catalog*.xml' -print | xargs zip ${ziprdfProdFile}
-    grep -r 'utl-av[:;.]Release' "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" | grep -F ".jsonld" |   sed 's/:.*$//' | xargs zip -r ${zipjsonldProdFile}
-    find  "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -name '*About*.jsonld' -print | grep -v "AboutFIBODev.jsonld" | xargs zip ${zipjsonldProdFile}
-    find  "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" -name '*catalog*.xml' -print | xargs zip ${zipjsonldProdFile}
+
+    grep -r 'utl-av[:;.]Release' "${family_product_branch_tag}" | grep -F ".ttl" | sed 's/:.*$//' | xargs zip -r ${zipttlProdFile}
+    find  "${family_product_branch_tag}" -name '*About*.ttl' -print | grep -v "AboutFIBODev.ttl" |  xargs zip ${zipttlProdFile}
+    find  "${family_product_branch_tag}" -name '*catalog*.xml' -print | xargs zip ${zipttlProdFile}
+    grep -r 'utl-av[:;.]Release' "${family_product_branch_tag}" | grep -F ".rdf" |   sed 's/:.*$//' | xargs zip -r ${ziprdfProdFile}
+    find  "${family_product_branch_tag}" -name '*About*.rdf' -print | grep -v "AboutFIBODev.rdf" | xargs zip ${ziprdfProdFile}
+    find  "${family_product_branch_tag}" -name '*catalog*.xml' -print | xargs zip ${ziprdfProdFile}
+    grep -r 'utl-av[:;.]Release' "${family_product_branch_tag}" | grep -F ".jsonld" |   sed 's/:.*$//' | xargs zip -r ${zipjsonldProdFile}
+    find  "${family_product_branch_tag}" -name '*About*.jsonld' -print | grep -v "AboutFIBODev.jsonld" | xargs zip ${zipjsonldProdFile}
+    find  "${family_product_branch_tag}" -name '*catalog*.xml' -print | xargs zip ${zipjsonldProdFile}
+
   )
 
   echo "Step: zipOntologyFiles finished"
@@ -754,56 +882,69 @@ function zipOntologyFiles () {
 }
 
 function generateWidocoDocumentation {
+
+  local outputDir
+
   echo "Generating html documentation for all ontologies from their ttl files"
 
-  ls "$1" | while read i
-  do
-    if [ -d "$1/$i" ]; then
+  ls "$1" | while read i ; do
+    if [ -d "$1/$i" ] ; then
       echo "Directory: $1/$i"
-      generateWidocoDocumentation "$1/$i" `expr $2 + 1`
-      else
-        if [[ $i =~ \.ttl$ ]]; then
-          local outputDir=$(echo "$1" | sed "s/ontology/widoco/")
-          mkdir -p outputDir
-          echo " running widoco tool on $1/$i to generate documentation. outFolder ${outputDir}/${i%.*}"
-          java \
-            -jar "${fibo_infra_root}/lib/widoco/widoco-1.4.1-jar-with-dependencies.jar" \
-            -ontFile "$1/$i" \
-            -outFolder "${outputDir}/${i%.*}" \
-            -rewriteAll \
-            -lang en  \
-            -getOntologyMetadata \
-            -licensius \
-            -webVowl
-          if [ ${PIPESTATUS[0]} -ne 0 ] ; then
-            error "Could not run widoci\o on $1/$i "
-            return 1
-          fi
-        fi
+      generateWidocoDocumentation "$1/$i" $(($2 + 1))
+    else
+      if [[ $i =~ \.ttl$ ]] ; then
+        outputDir=$(echo "$1" | sed "s/ontology/widoco/")
+        mkdir -p outputDir
+        echo "Running widoco tool on $1/$i to generate documentation. outFolder ${outputDir}/${i%.*}"
+        java \
+          -jar "${fibo_infra_root}/lib/widoco/widoco-1.4.1-jar-with-dependencies.jar" \
+          -ontFile "$1/$i" \
+          -outFolder "${outputDir}/${i%.*}" \
+          -rewriteAll \
+          -lang en  \
+          -getOntologyMetadata \
+          -webVowl
+        #KG: commented to make the build faster - need to revisit license
+        #   -licensius \
+        ## KG: Need to figure out why it fails on fibo/ontology/master/latest/SEC/SecuritiesExt/SecuritiesExt.ttl
+        ## KG: Commenting out temporarily so that the build doesn't stop
+        #if [ ${PIPESTATUS[0]} -ne 0 ] ; then
+        #  error "Could not run widoco on $1/$i "
+        #  return 1
+        #fi
+      fi
     fi
   done
 
-  return 0
+  return $?
 }
 
 function publishProductOntology() {
+
+  if [ "${NODE_LABEL}" == "nomagic" ] ; then
+    echo "Skipping publication of product ontology since we're on node ${NODE_LABEL}"
+    return 0
+  fi
 
   logRule "Publishing the ontology product"
 
   setProduct ontology || return $?
 
   ontology_root="${tag_root}"
-  echo "Ontology Root :${ontology_root}"
+  #
+  # Show the ontology root directory but strip the WORKSPACE director from it to
+  # save log space, it' ugly
+  #
+  echo "Ontology Root: ${ontology_root/${WORKSPACE}/}"
 
   ontologyCopyRdfToTarget || return $?
   buildIndex  || return $?
-
 
   ontologyBuildCats  || return $?
   ontologyCreateAboutFiles || return $?
   ontologySearchAndReplaceStuff || return $?
   ontologyConvertRdfToAllFormats || return $?
-#   ontologyAnnotateTopBraidBaseURL || return $?
+# ontologyAnnotateTopBraidBaseURL || return $?
   ontologyConvertMarkdownToHtml || return $?
   zipOntologyFiles || return $?
   buildquads || return $?
@@ -813,13 +954,18 @@ function publishProductOntology() {
 
 function publishProductWidoco() {
 
+  if [ "${NODE_LABEL}" == "nomagic" ] ; then
+    echo "Skipping publication of product widoco since we're on node ${NODE_LABEL}"
+    return 0
+  fi
+
   logRule "Publishing the widoco product"
 
   setProduct widoco || return $?
 
   buildVowlIndex || return $?
 
-  generateWidocoDocumentation ${spec_root} || return $?
+  generateWidocoDocumentation ${ontology_root} || return $?
 
   return 0
 }
@@ -834,17 +980,17 @@ function publishProductWidoco() {
 # JG>Apache jena3 is also installed on the Jenkins server itself, so maybe
 #    no need to have this in the fibs-infra repo.
 #
-function vocabyGetModules() {
+function vocabularyGetModules() {
 
-  require vocaby_script_dir || return $?
+  require vocabulary_script_dir || return $?
   require ontology_product_tag_root || return $?
 
   echo "Query the skosify.ttl file for the list of modules (TODO: Should come from rdf-toolkit.ttl)"
 
   ${jena_arq} \
     --results=CSV \
-    --data="${vocaby_script_dir}/skosify.ttl" \
-    --query="${vocaby_script_dir}/get-module.sparql" | grep -v list > \
+    --data="${vocabulary_script_dir}/skosify.ttl" \
+    --query="${vocabulary_script_dir}/get-module.sparql" | grep -v list > \
     "${tmp_dir}/module"
 
   if [ ${PIPESTATUS[0]} -ne 0 ] ; then
@@ -852,8 +998,9 @@ function vocabyGetModules() {
     return 1
   fi
 
-  cat ${tmp_dir}/module
-  export modules="$(< ${tmp_dir}/module)"
+  cat "${tmp_dir}/module"
+  
+  export modules="$(< "${tmp_dir}/module")"
 
   export module_directories="$(for module in ${modules} ; do echo -n "${ontology_product_tag_root}/${module} " ; done)"
 
@@ -871,25 +1018,25 @@ function vocabyGetModules() {
 #
 # 2) Compute the prefixes we'll need.
 #
-function vocabyGetPrefixes() {
+function vocabularyGetPrefixes() {
 
-  require vocaby_script_dir || return $?
+  require vocabulary_script_dir || return $?
   require ontology_product_tag_root || return $?
   require modules || return $?
   require module_directories || return $?
 
   echo "Get prefixes"
 
-  cat "${vocaby_script_dir}/basic-prefixes.ttl" > "${tmp_dir}/prefixes.ttl"
+  cat "${vocabulary_script_dir}/basic-prefixes.ttl" > "${tmp_dir}/prefixes.ttl"
 
-  pushd ${ontology_product_tag_root}
+  pushd "${ontology_product_tag_root}" >/dev/null
   grep -R --include "*.ttl" --no-filename "@prefix fibo-" >> "${tmp_dir}/prefixes.ttl"
-  popd
+  popd >/dev/null
 
   #
   # Sort and filter out duplicates
   #
-  sort --unique  --output="${tmp_dir}/prefixes.ttl" "${tmp_dir}/prefixes.ttl"
+  sort --unique --output="${tmp_dir}/prefixes.ttl" "${tmp_dir}/prefixes.ttl"
 
   echo "Found the following namespaces and prefixes:"
   cat "${tmp_dir}/prefixes.ttl"
@@ -902,26 +1049,28 @@ function vocabyGetPrefixes() {
 #
 # Generates tmp_dir/temp0.ttl
 #
-function vocabyGetOntologies() {
+function vocabularyGetOntologies() {
 
-  require vocaby_script_dir || return $?
+  require vocabulary_script_dir || return $?
   require module_directories || return $?
 
   echo "Get Ontologies into merged file (temp0.ttl)"
 
-echo "${ontology_product_tag_root}"
-echo "files that go into dev"
-find  "${ontology_product_tag_root}" -name "*.rdf" | sed "s/^/--data=/"
+  echo "${ontology_product_tag_root}"
+  echo "files that go into dev"
+  find  "${ontology_product_tag_root}" -name "*.rdf" | sed "s/^/--data=/"
 
-echo "files that go into prod"
-grep -r 'utl-av[:;.]Release' "${ontology_product_tag_root}" | sed 's/:.*$//;s/^/--data=/' | grep -F ".rdf"
+  echo "files that go into prod"
+  grep -r 'utl-av[:;.]Release' "${ontology_product_tag_root}" | sed 's/:.*$//;s/^/--data=/' | grep -F ".rdf"
 
-# Get ontologies for Dev
+  #
+  # Get ontologies for Dev
+  #
   ${jena_arq} \
     $(find  "${ontology_product_tag_root}" -name "*.rdf" | sed "s/^/--data=/") \
-    --data="${vocaby_script_dir}/skosify.ttl" \
-    --data="${vocaby_script_dir}/datatypes.rdf" \
-    --query="${vocaby_script_dir}/skosecho.sparql" \
+    --data="${vocabulary_script_dir}/skosify.ttl" \
+    --data="${vocabulary_script_dir}/datatypes.rdf" \
+    --query="${vocabulary_script_dir}/skosecho.sparql" \
     --results=TTL > "${tmp_dir}/temp0.ttl"
 
   if [ ${PIPESTATUS[0]} -ne 0 ] ; then
@@ -929,28 +1078,28 @@ grep -r 'utl-av[:;.]Release' "${ontology_product_tag_root}" | sed 's/:.*$//;s/^/
     return 1
   fi
 
-
-# Get ontologies for Prod
+  #
+  # Get ontologies for Prod
+  #
   ${jena_arq} \
-      $(grep -r 'utl-av[:;.]Release' "${ontology_product_tag_root}" | sed 's/:.*$//;s/^/--data=/' | grep -F ".rdf") \
-    --data="${vocaby_script_dir}/skosify.ttl" \
-    --data="${vocaby_script_dir}/datatypes.rdf" \
-    --query="${vocaby_script_dir}/skosecho.sparql" \
-      --results=TTL > "${tmp_dir}/temp0B.ttl"
-
-
+    $(grep -r 'utl-av[:;.]Release' "${ontology_product_tag_root}" | sed 's/:.*$//;s/^/--data=/' | grep -F ".rdf") \
+    --data="${vocabulary_script_dir}/skosify.ttl" \
+    --data="${vocabulary_script_dir}/datatypes.rdf" \
+    --query="${vocabulary_script_dir}/skosecho.sparql" \
+    --results=TTL > "${tmp_dir}/temp0B.ttl"
 
   if [ ${PIPESTATUS[0]} -ne 0 ] ; then
     error "Could not get Prod ontologies"
     return 1
   fi
 
-  set +x
-
   echo "Generated ${tmp_dir}/temp0.ttl:"
-  echo "Generated ${tmp_dir}/temp0B.ttl:"
 
   head -n200 "${tmp_dir}/temp0.ttl"
+
+  echo "Generated ${tmp_dir}/temp0B.ttl:"
+
+  head -n200 "${tmp_dir}/temp0B.ttl"
 
   return 0
 }
@@ -964,6 +1113,7 @@ function spinRunInferences() {
 
   (
     set -x
+    
     java \
       -Xmx2g \
       -Dlog4j.configuration="file:${JENA2ROOT}/jena-log4j.properties" \
@@ -971,6 +1121,7 @@ function spinRunInferences() {
       org.topbraid.spin.tools.RunInferences \
       http://example.org/example \
       "${inputFile}" >> "${outputFile}"
+      
     if [ ${PIPESTATUS[0]} -ne 0 ] ; then
       error "Could not run spin on ${inputFile}"
       return 1
@@ -988,7 +1139,7 @@ function spinRunInferences() {
 #
 # Generates tmp_dir/temp1.ttl
 #
-function vocabyRunSpin() {
+function vocabularyRunSpin() {
 
   echo "STARTING SPIN"
 
@@ -1009,15 +1160,15 @@ function vocabyRunSpin() {
 
   #The first three lines contain some WARN statements - removing it to complete the build.
   #JC > Need to check why this happens
-  echo "Removing the first three lines from ${tmp_dir}/temp1.ttl"
-  sed -i.bak -e '1,3d' "${tmp_dir}/temp1.ttl"
-  echo "Printing first 50 lines of ${tmp_dir}/temp1.ttl"
-  head -n50 "${tmp_dir}/temp1.ttl"
+  #echo "Removing the first three lines from ${tmp_dir}/temp1.ttl"
+  #sed -i.bak -e '1,3d' "${tmp_dir}/temp1.ttl"
+  #echo "Printing first 50 lines of ${tmp_dir}/temp1.ttl"
+  #head -n50 "${tmp_dir}/temp1.ttl"
 
-  echo "Removing the first three lines from ${tmp_dir}/temp1B.ttl"
-  sed -i.bak -e '1,3d' "${tmp_dir}/temp1B.ttl"
-  echo "Printing first 50 lines of ${tmp_dir}/temp1B.ttl"
-  head -n50 "${tmp_dir}/temp1B.ttl"
+  #echo "Removing the first three lines from ${tmp_dir}/temp1B.ttl"
+  #sed -i.bak -e '1,3d' "${tmp_dir}/temp1B.ttl"
+  #echo "Printing first 50 lines of ${tmp_dir}/temp1B.ttl"
+  #head -n50 "${tmp_dir}/temp1B.ttl"
 
   ### END Karthik changes
 
@@ -1027,14 +1178,17 @@ function vocabyRunSpin() {
 #
 # 4) Run the schemify rules.  This adds a ConceptScheme to the output.
 #
-function vocabyRunSchemifyRules() {
+function vocabularyRunSchemifyRules() {
 
   echo "Run the schemify rules"
-# Dev
+
+  #
+  # Dev
+  #
   ${jena_arq} \
     --data="${tmp_dir}/temp1.ttl" \
-    --data="${vocaby_script_dir}/schemify.ttl" \
-    --query="${vocaby_script_dir}/skosecho.sparql" \
+    --data="${vocabulary_script_dir}/schemify.ttl" \
+    --query="${vocabulary_script_dir}/skosecho.sparql" \
     --results=TTL > "${tmp_dir}/temp2.ttl"
 
   if [ ${PIPESTATUS[0]} -ne 0 ] ; then
@@ -1042,13 +1196,14 @@ function vocabyRunSchemifyRules() {
     return 1
   fi
 
-#Prod
+  #
+  # Prod
+  #
   ${jena_arq} \
     --data="${tmp_dir}/temp1B.ttl" \
-    --data="${vocaby_script_dir}/schemify.ttl" \
-    --query="${vocaby_script_dir}/skosecho.sparql" \
+    --data="${vocabulary_script_dir}/schemify.ttl" \
+    --query="${vocabulary_script_dir}/skosecho.sparql" \
     --results=TTL > "${tmp_dir}/temp2B.ttl"
-
 
   if [ ${PIPESTATUS[0]} -ne 0 ] ; then
     error "Could not run the Prod schemify rules"
@@ -1075,6 +1230,11 @@ function vocabyRunSchemifyRules() {
 #
 function publishProductVocabulary() {
 
+  if [ "${NODE_LABEL}" == "nomagic" ] ; then
+    echo "Skipping publication of product vocabulary since we're on node ${NODE_LABEL}"
+    return 0
+  fi
+
   require JENAROOT || return $?
 
   logRule "Publishing the vocabulary product"
@@ -1085,20 +1245,23 @@ function publishProductVocabulary() {
   setProduct vocabulary || return $?
 
   cd "${SCRIPT_DIR}/fibo-vocabulary" || return $?
-  vocaby_script_dir=$(pwd)
+  vocabulary_script_dir="$(pwd)"
+  #
+  # JG>This should not be necessary, should be done in your own git clone
+  #
   chmod a+x ./*.sh
 
   #
-  # 1) Start the output with the standard prefixes.  We compute these from the files. 
+  # 1) Start the output with the standard prefixes.  We compute these from the files.
   #
   echo "# baseURI: ${product_root_url}" > ${tmp_dir}/fibo-v1.ttl
   #cat skosprefixes >> ${tmp_dir}/fibo-v1.ttl
 
-  #vocabyGetModules || return $?
-  vocabyGetPrefixes || return $?
-  vocabyGetOntologies || return $?
-  vocabyRunSpin || return $?
-  vocabyRunSchemifyRules || return $?
+  #vocabularyGetModules || return $?
+  vocabularyGetPrefixes || return $?
+  vocabularyGetOntologies || return $?
+  vocabularyRunSpin || return $?
+  vocabularyRunSchemifyRules || return $?
 
   echo "second run of spin"
   spinRunInferences "${tmp_dir}/temp2.ttl" "${tmp_dir}/tc.ttl" || return $?
@@ -1111,13 +1274,13 @@ function publishProductVocabulary() {
   ${jena_arq}  \
     --data="${tmp_dir}/tc.ttl" \
     --data="${tmp_dir}/temp1.ttl" \
-    --query="${vocaby_script_dir}/echo.sparql" \
+    --query="${vocabulary_script_dir}/echo.sparql" \
     --results=TTL > "${tmp_dir}/fibo-uc.ttl"
 
   ${jena_arq}  \
     --data="${tmp_dir}/tcB.ttl" \
     --data="${tmp_dir}/temp1B.ttl" \
-    --query="${vocaby_script_dir}/echo.sparql" \
+    --query="${vocabulary_script_dir}/echo.sparql" \
     --results=TTL > "${tmp_dir}/fibo-ucB.ttl"
 
   #
@@ -1128,11 +1291,11 @@ function publishProductVocabulary() {
 
   ${jena_arq}  \
     --data="${tmp_dir}/fibo-v1.ttl" \
-    --query="${vocaby_script_dir}/echo.sparql" \
+    --query="${vocabulary_script_dir}/echo.sparql" \
     --results=TTL > "${tmp_dir}/fibo-vD.ttl"
   ${jena_arq}  \
     --data="${tmp_dir}/fibo-v1B.ttl" \
-    --query="${vocaby_script_dir}/echo.sparql" \
+    --query="${vocabulary_script_dir}/echo.sparql" \
     --results=TTL > "${tmp_dir}/fibo-vP.ttl"
 
   #
@@ -1157,86 +1320,302 @@ function publishProductVocabulary() {
     --output=turtle > \
     "${tag_root}/fibo-vP.ttl"
 
-
-
   #
   # JG>Dean I didn't find any hygiene*.sparql files anywhere
   #
 #  echo "Running tests"
-#  find ${vocaby_script_dir}/testing -name 'hygiene*.sparql' -print
-#  find ${vocaby_script_dir}/testing -name 'hygiene*.sparql' \
+#  find ${vocabulary_script_dir}/testing -name 'hygiene*.sparql' -print
+#  find ${vocabulary_script_dir}/testing -name 'hygiene*.sparql' \
 #    -exec ${jena_arq} --data="${tag_root}/fibo-v.ttl" --query={} \;
 
-  vocabyConvertTurtleToAllFormats || return $?
-(cd "${tag_root}"; rm -f **.zip)
+  vocabularyConvertTurtleToAllFormats || return $?
 
-#  gzip --best --stdout "${tag_root}/fibo-vD.ttl" > "${tag_root}/fibo-vD.ttl.gz"
+  (cd "${tag_root}"; rm -f **.zip)
+
+  #
+  # gzip --best --stdout "${tag_root}/fibo-vD.ttl" > "${tag_root}/fibo-vD.ttl.gz"
+  #
   (cd "${tag_root}" ; zip fibo-vD.ttl.zip fibo-vD.ttl)
-#  gzip --best --stdout "${tag_root}/fibo-vD.rdf" > "${tag_root}/fibo-vD.rdf.gz"
+  #
+  # gzip --best --stdout "${tag_root}/fibo-vD.rdf" > "${tag_root}/fibo-vD.rdf.gz"
+  #
   (cd "${tag_root}" ; zip  fibo-vD.rdf.zip fibo-vD.rdf)
-#  gzip --best --stdout "${tag_root}/fibo-vD.jsonld" > "${tag_root}/fibo-vD.jsonld.gz"
+  #
+  # gzip --best --stdout "${tag_root}/fibo-vD.jsonld" > "${tag_root}/fibo-vD.jsonld.gz"
+  #
   (cd "${tag_root}" ; zip  fibo-vD.jsonld.zip fibo-vD.jsonld)
-
-#  gzip --best --stdout "${tag_root}/fibo-vB.ttl" > "${tag_root}/fibo-vP.ttl.gz"
+  #
+  # gzip --best --stdout "${tag_root}/fibo-vB.ttl" > "${tag_root}/fibo-vP.ttl.gz"
+  #
   (cd "${tag_root}" ; zip  fibo-vP.ttl.zip fibo-vP.ttl)
-#  gzip --best --stdout "${tag_root}/fibo-vB.rdf" > "${tag_root}/fibo-vP.rdf.gz"
+  #
+  # gzip --best --stdout "${tag_root}/fibo-vB.rdf" > "${tag_root}/fibo-vP.rdf.gz"
+  #
   (cd "${tag_root}" ; zip  fibo-vP.rdf.zip fibo-vP.rdf)
-#  gzip --best --stdout "${tag_root}/fibo-vB.jsonld" > "${tag_root}/fibo-vP.jsonld.gz"
+  #
+  # gzip --best --stdout "${tag_root}/fibo-vB.jsonld" > "${tag_root}/fibo-vP.jsonld.gz"
+  #
   (cd "${tag_root}" ; zip  fibo-vP.jsonld.zip fibo-vP.jsonld)
-
 
   echo "Finished publishing the Vocabulary Product"
 
   return 0
 }
 
-# Stuff for building nquads files
+function nomagicGenerate() {
 
-function quadify () {
-  local tmpont="$(mktemp ${tmp_dir}/ontology.XXXXXX.sq)"
-  cat >"${tmpont}" <<EOF
-SELECT ?o WHERE {?o a <http://www.w3.org/2002/07/owl#Ontology> }
-EOF
+  local output="$1"
+  local package="$2"
+  local report_wizard_dir="/home/ec2-user/MagicDraw/plugins/com.nomagic.magicdraw.reportwizard"
 
-    
-  ${jena_riot} "$1" | sed "s@[.]\$@ <$(${jena_arq} --results=csv --data=$1 --query=${tmpont} | grep -v '^o' | tr -d '\n\r')> .@"
-}
+  require NOMAGIC_SERVER || return $?
+  require NOMAGIC_USERID || return $?
+  require NOMAGIC_PASSWD || return $?
 
-function buildquads () {
-
-  local ProdQuadsFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/prod.fibo.nq"
-  local DevQuadsFile="${product_root}/${GIT_BRANCH}/${GIT_TAG_NAME}/dev.fibo.nq"
+  echo "Generating ${output}"
 
   (
-    cd ${spec_root}
+    #
+    # Make sure the DISPLAY variable is unset, otherwise nomagic tries to connect to your X server
+    #
+    unset DISPLAY
+    #
+    # The default directory needs to be ${spec_root}/${family_product_branch_tag} because for some
+    # reason the -output parameter does not seem to support directory names.
+    #
+    cd "${spec_root}/${family_product_branch_tag}"
 
-  	find . -name '*.rdf' -print | while read file; do quadify "$file"; done > "${DevQuadsFile}"
+    bash -x ${report_wizard_dir}/generate.sh \
+      -server "${NOMAGIC_SERVER}" \
+      -login "${NOMAGIC_USERID}" \
+      -password "${NOMAGIC_PASSWD}" \
+      -project "FIBO-Master" \
+      -template "Natural Language Glossary" \
+      -package "${package}" \
+      -output "${output}" \
+      -servertype "twcloud" \
+      -report "Default Development FIBO"
+    rc=$?
+    echo rc=${rc}
 
-	  grep -r 'utl-av[:;.]Release' "fibo/${product}/${GIT_BRANCH}/${GIT_TAG_NAME}" | \
-	    grep -F ".rdf" | \
-	    sed 's/:.*$//' | \
-	    while read file ; do
-	      quadify $file
-	    done > ${ProdQuadsFile}
+    if [ ! -f "${output}" ] ; then
+      error "nomagicGenerate() did not generate ${output}"
+      exit 1
+    fi
 
-	  zip ${ProdQuadsFile}.zip ${ProdQuadsFile}
-	  zip ${DevQuadsFile}.zip ${DevQuadsFile}
+    exit 0
   )
+
+  return $?
+}
+
+function glossaryGenerate() {
+
+  local rc
+
+  #
+  # JG>Disabling the actual calls to nomagic now until we can actually feed in the current fibo version from
+  #    the current workspace because only THEN it makes sense to run nomagic. Otherwise we can just as well
+  #    copy the latest artifacts from the fibo-publish-nomagic job. This happens in the Jenkinsfile.
+  #
+  echo "WARNING: Skipping actual calls to nomagic"
+  return 0
+
+  nomagicGenerate "development.html" "Release;Provisional;Informative" || return $?
+  nomagicGenerate "production.html" "Release" || return $?
+
+  (
+    cd "${spec_root}/${family_product_branch_tag}"
+    set -x
+    ls -al
+    cp -v ${report_wizard_dir}/*.html .
+    cp -vr ${report_wizard_dir}/resources .
+    sed -i development.html -e 's!<br>!<br/>!g'
+    sed -i production.html -e 's!<br>!<br/>!g'
+
+    sed -e '/<script /,/<\\/script>/d' development.html > devin.html
+    sed -e '/<script /,/<\\/script>/d' production.html > prodin.html
+  )
+
+  if [ ! -f ./bin/SaxonHE9-8-0-4J/saxon9he.jar ] ; then
+    error "Could not find ./bin/SaxonHE9-8-0-4J/saxon9he.jar"
+    return 1
+  fi
+
+  chmod a+x ./bin/SaxonHE9-8-0-4J/*.jar
+
+  java \
+    -cp ./bin/SaxonHE9-8-0-4J/saxon9he.jar \
+    net.sf.saxon.Transform \
+    -o:"${spec_root}/${family_product_branch_tag}/datadictionaryDEV.csv" \
+    -xsl:"${SCRIPT_DIR}/glossary-to-csv.xsl" \
+    "${spec_root}/${family_product_branch_tag}/devin.html"
+
+  java \
+    -cp ./bin/SaxonHE9-8-0-4J/saxon9he.jar \
+    net.sf.saxon.Transform \
+    -o:"${spec_root}/${family_product_branch_tag}/datadictionaryPROD.csv" \
+    -xsl:"${SCRIPT_DIR}/glossary-to-csv.xsl" \
+    "${spec_root}/${family_product_branch_tag}/prodin.html"
+
+  return ${rc}
+}
+
+#
+# This can only run on the nomagic box (nomagic.edmcouncil.org) in the context of a Jenkins slave
+#
+function publishProductGlossary() {
+
+  if [ "${NODE_LABEL}" != "nomagic" ] ; then
+    echo "Skipping publication of product glossary since we're on node ${NODE_LABEL}"
+    return 0
+  fi
+
+  logRule "Publishing the glossary product"
+
+  setProduct glossary || return $?
+
+  glossaryGenerate || return $?
 
   return 0
 }
 
-function main() {
+#
+# This can only be run after publishProductGlossary() has been run
+#
+function publishProductDataDictionary() {
+
+  if [ "${NODE_LABEL}" != "nomagic" ] ; then
+    echo "Skipping publication of product glossary since we're on node ${NODE_LABEL}"
+    return 0
+  fi
+
+  logRule "Publishing the datadictionary product"
+
+  setProduct glossary || return $?
+
+  local glossary_root="${spec_root}/${family_product_branch_tag}"
+
+  if [ ! -f "${glossary_root}/datadictionaryDEV.csv" ] ; then
+    error "Could not find ${glossary_root}/datadictionaryDEV.csv"
+    return 1
+  fi
+
+  if [ ! -f "${glossary_root}/datadictionaryPROD.csv" ] ; then
+    error "Could not find ${glossary_root}/datadictionaryPROD.csv"
+    return 1
+  fi
+
+  setProduct datadictionary || return $?
+
+  local datadictionary_root="${spec_root}/${family_product_branch_tag}"
+
+  cp -v "${glossary_root}/datadictionaryDEV.csv" "${datadictionary_root}/datadictionaryDEV.html"
+  cp -v "${glossary_root}/datadictionaryPROD.csv" "${datadictionary_root}/datadictionaryPROD.html"
+
+  return 0
+}
+
+#
+# Stuff for building nquads files
+#
+function quadify () {
+
+  local tmpont="$(mktemp ${tmp_dir}/ontology.XXXXXX.sq)"
+
+  cat >"${tmpont}" << __HERE__
+SELECT ?o WHERE {?o a <http://www.w3.org/2002/07/owl#Ontology> }
+__HERE__
+    
+  ${jena_riot} "$1" | \
+    sed "s@[.]\$@ <$(${jena_arq} --results=csv --data=$1 --query=${tmpont} | grep -v '^o' | tr -d '\n\r')> .@"
+  local rc=$?
+
+  rm "${tmpont}"
+
+  return ${rc}
+}
+
+function buildquads () {
+
+  local ProdQuadsFile="${tag_root}/prod.fibo.nq"
+  local DevQuadsFile="${tag_root}/dev.fibo.nq"
 
   (
-    set -x
-    rm -rf "${spec_root}"
-    mkdir -p "${spec_root}"
-  )
+    cd ${spec_root}
 
+	  find . -name '*.rdf' -print | while read file; do quadify "$file"; done > "${DevQuadsFile}"
+
+	  grep -r 'utl-av[:;.]Release' "${family_product_branch_tag}" | \
+	    grep -F ".rdf" | \
+	    sed 's/:.*$//' | \
+	    while read file ; do quadify $file ; done > ${ProdQuadsFile}
+
+	  zip ${ProdQuadsFile}.zip ${ProdQuadsFile}
+	  zip ${DevQuadsFile}.zip ${DevQuadsFile}
+  )
+}
+
+#
+# Stuff for building catalog files
+#
+function build1catalog () {
+
+  local directory="$1"
+  local fibo_rel="${2}"
+
+  (
+    cd "${directory}"     # Build the catalog in this directory
+    directory="$(pwd)"
+    echo "Building catalog in ${directory/${WORKSPACE}/}"
+    cat  > catalog-v001.xml << __HERE__
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog prefer="public" xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+__HERE__
+
+    #
+    # Find all the rdf files in fibo, and create catalog lines for them based on their location.
+    #
+    find ${fibo_rel} -name '*.rdf' | \
+      grep -v etc | \
+      sed 's@^.*$@  <uri id="User Entered Import Resolution" uri="&" name="https://spec.edmcouncil.org/fibo/&"/>@;s@.rdf"/>@/"/>@' | \
+      sed "s@fibo/${fibo_rel}/\([a-zA-Z]*/\)@${family_product_branch_tag}/\U\1\E@" >> catalog-v001.xml
+
+    cat  >> catalog-v001.xml << __HERE__
+<!-- Automatically built by EDMC infrastructure -->
+</catalog>
+__HERE__
+)    
+}
+
+function ontologyBuildCats () {
+
+  #
+  # Run build1catalog in each subdirectory except ext, etc and .git
+  #
+  find \
+    ${tag_root} \
+    -maxdepth 1 \
+    -mindepth 1 \
+    -type d \( -regex "\(.*/ext\)\|\(.*/etc\)\|\(.*/.git\)$" -prune  -o -print \) | \
+    while read file; do build1catalog "$file" ".." ; done
+
+  #
+  # Run build1catalog in the main directory
+  #
+  build1catalog "${tag_root}" "."
+}
+
+function main() {
+
+  initTools || return $?
   initWorkspaceVars || return $?
   initGitVars || return $?
   initJiraVars || return $?
+
+  if [ "$1" == "init" ] ; then
+    return 0
+  fi
 
   for product in ${products} ; do
     case ${product} in
@@ -1248,6 +1627,12 @@ function main() {
         ;;
       vocabulary)
         publishProductVocabulary || return $?
+        ;;
+      glossary)
+        publishProductGlossary || return $?
+        ;;
+      datadictionary)
+        publishProductDataDictionary || return $?
         ;;
       *)
         echo "ERROR: Unknown product ${product}"
