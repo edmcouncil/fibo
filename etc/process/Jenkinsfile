@@ -108,7 +108,9 @@ pipeline {
               echo 'Finished executing the publish-fibo script'
             }
             initEnvironment()
-            echo "L114"
+            //
+            // Now stash all files in the env directory for reuse in other workspaces on other agents/slaves
+            //
             stash includes: 'env/**', name: 'environment'
             //
             // Then check out the LCC repo into the ./LCC directory
@@ -308,8 +310,8 @@ pipeline {
         echo 'Unstashing the output of the publish-script as it ran on the stardog node'
         unstash 'publish-script-output-stardog-node'
         sh 'ls -al'
-        sh 'find . -name \'.git\' -exec rm -rf {} \\;'
-        sh 'find . -name \'.gitignore\' -exec rm -f {} \\;'
+        sh 'find . -name \'.git\' -exec rm -rf {} \\; || true'
+        sh 'find . -name \'.gitignore\' -exec rm -f {} \\; || true'
 
         /* JG>Disabling this now until nomagic process actually gets its input from this job
         echo 'Unstashing the output of the publish-script as it ran on the nomagic node'
