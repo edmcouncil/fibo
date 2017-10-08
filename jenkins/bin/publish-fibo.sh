@@ -22,7 +22,8 @@ else
 fi
 
 tmp_dir="${WORKSPACE}/tmp"
-fibo_infra_root=""
+export fibo_root="${WORKSPACE}/fibo"
+export fibo_infra_root="$(cd ${SCRIPT_DIR}/../.. ; pwd -L)"
 jena_arq=""
 
 #
@@ -53,7 +54,6 @@ modules=""
 module_directories=""
 
 stardog_vcs=""
-
 
 shopt -s globstar
 
@@ -102,22 +102,27 @@ function initTools() {
 
   export | sort
 
-  #
-  # Make sure we have an empty tmp dir
-  #
-  [ -d "${tmp_dir}" ] && rm -rf "${tmp_dir}"
-  mkdir -p "${tmp_dir}" >/dev/null 2>&1
-  echo "tmp_dir=${tmp_dir}"
+  export | sort
 
-  fibo_root="${WORKSPACE}/fibo"
+  if [ ! -d "${tmp_dir}" ] ; then
+    mkdir -p "${tmp_dir}" >/dev/null 2>&1
+    if [ ! -d "${tmp_dir}" ] ; then
+      error "Could not create ${tmp_dir}"
+      return 1
+    fi
+  fi
+  #
+  # TMPDIR is used in the jena scripts
+  #
+  export TMPDIR="${tmp_dir}"
+
   echo "fibo_root=${fibo_root}"
 
   if [ ! -d "${fibo_root}" ] ; then
-    echo "ERROR: fibo_root directory not found (${fibo_root})"
+    error "fibo_root directory not found (${fibo_root})"
     return 1
   fi
 
-  export fibo_infra_root="$(cd ${SCRIPT_DIR}/../.. ; pwd -L)"
   echo fibo_infra_root=${fibo_infra_root}
 
   if [ ! -d "${fibo_infra_root}" ] ; then
@@ -201,7 +206,9 @@ function buildIndex () {
 #
 function buildVowlIndex () {
 
-  echo "Step: buildVowlIndex"
+  local vowlTree="${widoco_root}/vowltree.html"
+
+  echo "Step: buildVowlIndex (${vowlTree/${WORKSPACE}/})"
 
   (
     cd ${ontology_root}
@@ -209,22 +216,22 @@ function buildVowlIndex () {
     #
     # JG: KG, the value for the -H option, can that be ${tag_root_url} instead?
     #
-    tree -P '*.rdf' -H ${tag_root_url} | sed "s@latest\(/[^/]*/\)@latest/\\U\\1@" > vowltree.html
+    tree -P '*.rdf' -H ${tag_root_url} | sed "s@${GIT_TAG_NAME}\(/[^/]*/\)@${GIT_TAG_NAME}/\\U\\1@" > "${vowlTree}"
     #
     # Uncomment if you want to link only to vowl visualization
     #
-    #sed -i 's@\(https://spec.edmcouncil.org/fibo/widoco/master/latest/.*\)\.rdf\">@\1/webvowl/index.html#ontology\">@' vowltree.html
+    # JG>string ${product_branch_tag} needs to be built into the line below
+    #
+    #sed -i 's@\(https://spec.edmcouncil.org/fibo/widoco/master/latest/.*\)\.rdf\">@\1/webvowl/index.html#ontology\">@' "${vowlTree}"
     #
     # Link to the widoco page from the tree
     #
-    sed -i 's@\(https://spec.edmcouncil.org/fibo/widoco/master/latest/.*\)\.rdf\">@\1/index-en.html\">@' vowltree.html
-    sed -i 's@\(.*\).rdf@\1 vowl@' vowltree.html
-    sed -i 's/>Directory Tree</>FIBO Widoco file directory</g' vowltree.html
-    sed -i 's@h1><p>@h1><p>The Visual Notation for OWL Ontologies (VOWL) defines a visual language for the user-oriented representation of ontologies. It provides graphical depictions for elements of the Web Ontology Language (OWL) that are combined to a force-directed graph layout visualizing the ontology.<br/>This specification focuses on the visualization of the ontology schema (i.e. the classes, properties and datatypes, sometimes called TBox), while it also includes recommendations on how to depict individuals and data values (the ABox). �FIBO uses open source software named WIDOCO (Wizard for DOCumenting Ontologies) for <a href="https://github.com/dgarijo/Widoco">VOWL</a>.<p/>@' vowltree.html
+    sed -i "s@\(https://spec.edmcouncil.org/fibo/${product_branch_tag}/.*\)\.rdf\">@\1/index-en.html\">@" "${vowlTree}"
+    sed -i 's@\(.*\).rdf@\1 vowl@' "${vowlTree}"
+    sed -i 's/>Directory Tree</>FIBO Widoco file directory</g' "${vowlTree}"
+    sed -i 's@h1><p>@h1><p>The Visual Notation for OWL Ontologies (VOWL) defines a visual language for the user-oriented representation of ontologies. It provides graphical depictions for elements of the Web Ontology Language (OWL) that are combined to a force-directed graph layout visualizing the ontology.<br/>This specification focuses on the visualization of the ontology schema (i.e. the classes, properties and datatypes, sometimes called TBox), while it also includes recommendations on how to depict individuals and data values (the ABox). �FIBO uses open source software named WIDOCO (Wizard for DOCumenting Ontologies) for <a href="https://github.com/dgarijo/Widoco">VOWL</a>.<p/>@' "${vowlTree}"
 
-    sed -i 's@<a href=".*>https://spec.edmcouncil.org/.*</a>@@' vowltree.html
-
-    mv "${ontology_root}/vowltree.html" "${tag_root}"
+    sed -i 's@<a href=".*>https://spec.edmcouncil.org/.*</a>@@' "${vowlTree}"
   )
 
 	return 0
@@ -350,17 +357,11 @@ function initGitVars() {
     fi
   fi
 
-  echo "Saving GIT_BRANCH ${GIT_BRANCH} into ./tmp/GIT_BRANCH.env"
-  echo "Saving GIT_TAG_NAME ${GIT_TAG_NAME} into ./tmp/GIT_TAG_NAME.env"
-  echo "Saving GIT_AUTHOR ${GIT_AUTHOR} into ./tmp/GIT_AUTHOR.env"
-  echo "Saving GIT_COMMIT ${GIT_COMMIT} into ./tmp/GIT_COMMIT.env"
-  echo "Saving GIT_COMMENT ${GIT_COMMENT} into ./tmp/GIT_COMMENT.env"
-
-  echo -n "${GIT_BRANCH}"   > "${tmp_dir}/GIT_BRANCH.env"
-  echo -n "${GIT_TAG_NAME}" > "${tmp_dir}/GIT_TAG_NAME.env"
-  echo -n "${GIT_AUTHOR}"   > "${tmp_dir}/GIT_AUTHOR.env"
-  echo -n "${GIT_COMMIT}"   > "${tmp_dir}/GIT_COMMIT.env"
-  echo -n "${GIT_COMMENT}"  > "${tmp_dir}/GIT_COMMENT.env"
+  saveEnvironmentVariable GIT_BRANCH || return $?
+  saveEnvironmentVariable GIT_TAG_NAME || return $?
+  saveEnvironmentVariable GIT_AUTHOR || return $?
+  saveEnvironmentVariable GIT_COMMIT || return $?
+  saveEnvironmentVariable GIT_COMMENT || return $?
 
   #
   # Set default product
@@ -370,13 +371,23 @@ function initGitVars() {
   return 0
 }
 
+function saveEnvironmentVariable() {
+
+  local variable="$1"
+  local value="${!variable}"
+
+  echo "Saving $variable=${value}"
+
+  mkdir -p "${WORKSPACE}/env" >/dev/null 2>&1
+
+  echo -n "${value}" > "${WORKSPACE}/env/${variable}"
+}
+
 function initJiraVars() {
 
   export JIRA_ISSUE="$(echo ${GIT_COMMENT} | rev | grep -oP '\d+-[A-Z0-9]+(?!-?[a-zA-Z]{1,10})' | rev)"
 
-  echo "Saving JIRA_ISSUE ${JIRA_ISSUE} into ./tmp/JIRA_ISSUE.env"
-
-  echo -n "${JIRA_ISSUE}" > "${tmp_dir}/JIRA_ISSUE.env"
+  saveEnvironmentVariable JIRA_ISSUE || return $?
 
   return 0
 }
@@ -824,11 +835,15 @@ function copySiteFiles() {
     cd ${fibo_infra_root}/site
 
     #Replace GIT BRANCH and TAG in the glossary index html
-    log "Replacing GIT_BRANCH  $GIT_BRANCH"
-    sed -i "s/GIT_BRANCH/$GIT_BRANCH/g" "static/glossary/index.html"
-
-    log "Replacing GIT_TAG_NAME  $GIT_TAG_NAME"
-    sed -i "s/GIT_TAG_NAME/$GIT_TAG_NAME/g" "static/glossary/index.html"
+    #
+    # JG>I commented this out since this doesn't make sense it seems. There is no string "GIT_BRANCH" in
+    # index.html and even if there were I think it should always point to master/latest anyway (which it already does)
+    #
+    #echo "Replacing GIT_BRANCH  $GIT_BRANCH"
+    #sed -i "s/GIT_BRANCH/$GIT_BRANCH/g" "static/glossary/index.html"
+    #
+    #echo "Replacing GIT_TAG_NAME  $GIT_TAG_NAME"
+    #sed -i "s/GIT_TAG_NAME/$GIT_TAG_NAME/g" "static/glossary/index.html"
 
     cp -vr * "${spec_root}/"
   )
@@ -881,48 +896,78 @@ function zipOntologyFiles () {
   return 0
 }
 
-function generateWidocoDocumentation {
+function generateWidocoDocumentation() {
 
-  local outputDir
+  local directory="$1"
 
-  echo "Generating html documentation for all ontologies from their ttl files"
+  (
+    cd "${directory}"
 
-  ls "$1" | while read i ; do
-    if [ -d "$1/$i" ] ; then
-      echo "Directory: $1/$i"
-      generateWidocoDocumentation "$1/$i" $(($2 + 1))
-    else
-      if [[ $i =~ \.ttl$ ]] ; then
-        outputDir=$(echo "$1" | sed "s/ontology/widoco/")
-        mkdir -p outputDir
-        echo "Running widoco tool on $1/$i to generate documentation. outFolder ${outputDir}/${i%.*}"
-        java \
-          -jar "${fibo_infra_root}/lib/widoco/widoco-1.4.1-jar-with-dependencies.jar" \
-          -ontFile "$1/$i" \
-          -outFolder "${outputDir}/${i%.*}" \
-          -rewriteAll \
-          -lang en  \
-          -getOntologyMetadata \
-          -webVowl
-        #KG: commented to make the build faster - need to revisit license
-        #   -licensius \
-        ## KG: Need to figure out why it fails on fibo/ontology/master/latest/SEC/SecuritiesExt/SecuritiesExt.ttl
-        ## KG: Commenting out temporarily so that the build doesn't stop
-        #if [ ${PIPESTATUS[0]} -ne 0 ] ; then
-        #  error "Could not run widoco on $1/$i "
-        #  return 1
-        #fi
+    directory="$(pwd)"
+
+    echo "Generating html documentation for all ontologies from their ttl files"
+    echo "1 Directory: ${directory/${WORKSPACE}/}"
+
+    while read directoryEntry ; do
+      echo " - processing ${directoryEntry}"
+      if [ -d "${directoryEntry}" ] ; then
+        generateWidocoDocumentation "${directoryEntry}"
+      else
+        generateWidocoDocumentationForFile "${directory}" "${directoryEntry}"
       fi
-    fi
-  done
+    done < <(ls .)
+  )
 
   return $?
 }
 
+function generateWidocoDocumentationForFile() {
+
+  local directory="$1"
+  local outputDir="${directory/ontology/widoco}"
+  local rdfFile="$2"
+  local extension="$([[ "${rdfFile}" = *.* ]] && echo ".${rdfFile##*.}" || echo '')"
+
+  [ "${rdfFile}" == ".ttl" ] || return 0
+
+  mkdir -p outputDir >/dev/null 2>&1
+
+  echo "Running widoco tool on ${rdfFile} to generate documentation:"
+  echo " - outFolder ${outputDir}"
+
+  java \
+    -Xmx3G \
+    -Xms3G \
+    -jar "${fibo_infra_root}/lib/widoco/widoco-1.4.1-jar-with-dependencies.jar" \
+    -ontFile "${rdfFile}" \
+    -outFolder "${outputDir}/${rdfFile}" \
+    -rewriteAll \
+    -lang en  \
+    -getOntologyMetadata \
+    -webVowl
+  local rc=$?
+  echo " - rc is ${rc}"
+  #
+  # KG: commented to make the build faster - need to revisit license
+  #
+  # -licensius \
+  #
+  # KG: Need to figure out why it fails on fibo/ontology/master/latest/SEC/SecuritiesExt/SecuritiesExt.ttl
+  #
+  # KG: Commenting out temporarily so that the build doesn't stop
+  #
+  #if [ ${PIPESTATUS[0]} -ne 0 ] ; then
+  #  error "Could not run widoco on $1/$i "
+  #  return 1
+  #fi
+
+  return 0
+}
+
 function publishProductOntology() {
 
-  if [ "${NODE_LABEL}" == "nomagic" ] ; then
-    echo "Skipping publication of product ontology since we're on node ${NODE_LABEL}"
+  if [ "${NODE_NAME}" == "nomagic" ] ; then
+    echo "Skipping publication of product ontology since we're on node ${NODE_NAME}"
     return 0
   fi
 
@@ -952,16 +997,26 @@ function publishProductOntology() {
   return 0
 }
 
+#
+# Publish the widoco product which depends on the ontology product, so that should have been built before
+#
 function publishProductWidoco() {
 
-  if [ "${NODE_LABEL}" == "nomagic" ] ; then
-    echo "Skipping publication of product widoco since we're on node ${NODE_LABEL}"
+  if [ "${NODE_NAME}" == "nomagic" ] ; then
+    echo "Skipping publication of product widoco since we're on node ${NODE_NAME}"
     return 0
   fi
 
   logRule "Publishing the widoco product"
 
   setProduct widoco || return $?
+
+  widoco_root="${tag_root}"
+  #
+  # Show the widoco root directory but strip the WORKSPACE director from it to
+  # save log space, it' ugly
+  #
+  echo "Widoco Root: ${widoco_root/${WORKSPACE}/}"
 
   buildVowlIndex || return $?
 
@@ -985,6 +1040,11 @@ function vocabularyGetModules() {
   require vocabulary_script_dir || return $?
   require ontology_product_tag_root || return $?
 
+  #
+  # Set the memory for ARQ
+  #
+  export JVM_ARGS=${JVM_ARGS:--Xmx2G}
+
   echo "Query the skosify.ttl file for the list of modules (TODO: Should come from rdf-toolkit.ttl)"
 
   ${jena_arq} \
@@ -999,7 +1059,7 @@ function vocabularyGetModules() {
   fi
 
   cat "${tmp_dir}/module"
-  
+
   export modules="$(< "${tmp_dir}/module")"
 
   export module_directories="$(for module in ${modules} ; do echo -n "${ontology_product_tag_root}/${module} " ; done)"
@@ -1054,13 +1114,19 @@ function vocabularyGetOntologies() {
   require vocabulary_script_dir || return $?
   require module_directories || return $?
 
+  #
+  # Set the memory for ARQ
+  #
+  export JVM_ARGS=${JVM_ARGS:--Xmx2G}
+
   echo "Get Ontologies into merged file (temp0.ttl)"
 
-  echo "${ontology_product_tag_root}"
-  echo "files that go into dev"
+  echo "Files that go into dev:"
+
   find  "${ontology_product_tag_root}" -name "*.rdf" | sed "s/^/--data=/"
 
-  echo "files that go into prod"
+  echo "Files that go into prod:"
+
   grep -r 'utl-av[:;.]Release' "${ontology_product_tag_root}" | sed 's/:.*$//;s/^/--data=/' | grep -F ".rdf"
 
   #
@@ -1113,7 +1179,7 @@ function spinRunInferences() {
 
   (
     set -x
-    
+
     java \
       -Xmx2g \
       -Dlog4j.configuration="file:${JENA2ROOT}/jena-log4j.properties" \
@@ -1121,7 +1187,7 @@ function spinRunInferences() {
       org.topbraid.spin.tools.RunInferences \
       http://example.org/example \
       "${inputFile}" >> "${outputFile}"
-      
+
     if [ ${PIPESTATUS[0]} -ne 0 ] ; then
       error "Could not run spin on ${inputFile}"
       return 1
@@ -1180,6 +1246,11 @@ function vocabularyRunSpin() {
 #
 function vocabularyRunSchemifyRules() {
 
+  #
+  # Set the memory for ARQ
+  #
+  export JVM_ARGS=${JVM_ARGS:--Xmx2G}
+
   echo "Run the schemify rules"
 
   #
@@ -1230,10 +1301,15 @@ function vocabularyRunSchemifyRules() {
 #
 function publishProductVocabulary() {
 
-  if [ "${NODE_LABEL}" == "nomagic" ] ; then
-    echo "Skipping publication of product vocabulary since we're on node ${NODE_LABEL}"
+  if [ "${NODE_NAME}" == "nomagic" ] ; then
+    echo "Skipping publication of product vocabulary since we're on node ${NODE_NAME}"
     return 0
   fi
+
+  #
+  # Set the memory for ARQ
+  #
+  export JVM_ARGS=${JVM_ARGS:--Xmx2G}
 
   require JENAROOT || return $?
 
@@ -1244,12 +1320,24 @@ function publishProductVocabulary() {
 
   setProduct vocabulary || return $?
 
-  cd "${SCRIPT_DIR}/fibo-vocabulary" || return $?
-  vocabulary_script_dir="$(pwd)"
-  #
-  # JG>This should not be necessary, should be done in your own git clone
-  #
-  chmod a+x ./*.sh
+  (
+    cd "${SCRIPT_DIR}/fibo-vocabulary" || return $?
+    vocabulary_script_dir="$(pwd)"
+    #
+    # JG>This should not be necessary, should be done in your own git clone
+    #
+    chmod a+x *.sh
+
+    publishProductVocabularyInner
+  )
+  local rc=$?
+
+  echo "Done with processing product vocabulary rc=${rc}"
+
+  return ${rc}
+}
+
+function publishProductVocabularyInner() {
 
   #
   # 1) Start the output with the standard prefixes.  We compute these from the files.
@@ -1466,8 +1554,8 @@ function glossaryGenerate() {
 #
 function publishProductGlossary() {
 
-  if [ "${NODE_LABEL}" != "nomagic" ] ; then
-    echo "Skipping publication of product glossary since we're on node ${NODE_LABEL}"
+  if [ "${NODE_NAME}" != "nomagic" ] ; then
+    echo "Skipping publication of product glossary since we're on node ${NODE_NAME}"
     return 0
   fi
 
@@ -1485,8 +1573,8 @@ function publishProductGlossary() {
 #
 function publishProductDataDictionary() {
 
-  if [ "${NODE_LABEL}" != "nomagic" ] ; then
-    echo "Skipping publication of product glossary since we're on node ${NODE_LABEL}"
+  if [ "${NODE_NAME}" != "nomagic" ] ; then
+    echo "Skipping publication of product glossary since we're on node ${NODE_NAME}"
     return 0
   fi
 
@@ -1522,6 +1610,11 @@ function publishProductDataDictionary() {
 function quadify () {
 
   local tmpont="$(mktemp ${tmp_dir}/ontology.XXXXXX.sq)"
+
+  #
+  # Set the memory for ARQ
+  #
+  export JVM_ARGS=${JVM_ARGS:--Xmx2G}
 
   cat >"${tmpont}" << __HERE__
 SELECT ?o WHERE {?o a <http://www.w3.org/2002/07/owl#Ontology> }
