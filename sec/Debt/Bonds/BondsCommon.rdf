@@ -11,8 +11,10 @@
 	<!ENTITY fibo-sec-dbt-bo-iss "https://spec.edmcouncil.org/fibo/SEC/Debt/Bonds/BondsIssuerVariants/">
 	<!ENTITY fibo-sec-dbt-bo-li "https://spec.edmcouncil.org/fibo/SEC/Debt/Bonds/BondsListings/">
 	<!ENTITY fibo-sec-dbt-dbt-cft "https://spec.edmcouncil.org/fibo/SEC/Debt/DebtFoundations/DebtCashflowTerms/">
-	<!ENTITY fibo-sec-dbt-dbtx-dbtx "https://spec.edmcouncil.org/fibo/SEC/Debt/DebtFoundationsExt/DebtInstrumentsExt/">
+	<!ENTITY fibo-sec-dbt-dbti "https://spec.edmcouncil.org/fibo/SEC/Debt/DebtInstruments/">
 	<!ENTITY fibo-sec-eq-eq "https://spec.edmcouncil.org/fibo/SEC/Equities/EquityInstruments/">
+	<!ENTITY fibo-sec-sec-iss "https://spec.edmcouncil.org/fibo/SEC/Securities/SecuritiesIssuance/">
+	<!ENTITY fibo-sec-sec-lst "https://spec.edmcouncil.org/fibo/SEC/Securities/SecuritiesListings/">
 	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
 	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
 	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
@@ -32,8 +34,10 @@
 	xmlns:fibo-sec-dbt-bo-iss="https://spec.edmcouncil.org/fibo/SEC/Debt/Bonds/BondsIssuerVariants/"
 	xmlns:fibo-sec-dbt-bo-li="https://spec.edmcouncil.org/fibo/SEC/Debt/Bonds/BondsListings/"
 	xmlns:fibo-sec-dbt-dbt-cft="https://spec.edmcouncil.org/fibo/SEC/Debt/DebtFoundations/DebtCashflowTerms/"
-	xmlns:fibo-sec-dbt-dbtx-dbtx="https://spec.edmcouncil.org/fibo/SEC/Debt/DebtFoundationsExt/DebtInstrumentsExt/"
+	xmlns:fibo-sec-dbt-dbti="https://spec.edmcouncil.org/fibo/SEC/Debt/DebtInstruments/"
 	xmlns:fibo-sec-eq-eq="https://spec.edmcouncil.org/fibo/SEC/Equities/EquityInstruments/"
+	xmlns:fibo-sec-sec-iss="https://spec.edmcouncil.org/fibo/SEC/Securities/SecuritiesIssuance/"
+	xmlns:fibo-sec-sec-lst="https://spec.edmcouncil.org/fibo/SEC/Securities/SecuritiesListings/"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
@@ -61,16 +65,16 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/SEC/Debt/Bonds/BondsListings/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/SEC/Debt/DebtFoundations/DebtCashflowTerms/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/SEC/Debt/DebtFoundations/DebtIssuanceTerms/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/SEC/Debt/DebtFoundationsExt/DebtInstrumentsExt/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/SEC/Debt/DebtInstruments/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/SEC/Equities/EquityInstruments/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/SEC/Securities/SecuritiesIssuance/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/SEC/Securities/SecuritiesListings/"/>
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/SEC/Debt/Bonds/BondsCommon/"/>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Provisional"/>
 	</owl:Ontology>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-bo-bo;Bond">
-		<rdfs:subClassOf rdf:resource="https://spec.edmcouncil.org/fibo/SEC/Debt/DebtInstruments/TradableDebtInstrument"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbti;TradableDebtInstrument"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-md-dbtx-int;bondHasCoupon"/>
@@ -85,20 +89,20 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-bo-cft;hasPrincipalRepaymentTerms"/>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-bo-bo;isConvertible"/>
+				<owl:someValuesFrom rdf:resource="&xsd;boolean"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbti;hasRepaymentTerms"/>
 				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bo-cft;BondPrincipalRepaymentTermsSet"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-bo-bo;callable.1"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-utlx-val;TrueFalseValue"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-bo-bo;convertible"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-utlx-val;TrueFalseValue"/>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbti;isCallable"/>
+				<owl:someValuesFrom rdf:resource="&xsd;boolean"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">bond</rdfs:label>
@@ -110,7 +114,7 @@
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bo-bo;CallableBond"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbtx-dbtx;hasCallTerms"/>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbti;hasCallFeature"/>
 				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bo-cft;PartialCallFeature"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -129,7 +133,7 @@
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bo-bo;Bond"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbtx-dbtx;hasCallTerms"/>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbti;hasCallFeature"/>
 				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bo-cft;BondCallTermsSet"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -143,8 +147,8 @@
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bo-bo;ConvertibleBond"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-bo-bo;callable.1"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-utlx-val;TrueFalseValue"/>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbti;isCallable"/>
+				<owl:someValuesFrom rdf:resource="&xsd;boolean"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">callable convertible bond</rdfs:label>
@@ -155,8 +159,8 @@
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bo-bo;Bond"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-bo-bo;convertible"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-utlx-val;TrueFalseValue"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;hasContractualElement"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bo-bo;DebtConversionTerms"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -167,8 +171,8 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-bo-bo;hasConversionTerms"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bo-bo;DebtConversionTerms"/>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-bo-bo;isConvertible"/>
+				<owl:someValuesFrom rdf:resource="&xsd;boolean"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">convertible bond</rdfs:label>
@@ -198,11 +202,11 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-bo-bo;DebtConversionTerms">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbt-cft;TradableDebtSecurityRedemptionTermsSet"/>
-		<rdfs:subClassOf rdf:resource="https://spec.edmcouncil.org/fibo/SEC/Securities/SecuritiesIssuance/ConversionTerms"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbti;TradableDebtInstrumentRedemptionProvision"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-iss;ConversionTerms"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-bo-bo;specifiesConvertibleInto"/>
+				<owl:onProperty rdf:resource="&fibo-sec-sec-iss;specifiesConversionInto"/>
 				<owl:someValuesFrom rdf:resource="&fibo-sec-eq-eq;PubliclyTradedShare"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -218,10 +222,10 @@
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-bo-bo;ListedBond">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bo-bo;Bond"/>
-		<rdfs:subClassOf rdf:resource="https://spec.edmcouncil.org/fibo/SEC/Securities/SecuritiesListings/ExchangeTradedSecurity"/>
+		<rdfs:subClassOf rdf:resource="https://spec.edmcouncil.org/fibo/SEC/Debt/Bonds/BondsCommon/fibo-sec-sec-lst;ExchangeTradedSecurity"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-bo-bo;hasListing"/>
+				<owl:onProperty rdf:resource="&fibo-sec-sec-lst;isListedVia"/>
 				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bo-li;BondListing"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -245,32 +249,11 @@
 		<fibo-fnd-utl-av:synonym xml:lang="en">OTC Bond</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
-	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bo-bo;callable.1">
-		<rdfs:label xml:lang="en">callable</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-bo-bo;Bond"/>
-		<rdfs:range rdf:resource="&fibo-fnd-utlx-val;TrueFalseValue"/>
-		<skos:definition xml:lang="en">Whether the issuer has the right to pay the security prior to maturity.</skos:definition>
-	</owl:ObjectProperty>
-	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bo-bo;capitalizedInterest">
 		<rdfs:label xml:lang="en">capitalized interest</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-dbt-bo-bo;Bond"/>
 		<rdfs:range rdf:resource="&fibo-fnd-utlx-val;TrueFalseValue"/>
 		<skos:definition xml:lang="en">Whether the interest amount is capitalised until maturity date or paid out at each interest payment date.</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bo-bo;convertible">
-		<rdfs:label xml:lang="en">convertible</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-bo-bo;Bond"/>
-		<rdfs:range rdf:resource="&fibo-fnd-utlx-val;TrueFalseValue"/>
-		<skos:definition xml:lang="en">The bond has a conversion feature enabling it to be converted into another instrument on maturity.</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bo-bo;convertibleDate">
-		<rdfs:label xml:lang="en">convertible date</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-bo-bo;DebtConversionTerms"/>
-		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Date"/>
-		<skos:definition xml:lang="en">Date on which the Bond can be converted into the specified Equity Security.</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bo-bo;convertibleInto">
@@ -301,18 +284,27 @@
 		<rdfs:range rdf:resource="&fibo-sec-dbt-bo-bo;DebtConversionTerms"/>
 	</owl:ObjectProperty>
 	
+	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bo-bo;hasConvertibleDate">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDate"/>
+		<rdfs:label xml:lang="en">has convertible date</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-bo-bo;DebtConversionTerms"/>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Date"/>
+		<skos:definition>the date on which a bond can be converted into the specified equity security</skos:definition>
+	</owl:ObjectProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bo-bo;hasCouponInterestTerms">
-		<rdfs:subPropertyOf rdf:resource="&fibo-sec-dbt-dbt-cft;hasInterestTerms"/>
+		<rdfs:subPropertyOf rdf:resource="&fibo-sec-dbt-dbti;hasInterestPaymentTerms"/>
 		<rdfs:label xml:lang="en">has coupon interest terms</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-dbt-bo-bo;Bond"/>
 		<rdfs:range rdf:resource="&fibo-sec-dbt-bo-cft;BondCouponInterestTerms"/>
 	</owl:ObjectProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bo-bo;hasListing">
-		<rdfs:label xml:lang="en">has listing</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-bo-bo;ListedBond"/>
-		<rdfs:range rdf:resource="&fibo-sec-dbt-bo-li;BondListing"/>
-	</owl:ObjectProperty>
+	<owl:DatatypeProperty rdf:about="&fibo-sec-dbt-bo-bo;isConvertible">
+		<rdfs:label>is convertible</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-bo-bo;Bond"/>
+		<rdfs:range rdf:resource="&xsd;boolean"/>
+		<skos:definition xml:lang="en">has a conversion feature enabling it to be converted into another instrument on maturity</skos:definition>
+	</owl:DatatypeProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bo-bo;naked">
 		<rdfs:label xml:lang="en">naked</rdfs:label>
@@ -333,13 +325,6 @@
 		<rdfs:label xml:lang="en">securitization conditions</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-dbt-bo-bo;Debenture"/>
 		<rdfs:range rdf:resource="&fibo-sec-dbt-bo-bo;DebentureSecuritizationConditions"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bo-bo;specifiesConvertibleInto">
-		<rdfs:subPropertyOf rdf:resource="https://spec.edmcouncil.org/fibo/SEC/Securities/SecuritiesIssuance/specifiesConversionInto"/>
-		<rdfs:label xml:lang="en">specifies convertible into</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-bo-bo;DebtConversionTerms"/>
-		<rdfs:range rdf:resource="&fibo-sec-eq-eq;PubliclyTradedShare"/>
 	</owl:ObjectProperty>
 
 </rdf:RDF>
