@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE rdf:RDF [
+	<!ENTITY fibo-fbc-fi-fi "https://spec.edmcouncil.org/fibo/FBC/FinancialInstruments/FinancialInstruments/">
+	<!ENTITY fibo-fbc-pas-fpas "https://spec.edmcouncil.org/fibo/FBC/ProductsAndServices/FinancialProductsAndServices/">
 	<!ENTITY fibo-fnd-acc-cur "https://spec.edmcouncil.org/fibo/FND/Accounting/CurrencyAmount/">
 	<!ENTITY fibo-fnd-agr-ctr "https://spec.edmcouncil.org/fibo/FND/Agreements/Contracts/">
 	<!ENTITY fibo-fnd-tim-tim "https://spec.edmcouncil.org/fibo/FND/TimeExt/Time/">
@@ -13,6 +15,8 @@
 	<!ENTITY xsd "http://www.w3.org/2001/XMLSchema#">
 ]>
 <rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/SEC/Debt/MoneyMarkets/TermDeposits/"
+	xmlns:fibo-fbc-fi-fi="https://spec.edmcouncil.org/fibo/FBC/FinancialInstruments/FinancialInstruments/"
+	xmlns:fibo-fbc-pas-fpas="https://spec.edmcouncil.org/fibo/FBC/ProductsAndServices/FinancialProductsAndServices/"
 	xmlns:fibo-fnd-acc-cur="https://spec.edmcouncil.org/fibo/FND/Accounting/CurrencyAmount/"
 	xmlns:fibo-fnd-agr-ctr="https://spec.edmcouncil.org/fibo/FND/Agreements/Contracts/"
 	xmlns:fibo-fnd-tim-tim="https://spec.edmcouncil.org/fibo/FND/TimeExt/Time/"
@@ -26,9 +30,10 @@
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema#">
 	
 	<owl:Ontology rdf:about="https://spec.edmcouncil.org/fibo/SEC/Debt/MoneyMarkets/TermDeposits/">
-		<rdfs:label xml:lang="en">TermDeposits</rdfs:label>
+		<rdfs:label xml:lang="en">Term Deposits</rdfs:label>
 		<owl:imports rdf:resource="http://www.w3.org/2004/02/skos/core"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/DER/DerivativesContracts/OTCInstruments/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FBC/FinancialInstruments/FinancialInstruments/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FBC/ProductsAndServices/FinancialProductsAndServices/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/Accounting/CurrencyAmount/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/Agreements/Contracts/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/Relations/Relations/"/>
@@ -40,10 +45,16 @@
 	</owl:Ontology>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-mm-td;TermDeposit">
-		<rdfs:subClassOf rdf:resource="https://spec.edmcouncil.org/fibo/DER/DerivativesContracts/OTCInstruments/OTCInstrument"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;CashInstrument"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-mm-td;settlementTerms"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-acc-cur;hasMonetaryAmount"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;hasContractualElement"/>
 				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-mm-td;TermDepositSettlementTerms"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -52,25 +63,10 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-mm-td;TermDepositSettlementTerms">
-		<rdfs:subClassOf rdf:resource="https://spec.edmcouncil.org/fibo/DER/DerivativesContracts/OTCInstruments/OTCContractSettlementTerms"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;SettlementTerms"/>
 		<rdfs:label xml:lang="en">term deposit settlement terms</rdfs:label>
-		<skos:definition xml:lang="en">Contractual terms for the settlement of a Term Deposit.</skos:definition>
+		<skos:definition xml:lang="en">contractual terms for the settlement of a term deposit</skos:definition>
 	</owl:Class>
-	
-	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-mm-td;amount">
-		<rdfs:label xml:lang="en">amount</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-mm-td;TermDeposit"/>
-		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
-		<skos:definition xml:lang="en">The principal amount deposited.</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-mm-td;settlementTerms">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-agr-ctr;hasContractualElement"/>
-		<rdfs:label xml:lang="en">settlement terms</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-mm-td;TermDeposit"/>
-		<rdfs:range rdf:resource="&fibo-sec-dbt-mm-td;TermDepositSettlementTerms"/>
-		<skos:definition xml:lang="en">The contractual terms specifying the obligations of the certificate holder for the specified duration of that deposit.</skos:definition>
-	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-mm-td;termDepositRate">
 		<rdfs:label xml:lang="en">term deposit rate</rdfs:label>
