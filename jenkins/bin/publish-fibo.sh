@@ -709,6 +709,9 @@ function storeVersionInStardog() {
   ${stardog_vcs} tag --create $JIRA_ISSUE --version $SVERSION ${GIT_BRANCH}
 }
 
+#
+# Invoke the rdf-toolkit to convert an RDF file to another format
+#
 function convertRdfFileTo() {
 
   local sourceFormat="$1"
@@ -737,7 +740,6 @@ function convertRdfFileTo() {
       ;;
   esac
 
-  set -x
   java \
     -Xmx2G \
     -Xms2G \
@@ -751,7 +753,6 @@ function convertRdfFileTo() {
     --use-dtd-subset \
     > "${logfile}" 2>&1
   rc=$?
-  set +x
 
   #
   # For the turtle files, we want the base annotations to be the versionIRI
