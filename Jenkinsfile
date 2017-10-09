@@ -79,7 +79,16 @@ pipeline {
     // on master and let NGINX just serve it from there.
     //
     stage('Publish') {
-
+      //
+      // We only do the publication when we're on the master branch.
+      //
+      // TRICK: if you want to do a quick test, the disable this when{} clause in the Jenkinsfile in your branch,
+      // push your changes, then Jenkins will push your version to spec.edmcouncil.org. When satisfied, move the
+      // when{} back.
+      //
+      when {
+        branch 'master'
+      }
       agent {
         label 'master'
       }
