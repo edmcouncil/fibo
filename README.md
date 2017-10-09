@@ -9,20 +9,20 @@ server: https://wiki.edmcouncil.org.
 
 ## Directories
 
-Directory      | Purpose | Confluence |
-:------------- |:------- |:-----------|
-[/etc](./etc)  | Everything that is not a published OWL ontology in a financial domain | [INFRA](https://wiki.edmcouncil.org/display/INFRA) |
-[/be](./be)    | Business Entities | [BE](https://wiki.edmcouncil.org/display/BE) |
-[/bp](./bp)    | .. | .. |
-[/cae](./cae)  | .. | .. |
-[/civ](./civ)  | .. | .. |
-[/der](./der)  | Derivatives | [DER](https://wiki.edmcouncil.org/display/DER) |
-[/fnd](./fnd)  | Foundations | [FND](https://wiki.edmcouncil.org/display/FND) |
-[/fbc](./fbc)  | Financial Business & Commerce  | [FBC](https://wiki.edmcouncil.org/display/FBC) |
-[/ind](./ind)  | Indices & Indicators | [IND](https://wiki.edmcouncil.org/display/IND) |
-[/loan](./loan)| .. | [LOAN](https://wiki.edmcouncil.org/display/LOAN) |
-[/md](./md)    | .. | .. |
-[/sec](./sec)  | Securities & Equities | [SEC](https://wiki.edmcouncil.org/display/SEC) |
+Directory                | Purpose | Confluence |
+:----------------------- |:------- |:-----------|
+[/etc](./etc/README.md)  | Everything that is not a published OWL ontology in a financial domain | [INFRA](https://wiki.edmcouncil.org/display/INFRA) |
+[/be](./be/README.md)    | Business Entities | [BE](https://wiki.edmcouncil.org/display/BE) |
+[/bp](./bp/README.md)    | .. | .. |
+[/cae](./cae/README.md)  | .. | .. |
+[/civ](./civ/README.md)  | .. | .. |
+[/der](./der/README.md)  | Derivatives | [DER](https://wiki.edmcouncil.org/display/DER) |
+[/fnd](./fnd/README.md)  | Foundations | [FND](https://wiki.edmcouncil.org/display/FND) |
+[/fbc](./fbc/README.md)  | Financial Business & Commerce  | [FBC](https://wiki.edmcouncil.org/display/FBC) |
+[/ind](./ind/README.md)  | Indices & Indicators | [IND](https://wiki.edmcouncil.org/display/IND) |
+[/loan](./loan/README.md)| Loans & Mortgages | [LOAN](https://wiki.edmcouncil.org/display/LOAN) |
+[/md](./md/README.md)    | .. | .. |
+[/sec](./sec/README.md)  | Securities & Equities | [SEC](https://wiki.edmcouncil.org/display/SEC) |
 
 ## Links
 
