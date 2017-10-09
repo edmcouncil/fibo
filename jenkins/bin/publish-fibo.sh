@@ -207,31 +207,26 @@ function buildIndex () {
 function buildVowlIndex () {
 
   local vowlTree="${widoco_root}/vowltree.html"
+  local title="FIBO Widoco File Directory"
 
   echo "Step: buildVowlIndex (${vowlTree/${WORKSPACE}/})"
 
   (
     cd ${ontology_root}
     echo "Ontology Root: ${ontology_root/${WORKSPACE}/}"
-    #
-    # JG: KG, the value for the -H option, can that be ${tag_root_url} instead?
-    #
-    tree -P '*.rdf' -H ${tag_root_url} | sed "s@${GIT_TAG_NAME}\(/[^/]*/\)@${GIT_TAG_NAME}/\\U\\1@" > "${vowlTree}"
-    #
-    # Uncomment if you want to link only to vowl visualization
-    #
-    # JG>string ${product_branch_tag} needs to be built into the line below
-    #
-    #sed -i 's@\(https://spec.edmcouncil.org/fibo/widoco/master/latest/.*\)\.rdf\">@\1/webvowl/index.html#ontology\">@' "${vowlTree}"
-    #
-    # Link to the widoco page from the tree
-    #
-    sed -i "s@\(https://spec.edmcouncil.org/fibo/${product_branch_tag}/.*\)\.rdf\">@\1/index-en.html\">@" "${vowlTree}"
-    sed -i 's@\(.*\).rdf@\1 vowl@' "${vowlTree}"
-    sed -i 's/>Directory Tree</>FIBO Widoco file directory</g' "${vowlTree}"
-    sed -i 's@h1><p>@h1><p>The Visual Notation for OWL Ontologies (VOWL) defines a visual language for the user-oriented representation of ontologies. It provides graphical depictions for elements of the Web Ontology Language (OWL) that are combined to a force-directed graph layout visualizing the ontology.<br/>This specification focuses on the visualization of the ontology schema (i.e. the classes, properties and datatypes, sometimes called TBox), while it also includes recommendations on how to depict individuals and data values (the ABox). �FIBO uses open source software named WIDOCO (Wizard for DOCumenting Ontologies) for <a href="https://github.com/dgarijo/Widoco">VOWL</a>.<p/>@' "${vowlTree}"
 
-    sed -i 's@<a href=".*>https://spec.edmcouncil.org/.*</a>@@' "${vowlTree}"
+    tree \
+      -P '*.rdf' \
+      -T "${title}" \
+      --noreport \
+      --dirsfirst \
+      -H "${tag_root_url}" | \
+      sed "s@${GIT_BRANCH}\/${GIT_TAG_NAME}\/\(/[^/]*/\)@${GIT_BRANCH}\/${GIT_TAG_NAME}/\\U\\1@" | \
+      sed "s@\(${product_branch_tag}/.*\)\.rdf\">@\1/index-en.html\">@" | \
+      sed 's@\(.*\).rdf@\1 vowl@' | \
+      sed "s/>Directory Tree</>${title}</g" | \
+      sed 's@h1><p>@h1><p>The Visual Notation for OWL Ontologies (VOWL) defines a visual language for the user-oriented representation of ontologies. It provides graphical depictions for elements of the Web Ontology Language (OWL) that are combined to a force-directed graph layout visualizing the ontology.<br/>This specification focuses on the visualization of the ontology schema (i.e. the classes, properties and datatypes, sometimes called TBox), while it also includes recommendations on how to depict individuals and data values (the ABox). �FIBO uses open source software named WIDOCO (Wizard for DOCumenting Ontologies) for <a href="https://github.com/dgarijo/Widoco">VOWL</a>.<p/>@' | \
+      sed 's@<a href=".*>https://spec.edmcouncil.org/.*</a>@@' > "${vowlTree}"
   )
 
 	return 0
@@ -919,7 +914,6 @@ function generateWidocoDocumentation() {
     echo "1 Directory: ${directory/${WORKSPACE}/}"
 
     while read directoryEntry ; do
-      echo " - processing ${directoryEntry}"
       if [ -d "${directoryEntry}" ] ; then
         generateWidocoDocumentation "${directoryEntry}"
       else
@@ -938,7 +932,12 @@ function generateWidocoDocumentationForFile() {
   local rdfFile="$2"
   local extension="$([[ "${rdfFile}" = *.* ]] && echo ".${rdfFile##*.}" || echo '')"
 
-  [ "${rdfFile}" == ".ttl" ] || return 0
+  echo " - processing ${rdfFile} in ${directory} with extension ${extension}"
+
+  if [ "${rdfFile}" != ".ttl" ] ; then
+    echo -n ", skipping"
+    return 0
+  fi
 
   mkdir -p outputDir >/dev/null 2>&1
 
