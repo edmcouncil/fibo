@@ -313,8 +313,12 @@ function initGitVars() {
   #
   # See https://wiki.jenkins-ci.org/display/JENKINS/Git+Tag+Message+Plugin
   #
+  if [ "${GIT_TAG_NAME}" == "latest" ] ; then
+    unset GIT_TAG_NAME
+  fi
   if [ -z "${GIT_TAG_NAME}" ] ; then
-    export GIT_TAG_NAME="$(cd ${source_family_root} ; echo $(git describe --contains 2>/dev/null))"
+    export GIT_TAG_NAME="$(cd ${source_family_root} ; echo $(git describe --contains --exact-match 2>/dev/null))"
+    export GIT_TAG_NAME="${GIT_TAG_NAME%^*}" # Strip the suffix
   fi
   export GIT_TAG_NAME="${GIT_TAG_NAME:-${GIT_BRANCH}_latest}"
   echo "GIT_TAG_NAME=${GIT_TAG_NAME}"
@@ -705,6 +709,9 @@ function storeVersionInStardog() {
   ${stardog_vcs} tag --create $JIRA_ISSUE --version $SVERSION ${GIT_BRANCH}
 }
 
+#
+# Invoke the rdf-toolkit to convert an RDF file to another format
+#
 function convertRdfFileTo() {
 
   local sourceFormat="$1"
@@ -733,14 +740,17 @@ function convertRdfFileTo() {
       ;;
   esac
 
-
   java \
+    -Xmx2G \
+    -Xms2G \
     -jar "${rdftoolkit_jar}" \
     --source "${rdfFile}" \
     --source-format "${sourceFormat}" \
     --target "${targetFile}" \
     --target-format "${targetFormat}" \
-    -ibn -ibi --use-dtd-subset \
+    --inline-blank-nodes \
+    --infer-base-iri \
+    --use-dtd-subset \
     > "${logfile}" 2>&1
   rc=$?
 
