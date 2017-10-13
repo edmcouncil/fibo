@@ -47,7 +47,23 @@
     </xsl:for-each>
     <xsl:text>&quot;,&quot;</xsl:text>
     <!-- Definition -->
-    <xsl:value-of select="normalize-space(translate(../following-sibling::dd[p/span='Definition'][1]/p/span[@class = 'classdoc2'], $quot, $apos))"/>
+    <!-- Cope with a list if there is more than one -->
+    <xsl:for-each select="../following-sibling::dd[p/span='Definition'][1]"> <!-- To set the context only -->
+      <xsl:choose>
+        <xsl:when test="p/ul/li">
+          <!-- We have a list but only take the first value since it's an error -->
+          <!--  restore commented out code to process them all 
+          <xsl:for-each select="p/ul/li/span">
+            <xsl:value-of select="normalize-space(translate(., $quot, $apos))"/>
+            <xsl:if test="position() != last()"><xsl:text>&#x0A;</xsl:text></xsl:if>
+          </xsl:for-each> -->
+          <xsl:value-of select="normalize-space(translate(p/ul/li[1]/span, $quot, $apos))"/>
+        </xsl:when>
+        <xsl:when test="p/span[@class='classdoc2']">
+          <xsl:value-of select="normalize-space(translate(p/span[@class = 'classdoc2'], $quot, $apos))"/>
+        </xsl:when>
+      </xsl:choose>
+    </xsl:for-each>
     <xsl:text>&quot;,&quot;</xsl:text>
     <!-- Generated definition, different format when it's for a property -->
     <xsl:choose>
