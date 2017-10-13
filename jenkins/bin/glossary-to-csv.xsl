@@ -17,8 +17,9 @@
 
   <xsl:template match="dt/span[starts-with(@class, 'headterm')]">
     <!-- Term -->
+    <xsl:text>&quot;</xsl:text>
     <xsl:value-of select="."/>
-    <xsl:text>,</xsl:text>
+    <xsl:text>&quot;,</xsl:text>
     <!-- Type -->
     <xsl:choose>
       <xsl:when test="contains(@class, 'classterm')">
