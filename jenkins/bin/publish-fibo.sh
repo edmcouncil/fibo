@@ -209,7 +209,7 @@ function buildVowlIndex () {
   local vowlTreeP="${widoco_root}/vowltreeProd.html"
   local vowlTreeD="${widoco_root}/vowltreeDev.html"
   local titleP="FIBO Widoco File Directory (Production)"
-  local titleP="FIBO Widoco File Directory (Development)"
+  local titleD="FIBO Widoco File Directory (Development)"
 
   echo "Step: buildVowlIndex (${vowlTree/${WORKSPACE}/})"
 
@@ -237,8 +237,9 @@ function buildVowlIndex () {
 
 
     tree \
-      -P '*.rdf' \
+      -P '*.rdfRELEASE' \
       -T "${titleP}" \
+      -I '*Ext' \
       --noreport \
       --dirsfirst \
       -H "${tag_root_url}" | \
