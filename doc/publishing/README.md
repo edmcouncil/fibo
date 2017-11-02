@@ -2,16 +2,145 @@
 
 FIBO is developed in many ways as if it were a standard software
 development process. Although the various "source files" are not really
-the source files of programming languages like Java and C++, we can
+the source files of programming languages like Java or C++, we can
 consider them to be just the same, they're sources by any means.
 
+## Authoritative Sources
+
 The core authoritative source files are the OWL files in the main
-FIBO git repository: https://github.com/edmcouncil/fibo
+FIBO git repository: [https://github.com/edmcouncil/fibo](https://github.com/edmcouncil/fibo).
+
+Examples of authoritative OWL2 files are:
+
+- [FND - Law/Jurisdiction](https://github.com/edmcouncil/fibo/blob/master/fnd/Law/Jurisdiction.rdf)
+- [BE - LegalEntities/LEIEntities](https://github.com/edmcouncil/fibo/blob/master/be/LegalEntities/LEIEntities.rdf)
 
 Besides these OWL files, we also have some other authoritative sources
 such as UML files.
 
-# Directories, Domains and Sub-domains
+## Terms
+
+We're using a number of terms in the publishing process that have their own EDM Council specific definition:
+
+- [Family](#family)
+- [Product](#products)
+- [Module](#directories-&-modules)
+- Version
+  - Branch
+  - Tag
+- Serialization Format
+
+## Family
+
+The Enterprise Data Management Council produces a number of product families such as:
+
+- [FIBO](https://www.edmcouncil.org/financialbusiness)
+- [DCAM](https://www.edmcouncil.org/dcam)
+
+And some more insignificant ones such as:
+
+- [RDF Toolkit](https://github.com/edmcouncil/rdf-toolkit)
+
+In the context of the document, when we mention the term `family` we mean `fibo`.
+
+## Products
+
+So, FIBO itself is a "product family" that consists of a number of products.
+
+Here are the primary products and their product keys (more about that later):
+
+1. [`ontology`](https://spec.edmcouncil.org/fibo/ontology/master/latest/)
+
+   The FIBO Ontologies, the primary product, the core OWL2 ontologies that are the foundation and source of record 
+   for any of the other derived products in the product family.
+   
+   These are all of the about 30 mature modules and sub-modules developed by the [FIBO Team](../team.md) for nearly a
+   decade. They are in W3C OWL and can be opened with any RDF-compliant tool. FIBO is published in multiple RDF
+   serializations, including RDF/XML, Turtle, JSON-LD and NQUADS. See the Supported Formats table below to access FIBO
+   in these forms.
+
+1. [`glossary`](https://spec.edmcouncil.org/fibo/glossary/master/latest/)
+
+   The FIBO Glossary.	This is a searchable Glossary of terms in HTML.
+
+1. [`vocabulary`](https://spec.edmcouncil.org/fibo/vocabulary/master/latest/)
+
+   The FIBO Vocabulary consists of a SKOS-taxonomy of terms.
+
+1. [`datadictionary`](https://spec.edmcouncil.org/fibo/datadictionary/master/latest/)
+
+   The FIBO Data Dictionary	is a spreadsheet version (in the form of a CSV file) of the terms and definitions in FIBO.
+
+1. [`widoco`](https://spec.edmcouncil.org/fibo/widoco/master/latest/)
+
+   The FIBO Ontologies VOWL Visualization	The Visual Notation for OWL Ontologies (VOWL) defines a visual language for the user-oriented representation of ontologies. It provides graphical depictions for elements of the Web Ontology Language (OWL) that are combined to a force-directed graph layout visualizing the ontology.
+   
+1. `smif`
+	
+	 Sample UML Diagrams of FIBO.	The Semantic Modeling for Information Federation (SMIF) spec allows round tripping 
+	 between UML and OWL.
+
+1. `uml`
+  
+   The UML representations of the models that are represented in the OWL
+   ontologies.
+
+1. [`ldf`](http://fragments.edmcouncil.org/)
+
+   The [Linked Data Fragments](http://linkeddatafragments.org/) (LDF) version of FIBO is not really a downloadable 
+   product but more like an online web service running on http://fragments.edmcouncil.org which will show for any 
+   published version of FIBO the "ldf view" of it. See http://linkeddatafragments.org/
+   
+   The purpose of this server is to enable intelligent clients that can process triples in client side SPARQL. 
+   A triple pattern specification is very lightweight, and still allows SPARQL endpoint like access of data. 
+   One can look at this protocol method as sitting between a full RDF dump file and a SPARQL endpoint. 
+   Somewhere in the middle of the spectrum. It is planned to offer client implementation from this server after 
+   some further testing and finding some handy queries to prepopulate. Other fragments servers in production can 
+   be found [here](http://data.linkeddatafragments.org/).
+
+1. [`schema.org`](http://schema.org/docs/financial.html)
+
+   A "flattened down" version of the FIBO ontologies, made suitable for
+   use in search engines like Google and Bing, as an extension to schema.org,
+   this is the "fibo.schema.org" source.
+   
+   >The schema.org product has its own build/test/deploy/publish cycle and is not published on 
+   >https://spec.edmcouncil.org, where in a later phase it is expected to end up under 
+   >https://spec.edmcouncil.org/fibo/schema.org . 
+   >At the moment it is published here: http://schema.org/docs/financial.html
+
+
+These are the "product keys", as they're also used in the URLs that
+are published on https://spec.edmcouncil.org:
+
+- `https://spec.edmcouncil.org/fibo/ontology/...`
+- `https://spec.edmcouncil.org/fibo/glossary/...`
+- `https://spec.edmcouncil.org/fibo/vocabulary/...`
+- `https://spec.edmcouncil.org/fibo/datadictionary/...`
+- `https://spec.edmcouncil.org/fibo/widoco/...`
+
+Then actually, we do also have a few other "products" that can be treated in the same
+way as the above products, so we assign product keys to them as well:
+
+1. [`doc`](https://spec.edmcouncil.org/fibo/doc/)
+
+   The primary generated FIBO documentation. Special software, still to be developed
+   (although parts already exist), will be used to generate an HTML5 website with the
+   full documentation of all the various components of FIBO.
+
+   >Next to product keys like
+   >'doc' we can support vendor specific product keys like `vendor-adaptive`, 
+   >`vendor-topquadrant`, `vendor-complexible`, `vendor-ontotext` and so forth.
+   >Whatever they want to deliver or add to the overall site can be placed here, where
+   >the council will forward all traffic to a host of their specification.
+
+2. [`static`](https://spec.edmcouncil.org/static/)
+
+   All static content such as logos, javascript, stylesheets and the like.
+   
+   >NOTE: We will have to split this up into `/static`, `/fibo/static` and `/fibo/static/<branch>/<tag>`
+
+## Directories & Modules
 
 Let's first explain the structure of the directories in the FIBO git
 repository, where we start with the two top level directories that more
@@ -36,86 +165,29 @@ or less look as follows:
 - ..
 
 And so forth. As you can see, at the top level we have the FIBO
-"Domains" and at the second level we have the "Sub-domains".
+"Modules" and at the second level we have the "Sub-modules".
 
-- FIBO Domains are stored in separate directories in a single Git
+- All FIBO Modules are stored in their own separate directory in the single Git
   repository called fibo.  These directories are named for each of the
-  FIBO Domains, e.g., `/fnd`, `/be`, `/ind`, etc.
+  FIBO Modules, e.g., [`/fnd`](https://github.com/edmcouncil/fibo/tree/master/fnd) (Foundations), 
+  [`/be`](https://github.com/edmcouncil/fibo/tree/master/be) (Business Entities), 
+  [`/ind`](https://github.com/edmcouncil/fibo/tree/master/ind) (Indices & Indicators), etc.
+  
   These directories are siblings in the root directory of the FIBO
-  repository. (Actually, the directory `/etc` is the only exception to
+  repository. (Actually, the directory [`/etc`](https://github.com/edmcouncil/fibo/tree/master/etc) is the only exception to
   this rule)
-- Each Domain directory contains a number of sub-directories
-  corresponding to the "Sub-domains" of that Domain. The names of these
+  
+- Each Module directory contains a number of sub-directories
+  corresponding to the "Sub-modules" of that Module. The names of these
   directories are in ["UpperCamelCase"](http://c2.com/cgi/wiki?UpperCamelCase)
   such as `/be/Corporations/`. 
-- Then there's an optional third level, such as 
-  `/fbc/FunctionalEntities/USJurisdiction`, where `USJurisdiction` is
-  a "Sub-sub-domain".
-
-# Products and Flavors
-
-FIBO itself is a "product family" or a "product line" that consists of
-a number of products which we usually call "flavors", here are the four primary
-products and their product keys (as they're used in the IRI/URL and directory
-names):
-
-1. `ontology`
-
-   The primary product, the core OWL ontologies that are the foundation
-   for any of the other flavors of FIBO.
-
-2. `glossary`
-
-   The "FIBO-V" flavor, the glossary or vocabulary, which is based on the SKOS standard,
-   a vocabulary or taxonomy or "concept scheme" that is built up from all
-   the terms in the OWL ontologies.
-
-3. `schema.org`
-
-   A "flattened down" version of the FIBO ontologies, made suitable for
-   use in search engines like Google and Bing, as an extension to schema.org,
-   this is the "fibo.schema.org" source.
-
-4. `uml`
   
-   The UML representations of the models that are represented in the OWL
-   ontologies.
-
-These are the four "product keys", as they're also used in the URLs that
-are published on https://spec.edmcouncil.org:
-
-- `https://spec.edmcouncil.org/fibo/ontology/...`
-- `https://spec.edmcouncil.org/fibo/vocabulary/...`
-- `https://spec.edmcouncil.org/fibo/schema.org/...`
-- `https://spec.edmcouncil.org/fibo/uml/...`
-
-Then actually, we do also have a few other "products" that can be treated in the same
-way as the four primary products, so we assign product keys to them as well:
-
-5. `doc`
-
-   The primary generated FIBO documentation. Special software, still to be developed
-   (although parts already exist), will be used to generate an HTML5 website with the
-   full documentation of all the various components of FIBO.
-
-   >Next to product keys like
-   >'doc' we can support vendor specific product keys like `vendor-adaptive`, 
-   >`vendor-topquadrant`, `vendor-complexible`, `vendor-ontotext` and so forth.
-   >Whatever they want to deliver or add to the overall site can be placed here, where
-   >the council will forward all traffic to a host of their specification.
-
-6. `static`
-
-   All static content such as logos, javascript, stylesheets and the like.
-
-Examples:
-
-- `https://spec.edmcouncil.org/fibo/doc/` (the main documentation page)
-- `https://spec.edmcouncil.org/fibo/vendor-topquadrant/evn` (TopQuadrant's EVN setup showing FIBO-V)
-- `https://spec.edmcouncil.org/fibo/static/image/edmcouncil.jpg` (the logo)
+- Then there's an optional third level, such as 
+  [`/fbc/FunctionalEntities/NorthAmericanEntities`](https://github.com/edmcouncil/fibo/tree/master/fbc/FunctionalEntities/NorthAmericanEntities), 
+  where `NorthAmericanEntities` is a "Sub-sub-module".
 
 
-# Branches and Colors
+# Branches
 
 The FIBO development process is organized in several streams of work
 that in the software development world are usually called branches,
