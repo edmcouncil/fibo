@@ -24,10 +24,14 @@ We're using a number of terms in the publishing process that have their own EDM 
 
 - [Family](#family)
 - [Product](#products)
-- [Module](#directories-&-modules)
-- Version
+- [Module](#directories--modules)
+- [Version](tags-versions-and-releases)
   - Branch
   - Tag
+  - Release
+- [Maturity]
+  - Production
+  - Development
 - Serialization Format
 
 ## Family
