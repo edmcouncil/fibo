@@ -562,7 +562,8 @@ __HERE__
 # We want to add in a rdfs:isDefinedBy link from every class back to the ontology. 
 
   find ${tag_root}/ -type f  -name '*.rdf' -not -name '*About*'  -print | while read file ; do
-    addIsDefinedBy "${file}"
+    # addIsDefinedBy "${file}"
+      echo "skipping is defined by"
   done
  
   return 0
@@ -777,7 +778,7 @@ function convertRdfFileTo() {
     --inline-blank-nodes \
     --infer-base-iri \
     --use-dtd-subset \
-    > "${logfile}" 2>&1
+    > "${logfile}"    # 2>&1
   rc=$?
 
   #
