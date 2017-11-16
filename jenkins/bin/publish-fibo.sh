@@ -815,6 +815,7 @@ function ontologyConvertRdfToAllFormats() {
 
   for rdfFile in **/*.rdf ; do
     for format in json-ld turtle ; do
+      echo "converting ${rdfFile} to ${format}"
       convertRdfFileTo rdf-xml "${rdfFile}" "${format}" || return $?
     done || return $?
   done || return $?
