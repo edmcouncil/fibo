@@ -8,6 +8,8 @@
 	<!ENTITY fibo-fbc-fct-rga "https://spec.edmcouncil.org/fibo/FBC/FunctionalEntities/RegulatoryAgencies/">
 	<!ENTITY fibo-fnd-aap-agt "https://spec.edmcouncil.org/fibo/FND/AgentsAndPeople/Agents/">
 	<!ENTITY fibo-fnd-aap-ppl "https://spec.edmcouncil.org/fibo/FND/AgentsAndPeople/People/">
+	<!ENTITY fibo-fnd-agr-agr "https://spec.edmcouncil.org/fibo/FND/Agreements/Agreements/">
+	<!ENTITY fibo-fnd-agr-ctr "https://spec.edmcouncil.org/fibo/FND/Agreements/Contracts/">
 	<!ENTITY fibo-fnd-arr-doc "https://spec.edmcouncil.org/fibo/FND/Arrangements/Documents/">
 	<!ENTITY fibo-fnd-arr-id "https://spec.edmcouncil.org/fibo/FND/Arrangements/IdentifiersAndIndices/">
 	<!ENTITY fibo-fnd-law-cor "https://spec.edmcouncil.org/fibo/FND/Law/LegalCore/">
@@ -34,6 +36,8 @@
 	xmlns:fibo-fbc-fct-rga="https://spec.edmcouncil.org/fibo/FBC/FunctionalEntities/RegulatoryAgencies/"
 	xmlns:fibo-fnd-aap-agt="https://spec.edmcouncil.org/fibo/FND/AgentsAndPeople/Agents/"
 	xmlns:fibo-fnd-aap-ppl="https://spec.edmcouncil.org/fibo/FND/AgentsAndPeople/People/"
+	xmlns:fibo-fnd-agr-agr="https://spec.edmcouncil.org/fibo/FND/Agreements/Agreements/"
+	xmlns:fibo-fnd-agr-ctr="https://spec.edmcouncil.org/fibo/FND/Agreements/Contracts/"
 	xmlns:fibo-fnd-arr-doc="https://spec.edmcouncil.org/fibo/FND/Arrangements/Documents/"
 	xmlns:fibo-fnd-arr-id="https://spec.edmcouncil.org/fibo/FND/Arrangements/IdentifiersAndIndices/"
 	xmlns:fibo-fnd-law-cor="https://spec.edmcouncil.org/fibo/FND/Law/LegalCore/"
@@ -73,6 +77,7 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/AgentsAndPeople/Agents/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/AgentsAndPeople/People/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/Agreements/Agreements/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/Agreements/Contracts/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/Arrangements/Documents/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/Arrangements/IdentifiersAndIndices/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/Law/Jurisdiction/"/>
@@ -83,7 +88,7 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/ProductsAndServices/ProductsAndServices/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/FBC/20170201/FunctionalEntities/RegulatoryAgencies/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/FBC/20171101/FunctionalEntities/RegulatoryAgencies/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/FBC/20150801/FunctionalEntities/RegulatoryAgencies.rdf version of this ontology was modified per the issue resolutions identified in the FIBO FBC 1.1 RTF report, including deprecation of the hasJurisdiction property that was duplicated in BE via the BE 1.1 RTF.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
@@ -244,6 +249,58 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<skos:definition>the capacity of some natural person to regulate some industry, organization, or product by virtue of some certification program on behalf of some regulatory agency</skos:definition>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-fbc-fct-rga;RegulatoryReport">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-doc;Report"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-fct-rga;isSubmittedBy"/>
+				<owl:onClass rdf:resource="&fibo-fbc-fct-rga;Submitter"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-fct-rga;isSubmittedTo"/>
+				<owl:onClass rdf:resource="&fibo-fnd-pty-pty;PartyInRole"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-fct-rga;isReportedBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-fct-rga;ReportingParty"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-fct-rga;isReportedTo"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-pty-pty;PartyInRole"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isGovernedBy"/>
+				<owl:someValuesFrom>
+					<owl:Class>
+						<owl:unionOf rdf:parseType="Collection">
+							<rdf:Description rdf:about="&fibo-fnd-agr-ctr;Contract">
+							</rdf:Description>
+							<rdf:Description rdf:about="&fibo-fnd-law-cor;Constitution">
+							</rdf:Description>
+							<rdf:Description rdf:about="&fibo-fnd-law-cor;Law">
+							</rdf:Description>
+							<rdf:Description rdf:about="&fibo-fbc-fct-rga;Regulation">
+							</rdf:Description>
+						</owl:unionOf>
+					</owl:Class>
+				</owl:someValuesFrom>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>regulatory report</rdfs:label>
+		<skos:definition>a report required to support operational transparency that demonstrates compliance with some specification, law, policy, restriction, or other rule specified by a regulatory agency</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Such a report may be needed for licensing, monitoring, taxation, or for other purposes that demonstrate the integrity, fairness, safety, or other capacity of a given industry, organization, or product</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-fbc-fct-rga;RegulatoryService">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-pas;Service"/>
 		<rdfs:subClassOf>
@@ -256,12 +313,34 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<skos:definition>a service provided by a regulatory agency, which may include, but not be limited to, examination, monitoring, supervision, testing, or other capabilities required to ensure the integrity, fairness, safety, or other capacity of a given industry, organization, or product</skos:definition>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-fbc-fct-rga;ReportingParty">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-pty-pty;PartyInRole"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-fct-rga;reports"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-arr-doc;Report"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>reporting party</rdfs:label>
+		<skos:definition>a party providing a report in response to some contractual, legal, regulatory or other requirement</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-fct-rga;Submitter">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-pty-pty;PartyInRole"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-fct-rga;submits"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-arr-doc;Report"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>submitting party</rdfs:label>
+		<skos:definition>a party presenting something, such as a regulatory report</skos:definition>
+	</owl:Class>
+	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-fct-rga;hasJurisdiction">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;has"/>
 		<rdfs:label>has jurisdiction</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fbc-fct-rga;RegulatoryAgency"/>
-		<rdfs:range rdf:resource="&fibo-fnd-law-jur;Jurisdiction"/>
 		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentProperty rdf:resource="&fibo-be-ge-ge;hasJurisdiction"/>
 		<skos:definition>indicates the jurisdiction in which the regulatory agency has authority</skos:definition>
 	</owl:ObjectProperty>
 	
@@ -280,6 +359,34 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<skos:definition>indicates the regulatory agency that regulates something</skos:definition>
 	</owl:ObjectProperty>
 	
+	<owl:ObjectProperty rdf:about="&fibo-fbc-fct-rga;isReportedBy">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;isProvidedBy"/>
+		<rdfs:label>is reported by</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fbc-fct-rga;ReportingParty"/>
+		<owl:inverseOf rdf:resource="&fibo-fbc-fct-rga;reports"/>
+		<skos:definition>indicates the party that reports something</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fbc-fct-rga;isReportedTo">
+		<rdfs:label>is reported to</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fnd-pty-pty;PartyInRole"/>
+		<skos:definition>indicates the party to which something is reported</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fbc-fct-rga;isSubmittedBy">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;isProvidedBy"/>
+		<rdfs:label>is submitted by</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fbc-fct-rga;Submitter"/>
+		<owl:inverseOf rdf:resource="&fibo-fbc-fct-rga;submits"/>
+		<skos:definition>indicates the party that submits something</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fbc-fct-rga;isSubmittedTo">
+		<rdfs:label>is submitted to</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fnd-pty-pty;PartyInRole"/>
+		<skos:definition>indicates the party to which something is submitted</skos:definition>
+	</owl:ObjectProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-fct-rga;issues">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;provides"/>
 		<rdfs:label>issues</rdfs:label>
@@ -294,6 +401,23 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<rdfs:domain rdf:resource="&fibo-fbc-fct-rga;RegulatoryAgency"/>
 		<skos:definition>governs or directs according to rule or law, typically an industry, organization, or product</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom>http://www.merriam-webster.com/dictionary/regulate</fibo-fnd-utl-av:adaptedFrom>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fbc-fct-rga;reports">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;provides"/>
+		<rdfs:label>reports</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fbc-fct-rga;ReportingParty"/>
+		<skos:definition>provides an account or statement of something, prepared on an ad hoc, periodic, recurring, regular, or as required basis</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.businessdictionary.com/definition/report.html</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.merriam-webster.com/dictionary/report</fibo-fnd-utl-av:adaptedFrom>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fbc-fct-rga;submits">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;provides"/>
+		<rdfs:label>submits</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fbc-fct-rga;Submitter"/>
+		<skos:definition>presents something (a proposal, application, report, or other document) for consideration or review</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.merriam-webster.com/dictionary/submit</fibo-fnd-utl-av:adaptedFrom>
 	</owl:ObjectProperty>
 
 </rdf:RDF>
