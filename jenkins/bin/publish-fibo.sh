@@ -969,7 +969,7 @@ function generateWidocoDocumentationForFile() {
   echo " - processing ${rdfFile} in ${directory} with extension ${extension}"
 
   if [[ "${extension}" != ".ttl" || "${rdfFile}" =~ ^About.* ]] ; then
-    echo -n ", skipping"
+    echo  "- skipping ${rdfFile} in ${directory} with extension ${extension}"
     return 0
   fi
 
