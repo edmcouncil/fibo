@@ -219,6 +219,7 @@ function buildVowlIndex () {
 
     tree \
       -P '*.rdf' \
+      -I About\* \
       -T "${titleD}" \
       --noreport \
       --dirsfirst \
@@ -967,7 +968,7 @@ function generateWidocoDocumentationForFile() {
 
   echo " - processing ${rdfFile} in ${directory} with extension ${extension}"
 
-  if [ "${rdfFile}" != ".ttl" ] ; then
+  if [[ "${extension}" != ".ttl" || "${rdfFile}" =~ ^About.* ]] ; then
     echo -n ", skipping"
     return 0
   fi
@@ -985,15 +986,18 @@ function generateWidocoDocumentationForFile() {
     -outFolder "${outputDir}/${rdfFile}" \
     -rewriteAll \
     -lang en  \
+    -licensius \
     -getOntologyMetadata \
     -webVowl
   local rc=$?
   echo " - rc is ${rc}"
-  #
-  # KG: commented to make the build faster - need to revisit license
-  #
-  # -licensius \
-  #
+
+  #Remove introduction section
+  sed -i "/#introduction/d" "${outputDir}/${rdfFile}/doc/index-en.html"
+
+  #Remove description section
+  sed -i "/#description/d" "${outputDir}/${rdfFile}/doc/index-en.html"
+
   # KG: Need to figure out why it fails on fibo/ontology/master/latest/SEC/SecuritiesExt/SecuritiesExt.ttl
   #
   # KG: Commenting out temporarily so that the build doesn't stop
