@@ -219,6 +219,7 @@ function buildVowlIndex () {
 
     tree \
       -P '*.rdf' \
+      -I About\* \
       -T "${titleD}" \
       --noreport \
       --dirsfirst \
