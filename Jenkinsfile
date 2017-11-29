@@ -24,7 +24,7 @@ pipeline {
     //
     skipStagesAfterUnstable()
     //
-    // There must be SOME limit, if it hangs or whatever then that's a bug and therefore cancel the job.
+    // There must be SOME limit, if it hangs or whatever then that's a bug and therefore cancel the job. 6
     //
     timeout(time: 6, unit: 'HOURS')
     //
