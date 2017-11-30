@@ -1,0 +1,1499 @@
+# baseURI: http://spec.edmcouncil.org/owlnames
+# imports: http://spinrdf.org/spin
+# imports: http://topbraid.org/sparqlmotionlib
+# imports: http://www.w3.org/2004/02/skos/core
+# prefix: owlnames
+
+@prefix arg: <http://spinrdf.org/arg#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix owlnames: <http://spec.edmcouncil.org/owlnames#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sm: <http://topbraid.org/sparqlmotion#> .
+@prefix sp: <http://spinrdf.org/sp#> .
+@prefix spif: <http://spinrdf.org/spif#> .
+@prefix spin: <http://spinrdf.org/spin#> .
+@prefix spl: <http://spinrdf.org/spl#> .
+@prefix ui: <http://uispin.org/ui#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://spec.edmcouncil.org/owlnames>
+  rdf:type owl:Ontology ;
+  owl:imports <http://spinrdf.org/spin> ;
+  owl:imports <http://topbraid.org/sparqlmotionlib> ;
+  owl:imports <http://www.w3.org/2004/02/skos/core> ;
+  owl:versionInfo "Created with TopBraid Composer"^^xsd:string ;
+.
+owlnames:Select_1
+  rdf:type sp:Select ;
+  rdfs:label "Select 1"^^xsd:string ;
+.
+owlnames:Select_2
+  rdf:type sp:Select ;
+  rdfs:label "Select 2"^^xsd:string ;
+.
+owlnames:clabel
+  rdf:type rdf:Property ;
+  rdfs:domain rdf:Property ;
+  rdfs:label "clabel"^^xsd:string ;
+  rdfs:range xsd:string ;
+.
+owlnames:condition
+  rdf:type rdf:Property ;
+  rdfs:domain rdf:Property ;
+  rdfs:label "label"^^xsd:string ;
+.
+owlnames:definition
+  rdf:type rdf:Property ;
+  rdfs:label "definition"^^xsd:string ;
+.
+owlnames:kindOf
+  rdf:type rdf:Property ;
+  rdfs:label "kinds"^^xsd:string ;
+.
+owlnames:label
+  rdf:type rdf:Property ;
+  rdfs:label "label"^^xsd:string ;
+.
+owlnames:rlabel
+  rdf:type spin:Function ;
+  spin:body [
+      rdf:type sp:Select ;
+      sp:resultVariables (
+          [
+            sp:varName "result"^^xsd:string ;
+          ]
+        ) ;
+      sp:text """PREFIX  metadata: <http://topbraid.org/metadata#>
+PREFIX  skostemplate: <http://topbraid.org/spin/skostemplates#>
+PREFIX  tagger: <http://evn.topbraidlive.org/tagger#>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  tops: <http://www.topbraid.org/tops#>
+PREFIX  swaclasses: <http://topbraid.org/swaclasses#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX  spif: <http://spinrdf.org/spif#>
+PREFIX  crosswalkprojects: <http://teamwork.topbraidlive.org/crosswalkprojects#>
+PREFIX  tables: <http://topbraid.org/tables#>
+PREFIX  ui:   <http://uispin.org/ui#>
+PREFIX  composite: <http://www.topbraid.org/2007/05/composite.owl#>
+PREFIX  swaeditor: <http://topbraid.org/swaeditor#>
+PREFIX  sm2wsdl: <http://topbraid.org/sparqlmotion/sm2wsdl.sms#>
+PREFIX  html: <http://uispin.org/html#>
+PREFIX  let:  <http://uispin.org/let#>
+PREFIX  shaclify: <http://topbraid.org/shacl/shaclify#>
+PREFIX  spinmapl: <http://topbraid.org/spin/spinmapl#>
+PREFIX  tasks: <http://topbraid.org/tasks#>
+PREFIX  skosspin: <http://topbraid.org/spin/skosspin#>
+PREFIX  discoverytool: <http://www.epa.gov/discoverytool#>
+PREFIX  tbladmin: <http://server.topbraidlive.org/system-applications/tbladmin#>
+PREFIX  qudtspin: <http://qudt.org/spin/qudtspin#>
+PREFIX  spl:  <http://spinrdf.org/spl#>
+PREFIX  jfn:  <java:com.hp.hpl.jena.sparql.function.library.>
+PREFIX  spr:  <http://spinrdf.org/spr#>
+PREFIX  taxonomies: <http://evn.topbraidlive.org/evnprojects#>
+PREFIX  tbi:  <http://tbi.topbraid.org/tbi#>
+PREFIX  letrs: <http://uispin.org/letrs#>
+PREFIX  connectset-templates: <http://tbi.topbraidlive.org/system/connectset-templates#>
+PREFIX  fn:   <http://www.w3.org/2005/xpath-functions#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  sharepoint: <http://topbraid.org/sharepoint#>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  smf:  <http://topbraid.org/sparqlmotionfunctions#>
+PREFIX  swauml: <http://topbraid.org/swauml#>
+PREFIX  evnconstraints: <http://topbraid.org/spin/evnconstraints#>
+PREFIX  sparqlmotionlib-tbc: <http://topbraid.org/sparqlmotionlib-tbc#>
+PREFIX  backspin: <http://topbraid.org/backspin#>
+PREFIX  tablesmap: <http://topbraid.org/spin/tablesmap#>
+PREFIX  search: <http://topbraid.org/search#>
+PREFIX  default: <http://uispin.org/default#>
+PREFIX  sml:  <http://topbraid.org/sparqlmotionlib#>
+PREFIX  crosswalk: <http://topbraid.org/crosswalk#>
+PREFIX  dct:  <http://purl.org/dc/terms/>
+PREFIX  arg:  <http://spinrdf.org/arg#>
+PREFIX  json: <http://topbraid.org/json#>
+PREFIX  sm:   <http://topbraid.org/sparqlmotion#>
+PREFIX  spinmap: <http://spinrdf.org/spinmap#>
+PREFIX  sp:   <http://spinrdf.org/sp#>
+PREFIX  email: <http://topbraid.org/email#>
+PREFIX  raci: <http://topbraid.org/raci#>
+PREFIX  uix:  <http://topbraidlive.org/uix#>
+PREFIX  afn:  <http://jena.hpl.hp.com/ARQ/function#>
+PREFIX  unnamed: <http://sc.workingontologist.com/unnamed#>
+PREFIX  owlnames: <http://spec.edmcouncil.org/owlnames#>
+PREFIX  owlrl: <http://topbraid.org/spin/owlrl#>
+PREFIX  sxml: <http://topbraid.org/sxml#>
+PREFIX  daml: <http://www.daml.org/2001/03/daml+oil#>
+PREFIX  teamwork: <http://topbraid.org/teamwork#>
+PREFIX  swon: <http://uispin.org/swon#>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  pf:   <http://jena.hpl.hp.com/ARQ/property#>
+PREFIX  spin: <http://spinrdf.org/spin#>
+PREFIX  evnui: <http://evn.topbraidlive.org/ui#>
+PREFIX  spra: <http://spinrdf.org/spra#>
+PREFIX  swa:  <http://topbraid.org/swa#>
+
+SELECT  ?result
+WHERE
+  { OPTIONAL
+      { ?a1 rdfs:label ?l1 }
+    OPTIONAL
+      { ?a1 rdf:type owl:Restriction .
+        ?a1 owl:onProperty ?p .
+        ?p rdfs:label ?pl .
+        ?a1 ?op ?rc
+        BIND(owlnames:rlabel(?rc) AS ?rcl)
+        FILTER ( ?op IN (owl:someValuesFrom, owl:allValuesFrom, owl:hasValue) )
+        ?op owlnames:condition ?oplp .
+        ?op owlnames:clabel ?oplc
+        BIND(if(isBlank(?rc), ?oplc, ?oplp) AS ?opl)
+        BIND(concat(?pl, \" \", ?opl, \" \", ?rcl) AS ?lx)
+        BIND(replace(replace(?opl, \"\\\\{\\\\?1}\", ?pl), \"\\\\{\\\\?2}\", ?rcl) AS ?l2)
+      }
+    OPTIONAL
+      { ?a1 rdf:type owl:Class .
+        ?a1 ?oc ?b
+        FILTER ( ?oc IN (owl:intersectionOf, owl:unionOf) )
+        ?b rdf:first ?car .
+        ?b rdf:rest ?cdr .
+        ?oc owlnames:condition ?opl
+        BIND(concat(owlnames:rlabel(?cdr), \" \", ?opl, \" \", owlnames:rlabel(?car)) AS ?l3)
+      }
+    OPTIONAL
+      { FILTER isBlank(?a1)
+        ?a1 rdf:first ?car .
+        ?a1 rdf:rest ?cdr
+        BIND(if(( ?cdr = rdf:nil ), owlnames:rlabel(?car), concat(owlnames:rlabel(?car), \", \", owlnames:rlabel(?cdr))) AS ?l4)
+      }
+    BIND(coalesce(?l1, ?l2, ?l3, ?l4) AS ?result)
+  }
+""" ;
+      sp:where (
+          [
+            rdf:type sp:Optional ;
+            sp:elements (
+                [
+                  sp:object [
+                      sp:varName "l1"^^xsd:string ;
+                    ] ;
+                  sp:predicate rdfs:label ;
+                  sp:subject [
+                      sp:varName "a1"^^xsd:string ;
+                    ] ;
+                ]
+              ) ;
+          ]
+          [
+            rdf:type sp:Optional ;
+            sp:elements (
+                [
+                  sp:object owl:Restriction ;
+                  sp:predicate rdf:type ;
+                  sp:subject [
+                      sp:varName "a1"^^xsd:string ;
+                    ] ;
+                ]
+                [
+                  sp:object [
+                      sp:varName "p"^^xsd:string ;
+                    ] ;
+                  sp:predicate owl:onProperty ;
+                  sp:subject [
+                      sp:varName "a1"^^xsd:string ;
+                    ] ;
+                ]
+                [
+                  sp:object [
+                      sp:varName "pl"^^xsd:string ;
+                    ] ;
+                  sp:predicate rdfs:label ;
+                  sp:subject [
+                      sp:varName "p"^^xsd:string ;
+                    ] ;
+                ]
+                [
+                  sp:object [
+                      sp:varName "rc"^^xsd:string ;
+                    ] ;
+                  sp:predicate [
+                      sp:varName "op"^^xsd:string ;
+                    ] ;
+                  sp:subject [
+                      sp:varName "a1"^^xsd:string ;
+                    ] ;
+                ]
+                [
+                  rdf:type sp:Bind ;
+                  sp:expression [
+                      rdf:type owlnames:rlabel ;
+                      arg:a1 [
+                          sp:varName "rc"^^xsd:string ;
+                        ] ;
+                    ] ;
+                  sp:variable [
+                      sp:varName "rcl"^^xsd:string ;
+                    ] ;
+                ]
+                [
+                  rdf:type sp:Filter ;
+                  sp:expression [
+                      rdf:type sp:in ;
+                      sp:arg1 [
+                          sp:varName "op"^^xsd:string ;
+                        ] ;
+                      sp:arg2 owl:someValuesFrom ;
+                      sp:arg3 owl:allValuesFrom ;
+                      sp:arg4 owl:hasValue ;
+                    ] ;
+                ]
+                [
+                  sp:object [
+                      sp:varName "oplp"^^xsd:string ;
+                    ] ;
+                  sp:predicate owlnames:condition ;
+                  sp:subject [
+                      sp:varName "op"^^xsd:string ;
+                    ] ;
+                ]
+                [
+                  sp:object [
+                      sp:varName "oplc"^^xsd:string ;
+                    ] ;
+                  sp:predicate owlnames:clabel ;
+                  sp:subject [
+                      sp:varName "op"^^xsd:string ;
+                    ] ;
+                ]
+                [
+                  rdf:type sp:Bind ;
+                  sp:expression [
+                      rdf:type sp:if ;
+                      sp:arg1 [
+                          rdf:type sp:isBlank ;
+                          sp:arg1 [
+                              sp:varName "rc"^^xsd:string ;
+                            ] ;
+                        ] ;
+                      sp:arg2 [
+                          sp:varName "oplc"^^xsd:string ;
+                        ] ;
+                      sp:arg3 [
+                          sp:varName "oplp"^^xsd:string ;
+                        ] ;
+                    ] ;
+                  sp:variable [
+                      sp:varName "opl"^^xsd:string ;
+                    ] ;
+                ]
+                [
+                  rdf:type sp:Bind ;
+                  sp:expression [
+                      rdf:type sp:concat ;
+                      sp:arg1 [
+                          sp:varName "pl"^^xsd:string ;
+                        ] ;
+                      sp:arg2 " " ;
+                      sp:arg3 [
+                          sp:varName "opl"^^xsd:string ;
+                        ] ;
+                      sp:arg4 " " ;
+                      sp:arg5 [
+                          sp:varName "rcl"^^xsd:string ;
+                        ] ;
+                    ] ;
+                  sp:variable [
+                      sp:varName "lx"^^xsd:string ;
+                    ] ;
+                ]
+                [
+                  rdf:type sp:Bind ;
+                  sp:expression [
+                      rdf:type sp:replace ;
+                      sp:arg1 [
+                          rdf:type sp:replace ;
+                          sp:arg1 [
+                              sp:varName "opl"^^xsd:string ;
+                            ] ;
+                          sp:arg2 "\\{\\?1}" ;
+                          sp:arg3 [
+                              sp:varName "pl"^^xsd:string ;
+                            ] ;
+                        ] ;
+                      sp:arg2 "\\{\\?2}" ;
+                      sp:arg3 [
+                          sp:varName "rcl"^^xsd:string ;
+                        ] ;
+                    ] ;
+                  sp:variable [
+                      sp:varName "l2"^^xsd:string ;
+                    ] ;
+                ]
+              ) ;
+          ]
+          [
+            rdf:type sp:Optional ;
+            sp:elements (
+                [
+                  sp:object owl:Class ;
+                  sp:predicate rdf:type ;
+                  sp:subject [
+                      sp:varName "a1"^^xsd:string ;
+                    ] ;
+                ]
+                [
+                  sp:object [
+                      sp:varName "b"^^xsd:string ;
+                    ] ;
+                  sp:predicate [
+                      sp:varName "oc"^^xsd:string ;
+                    ] ;
+                  sp:subject [
+                      sp:varName "a1"^^xsd:string ;
+                    ] ;
+                ]
+                [
+                  rdf:type sp:Filter ;
+                  sp:expression [
+                      rdf:type sp:in ;
+                      sp:arg1 [
+                          sp:varName "oc"^^xsd:string ;
+                        ] ;
+                      sp:arg2 owl:intersectionOf ;
+                      sp:arg3 owl:unionOf ;
+                    ] ;
+                ]
+                [
+                  sp:object [
+                      sp:varName "car"^^xsd:string ;
+                    ] ;
+                  sp:predicate rdf:first ;
+                  sp:subject [
+                      sp:varName "b"^^xsd:string ;
+                    ] ;
+                ]
+                [
+                  sp:object [
+                      sp:varName "cdr"^^xsd:string ;
+                    ] ;
+                  sp:predicate rdf:rest ;
+                  sp:subject [
+                      sp:varName "b"^^xsd:string ;
+                    ] ;
+                ]
+                [
+                  sp:object [
+                      sp:varName "opl"^^xsd:string ;
+                    ] ;
+                  sp:predicate owlnames:condition ;
+                  sp:subject [
+                      sp:varName "oc"^^xsd:string ;
+                    ] ;
+                ]
+                [
+                  rdf:type sp:Bind ;
+                  sp:expression [
+                      rdf:type sp:concat ;
+                      sp:arg1 [
+                          rdf:type owlnames:rlabel ;
+                          arg:a1 [
+                              sp:varName "cdr"^^xsd:string ;
+                            ] ;
+                        ] ;
+                      sp:arg2 " " ;
+                      sp:arg3 [
+                          sp:varName "opl"^^xsd:string ;
+                        ] ;
+                      sp:arg4 " " ;
+                      sp:arg5 [
+                          rdf:type owlnames:rlabel ;
+                          arg:a1 [
+                              sp:varName "car"^^xsd:string ;
+                            ] ;
+                        ] ;
+                    ] ;
+                  sp:variable [
+                      sp:varName "l3"^^xsd:string ;
+                    ] ;
+                ]
+              ) ;
+          ]
+          [
+            rdf:type sp:Optional ;
+            sp:elements (
+                [
+                  rdf:type sp:Filter ;
+                  sp:expression [
+                      rdf:type sp:isBlank ;
+                      sp:arg1 [
+                          sp:varName "a1"^^xsd:string ;
+                        ] ;
+                    ] ;
+                ]
+                [
+                  sp:object [
+                      sp:varName "car"^^xsd:string ;
+                    ] ;
+                  sp:predicate rdf:first ;
+                  sp:subject [
+                      sp:varName "a1"^^xsd:string ;
+                    ] ;
+                ]
+                [
+                  sp:object [
+                      sp:varName "cdr"^^xsd:string ;
+                    ] ;
+                  sp:predicate rdf:rest ;
+                  sp:subject [
+                      sp:varName "a1"^^xsd:string ;
+                    ] ;
+                ]
+                [
+                  rdf:type sp:Bind ;
+                  sp:expression [
+                      rdf:type sp:if ;
+                      sp:arg1 [
+                          rdf:type sp:eq ;
+                          sp:arg1 [
+                              sp:varName "cdr"^^xsd:string ;
+                            ] ;
+                          sp:arg2 () ;
+                        ] ;
+                      sp:arg2 [
+                          rdf:type owlnames:rlabel ;
+                          arg:a1 [
+                              sp:varName "car"^^xsd:string ;
+                            ] ;
+                        ] ;
+                      sp:arg3 [
+                          rdf:type sp:concat ;
+                          sp:arg1 [
+                              rdf:type owlnames:rlabel ;
+                              arg:a1 [
+                                  sp:varName "car"^^xsd:string ;
+                                ] ;
+                            ] ;
+                          sp:arg2 ", " ;
+                          sp:arg3 [
+                              rdf:type owlnames:rlabel ;
+                              arg:a1 [
+                                  sp:varName "cdr"^^xsd:string ;
+                                ] ;
+                            ] ;
+                        ] ;
+                    ] ;
+                  sp:variable [
+                      sp:varName "l4"^^xsd:string ;
+                    ] ;
+                ]
+              ) ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type sp:coalesce ;
+                sp:arg1 [
+                    sp:varName "l1"^^xsd:string ;
+                  ] ;
+                sp:arg2 [
+                    sp:varName "l2"^^xsd:string ;
+                  ] ;
+                sp:arg3 [
+                    sp:varName "l3"^^xsd:string ;
+                  ] ;
+                sp:arg4 [
+                    sp:varName "l4"^^xsd:string ;
+                  ] ;
+              ] ;
+            sp:variable [
+                sp:varName "result"^^xsd:string ;
+              ] ;
+          ]
+        ) ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate arg:a1 ;
+      spl:valueType xsd:string ;
+    ] ;
+  rdfs:comment "# Create human readable labels for restrictions"^^xsd:string ;
+  rdfs:subClassOf sm:Functions ;
+.
+owlnames:synonym
+  rdf:type rdf:Property ;
+  rdfs:label "synonym"^^xsd:string ;
+.
+arg:a1
+  rdf:type rdf:Property ;
+  rdfs:subPropertyOf sp:arg ;
+.
+owl:Class
+  spin:rule [
+      rdf:type sp:Construct ;
+      sp:templates (
+          [
+            sp:object owlnames:Class ;
+            sp:predicate rdf:type ;
+            sp:subject [
+                sp:varName "x"^^xsd:string ;
+              ] ;
+          ]
+        ) ;
+      sp:text """PREFIX  metadata: <http://topbraid.org/metadata#>
+PREFIX  skostemplate: <http://topbraid.org/spin/skostemplates#>
+PREFIX  tagger: <http://evn.topbraidlive.org/tagger#>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  tops: <http://www.topbraid.org/tops#>
+PREFIX  swaclasses: <http://topbraid.org/swaclasses#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX  spif: <http://spinrdf.org/spif#>
+PREFIX  crosswalkprojects: <http://teamwork.topbraidlive.org/crosswalkprojects#>
+PREFIX  tables: <http://topbraid.org/tables#>
+PREFIX  ui:   <http://uispin.org/ui#>
+PREFIX  composite: <http://www.topbraid.org/2007/05/composite.owl#>
+PREFIX  swaeditor: <http://topbraid.org/swaeditor#>
+PREFIX  sm2wsdl: <http://topbraid.org/sparqlmotion/sm2wsdl.sms#>
+PREFIX  html: <http://uispin.org/html#>
+PREFIX  let:  <http://uispin.org/let#>
+PREFIX  shaclify: <http://topbraid.org/shacl/shaclify#>
+PREFIX  spinmapl: <http://topbraid.org/spin/spinmapl#>
+PREFIX  tasks: <http://topbraid.org/tasks#>
+PREFIX  skosspin: <http://topbraid.org/spin/skosspin#>
+PREFIX  discoverytool: <http://www.epa.gov/discoverytool#>
+PREFIX  tbladmin: <http://server.topbraidlive.org/system-applications/tbladmin#>
+PREFIX  qudtspin: <http://qudt.org/spin/qudtspin#>
+PREFIX  spl:  <http://spinrdf.org/spl#>
+PREFIX  jfn:  <java:com.hp.hpl.jena.sparql.function.library.>
+PREFIX  spr:  <http://spinrdf.org/spr#>
+PREFIX  taxonomies: <http://evn.topbraidlive.org/evnprojects#>
+PREFIX  tbi:  <http://tbi.topbraid.org/tbi#>
+PREFIX  letrs: <http://uispin.org/letrs#>
+PREFIX  connectset-templates: <http://tbi.topbraidlive.org/system/connectset-templates#>
+PREFIX  fn:   <http://www.w3.org/2005/xpath-functions#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  sharepoint: <http://topbraid.org/sharepoint#>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  smf:  <http://topbraid.org/sparqlmotionfunctions#>
+PREFIX  swauml: <http://topbraid.org/swauml#>
+PREFIX  evnconstraints: <http://topbraid.org/spin/evnconstraints#>
+PREFIX  sparqlmotionlib-tbc: <http://topbraid.org/sparqlmotionlib-tbc#>
+PREFIX  backspin: <http://topbraid.org/backspin#>
+PREFIX  tablesmap: <http://topbraid.org/spin/tablesmap#>
+PREFIX  search: <http://topbraid.org/search#>
+PREFIX  default: <http://uispin.org/default#>
+PREFIX  sml:  <http://topbraid.org/sparqlmotionlib#>
+PREFIX  crosswalk: <http://topbraid.org/crosswalk#>
+PREFIX  dct:  <http://purl.org/dc/terms/>
+PREFIX  arg:  <http://spinrdf.org/arg#>
+PREFIX  json: <http://topbraid.org/json#>
+PREFIX  sm:   <http://topbraid.org/sparqlmotion#>
+PREFIX  spinmap: <http://spinrdf.org/spinmap#>
+PREFIX  sp:   <http://spinrdf.org/sp#>
+PREFIX  email: <http://topbraid.org/email#>
+PREFIX  raci: <http://topbraid.org/raci#>
+PREFIX  uix:  <http://topbraidlive.org/uix#>
+PREFIX  afn:  <http://jena.hpl.hp.com/ARQ/function#>
+PREFIX  unnamed: <http://sc.workingontologist.com/unnamed#>
+PREFIX  owlnames: <http://spec.edmcouncil.org/owlnames#>
+PREFIX  owlrl: <http://topbraid.org/spin/owlrl#>
+PREFIX  daml: <http://www.daml.org/2001/03/daml+oil#>
+PREFIX  sxml: <http://topbraid.org/sxml#>
+PREFIX  teamwork: <http://topbraid.org/teamwork#>
+PREFIX  swon: <http://uispin.org/swon#>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  pf:   <http://jena.hpl.hp.com/ARQ/property#>
+PREFIX  spin: <http://spinrdf.org/spin#>
+PREFIX  evnui: <http://evn.topbraidlive.org/ui#>
+PREFIX  spra: <http://spinrdf.org/spra#>
+PREFIX  swa:  <http://topbraid.org/swa#>
+
+CONSTRUCT 
+  { ?x rdf:type owlnames:Class .}
+WHERE
+  { ?x rdf:type owl:Class }
+"""^^xsd:string ;
+      sp:where (
+          [
+            sp:object owl:Class ;
+            sp:predicate rdf:type ;
+            sp:subject [
+                sp:varName "x"^^xsd:string ;
+              ] ;
+          ]
+        ) ;
+    ] ;
+  spin:rule [
+      rdf:type sp:Construct ;
+      sp:templates (
+          [
+            sp:object owlnames:Property ;
+            sp:predicate rdf:type ;
+            sp:subject [
+                sp:varName "x"^^xsd:string ;
+              ] ;
+          ]
+        ) ;
+      sp:text """PREFIX  metadata: <http://topbraid.org/metadata#>
+PREFIX  skostemplate: <http://topbraid.org/spin/skostemplates#>
+PREFIX  tagger: <http://evn.topbraidlive.org/tagger#>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  tops: <http://www.topbraid.org/tops#>
+PREFIX  swaclasses: <http://topbraid.org/swaclasses#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX  spif: <http://spinrdf.org/spif#>
+PREFIX  crosswalkprojects: <http://teamwork.topbraidlive.org/crosswalkprojects#>
+PREFIX  tables: <http://topbraid.org/tables#>
+PREFIX  ui:   <http://uispin.org/ui#>
+PREFIX  composite: <http://www.topbraid.org/2007/05/composite.owl#>
+PREFIX  swaeditor: <http://topbraid.org/swaeditor#>
+PREFIX  sm2wsdl: <http://topbraid.org/sparqlmotion/sm2wsdl.sms#>
+PREFIX  html: <http://uispin.org/html#>
+PREFIX  let:  <http://uispin.org/let#>
+PREFIX  shaclify: <http://topbraid.org/shacl/shaclify#>
+PREFIX  spinmapl: <http://topbraid.org/spin/spinmapl#>
+PREFIX  tasks: <http://topbraid.org/tasks#>
+PREFIX  skosspin: <http://topbraid.org/spin/skosspin#>
+PREFIX  discoverytool: <http://www.epa.gov/discoverytool#>
+PREFIX  tbladmin: <http://server.topbraidlive.org/system-applications/tbladmin#>
+PREFIX  qudtspin: <http://qudt.org/spin/qudtspin#>
+PREFIX  spl:  <http://spinrdf.org/spl#>
+PREFIX  jfn:  <java:com.hp.hpl.jena.sparql.function.library.>
+PREFIX  spr:  <http://spinrdf.org/spr#>
+PREFIX  taxonomies: <http://evn.topbraidlive.org/evnprojects#>
+PREFIX  tbi:  <http://tbi.topbraid.org/tbi#>
+PREFIX  letrs: <http://uispin.org/letrs#>
+PREFIX  connectset-templates: <http://tbi.topbraidlive.org/system/connectset-templates#>
+PREFIX  fn:   <http://www.w3.org/2005/xpath-functions#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  sharepoint: <http://topbraid.org/sharepoint#>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  smf:  <http://topbraid.org/sparqlmotionfunctions#>
+PREFIX  swauml: <http://topbraid.org/swauml#>
+PREFIX  evnconstraints: <http://topbraid.org/spin/evnconstraints#>
+PREFIX  sparqlmotionlib-tbc: <http://topbraid.org/sparqlmotionlib-tbc#>
+PREFIX  backspin: <http://topbraid.org/backspin#>
+PREFIX  tablesmap: <http://topbraid.org/spin/tablesmap#>
+PREFIX  search: <http://topbraid.org/search#>
+PREFIX  default: <http://uispin.org/default#>
+PREFIX  sml:  <http://topbraid.org/sparqlmotionlib#>
+PREFIX  crosswalk: <http://topbraid.org/crosswalk#>
+PREFIX  dct:  <http://purl.org/dc/terms/>
+PREFIX  arg:  <http://spinrdf.org/arg#>
+PREFIX  json: <http://topbraid.org/json#>
+PREFIX  sm:   <http://topbraid.org/sparqlmotion#>
+PREFIX  spinmap: <http://spinrdf.org/spinmap#>
+PREFIX  sp:   <http://spinrdf.org/sp#>
+PREFIX  email: <http://topbraid.org/email#>
+PREFIX  raci: <http://topbraid.org/raci#>
+PREFIX  uix:  <http://topbraidlive.org/uix#>
+PREFIX  afn:  <http://jena.hpl.hp.com/ARQ/function#>
+PREFIX  unnamed: <http://sc.workingontologist.com/unnamed#>
+PREFIX  owlnames: <http://spec.edmcouncil.org/owlnames#>
+PREFIX  owlrl: <http://topbraid.org/spin/owlrl#>
+PREFIX  daml: <http://www.daml.org/2001/03/daml+oil#>
+PREFIX  sxml: <http://topbraid.org/sxml#>
+PREFIX  teamwork: <http://topbraid.org/teamwork#>
+PREFIX  swon: <http://uispin.org/swon#>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  pf:   <http://jena.hpl.hp.com/ARQ/property#>
+PREFIX  spin: <http://spinrdf.org/spin#>
+PREFIX  evnui: <http://evn.topbraidlive.org/ui#>
+PREFIX  spra: <http://spinrdf.org/spra#>
+PREFIX  swa:  <http://topbraid.org/swa#>
+
+CONSTRUCT 
+  { ?x rdf:type owlnames:Property .}
+WHERE
+  { ?x rdf:type ?c
+    FILTER ( ?c IN (owl:AnnotationProperty, owl:AsymmetricProperty, owl:DatatypeProperty, owl:DeprecatedProperty, owl:FunctionalProperty, owl:InverseFunctionalProperty, owl:IrreflexiveProperty, owl:ObjectProperty, owl:OntologyProperty, owl:ReflexiveProperty, owl:SymmetricProperty, owl:TransitiveProperty, rdf:Property, rdfs:ContainerMembershipProperty) )
+  }
+"""^^xsd:string ;
+      sp:where (
+          [
+            sp:object [
+                sp:varName "c"^^xsd:string ;
+              ] ;
+            sp:predicate rdf:type ;
+            sp:subject [
+                sp:varName "x"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Filter ;
+            sp:expression [
+                rdf:type sp:in ;
+                sp:arg1 [
+                    sp:varName "c"^^xsd:string ;
+                  ] ;
+                sp:arg10 owl:OntologyProperty ;
+                sp:arg11 owl:ReflexiveProperty ;
+                sp:arg12 owl:SymmetricProperty ;
+                sp:arg13 owl:TransitiveProperty ;
+                sp:arg14 rdf:Property ;
+                sp:arg15 rdfs:ContainerMembershipProperty ;
+                sp:arg2 owl:AnnotationProperty ;
+                sp:arg3 owl:AsymmetricProperty ;
+                sp:arg4 owl:DatatypeProperty ;
+                sp:arg5 owl:DeprecatedProperty ;
+                sp:arg6 owl:FunctionalProperty ;
+                sp:arg7 owl:InverseFunctionalProperty ;
+                sp:arg8 owl:IrreflexiveProperty ;
+                sp:arg9 owl:ObjectProperty ;
+              ] ;
+          ]
+        ) ;
+    ] ;
+  spin:rule [
+      rdf:type sp:Construct ;
+      sp:templates (
+          [
+            sp:object [
+                sp:varName "sllang"^^xsd:string ;
+              ] ;
+            sp:predicate owlnames:condition ;
+            sp:subject [
+                sp:varName "x"^^xsd:string ;
+              ] ;
+          ]
+        ) ;
+      sp:text """PREFIX  metadata: <http://topbraid.org/metadata#>
+PREFIX  skostemplate: <http://topbraid.org/spin/skostemplates#>
+PREFIX  tagger: <http://evn.topbraidlive.org/tagger#>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  tops: <http://www.topbraid.org/tops#>
+PREFIX  swaclasses: <http://topbraid.org/swaclasses#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX  spif: <http://spinrdf.org/spif#>
+PREFIX  crosswalkprojects: <http://teamwork.topbraidlive.org/crosswalkprojects#>
+PREFIX  tables: <http://topbraid.org/tables#>
+PREFIX  ui:   <http://uispin.org/ui#>
+PREFIX  composite: <http://www.topbraid.org/2007/05/composite.owl#>
+PREFIX  swaeditor: <http://topbraid.org/swaeditor#>
+PREFIX  sm2wsdl: <http://topbraid.org/sparqlmotion/sm2wsdl.sms#>
+PREFIX  html: <http://uispin.org/html#>
+PREFIX  let:  <http://uispin.org/let#>
+PREFIX  shaclify: <http://topbraid.org/shacl/shaclify#>
+PREFIX  spinmapl: <http://topbraid.org/spin/spinmapl#>
+PREFIX  tasks: <http://topbraid.org/tasks#>
+PREFIX  skosspin: <http://topbraid.org/spin/skosspin#>
+PREFIX  discoverytool: <http://www.epa.gov/discoverytool#>
+PREFIX  tbladmin: <http://server.topbraidlive.org/system-applications/tbladmin#>
+PREFIX  qudtspin: <http://qudt.org/spin/qudtspin#>
+PREFIX  spl:  <http://spinrdf.org/spl#>
+PREFIX  jfn:  <java:com.hp.hpl.jena.sparql.function.library.>
+PREFIX  spr:  <http://spinrdf.org/spr#>
+PREFIX  taxonomies: <http://evn.topbraidlive.org/evnprojects#>
+PREFIX  tbi:  <http://tbi.topbraid.org/tbi#>
+PREFIX  letrs: <http://uispin.org/letrs#>
+PREFIX  connectset-templates: <http://tbi.topbraidlive.org/system/connectset-templates#>
+PREFIX  fn:   <http://www.w3.org/2005/xpath-functions#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  sharepoint: <http://topbraid.org/sharepoint#>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  smf:  <http://topbraid.org/sparqlmotionfunctions#>
+PREFIX  swauml: <http://topbraid.org/swauml#>
+PREFIX  evnconstraints: <http://topbraid.org/spin/evnconstraints#>
+PREFIX  sparqlmotionlib-tbc: <http://topbraid.org/sparqlmotionlib-tbc#>
+PREFIX  backspin: <http://topbraid.org/backspin#>
+PREFIX  tablesmap: <http://topbraid.org/spin/tablesmap#>
+PREFIX  search: <http://topbraid.org/search#>
+PREFIX  default: <http://uispin.org/default#>
+PREFIX  sml:  <http://topbraid.org/sparqlmotionlib#>
+PREFIX  crosswalk: <http://topbraid.org/crosswalk#>
+PREFIX  dct:  <http://purl.org/dc/terms/>
+PREFIX  arg:  <http://spinrdf.org/arg#>
+PREFIX  json: <http://topbraid.org/json#>
+PREFIX  sm:   <http://topbraid.org/sparqlmotion#>
+PREFIX  spinmap: <http://spinrdf.org/spinmap#>
+PREFIX  sp:   <http://spinrdf.org/sp#>
+PREFIX  email: <http://topbraid.org/email#>
+PREFIX  raci: <http://topbraid.org/raci#>
+PREFIX  uix:  <http://topbraidlive.org/uix#>
+PREFIX  afn:  <http://jena.hpl.hp.com/ARQ/function#>
+PREFIX  unnamed: <http://sc.workingontologist.com/unnamed#>
+PREFIX  owlnames: <http://spec.edmcouncil.org/owlnames#>
+PREFIX  owlrl: <http://topbraid.org/spin/owlrl#>
+PREFIX  sxml: <http://topbraid.org/sxml#>
+PREFIX  daml: <http://www.daml.org/2001/03/daml+oil#>
+PREFIX  teamwork: <http://topbraid.org/teamwork#>
+PREFIX  swon: <http://uispin.org/swon#>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  pf:   <http://jena.hpl.hp.com/ARQ/property#>
+PREFIX  spin: <http://spinrdf.org/spin#>
+PREFIX  evnui: <http://evn.topbraidlive.org/ui#>
+PREFIX  spra: <http://spinrdf.org/spra#>
+PREFIX  swa:  <http://topbraid.org/swa#>
+
+CONSTRUCT 
+  { ?x owlnames:condition ?sllang .}
+WHERE
+  { ?x rdfs:subClassOf|owl:equivalentClass ?r
+    FILTER ( ! isIRI(?r) )
+    BIND(owlnames:rlabel(?r) AS ?sl)
+    BIND(if(( lang(?sl) = \"\" ), strlang(?sl, \"en\"), ?sl) AS ?sllang)
+  }
+"""^^xsd:string ;
+      sp:where (
+          [
+            rdf:type sp:TriplePath ;
+            sp:object [
+                sp:varName "r"^^xsd:string ;
+              ] ;
+            sp:path [
+                rdf:type sp:AltPath ;
+                sp:path1 rdfs:subClassOf ;
+                sp:path2 owl:equivalentClass ;
+              ] ;
+            sp:subject [
+                sp:varName "x"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Filter ;
+            sp:expression [
+                rdf:type sp:not ;
+                sp:arg1 [
+                    rdf:type sp:isIRI ;
+                    sp:arg1 [
+                        sp:varName "r"^^xsd:string ;
+                      ] ;
+                  ] ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type owlnames:rlabel ;
+                arg:a1 [
+                    sp:varName "r"^^xsd:string ;
+                  ] ;
+              ] ;
+            sp:variable [
+                sp:varName "sl"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type sp:if ;
+                sp:arg1 [
+                    rdf:type sp:eq ;
+                    sp:arg1 [
+                        rdf:type sp:lang ;
+                        sp:arg1 [
+                            sp:varName "sl"^^xsd:string ;
+                          ] ;
+                      ] ;
+                    sp:arg2 "" ;
+                  ] ;
+                sp:arg2 [
+                    rdf:type sp:strlang ;
+                    sp:arg1 [
+                        sp:varName "sl"^^xsd:string ;
+                      ] ;
+                    sp:arg2 "en" ;
+                  ] ;
+                sp:arg3 [
+                    sp:varName "sl"^^xsd:string ;
+                  ] ;
+              ] ;
+            sp:variable [
+                sp:varName "sllang"^^xsd:string ;
+              ] ;
+          ]
+        ) ;
+    ] ;
+  spin:rule [
+      rdf:type sp:Construct ;
+      sp:templates (
+          [
+            sp:object [
+                sp:varName "sllang"^^xsd:string ;
+              ] ;
+            sp:predicate owlnames:kindOf ;
+            sp:subject [
+                sp:varName "x"^^xsd:string ;
+              ] ;
+          ]
+        ) ;
+      sp:text """PREFIX  metadata: <http://topbraid.org/metadata#>
+PREFIX  skostemplate: <http://topbraid.org/spin/skostemplates#>
+PREFIX  tagger: <http://evn.topbraidlive.org/tagger#>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  tops: <http://www.topbraid.org/tops#>
+PREFIX  swaclasses: <http://topbraid.org/swaclasses#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX  spif: <http://spinrdf.org/spif#>
+PREFIX  crosswalkprojects: <http://teamwork.topbraidlive.org/crosswalkprojects#>
+PREFIX  tables: <http://topbraid.org/tables#>
+PREFIX  ui:   <http://uispin.org/ui#>
+PREFIX  composite: <http://www.topbraid.org/2007/05/composite.owl#>
+PREFIX  swaeditor: <http://topbraid.org/swaeditor#>
+PREFIX  sm2wsdl: <http://topbraid.org/sparqlmotion/sm2wsdl.sms#>
+PREFIX  html: <http://uispin.org/html#>
+PREFIX  let:  <http://uispin.org/let#>
+PREFIX  shaclify: <http://topbraid.org/shacl/shaclify#>
+PREFIX  spinmapl: <http://topbraid.org/spin/spinmapl#>
+PREFIX  tasks: <http://topbraid.org/tasks#>
+PREFIX  skosspin: <http://topbraid.org/spin/skosspin#>
+PREFIX  discoverytool: <http://www.epa.gov/discoverytool#>
+PREFIX  tbladmin: <http://server.topbraidlive.org/system-applications/tbladmin#>
+PREFIX  qudtspin: <http://qudt.org/spin/qudtspin#>
+PREFIX  spl:  <http://spinrdf.org/spl#>
+PREFIX  jfn:  <java:com.hp.hpl.jena.sparql.function.library.>
+PREFIX  spr:  <http://spinrdf.org/spr#>
+PREFIX  taxonomies: <http://evn.topbraidlive.org/evnprojects#>
+PREFIX  tbi:  <http://tbi.topbraid.org/tbi#>
+PREFIX  letrs: <http://uispin.org/letrs#>
+PREFIX  connectset-templates: <http://tbi.topbraidlive.org/system/connectset-templates#>
+PREFIX  fn:   <http://www.w3.org/2005/xpath-functions#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  sharepoint: <http://topbraid.org/sharepoint#>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  smf:  <http://topbraid.org/sparqlmotionfunctions#>
+PREFIX  swauml: <http://topbraid.org/swauml#>
+PREFIX  evnconstraints: <http://topbraid.org/spin/evnconstraints#>
+PREFIX  sparqlmotionlib-tbc: <http://topbraid.org/sparqlmotionlib-tbc#>
+PREFIX  backspin: <http://topbraid.org/backspin#>
+PREFIX  tablesmap: <http://topbraid.org/spin/tablesmap#>
+PREFIX  search: <http://topbraid.org/search#>
+PREFIX  default: <http://uispin.org/default#>
+PREFIX  sml:  <http://topbraid.org/sparqlmotionlib#>
+PREFIX  crosswalk: <http://topbraid.org/crosswalk#>
+PREFIX  dct:  <http://purl.org/dc/terms/>
+PREFIX  arg:  <http://spinrdf.org/arg#>
+PREFIX  json: <http://topbraid.org/json#>
+PREFIX  sm:   <http://topbraid.org/sparqlmotion#>
+PREFIX  spinmap: <http://spinrdf.org/spinmap#>
+PREFIX  sp:   <http://spinrdf.org/sp#>
+PREFIX  email: <http://topbraid.org/email#>
+PREFIX  raci: <http://topbraid.org/raci#>
+PREFIX  uix:  <http://topbraidlive.org/uix#>
+PREFIX  afn:  <http://jena.hpl.hp.com/ARQ/function#>
+PREFIX  unnamed: <http://sc.workingontologist.com/unnamed#>
+PREFIX  owlnames: <http://spec.edmcouncil.org/owlnames#>
+PREFIX  owlrl: <http://topbraid.org/spin/owlrl#>
+PREFIX  sxml: <http://topbraid.org/sxml#>
+PREFIX  daml: <http://www.daml.org/2001/03/daml+oil#>
+PREFIX  teamwork: <http://topbraid.org/teamwork#>
+PREFIX  swon: <http://uispin.org/swon#>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  pf:   <http://jena.hpl.hp.com/ARQ/property#>
+PREFIX  spin: <http://spinrdf.org/spin#>
+PREFIX  evnui: <http://evn.topbraidlive.org/ui#>
+PREFIX  spra: <http://spinrdf.org/spra#>
+PREFIX  swa:  <http://topbraid.org/swa#>
+
+CONSTRUCT 
+  { ?x owlnames:kindOf ?sllang .}
+WHERE
+  { ?x rdfs:subClassOf|owl:equivalentClass ?r
+    FILTER isIRI(?r)
+    BIND(owlnames:rlabel(?r) AS ?sl)
+    BIND(if(( lang(?sl) = \"\" ), strlang(xsd:string(?sl), \"en\"), ?sl) AS ?sllang)
+  }
+"""^^xsd:string ;
+      sp:where (
+          [
+            rdf:type sp:TriplePath ;
+            sp:object [
+                sp:varName "r"^^xsd:string ;
+              ] ;
+            sp:path [
+                rdf:type sp:AltPath ;
+                sp:path1 rdfs:subClassOf ;
+                sp:path2 owl:equivalentClass ;
+              ] ;
+            sp:subject [
+                sp:varName "x"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Filter ;
+            sp:expression [
+                rdf:type sp:isIRI ;
+                sp:arg1 [
+                    sp:varName "r"^^xsd:string ;
+                  ] ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type owlnames:rlabel ;
+                arg:a1 [
+                    sp:varName "r"^^xsd:string ;
+                  ] ;
+              ] ;
+            sp:variable [
+                sp:varName "sl"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type sp:if ;
+                sp:arg1 [
+                    rdf:type sp:eq ;
+                    sp:arg1 [
+                        rdf:type sp:lang ;
+                        sp:arg1 [
+                            sp:varName "sl"^^xsd:string ;
+                          ] ;
+                      ] ;
+                    sp:arg2 "" ;
+                  ] ;
+                sp:arg2 [
+                    rdf:type sp:strlang ;
+                    sp:arg1 [
+                        rdf:type xsd:string ;
+                        sp:arg1 [
+                            sp:varName "sl"^^xsd:string ;
+                          ] ;
+                      ] ;
+                    sp:arg2 "en" ;
+                  ] ;
+                sp:arg3 [
+                    sp:varName "sl"^^xsd:string ;
+                  ] ;
+              ] ;
+            sp:variable [
+                sp:varName "sllang"^^xsd:string ;
+              ] ;
+          ]
+        ) ;
+    ] ;
+  spin:rule [
+      rdf:type sp:Construct ;
+      sp:templates (
+          [
+            sp:object [
+                sp:varName "synlang"^^xsd:string ;
+              ] ;
+            sp:predicate owlnames:definition ;
+            sp:subject [
+                sp:varName "x"^^xsd:string ;
+              ] ;
+          ]
+        ) ;
+      sp:text """PREFIX  metadata: <http://topbraid.org/metadata#>
+PREFIX  skostemplate: <http://topbraid.org/spin/skostemplates#>
+PREFIX  tagger: <http://evn.topbraidlive.org/tagger#>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  tops: <http://www.topbraid.org/tops#>
+PREFIX  swaclasses: <http://topbraid.org/swaclasses#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX  spif: <http://spinrdf.org/spif#>
+PREFIX  crosswalkprojects: <http://teamwork.topbraidlive.org/crosswalkprojects#>
+PREFIX  tables: <http://topbraid.org/tables#>
+PREFIX  ui:   <http://uispin.org/ui#>
+PREFIX  composite: <http://www.topbraid.org/2007/05/composite.owl#>
+PREFIX  swaeditor: <http://topbraid.org/swaeditor#>
+PREFIX  sm2wsdl: <http://topbraid.org/sparqlmotion/sm2wsdl.sms#>
+PREFIX  html: <http://uispin.org/html#>
+PREFIX  let:  <http://uispin.org/let#>
+PREFIX  shaclify: <http://topbraid.org/shacl/shaclify#>
+PREFIX  spinmapl: <http://topbraid.org/spin/spinmapl#>
+PREFIX  tasks: <http://topbraid.org/tasks#>
+PREFIX  skosspin: <http://topbraid.org/spin/skosspin#>
+PREFIX  discoverytool: <http://www.epa.gov/discoverytool#>
+PREFIX  tbladmin: <http://server.topbraidlive.org/system-applications/tbladmin#>
+PREFIX  qudtspin: <http://qudt.org/spin/qudtspin#>
+PREFIX  spl:  <http://spinrdf.org/spl#>
+PREFIX  jfn:  <java:com.hp.hpl.jena.sparql.function.library.>
+PREFIX  spr:  <http://spinrdf.org/spr#>
+PREFIX  taxonomies: <http://evn.topbraidlive.org/evnprojects#>
+PREFIX  tbi:  <http://tbi.topbraid.org/tbi#>
+PREFIX  letrs: <http://uispin.org/letrs#>
+PREFIX  connectset-templates: <http://tbi.topbraidlive.org/system/connectset-templates#>
+PREFIX  fn:   <http://www.w3.org/2005/xpath-functions#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  sharepoint: <http://topbraid.org/sharepoint#>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  smf:  <http://topbraid.org/sparqlmotionfunctions#>
+PREFIX  swauml: <http://topbraid.org/swauml#>
+PREFIX  evnconstraints: <http://topbraid.org/spin/evnconstraints#>
+PREFIX  sparqlmotionlib-tbc: <http://topbraid.org/sparqlmotionlib-tbc#>
+PREFIX  backspin: <http://topbraid.org/backspin#>
+PREFIX  tablesmap: <http://topbraid.org/spin/tablesmap#>
+PREFIX  search: <http://topbraid.org/search#>
+PREFIX  default: <http://uispin.org/default#>
+PREFIX  sml:  <http://topbraid.org/sparqlmotionlib#>
+PREFIX  crosswalk: <http://topbraid.org/crosswalk#>
+PREFIX  dct:  <http://purl.org/dc/terms/>
+PREFIX  arg:  <http://spinrdf.org/arg#>
+PREFIX  json: <http://topbraid.org/json#>
+PREFIX  sm:   <http://topbraid.org/sparqlmotion#>
+PREFIX  spinmap: <http://spinrdf.org/spinmap#>
+PREFIX  sp:   <http://spinrdf.org/sp#>
+PREFIX  email: <http://topbraid.org/email#>
+PREFIX  raci: <http://topbraid.org/raci#>
+PREFIX  uix:  <http://topbraidlive.org/uix#>
+PREFIX  afn:  <http://jena.hpl.hp.com/ARQ/function#>
+PREFIX  unnamed: <http://sc.workingontologist.com/unnamed#>
+PREFIX  owlnames: <http://spec.edmcouncil.org/owlnames#>
+PREFIX  owlrl: <http://topbraid.org/spin/owlrl#>
+PREFIX  daml: <http://www.daml.org/2001/03/daml+oil#>
+PREFIX  sxml: <http://topbraid.org/sxml#>
+PREFIX  teamwork: <http://topbraid.org/teamwork#>
+PREFIX  swon: <http://uispin.org/swon#>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  pf:   <http://jena.hpl.hp.com/ARQ/property#>
+PREFIX  spin: <http://spinrdf.org/spin#>
+PREFIX  evnui: <http://evn.topbraidlive.org/ui#>
+PREFIX  spra: <http://spinrdf.org/spra#>
+PREFIX  swa:  <http://topbraid.org/swa#>
+
+CONSTRUCT 
+  { ?x owlnames:definition ?synlang .}
+WHERE
+  { ?x skos:definition ?syn
+    BIND(if(( lang(?syn) = \"\" ), strlang(xsd:string(?syn), \"en\"), ?syn) AS ?synlang)
+  }
+"""^^xsd:string ;
+      sp:where (
+          [
+            sp:object [
+                sp:varName "syn"^^xsd:string ;
+              ] ;
+            sp:predicate <http://www.w3.org/2004/02/skos/core#definition> ;
+            sp:subject [
+                sp:varName "x"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type sp:if ;
+                sp:arg1 [
+                    rdf:type sp:eq ;
+                    sp:arg1 [
+                        rdf:type sp:lang ;
+                        sp:arg1 [
+                            sp:varName "syn"^^xsd:string ;
+                          ] ;
+                      ] ;
+                    sp:arg2 "" ;
+                  ] ;
+                sp:arg2 [
+                    rdf:type sp:strlang ;
+                    sp:arg1 [
+                        rdf:type xsd:string ;
+                        sp:arg1 [
+                            sp:varName "syn"^^xsd:string ;
+                          ] ;
+                      ] ;
+                    sp:arg2 "en" ;
+                  ] ;
+                sp:arg3 [
+                    sp:varName "syn"^^xsd:string ;
+                  ] ;
+              ] ;
+            sp:variable [
+                sp:varName "synlang"^^xsd:string ;
+              ] ;
+          ]
+        ) ;
+    ] ;
+  spin:rule [
+      rdf:type sp:Construct ;
+      sp:templates (
+          [
+            sp:object [
+                sp:varName "synlang"^^xsd:string ;
+              ] ;
+            sp:predicate owlnames:label ;
+            sp:subject [
+                sp:varName "x"^^xsd:string ;
+              ] ;
+          ]
+        ) ;
+      sp:text """PREFIX  metadata: <http://topbraid.org/metadata#>
+PREFIX  skostemplate: <http://topbraid.org/spin/skostemplates#>
+PREFIX  tagger: <http://evn.topbraidlive.org/tagger#>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  tops: <http://www.topbraid.org/tops#>
+PREFIX  swaclasses: <http://topbraid.org/swaclasses#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX  spif: <http://spinrdf.org/spif#>
+PREFIX  crosswalkprojects: <http://teamwork.topbraidlive.org/crosswalkprojects#>
+PREFIX  tables: <http://topbraid.org/tables#>
+PREFIX  ui:   <http://uispin.org/ui#>
+PREFIX  composite: <http://www.topbraid.org/2007/05/composite.owl#>
+PREFIX  swaeditor: <http://topbraid.org/swaeditor#>
+PREFIX  sm2wsdl: <http://topbraid.org/sparqlmotion/sm2wsdl.sms#>
+PREFIX  html: <http://uispin.org/html#>
+PREFIX  let:  <http://uispin.org/let#>
+PREFIX  shaclify: <http://topbraid.org/shacl/shaclify#>
+PREFIX  spinmapl: <http://topbraid.org/spin/spinmapl#>
+PREFIX  tasks: <http://topbraid.org/tasks#>
+PREFIX  skosspin: <http://topbraid.org/spin/skosspin#>
+PREFIX  discoverytool: <http://www.epa.gov/discoverytool#>
+PREFIX  tbladmin: <http://server.topbraidlive.org/system-applications/tbladmin#>
+PREFIX  qudtspin: <http://qudt.org/spin/qudtspin#>
+PREFIX  spl:  <http://spinrdf.org/spl#>
+PREFIX  jfn:  <java:com.hp.hpl.jena.sparql.function.library.>
+PREFIX  spr:  <http://spinrdf.org/spr#>
+PREFIX  taxonomies: <http://evn.topbraidlive.org/evnprojects#>
+PREFIX  tbi:  <http://tbi.topbraid.org/tbi#>
+PREFIX  letrs: <http://uispin.org/letrs#>
+PREFIX  connectset-templates: <http://tbi.topbraidlive.org/system/connectset-templates#>
+PREFIX  fn:   <http://www.w3.org/2005/xpath-functions#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  sharepoint: <http://topbraid.org/sharepoint#>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  smf:  <http://topbraid.org/sparqlmotionfunctions#>
+PREFIX  swauml: <http://topbraid.org/swauml#>
+PREFIX  evnconstraints: <http://topbraid.org/spin/evnconstraints#>
+PREFIX  sparqlmotionlib-tbc: <http://topbraid.org/sparqlmotionlib-tbc#>
+PREFIX  backspin: <http://topbraid.org/backspin#>
+PREFIX  tablesmap: <http://topbraid.org/spin/tablesmap#>
+PREFIX  search: <http://topbraid.org/search#>
+PREFIX  default: <http://uispin.org/default#>
+PREFIX  sml:  <http://topbraid.org/sparqlmotionlib#>
+PREFIX  crosswalk: <http://topbraid.org/crosswalk#>
+PREFIX  dct:  <http://purl.org/dc/terms/>
+PREFIX  arg:  <http://spinrdf.org/arg#>
+PREFIX  json: <http://topbraid.org/json#>
+PREFIX  sm:   <http://topbraid.org/sparqlmotion#>
+PREFIX  spinmap: <http://spinrdf.org/spinmap#>
+PREFIX  sp:   <http://spinrdf.org/sp#>
+PREFIX  email: <http://topbraid.org/email#>
+PREFIX  raci: <http://topbraid.org/raci#>
+PREFIX  uix:  <http://topbraidlive.org/uix#>
+PREFIX  afn:  <http://jena.hpl.hp.com/ARQ/function#>
+PREFIX  unnamed: <http://sc.workingontologist.com/unnamed#>
+PREFIX  owlnames: <http://spec.edmcouncil.org/owlnames#>
+PREFIX  owlrl: <http://topbraid.org/spin/owlrl#>
+PREFIX  sxml: <http://topbraid.org/sxml#>
+PREFIX  daml: <http://www.daml.org/2001/03/daml+oil#>
+PREFIX  teamwork: <http://topbraid.org/teamwork#>
+PREFIX  swon: <http://uispin.org/swon#>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  pf:   <http://jena.hpl.hp.com/ARQ/property#>
+PREFIX  spin: <http://spinrdf.org/spin#>
+PREFIX  evnui: <http://evn.topbraidlive.org/ui#>
+PREFIX  spra: <http://spinrdf.org/spra#>
+PREFIX  swa:  <http://topbraid.org/swa#>
+
+CONSTRUCT 
+  { ?x owlnames:label ?synlang .}
+WHERE
+  { ?x rdfs:label ?syn
+    BIND(if(( lang(?syn) = \"\" ), strlang(xsd:string(?syn), \"en\"), ?syn) AS ?synlang)
+  }
+"""^^xsd:string ;
+      sp:where (
+          [
+            sp:object [
+                sp:varName "syn"^^xsd:string ;
+              ] ;
+            sp:predicate rdfs:label ;
+            sp:subject [
+                sp:varName "x"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type sp:if ;
+                sp:arg1 [
+                    rdf:type sp:eq ;
+                    sp:arg1 [
+                        rdf:type sp:lang ;
+                        sp:arg1 [
+                            sp:varName "syn"^^xsd:string ;
+                          ] ;
+                      ] ;
+                    sp:arg2 "" ;
+                  ] ;
+                sp:arg2 [
+                    rdf:type sp:strlang ;
+                    sp:arg1 [
+                        rdf:type xsd:string ;
+                        sp:arg1 [
+                            sp:varName "syn"^^xsd:string ;
+                          ] ;
+                      ] ;
+                    sp:arg2 "en" ;
+                  ] ;
+                sp:arg3 [
+                    sp:varName "syn"^^xsd:string ;
+                  ] ;
+              ] ;
+            sp:variable [
+                sp:varName "synlang"^^xsd:string ;
+              ] ;
+          ]
+        ) ;
+    ] ;
+  spin:rule [
+      rdf:type sp:Construct ;
+      sp:templates (
+          [
+            sp:object [
+                sp:varName "synlang"^^xsd:string ;
+              ] ;
+            sp:predicate owlnames:synonym ;
+            sp:subject [
+                sp:varName "x"^^xsd:string ;
+              ] ;
+          ]
+        ) ;
+      sp:text """PREFIX  metadata: <http://topbraid.org/metadata#>
+PREFIX  skostemplate: <http://topbraid.org/spin/skostemplates#>
+PREFIX  tagger: <http://evn.topbraidlive.org/tagger#>
+PREFIX  owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX  tops: <http://www.topbraid.org/tops#>
+PREFIX  swaclasses: <http://topbraid.org/swaclasses#>
+PREFIX  skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX  spif: <http://spinrdf.org/spif#>
+PREFIX  crosswalkprojects: <http://teamwork.topbraidlive.org/crosswalkprojects#>
+PREFIX  tables: <http://topbraid.org/tables#>
+PREFIX  ui:   <http://uispin.org/ui#>
+PREFIX  composite: <http://www.topbraid.org/2007/05/composite.owl#>
+PREFIX  swaeditor: <http://topbraid.org/swaeditor#>
+PREFIX  sm2wsdl: <http://topbraid.org/sparqlmotion/sm2wsdl.sms#>
+PREFIX  html: <http://uispin.org/html#>
+PREFIX  let:  <http://uispin.org/let#>
+PREFIX  shaclify: <http://topbraid.org/shacl/shaclify#>
+PREFIX  spinmapl: <http://topbraid.org/spin/spinmapl#>
+PREFIX  tasks: <http://topbraid.org/tasks#>
+PREFIX  skosspin: <http://topbraid.org/spin/skosspin#>
+PREFIX  discoverytool: <http://www.epa.gov/discoverytool#>
+PREFIX  tbladmin: <http://server.topbraidlive.org/system-applications/tbladmin#>
+PREFIX  qudtspin: <http://qudt.org/spin/qudtspin#>
+PREFIX  spl:  <http://spinrdf.org/spl#>
+PREFIX  jfn:  <java:com.hp.hpl.jena.sparql.function.library.>
+PREFIX  spr:  <http://spinrdf.org/spr#>
+PREFIX  taxonomies: <http://evn.topbraidlive.org/evnprojects#>
+PREFIX  tbi:  <http://tbi.topbraid.org/tbi#>
+PREFIX  letrs: <http://uispin.org/letrs#>
+PREFIX  connectset-templates: <http://tbi.topbraidlive.org/system/connectset-templates#>
+PREFIX  fn:   <http://www.w3.org/2005/xpath-functions#>
+PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
+PREFIX  sharepoint: <http://topbraid.org/sharepoint#>
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  smf:  <http://topbraid.org/sparqlmotionfunctions#>
+PREFIX  swauml: <http://topbraid.org/swauml#>
+PREFIX  evnconstraints: <http://topbraid.org/spin/evnconstraints#>
+PREFIX  sparqlmotionlib-tbc: <http://topbraid.org/sparqlmotionlib-tbc#>
+PREFIX  backspin: <http://topbraid.org/backspin#>
+PREFIX  tablesmap: <http://topbraid.org/spin/tablesmap#>
+PREFIX  search: <http://topbraid.org/search#>
+PREFIX  default: <http://uispin.org/default#>
+PREFIX  sml:  <http://topbraid.org/sparqlmotionlib#>
+PREFIX  crosswalk: <http://topbraid.org/crosswalk#>
+PREFIX  dct:  <http://purl.org/dc/terms/>
+PREFIX  arg:  <http://spinrdf.org/arg#>
+PREFIX  json: <http://topbraid.org/json#>
+PREFIX  sm:   <http://topbraid.org/sparqlmotion#>
+PREFIX  spinmap: <http://spinrdf.org/spinmap#>
+PREFIX  sp:   <http://spinrdf.org/sp#>
+PREFIX  email: <http://topbraid.org/email#>
+PREFIX  raci: <http://topbraid.org/raci#>
+PREFIX  uix:  <http://topbraidlive.org/uix#>
+PREFIX  afn:  <http://jena.hpl.hp.com/ARQ/function#>
+PREFIX  unnamed: <http://sc.workingontologist.com/unnamed#>
+PREFIX  owlnames: <http://spec.edmcouncil.org/owlnames#>
+PREFIX  owlrl: <http://topbraid.org/spin/owlrl#>
+PREFIX  sxml: <http://topbraid.org/sxml#>
+PREFIX  daml: <http://www.daml.org/2001/03/daml+oil#>
+PREFIX  teamwork: <http://topbraid.org/teamwork#>
+PREFIX  swon: <http://uispin.org/swon#>
+PREFIX  rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  pf:   <http://jena.hpl.hp.com/ARQ/property#>
+PREFIX  spin: <http://spinrdf.org/spin#>
+PREFIX  evnui: <http://evn.topbraidlive.org/ui#>
+PREFIX  spra: <http://spinrdf.org/spra#>
+PREFIX  swa:  <http://topbraid.org/swa#>
+
+CONSTRUCT 
+  { ?x owlnames:synonym ?synlang .}
+WHERE
+  { ?x ?p ?syn
+    FILTER ( replace(xsd:string(?p), \"^.*/\", \"\") = \"synonym\" )
+    BIND(if(( lang(?syn) = \"\" ), strlang(xsd:string(?syn), \"en\"), ?syn) AS ?synlang)
+  }
+"""^^xsd:string ;
+      sp:where (
+          [
+            sp:object [
+                sp:varName "syn"^^xsd:string ;
+              ] ;
+            sp:predicate [
+                sp:varName "p"^^xsd:string ;
+              ] ;
+            sp:subject [
+                sp:varName "x"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Filter ;
+            sp:expression [
+                rdf:type sp:eq ;
+                sp:arg1 [
+                    rdf:type sp:replace ;
+                    sp:arg1 [
+                        rdf:type xsd:string ;
+                        sp:arg1 [
+                            sp:varName "p"^^xsd:string ;
+                          ] ;
+                      ] ;
+                    sp:arg2 "^.*/" ;
+                    sp:arg3 "" ;
+                  ] ;
+                sp:arg2 "synonym" ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type sp:if ;
+                sp:arg1 [
+                    rdf:type sp:eq ;
+                    sp:arg1 [
+                        rdf:type sp:lang ;
+                        sp:arg1 [
+                            sp:varName "syn"^^xsd:string ;
+                          ] ;
+                      ] ;
+                    sp:arg2 "" ;
+                  ] ;
+                sp:arg2 [
+                    rdf:type sp:strlang ;
+                    sp:arg1 [
+                        rdf:type xsd:string ;
+                        sp:arg1 [
+                            sp:varName "syn"^^xsd:string ;
+                          ] ;
+                      ] ;
+                    sp:arg2 "en" ;
+                  ] ;
+                sp:arg3 [
+                    sp:varName "syn"^^xsd:string ;
+                  ] ;
+              ] ;
+            sp:variable [
+                sp:varName "synlang"^^xsd:string ;
+              ] ;
+          ]
+        ) ;
+    ] ;
+.
+owl:allValuesFrom
+  owlnames:clabel "only '{?1}' values from '{?2}'."^^xsd:string ;
+  owlnames:condition "only '{?1}' values from '{?2}'."^^xsd:string ;
+.
+owl:hasValue
+  owlnames:clabel "{?1} has the value '{?2}'."^^xsd:string ;
+  owlnames:condition "{?1} has the value '{?2}'."^^xsd:string ;
+.
+owl:intersectionOf
+  owlnames:condition "AND"^^xsd:string ;
+.
+owl:someValuesFrom
+  owlnames:clabel "{?1} something that {?2}"^^xsd:string ;
+  owlnames:condition "{?1} some value of {?2}"^^xsd:string ;
+.
+owl:unionOf
+  owlnames:condition "OR"^^xsd:string ;
+.
