@@ -993,7 +993,7 @@ function generateWidocoDocumentationForFile() {
     -Xms3G \
     -jar "${fibo_infra_root}/lib/widoco/widoco-1.4.1-jar-with-dependencies.jar" \
     -ontFile "${rdfFile}" \
-    -outFolder "${outputDir}/${rdfFile}" \
+    -outFolder "${outputDir}/${rdfFileNoExtension}" \
     -rewriteAll \
     -lang en  \
     -licensius \
@@ -1003,19 +1003,19 @@ function generateWidocoDocumentationForFile() {
   echo " - rc is ${rc}"
 
   #Remove introduction section
-  if [ -f "${outputDir}/${rdfFile}/index-en.html" ] ; then
-    echo "Removing introduction section from file ${outputDir}/${rdfFile}/index-en.html"
-    sed -i "/#introduction/d" "${outputDir}/${rdfFile}/index-en.html"
+  if [ -f "${outputDir}/${rdfFileNoExtension}/index-en.html" ] ; then
+    echo "Removing introduction section from file ${outputDir}/${rdfFileNoExtension}/index-en.html"
+    sed -i "/#introduction/d" "${outputDir}/${rdfFileNoExtension}/index-en.html"
   else
-    echo "No file found at ${outputDir}/${rdfFile}/index-en.html"
+    echo "No file found at ${outputDir}/${rdfFileNoExtension}/index-en.html"
   fi
 
   #Remove description section
-  if [ -f "${outputDir}/${rdfFile}/index-en.html" ] ; then
-    echo "Removing description section from file ${outputDir}/${rdfFile}/index-en.html"
-    sed -i "/#description/d" "${outputDir}/${rdfFile}/index-en.html"
+  if [ -f "${outputDir}/${rdfFileNoExtension}/index-en.html" ] ; then
+    echo "Removing description section from file ${outputDir}/${rdfFileNoExtension}/index-en.html"
+    sed -i "/#description/d" "${outputDir}/${rdfFileNoExtension}/index-en.html"
   else
-    echo "No file found at ${outputDir}/${rdfFile}/index-en.html"
+    echo "No file found at ${outputDir}/${rdfFileNoExtension}/index-en.html"
   fi
   # KG: Need to figure out why it fails on fibo/ontology/master/latest/SEC/SecuritiesExt/SecuritiesExt.ttl
   #
