@@ -240,6 +240,7 @@ function buildVowlIndex () {
     tree \
       -P '*.rdfRELEASE' \
       -T "${titleP}" \
+      -I About\* \
       -I '*Ext' \
       --noreport \
       --dirsfirst \
@@ -964,9 +965,18 @@ function generateWidocoDocumentationForFile() {
   local directory="$1"
   local outputDir="${directory/ontology/widoco}"
   local rdfFile="$2"
+  local rdfFileNoExtension="${rdfFile/.rdf/}"
+
   local extension="$([[ "${rdfFile}" = *.* ]] && echo ".${rdfFile##*.}" || echo '')"
 
   echo " - processing ${rdfFile} in ${directory} with extension ${extension}"
+
+
+  echo " Remove the About * html files that were generated earlier "
+  if [[ "${rdfFile}" =~ ^About.* ]] ; then
+    echo  "Removing the documentation files generated for ${rdfFile} from ${outputDir}/${rdfFileNoExtension}"
+    rm -rf "${outputDir}/${rdfFileNoExtension}"
+  fi
 
   if [[ "${extension}" != ".ttl" || "${rdfFile}" =~ ^About.* ]] ; then
     echo  "- skipping ${rdfFile} in ${directory} with extension ${extension}"
@@ -993,11 +1003,20 @@ function generateWidocoDocumentationForFile() {
   echo " - rc is ${rc}"
 
   #Remove introduction section
-  sed -i "/#introduction/d" "${outputDir}/${rdfFile}/doc/index-en.html"
+  if [ -f "${outputDir}/${rdfFile}/index-en.html" ] ; then
+    echo "Removing introduction section from file ${outputDir}/${rdfFile}/index-en.html"
+    sed -i "/#introduction/d" "${outputDir}/${rdfFile}/index-en.html"
+  else
+    echo "No file found at ${outputDir}/${rdfFile}/index-en.html"
+  fi
 
   #Remove description section
-  sed -i "/#description/d" "${outputDir}/${rdfFile}/doc/index-en.html"
-
+  if [ -f "${outputDir}/${rdfFile}/index-en.html" ] ; then
+    echo "Removing description section from file ${outputDir}/${rdfFile}/index-en.html"
+    sed -i "/#description/d" "${outputDir}/${rdfFile}/index-en.html"
+  else
+    echo "No file found at ${outputDir}/${rdfFile}/index-en.html"
+  fi
   # KG: Need to figure out why it fails on fibo/ontology/master/latest/SEC/SecuritiesExt/SecuritiesExt.ttl
   #
   # KG: Commenting out temporarily so that the build doesn't stop
