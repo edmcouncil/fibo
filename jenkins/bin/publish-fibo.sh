@@ -965,7 +965,7 @@ function generateWidocoDocumentationForFile() {
   local directory="$1"
   local outputDir="${directory/ontology/widoco}"
   local rdfFile="$2"
-  local rdfFileNoExtension="${rdfFile/.rdf/}"
+  local rdfFileNoExtension="${rdfFile/.ttl/}"
 
   local extension="$([[ "${rdfFile}" = *.* ]] && echo ".${rdfFile##*.}" || echo '')"
 
