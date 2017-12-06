@@ -1,4 +1,4 @@
-arq $(find ../../fibo/be ../../fibo/bp ../../fibo/cae ../../fibo/civ ../../fibo/der ../../fibo/fbc ../../fibo/fnd ../../fibo/ind ../../fibo/loan ../../fibo/md ../../fibo/sec -name '*.rdf' | sed "s/^/--data=/") --data=../jenkins/bin/glossary/owlnames.ttl --data=../jenkins/bin/fibo-vocabulary/datatypes.rdf --query=../jenkins/bin/fibo-vocabulary/skosecho.sparql --results=TTL > temp0.ttl
+arq --data=../../fibo/fbc/FunctionalEntities/RegulatoryAgencies.rdf --data=../jenkins/bin/glossary/owlnames.ttl --data=../jenkins/bin/fibo-vocabulary/datatypes.rdf --query=../jenkins/bin/fibo-vocabulary/skosecho.sparql --results=TTL > temp0.ttl
 
 echo "finished combining"
  
