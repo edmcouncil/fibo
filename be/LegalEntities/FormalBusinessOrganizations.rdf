@@ -47,6 +47,7 @@
 	
 	<owl:Ontology rdf:about="https://spec.edmcouncil.org/fibo/BE/LegalEntities/FormalBusinessOrganizations/">
 		<rdfs:label>Formal Business Organizations Ontology</rdfs:label>
+		<dct:abstract>This ontology defines formal business organizations and related concepts. The ontology covers parts of organizations, membership, classification, address relations and other properties which are applicable to formal business organizations generally. The concept of a formal business organization forms the basis for articulation of types of organization, both incorporated and non-incorporated, in other FIBO-BE ontologies.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">http://www.omg.org/techprocess/ab/SpecificationMetadata/MITLicense</dct:license>
 		<sm:contentLanguage rdf:datatype="&xsd;anyURI">http://www.omg.org/spec/ODM/</sm:contentLanguage>
 		<sm:contentLanguage rdf:datatype="&xsd;anyURI">http://www.w3.org/standards/techs/owl#w3c_all</sm:contentLanguage>
@@ -55,7 +56,6 @@ Copyright (c) 2013-2017 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/BE/LegalEntities/LegalPersons/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/FND/</sm:dependsOn>
 		<sm:fileAbbreviation>fibo-be-le-fbo</sm:fileAbbreviation>
-		<sm:fileAbstract>This ontology defines formal business organizations and related concepts. The ontology covers parts of organizations, membership, classification, address relations and other properties which are applicable to formal business organizations generally. The concept of a formal business organization forms the basis for articulation of types of organization, both incorporated and non-incorporated, in other FIBO-BE ontologies.</sm:fileAbstract>
 		<sm:filename>FormalBusinessOrganizations.rdf</sm:filename>
 		<rdfs:seeAlso rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/AboutTheEDMC-FIBOFamily/</rdfs:seeAlso>
 		<rdfs:seeAlso rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/BE/AboutBE/</rdfs:seeAlso>
@@ -82,7 +82,7 @@ Copyright (c) 2013-2017 Object Management Group, Inc.</sm:copyright>
 	<owl:Class rdf:about="&fibo-be-le-fbo;Branch">
 		<rdfs:subClassOf rdf:resource="&fibo-be-le-fbo;OrganizationalSubUnit"/>
 		<rdfs:label>branch</rdfs:label>
-		<skos:definition>A part of a business organization or company, identified as a branch.</skos:definition>
+		<skos:definition>a part of a business organization or company, identified as a branch</skos:definition>
 		<skos:editorialNote>This is not a separate legal entity in its own right, but a functional part of the entity.</skos:editorialNote>
 	</owl:Class>
 	
@@ -241,6 +241,13 @@ Copyright (c) 2013-2017 Object Management Group, Inc.</sm:copyright>
 	
 	<owl:Class rdf:about="&fibo-be-le-fbo;OrganizationPartIdentifier">
 		<rdfs:subClassOf rdf:resource="&fibo-be-le-fbo;OrganizationIdentifier"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-aap-agt;identifies"/>
+				<owl:onClass rdf:resource="&fibo-be-le-fbo;OrganizationalSubUnit"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label>organization part identifier</rdfs:label>
 		<skos:definition>an identifier allocated to a particular organizational sub-unit</skos:definition>
 		<fibo-fnd-utl-av:abbreviation>OPI</fibo-fnd-utl-av:abbreviation>
@@ -260,6 +267,7 @@ Copyright (c) 2013-2017 Object Management Group, Inc.</sm:copyright>
 		<skos:definition>any department, service, or other entity within a larger formal organization that only has full recognition within the context of that formal organization, but requires identification for some purpose</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.iso.org/obp/ui/#iso:std:iso-iec:6523:-1:ed-1:v1:en</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:explanatoryNote>In other words, it is not a legal entity in its own right.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:synonym>organization part</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-le-fbo;RegisteredAddress">
@@ -323,7 +331,7 @@ Copyright (c) 2013-2017 Object Management Group, Inc.</sm:copyright>
 		<rdfs:domain rdf:resource="&fibo-be-le-fbo;FormallyConstitutedOrganization"/>
 		<rdfs:range rdf:resource="&fibo-be-le-fbo;OrganizationalSubUnit"/>
 		<owl:inverseOf rdf:resource="&fibo-be-le-fbo;isSubUnitOf"/>
-		<skos:definition>The company has a branch, which is part of that company. This may be in another country or in the country in which that company is registered (incorporated).</skos:definition>
+		<skos:definition>relates a formally constituted organization to a sub-unit of that organization</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-be-le-fbo;isSubUnitOf">
@@ -331,7 +339,7 @@ Copyright (c) 2013-2017 Object Management Group, Inc.</sm:copyright>
 		<rdfs:label>is sub-unit of</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-be-le-fbo;OrganizationalSubUnit"/>
 		<rdfs:range rdf:resource="&fibo-be-le-fbo;FormallyConstitutedOrganization"/>
-		<skos:definition>The organization is a sub-unit of a formally constituted organization and has the role and function of being a formal part of that organization, such as a branch.</skos:definition>
+		<skos:definition>relates a sub-unit of an organization to the larger entity, which may or may not be co-located with that entity</skos:definition>
 	</owl:ObjectProperty>
 
 </rdf:RDF>
