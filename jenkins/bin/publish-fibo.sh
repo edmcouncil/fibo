@@ -1004,19 +1004,19 @@ function generateWidocoDocumentationForFile() {
 
   #Remove introduction section
   if [ -f "${outputDir}/${rdfFileNoExtension}/index-en.html" ] ; then
-    echo "Removing introduction section from file ${outputDir}/${rdfFileNoExtension}/index-en.html"
-    sed -i "/#introduction/d" "${outputDir}/${rdfFileNoExtension}/index-en.html"
+    echo "Replacing introduction with acknowledgements section from file ${outputDir}/${rdfFileNoExtension}/index-en.html"
+    cp "${SCRIPT_DIR}/widoco-sections/*.html" "${outputDir}/${rdfFileNoExtension}/sections"
+    echo "Contents of folder ${outputDir}/${rdfFileNoExtension}/sections"
+    ls -al "${outputDir}/${rdfFileNoExtension}/sections"
+    sed -i "s/#introduction/#acknowledgements/g" "${outputDir}/${rdfFileNoExtension}/index-en.html"
+    echo "Removing description section from file ${outputDir}/${rdfFileNoExtension}/index-en.html"
+    sed -i "/#description/d" "${outputDir}/${rdfFileNoExtension}/index-en.html"
+    echo "Removing references section from file ${outputDir}/${rdfFileNoExtension}/index-en.html"
+    sed -i "/#references/d" "${outputDir}/${rdfFileNoExtension}/index-en.html"
   else
     echo "No file found at ${outputDir}/${rdfFileNoExtension}/index-en.html"
   fi
 
-  #Remove description section
-  if [ -f "${outputDir}/${rdfFileNoExtension}/index-en.html" ] ; then
-    echo "Removing description section from file ${outputDir}/${rdfFileNoExtension}/index-en.html"
-    sed -i "/#description/d" "${outputDir}/${rdfFileNoExtension}/index-en.html"
-  else
-    echo "No file found at ${outputDir}/${rdfFileNoExtension}/index-en.html"
-  fi
   # KG: Need to figure out why it fails on fibo/ontology/master/latest/SEC/SecuritiesExt/SecuritiesExt.ttl
   #
   # KG: Commenting out temporarily so that the build doesn't stop
