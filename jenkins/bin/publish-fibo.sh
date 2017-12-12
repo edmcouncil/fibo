@@ -1004,6 +1004,11 @@ function generateWidocoDocumentationForFile() {
 
   #Remove introduction section
   if [ -f "${outputDir}/${rdfFileNoExtension}/index-en.html" ] ; then
+
+   contents=$(<${outputDir}/${rdfFileNoExtension}/index-en.html)
+   echo "contents of index file before modification"
+   echo "${contents}"
+
     echo "Replacing introduction with acknowledgements section from file ${outputDir}/${rdfFileNoExtension}/index-en.html"
     echo "Contents of script folder ${SCRIPT_DIR}"
     ls -al "${SCRIPT_DIR}"
@@ -1013,10 +1018,19 @@ function generateWidocoDocumentationForFile() {
     echo "Contents of folder ${outputDir}/${rdfFileNoExtension}/sections"
     ls -al "${outputDir}/${rdfFileNoExtension}/sections"
     sed -i "s/#introduction/#acknowledgements/g" "${outputDir}/${rdfFileNoExtension}/index-en.html"
+    sed -i "s/introduction-en/acknowledgements-en/g" "${outputDir}/${rdfFileNoExtension}/index-en.html"
     echo "Removing description section from file ${outputDir}/${rdfFileNoExtension}/index-en.html"
     sed -i "/#description/d" "${outputDir}/${rdfFileNoExtension}/index-en.html"
     echo "Removing references section from file ${outputDir}/${rdfFileNoExtension}/index-en.html"
     sed -i "/#references/d" "${outputDir}/${rdfFileNoExtension}/index-en.html"
+
+   contents=$(<${outputDir}/${rdfFileNoExtension}/index-en.html)
+   echo "contents of index file after modification"
+   echo "${contents}"
+
+   echo "Breaking here just for test"
+   return 0
+
   else
     echo "No file found at ${outputDir}/${rdfFileNoExtension}/index-en.html"
   fi
