@@ -1005,7 +1005,11 @@ function generateWidocoDocumentationForFile() {
   #Remove introduction section
   if [ -f "${outputDir}/${rdfFileNoExtension}/index-en.html" ] ; then
     echo "Replacing introduction with acknowledgements section from file ${outputDir}/${rdfFileNoExtension}/index-en.html"
-    cp "${SCRIPT_DIR}/widoco-sections/*.html" "${outputDir}/${rdfFileNoExtension}/sections"
+    echo "Contents of script folder ${SCRIPT_DIR}"
+    ls -al "${SCRIPT_DIR}"
+    echo "Contents of widoco-sections folder ${SCRIPT_DIR}/widoco-sections"
+    ls -al ${SCRIPT_DIR}/widoco-sections
+    cp "${SCRIPT_DIR}/widoco-sections/acknowledgements-en.html" "${outputDir}/${rdfFileNoExtension}/sections"
     echo "Contents of folder ${outputDir}/${rdfFileNoExtension}/sections"
     ls -al "${outputDir}/${rdfFileNoExtension}/sections"
     sed -i "s/#introduction/#acknowledgements/g" "${outputDir}/${rdfFileNoExtension}/index-en.html"
