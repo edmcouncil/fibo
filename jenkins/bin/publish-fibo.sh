@@ -259,7 +259,6 @@ function buildVowlIndex () {
 
 
 
-
   )
 
 	return 0
