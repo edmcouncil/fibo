@@ -219,7 +219,7 @@ function buildVowlIndex () {
 
     tree \
       -P '*.rdf' \
-      -I About\* \
+      -I  [0-9]\* \
       -T "${titleD}" \
       --noreport \
       --dirsfirst \
@@ -240,7 +240,7 @@ function buildVowlIndex () {
     tree \
       -P '*.rdfRELEASE' \
       -T "${titleP}" \
-      -I About\* \
+      -I  [0-9]\* \
       -I '*Ext' \
       --noreport \
       --dirsfirst \
@@ -978,7 +978,7 @@ function generateWidocoDocumentationForFile() {
     rm -rf "${outputDir}/${rdfFileNoExtension}"
   fi
 
-  if [[ "${extension}" != ".ttl" || "${rdfFile}" =~ ^About.* ]] ; then
+  if [[ "${extension}" != ".ttl" || "${rdfFile}" =~ ^[0-9].* ]] ; then
     echo  "- skipping ${rdfFile} in ${directory} with extension ${extension}"
     return 0
   fi
@@ -1005,9 +1005,9 @@ function generateWidocoDocumentationForFile() {
   #Remove introduction section
   if [ -f "${outputDir}/${rdfFileNoExtension}/index-en.html" ] ; then
 
-   contents=$(<${outputDir}/${rdfFileNoExtension}/index-en.html)
-   echo "contents of index file before modification"
-   echo "${contents}"
+   #contents=$(<${outputDir}/${rdfFileNoExtension}/index-en.html)
+   #echo "contents of index file before modification"
+   #echo "${contents}"
 
     echo "Replacing introduction with acknowledgements section from file ${outputDir}/${rdfFileNoExtension}/index-en.html"
     echo "Contents of script folder ${SCRIPT_DIR}"
@@ -1024,9 +1024,9 @@ function generateWidocoDocumentationForFile() {
     echo "Removing references section from file ${outputDir}/${rdfFileNoExtension}/index-en.html"
     sed -i "/#references/d" "${outputDir}/${rdfFileNoExtension}/index-en.html"
 
-   contents=$(<${outputDir}/${rdfFileNoExtension}/index-en.html)
-   echo "contents of index file after modification"
-   echo "${contents}"
+   #contents=$(<${outputDir}/${rdfFileNoExtension}/index-en.html)
+   #echo "contents of index file after modification"
+   #echo "${contents}"
 
    echo "Breaking here just for test"
    return 0
