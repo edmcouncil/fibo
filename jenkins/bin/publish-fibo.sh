@@ -246,7 +246,7 @@ function buildVowlIndex () {
       --dirsfirst \
       -H "${tag_root_url}" | \
       sed "s@${GIT_BRANCH}\/${GIT_TAG_NAME}\/\(/[^/]*/\)@${GIT_BRANCH}\/${GIT_TAG_NAME}/\\U\\1@" | \
-      sed "s@\(${product_branch_tag}/.*\)\.rdf\">@\1/index-en.html\">@" | \
+      sed "s@\(${product_branch_tag}/.*\)\.rdfRELEASE\">@\1/index-en.html\">@" | \
       sed 's@rdfRELEASE@rdf@g' | \
       sed 's@\(.*\).rdf@\1 vowl@' | \
       sed "s/>Directory Tree</>${titleP}</g" | \
