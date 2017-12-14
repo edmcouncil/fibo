@@ -1617,14 +1617,14 @@ function glossaryGenerate() {
   java \
     -cp ./bin/SaxonHE9-8-0-4J/saxon9he.jar \
     net.sf.saxon.Transform \
-    -o:"${spec_root}/${family_product_branch_tag}/datadictionaryDEV.csv" \
+    -o:"${spec_root}/${family_product_branch_tag}/glossaryDEV.csv" \
     -xsl:"${SCRIPT_DIR}/glossary-to-csv.xsl" \
     "${spec_root}/${family_product_branch_tag}/devin.html"
 
   java \
     -cp ./bin/SaxonHE9-8-0-4J/saxon9he.jar \
     net.sf.saxon.Transform \
-    -o:"${spec_root}/${family_product_branch_tag}/datadictionaryPROD.csv" \
+    -o:"${spec_root}/${family_product_branch_tag}/glossaryPROD.csv" \
     -xsl:"${SCRIPT_DIR}/glossary-to-csv.xsl" \
     "${spec_root}/${family_product_branch_tag}/prodin.html"
 
@@ -1651,7 +1651,7 @@ function publishProductGlossary() {
 }
 
 #
-# This can only be run after publishProductGlossary() has been run
+# this is the new data dictionary. It is independent of any glossary work. 
 #
 function publishProductDataDictionary() {
 
@@ -1662,29 +1662,189 @@ function publishProductDataDictionary() {
 
   logRule "Publishing the datadictionary product"
 
-  setProduct glossary || return $?
-
-  local glossary_root="${spec_root}/${family_product_branch_tag}"
-
-  if [ ! -f "${glossary_root}/datadictionaryDEV.csv" ] ; then
-    error "Could not find ${glossary_root}/datadictionaryDEV.csv"
-    return 1
-  fi
-
-  if [ ! -f "${glossary_root}/datadictionaryPROD.csv" ] ; then
-    error "Could not find ${glossary_root}/datadictionaryPROD.csv"
-    return 1
-  fi
-
   setProduct datadictionary || return $?
 
-  local datadictionary_root="${spec_root}/${family_product_branch_tag}"
+  export datadictionary_root="${spec_root}/${family_product_branch_tag}"
+  export datadictionary_script_dir="${SCRIPT_DIR}/datadictionary"
 
-  cp -v "${glossary_root}/datadictionaryDEV.csv" "${datadictionary_root}/datadictionaryDEV.html"
-  cp -v "${glossary_root}/datadictionaryPROD.csv" "${datadictionary_root}/datadictionaryPROD.html"
+  #
+  # Get ontologies for Prod
+  #
+  ${jena_arq} \
+    $(grep -r 'utl-av[:;.]Release' "${ontology_product_tag_root}" | sed 's/:.*$//;s/^/--data=/' | grep -F ".rdf") \
+    --data="${datadictionary_script_dir}/AllProd.ttl" \
+    --query="${vocabulary_script_dir}/skosecho.sparql" \
+    --results=TTL > "${tmp_dir}/temp0B.ttl"
+
+  ${jena_arq} --data="${tmp_dir}/temp0B.ttl" --query="${datadictionary_script_dir}/pseudorange.sq" \ 
+> "${tmp_dir}/pr.ttl"
+
+cat > "{tmp_dir}/con1.sq" <<EOF
+PREFIX av: <https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+
+SELECT DISTINCT ?c
+WHERE {?x av:forCM true . 
+?x rdfs:subClassOf* ?c  .
+FILTER (ISIRI (?c))
+}
+
+EOF
+
+  ${jena_arq} --data="${tmp_dir}/temp0B.ttl" --query="${tmp_dir}/con1.sq" \ 
+      --results=TSV > "${tmp_dir}/CONCEPTS"
+
+
+cat > "${tmp_dir}/ss.sq" << EOF
+
+PREFIX afn: <http://jena.apache.org/ARQ/function#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+prefix skos: <http://www.w3.org/2004/02/skos/core#> 
+prefix edm: <http://www.edmcouncil.org/temp#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX av: <https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/>
+
+SELECT ?class ?table ?definition ?field ?description ?type ?r1
+WHERE {
+?class a owl:Class .
+FILTER (ISIRI (?class))
+FIlTER (REGEX (xsd:string (?class), "edmcouncil"))
+?class rdfs:subClassOf* ?base1 .
+?b1 edm:pseudodomain ?base1; a edm:PR ; edm:p ?p ; edm:pseudorange ?r1  .
+?p av:forDD "true"^^xsd:boolean .
+FILTER NOT EXISTS {?class rdfs:subClassOf* ?base2 .
+#                   FILTER (?base2 != ?base1)
+                   ?b2 a edm:PR ; edm:p ?p ; edm:pseudorange ?r2 ; edm:pseudodomain ?base2 .
+		   ?r2 rdfs:subClassOf+ ?r1 }
+
+
+?p rdfs:label ?field .
+OPTIONAL {?p  skos:definition ?dx}
+BIND (COALESCE (?dx, "(none)") AS ?description )
+?r1 rdfs:label ?type .
+?class rdfs:label ?table
+OPTIONAL {?class skos:definition  ?dy }
+BIND ( COALESCE (?dy, "(none)") AS ?definition )
+
+} 
+EOF
+
+
+
+# Turns out, putting this into a text file and grepping over it ran faster than putting it into a triple store.
+${jena_arq} --data="${tmp_dir}/temp0B.ttl" \
+   --data="${tmp_dir}/pr.ttl" \
+    --query="${tmp_dir}/ss.sq" \ 
+    --results=TSV | sed 's/"@../"/g' > "${tmp_dir}/ssx.txt"
+
+# remove duplicate lines
+sort -u "${tmp_dir}/ssx.txt" > "${tmp_dir}/ss.txt"
+
+
+# Start with empty output 
+echo "" > "${tmp_dir}/output.tsv"
+
+
+# The CONCEPTS are stopclasses; we don't show those.  So we treat them as DONE at the start of the processing. 
+cp "${tmp_dir}/CONCEPTS" "${tmp_dir}/DONE"
+
+
+# Find the list of things to include.  This is too costly to include all classes. 
+
+cat > "${tmp_dir}dumps.sq" <<EOF
+
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+SELECT ?c
+WHERE {
+?x <https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/dumpable> true .
+## Swap these two to include all subclasses of marked classes
+#?c rdfs:subClassOf* ?x . 
+BIND (?x AS ?c)
+}
+
+EOF
+
+${jena_arq}  --data="${tmp_dir}/temp0B.ttl"  --query="${tmp_dir}dumps.sq"  --results=TSV> "${tmp_dir}dumps"
+
+tail -n +2 "${tmp_dir}/dumps" | while read class ; do
+    dumpdd $class
+done
 
   return 0
 }
+
+
+#
+#
+# Helper Functions for DD
+#
+#
+
+function localdd () {
+
+if grep -q "$1"  "${tmp_dir}/DONE" ;
+then
+     echo "I've seen it before!"
+else
+echo "$1" >>  "${tmp_dir}/DONE"
+
+
+grep  "^$1" "${tmp_dir}/ss.txt" | \
+sed "s/^[^\t]*\t//; s/\t[^\t]*$//; 2,\$s/^[^\t]*\t[^\t]*\t/\t\"\"\t/" >> "${tmp_dir}/output.tsv"
+
+echo "Finished tsv sed for $1"
+
+
+#tdbquery --loc=TEMP  --query=temp2.sq --results=TSV   > next
+grep "^$1" "${tmp_dir}/ss.txt" | sed 's/^.*\t//'  |  while read uri ; do
+  localdd "$(echo "${uri}" | sed 's/\r//')" 
+done
+
+
+fi
+}
+
+
+function dumpdd () {
+
+echo "Creating Data Dictionary for $1"
+# Extract the filename from the local part of the class IRI
+t=${1##*/}
+fname=${t%>*}
+
+
+# Reset the output to blank
+echo "" > "${tmp_dir}/output.tsv"
+
+#Reset the "seen" list to be the stopclasses 
+cp  "${tmp_dir}/CONCEPTS"  "${tmp_dir}/DONE"
+
+localdd $1
+
+
+cat > "${datadictionary_root}/${fname}.csv" <<EOF
+Table,Definition,Field,Field Definition,Type
+EOF
+
+sed 's/"\t"/","/g; s/^\t"/,"/' "${tmp_dir}/output.tsv" > "${datadictionary_root}/${fname}.csv"
+
+
+cat > "${datadictionary_root}/${fname}.xls" <<EOF
+<table border=1>
+<tr><th  bgcolor="goldenrod">Table</th><th  bgcolor="goldenrod">Definition</th><th  bgcolor="goldenrod">Field</th><th  bgcolor="goldenrod">Field Definition</th><th  bgcolor="goldenrod">Type</th></tr>
+EOF
+tail -n +2 "${tmp_dir}/output.tsv" \ 
+     | sed 's!"\t"!</td><td valign="top">!g; s!^"!<td valign="top">!; s!^\t"!<td/><td valign="top">!; s!"$!</td>!g; s!^!<tr>!; s!$!</tr>!' \
+      >> "${datadictionary_root}/${fname}.xls" 
+cat >>"${datadictionary_root}/${fname}.xls"  <<EOF
+</table>
+EOF
+sed -i '4,${s/<td/<td bgcolor="azure"/g;n}' "${datadictionary_root}/${fname}.xls" 
+}
+
+
 
 #
 # Stuff for building nquads files
