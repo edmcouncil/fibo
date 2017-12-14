@@ -241,7 +241,7 @@ function buildVowlIndex () {
     tree \
       -P '*.rdfRELEASE' \
       -I  [0-9]\* \
-      -I '*Ext' \
+     #Do we need this -I '*Ext' \
       -T "${titleP}" \
       --noreport \
       --dirsfirst \
