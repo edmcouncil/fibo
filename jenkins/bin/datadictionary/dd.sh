@@ -87,7 +87,9 @@ BIND ( COALESCE (?dy, "(none)") AS ?definition )
 
 EOF
 
-arq --data=combined.ttl --data=pr.ttl --data=AllProd.ttl  --query=ss.sq --results=TSV | sed 's/"@../@/g' > ss.txt
+arq --data=combined.ttl --data=pr.ttl --data=AllProd.ttl  --query=ss.sq --results=TSV | sed 's/"@../"/g' > ssx.txt
+sort -u ssx.txt > ss.txt
+
 
 ### Store all this into a TDB so that we never haver to parse again
 
