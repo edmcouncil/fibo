@@ -1,5 +1,8 @@
 #!/bin/bash
 
+fiboroot="../../../../fibo"
+
+
 if [ "$1" = "yes" ] ;
 then
 
@@ -12,14 +15,35 @@ WHERE {?s ?p ?o }
 EOF
 
 
-arq  $(find AllDev.ttl be bp cae civ der fbc fnd ind loan md sec -name "*.rdf" | sed "s/^/--data=/") --query=echo.sq --results=TTL> combined.ttl
+
+arq  $(find $fiboroot/be $fiboroot/bp $fiboroot/cae $fiboroot/civ $fiboroot/der $fiboroot/fbc $fiboroot/fnd $fiboroot/ind $fiboroot/loan $fiboroot/md $fiboroot/sec -name "*.rdf" | sed "s/^/--data=/") --data=AllProd.ttl --query=echo.sq --results=TTL> combined.ttl
 
 echo "finished combining"
 
 
-# arq --data=combined.ttl --query=pseudorange.sq > pr.ttl
-arq --data=combined.ttl --data=AllDev.ttl --query=pseudorange1.sq > pr1.ttl
-sed -i "s/@en//g" pr1.ttl
+
+
+arq --data=combined.ttl --query=pseudorange.sq > pr.ttl
+
+
+cat > "con1.sq" <<EOF
+PREFIX av: <https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+
+SELECT DISTINCT ?c
+WHERE {?x av:forCM true . 
+?x rdfs:subClassOf* ?c  .
+FILTER (ISIRI (?c))
+}
+
+EOF
+
+
+
+arq --data=combined.ttl --query=con1.sq --results=TSV > CONCEPTS
+
+#arq --data=combined.ttl --data=AllProd.ttl --query=pseudorange1.sq > pr1.ttl
+#sed -i "s/@en//g" pr1.ttl
 
 fi
 
@@ -27,7 +51,7 @@ echo "finished pseudorange"
 
 echo "" > output.tsv
 
-echo "" > DONE
+cp CONCEPTS DONE
 
 function localdd () {
 
@@ -75,8 +99,8 @@ EOF
 
 
 
-arq --data=combined.ttl --data=pr.ttl --data=AllDev.ttl --query=temp.sq --results=TSV > output1.tsv
-cat output1.tsv | tail +2 | sed "2,\$s/^[^\t]*\t[^\t]*\t/\t\"\"\t/" | sed "s/\"@../\"/g" >> output.tsv
+arq --data=combined.ttl --data=pr.ttl --data=AllProd.ttl --query=temp.sq --results=TSV > output1.tsv
+cat output1.tsv | tail -n +2 | sed "2,\$s/^[^\t]*\t[^\t]*\t/\t\"\"\t/" | sed "s/\"@../\"/g" >> output.tsv
 
 echo "Finished tsv for $1"
 
@@ -110,11 +134,12 @@ FILTER NOT EXISTS {?class rdfs:subClassOf* ?base2 .
 EOF
 
 
-arq --data=combined.ttl --data=pr.ttl --data=AllDev.ttl --query=temp.sq --results=CSV > next
+arq --data=combined.ttl --data=pr.ttl --data=AllProd.ttl --query=temp.sq --results=CSV > next
 
 echo "Finished next for $1"
 
-tail -n +2 next |  while read uri ; do
+
+tail -n +2  next |  while read uri ; do
   localdd "<$(echo "${uri}" | sed 's/\r//')>" 
 done
 
@@ -123,15 +148,56 @@ fi
 }
 
 
-localdd "<https://spec.edmcouncil.org/fibo/DER/RateDerivatives/IRSwaps/InterestRateSwap>"
-# <https://spec.edmcouncil.org/fibo/BE/LegalEntities/LegalPersons/LegalPerson>" 
+function dumpdd () {
 
-#localdd "<https://spec.edmcouncil.org/fibo/FND/AgentsAndPeople/People/Person>" 
+echo "$1"
+t=${1##*/}
+fname=${t%>*}
+echo $fname
+rm -f $fname.*
 
-cat > output.csv <<EOF
+echo "" > output.tsv
+
+cp CONCEPTS DONE
+
+localdd $1
+
+
+cat > $fname.csv <<EOF
 Table,Definition,Field,Field Definition,Type
 EOF
 
-sed 's/"\t"/","/g; s/^\t"/,"/' output.tsv > output.csv
+sed 's/"\t"/","/g; s/^\t"/,"/' output.tsv > $fname.csv
 
 
+cat > $fname.xls <<EOF
+<table border=1>
+<tr><th  bgcolor="goldenrod">Table</th><th  bgcolor="goldenrod">Definition</th><th  bgcolor="goldenrod">Field</th><th  bgcolor="goldenrod">Field Definition</th><th  bgcolor="goldenrod">Type</th></tr>
+EOF
+tail -n +2 output.tsv | sed 's!"\t"!</td><td valign="top">!g; s!^"!<td valign="top">!; s!^\t"!<td/><td valign="top">!; s!"$!</td>!g; s!^!<tr>!; s!$!</tr>!'  >> $fname.xls
+cat >>$fname.xls <<EOF
+</table>
+EOF
+sed -i '4,${s/<td/<td bgcolor="azure"/g;n}' $fname.xls
+}
+
+
+
+
+cat > "dumps.sq" <<EOF
+
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+SELECT ?c
+WHERE {
+?x <https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/dumpable> true .
+?c rdfs:subClassOf* ?x . 
+}
+
+EOF
+
+arq --data=combined.ttl --query=dumps.sq  --results=TSV> dumps
+
+
+tail -n +2 dumps | while read class ; do
+    dumpdd $class
+done
