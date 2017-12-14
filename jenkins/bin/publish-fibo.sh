@@ -236,12 +236,12 @@ function buildVowlIndex () {
     grep -rl 'utl-av[:;.]Release' . > ${pfiles}
     cat ${pfiles} | while read file ; do mv ${file} ${file}RELEASE ; done
 
-
+    echo "Generating Production Widoco Tree"
+     #Do we need this -I '*Ext' \
     tree \
       -P '*.rdfRELEASE' \
-      -T "${titleP}" \
       -I  [0-9]\* \
-      -I '*Ext' \
+      -T "${titleP}" \
       --noreport \
       --dirsfirst \
       -H "${tag_root_url}" | \
