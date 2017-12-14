@@ -237,11 +237,10 @@ function buildVowlIndex () {
     cat ${pfiles} | while read file ; do mv ${file} ${file}RELEASE ; done
 
     echo "Generating Production Widoco Tree"
-
+     #Do we need this -I '*Ext' \
     tree \
       -P '*.rdfRELEASE' \
       -I  [0-9]\* \
-     #Do we need this -I '*Ext' \
       -T "${titleP}" \
       --noreport \
       --dirsfirst \
