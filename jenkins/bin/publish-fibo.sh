@@ -1835,9 +1835,9 @@ cat > "${datadictionary_root}/${fname}.xls" <<EOF
 <table border=1>
 <tr><th  bgcolor="goldenrod">Table</th><th  bgcolor="goldenrod">Definition</th><th  bgcolor="goldenrod">Field</th><th  bgcolor="goldenrod">Field Definition</th><th  bgcolor="goldenrod">Type</th></tr>
 EOF
-tail -n +2 "${tmp_dir}/output.tsv" \ 
-     | sed 's!"\t"!</td><td valign="top">!g; s!^"!<td valign="top">!; s!^\t"!<td/><td valign="top">!; s!"$!</td>!g; s!^!<tr>!; s!$!</tr>!' \
-      >> "${datadictionary_root}/${fname}.xls" 
+tail -n +2 "${tmp_dir}/output.tsv"  | \
+ sed 's!"\t"!</td><td valign="top">!g; s!^"!<td valign="top">!; s!^\t"!<td/><td valign="top">!; s!"$!</td>!g; s!^!<tr>!; s!$!</tr>!' >> \
+ "${datadictionary_root}/${fname}.xls" 
 cat >>"${datadictionary_root}/${fname}.xls"  <<EOF
 </table>
 EOF
