@@ -1067,14 +1067,14 @@ function publishProductOntology() {
   ontologyCopyRdfToTarget || return $?
   buildIndex  || return $?
 
-  ontologyBuildCats  || return $?
-  ontologyCreateAboutFiles || return $?
-  ontologySearchAndReplaceStuff || return $?
-  ontologyConvertRdfToAllFormats || return $?
+#  ontologyBuildCats  || return $?
+#  ontologyCreateAboutFiles || return $?
+#  ontologySearchAndReplaceStuff || return $?
+#  ontologyConvertRdfToAllFormats || return $?
 # ontologyAnnotateTopBraidBaseURL || return $?
-  ontologyConvertMarkdownToHtml || return $?
-  zipOntologyFiles || return $?
-  buildquads || return $?
+#  ontologyConvertMarkdownToHtml || return $?
+#  zipOntologyFiles || return $?
+#  buildquads || return $?
 
   return 0
 }
