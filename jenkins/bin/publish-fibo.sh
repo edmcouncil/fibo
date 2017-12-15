@@ -1951,7 +1951,7 @@ function main() {
   if [ "$1" == "init" ] ; then
     return 0
   fi
-
+  echo "products = ${products}"
   for product in ${products} ; do
     case ${product} in
       ontology)
