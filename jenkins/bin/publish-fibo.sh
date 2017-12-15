@@ -1670,6 +1670,9 @@ function publishProductDataDictionary() {
   #
   # Get ontologies for Prod
   #
+
+  echo "${ontology_product_tag_root}"
+  
   ${jena_arq} \
     $(grep -r 'utl-av[:;.]Release' "${ontology_product_tag_root}" | sed 's/:.*$//;s/^/--data=/' | grep -F ".rdf") \
     --data="${datadictionary_script_dir}/AllProd.ttl" \
