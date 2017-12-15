@@ -1958,13 +1958,13 @@ function main() {
         publishProductOntology || return $?
         ;;
       widoco)
-        publishProductWidoco || return $?
+        # publishProductWidoco || return $?
         ;;
       vocabulary)
-        publishProductVocabulary || return $?
+        # publishProductVocabulary || return $?
         ;;
       glossary)
-        publishProductGlossary || return $?
+        # publishProductGlossary || return $?
         ;;
       datadictionary)
         publishProductDataDictionary || return $?
