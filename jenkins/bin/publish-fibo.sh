@@ -1694,7 +1694,7 @@ FILTER (ISIRI (?c))
 
 EOF
 
-  ${jena_arq} --data="${tmp_dir}/temp0B.ttl" --query="${tmp_dir}/con1.sq" \ 
+  ${jena_arq} --data="${tmp_dir}/temp0B.ttl" --query="${tmp_dir}/con1.sq" \
       --results=TSV > "${tmp_dir}/CONCEPTS"
 
 
@@ -1739,7 +1739,7 @@ EOF
 # Turns out, putting this into a text file and grepping over it ran faster than putting it into a triple store.
 ${jena_arq} --data="${tmp_dir}/temp0B.ttl" \
    --data="${tmp_dir}/pr.ttl" \
-    --query="${tmp_dir}/ss.sq" \ 
+    --query="${tmp_dir}/ss.sq" \
     --results=TSV | sed 's/"@../"/g' > "${tmp_dir}/ssx.txt"
 
 # remove duplicate lines
