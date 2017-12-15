@@ -1666,6 +1666,7 @@ function publishProductDataDictionary() {
   
 
   local ontology_root="${spec_family_root}/ontology/${GIT_BRANCH}/${GIT_TAG_NAME}"
+  echo "ontology root = ${ontology_root}"
   export datadictionary_root="${spec_root}/${family_product_branch_tag}"
   export datadictionary_script_dir="${SCRIPT_DIR}/datadictionary"
 
