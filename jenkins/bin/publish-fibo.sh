@@ -1676,7 +1676,7 @@ function publishProductDataDictionary() {
   ${jena_arq} \
     $(grep -r 'utl-av[:;.]Release' "${tag_root}" | sed 's/:.*$//;s/^/--data=/' | grep -F ".rdf") \
     --data="${datadictionary_script_dir}/AllProd.ttl" \
-    --query="${vocabulary_script_dir}/skosecho.sparql" \
+    --query="${datadictionary_script_dir}/echo.sq" \
     --results=TTL > "${tmp_dir}/temp0B.ttl"
 
   ${jena_arq} --data="${tmp_dir}/temp0B.ttl" --query="${datadictionary_script_dir}/pseudorange.sq" \ 
