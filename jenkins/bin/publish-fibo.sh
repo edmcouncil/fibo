@@ -1670,7 +1670,7 @@ function publishProductDataDictionary() {
   #
   # Get ontologies for Prod
   #
-
+  require ontology_product_tag_root || return $?  
   echo "optr = ${ontology_product_tag_root}"
   
   ${jena_arq} \
