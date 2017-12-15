@@ -1917,7 +1917,7 @@ __HERE__
       sed "s@fibo/${fibo_rel}/\([a-zA-Z]*/\)@${family_product_branch_tag}/\U\1\E@" >> catalog-v001.xml
 
     cat  >> catalog-v001.xml << __HERE__
-<!-- Automatically built by EDMC infrastructure -->
+a<!-- Automatically built by EDMC infrastructure -->
 </catalog>
 __HERE__
 )    
@@ -1958,15 +1958,19 @@ function main() {
         publishProductOntology || return $?
         ;;
       widoco)
+	echo "not publishing widoco"    
         # publishProductWidoco || return $?
         ;;
       vocabulary)
+	echo "not publishing vocabulary"
         # publishProductVocabulary || return $?
         ;;
       glossary)
+	echo "not publishing glossary"
         # publishProductGlossary || return $?
         ;;
       datadictionary)
+	echo "publishing data dictionary"    
         publishProductDataDictionary || return $?
         ;;
       *)
