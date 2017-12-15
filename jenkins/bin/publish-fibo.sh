@@ -1663,7 +1663,9 @@ function publishProductDataDictionary() {
   logRule "Publishing the datadictionary product"
 
   setProduct datadictionary || return $?
+  
 
+  local ontology_root="${spec_family_root}/ontology/${GIT_BRANCH}/${GIT_TAG_NAME}"
   export datadictionary_root="${spec_root}/${family_product_branch_tag}"
   export datadictionary_script_dir="${SCRIPT_DIR}/datadictionary"
 
@@ -1674,7 +1676,7 @@ function publishProductDataDictionary() {
   echo "optr = ${tag_root}"
   
   ${jena_arq} \
-    $(grep -r 'utl-av[:;.]Release' "${tag_root}" | sed 's/:.*$//;s/^/--data=/' | grep -F ".rdf") \
+    $(grep -r 'utl-av[:;.]Release' "${ontology_root}" | sed 's/:.*$//;s/^/--data=/' | grep -F ".rdf") \
     --data="${datadictionary_script_dir}/AllProd.ttl" \
     --query="${datadictionary_script_dir}/echo.sq" \
     --results=TTL > "${tmp_dir}/temp0B.ttl"
