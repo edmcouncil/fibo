@@ -1670,11 +1670,11 @@ function publishProductDataDictionary() {
   #
   # Get ontologies for Prod
   #
-  require ontology_product_tag_root || return $?  
-  echo "optr = ${ontology_product_tag_root}"
+  require tag_root || return $?  
+  echo "optr = ${tag_root}"
   
   ${jena_arq} \
-    $(grep -r 'utl-av[:;.]Release' "${ontology_product_tag_root}" | sed 's/:.*$//;s/^/--data=/' | grep -F ".rdf") \
+    $(grep -r 'utl-av[:;.]Release' "${tag_root}" | sed 's/:.*$//;s/^/--data=/' | grep -F ".rdf") \
     --data="${datadictionary_script_dir}/AllProd.ttl" \
     --query="${vocabulary_script_dir}/skosecho.sparql" \
     --results=TTL > "${tmp_dir}/temp0B.ttl"
