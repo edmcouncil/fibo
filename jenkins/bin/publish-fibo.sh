@@ -1655,8 +1655,8 @@ function publishProductGlossary() {
 #
 function publishProductDataDictionary() {
 
-  if [ "${NODE_NAME}" != "nomagic" ] ; then
-    echo "Skipping publication of product glossary since we're on node ${NODE_NAME}"
+  if [ "${NODE_NAME}" == "nomagic" ] ; then
+    echo "Skipping publication of product data dictionary since we're on node ${NODE_NAME}"
     return 0
   fi
 
