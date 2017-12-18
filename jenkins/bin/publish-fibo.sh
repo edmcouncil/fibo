@@ -1685,10 +1685,10 @@ function publishProductDataDictionary() {
     --query="${datadictionary_script_dir}/echo.sq" \
     --results=TTL > "${tmp_dir}/temp0B.ttl"
 
-ech "here is the start of the combined file"
-head    "${tmp_dir}/temp0B.ttl"
+echo "here is the start of the combined file"
+wc    "${tmp_dir}/temp0B.ttl"
 
-  ${jena_arq} --data="${tmp_dir}/temp0B.ttl" --query="${datadictionary_script_dir}/pseudorange.sq" \ 
+  ${jena_arq} --data="${tmp_dir}/temp0B.ttl" --query="${datadictionary_script_dir}/pseudorange.sq" \
 > "${tmp_dir}/pr.ttl"
 
 cat > "${tmp_dir}/con1.sq" <<EOF
