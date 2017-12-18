@@ -32,7 +32,8 @@ jena_arq=""
 # ontology has to come before vocabulary because vocabulary depends on it.
 #
 family="fibo"
-products="ontology widoco glossary datadictionary vocabulary"
+#products="ontology widoco glossary datadictionary vocabulary"
+products="ontology  datadictionary"
 
 source_family_root="${WORKSPACE}/${family}"
 spec_root="${WORKSPACE}/target"
@@ -563,7 +564,9 @@ __HERE__
 # We want to add in a rdfs:isDefinedBy link from every class back to the ontology. 
 
   find ${tag_root}/ -type f  -name '*.rdf' -not -name '*About*'  -print | while read file ; do
-      addIsDefinedBy "${file}"
+#      addIsDefinedBy "${file}"
+      echo "not doing is defined by"
+
 
   done
  
