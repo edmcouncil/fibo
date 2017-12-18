@@ -1774,7 +1774,7 @@ cp "${tmp_dir}/CONCEPTS" "${tmp_dir}/DONE"
 cat > "${tmp_dir}dumps.sq" <<EOF
 
 prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
-SELECT ?c
+SELECT DISTINCT ?c
 WHERE {
 ?x <https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/dumpable> true .
 ## Swap these two to include all subclasses of marked classes
