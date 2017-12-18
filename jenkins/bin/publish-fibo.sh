@@ -563,8 +563,8 @@ __HERE__
 # We want to add in a rdfs:isDefinedBy link from every class back to the ontology. 
 
   find ${tag_root}/ -type f  -name '*.rdf' -not -name '*About*'  -print | while read file ; do
-#     addIsDefinedBy "${file}"
-      echo "skipping is defined by"
+      addIsDefinedBy "${file}"
+
   done
  
   return 0
@@ -1067,14 +1067,14 @@ function publishProductOntology() {
   ontologyCopyRdfToTarget || return $?
   buildIndex  || return $?
 
-#  ontologyBuildCats  || return $?
-#  ontologyCreateAboutFiles || return $?
-#  ontologySearchAndReplaceStuff || return $?
-#  ontologyConvertRdfToAllFormats || return $?
+  ontologyBuildCats  || return $?
+  ontologyCreateAboutFiles || return $?
+  ontologySearchAndReplaceStuff || return $?
+  ontologyConvertRdfToAllFormats || return $?
 # ontologyAnnotateTopBraidBaseURL || return $?
-#  ontologyConvertMarkdownToHtml || return $?
-#  zipOntologyFiles || return $?
-#  buildquads || return $?
+  ontologyConvertMarkdownToHtml || return $?
+  zipOntologyFiles || return $?
+  buildquads || return $?
 
   return 0
 }
