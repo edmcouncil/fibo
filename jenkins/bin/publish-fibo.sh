@@ -1784,7 +1784,7 @@ BIND (?x AS ?c)
 
 EOF
 
-${jena_arq}  --data="${tmp_dir}/temp0B.ttl"  --query="${tmp_dir}dumps.sq"  --results=TSV > "${tmp_dir}dumps"
+${jena_arq}  --data="${tmp_dir}/temp0B.ttl"  --query="${tmp_dir}dumps.sq"  --results=TSV > "${tmp_dir}/dumps"
 
 tail -n +2 "${tmp_dir}/dumps" | while read class ; do
     dumpdd $class
