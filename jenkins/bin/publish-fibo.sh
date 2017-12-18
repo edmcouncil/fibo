@@ -1780,7 +1780,9 @@ WHERE {
 ## Swap these two to include all subclasses of marked classes
 ?c rdfs:subClassOf* ?x . 
 #BIND (?x AS ?c)
-?c rdfs:label ?l
+?c rdfs:label ?lx
+BIND (UCASE (?lx) AS ?l)
+
 } ORDER BY ?l
 
 EOF
