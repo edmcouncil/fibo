@@ -1778,8 +1778,8 @@ SELECT ?c
 WHERE {
 ?x <https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/dumpable> true .
 ## Swap these two to include all subclasses of marked classes
-#?c rdfs:subClassOf* ?x . 
-BIND (?x AS ?c)
+?c rdfs:subClassOf* ?x . 
+#BIND (?x AS ?c)
 }
 
 EOF
