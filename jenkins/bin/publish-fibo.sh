@@ -1700,9 +1700,11 @@ FILTER (ISIRI (?c))
 
 EOF
 
+
   ${jena_arq} --data="${tmp_dir}/temp0B.ttl" --query="${tmp_dir}/con1.sq" \
       --results=TSV > "${tmp_dir}/CONCEPTS"
 
+cat "${tmp_dir}/CONCEPTS"
 
 cat > "${tmp_dir}/ss.sq" << EOF
 
@@ -1747,6 +1749,8 @@ ${jena_arq} --data="${tmp_dir}/temp0B.ttl" \
    --data="${tmp_dir}/pr.ttl" \
     --query="${tmp_dir}/ss.sq" \
     --results=TSV | sed 's/"@../"/g' > "${tmp_dir}/ssx.txt"
+
+head  "${tmp_dir}/ssx.txt"
 
 # remove duplicate lines
 sort -u "${tmp_dir}/ssx.txt" > "${tmp_dir}/ss.txt"

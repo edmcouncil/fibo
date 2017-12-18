@@ -166,7 +166,7 @@ tail -n +2 output.tsv | sed 's!"\t"!</td><td valign="top">!g; s!^"!<td valign="t
 cat >>$outputs/fname.xls <<EOF
 </table>
 EOF
-sed -i '4,${s/<td/<td bgcolor="azure"/g;n}' outputs/$fname.xls
+sed -i '4,${s/<td/<td bgcolor="azure"/g;n}' outputs/$fname.xls 
 }
 
 
@@ -178,7 +178,8 @@ prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 SELECT ?c
 WHERE {
 ?x <https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/dumpable> true .
-?c rdfs:subClassOf* ?x . 
+#?c rdfs:subClassOf* ?x . 
+BIND (?x AS ?c)
 }
 
 EOF
