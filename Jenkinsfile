@@ -47,13 +47,6 @@ pipeline {
       }
 
       steps {
-
-        //
-        // Clean the workspace on this node, for now. Takes more time but we need to test this with a clean slate
-        // every time. Once this all works fine we can skip this step.
-        //
-        sh "rm -rf ${env.WORKSPACE}/*"
-
         //
         // Then check out the fibo-infra repo content into the ./fibo-infra directory
         //
