@@ -1844,7 +1844,8 @@ echo "Creating Data Dictionary for $1"
 # Extract the filename from the local part of the class IRI
 t=${1##*/}
 fname=${t%>*}
-cat >> "${datadictionary_root}/index.html << EOF
+
+cat >> "${datadictionary_root}/index.html" << EOF
 <tr><td>${fname}</td><td><a href="${fname}.xls">excel</a></td><td><a href="${fname}.csv">CSV</a></td></tr>
 EOF
 
