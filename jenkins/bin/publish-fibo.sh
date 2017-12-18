@@ -1786,12 +1786,25 @@ EOF
 
 ${jena_arq}  --data="${tmp_dir}/temp0B.ttl"  --query="${tmp_dir}dumps.sq"  --results=TSV > "${tmp_dir}/dumps"
 
+cat > "${datadictionary_root}/index.html" << EOF
+<html><body>
+<h1>Data Dictionary</h1>
+<p>Data Dictionaries are availble for the following classes.  They are available in Excel and CSV formats. </p>
+<table>
+EOF
 tail -n +2 "${tmp_dir}/dumps" | while read class ; do
     dumpdd $class
 done
 
   return 0
 }
+
+cat >> "${datadictionary_root}/index.html" <<EOF
+
+</table>
+</body></html>
+
+EOF
 
 
 #
@@ -1831,6 +1844,9 @@ echo "Creating Data Dictionary for $1"
 # Extract the filename from the local part of the class IRI
 t=${1##*/}
 fname=${t%>*}
+cat >> "${datadictionary_root}/index.html << EOF
+<tr><td>${fname}</td><td><a href="${fname}.xls">excel</a></td><td><a href="${fname}.csv">CSV</a></td></tr>
+EOF
 
 
 # Reset the output to blank
@@ -1859,7 +1875,8 @@ tail -n +2 "${tmp_dir}/output.tsv"  | \
 cat >>"${datadictionary_root}/${fname}.xls"  <<EOF
 </table>
 EOF
-sed -i '4,${s/<td/<td bgcolor="azure"/g;n}' "${datadictionary_root}/${fname}.xls" 
+sed -i '4,${s/<td/<td bgcolor="azure"/g;n}' "${datadictionary_root}/${fname}.xls"
+
 }
 
 
