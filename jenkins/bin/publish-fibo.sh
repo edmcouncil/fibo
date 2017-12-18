@@ -1792,7 +1792,7 @@ cat > "${datadictionary_root}/index.html" << EOF
 <p>Data Dictionaries are availble for the following classes.  They are available in Excel and CSV formats. </p>
 <table>
 EOF
-tail -n +2 "${tmp_dir}/dumps" | while read class ; do
+tail -n +2 "${tmp_dir}/dumps" |sort| while read class ; do
     dumpdd $class
 done
 
