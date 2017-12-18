@@ -1688,7 +1688,7 @@ function publishProductDataDictionary() {
   ${jena_arq} --data="${tmp_dir}/temp0B.ttl" --query="${datadictionary_script_dir}/pseudorange.sq" \ 
 > "${tmp_dir}/pr.ttl"
 
-cat > "{tmp_dir}/con1.sq" <<EOF
+cat > "${tmp_dir}/con1.sq" <<EOF
 PREFIX av: <https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/>
 prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
 
