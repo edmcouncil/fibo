@@ -1704,6 +1704,7 @@ EOF
   ${jena_arq} --data="${tmp_dir}/temp0B.ttl" --query="${tmp_dir}/con1.sq" \
       --results=TSV > "${tmp_dir}/CONCEPTS"
 
+echo "Here are the concepts" 
 cat "${tmp_dir}/CONCEPTS"
 
 cat > "${tmp_dir}/ss.sq" << EOF
@@ -1750,6 +1751,7 @@ ${jena_arq} --data="${tmp_dir}/temp0B.ttl" \
     --query="${tmp_dir}/ss.sq" \
     --results=TSV | sed 's/"@../"/g' > "${tmp_dir}/ssx.txt"
 
+echo "Here are the first few lines"
 head  "${tmp_dir}/ssx.txt"
 
 # remove duplicate lines
