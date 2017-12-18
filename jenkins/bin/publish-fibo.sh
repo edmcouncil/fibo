@@ -1685,6 +1685,9 @@ function publishProductDataDictionary() {
     --query="${datadictionary_script_dir}/echo.sq" \
     --results=TTL > "${tmp_dir}/temp0B.ttl"
 
+ech "here is the start of the combined file"
+head    "${tmp_dir}/temp0B.ttl"
+
   ${jena_arq} --data="${tmp_dir}/temp0B.ttl" --query="${datadictionary_script_dir}/pseudorange.sq" \ 
 > "${tmp_dir}/pr.ttl"
 
@@ -1781,7 +1784,7 @@ BIND (?x AS ?c)
 
 EOF
 
-${jena_arq}  --data="${tmp_dir}/temp0B.ttl"  --query="${tmp_dir}dumps.sq"  --results=TSV> "${tmp_dir}dumps"
+${jena_arq}  --data="${tmp_dir}/temp0B.ttl"  --query="${tmp_dir}dumps.sq"  --results=TSV > "${tmp_dir}dumps"
 
 tail -n +2 "${tmp_dir}/dumps" | while read class ; do
     dumpdd $class
