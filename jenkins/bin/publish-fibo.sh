@@ -1001,6 +1001,13 @@ function generateWidocoDocumentationForFile() {
   local rc=$?
   echo " - rc is ${rc}"
 
+  # KG: Break on first failure - testing INFRA-229
+
+  if [ ${rc} -ne 0 ] ; then
+    error "Could not run widoco on ${rdfFile} "
+    return 1
+  fi
+
   #Remove introduction section
   if [ -f "${outputDir}/${rdfFileNoExtension}/index-en.html" ] ; then
 
