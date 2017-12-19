@@ -1776,7 +1776,7 @@ cp "${tmp_dir}/CONCEPTS" "${tmp_dir}/DONE"
 
 # Find the list of things to include.  This is too costly to include all classes. 
 
-cat > "${tmp_dir}dumps.sq" <<EOF
+cat > "${tmp_dir}/dumps.sq" <<EOF
 
 prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
 SELECT DISTINCT ?c
@@ -1792,7 +1792,7 @@ BIND (UCASE (?lx) AS ?l)
 
 EOF
 
-${jena_arq}  --data="${tmp_dir}/temp0B.ttl"  --query="${tmp_dir}dumps.sq"  --results=TSV > "${tmp_dir}/dumps"
+${jena_arq}  --data="${tmp_dir}/temp0B.ttl"  --query="${tmp_dir}/dumps.sq"  --results=TSV > "${tmp_dir}/dumps"
 
 cat > "${datadictionary_root}/index.html" << EOF
 <html><body>
