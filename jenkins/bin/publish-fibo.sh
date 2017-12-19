@@ -1771,7 +1771,7 @@ echo "" > "${tmp_dir}/output.tsv"
 
 
 # The CONCEPTS are stopclasses; we don't show those.  So we treat them as DONE at the start of the processing. 
-cp "${tmp_dir}/CONCEPTS" "${tmp_dir}/DONE"
+cp "${tmp_dir}/CONCEPTS" "${tmp_dir}/DONE" 
 
 
 # Find the list of things to include.  This is too costly to include all classes. 
@@ -1794,6 +1794,8 @@ EOF
 
 ${jena_arq}  --data="${tmp_dir}/temp0B.ttl"  --query="${tmp_dir}/dumps.sq"  --results=TSV > "${tmp_dir}/dumps"
 
+
+cp  "${tmp_dir}/dumps" "${tmp_dir}/pr.ttl"    "${tmp_dir}/temp0B.ttl"  ${datadictionary_root}
 
 echo "here are the dumps"
 cat "${tmp_dir}/dumps"
