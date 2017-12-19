@@ -1073,7 +1073,7 @@ function publishProductOntology() {
   ontologyBuildCats  || return $?
   ontologyCreateAboutFiles || return $?
   ontologySearchAndReplaceStuff || return $?
-  ontologyConvertRdfToAllFormats || return $?
+#  ontologyConvertRdfToAllFormats || return $?
 # ontologyAnnotateTopBraidBaseURL || return $?
 #  ontologyConvertMarkdownToHtml || return $?
 #  zipOntologyFiles || return $?
