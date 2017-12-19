@@ -1075,9 +1075,9 @@ function publishProductOntology() {
   ontologySearchAndReplaceStuff || return $?
   ontologyConvertRdfToAllFormats || return $?
 # ontologyAnnotateTopBraidBaseURL || return $?
-  ontologyConvertMarkdownToHtml || return $?
-  zipOntologyFiles || return $?
-  buildquads || return $?
+#  ontologyConvertMarkdownToHtml || return $?
+#  zipOntologyFiles || return $?
+#  buildquads || return $?
 
   return 0
 }
@@ -1693,6 +1693,8 @@ wc    "${tmp_dir}/temp0B.ttl"
 
   ${jena_arq} --data="${tmp_dir}/temp0B.ttl" --query="${datadictionary_script_dir}/pseudorange.sq" \
 > "${tmp_dir}/pr.ttl"
+
+wc "${tmp_dir}/pr.ttl"
 
 cat > "${tmp_dir}/con1.sq" <<EOF
 PREFIX av: <https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/>
