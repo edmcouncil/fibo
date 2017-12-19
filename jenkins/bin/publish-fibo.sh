@@ -952,6 +952,12 @@ function generateWidocoDocumentation() {
         generateWidocoDocumentation "${directoryEntry}"
       else
         generateWidocoDocumentationForFile "${directory}" "${directoryEntry}"
+        local rc=$?
+        # KG: Break on first failure - testing INFRA-229
+        if [ ${rc} -ne 0 ] ; then
+          error "Could not run widoco on ${rdfFile} "
+          return 1
+        fi
       fi
     done < <(ls .)
   )
@@ -1005,6 +1011,9 @@ function generateWidocoDocumentationForFile() {
 
   if [ ${rc} -ne 0 ] ; then
     error "Could not run widoco on ${rdfFile} "
+    echo "Printing contents of file ${rdfFile} "
+    contents=$(<${rdfFile})
+    echo "${contents}"
     return 1
   fi
 
