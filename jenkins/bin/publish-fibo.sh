@@ -1794,6 +1794,11 @@ EOF
 
 ${jena_arq}  --data="${tmp_dir}/temp0B.ttl"  --query="${tmp_dir}/dumps.sq"  --results=TSV > "${tmp_dir}/dumps"
 
+
+echo "here are the dumps"
+cat "${tmp_dir}/dumps"
+echo "that was the dumps"
+
 cat > "${datadictionary_root}/index.html" << EOF
 <html><body>
 <h1>Data Dictionary</h1>
