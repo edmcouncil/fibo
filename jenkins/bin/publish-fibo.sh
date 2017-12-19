@@ -1072,7 +1072,7 @@ function publishProductOntology() {
 
   ontologyBuildCats  || return $?
   ontologyCreateAboutFiles || return $?
-#  ontologySearchAndReplaceStuff || return $?
+  ontologySearchAndReplaceStuff || return $?
 #  ontologyConvertRdfToAllFormats || return $?
 # ontologyAnnotateTopBraidBaseURL || return $?
 #  ontologyConvertMarkdownToHtml || return $?
@@ -1697,7 +1697,7 @@ wc    "${tmp_dir}/temp0B.ttl"
 wc "${tmp_dir}/pr.ttl"
 
 cat > "${tmp_dir}/con1.sq" <<EOF
-PREFIX av: <https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/>
+PREFIX av: <https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/>
 prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
 
 SELECT DISTINCT ?c
@@ -1724,7 +1724,7 @@ prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 prefix skos: <http://www.w3.org/2004/02/skos/core#> 
 prefix edm: <http://www.edmcouncil.org/temp#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-PREFIX av: <https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/>
+PREFIX av: <https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/>
 
 SELECT ?class ?table ?definition ?field ?description ?type ?r1
 WHERE {
@@ -1781,7 +1781,7 @@ cat > "${tmp_dir}/dumps.sq" <<EOF
 prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
 SELECT DISTINCT ?c
 WHERE {
-?x <https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/dumpable> true .
+?x <https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/dumpable> true .
 ## Swap these two to include all subclasses of marked classes
 ?c rdfs:subClassOf* ?x . 
 #BIND (?x AS ?c)
