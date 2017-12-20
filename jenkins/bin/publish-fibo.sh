@@ -1630,6 +1630,7 @@ EOF
 
 # arq --data="${tmp_dir}/glossaryP.ttl" --query="${tmp_dir}/nolabel.sq" > "${tmp_dir}/temp2P.ttl"
 # arq --data="${tmp_dir}/glossaryD.ttl" --query="${tmp_dir}/nolabel.sq" > "${tmp_dir}/temp2D.ttl"
+rm -f "${glossary_root}/temp2C.ttl"
 ${jena_arq}  --data="${glossary_root}/glossaryC.ttl" --query="${tmp_dir}/nolabel.sq" > "${glossary_root}/temp2C.ttl"
 
 
