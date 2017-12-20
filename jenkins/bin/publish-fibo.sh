@@ -1614,6 +1614,8 @@ function publishProductGlossary() {
   rm -f "${glossary_root}/glossaryC.ttl"
   spinRunInferences "${glossary_root}/tempCD.ttl" "${glossary_root}/glossaryC.ttl"
 
+# Spin can put warnings at the start of a file.  I don't know why. Get rid of them.   
+  sed -i '/^@prefix/,$!d' "${glossary_root}/glossaryC.ttl"
 
 echo >"${tmp_dir}/nolabel.sq" <<EOF
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
