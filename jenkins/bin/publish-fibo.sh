@@ -1611,7 +1611,7 @@ function publishProductGlossary() {
 
 #  spinRunInferences "${tmp_dir}/temp0P.ttl" "${tmp_dir}/glossaryP.ttl"
 #  spinRunInferences "${tmp_dir}/temp0D.ttl" "${tmp_dir}/glossaryD.ttl"
-  spinRunInferences "${tmp_dir}/tempCD.ttl" "${glossaary_root}/glossaryC.ttl"
+  spinRunInferences "${glossary_root}/tempCD.ttl" "${glossary_root}/glossaryC.ttl"
 
 
 echo >"${tmp_dir}/nolabel.sq" <<EOF
