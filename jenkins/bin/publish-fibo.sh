@@ -232,7 +232,7 @@ function buildVowlIndex () {
       sed "s@${GIT_BRANCH}\/${GIT_TAG_NAME}\/\(/[^/]*/\)@${GIT_BRANCH}\/${GIT_TAG_NAME}/\\U\\1@" | \
       sed "s@\(${product_branch_tag}/.*\)\.rdf\">@\1/index-en.html\">@" | \
       sed 's@\(.*\).rdf@\1 vowl@' | \
-      sed -i '' 's/<a[^>]*\/\">\([^<]*\)<\/a>/\1/g' | \
+      sed 's/<a[^>]*\/\">\([^<]*\)<\/a>/\1/g' | \
       sed "s/>Directory Tree</>${titleD}</g" | \
       sed 's@h1><p>@h1><p>The Visual Notation for OWL Ontologies (VOWL) defines a visual language for the user-oriented representation of ontologies. It provides graphical depictions for elements of the Web Ontology Language (OWL) that are combined to a force-directed graph layout visualizing the ontology.<br/>This specification focuses on the visualization of the ontology schema (i.e. the classes, properties and datatypes, sometimes called TBox), while it also includes recommendations on how to depict individuals and data values (the ABox). FIBO uses open source software named WIDOCO (Wizard for DOCumenting Ontologies) for <a href="https://github.com/dgarijo/Widoco">VOWL</a>.<p/>@' | \
       sed 's@<a href=".*>https://spec.edmcouncil.org/.*</a>@@' > "${vowlTreeD}"
@@ -259,7 +259,7 @@ function buildVowlIndex () {
       sed "s@\(${product_branch_tag}/.*\)\.rdfRELEASE\">@\1/index-en.html\">@" | \
       sed 's@rdfRELEASE@rdf@g' | \
       sed 's@\(.*\).rdf@\1 vowl@' | \
-      sed -i '' 's/<a[^>]*\/\">\([^<]*\)<\/a>/\1/g' | \
+      sed 's/<a[^>]*\/\">\([^<]*\)<\/a>/\1/g' | \
       sed "s/>Directory Tree</>${titleP}</g" | \
       sed 's@h1><p>@h1><p>The Visual Notation for OWL Ontologies (VOWL) defines a visual language for the user-oriented representation of ontologies. It provides graphical depictions for elements of the Web Ontology Language (OWL) that are combined to a force-directed graph layout visualizing the ontology.<br/>This specification focuses on the visualization of the ontology schema (i.e. the classes, properties and datatypes, sometimes called TBox), while it also includes recommendations on how to depict individuals and data values (the ABox). FIBO uses open source software named WIDOCO (Wizard for DOCumenting Ontologies) for <a href="https://github.com/dgarijo/Widoco">VOWL</a>.<p/>@' | \
       sed 's@<a href=".*>https://spec.edmcouncil.org/.*</a>@@' > "${vowlTreeP}"
