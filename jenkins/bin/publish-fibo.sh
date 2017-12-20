@@ -1617,7 +1617,7 @@ function publishProductGlossary() {
 # Spin can put warnings at the start of a file.  I don't know why. Get rid of them.   
   sed -i '/^@prefix/,$!d' "${glossary_root}/glossaryC.ttl"
 
-echo >"${tmp_dir}/nolabel.sq" <<EOF
+cat >"${tmp_dir}/nolabel.sq" <<EOF
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
 CONSTRUCT {?s ?p ?o}
 WHERE {?s ?p ?o .
@@ -1633,12 +1633,12 @@ EOF
 
 
 # Testing
-echo >"${tmp_dir}/testest.sq" <<EOF
+cat >"${tmp_dir}/testest.sq" <<EOF
 CONSTRUCT {?s ?p ?o}
 WHERE {?s ?p ?o}
 EOF
 
-cat "${tmp_dir}/testest.sq" 
+
 
   ${jena_arq}  --data="${glossary_root}/glossaryC.ttl" --query="${tmp_dir}/testest.sq" 
 
