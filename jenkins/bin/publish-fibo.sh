@@ -1608,11 +1608,12 @@ function publishProductGlossary() {
     --results=TTL > "${glossary_root}/tempCD.ttl"
 
 
-
-#  spinRunInferences "${tmp_dir}/temp0P.ttl" "${tmp_dir}/glossaryP.ttl"
-#  spinRunInferences "${tmp_dir}/temp0D.ttl" "${tmp_dir}/glossaryD.ttl"
-  rm -f "${glossary_root}/glossaryC.ttl"
-  spinRunInferences "${glossary_root}/tempCD.ttl" "${glossary_root}/glossaryC.ttl"
+  rm -f "${glossary_root}/glossaryP.ttl"
+  spinRunInferences "${tmp_dir}/temp0P.ttl" "${tmp_dir}/glossaryP.ttl"
+  rm -f "${glossary_root}/glossaryD.ttl"
+  spinRunInferences "${tmp_dir}/temp0D.ttl" "${tmp_dir}/glossaryD.ttl"
+#  rm -f "${glossary_root}/glossaryC.ttl"
+#  spinRunInferences "${glossary_root}/tempCD.ttl" "${glossary_root}/glossaryC.ttl"
 
 # Spin can put warnings at the start of a file.  I don't know why. Get rid of them.   
   sed -i '/^@prefix/,$!d' "${glossary_root}/glossaryC.ttl"
@@ -1626,34 +1627,11 @@ FILTER (ISIRI (?s) || (?p != rdfs:label))
 EOF
 
 
-# arq --data="${tmp_dir}/glossaryP.ttl" --query="${tmp_dir}/nolabel.sq" > "${tmp_dir}/temp2P.ttl"
-# arq --data="${tmp_dir}/glossaryD.ttl" --query="${tmp_dir}/nolabel.sq" > "${tmp_dir}/temp2D.ttl"
-  rm -f "${glossary_root}/temp2C.ttl"
-  ${jena_arq}  --data="${glossary_root}/glossaryC.ttl" --query="${tmp_dir}/nolabel.sq" > "${glossary_root}/temp2C.ttl"
+  ${jena_arq} --data="${tmp_dir}/glossaryP.ttl" --query="${tmp_dir}/nolabel.sq" > "${tmp_dir}/temp2P.ttl"
+  ${jena_arq} --data="${tmp_dir}/glossaryD.ttl" --query="${tmp_dir}/nolabel.sq" > "${tmp_dir}/temp2D.ttl"
+#  rm -f "${glossary_root}/temp2C.ttl"
+#   ${jena_arq}  --data="${glossary_root}/glossaryC.ttl" --query="${tmp_dir}/nolabel.sq" > "${glossary_root}/temp2C.ttl"
 
-
-# Testing
-cat >"${tmp_dir}/testest.sq" <<EOF
-CONSTRUCT {?s ?p ?o}
-WHERE {?s ?p ?o}
-EOF
-
-
-
-  ${jena_arq}  --data="${glossary_root}/glossaryC.ttl" --query="${tmp_dir}/testest.sq" 
-
-
-  java \
-    -Xmx2G \
-    -Xms2G \
-    -jar "${rdftoolkit_jar}" \
-    --source "${glossary_root}/temp2C.ttl" \
-    --source-format turtle \
-    --target "${glossary_root}/glossaryC.json" \
-    --target-format json-ld \
-    --infer-base-iri \
-    --use-dtd-subset -ibn \
-    > log 2>&1
 
 
 
@@ -1661,26 +1639,40 @@ EOF
 #     -Xmx2G \
 #     -Xms2G \
 #     -jar "${rdftoolkit_jar}" \
-#     --source "${tmp_dir}/temp2P.ttl" \
+#     --source "${glossary_root}/temp2C.ttl" \
 #     --source-format turtle \
-#     --target "${glossary_root}/glossaryP.json" \
+#     --target "${glossary_root}/glossaryC.json" \
 #     --target-format json-ld \
 #     --infer-base-iri \
 #     --use-dtd-subset -ibn \
 #     > log 2>&1
-# 
-#   java \
-#     -Xmx2G \
-#     -Xms2G \
-#     -jar "${rdftoolkit_jar}" \
-#     --source "${tmp_dir}/temp2D.ttl" \
-#     --source-format turtle \
-#     --target "${glossary_root}/glossaryD.json" \
-#     --target-format json-ld \
-#     --infer-base-iri \
-#     --use-dtd-subset -ibn \
-#     > log 2>&1
-# 
+
+
+
+   java \
+     -Xmx2G \
+     -Xms2G \
+     -jar "${rdftoolkit_jar}" \
+     --source "${tmp_dir}/temp2P.ttl" \
+     --source-format turtle \
+     --target "${glossary_root}/glossaryP.json" \
+     --target-format json-ld \
+     --infer-base-iri \
+     --use-dtd-subset -ibn \
+     > log 2>&1
+ 
+   java \
+     -Xmx2G \
+     -Xms2G \
+     -jar "${rdftoolkit_jar}" \
+     --source "${tmp_dir}/temp2D.ttl" \
+     --source-format turtle \
+     --target "${glossary_root}/glossaryD.json" \
+     --target-format json-ld \
+     --infer-base-iri \
+     --use-dtd-subset -ibn \
+     > log 2>&1
+ 
   glossaryGenerate || return $?
 
   return 0
