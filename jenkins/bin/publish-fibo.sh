@@ -1601,11 +1601,11 @@ function publishProductGlossary() {
 
 
 
-#  ${jena_arq} \
-#    $(find  "${ontology_root}" -name "Corporations.rdf" | sed "s/^/--data=/") \
-#    --data=${glossary_script_dir}/owlnames.ttl \
-#    --query="${glossary_script_dir}/echo.sparql" \
-#    --results=TTL > "${glossary_root}/tempCD.ttl"
+  ${jena_arq} \
+    $(find  "${ontology_root}" -name "Corporations.rdf" | sed "s/^/--data=/") \
+    --data=${glossary_script_dir}/owlnames.ttl \
+    --query="${glossary_script_dir}/echo.sparql" \
+    --results=TTL > "${glossary_root}/tempCD.ttl"
 
 
 debug=true
