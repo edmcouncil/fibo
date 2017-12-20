@@ -1608,13 +1608,16 @@ function publishProductGlossary() {
 #    --results=TTL > "${glossary_root}/tempCD.ttl"
 
 
+debug=true
+if [ $debug == "true"] ; then
+  rm -f "${glossary_root}/glossaryC.ttl"
+  spinRunInferences "${glossary_root}/tempCD.ttl" "${glossary_root}/glossaryC.ttl"
+else 
   rm -f "${glossary_root}/glossaryP.ttl"
   spinRunInferences "${glossary_root}/temp0P.ttl" "${glossary_root}/glossaryP.ttl"
   rm -f "${glossary_root}/glossaryD.ttl"
   spinRunInferences "${glossary_root}/temp0D.ttl" "${glossary_root}/glossaryD.ttl"
-#  rm -f "${glossary_root}/glossaryC.ttl"
-#  spinRunInferences "${glossary_root}/tempCD.ttl" "${glossary_root}/glossaryC.ttl"
-
+fi
 # Spin can put warnings at the start of a file.  I don't know why. Get rid of them.   
   sed -i '/^@prefix/,$!d' "${glossary_root}/glossaryC.ttl"
 
@@ -1632,8 +1635,7 @@ EOF
   ${jena_arq}  --data="${glossary_root}/glossaryC.ttl" --query="${tmp_dir}/nolabel.sq" > "${glossary_root}/temp2C.ttl"
 
 
-debug=true
-if [ $debug == "true"] ; then
+
    java \
      -Xmx2G \
      -Xms2G \
@@ -1646,7 +1648,6 @@ if [ $debug == "true"] ; then
      --use-dtd-subset -ibn \
      > log 2>&1
 
-else
 
    java \
      -Xmx2G \
@@ -1672,7 +1673,6 @@ else
      --use-dtd-subset -ibn \
      > log 2>&1
 
-fi 
 #  glossaryGenerate || return $?
 
   return 0
