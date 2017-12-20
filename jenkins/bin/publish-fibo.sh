@@ -1596,7 +1596,7 @@ function publishProductGlossary() {
   ${jena_arq} \
     $(grep -r 'utl-av[:;.]Release' "${ontology_root}" | sed 's/:.*$//;s/^/--data=/' | grep -F ".rdf") \
     --data=${glossary_script_dir}/owlnames.ttl \
-    --query="${glossary_script_dir}/echo.sq" \
+    --query="${glossary_script_dir}/echo.sparql" \
     --results=TTL > "${tmp_dir}/temp0P.ttl"
 
 
@@ -1619,8 +1619,6 @@ function publishProductGlossary() {
 
 echo >"${tmp_dir}/nolabel.sq" <<EOF
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
-
-
 CONSTRUCT {?s ?p ?o}
 WHERE {?s ?p ?o .
 FILTER (ISIRI (?s) || (?p != rdfs:label))
@@ -1630,8 +1628,17 @@ EOF
 
 # arq --data="${tmp_dir}/glossaryP.ttl" --query="${tmp_dir}/nolabel.sq" > "${tmp_dir}/temp2P.ttl"
 # arq --data="${tmp_dir}/glossaryD.ttl" --query="${tmp_dir}/nolabel.sq" > "${tmp_dir}/temp2D.ttl"
-rm -f "${glossary_root}/temp2C.ttl"
-${jena_arq}  --data="${glossary_root}/glossaryC.ttl" --query="${tmp_dir}/nolabel.sq" > "${glossary_root}/temp2C.ttl"
+  rm -f "${glossary_root}/temp2C.ttl"
+  ${jena_arq}  --data="${glossary_root}/glossaryC.ttl" --query="${tmp_dir}/nolabel.sq" > "${glossary_root}/temp2C.ttl"
+
+
+# Testing
+echo >"${tmp_dir}/testest.sq" <<EOF
+CONSTRUCT {?s ?p ?o}
+WHERE {?s ?p ?o}
+EOF
+
+  ${jena_arq}  --data="${glossary_root}/glossaryC.ttl" --query="${tmp_dir}/testest.sq" 
 
 
   java \
