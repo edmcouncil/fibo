@@ -208,7 +208,6 @@ function buildVowlIndex () {
 
   local vowlTreeP="${widoco_root}/vowltreeProd.html"
   local vowlTreeD="${widoco_root}/vowltreeDev.html"
-  local product_branch_tag="${widoco_root}/vowltreeDev.html"
   local titleP="FIBO Widoco File Directory (Production)"
   local titleD="FIBO Widoco File Directory (Development)"
 
@@ -225,7 +224,7 @@ function buildVowlIndex () {
 
     tree \
       -P '*.rdf' \
-      -I  "[0-9]\*|*Ext" \
+      -I  "[0-9]*|*Ext" \
       -T "${titleD}" \
       --noreport \
       --dirsfirst \
@@ -250,7 +249,7 @@ function buildVowlIndex () {
      #Do we need this -I '*Ext' \
     tree \
       -P '*.rdfRELEASE' \
-      -I  [0-9]\* \
+      -I  "[0-9]*|*Ext" \
       -T "${titleP}" \
       --noreport \
       --dirsfirst \
