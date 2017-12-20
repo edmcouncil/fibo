@@ -1638,6 +1638,8 @@ CONSTRUCT {?s ?p ?o}
 WHERE {?s ?p ?o}
 EOF
 
+cat "${tmp_dir}/testest.sq" 
+
   ${jena_arq}  --data="${glossary_root}/glossaryC.ttl" --query="${tmp_dir}/testest.sq" 
 
 
