@@ -207,6 +207,7 @@ function buildIndex () {
 function buildVowlIndex () {
 
   local vowlTreeP="${widoco_root}/vowltreeProd.html"
+  local vowlTreeP="${widoco_root}/vowltreeDev.html"
   local product_branch_tag="${widoco_root}/vowltreeDev.html"
   local titleP="FIBO Widoco File Directory (Production)"
   local titleD="FIBO Widoco File Directory (Development)"
