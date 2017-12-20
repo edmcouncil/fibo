@@ -1629,25 +1629,24 @@ EOF
 
   ${jena_arq} --data="${glossary_root}/glossaryP.ttl" --query="${tmp_dir}/nolabel.sq" > "${glossary_root}/temp2P.ttl"
   ${jena_arq} --data="${glossary_root}/glossaryD.ttl" --query="${tmp_dir}/nolabel.sq" > "${glossary_root}/temp2D.ttl"
-#  rm -f "${glossary_root}/temp2C.ttl"
-#   ${jena_arq}  --data="${glossary_root}/glossaryC.ttl" --query="${tmp_dir}/nolabel.sq" > "${glossary_root}/temp2C.ttl"
+  ${jena_arq}  --data="${glossary_root}/glossaryC.ttl" --query="${tmp_dir}/nolabel.sq" > "${glossary_root}/temp2C.ttl"
 
 
+debug=true
+if [ $debug == "true"] ; then
+   java \
+     -Xmx2G \
+     -Xms2G \
+     -jar "${rdftoolkit_jar}" \
+     --source "${glossary_root}/temp2C.ttl" \
+     --source-format turtle \
+     --target "${glossary_root}/glossaryC.json" \
+     --target-format json-ld \
+     --infer-base-iri \
+     --use-dtd-subset -ibn \
+     > log 2>&1
 
-
-#   java \
-#     -Xmx2G \
-#     -Xms2G \
-#     -jar "${rdftoolkit_jar}" \
-#     --source "${glossary_root}/temp2C.ttl" \
-#     --source-format turtle \
-#     --target "${glossary_root}/glossaryC.json" \
-#     --target-format json-ld \
-#     --infer-base-iri \
-#     --use-dtd-subset -ibn \
-#     > log 2>&1
-
-
+else
 
    java \
      -Xmx2G \
@@ -1672,8 +1671,9 @@ EOF
      --infer-base-iri \
      --use-dtd-subset -ibn \
      > log 2>&1
- 
-  glossaryGenerate || return $?
+
+fi 
+#  glossaryGenerate || return $?
 
   return 0
 }
