@@ -1605,13 +1605,13 @@ function publishProductGlossary() {
     $(find  "${ontology_root}" -name "Corporations.rdf" | sed "s/^/--data=/") \
     --data=${glossary_script_dir}/owlnames.ttl \
     --query="${glossary_script_dir}/echo.sparql" \
-    --results=TTL > "${tmp_dir}/tempCD.ttl"
+    --results=TTL > "${glossary_root}/tempCD.ttl"
 
 
 
 #  spinRunInferences "${tmp_dir}/temp0P.ttl" "${tmp_dir}/glossaryP.ttl"
 #  spinRunInferences "${tmp_dir}/temp0D.ttl" "${tmp_dir}/glossaryD.ttl"
-  spinRunInferences "${tmp_dir}/tempCD.ttl" "${tmp_dir}/glossaryC.ttl"
+  spinRunInferences "${tmp_dir}/tempCD.ttl" "${glossaary_root}/glossaryC.ttl"
 
 
 echo >"${tmp_dir}/nolabel.sq" <<EOF
@@ -1627,14 +1627,14 @@ EOF
 
 # arq --data="${tmp_dir}/glossaryP.ttl" --query="${tmp_dir}/nolabel.sq" > "${tmp_dir}/temp2P.ttl"
 # arq --data="${tmp_dir}/glossaryD.ttl" --query="${tmp_dir}/nolabel.sq" > "${tmp_dir}/temp2D.ttl"
-${jena_arq}  --data="${tmp_dir}/glossaryC.ttl" --query="${tmp_dir}/nolabel.sq" > "${tmp_dir}/temp2C.ttl"
+${jena_arq}  --data="${glossary_root}/glossaryC.ttl" --query="${tmp_dir}/nolabel.sq" > "${glossary_root}/temp2C.ttl"
 
 
   java \
     -Xmx2G \
     -Xms2G \
     -jar "${rdftoolkit_jar}" \
-    --source "${tmp_dir}/temp2C.ttl" \
+    --source "${glossary_root}/temp2C.ttl" \
     --source-format turtle \
     --target "${glossary_root}/glossaryC.json" \
     --target-format json-ld \
