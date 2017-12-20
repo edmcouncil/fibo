@@ -1737,6 +1737,7 @@ function buildquads () {
 
   local ProdQuadsFile="${tag_root}/prod.fibo.nq"
   local DevQuadsFile="${tag_root}/dev.fibo.nq"
+  echo "starting buildquads" 
 
   (
     cd ${spec_root}
@@ -1751,6 +1752,7 @@ function buildquads () {
 	  zip ${ProdQuadsFile}.zip ${ProdQuadsFile}
 	  zip ${DevQuadsFile}.zip ${DevQuadsFile}
   )
+  echo "finished buildquads" 
 }
 
 #
