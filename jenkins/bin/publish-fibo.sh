@@ -821,6 +821,7 @@ function ontologyConvertRdfToAllFormats() {
     for format in json-ld turtle ; do
 # Remove for speedier testing	
 #       convertRdfFileTo rdf-xml "${rdfFile}" "${format}" || return $?
+	echo "Not doing the ttl and json conversions"
     done || return $?
   done || return $?
 
