@@ -1579,7 +1579,7 @@ function publishProductGlossary() {
     $(find  "${ontology_root}" -name "*.rdf" | sed "s/^/--data=/") \
     --data=${glossary_script_dir}/owlnames.ttl \
     --query="${glossary_script_dir}/echo.sparql" \
-    --results=TTL > "${tmp_dir}/temp0D.ttl"
+    --results=TTL > "${glossary_root}/temp0D.ttl"
 
   if [ ${PIPESTATUS[0]} -ne 0 ] ; then
     error "Could not get Dev ontologies"
@@ -1597,21 +1597,21 @@ function publishProductGlossary() {
     $(grep -r 'utl-av[:;.]Release' "${ontology_root}" | sed 's/:.*$//;s/^/--data=/' | grep -F ".rdf") \
     --data=${glossary_script_dir}/owlnames.ttl \
     --query="${glossary_script_dir}/echo.sparql" \
-    --results=TTL > "${tmp_dir}/temp0P.ttl"
+    --results=TTL > "${glossary_root}/temp0P.ttl"
 
 
 
-  ${jena_arq} \
-    $(find  "${ontology_root}" -name "Corporations.rdf" | sed "s/^/--data=/") \
-    --data=${glossary_script_dir}/owlnames.ttl \
-    --query="${glossary_script_dir}/echo.sparql" \
-    --results=TTL > "${glossary_root}/tempCD.ttl"
+#  ${jena_arq} \
+#    $(find  "${ontology_root}" -name "Corporations.rdf" | sed "s/^/--data=/") \
+#    --data=${glossary_script_dir}/owlnames.ttl \
+#    --query="${glossary_script_dir}/echo.sparql" \
+#    --results=TTL > "${glossary_root}/tempCD.ttl"
 
 
   rm -f "${glossary_root}/glossaryP.ttl"
-  spinRunInferences "${tmp_dir}/temp0P.ttl" "${tmp_dir}/glossaryP.ttl"
+  spinRunInferences "${glossary_root}/temp0P.ttl" "${glossary_root}/glossaryP.ttl"
   rm -f "${glossary_root}/glossaryD.ttl"
-  spinRunInferences "${tmp_dir}/temp0D.ttl" "${tmp_dir}/glossaryD.ttl"
+  spinRunInferences "${glossary_root}/temp0D.ttl" "${glossary_root}/glossaryD.ttl"
 #  rm -f "${glossary_root}/glossaryC.ttl"
 #  spinRunInferences "${glossary_root}/tempCD.ttl" "${glossary_root}/glossaryC.ttl"
 
@@ -1627,8 +1627,8 @@ FILTER (ISIRI (?s) || (?p != rdfs:label))
 EOF
 
 
-  ${jena_arq} --data="${tmp_dir}/glossaryP.ttl" --query="${tmp_dir}/nolabel.sq" > "${tmp_dir}/temp2P.ttl"
-  ${jena_arq} --data="${tmp_dir}/glossaryD.ttl" --query="${tmp_dir}/nolabel.sq" > "${tmp_dir}/temp2D.ttl"
+  ${jena_arq} --data="${glossary_root}/glossaryP.ttl" --query="${tmp_dir}/nolabel.sq" > "${glossary_root}/temp2P.ttl"
+  ${jena_arq} --data="${glossary_root}/glossaryD.ttl" --query="${tmp_dir}/nolabel.sq" > "${glossary_root}/temp2D.ttl"
 #  rm -f "${glossary_root}/temp2C.ttl"
 #   ${jena_arq}  --data="${glossary_root}/glossaryC.ttl" --query="${tmp_dir}/nolabel.sq" > "${glossary_root}/temp2C.ttl"
 
@@ -1653,7 +1653,7 @@ EOF
      -Xmx2G \
      -Xms2G \
      -jar "${rdftoolkit_jar}" \
-     --source "${tmp_dir}/temp2P.ttl" \
+     --source "${glossary_root}/temp2P.ttl" \
      --source-format turtle \
      --target "${glossary_root}/glossaryP.json" \
      --target-format json-ld \
@@ -1665,7 +1665,7 @@ EOF
      -Xmx2G \
      -Xms2G \
      -jar "${rdftoolkit_jar}" \
-     --source "${tmp_dir}/temp2D.ttl" \
+     --source "${glossary_root}/temp2D.ttl" \
      --source-format turtle \
      --target "${glossary_root}/glossaryD.json" \
      --target-format json-ld \
