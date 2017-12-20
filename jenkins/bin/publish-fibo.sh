@@ -1233,7 +1233,7 @@ function spinRunInferences() {
       -cp "${JENA2ROOT}/lib/*:${fibo_infra_root}/lib:${fibo_infra_root}/lib/SPIN/spin-1.3.3.jar" \
       org.topbraid.spin.tools.RunInferences \
       http://example.org/example \
-      "${inputFile}" >> "${outputFile}"
+      "${inputFile}" >> "${outputFile}" 2>/dev/null
 
     if [ ${PIPESTATUS[0]} -ne 0 ] ; then
       error "Could not run spin on ${inputFile}"
@@ -1611,6 +1611,7 @@ function publishProductGlossary() {
 
 #  spinRunInferences "${tmp_dir}/temp0P.ttl" "${tmp_dir}/glossaryP.ttl"
 #  spinRunInferences "${tmp_dir}/temp0D.ttl" "${tmp_dir}/glossaryD.ttl"
+  rm -f "${glossary_root}/glossaryC.ttl"
   spinRunInferences "${glossary_root}/tempCD.ttl" "${glossary_root}/glossaryC.ttl"
 
 
