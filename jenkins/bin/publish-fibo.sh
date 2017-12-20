@@ -32,7 +32,8 @@ jena_arq=""
 # ontology has to come before vocabulary because vocabulary depends on it.
 #
 family="fibo"
-products="ontology widoco glossary datadictionary vocabulary"
+#products="ontology widoco glossary datadictionary vocabulary"
+products="ontology  glossary "
 
 source_family_root="${WORKSPACE}/${family}"
 spec_root="${WORKSPACE}/target"
@@ -562,7 +563,8 @@ __HERE__
 # We want to add in a rdfs:isDefinedBy link from every class back to the ontology. 
 
   find ${tag_root}/ -type f  -name '*.rdf' -not -name '*About*'  -print | while read file ; do
-    addIsDefinedBy "${file}"
+#    addIsDefinedBy "${file}"
+      echo "not doing isdefinedby"
   done
  
   return 0
@@ -1490,52 +1492,6 @@ function publishProductVocabularyInner() {
   return 0
 }
 
-function nomagicGenerate() {
-
-  local output="$1"
-  local package="$2"
-  local report_wizard_dir="/home/ec2-user/MagicDraw/plugins/com.nomagic.magicdraw.reportwizard"
-
-  require NOMAGIC_SERVER || return $?
-  require NOMAGIC_USERID || return $?
-  require NOMAGIC_PASSWD || return $?
-
-  echo "Generating ${output}"
-
-  (
-    #
-    # Make sure the DISPLAY variable is unset, otherwise nomagic tries to connect to your X server
-    #
-    unset DISPLAY
-    #
-    # The default directory needs to be ${spec_root}/${family_product_branch_tag} because for some
-    # reason the -output parameter does not seem to support directory names.
-    #
-    cd "${spec_root}/${family_product_branch_tag}"
-
-    bash -x ${report_wizard_dir}/generate.sh \
-      -server "${NOMAGIC_SERVER}" \
-      -login "${NOMAGIC_USERID}" \
-      -password "${NOMAGIC_PASSWD}" \
-      -project "FIBO-Master" \
-      -template "Natural Language Glossary" \
-      -package "${package}" \
-      -output "${output}" \
-      -servertype "twcloud" \
-      -report "Default Development FIBO"
-    rc=$?
-    echo rc=${rc}
-
-    if [ ! -f "${output}" ] ; then
-      error "nomagicGenerate() did not generate ${output}"
-      exit 1
-    fi
-
-    exit 0
-  )
-
-  return $?
-}
 
 function glossaryGenerate() {
 
@@ -1549,8 +1505,8 @@ function glossaryGenerate() {
   echo "WARNING: Skipping actual calls to nomagic"
   return 0
 
-  nomagicGenerate "development.html" "Release;Provisional;Informative" || return $?
-  nomagicGenerate "production.html" "Release" || return $?
+  # nomagicGenerate "development.html" "Release;Provisional;Informative" || return $?
+  # nomagicGenerate "production.html" "Release" || return $?
 
   (
     cd "${spec_root}/${family_product_branch_tag}"
@@ -1594,15 +1550,119 @@ function glossaryGenerate() {
 #
 function publishProductGlossary() {
 
-  if [ "${NODE_NAME}" != "nomagic" ] ; then
-    echo "Skipping publication of product glossary since we're on node ${NODE_NAME}"
+
+  if [ "${NODE_NAME}" == "nomagic" ] ; then
+    echo "Skipping publication of product data dictionary since we're on node ${NODE_NAME}"
     return 0
   fi
 
   logRule "Publishing the glossary product"
 
   setProduct glossary || return $?
+  
 
+  local ontology_root="${spec_family_root}/ontology/${GIT_BRANCH}/${GIT_TAG_NAME}"
+  echo "ontology root = ${ontology_root}"
+
+  export glossary_root="${spec_root}/${family_product_branch_tag}"
+  export glossary_script_dir="${SCRIPT_DIR}/glossary"
+
+  #
+  # Get ontologies for Dev
+  #
+  ${jena_arq} \
+    $(find  "${ontology_product_tag_root}" -name "*.rdf" | sed "s/^/--data=/") \
+    --data=${glossary_script_dir}/owlnames.ttl \
+    --query="${glossary_script_dir}/echo.sparql" \
+    --results=TTL > "${tmp_dir}/temp0D.ttl"
+
+  if [ ${PIPESTATUS[0]} -ne 0 ] ; then
+    error "Could not get Dev ontologies"
+    return 1
+  fi
+
+
+  #
+  # Get ontologies for Prod
+  #
+  require tag_root || return $?  
+  echo "optr = ${tag_root}"
+  
+  ${jena_arq} \
+    $(grep -r 'utl-av[:;.]Release' "${ontology_root}" | sed 's/:.*$//;s/^/--data=/' | grep -F ".rdf") \
+    --data=${glossary_script_dir}/owlnames.ttl \
+    --query="${glossary_script_dir}/echo.sq" \
+    --results=TTL > "${tmp_dir}/temp0P.ttl"
+
+
+
+  ${jena_arq} \
+    $(find  "${ontology_root}" -name "Corporations.rdf" | sed "s/^/--data=/") \
+    --data=${glossary_script_dir}/owlnames.ttl \
+    --query="${glossary_script_dir}/echo.sparql" \
+    --results=TTL > "${tmp_dir}/tempCD.ttl"
+
+
+
+#  spinRunInferences "${tmp_dir}/temp0P.ttl" "${tmp_dir}/glossaryP.ttl"
+#  spinRunInferences "${tmp_dir}/temp0D.ttl" "${tmp_dir}/glossaryD.ttl"
+  spinRunInferences "${tmp_dir}/tempCD.ttl" "${tmp_dir}/glossaryC.ttl"
+
+
+echo >"${tmp_dir}/nolabel.sq" <<EOF
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+
+
+CONSTRUCT {?s ?p ?o}
+WHERE {?s ?p ?o .
+FILTER (ISIRI (?s) || (?p != rdfs:label))
+}
+EOF
+
+
+# arq --data="${tmp_dir}/glossaryP.ttl" --query="${tmp_dir}/nolabel.sq" > "${tmp_dir}/temp2P.ttl"
+# arq --data="${tmp_dir}/glossaryD.ttl" --query="${tmp_dir}/nolabel.sq" > "${tmp_dir}/temp2D.ttl"
+arq --data="${tmp_dir}/glossaryC.ttl" --query="${tmp_dir}/nolabel.sq" > "${tmp_dir}/temp2C.ttl"
+
+
+  java \
+    -Xmx2G \
+    -Xms2G \
+    -jar "${rdftoolkit_jar}" \
+    --source "${tmp_dir}/temp2C.ttl" \
+    --source-format turtle \
+    --target "${glossary_root}/glossaryC.json" \
+    --target-format json-ld \
+    --infer-base-iri \
+    --use-dtd-subset -ibn \
+    > log 2>&1
+
+
+
+#   java \
+#     -Xmx2G \
+#     -Xms2G \
+#     -jar "${rdftoolkit_jar}" \
+#     --source "${tmp_dir}/temp2P.ttl" \
+#     --source-format turtle \
+#     --target "${glossary_root}/glossaryP.json" \
+#     --target-format json-ld \
+#     --infer-base-iri \
+#     --use-dtd-subset -ibn \
+#     > log 2>&1
+# 
+#   java \
+#     -Xmx2G \
+#     -Xms2G \
+#     -jar "${rdftoolkit_jar}" \
+#     --source "${tmp_dir}/temp2D.ttl" \
+#     --source-format turtle \
+#     --target "${glossary_root}/glossaryD.json" \
+#     --target-format json-ld \
+#     --infer-base-iri \
+#     --use-dtd-subset -ibn \
+#     > log 2>&1
+# 
   glossaryGenerate || return $?
 
   return 0
