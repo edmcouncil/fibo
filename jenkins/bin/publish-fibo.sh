@@ -207,7 +207,7 @@ function buildIndex () {
 function buildVowlIndex () {
 
   local vowlTreeP="${widoco_root}/vowltreeProd.html"
-  local vowlTreeD="${widoco_root}/vowltreeDev.html"
+  local product_branch_tag="${widoco_root}/vowltreeDev.html"
   local titleP="FIBO Widoco File Directory (Production)"
   local titleD="FIBO Widoco File Directory (Development)"
 
@@ -217,9 +217,14 @@ function buildVowlIndex () {
     cd ${ontology_root}
     echo "Ontology Root: ${ontology_root/${WORKSPACE}/}"
 
+    echo "tag_root_url : ${tag_root_url}"
+    echo "GIT_BRANCH : ${GIT_BRANCH}"
+    echo "GIT_TAG_NAME : ${GIT_TAG_NAME}"
+    echo "product_branch_tag: ${product_branch_tag}"
+
     tree \
       -P '*.rdf' \
-      -I  [0-9]\* \
+      -I  "[0-9]\*|*Ext" \
       -T "${titleD}" \
       --noreport \
       --dirsfirst \
@@ -230,6 +235,10 @@ function buildVowlIndex () {
       sed "s/>Directory Tree</>${titleD}</g" | \
       sed 's@h1><p>@h1><p>The Visual Notation for OWL Ontologies (VOWL) defines a visual language for the user-oriented representation of ontologies. It provides graphical depictions for elements of the Web Ontology Language (OWL) that are combined to a force-directed graph layout visualizing the ontology.<br/>This specification focuses on the visualization of the ontology schema (i.e. the classes, properties and datatypes, sometimes called TBox), while it also includes recommendations on how to depict individuals and data values (the ABox). FIBO uses open source software named WIDOCO (Wizard for DOCumenting Ontologies) for <a href="https://github.com/dgarijo/Widoco">VOWL</a>.<p/>@' | \
       sed 's@<a href=".*>https://spec.edmcouncil.org/.*</a>@@' > "${vowlTreeD}"
+
+   echo "Printing contents of tree ${product_branch_tag}"
+   contents=$(<${vowlTreeD})
+   echo ${contents}
 
 
     local pfiles=$(mktemp ${tmp_dir}/pfiles.XXXXXX)
@@ -563,8 +572,8 @@ __HERE__
 # We want to add in a rdfs:isDefinedBy link from every class back to the ontology. 
 
   find ${tag_root}/ -type f  -name '*.rdf' -not -name '*About*'  -print | while read file ; do
-     addIsDefinedBy "${file}"
-#      echo "skipping is defined by"
+#     addIsDefinedBy "${file}"
+      echo "skipping is defined by"
   done
  
   return 0
