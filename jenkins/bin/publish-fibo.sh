@@ -1576,7 +1576,7 @@ function publishProductGlossary() {
   # Get ontologies for Dev
   #
   ${jena_arq} \
-    $(find  "${ontology_product_tag_root}" -name "*.rdf" | sed "s/^/--data=/") \
+    $(find  "${ontology_root}" -name "*.rdf" | sed "s/^/--data=/") \
     --data=${glossary_script_dir}/owlnames.ttl \
     --query="${glossary_script_dir}/echo.sparql" \
     --results=TTL > "${tmp_dir}/temp0D.ttl"
