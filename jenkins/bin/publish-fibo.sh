@@ -1677,9 +1677,89 @@ EOF
 
 #  glossaryGenerate || return $?
 
+
+
+
+
+
   return 0
 }
 
+
+function makexl () {
+cat > "${tmp_dir}/makecsv.sparql" <<EOF
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owlnames: <http://spec.edmcouncil.org/owlnames#> 
+PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#> 
+PREFIX owl:   <http://www.w3.org/2002/07/owl#> 
+PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+
+
+
+SELECT ?Term ?Type (GROUP_CONCAT (?syn; separator=",") AS ?Synonyms) ?Definition ?GeneratedDefinition
+WHERE {?c a owlnames:Class  . 
+FILTER (REGEX (xsd:string (?c), "edmcouncil"))
+?c  owlnames:definition ?Definition ; 
+owlnames:label ?Term .
+BIND ("Class" as ?Type)
+OPTIONAL {?c owlnames:synonym ?syn}
+OPTIONAL {?c  owlnames:mdDefinition ?GeneratedDefinition}
+}
+GROUP BY ?c ?Term ?Type ?Definition ?GeneratedDefinition
+ORDER BY ?Term
+EOF
+
+arq --data="${glossary_root}/$1.ttl" --query=makecsv.sparql --results=TSV > "${glossary_root}/$2.tsv"
+
+sed -i 's/"@../"/g; s/\t\t/\t""\t/g; s/\t$/\t""/'  "${glossary_root}/$2.tsv"
+
+sed  's/"\t"/","/g'  "${glossary_root}/$2.tsv" >  "${glossary_root}/$2.csv"
+
+cat >  "${glossary_root}/$2.xls" <<EOF
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html xmlns:x="urn:schemas-microsoft-com:office:excel" >
+<head>
+  <xml>
+  <x:ExcelWorkbook>
+    <x:ExcelWorksheet>
+      <x:WorksheetOptions>
+        <x:FreezePanes/>
+        <x:SplitHorizontal>1</x:SplitHorizontal>
+        <x:TopRowBottomPane>1</x:TopRowBottomPane>
+        <x:ActivePane>2</x:ActivePane>
+        <x:Panes>
+          <x:Pane>
+            <x:Number>1</x:Number>
+          </x:Pane>
+          <x:Pane>
+            <x:Number>2</x:Number> 
+            <x:ActiveRow>2</x:ActiveRow> 
+          </x:Pane>
+        </x:Panes>
+      </x:WorksheetOptions>
+    </x:ExcelWorksheet>
+  </x:ExcelWorkbook>
+</xml>
+</head>
+a<body>
+<table>
+EOF
+
+head -n 1 "${glossary_root}/$2.tsv" | sed 's!?!!g; s!^!<tr><th bgcolor="goldenrod">!; s!\t!</th><th bgcolor="goldenrod">!g; s!$!</th></tr>!' >> "${glossary_root}/$2.xls"
+
+tail -n +2 "${glossary_root}/$2.tsv" | sed 's!^"!<tr><td valign="top">!; s!"\t"!</td><td valign="top">!g; s!"$!</td></tr>!' >> "${glossary_root}/$2.xls"
+sed -i '2,${s/<td/<td bgcolor="azure"/g;n}' "${glossary_root}/$2.xls"
+
+cat >> "${glossary_root}/$2.xls" <<EOF
+</table></bode></html>
+EOF
+
+
+
+
+
+
+    }
 #
 # This can only be run after publishProductGlossary() has been run
 #
