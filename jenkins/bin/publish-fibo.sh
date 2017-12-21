@@ -1077,7 +1077,7 @@ function publishProductOntology() {
 # ontologyAnnotateTopBraidBaseURL || return $?
   ontologyConvertMarkdownToHtml || return $?
   zipOntologyFiles || return $?
-  buildquads || return $?
+#  buildquads || return $?
 
   return 0
 }
