@@ -1677,7 +1677,9 @@ EOF
 
 #  glossaryGenerate || return $?
 
-
+  makexl "temp2C" "glossaryC"
+  makexl "temp2D" "glossaryD"
+  makexl "temp2P" "glossaryP"
 
 
 
