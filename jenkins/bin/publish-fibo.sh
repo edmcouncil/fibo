@@ -1711,7 +1711,7 @@ GROUP BY ?c ?Term ?Type ?Definition ?GeneratedDefinition
 ORDER BY ?Term
 EOF
 
-arq --data="${glossary_root}/$1.ttl" --query=makecsv.sparql --results=TSV > "${glossary_root}/$2.tsv"
+arq --data="${glossary_root}/$1.ttl" --query="${tmp_dir}/makecsv.sparql" --results=TSV > "${glossary_root}/$2.tsv"
 
 sed -i 's/"@../"/g; s/\t\t/\t""\t/g; s/\t$/\t""/'  "${glossary_root}/$2.tsv"
 
