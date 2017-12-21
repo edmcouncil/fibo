@@ -1738,7 +1738,7 @@ GROUP BY ?c ?Term ?Type ?Definition ?GeneratedDefinition
 ORDER BY ?Term
 EOF
 
-${jena_arq} --data="${glossary_root}/$1.ttl" --query="${tmp_dir}/makeCcsv.sparql" --results=TSV | head -n 1 >> "${glossary_root}/$2.tsv"
+${jena_arq} --data="${glossary_root}/$1.ttl" --query="${tmp_dir}/makePcsv.sparql" --results=TSV | tail -n +2 >> "${glossary_root}/$2.tsv"
 
 sed -i 's/"@../"/g; s/\t\t/\t""\t/g; s/\t$/\t""/'  "${glossary_root}/$2.tsv"
 
