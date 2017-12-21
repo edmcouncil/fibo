@@ -245,7 +245,7 @@ function buildVowlIndex () {
    failedOntologies="FundEntities,SPVs,StateEntities,PrivateLimitedCompanies,RegulatoryRequirements,AgencyMBSIssuance,DebtIssuance,IssuanceDocuments,IssuanceProcessTerms,IssuanceProcess,MBSIssuance,MuniIssuance,PrivateLabelMBSIssuance,CIV,AssetBaskets,AssetDerivatives,CommoditiesDelivery,CommodityForwards,CreditDefaultSwaps,ExerciseConventions,Forwards,Options,ReturnSwaps,Spots,DerivativesBasicsExt,OTCDerivativeMasterAgreements,SwapsExt,DerivativesStandardizedTerms,ExchangeTradedOptions,FuturesExchanges,FuturesStandardizedTerms,Futures,OptionsExchanges,OptionsStandardizedTerms,FxForwards,FxSpots,FxSwaps,RightsAndWarrants,CreditFacilities,DebtPerspectives,AccountsMain,AssetExtensions,BalanceSheetBalances,Taxation,ContractsExtensions,ContractualConstructs,ToolsAndInstruments,AddressExtensions,Documentation,PostalAddress,TemporalInfo,RegulatoryRestrictions,Amounts,Math,Quantities,Geophysical,RealEstate,Conventions,Publications,StandardsIndividuals,Standards,ConstructAspects,SocialConstructs,Time,EconomicResources,MarketTransactions,QuantifiedResources,REAClaimsEvents,REATransactions,SecuritiesTransactions,SupplyTransactions,TransactionAccounting,TransactionEvents,TransactionsExtended,IndicatorsValues,BasketIndexPublishers,BasketIndices,CreditIndices,LoanBasicTerms,LoansCollateral,LoansGeneral,LoansGuaranties,LoansParties,LoansRegulatory,LoanApplicationsTemporal,LoanBorrowersTemporal,LoanCollateralTemporal,LoanPhases,LoansAppraisal,LoansEvents,LoansStatus,CommercialLoans,LoanProducts,MortgageLoans,PersonalLoans,SecuredLoans,StudentLoans,UnsecuredLoans,DebtAnalytics,DebtInterestAmounts,DebtPricingYields,DebtRedemptionAmounts,ETOptionsTemporal,EquityPricing,CreditEvents,CreditRatings,InstrumentTemporalTerms,SecurityTradingStatuses,TemporalConcepts,AssetBackedSecurities,AssetBackedSPVs,CBOs,CDOs,CLOs,CMOs,MortgageBackedSecurities,PoolBackedSecurities,SyntheticCDOs,BondsCashflowTerms,BondsCashflowVariants,BondsCommon,BondsIssuerVariants,BondsListings,BondsTaxTreatment,DebtCashflowTerms,DebtIssuanceTerms,ParityVariants,DebtInstrumentsExt,REPOs,TradedShortTermDebt,EquityInstruments,EquityIssuanceTerms,ShareholderEquity,ShareholderRights,ShareTerms,SecuritiesExt,SecuritiesListingsExt,SecuritiesRestrictionsExt,SecuritiesTaxTreatment"
    IFS=',' read -ra FAILED_ONTOLOGIES <<< "$failedOntologies"
    for i in "${FAILED_ONTOLOGIES[@]}"; do
-      sed -i '' "s/<a.*\/$i\/index-en\.html\">\([^<]*\)<\/a>/\1/g" "${vowlTreeD}"
+      sed -i "s/<a.*\/$i\/index-en\.html\">\([^<]*\)<\/a>/\1/g" "${vowlTreeD}"
    done
 
 
@@ -990,11 +990,7 @@ function generateWidocoDocumentationForFile() {
   echo " - processing ${rdfFile} in ${directory} with extension ${extension}"
 
 
-  echo " Remove the About * html files that were generated earlier "
-  if [[ "${rdfFile}" =~ ^About.* ]] ; then
-    echo  "Removing the documentation files generated for ${rdfFile} from ${outputDir}/${rdfFileNoExtension}"
-    rm -rf "${outputDir}/${rdfFileNoExtension}"
-  fi
+
 
   if [[ "${extension}" != ".ttl" || "${rdfFile}" =~ ^[0-9].* ]] ; then
     echo  "- skipping ${rdfFile} in ${directory} with extension ${extension}"
@@ -1024,9 +1020,9 @@ function generateWidocoDocumentationForFile() {
 
   if [ ${rc} -ne 0 ] ; then
     error "Could not run widoco on ${rdfFile} "
-    echo "Printing contents of file ${rdfFile} "
-    contents=$(<${rdfFile})
-    echo "${contents}"
+    #echo "Printing contents of file ${rdfFile} "
+    #contents=$(<${rdfFile})
+    #echo "${contents}"
   fi
 
   #Remove introduction section
