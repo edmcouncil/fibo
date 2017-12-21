@@ -219,8 +219,14 @@ function buildVowlIndex () {
     cd ${ontology_root}
     echo "Ontology Root: ${ontology_root/${WORKSPACE}/}"
 
+    echo "tag_root_url : ${tag_root_url}"
+    echo "GIT_BRANCH : ${GIT_BRANCH}"
+    echo "GIT_TAG_NAME : ${GIT_TAG_NAME}"
+    echo "product_branch_tag: ${product_branch_tag}"
+
     tree \
       -P '*.rdf' \
+      -I  "[0-9]*|*Ext" \
       -T "${titleD}" \
       --noreport \
       --dirsfirst \
@@ -228,34 +234,48 @@ function buildVowlIndex () {
       sed "s@${GIT_BRANCH}\/${GIT_TAG_NAME}\/\(/[^/]*/\)@${GIT_BRANCH}\/${GIT_TAG_NAME}/\\U\\1@" | \
       sed "s@\(${product_branch_tag}/.*\)\.rdf\">@\1/index-en.html\">@" | \
       sed 's@\(.*\).rdf@\1 vowl@' | \
+      sed 's/<a[^>]*\/\">\([^<]*\)<\/a>/\1/g' | \
       sed "s/>Directory Tree</>${titleD}</g" | \
       sed 's@h1><p>@h1><p>The Visual Notation for OWL Ontologies (VOWL) defines a visual language for the user-oriented representation of ontologies. It provides graphical depictions for elements of the Web Ontology Language (OWL) that are combined to a force-directed graph layout visualizing the ontology.<br/>This specification focuses on the visualization of the ontology schema (i.e. the classes, properties and datatypes, sometimes called TBox), while it also includes recommendations on how to depict individuals and data values (the ABox). FIBO uses open source software named WIDOCO (Wizard for DOCumenting Ontologies) for <a href="https://github.com/dgarijo/Widoco">VOWL</a>.<p/>@' | \
       sed 's@<a href=".*>https://spec.edmcouncil.org/.*</a>@@' > "${vowlTreeD}"
+
+   echo "Printing contents of tree ${vowlTreeD}"
+   contents=$(<${vowlTreeD})
+   echo ${contents}
+
+   echo "Suppressing failed Ontology Links"
+   failedOntologies="FundEntities,SPVs,StateEntities,PrivateLimitedCompanies,RegulatoryRequirements,AgencyMBSIssuance,DebtIssuance,IssuanceDocuments,IssuanceProcessTerms,IssuanceProcess,MBSIssuance,MuniIssuance,PrivateLabelMBSIssuance,CIV,AssetBaskets,AssetDerivatives,CommoditiesDelivery,CommodityForwards,CreditDefaultSwaps,ExerciseConventions,Forwards,Options,ReturnSwaps,Spots,DerivativesBasicsExt,OTCDerivativeMasterAgreements,SwapsExt,DerivativesStandardizedTerms,ExchangeTradedOptions,FuturesExchanges,FuturesStandardizedTerms,Futures,OptionsExchanges,OptionsStandardizedTerms,FxForwards,FxSpots,FxSwaps,RightsAndWarrants,CreditFacilities,DebtPerspectives,AccountsMain,AssetExtensions,BalanceSheetBalances,Taxation,ContractsExtensions,ContractualConstructs,ToolsAndInstruments,AddressExtensions,Documentation,PostalAddress,TemporalInfo,RegulatoryRestrictions,Amounts,Math,Quantities,Geophysical,RealEstate,Conventions,Publications,StandardsIndividuals,Standards,ConstructAspects,SocialConstructs,Time,EconomicResources,MarketTransactions,QuantifiedResources,REAClaimsEvents,REATransactions,SecuritiesTransactions,SupplyTransactions,TransactionAccounting,TransactionEvents,TransactionsExtended,IndicatorsValues,BasketIndexPublishers,BasketIndices,CreditIndices,LoanBasicTerms,LoansCollateral,LoansGeneral,LoansGuaranties,LoansParties,LoansRegulatory,LoanApplicationsTemporal,LoanBorrowersTemporal,LoanCollateralTemporal,LoanPhases,LoansAppraisal,LoansEvents,LoansStatus,CommercialLoans,LoanProducts,MortgageLoans,PersonalLoans,SecuredLoans,StudentLoans,UnsecuredLoans,DebtAnalytics,DebtInterestAmounts,DebtPricingYields,DebtRedemptionAmounts,ETOptionsTemporal,EquityPricing,CreditEvents,CreditRatings,InstrumentTemporalTerms,SecurityTradingStatuses,TemporalConcepts,AssetBackedSecurities,AssetBackedSPVs,CBOs,CDOs,CLOs,CMOs,MortgageBackedSecurities,PoolBackedSecurities,SyntheticCDOs,BondsCashflowTerms,BondsCashflowVariants,BondsCommon,BondsIssuerVariants,BondsListings,BondsTaxTreatment,DebtCashflowTerms,DebtIssuanceTerms,ParityVariants,DebtInstrumentsExt,REPOs,TradedShortTermDebt,EquityInstruments,EquityIssuanceTerms,ShareholderEquity,ShareholderRights,ShareTerms,SecuritiesExt,SecuritiesListingsExt,SecuritiesRestrictionsExt,SecuritiesTaxTreatment"
+   IFS=',' read -ra FAILED_ONTOLOGIES <<< "$failedOntologies"
+   for i in "${FAILED_ONTOLOGIES[@]}"; do
+      sed -i "s/<a.*\/$i\/index-en\.html\">\([^<]*\)<\/a>/\1/g" "${vowlTreeD}"
+   done
+
 
 
     local pfiles=$(mktemp ${tmp_dir}/pfiles.XXXXXX)
     grep -rl 'utl-av[:;.]Release' . > ${pfiles}
     cat ${pfiles} | while read file ; do mv ${file} ${file}RELEASE ; done
 
-
+    echo "Generating Production Widoco Tree"
+     #Do we need this -I '*Ext' \
     tree \
       -P '*.rdfRELEASE' \
+      -I  "[0-9]*|*Ext" \
       -T "${titleP}" \
-      -I '*Ext' \
       --noreport \
       --dirsfirst \
       -H "${tag_root_url}" | \
       sed "s@${GIT_BRANCH}\/${GIT_TAG_NAME}\/\(/[^/]*/\)@${GIT_BRANCH}\/${GIT_TAG_NAME}/\\U\\1@" | \
-      sed "s@\(${product_branch_tag}/.*\)\.rdf\">@\1/index-en.html\">@" | \
+      sed "s@\(${product_branch_tag}/.*\)\.rdfRELEASE\">@\1/index-en.html\">@" | \
       sed 's@rdfRELEASE@rdf@g' | \
       sed 's@\(.*\).rdf@\1 vowl@' | \
+      sed 's/<a[^>]*\/\">\([^<]*\)<\/a>/\1/g' | \
       sed "s/>Directory Tree</>${titleP}</g" | \
       sed 's@h1><p>@h1><p>The Visual Notation for OWL Ontologies (VOWL) defines a visual language for the user-oriented representation of ontologies. It provides graphical depictions for elements of the Web Ontology Language (OWL) that are combined to a force-directed graph layout visualizing the ontology.<br/>This specification focuses on the visualization of the ontology schema (i.e. the classes, properties and datatypes, sometimes called TBox), while it also includes recommendations on how to depict individuals and data values (the ABox). FIBO uses open source software named WIDOCO (Wizard for DOCumenting Ontologies) for <a href="https://github.com/dgarijo/Widoco">VOWL</a>.<p/>@' | \
       sed 's@<a href=".*>https://spec.edmcouncil.org/.*</a>@@' > "${vowlTreeP}"
 
    cat ${pfiles} | while read file ; do mv ${file}RELEASE ${file} ; done
    rm ${pfiles}
-
 
 
 
@@ -564,9 +584,7 @@ __HERE__
 # We want to add in a rdfs:isDefinedBy link from every class back to the ontology. 
 
   find ${tag_root}/ -type f  -name '*.rdf' -not -name '*About*'  -print | while read file ; do
-# Removed for speedier testing
-#    addIsDefinedBy "${file}"
-      echo "not doing isdefinedby"
+    addIsDefinedBy "${file}"
   done
  
   return 0
@@ -781,7 +799,7 @@ function convertRdfFileTo() {
     --inline-blank-nodes \
     --infer-base-iri \
     --use-dtd-subset \
-    > "${logfile}" 2>&1
+    > "${logfile}"    # 2>&1
   rc=$?
 
   #
@@ -819,9 +837,8 @@ function ontologyConvertRdfToAllFormats() {
 
   for rdfFile in **/*.rdf ; do
     for format in json-ld turtle ; do
-# Remove for speedier testing	
-#       convertRdfFileTo rdf-xml "${rdfFile}" "${format}" || return $?
-	echo "Not doing the ttl and json conversions"
+      echo "converting ${rdfFile} to ${format}"
+      convertRdfFileTo rdf-xml "${rdfFile}" "${format}" || return $?
     done || return $?
   done || return $?
 
@@ -967,12 +984,17 @@ function generateWidocoDocumentationForFile() {
   local directory="$1"
   local outputDir="${directory/ontology/widoco}"
   local rdfFile="$2"
+  local rdfFileNoExtension="${rdfFile/.ttl/}"
+
   local extension="$([[ "${rdfFile}" = *.* ]] && echo ".${rdfFile##*.}" || echo '')"
 
   echo " - processing ${rdfFile} in ${directory} with extension ${extension}"
 
-  if [ "${rdfFile}" != ".ttl" ] ; then
-    echo -n ", skipping"
+
+
+
+  if [[ "${extension}" != ".ttl" || "${rdfFile}" =~ ^[0-9].* ]] ; then
+    echo  "- skipping ${rdfFile} in ${directory} with extension ${extension}"
     return 0
   fi
 
@@ -986,18 +1008,57 @@ function generateWidocoDocumentationForFile() {
     -Xms3G \
     -jar "${fibo_infra_root}/lib/widoco/widoco-1.4.1-jar-with-dependencies.jar" \
     -ontFile "${rdfFile}" \
-    -outFolder "${outputDir}/${rdfFile}" \
+    -outFolder "${outputDir}/${rdfFileNoExtension}" \
     -rewriteAll \
     -lang en  \
+    -licensius \
     -getOntologyMetadata \
     -webVowl
   local rc=$?
   echo " - rc is ${rc}"
-  #
-  # KG: commented to make the build faster - need to revisit license
-  #
-  # -licensius \
-  #
+
+  # KG: Break on first failure - testing INFRA-229
+
+  if [ ${rc} -ne 0 ] ; then
+    error "Could not run widoco on ${rdfFile} "
+    #echo "Printing contents of file ${rdfFile} "
+    #contents=$(<${rdfFile})
+    #echo "${contents}"
+  fi
+
+  #Remove introduction section
+  if [ -f "${outputDir}/${rdfFileNoExtension}/index-en.html" ] ; then
+
+   #contents=$(<${outputDir}/${rdfFileNoExtension}/index-en.html)
+   #echo "contents of index file before modification"
+   #echo "${contents}"
+
+    echo "Replacing introduction with acknowledgements section from file ${outputDir}/${rdfFileNoExtension}/index-en.html"
+    echo "Contents of script folder ${SCRIPT_DIR}"
+    ls -al "${SCRIPT_DIR}"
+    echo "Contents of widoco-sections folder ${SCRIPT_DIR}/widoco-sections"
+    ls -al ${SCRIPT_DIR}/widoco-sections
+    cp "${SCRIPT_DIR}/widoco-sections/acknowledgements-en.html" "${outputDir}/${rdfFileNoExtension}/sections"
+    echo "Contents of folder ${outputDir}/${rdfFileNoExtension}/sections"
+    ls -al "${outputDir}/${rdfFileNoExtension}/sections"
+    sed -i "s/#introduction/#acknowledgements/g" "${outputDir}/${rdfFileNoExtension}/index-en.html"
+    sed -i "s/introduction-en/acknowledgements-en/g" "${outputDir}/${rdfFileNoExtension}/index-en.html"
+    echo "Removing description section from file ${outputDir}/${rdfFileNoExtension}/index-en.html"
+    sed -i "/#description/d" "${outputDir}/${rdfFileNoExtension}/index-en.html"
+    echo "Removing references section from file ${outputDir}/${rdfFileNoExtension}/index-en.html"
+    sed -i "/#references/d" "${outputDir}/${rdfFileNoExtension}/index-en.html"
+
+   #contents=$(<${outputDir}/${rdfFileNoExtension}/index-en.html)
+   #echo "contents of index file after modification"
+   #echo "${contents}"
+
+   echo "Breaking here just for test"
+   return 0
+
+  else
+    echo "No file found at ${outputDir}/${rdfFileNoExtension}/index-en.html"
+  fi
+
   # KG: Need to figure out why it fails on fibo/ontology/master/latest/SEC/SecuritiesExt/SecuritiesExt.ttl
   #
   # KG: Commenting out temporarily so that the build doesn't stop
