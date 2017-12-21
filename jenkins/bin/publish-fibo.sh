@@ -32,7 +32,8 @@ jena_arq=""
 # ontology has to come before vocabulary because vocabulary depends on it.
 #
 family="fibo"
-products="ontology widoco glossary datadictionary vocabulary"
+#products="ontology widoco glossary datadictionary vocabulary"
+products="ontology  datadictionary"
 
 source_family_root="${WORKSPACE}/${family}"
 spec_root="${WORKSPACE}/target"
@@ -563,7 +564,9 @@ __HERE__
 # We want to add in a rdfs:isDefinedBy link from every class back to the ontology. 
 
   find ${tag_root}/ -type f  -name '*.rdf' -not -name '*About*'  -print | while read file ; do
-      addIsDefinedBy "${file}"
+#      addIsDefinedBy "${file}"
+      echo "not doing is defined by"
+
 
   done
  
@@ -1691,8 +1694,10 @@ wc    "${tmp_dir}/temp0B.ttl"
   ${jena_arq} --data="${tmp_dir}/temp0B.ttl" --query="${datadictionary_script_dir}/pseudorange.sq" \
 > "${tmp_dir}/pr.ttl"
 
+wc "${tmp_dir}/pr.ttl"
+
 cat > "${tmp_dir}/con1.sq" <<EOF
-PREFIX av: <https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/>
+PREFIX av: <https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/>
 prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
 
 SELECT DISTINCT ?c
@@ -1719,7 +1724,7 @@ prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 prefix skos: <http://www.w3.org/2004/02/skos/core#> 
 prefix edm: <http://www.edmcouncil.org/temp#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-PREFIX av: <https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/>
+PREFIX av: <https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/>
 
 SELECT ?class ?table ?definition ?field ?description ?type ?r1
 WHERE {
@@ -1766,17 +1771,17 @@ echo "" > "${tmp_dir}/output.tsv"
 
 
 # The CONCEPTS are stopclasses; we don't show those.  So we treat them as DONE at the start of the processing. 
-cp "${tmp_dir}/CONCEPTS" "${tmp_dir}/DONE"
+cp "${tmp_dir}/CONCEPTS" "${tmp_dir}/DONE" 
 
 
 # Find the list of things to include.  This is too costly to include all classes. 
 
-cat > "${tmp_dir}dumps.sq" <<EOF
+cat > "${tmp_dir}/dumps.sq" <<EOF
 
 prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
 SELECT DISTINCT ?c
 WHERE {
-?x <https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/dumpable> true .
+?x <https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/dumpable> true .
 ## Swap these two to include all subclasses of marked classes
 ?c rdfs:subClassOf* ?x . 
 #BIND (?x AS ?c)
@@ -1787,7 +1792,14 @@ BIND (UCASE (?lx) AS ?l)
 
 EOF
 
-${jena_arq}  --data="${tmp_dir}/temp0B.ttl"  --query="${tmp_dir}dumps.sq"  --results=TSV > "${tmp_dir}/dumps"
+${jena_arq}  --data="${tmp_dir}/temp0B.ttl"  --query="${tmp_dir}/dumps.sq"  --results=TSV > "${tmp_dir}/dumps"
+
+
+cp  "${tmp_dir}/dumps" "${tmp_dir}/pr.ttl"    "${tmp_dir}/temp0B.ttl"  ${datadictionary_root}
+
+echo "here are the dumps"
+cat "${tmp_dir}/dumps"
+echo "that was the dumps"
 
 cat > "${datadictionary_root}/index.html" << EOF
 <html><body>
