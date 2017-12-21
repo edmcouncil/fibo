@@ -1610,7 +1610,7 @@ function publishProductGlossary() {
 
 debug=true
 echo "About to run inferences with debug = $debug"
-if [ $debug == "true"] ; then
+if [ $debug == "true" ] ; then
   echo "C" 
   rm -f "${glossary_root}/glossaryC.ttl"
   spinRunInferences "${glossary_root}/tempCD.ttl" "${glossary_root}/glossaryC.ttl"
