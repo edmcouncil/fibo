@@ -1622,6 +1622,8 @@ else
 fi
 # Spin can put warnings at the start of a file.  I don't know why. Get rid of them.   
   sed -i '/^@prefix/,$!d' "${glossary_root}/glossaryC.ttl"
+  sed -i '/^@prefix/,$!d' "${glossary_root}/glossaryD.ttl"
+  sed -i '/^@prefix/,$!d' "${glossary_root}/glossaryP.ttl"
 
 cat >"${tmp_dir}/nolabel.sq" <<EOF
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
@@ -1689,7 +1691,7 @@ EOF
 
 
 function makexl () {
-cat > "${tmp_dir}/makecsv.sparql" <<EOF
+cat > "${tmp_dir}/makeCcsv.sparql" <<EOF
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owlnames: <http://spec.edmcouncil.org/owlnames#> 
 PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#> 
@@ -1711,7 +1713,32 @@ GROUP BY ?c ?Term ?Type ?Definition ?GeneratedDefinition
 ORDER BY ?Term
 EOF
 
-${jena_arq} --data="${glossary_root}/$1.ttl" --query="${tmp_dir}/makecsv.sparql" --results=TSV > "${glossary_root}/$2.tsv"
+${jena_arq} --data="${glossary_root}/$1.ttl" --query="${tmp_dir}/makeCcsv.sparql" --results=TSV > "${glossary_root}/$2.tsv"
+
+
+cat > "${tmp_dir}/makePcsv.sparql" <<EOF
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owlnames: <http://spec.edmcouncil.org/owlnames#> 
+PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#> 
+PREFIX owl:   <http://www.w3.org/2002/07/owl#> 
+PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+
+
+
+SELECT ?Term ?Type (GROUP_CONCAT (?syn; separator=",") AS ?Synonyms) ?Definition ?GeneratedDefinition
+WHERE {?c a owlnames:Property
+FILTER (REGEX (xsd:string (?c), "edmcouncil"))
+OPTIONAL {?c  owlnames:definition ?Definition  }
+?c owlnames:label ?Term .
+BIND ("Property" as ?Type)
+OPTIONAL {?c owlnames:synonym ?syn}
+OPTIONAL {?c  owlnames:mdDefinition ?GeneratedDefinition}
+}
+GROUP BY ?c ?Term ?Type ?Definition ?GeneratedDefinition
+ORDER BY ?Term
+EOF
+
+${jena_arq} --data="${glossary_root}/$1.ttl" --query="${tmp_dir}/makeCcsv.sparql" --results=TSV | head -n 1 >> "${glossary_root}/$2.tsv"
 
 sed -i 's/"@../"/g; s/\t\t/\t""\t/g; s/\t$/\t""/'  "${glossary_root}/$2.tsv"
 
