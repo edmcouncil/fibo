@@ -1099,8 +1099,8 @@ function publishProductOntology() {
 # ontologyAnnotateTopBraidBaseURL || return $?
   ontologyConvertMarkdownToHtml || return $?
   zipOntologyFiles || return $?
-# Removed for speedier testing 
-#   buildquads || return $?
+
+  buildquads || return $?
 
   return 0
 }
@@ -1294,7 +1294,7 @@ function spinRunInferences() {
       -cp "${JENA2ROOT}/lib/*:${fibo_infra_root}/lib:${fibo_infra_root}/lib/SPIN/spin-1.3.3.jar" \
       org.topbraid.spin.tools.RunInferences \
       http://example.org/example \
-      "${inputFile}" >> "${outputFile}" 2>/dev/null
+      "${inputFile}" >> "${outputFile}" 
 
     if [ ${PIPESTATUS[0]} -ne 0 ] ; then
       error "Could not run spin on ${inputFile}"
