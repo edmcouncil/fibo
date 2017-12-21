@@ -33,8 +33,8 @@ jena_arq=""
 #
 family="fibo"
 # Removed for speedier testing 
-#products="ontology widoco glossary datadictionary vocabulary"
-products="ontology  glossary "
+products="ontology widoco glossary datadictionary vocabulary"
+#products="ontology  glossary "
 
 source_family_root="${WORKSPACE}/${family}"
 spec_root="${WORKSPACE}/target"
