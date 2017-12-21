@@ -39,7 +39,7 @@ Copyright (c) 2014-2017 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/FND/Relations/Relations/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/</sm:dependsOn>
 		<sm:fileAbbreviation>fibo-fnd-dt-fd</sm:fileAbbreviation>
-		<dct:abstract>This ontology provides definitions of date and schedule concepts for use in other FIBO ontologies.</dct:abstract>
+		<sm:fileAbstract>This ontology provides definitions of date and schedule concepts for use in other FIBO ontologies.</sm:fileAbstract>
 		<sm:filename>FinancialDates.rdf</sm:filename>
 		<rdfs:seeAlso rdf:resource="https://spec.edmcouncil.org/fibo/AboutTheEDMC-FIBOFamily/"/>
 		<rdfs:seeAlso rdf:resource="https://spec.edmcouncil.org/fibo/FND/AboutFND/"/>
@@ -48,7 +48,7 @@ Copyright (c) 2014-2017 Object Management Group, Inc.</sm:copyright>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/Places/Locations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/FND/20171101/DatesAndTimes/FinancialDates/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/FND/20171201/DatesAndTimes/FinancialDates/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/FND/20141101/DatesAndTimes/FinancialDates/ version of this ontology was revised by the FIBO FND 1.2 RTF in order to introduce the definition of a time interval, which is a location, to ground some of the concepts such as a date period, and duration as well as to support the definition of business recurrence intervals for use in parametric schedules for securities.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/FND/20170201/DatesAndTimes/FinancialDates/ version of this ontology was revised by the FIBO FND 1.3 RTF in order to introduce the definition of a time instant, to eliminate a reasoning issue with relative dates, and remove a circular dependency inadvertently incorporated in the ontology with a FIBO FND 1.2 modification.</skos:changeNote>
 		<skos:changeNote>This ontology was added to Foundations in advance of the December 2014 Long Beach meeting in support of the SEC specification.  It is also needed to provide temporal relationships for Ownership and Control.
@@ -173,6 +173,7 @@ The nth day is an ordinal number, not a cardinal number. &apos;1&apos; means the
 	</fibo-fnd-dt-fd:CalendarPeriod>
 	
 	<owl:Class rdf:about="&fibo-fnd-dt-fd;Date">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-fd;TimeInstant"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-dt-fd;hasDateValue"/>
@@ -214,6 +215,7 @@ The nth day is an ordinal number, not a cardinal number. &apos;1&apos; means the
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-dt-fd;DateTime">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-fd;TimeInstant"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-dt-fd;hasDateTimeValue"/>
@@ -228,6 +230,7 @@ The nth day is an ordinal number, not a cardinal number. &apos;1&apos; means the
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-dt-fd;DateTimeStamp">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-fd;TimeInstant"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-dt-fd;hasDateTimeStampValue"/>
@@ -518,10 +521,21 @@ The recurrence start date can also be relative to the starting Date of the overa
 		<skos:definition>an enumeration that indicates whether a calendar specified date is figured from the start or the end of a calendar period</skos:definition>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-fnd-dt-fd;TimeInstant">
+		<rdfs:label>time instant</rdfs:label>
+		<rdfs:seeAlso rdf:resource="https://www.w3.org/TR/owl-time/#time:Instant"/>
+		<skos:definition>a temporal entity that is a member of a time scale, with no extent or duration</skos:definition>
+		<skos:example>The Battle of Hastings was on &apos;14 October 1066&apos;. (This gives the Julian date of the battle at a granularity of &apos;day&apos;. If desired, the battle could be given more precisely as a time period within that calendar day.)</skos:example>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.omg.org/spec/DTV/</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:explanatoryNote>The duration of each time interval that is an instance of the time point is the granularity of the time scale of the time point.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:synonym>instant in time</fibo-fnd-utl-av:synonym>
+		<fibo-fnd-utl-av:synonym>time point</fibo-fnd-utl-av:synonym>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-fnd-dt-fd;TimeInterval">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-plc-loc;Location"/>
 		<rdfs:label>time interval</rdfs:label>
-		<skos:definition>a segment of the time axis, a location in time</skos:definition>
+		<rdfs:seeAlso rdf:resource="https://www.w3.org/TR/owl-time/#time:Interval"/>
+		<skos:definition>a segment of the time axis, a location in time, with an extent or duration</skos:definition>
 		<skos:example>the day whose Gregorian calendar date is September 11, 2001</skos:example>
 		<skos:example>the lifetime of Henry V</skos:example>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.omg.org/spec/DTV/</fibo-fnd-utl-av:adaptedFrom>
@@ -766,6 +780,12 @@ The recurrence start date can also be relative to the starting Date of the overa
 		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;TimeDirection"/>
 		<skos:definition>A TimeDirection indicates whether a CalendarSpecifiedDate is figured from the beginning or end of a calendar period.</skos:definition>
 	</owl:ObjectProperty>
+	
+	<owl:DatatypeProperty rdf:about="&fibo-fnd-dt-fd;hasTimeValue">
+		<rdfs:label>has time value</rdfs:label>
+		<rdfs:range rdf:resource="&xsd;string"/>
+		<skos:definition>specifies an actual literal (explicit) time, captured in the format specified for xsd:time (i.e., ISO 8601 format), WITHOUT the date or timezone information; the semantics are identical to those of xsd:time, which is not available for use in OWL</skos:definition>
+	</owl:DatatypeProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-dt-fd;isRelativeTo">
 		<rdfs:label>is relative to</rdfs:label>
