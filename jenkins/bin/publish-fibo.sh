@@ -237,9 +237,17 @@ function buildVowlIndex () {
       sed 's@h1><p>@h1><p>The Visual Notation for OWL Ontologies (VOWL) defines a visual language for the user-oriented representation of ontologies. It provides graphical depictions for elements of the Web Ontology Language (OWL) that are combined to a force-directed graph layout visualizing the ontology.<br/>This specification focuses on the visualization of the ontology schema (i.e. the classes, properties and datatypes, sometimes called TBox), while it also includes recommendations on how to depict individuals and data values (the ABox). FIBO uses open source software named WIDOCO (Wizard for DOCumenting Ontologies) for <a href="https://github.com/dgarijo/Widoco">VOWL</a>.<p/>@' | \
       sed 's@<a href=".*>https://spec.edmcouncil.org/.*</a>@@' > "${vowlTreeD}"
 
-   echo "Printing contents of tree ${product_branch_tag}"
+   echo "Printing contents of tree ${vowlTreeD}"
    contents=$(<${vowlTreeD})
    echo ${contents}
+
+   echo "Suppressing failed Ontology Links"
+   failedOntologies="FundEntities,SPVs,StateEntities,PrivateLimitedCompanies,RegulatoryRequirements,AgencyMBSIssuance,DebtIssuance,IssuanceDocuments,IssuanceProcessTerms,IssuanceProcess,MBSIssuance,MuniIssuance,PrivateLabelMBSIssuance,CIV,AssetBaskets,AssetDerivatives,CommoditiesDelivery,CommodityForwards,CreditDefaultSwaps,ExerciseConventions,Forwards,Options,ReturnSwaps,Spots,DerivativesBasicsExt,OTCDerivativeMasterAgreements,SwapsExt,DerivativesStandardizedTerms,ExchangeTradedOptions,FuturesExchanges,FuturesStandardizedTerms,Futures,OptionsExchanges,OptionsStandardizedTerms,FxForwards,FxSpots,FxSwaps,RightsAndWarrants,CreditFacilities,DebtPerspectives,AccountsMain,AssetExtensions,BalanceSheetBalances,Taxation,ContractsExtensions,ContractualConstructs,ToolsAndInstruments,AddressExtensions,Documentation,PostalAddress,TemporalInfo,RegulatoryRestrictions,Amounts,Math,Quantities,Geophysical,RealEstate,Conventions,Publications,StandardsIndividuals,Standards,ConstructAspects,SocialConstructs,Time,EconomicResources,MarketTransactions,QuantifiedResources,REAClaimsEvents,REATransactions,SecuritiesTransactions,SupplyTransactions,TransactionAccounting,TransactionEvents,TransactionsExtended,IndicatorsValues,BasketIndexPublishers,BasketIndices,CreditIndices,LoanBasicTerms,LoansCollateral,LoansGeneral,LoansGuaranties,LoansParties,LoansRegulatory,LoanApplicationsTemporal,LoanBorrowersTemporal,LoanCollateralTemporal,LoanPhases,LoansAppraisal,LoansEvents,LoansStatus,CommercialLoans,LoanProducts,MortgageLoans,PersonalLoans,SecuredLoans,StudentLoans,UnsecuredLoans,DebtAnalytics,DebtInterestAmounts,DebtPricingYields,DebtRedemptionAmounts,ETOptionsTemporal,EquityPricing,CreditEvents,CreditRatings,InstrumentTemporalTerms,SecurityTradingStatuses,TemporalConcepts,AssetBackedSecurities,AssetBackedSPVs,CBOs,CDOs,CLOs,CMOs,MortgageBackedSecurities,PoolBackedSecurities,SyntheticCDOs,BondsCashflowTerms,BondsCashflowVariants,BondsCommon,BondsIssuerVariants,BondsListings,BondsTaxTreatment,DebtCashflowTerms,DebtIssuanceTerms,ParityVariants,DebtInstrumentsExt,REPOs,TradedShortTermDebt,EquityInstruments,EquityIssuanceTerms,ShareholderEquity,ShareholderRights,ShareTerms,SecuritiesExt,SecuritiesListingsExt,SecuritiesRestrictionsExt,SecuritiesTaxTreatment"
+   IFS=',' read -ra FAILED_ONTOLOGIES <<< "$failedOntologies"
+   for i in "${FAILED_ONTOLOGIES[@]}"; do
+      sed -i '' "s/<a.*\/$i\/index-en\.html\">\([^<]*\)<\/a>/\1/g" "${vowlTreeD}"
+   done
+
 
 
     local pfiles=$(mktemp ${tmp_dir}/pfiles.XXXXXX)
