@@ -1681,7 +1681,8 @@ else
   rm -f "${glossary_root}/glossaryD.ttl"
   spinRunInferences "${glossary_root}/temp0D.ttl" "${glossary_root}/glossaryD.ttl"
 fi
-# Spin can put warnings at the start of a file.  I don't know why. Get rid of them.   
+# Spin can put warnings at the start of a file.  I don't know why. Get rid of them.
+# I figured this out, and I think I got rid of it, but this still won't hurt. 
   sed -i '/^@prefix/,$!d' "${glossary_root}/glossaryC.ttl"
   sed -i '/^@prefix/,$!d' "${glossary_root}/glossaryD.ttl"
   sed -i '/^@prefix/,$!d' "${glossary_root}/glossaryP.ttl"
@@ -1707,7 +1708,7 @@ EOF
      -jar "${rdftoolkit_jar}" \
      --source "${glossary_root}/temp2C.ttl" \
      --source-format turtle \
-     --target "${glossary_root}/glossaryC.json" \
+     --target "${glossary_root}/glossaryC.jsonld" \
      --target-format json-ld \
      --infer-base-iri \
      --use-dtd-subset -ibn \
@@ -1720,7 +1721,7 @@ EOF
      -jar "${rdftoolkit_jar}" \
      --source "${glossary_root}/temp2P.ttl" \
      --source-format turtle \
-     --target "${glossary_root}/glossaryP.json" \
+     --target "${glossary_root}/glossaryP.jsonld" \
      --target-format json-ld \
      --infer-base-iri \
      --use-dtd-subset -ibn \
@@ -1732,7 +1733,7 @@ EOF
      -jar "${rdftoolkit_jar}" \
      --source "${glossary_root}/temp2D.ttl" \
      --source-format turtle \
-     --target "${glossary_root}/glossaryD.json" \
+     --target "${glossary_root}/glossaryD.jsonld" \
      --target-format json-ld \
      --infer-base-iri \
      --use-dtd-subset -ibn \
