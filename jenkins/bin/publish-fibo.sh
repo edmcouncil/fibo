@@ -26,6 +26,10 @@ export fibo_root="${WORKSPACE}/fibo"
 export fibo_infra_root="$(cd ${SCRIPT_DIR}/../.. ; pwd -L)"
 jena_arq=""
 
+# For testing - speedy=true leaves out some very slow processing, 
+# e.g., isDefinedBy, converstions into ttl and jsonld, and nquads
+speedy=true
+
 #
 # The products that we generate the artifacts for with this script
 #
@@ -33,8 +37,8 @@ jena_arq=""
 #
 family="fibo"
 # Removed for speedier testing 
-products="ontology widoco glossary datadictionary vocabulary"
-#products="ontology  glossary "
+#products="ontology widoco glossary datadictionary vocabulary"
+products="ontology  glossary datadictionary vocabulary "
 
 source_family_root="${WORKSPACE}/${family}"
 spec_root="${WORKSPACE}/target"
@@ -584,7 +588,11 @@ __HERE__
 # We want to add in a rdfs:isDefinedBy link from every class back to the ontology. 
 
   find ${tag_root}/ -type f  -name '*.rdf' -not -name '*About*'  -print | while read file ; do
-     addIsDefinedBy "${file}"
+     if [ speedy="true" ] ; then
+	 echo "Leaving out isDefinedBy because it is slow"
+     else
+	 addIsDefinedBy "${file}"
+     fi 
   
   done
  
@@ -1096,12 +1104,21 @@ function publishProductOntology() {
   ontologyBuildCats  || return $?
   ontologyCreateAboutFiles || return $?
   ontologySearchAndReplaceStuff || return $?
-  ontologyConvertRdfToAllFormats || return $?
+  if [ speedy=="true" ] ; then
+      echo "Not doing some conversions because they are slow"
+  else 
+      ontologyConvertRdfToAllFormats || return $?
+  fi 
 # ontologyAnnotateTopBraidBaseURL || return $?
   ontologyConvertMarkdownToHtml || return $?
   zipOntologyFiles || return $?
 
-  buildquads || return $?
+  if [ speedy=="true" ] ; then
+      echo "Not doing quads becuase they are slow"
+  else
+      buildquads || return $?
+  fi
+
 
   return 0
 }
