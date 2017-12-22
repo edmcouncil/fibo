@@ -1687,7 +1687,7 @@ function publishProductGlossary() {
     --results=TTL > "${glossary_root}/tempCD.ttl"
 
 
-debug=false
+debug=true
 echo "About to run inferences with debug = $debug"
 if [ $debug == "true" ] ; then
   echo "C" 
