@@ -2019,10 +2019,10 @@ echo "that was the dumps"
 
 echo Writing into "${datadictionary_root}/index.html" 
 
-echo "${datadictionary_script_dir}/index.template" contains
+echo "${datadictionary_script_dir}/index.template contains"
 cat "${datadictionary_script_dir}/index.template"
 
-  sed -i '/-- index of dictionaries goes here/,$d' \
+  sed  '/-- index of dictionaries goes here/,$d' \
   "${datadictionary_script_dir}/index.template" > "${datadictionary_root}/index.html" 
 
 
@@ -2043,7 +2043,7 @@ cat >> "${datadictionary_root}/index.html" <<EOF
 EOF
 
 
-  sed -i '1,/-- index of dictionaries goes here/d' \
+  sed  '1,/-- index of dictionaries goes here/d' \
   "${datadictionary_script_dir}/index.template" >> "${datadictionary_root}/index.html" 
 
 
