@@ -2017,25 +2017,21 @@ echo "here are the dumps"
 cat "${tmp_dir}/dumps"
 echo "that was the dumps"
 
-cat > "${datadictionary_root}/index.html" << EOF
-<html><body>
-<h1>Data Dictionary</h1>
-<p>Data Dictionaries are availble for the following classes.  They are available in Excel and CSV formats. </p>
-<table>
-EOF
+  sed -i '/-- index of dictionaries goes here/,$d' \
+  "${datadictionary_script_dir}/index.template" > "${datadictionary_root}/index.html" 
+
+
 tail -n +2 "${tmp_dir}/dumps" | while read class ; do
     dumpdd $class
 done
 
+  sed -i '1,/-- index of dictionaries goes here/d' \
+  "${datadictionary_script_dir}/index.template" >> "${datadictionary_root}/index.html" 
+
+
   return 0
 }
 
-cat >> "${datadictionary_root}/index.html" <<EOF
-
-</table>
-</body></html>
-
-EOF
 
 
 #
