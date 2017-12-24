@@ -2017,16 +2017,36 @@ echo "here are the dumps"
 cat "${tmp_dir}/dumps"
 echo "that was the dumps"
 
+
+
   sed -i '/-- index of dictionaries goes here/,$d' \
   "${datadictionary_script_dir}/index.template" > "${datadictionary_root}/index.html" 
+
+
+cat >> "${datadictionary_root}/index.html" <<EOF
+
+</table>
+</body></html>
+
+EOF
 
 
 tail -n +2 "${tmp_dir}/dumps" | while read class ; do
     dumpdd $class
 done
 
+cat >> "${datadictionary_root}/index.html" <<EOF
+
+</table>
+</body></html>
+
+EOF
+
+
   sed -i '1,/-- index of dictionaries goes here/d' \
   "${datadictionary_script_dir}/index.template" >> "${datadictionary_root}/index.html" 
+
+
 
 
   return 0
