@@ -2017,6 +2017,7 @@ echo "here are the dumps"
 cat "${tmp_dir}/dumps"
 echo "that was the dumps"
 
+echo Writing into "${datadictionary_root}/index.html" 
 
 
   sed -i '/-- index of dictionaries goes here/,$d' \
