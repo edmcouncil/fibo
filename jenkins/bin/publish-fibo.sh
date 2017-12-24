@@ -2024,10 +2024,7 @@ echo "that was the dumps"
 
 
 cat >> "${datadictionary_root}/index.html" <<EOF
-
-</table>
-</body></html>
-
+<table>
 EOF
 
 
@@ -2038,7 +2035,7 @@ done
 cat >> "${datadictionary_root}/index.html" <<EOF
 
 </table>
-</body></html>
+
 
 EOF
 
