@@ -28,7 +28,7 @@ jena_arq=""
 
 # For testing - speedy=true leaves out some very slow processing, 
 # e.g., isDefinedBy, converstions into ttl and jsonld, and nquads
-speedy=true
+speedy=false
 
 #
 # The products that we generate the artifacts for with this script
@@ -1687,7 +1687,7 @@ function publishProductGlossary() {
     --results=TTL > "${glossary_root}/tempCD.ttl"
 
 
-debug=true
+debug=false
 echo "About to run inferences with debug = $debug"
 if [ $debug == "true" ] ; then
   echo "C" 
