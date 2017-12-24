@@ -38,7 +38,7 @@ speedy=false
 family="fibo"
 # Removed for speedier testing 
 #products="ontology widoco glossary datadictionary vocabulary"
-products="ontology  glossary datadictionary vocabulary "
+products="ontology glossary datadictionary vocabulary "
 
 source_family_root="${WORKSPACE}/${family}"
 spec_root="${WORKSPACE}/target"
@@ -48,7 +48,7 @@ branch_root=""
 tag_root=""
 product_branch_tag=""
 #Ontology root is required for other products like widoco
-ontology_root=""
+ontology_product_tag_root=""
 
 spec_root_url="https://spec.edmcouncil.org"
 spec_family_root_url="${spec_root_url}/${family}"
@@ -212,16 +212,16 @@ function buildIndex () {
 #
 function buildVowlIndex () {
 
-  local vowlTreeP="${widoco_root}/vowltreeProd.html"
-  local vowlTreeD="${widoco_root}/vowltreeDev.html"
+  local vowlTreeP="${widoco_product_tag_root}/vowltreeProd.html"
+  local vowlTreeD="${widoco_product_tag_root}/vowltreeDev.html"
   local titleP="FIBO Widoco File Directory (Production)"
   local titleD="FIBO Widoco File Directory (Development)"
 
   echo "Step: buildVowlIndex (${vowlTree/${WORKSPACE}/})"
 
   (
-    cd ${ontology_root}
-    echo "Ontology Root: ${ontology_root/${WORKSPACE}/}"
+    cd ${ontology_product_tag_root}
+    echo "Ontology Root: ${ontology_product_tag_root/${WORKSPACE}/}"
 
     echo "tag_root_url : ${tag_root_url}"
     echo "GIT_BRANCH : ${GIT_BRANCH}"
@@ -1080,23 +1080,21 @@ function generateWidocoDocumentationForFile() {
   return 0
 }
 
+#
+# Produce the artifacts of the ontology product
+#
 function publishProductOntology() {
-
-  if [ "${NODE_NAME}" == "nomagic" ] ; then
-    echo "Skipping publication of product ontology since we're on node ${NODE_NAME}"
-    return 0
-  fi
 
   logRule "Publishing the ontology product"
 
   setProduct ontology || return $?
 
-  ontology_root="${tag_root}"
+  ontology_product_tag_root="${tag_root}"
   #
   # Show the ontology root directory but strip the WORKSPACE director from it to
   # save log space, it' ugly
   #
-  echo "Ontology Root: ${ontology_root/${WORKSPACE}/}"
+  echo "Ontology Root: ${ontology_product_tag_root/${WORKSPACE}/}"
 
   ontologyCopyRdfToTarget || return $?
   buildIndex  || return $?
@@ -1135,18 +1133,21 @@ function publishProductWidoco() {
 
   logRule "Publishing the widoco product"
 
-  setProduct widoco || return $?
+  setProduct ontology || return $?
+  ontology_product_tag_root="${tag_root}"
 
-  widoco_root="${tag_root}"
+  setProduct widoco || return $?
+  widoco_product_tag_root="${tag_root}"
+
   #
-  # Show the widoco root directory but strip the WORKSPACE director from it to
+  # Show the widoco root directory but strip the WORKSPACE directory from it to
   # save log space, it' ugly
   #
-  echo "Widoco Root: ${widoco_root/${WORKSPACE}/}"
+  echo "Widoco Root: ${widoco_product_tag_root/${WORKSPACE}/}"
 
   buildVowlIndex || return $?
 
-  generateWidocoDocumentation ${ontology_root} || return $?
+  generateWidocoDocumentation ${ontology_product_tag_root} || return $?
 
   return 0
 }
@@ -1169,7 +1170,7 @@ function vocabularyGetModules() {
   #
   # Set the memory for ARQ
   #
-  export JVM_ARGS=${JVM_ARGS:--Xmx2G}
+  export JVM_ARGS=${JVM_ARGS:--Xmx4G}
 
   echo "Query the skosify.ttl file for the list of modules (TODO: Should come from rdf-toolkit.ttl)"
 
@@ -1243,7 +1244,7 @@ function vocabularyGetOntologies() {
   #
   # Set the memory for ARQ
   #
-  export JVM_ARGS=${JVM_ARGS:--Xmx2G}
+  export JVM_ARGS=${JVM_ARGS:--Xmx4G}
 
   echo "Get Ontologies into merged file (temp0.ttl)"
 
@@ -1307,7 +1308,7 @@ function spinRunInferences() {
     set -x
 
     java \
-      -Xmx2g \
+      -Xmx4g \
       -Dlog4j.configuration="file:${JENA2ROOT}/jena-log4j.properties" \
       -cp "${JENA2ROOT}/lib/*:${fibo_infra_root}/lib:${fibo_infra_root}/lib/SPIN/spin-1.3.3.jar" \
       org.topbraid.spin.tools.RunInferences \
@@ -1375,7 +1376,7 @@ function vocabularyRunSchemifyRules() {
   #
   # Set the memory for ARQ
   #
-  export JVM_ARGS=${JVM_ARGS:--Xmx2G}
+  export JVM_ARGS=${JVM_ARGS:--Xmx4G}
 
   echo "Run the schemify rules"
 
@@ -1435,7 +1436,7 @@ function publishProductVocabulary() {
   #
   # Set the memory for ARQ
   #
-  export JVM_ARGS=${JVM_ARGS:--Xmx2G}
+  export JVM_ARGS=${JVM_ARGS:--Xmx4G}
 
   require JENAROOT || return $?
 
@@ -1445,6 +1446,7 @@ function publishProductVocabulary() {
   ontology_product_tag_root="${tag_root}"
 
   setProduct vocabulary || return $?
+  vocabulary_product_tag_root="${tag_root}"
 
   (
     cd "${SCRIPT_DIR}/fibo-vocabulary" || return $?
@@ -1576,136 +1578,79 @@ function publishProductVocabularyInner() {
   return 0
 }
 
-
-function glossaryGenerate() {
-
-  local rc
-
-  #
-  # JG>Disabling the actual calls to nomagic now until we can actually feed in the current fibo version from
-  #    the current workspace because only THEN it makes sense to run nomagic. Otherwise we can just as well
-  #    copy the latest artifacts from the fibo-publish-nomagic job. This happens in the Jenkinsfile.
-  #
-  echo "WARNING: Skipping actual calls to nomagic"
-  return 0
-
-  # nomagicGenerate "development.html" "Release;Provisional;Informative" || return $?
-  # nomagicGenerate "production.html" "Release" || return $?
-
-  (
-    cd "${spec_root}/${family_product_branch_tag}"
-    set -x
-    ls -al
-    cp -v ${report_wizard_dir}/*.html .
-    cp -vr ${report_wizard_dir}/resources .
-    sed -i development.html -e 's!<br>!<br/>!g'
-    sed -i production.html -e 's!<br>!<br/>!g'
-
-    sed -e '/<script /,/<\\/script>/d' development.html > devin.html
-    sed -e '/<script /,/<\\/script>/d' production.html > prodin.html
-  )
-
-  if [ ! -f ./bin/SaxonHE9-8-0-4J/saxon9he.jar ] ; then
-    error "Could not find ./bin/SaxonHE9-8-0-4J/saxon9he.jar"
-    return 1
-  fi
-
-  chmod a+x ./bin/SaxonHE9-8-0-4J/*.jar
-
-  java \
-    -cp ./bin/SaxonHE9-8-0-4J/saxon9he.jar \
-    net.sf.saxon.Transform \
-    -o:"${spec_root}/${family_product_branch_tag}/glossaryDEV.csv" \
-    -xsl:"${SCRIPT_DIR}/glossary-to-csv.xsl" \
-    "${spec_root}/${family_product_branch_tag}/devin.html"
-
-  java \
-    -cp ./bin/SaxonHE9-8-0-4J/saxon9he.jar \
-    net.sf.saxon.Transform \
-    -o:"${spec_root}/${family_product_branch_tag}/glossaryPROD.csv" \
-    -xsl:"${SCRIPT_DIR}/glossary-to-csv.xsl" \
-    "${spec_root}/${family_product_branch_tag}/prodin.html"
-
-  return ${rc}
-}
-
 #
-# This can only run on the nomagic box (nomagic.edmcouncil.org) in the context of a Jenkins slave
+# Produce all artifacts for the glossary product
 #
 function publishProductGlossary() {
 
-
-  if [ "${NODE_NAME}" == "nomagic" ] ; then
-    echo "Skipping publication of product data dictionary since we're on node ${NODE_NAME}"
-    return 0
-  fi
-
   logRule "Publishing the glossary product"
 
+  setProduct ontology || return $?
+  export ontology_product_tag_root="${tag_root}"
+
   setProduct glossary || return $?
-  
+  export glossary_product_tag_root="${tag_root}"
 
-  local ontology_root="${spec_family_root}/ontology/${GIT_BRANCH}/${GIT_TAG_NAME}"
-  echo "ontology root = ${ontology_root}"
-
-  export glossary_root="${spec_root}/${family_product_branch_tag}"
   export glossary_script_dir="${SCRIPT_DIR}/glossary"
+
+  #
+  # Set the memory for ARQ
+  #
+  export JVM_ARGS=${JVM_ARGS:--Xmx4G}
 
   #
   # Get ontologies for Dev
   #
   ${jena_arq} \
-    $(find  "${ontology_root}" -name "*.rdf" | sed "s/^/--data=/") \
+    $(find  "${ontology_product_tag_root}" -name "*.rdf" | sed "s/^/--data=/") \
     --data=${glossary_script_dir}/owlnames.ttl \
     --query="${glossary_script_dir}/echo.sparql" \
-    --results=TTL > "${glossary_root}/temp0D.ttl"
+    --results=TTL > "${glossary_product_tag_root}/temp0D.ttl"
 
   if [ ${PIPESTATUS[0]} -ne 0 ] ; then
     error "Could not get Dev ontologies"
     return 1
   fi
 
-
   #
   # Get ontologies for Prod
   #
-  require tag_root || return $?  
-  echo "optr = ${tag_root}"
-  
   ${jena_arq} \
-    $(grep -r 'utl-av[:;.]Release' "${ontology_root}" | sed 's/:.*$//;s/^/--data=/' | grep -F ".rdf") \
+    $(grep -r 'utl-av[:;.]Release' "${ontology_product_tag_root}" | sed 's/:.*$//;s/^/--data=/' | grep -F ".rdf") \
     --data=${glossary_script_dir}/owlnames.ttl \
     --query="${glossary_script_dir}/echo.sparql" \
-    --results=TTL > "${glossary_root}/temp0P.ttl"
-
+    --results=TTL > "${glossary_product_tag_root}/temp0P.ttl"
 
 
   ${jena_arq} \
-    $(find  "${ontology_root}" -name "Corporations.rdf" | sed "s/^/--data=/") \
+    $(find  "${ontology_product_tag_root}" -name "Corporations.rdf" | sed "s/^/--data=/") \
     --data=${glossary_script_dir}/owlnames.ttl \
     --query="${glossary_script_dir}/echo.sparql" \
-    --results=TTL > "${glossary_root}/tempCD.ttl"
+    --results=TTL > "${glossary_product_tag_root}/tempCD.ttl"
 
+  debug=false
 
-debug=false
-echo "About to run inferences with debug = $debug"
-if [ $debug == "true" ] ; then
-  echo "C" 
-  rm -f "${glossary_root}/glossaryC.ttl"
-  spinRunInferences "${glossary_root}/tempCD.ttl" "${glossary_root}/glossaryC.ttl"
-else 
-  rm -f "${glossary_root}/glossaryP.ttl"
-  spinRunInferences "${glossary_root}/temp0P.ttl" "${glossary_root}/glossaryP.ttl"
-  rm -f "${glossary_root}/glossaryD.ttl"
-  spinRunInferences "${glossary_root}/temp0D.ttl" "${glossary_root}/glossaryD.ttl"
-fi
-# Spin can put warnings at the start of a file.  I don't know why. Get rid of them.
-# I figured this out, and I think I got rid of it, but this still won't hurt. 
-  sed -i '/^@prefix/,$!d' "${glossary_root}/glossaryC.ttl"
-  sed -i '/^@prefix/,$!d' "${glossary_root}/glossaryD.ttl"
-  sed -i '/^@prefix/,$!d' "${glossary_root}/glossaryP.ttl"
+  echo "About to run inferences with debug = $debug"
 
-cat >"${tmp_dir}/nolabel.sq" <<EOF
+  if [ $debug == "true" ] ; then
+    echo "C"
+    rm -f "${glossary_product_tag_root}/glossaryC.ttl"
+    spinRunInferences "${glossary_product_tag_root}/tempCD.ttl" "${glossary_product_tag_root}/glossaryC.ttl"
+  else
+    rm -f "${glossary_product_tag_root}/glossaryP.ttl"
+    spinRunInferences "${glossary_product_tag_root}/temp0P.ttl" "${glossary_product_tag_root}/glossaryP.ttl"
+    rm -f "${glossary_product_tag_root}/glossaryD.ttl"
+    spinRunInferences "${glossary_product_tag_root}/temp0D.ttl" "${glossary_product_tag_root}/glossaryD.ttl"
+  fi
+  #
+  # Spin can put warnings at the start of a file.  I don't know why. Get rid of them.
+  # I figured this out, and I think I got rid of it, but this still won't hurt.
+  #
+  sed -i '/^@prefix/,$!d' "${glossary_product_tag_root}/glossaryC.ttl"
+  sed -i '/^@prefix/,$!d' "${glossary_product_tag_root}/glossaryD.ttl"
+  sed -i '/^@prefix/,$!d' "${glossary_product_tag_root}/glossaryP.ttl"
+
+  cat >"${tmp_dir}/nolabel.sq" <<EOF
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
 CONSTRUCT {?s ?p ?o}
 WHERE {?s ?p ?o .
@@ -1713,65 +1658,61 @@ FILTER (ISIRI (?s) || (?p != rdfs:label))
 }
 EOF
 
-
-  ${jena_arq} --data="${glossary_root}/glossaryP.ttl" --query="${tmp_dir}/nolabel.sq" > "${glossary_root}/temp2P.ttl"
-  ${jena_arq} --data="${glossary_root}/glossaryD.ttl" --query="${tmp_dir}/nolabel.sq" > "${glossary_root}/temp2D.ttl"
-  ${jena_arq}  --data="${glossary_root}/glossaryC.ttl" --query="${tmp_dir}/nolabel.sq" > "${glossary_root}/temp2C.ttl"
-
+  ${jena_arq} --data="${glossary_product_tag_root}/glossaryP.ttl" --query="${tmp_dir}/nolabel.sq" > "${glossary_product_tag_root}/temp2P.ttl"
+  ${jena_arq} --data="${glossary_product_tag_root}/glossaryD.ttl" --query="${tmp_dir}/nolabel.sq" > "${glossary_product_tag_root}/temp2D.ttl"
+  ${jena_arq} --data="${glossary_product_tag_root}/glossaryC.ttl" --query="${tmp_dir}/nolabel.sq" > "${glossary_product_tag_root}/temp2C.ttl"
 
 
-   java \
-     -Xmx2G \
-     -Xms2G \
-     -jar "${rdftoolkit_jar}" \
-     --source "${glossary_root}/temp2C.ttl" \
-     --source-format turtle \
-     --target "${glossary_root}/glossaryC.jsonld" \
-     --target-format json-ld \
-     --infer-base-iri \
-     --use-dtd-subset -ibn \
-     > log 2>&1
+ java \
+   -Xmx4G \
+   -Xms4G \
+   -jar "${rdftoolkit_jar}" \
+   --source "${glossary_product_tag_root}/temp2C.ttl" \
+   --source-format turtle \
+   --target "${glossary_product_tag_root}/glossaryC.jsonld" \
+   --target-format json-ld \
+   --infer-base-iri \
+   --use-dtd-subset -ibn \
+   > log 2>&1
 
+ java \
+   -Xmx4G \
+   -Xms4G \
+   -jar "${rdftoolkit_jar}" \
+   --source "${glossary_product_tag_root}/temp2P.ttl" \
+   --source-format turtle \
+   --target "${glossary_product_tag_root}/glossaryP.jsonld" \
+   --target-format json-ld \
+   --infer-base-iri \
+   --use-dtd-subset -ibn \
+   > log 2>&1
 
-   java \
-     -Xmx2G \
-     -Xms2G \
-     -jar "${rdftoolkit_jar}" \
-     --source "${glossary_root}/temp2P.ttl" \
-     --source-format turtle \
-     --target "${glossary_root}/glossaryP.jsonld" \
-     --target-format json-ld \
-     --infer-base-iri \
-     --use-dtd-subset -ibn \
-     > log 2>&1
- 
-   java \
-     -Xmx2G \
-     -Xms2G \
-     -jar "${rdftoolkit_jar}" \
-     --source "${glossary_root}/temp2D.ttl" \
-     --source-format turtle \
-     --target "${glossary_root}/glossaryD.jsonld" \
-     --target-format json-ld \
-     --infer-base-iri \
-     --use-dtd-subset -ibn \
-     > log 2>&1
-
-#  glossaryGenerate || return $?
+ java \
+   -Xmx4G \
+   -Xms4G \
+   -jar "${rdftoolkit_jar}" \
+   --source "${glossary_product_tag_root}/temp2D.ttl" \
+   --source-format turtle \
+   --target "${glossary_product_tag_root}/glossaryD.jsonld" \
+   --target-format json-ld \
+   --infer-base-iri \
+   --use-dtd-subset -ibn \
+   > log 2>&1
 
   makexl "temp2C" "glossaryC"
   makexl "temp2D" "glossaryD"
   makexl "temp2P" "glossaryP"
 
-
-
-
   return 0
 }
 
 
+#
+# What does "makexl" stand for?
+#
 function makexl () {
-cat > "${tmp_dir}/makeCcsv.sparql" <<EOF
+
+  cat > "${tmp_dir}/makeCcsv.sparql" <<EOF
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owlnames: <http://spec.edmcouncil.org/owlnames#> 
 PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#> 
@@ -1793,10 +1734,9 @@ GROUP BY ?c ?Term ?Type ?Definition ?GeneratedDefinition
 ORDER BY ?Term
 EOF
 
-${jena_arq} --data="${glossary_root}/$1.ttl" --query="${tmp_dir}/makeCcsv.sparql" --results=TSV > "${glossary_root}/$2.tsv"
+  ${jena_arq} --data="${glossary_product_tag_root}/$1.ttl" --query="${tmp_dir}/makeCcsv.sparql" --results=TSV > "${glossary_product_tag_root}/$2.tsv"
 
-
-cat > "${tmp_dir}/makePcsv.sparql" <<EOF
+  cat > "${tmp_dir}/makePcsv.sparql" <<EOF
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owlnames: <http://spec.edmcouncil.org/owlnames#> 
 PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#> 
@@ -1818,13 +1758,13 @@ GROUP BY ?c ?Term ?Type ?Definition ?GeneratedDefinition
 ORDER BY ?Term
 EOF
 
-${jena_arq} --data="${glossary_root}/$1.ttl" --query="${tmp_dir}/makePcsv.sparql" --results=TSV | tail -n +2 >> "${glossary_root}/$2.tsv"
+  ${jena_arq} --data="${glossary_product_tag_root}/$1.ttl" --query="${tmp_dir}/makePcsv.sparql" --results=TSV | tail -n +2 >> "${glossary_product_tag_root}/$2.tsv"
 
-sed -i 's/"@../"/g; s/\t\t/\t""\t/g; s/\t$/\t""/'  "${glossary_root}/$2.tsv"
+  sed -i 's/"@../"/g; s/\t\t/\t""\t/g; s/\t$/\t""/'  "${glossary_product_tag_root}/$2.tsv"
 
-sed  's/"\t"/","/g'  "${glossary_root}/$2.tsv" >  "${glossary_root}/$2.csv"
+  sed  's/"\t"/","/g'  "${glossary_product_tag_root}/$2.tsv" >  "${glossary_product_tag_root}/$2.csv"
 
-cat >  "${glossary_root}/$2.xls" <<EOF
+  cat >  "${glossary_product_tag_root}/$2.xls" <<EOF
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
 <html xmlns:x="urn:schemas-microsoft-com:office:excel" >
 <head>
@@ -1854,21 +1794,18 @@ a<body>
 <table>
 EOF
 
-head -n 1 "${glossary_root}/$2.tsv" | sed 's!?!!g; s!^!<tr><th bgcolor="goldenrod">!; s!\t!</th><th bgcolor="goldenrod">!g; s!$!</th></tr>!' >> "${glossary_root}/$2.xls"
+  head -n 1 "${glossary_product_tag_root}/$2.tsv" | sed 's!?!!g; s!^!<tr><th bgcolor="goldenrod">!; s!\t!</th><th bgcolor="goldenrod">!g; s!$!</th></tr>!' >> "${glossary_product_tag_root}/$2.xls"
 
-tail -n +2 "${glossary_root}/$2.tsv" | sed 's!^"!<tr><td valign="top">!; s!"\t"!</td><td valign="top">!g; s!"$!</td></tr>!' >> "${glossary_root}/$2.xls"
-sed -i '2,${s/<td/<td bgcolor="azure"/g;n}' "${glossary_root}/$2.xls"
+  tail -n +2 "${glossary_product_tag_root}/$2.tsv" | sed 's!^"!<tr><td valign="top">!; s!"\t"!</td><td valign="top">!g; s!"$!</td></tr>!' >> "${glossary_product_tag_root}/$2.xls"
+  sed -i '2,${s/<td/<td bgcolor="azure"/g;n}' "${glossary_product_tag_root}/$2.xls"
 
-cat >> "${glossary_root}/$2.xls" <<EOF
+  cat >> "${glossary_product_tag_root}/$2.xls" <<EOF
 </table></bode></html>
 EOF
 
+  return 0
+}
 
-
-
-
-
-    }
 #
 # this is the new data dictionary. It is independent of any glossary work. 
 #
@@ -1881,38 +1818,44 @@ function publishProductDataDictionary() {
 
   logRule "Publishing the datadictionary product"
 
-  setProduct datadictionary || return $?
-  
+  setProduct ontology || return $?
+  export ontology_product_tag_root="${tag_root}"
 
-  local ontology_root="${spec_family_root}/ontology/${GIT_BRANCH}/${GIT_TAG_NAME}"
-  echo "ontology root = ${ontology_root}"
-  (cd ${ontology_root}
-   ls 
-)
-  export datadictionary_root="${spec_root}/${family_product_branch_tag}"
+  setProduct datadictionary || return $?
+  export datadictionary_product_tag_root="${tag_root}"
+
+  (
+    cd ${ontology_product_tag_root}
+    ls
+  )
+
   export datadictionary_script_dir="${SCRIPT_DIR}/datadictionary"
+
+  #
+  # Set the memory for ARQ
+  #
+  export JVM_ARGS=${JVM_ARGS:--Xmx4G}
 
   #
   # Get ontologies for Prod
   #
-  require tag_root || return $?  
-  echo "optr = ${tag_root}"
-  
   ${jena_arq} \
-    $(grep -r 'utl-av[:;.]Release' "${ontology_root}" | sed 's/:.*$//;s/^/--data=/' | grep -F ".rdf") \
+    $(grep -r 'utl-av[:;.]Release' "${ontology_product_tag_root}" | sed 's/:.*$//;s/^/--data=/' | grep -F ".rdf") \
     --data="${datadictionary_script_dir}/AllProd.ttl" \
     --query="${datadictionary_script_dir}/echo.sq" \
     --results=TTL > "${tmp_dir}/temp0B.ttl"
 
-echo "here is the start of the combined file"
-wc    "${tmp_dir}/temp0B.ttl"
+  echo "here is the start of the combined file"
+  wc    "${tmp_dir}/temp0B.ttl"
 
-  ${jena_arq} --data="${tmp_dir}/temp0B.ttl" --query="${datadictionary_script_dir}/pseudorange.sq" \
-> "${tmp_dir}/pr.ttl"
+  ${jena_arq} \
+    --data="${tmp_dir}/temp0B.ttl" \
+    --query="${datadictionary_script_dir}/pseudorange.sq" \
+    > "${tmp_dir}/pr.ttl"
 
-wc "${tmp_dir}/pr.ttl"
+  wc "${tmp_dir}/pr.ttl"
 
-cat > "${tmp_dir}/con1.sq" <<EOF
+  cat > "${tmp_dir}/con1.sq" <<EOF
 PREFIX av: <https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/>
 prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
 
@@ -1921,18 +1864,17 @@ WHERE {?x av:forCM true .
 ?x rdfs:subClassOf* ?c  .
 FILTER (ISIRI (?c))
 }
-
 EOF
 
+  ${jena_arq} \
+    --data="${tmp_dir}/temp0B.ttl" \
+    --query="${tmp_dir}/con1.sq" \
+    --results=TSV > "${tmp_dir}/CONCEPTS"
 
-  ${jena_arq} --data="${tmp_dir}/temp0B.ttl" --query="${tmp_dir}/con1.sq" \
-      --results=TSV > "${tmp_dir}/CONCEPTS"
+  echo "Here are the concepts"
+  cat "${tmp_dir}/CONCEPTS"
 
-echo "Here are the concepts" 
-cat "${tmp_dir}/CONCEPTS"
-
-cat > "${tmp_dir}/ss.sq" << EOF
-
+  cat > "${tmp_dir}/ss.sq" << EOF
 PREFIX afn: <http://jena.apache.org/ARQ/function#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
@@ -1944,190 +1886,175 @@ PREFIX av: <https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVo
 
 SELECT ?class ?table ?definition ?field ?description ?type ?r1
 WHERE {
-?class a owl:Class .
-FILTER (ISIRI (?class))
-FIlTER (REGEX (xsd:string (?class), "edmcouncil"))
-?class rdfs:subClassOf* ?base1 .
-?b1 edm:pseudodomain ?base1; a edm:PR ; edm:p ?p ; edm:pseudorange ?r1  .
-?p av:forDD "true"^^xsd:boolean .
-FILTER NOT EXISTS {?class rdfs:subClassOf* ?base2 .
-#                   FILTER (?base2 != ?base1)
-                   ?b2 a edm:PR ; edm:p ?p ; edm:pseudorange ?r2 ; edm:pseudodomain ?base2 .
-		   ?r2 rdfs:subClassOf+ ?r1 }
+  ?class a owl:Class .
+  FILTER (ISIRI (?class))
+  FIlTER (REGEX (xsd:string (?class), "edmcouncil"))
+  ?class rdfs:subClassOf* ?base1 .
+  ?b1 edm:pseudodomain ?base1; a edm:PR ; edm:p ?p ; edm:pseudorange ?r1  .
+  ?p av:forDD "true"^^xsd:boolean .
+  FILTER NOT EXISTS {
+    ?class rdfs:subClassOf* ?base2 .
+# FILTER (?base2 != ?base1)
+    ?b2 a edm:PR ; edm:p ?p ; edm:pseudorange ?r2 ; edm:pseudodomain ?base2 .
+	  ?r2 rdfs:subClassOf+ ?r1
+	}
 
-
-?p rdfs:label ?field .
-OPTIONAL {?p  skos:definition ?dx}
-BIND (COALESCE (?dx, "(none)") AS ?description )
-?r1 rdfs:label ?type .
-?class rdfs:label ?table
-OPTIONAL {?class skos:definition  ?dy }
-BIND ( COALESCE (?dy, "(none)") AS ?definition )
-
+  ?p rdfs:label ?field .
+  OPTIONAL {?p  skos:definition ?dx}
+  BIND (COALESCE (?dx, "(none)") AS ?description )
+  ?r1 rdfs:label ?type .
+  ?class rdfs:label ?table
+  OPTIONAL {?class skos:definition  ?dy }
+  BIND ( COALESCE (?dy, "(none)") AS ?definition )
 } 
 EOF
 
-
-
-# Turns out, putting this into a text file and grepping over it ran faster than putting it into a triple store.
-${jena_arq} --data="${tmp_dir}/temp0B.ttl" \
-   --data="${tmp_dir}/pr.ttl" \
+  #
+  # Turns out, putting this into a text file and grepping over it ran faster than putting it into a triple store.
+  #
+  ${jena_arq} \
+    --data="${tmp_dir}/temp0B.ttl" \
+    --data="${tmp_dir}/pr.ttl" \
     --query="${tmp_dir}/ss.sq" \
     --results=TSV | sed 's/"@../"/g' > "${tmp_dir}/ssx.txt"
 
-echo "Here are the first few lines"
-head  "${tmp_dir}/ssx.txt"
+  echo "Here are the first few lines"
+  head  "${tmp_dir}/ssx.txt"
+  #
+  # remove duplicate lines
+  #
+  sort -u "${tmp_dir}/ssx.txt" > "${tmp_dir}/ss.txt"
+  #
+  # Start with empty output
+  #
+  echo "" > "${tmp_dir}/output.tsv"
+  #
+  # The CONCEPTS are stop-classes; we don't show those.  So we treat them as DONE at the start of the processing.
+  #
+  cp "${tmp_dir}/CONCEPTS" "${tmp_dir}/DONE"
+  #
+  # Find the list of things to include.  This is too costly to include all classes.
+  #
+  cat > "${tmp_dir}/dumps.sq" <<EOF
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
-# remove duplicate lines
-sort -u "${tmp_dir}/ssx.txt" > "${tmp_dir}/ss.txt"
-
-
-# Start with empty output 
-echo "" > "${tmp_dir}/output.tsv"
-
-
-# The CONCEPTS are stopclasses; we don't show those.  So we treat them as DONE at the start of the processing. 
-cp "${tmp_dir}/CONCEPTS" "${tmp_dir}/DONE" 
-
-
-# Find the list of things to include.  This is too costly to include all classes. 
-
-cat > "${tmp_dir}/dumps.sq" <<EOF
-
-prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
 SELECT DISTINCT ?c
 WHERE {
-?x <https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/dumpable> true .
-## Swap these two to include all subclasses of marked classes
-?c rdfs:subClassOf* ?x . 
-#BIND (?x AS ?c)
-?c rdfs:label ?lx
-BIND (UCASE (?lx) AS ?l)
-
+  ?x <https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/dumpable> true .
+  ## Swap these two to include all subclasses of marked classes
+  ?c rdfs:subClassOf* ?x .
+  #BIND (?x AS ?c)
+  ?c rdfs:label ?lx
+  BIND (UCASE (?lx) AS ?l)
 } ORDER BY ?l
-
 EOF
 
-${jena_arq}  --data="${tmp_dir}/temp0B.ttl"  --query="${tmp_dir}/dumps.sq"  --results=TSV > "${tmp_dir}/dumps"
+  ${jena_arq}  --data="${tmp_dir}/temp0B.ttl"  --query="${tmp_dir}/dumps.sq"  --results=TSV > "${tmp_dir}/dumps"
 
+  cp  "${tmp_dir}/dumps" "${tmp_dir}/pr.ttl"    "${tmp_dir}/temp0B.ttl"  ${datadictionary_product_tag_root}
 
-cp  "${tmp_dir}/dumps" "${tmp_dir}/pr.ttl"    "${tmp_dir}/temp0B.ttl"  ${datadictionary_root}
+  echo "here are the dumps"
+  cat "${tmp_dir}/dumps"
+  echo "that was the dumps"
 
-echo "here are the dumps"
-cat "${tmp_dir}/dumps"
-echo "that was the dumps"
+  echo Writing into "${datadictionary_product_tag_root}/index.html"
 
-echo Writing into "${datadictionary_root}/index.html" 
-
-echo "${datadictionary_script_dir}/index.template contains"
-cat "${datadictionary_script_dir}/index.template"
+  echo "${datadictionary_script_dir}/index.template contains"
+  cat "${datadictionary_script_dir}/index.template"
 
   sed  '/-- index of dictionaries goes here/,$d' \
-  "${datadictionary_script_dir}/index.template" > "${datadictionary_root}/index.html" 
+  "${datadictionary_script_dir}/index.template" > "${datadictionary_product_tag_root}/index.html"
 
-
-cat >> "${datadictionary_root}/index.html" <<EOF
+  cat >> "${datadictionary_product_tag_root}/index.html" <<EOF
 <table>
 EOF
 
-
-tail -n +2 "${tmp_dir}/dumps" | while read class ; do
+  tail -n +2 "${tmp_dir}/dumps" | while read class ; do
     dumpdd $class
-done
+  done
 
-cat >> "${datadictionary_root}/index.html" <<EOF
-
+  cat >> "${datadictionary_product_tag_root}/index.html" <<EOF
 </table>
-
-
 EOF
 
+  sed \
+    '1,/-- index of dictionaries goes here/d' \
+    "${datadictionary_script_dir}/index.template" >> "${datadictionary_product_tag_root}/index.html"
 
-  sed  '1,/-- index of dictionaries goes here/d' \
-  "${datadictionary_script_dir}/index.template" >> "${datadictionary_root}/index.html" 
+  return 0
+}
 
+#
+# Helper Function for datadictionary
+#
+function localdd () {
 
+  if grep -q "$1" "${tmp_dir}/DONE" ; then
+    echo "I've seen it before!"
+    return 0
+  fi
 
+  echo "$1" >>  "${tmp_dir}/DONE"
+
+  grep  "^$1" "${tmp_dir}/ss.txt" | \
+  sed "s/^[^\t]*\t//; s/\t[^\t]*$//; 2,\$s/^[^\t]*\t[^\t]*\t/\t\"\"\t/" >> "${tmp_dir}/output.tsv"
+
+  echo "Finished tsv sed for $1"
+
+  #tdbquery --loc=TEMP  --query=temp2.sq --results=TSV   > next
+  grep "^$1" "${tmp_dir}/ss.txt" | sed 's/^.*\t//'  |  while read uri ; do
+    localdd "$(echo "${uri}" | sed 's/\r//')"
+  done
 
   return 0
 }
 
 
-
 #
+# Helper Function for datadictionary
 #
-# Helper Functions for DD
-#
-#
-
-function localdd () {
-
-if grep -q "$1"  "${tmp_dir}/DONE" ;
-then
-     echo "I've seen it before!"
-else
-echo "$1" >>  "${tmp_dir}/DONE"
-
-
-grep  "^$1" "${tmp_dir}/ss.txt" | \
-sed "s/^[^\t]*\t//; s/\t[^\t]*$//; 2,\$s/^[^\t]*\t[^\t]*\t/\t\"\"\t/" >> "${tmp_dir}/output.tsv"
-
-echo "Finished tsv sed for $1"
-
-
-#tdbquery --loc=TEMP  --query=temp2.sq --results=TSV   > next
-grep "^$1" "${tmp_dir}/ss.txt" | sed 's/^.*\t//'  |  while read uri ; do
-  localdd "$(echo "${uri}" | sed 's/\r//')" 
-done
-
-
-fi
-}
-
-
 function dumpdd () {
 
-echo "Creating Data Dictionary for $1"
-# Extract the filename from the local part of the class IRI
-t=${1##*/}
-fname=${t%>*}
+  echo "Creating Data Dictionary for $1"
+  # Extract the filename from the local part of the class IRI
+  local t=${1##*/}
+  local fname=${t%>*}
 
-cat >> "${datadictionary_root}/index.html" << EOF
+  cat >> "${datadictionary_product_tag_root}/index.html" << EOF
 <tr><td>${fname}</td><td><a href="${fname}.xls">excel</a></td><td><a href="${fname}.csv">CSV</a></td></tr>
 EOF
 
+  # Reset the output to blank
+  echo "" > "${tmp_dir}/output.tsv"
 
-# Reset the output to blank
-echo "" > "${tmp_dir}/output.tsv"
+  #Reset the "seen" list to be the stopclasses
+  cp  "${tmp_dir}/CONCEPTS"  "${tmp_dir}/DONE"
 
-#Reset the "seen" list to be the stopclasses 
-cp  "${tmp_dir}/CONCEPTS"  "${tmp_dir}/DONE"
+  localdd $1
 
-localdd $1
-
-
-cat > "${datadictionary_root}/${fname}.csv" <<EOF
+  cat > "${datadictionary_product_tag_root}/${fname}.csv" <<EOF
 Table,Definition,Field,Field Definition,Type
 EOF
 
-sed 's/"\t"/","/g; s/^\t"/,"/' "${tmp_dir}/output.tsv" > "${datadictionary_root}/${fname}.csv"
+  sed 's/"\t"/","/g; s/^\t"/,"/' "${tmp_dir}/output.tsv" > "${datadictionary_product_tag_root}/${fname}.csv"
 
-
-cat > "${datadictionary_root}/${fname}.xls" <<EOF
+  cat > "${datadictionary_product_tag_root}/${fname}.xls" <<EOF
 <table border=1>
 <tr><th  bgcolor="goldenrod">Table</th><th  bgcolor="goldenrod">Definition</th><th  bgcolor="goldenrod">Field</th><th  bgcolor="goldenrod">Field Definition</th><th  bgcolor="goldenrod">Type</th></tr>
 EOF
-tail -n +2 "${tmp_dir}/output.tsv"  | \
- sed 's!"\t"!</td><td valign="top">!g; s!^"!<td valign="top">!; s!^\t"!<td/><td valign="top">!; s!"$!</td>!g; s!^!<tr>!; s!$!</tr>!' >> \
- "${datadictionary_root}/${fname}.xls" 
-cat >>"${datadictionary_root}/${fname}.xls"  <<EOF
+
+  tail -n +2 "${tmp_dir}/output.tsv" | \
+    sed 's!"\t"!</td><td valign="top">!g; s!^"!<td valign="top">!; s!^\t"!<td/><td valign="top">!; s!"$!</td>!g; s!^!<tr>!; s!$!</tr>!' >> \
+    "${datadictionary_product_tag_root}/${fname}.xls"
+
+  cat >>"${datadictionary_product_tag_root}/${fname}.xls"  <<EOF
 </table>
 EOF
-sed -i '4,${s/<td/<td bgcolor="azure"/g;n}' "${datadictionary_root}/${fname}.xls"
 
+  sed -i '4,${s/<td/<td bgcolor="azure"/g;n}' "${datadictionary_product_tag_root}/${fname}.xls"
+
+  return 0
 }
-
-
 
 #
 # Stuff for building nquads files
@@ -2139,7 +2066,7 @@ function quadify () {
   #
   # Set the memory for ARQ
   #
-  export JVM_ARGS=${JVM_ARGS:--Xmx2G}
+  export JVM_ARGS=${JVM_ARGS:--Xmx4G}
 
   cat >"${tmpont}" << __HERE__
 SELECT ?o WHERE {?o a <http://www.w3.org/2002/07/owl#Ontology> }
