@@ -890,6 +890,7 @@ function vocabularyConvertTurtleToAllFormats() {
 function zipWholeTagDir() {
 
   local tarGzFile="${branch_root}/${GIT_TAG_NAME}.tar.gz"
+  local tarGzContentsFile="${branch_root}/${GIT_TAG_NAME}.tar.gz.log"
   local zipttlFile="${branch_root}/${GIT_TAG_NAME}.ttl.zip"
   local ziprdfFile="${branch_root}/${GIT_TAG_NAME}.rdf.zip"
   local zipjsonFile="${branch_root}/${GIT_TAG_NAME}.jsonld.zip"
@@ -900,8 +901,8 @@ function zipWholeTagDir() {
     tar -cvzf "${tarGzFile}" "${tag_root/${spec_root}/.}"
   )
 
-  echo "Created ${tarGzFile/${WORKSPACE}/}:"
-  ls -al "${tarGzFile}" || return $?
+  echo "Created ${tarGzFile/${WORKSPACE}/}, saving contents list in ${tarGzContentsFile}"
+  ls -al "${tarGzFile}" > "${tarGzContentsFile}" || return $?
 
   return 0
 }
