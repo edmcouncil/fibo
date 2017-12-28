@@ -180,7 +180,9 @@ pipeline {
 
         echo "Copy all generated content to ${env.NGINX_SPEC_ROOT}:"
         sh 'ls -al ${NGINX_SPEC_ROOT}/'
-        sh 'cp -vr . ${NGINX_SPEC_ROOT}/'
+        sh 'cp -vr . ${NGINX_SPEC_ROOT}/ > published-files.log 2>&1'
+        echo 'Successfully copied all files to destination, see published-files.log in the workspace'
+        archiveArtifacts artifacts: 'published-files.log', fingerprint: true
 
         //setGitHubPullRequestStatus context: 'fibo-publish', message: '', state: 'SUCCESS'
       }
