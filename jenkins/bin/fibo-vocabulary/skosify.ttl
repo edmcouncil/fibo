@@ -1,22 +1,25 @@
 # baseURI: http://www.edmcouncil.org/skosify
+# imports: http://purl.org/dc/terms/
 # imports: http://spinrdf.org/spin
+# imports: http://spinrdf.org/spinx
+# imports: http://www.omg.org/techprocess/ab/SpecificationMetadata/
 # imports: http://www.w3.org/2004/02/skos/core
-# imports: https://spec.edmcouncil.org/fibo/ontology/master/latest/FND/Utilities/AnnotationVocabulary/
-# prefix: skosify
 
 @prefix afn: <http://jena.apache.org/ARQ/function#> .
 @prefix arg: <http://spinrdf.org/arg#> .
-@prefix fibo-fnd-utl-av: <https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/> .
+@prefix fibo-fnd-utl-av: <https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/> .
 @prefix fn: <http://www.w3.org/2005/xpath-functions#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix skosify: <http://www.edmcouncil.org/skosify#> .
+@prefix sm: <http://www.omg.org/techprocess/ab/SpecificationMetadata/> .
 @prefix smf: <http://topbraid.org/sparqlmotionfunctions#> .
 @prefix sp: <http://spinrdf.org/sp#> .
 @prefix spif: <http://spinrdf.org/spif#> .
 @prefix spin: <http://spinrdf.org/spin#> .
+@prefix spinx: <http://spinrdf.org/spinx#> .
 @prefix spl: <http://spinrdf.org/spl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
@@ -28,15 +31,180 @@ afn:Select_2
   rdf:type sp:Select ;
   rdfs:label "Select 2"^^xsd:string ;
 .
+arg:a1
+  rdf:type rdf:Property ;
+  rdfs:subPropertyOf sp:arg ;
+.
+arg:a2
+  rdf:type rdf:Property ;
+  rdfs:subPropertyOf sp:arg ;
+.
 arg:text
   rdf:type rdf:Property ;
   rdfs:subPropertyOf sp:arg ;
 .
 <http://www.edmcouncil.org/skosify>
   rdf:type owl:Ontology ;
+  owl:imports <http://purl.org/dc/terms/> ;
   owl:imports <http://spinrdf.org/spin> ;
+  owl:imports <http://spinrdf.org/spinx> ;
+  owl:imports sm: ;
   owl:imports <http://www.w3.org/2004/02/skos/core> ;
-  owl:imports <https://spec.edmcouncil.org/fibo/ontology/master/latest/FND/Utilities/AnnotationVocabulary/> ;
+.
+skosify:px
+  rdf:type owl:DatatypeProperty ;
+  rdfs:label "px"^^xsd:string ;
+.
+skosify:subs
+  rdf:type spin:Function ;
+  spin:body [
+      rdf:type sp:Select ;
+      sp:resultVariables (
+          [
+            sp:varName "result"^^xsd:string ;
+          ]
+        ) ;
+      sp:where (
+          (
+            [
+              rdf:type sp:Bind ;
+              sp:expression [
+                  rdf:type sp:replace ;
+                  sp:arg1 [
+                      rdf:type sp:replace ;
+                      sp:arg1 [
+                          rdf:type xsd:string ;
+                          sp:arg1 [
+                              sp:varName "a1"^^xsd:string ;
+                            ] ;
+                        ] ;
+                      sp:arg2 "(/|#)[^/#]*$" ;
+                      sp:arg3 "" ;
+                    ] ;
+                  sp:arg2 "^.*/" ;
+                  sp:arg3 "" ;
+                ] ;
+              sp:variable [
+                  sp:varName "ont"^^xsd:string ;
+                ] ;
+            ]
+            [
+              rdf:type sp:Bind ;
+              sp:expression [
+                  rdf:type sp:replace ;
+                  sp:arg1 [
+                      rdf:type sp:replace ;
+                      sp:arg1 [
+                          rdf:type sp:replace ;
+                          sp:arg1 [
+                              rdf:type xsd:string ;
+                              sp:arg1 [
+                                  sp:varName "a1"^^xsd:string ;
+                                ] ;
+                            ] ;
+                          sp:arg2 "(/|#)[^/#]*$" ;
+                          sp:arg3 "" ;
+                        ] ;
+                      sp:arg2 "/[^/]*$" ;
+                      sp:arg3 "" ;
+                    ] ;
+                  sp:arg2 "^.*/" ;
+                  sp:arg3 "" ;
+                ] ;
+              sp:variable [
+                  sp:varName "mod"^^xsd:string ;
+                ] ;
+            ]
+            [
+              rdf:type sp:Bind ;
+              sp:expression [
+                  rdf:type sp:replace ;
+                  sp:arg1 [
+                      rdf:type sp:replace ;
+                      sp:arg1 [
+                          rdf:type xsd:string ;
+                          sp:arg1 [
+                              sp:varName "a1"^^xsd:string ;
+                            ] ;
+                        ] ;
+                      sp:arg2 "^.*fibo/ontology/" ;
+                      sp:arg3 "" ;
+                    ] ;
+                  sp:arg2 "/.*$" ;
+                  sp:arg3 "" ;
+                ] ;
+              sp:variable [
+                  sp:varName "domain"^^xsd:string ;
+                ] ;
+            ]
+            [
+              rdf:type sp:Bind ;
+              sp:expression [
+                  rdf:type sp:replace ;
+                  sp:arg1 [
+                      rdf:type xsd:string ;
+                      sp:arg1 [
+                          sp:varName "a2"^^xsd:string ;
+                        ] ;
+                    ] ;
+                  sp:arg2 "[{]M[}]" ;
+                  sp:arg3 [
+                      sp:varName "mod"^^xsd:string ;
+                    ] ;
+                ] ;
+              sp:variable [
+                  sp:varName "r1"^^xsd:string ;
+                ] ;
+            ]
+            [
+              rdf:type sp:Bind ;
+              sp:expression [
+                  rdf:type sp:replace ;
+                  sp:arg1 [
+                      sp:varName "r1"^^xsd:string ;
+                    ] ;
+                  sp:arg2 "[{]O[}]" ;
+                  sp:arg3 [
+                      sp:varName "ont"^^xsd:string ;
+                    ] ;
+                ] ;
+              sp:variable [
+                  sp:varName "r2"^^xsd:string ;
+                ] ;
+            ]
+            [
+              rdf:type sp:Bind ;
+              sp:expression [
+                  rdf:type sp:replace ;
+                  sp:arg1 [
+                      sp:varName "r2"^^xsd:string ;
+                    ] ;
+                  sp:arg2 "[{]D[}]" ;
+                  sp:arg3 [
+                      sp:varName "domain"^^xsd:string ;
+                    ] ;
+                ] ;
+              sp:variable [
+                  sp:varName "result"^^xsd:string ;
+                ] ;
+            ]
+          )
+        ) ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate arg:a1 ;
+      spl:valueType xsd:string ;
+    ] ;
+  spin:constraint [
+      rdf:type spl:Argument ;
+      spl:predicate arg:a2 ;
+      spl:valueType xsd:string ;
+    ] ;
+  spin:returnType xsd:string ;
+  rdfs:comment "Substitute keys from Domain, Module and Ontology into a given URL"^^xsd:string ;
+  rdfs:label "subs"^^xsd:string ;
+  rdfs:subClassOf spin:Functions ;
 .
 rdf:Property
   spin:rule [
@@ -83,6 +251,34 @@ owl:Class
             sp:predicate rdf:type ;
             sp:subject [
                 sp:varName "entity"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Filter ;
+            sp:expression [
+                rdf:type sp:notExists ;
+                sp:elements (
+                    [
+                      sp:object "true"^^xsd:boolean ;
+                      sp:predicate owl:deprecated ;
+                      sp:subject [
+                          sp:varName "entity"^^xsd:string ;
+                        ] ;
+                    ]
+                  ) ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Filter ;
+            sp:expression [
+                rdf:type sp:regex ;
+                sp:arg1 [
+                    rdf:type xsd:string ;
+                    sp:arg1 [
+                        sp:varName "entity"^^xsd:string ;
+                      ] ;
+                  ] ;
+                sp:arg2 "edmcouncil" ;
               ] ;
           ]
           [
@@ -194,32 +390,13 @@ owl:Class
           [
             rdf:type sp:Bind ;
             sp:expression [
-                rdf:type sp:replace ;
-                sp:arg1 [
-                    rdf:type sp:replace ;
-                    sp:arg1 [
-                        rdf:type sp:str ;
-                        sp:arg1 [
-                            sp:varName "entity"^^xsd:string ;
-                          ] ;
-                      ] ;
-                    sp:arg2 "(/|#)[^/]*$" ;
-                    sp:arg3 "" ;
-                  ] ;
-                sp:arg2 "^.*/" ;
-                sp:arg3 "" ;
-              ] ;
-            sp:variable [
-                sp:varName "module"^^xsd:string ;
-              ] ;
-          ]
-          [
-            rdf:type sp:Bind ;
-            sp:expression [
                 rdf:type sp:uri ;
                 sp:arg1 [
-                    rdf:type sp:replace ;
-                    sp:arg1 [
+                    rdf:type skosify:subs ;
+                    arg:a1 [
+                        sp:varName "entity"^^xsd:string ;
+                      ] ;
+                    arg:a2 [
                         rdf:type sp:concat ;
                         sp:arg1 [
                             sp:varName "px"^^xsd:string ;
@@ -238,10 +415,6 @@ owl:Class
                             sp:arg2 "^." ;
                             sp:arg3 "uc($0)" ;
                           ] ;
-                      ] ;
-                    sp:arg2 "[{]M[}]" ;
-                    sp:arg3 [
-                        sp:varName "module"^^xsd:string ;
                       ] ;
                   ] ;
               ] ;
@@ -278,6 +451,21 @@ owl:Class
             sp:predicate rdf:type ;
             sp:subject [
                 sp:varName "entity"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Filter ;
+            sp:expression [
+                rdf:type sp:notExists ;
+                sp:elements (
+                    [
+                      sp:object "true"^^xsd:boolean ;
+                      sp:predicate owl:deprecated ;
+                      sp:subject [
+                          sp:varName "entity"^^xsd:string ;
+                        ] ;
+                    ]
+                  ) ;
               ] ;
           ]
           [
@@ -403,32 +591,13 @@ owl:Class
           [
             rdf:type sp:Bind ;
             sp:expression [
-                rdf:type sp:replace ;
-                sp:arg1 [
-                    rdf:type sp:replace ;
-                    sp:arg1 [
-                        rdf:type sp:str ;
-                        sp:arg1 [
-                            sp:varName "entity"^^xsd:string ;
-                          ] ;
-                      ] ;
-                    sp:arg2 "(/|#)[^/]*$" ;
-                    sp:arg3 "" ;
-                  ] ;
-                sp:arg2 "^.*/" ;
-                sp:arg3 "" ;
-              ] ;
-            sp:variable [
-                sp:varName "module"^^xsd:string ;
-              ] ;
-          ]
-          [
-            rdf:type sp:Bind ;
-            sp:expression [
                 rdf:type sp:uri ;
                 sp:arg1 [
-                    rdf:type sp:replace ;
-                    sp:arg1 [
+                    rdf:type skosify:subs ;
+                    arg:a1 [
+                        sp:varName "entity"^^xsd:string ;
+                      ] ;
+                    arg:a2 [
                         rdf:type sp:concat ;
                         sp:arg1 [
                             sp:varName "px"^^xsd:string ;
@@ -442,10 +611,6 @@ owl:Class
                                   ] ;
                               ] ;
                           ] ;
-                      ] ;
-                    sp:arg2 "[{]M[}]" ;
-                    sp:arg3 [
-                        sp:varName "module"^^xsd:string ;
                       ] ;
                   ] ;
               ] ;
@@ -484,6 +649,21 @@ owl:Class
             sp:predicate rdf:type ;
             sp:subject [
                 sp:varName "entity"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Filter ;
+            sp:expression [
+                rdf:type sp:notExists ;
+                sp:elements (
+                    [
+                      sp:object "true"^^xsd:boolean ;
+                      sp:predicate owl:deprecated ;
+                      sp:subject [
+                          sp:varName "entity"^^xsd:string ;
+                        ] ;
+                    ]
+                  ) ;
               ] ;
           ]
           [
@@ -534,28 +714,6 @@ owl:Class
               ] ;
             sp:variable [
                 sp:varName "lentity"^^xsd:string ;
-              ] ;
-          ]
-          [
-            rdf:type sp:Bind ;
-            sp:expression [
-                rdf:type sp:replace ;
-                sp:arg1 [
-                    rdf:type sp:replace ;
-                    sp:arg1 [
-                        rdf:type sp:str ;
-                        sp:arg1 [
-                            sp:varName "entity"^^xsd:string ;
-                          ] ;
-                      ] ;
-                    sp:arg2 "(/|#)[^/]*$" ;
-                    sp:arg3 "" ;
-                  ] ;
-                sp:arg2 "^.*/" ;
-                sp:arg3 "" ;
-              ] ;
-            sp:variable [
-                sp:varName "module"^^xsd:string ;
               ] ;
           ]
           [
@@ -621,8 +779,11 @@ owl:Class
             sp:expression [
                 rdf:type sp:uri ;
                 sp:arg1 [
-                    rdf:type sp:replace ;
-                    sp:arg1 [
+                    rdf:type skosify:subs ;
+                    arg:a1 [
+                        sp:varName "entity"^^xsd:string ;
+                      ] ;
+                    arg:a2 [
                         rdf:type sp:concat ;
                         sp:arg1 [
                             sp:varName "px"^^xsd:string ;
@@ -641,10 +802,6 @@ owl:Class
                             sp:arg2 "^." ;
                             sp:arg3 "uc($0)" ;
                           ] ;
-                      ] ;
-                    sp:arg2 "[{]M[}]" ;
-                    sp:arg3 [
-                        sp:varName "module"^^xsd:string ;
                       ] ;
                   ] ;
               ] ;
@@ -683,6 +840,21 @@ owl:Class
             sp:predicate rdf:type ;
             sp:subject [
                 sp:varName "entity"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Filter ;
+            sp:expression [
+                rdf:type sp:notExists ;
+                sp:elements (
+                    [
+                      sp:object "true"^^xsd:boolean ;
+                      sp:predicate owl:deprecated ;
+                      sp:subject [
+                          sp:varName "entity"^^xsd:string ;
+                        ] ;
+                    ]
+                  ) ;
               ] ;
           ]
           [
@@ -742,28 +914,6 @@ owl:Class
               ] ;
             sp:variable [
                 sp:varName "lentity"^^xsd:string ;
-              ] ;
-          ]
-          [
-            rdf:type sp:Bind ;
-            sp:expression [
-                rdf:type sp:replace ;
-                sp:arg1 [
-                    rdf:type sp:replace ;
-                    sp:arg1 [
-                        rdf:type sp:str ;
-                        sp:arg1 [
-                            sp:varName "entity"^^xsd:string ;
-                          ] ;
-                      ] ;
-                    sp:arg2 "(/|#)[^/]*$" ;
-                    sp:arg3 "" ;
-                  ] ;
-                sp:arg2 "^.*/" ;
-                sp:arg3 "" ;
-              ] ;
-            sp:variable [
-                sp:varName "module"^^xsd:string ;
               ] ;
           ]
           [
@@ -832,8 +982,11 @@ owl:Class
             sp:expression [
                 rdf:type sp:uri ;
                 sp:arg1 [
-                    rdf:type sp:replace ;
-                    sp:arg1 [
+                    rdf:type skosify:subs ;
+                    arg:a1 [
+                        sp:varName "entity"^^xsd:string ;
+                      ] ;
+                    arg:a2 [
                         rdf:type sp:concat ;
                         sp:arg1 [
                             sp:varName "px"^^xsd:string ;
@@ -847,10 +1000,6 @@ owl:Class
                                   ] ;
                               ] ;
                           ] ;
-                      ] ;
-                    sp:arg2 "[{]M[}]" ;
-                    sp:arg3 [
-                        sp:varName "module"^^xsd:string ;
                       ] ;
                   ] ;
               ] ;
@@ -974,6 +1123,36 @@ owl:Thing
               ] ;
           ]
           [
+            rdf:type sp:Filter ;
+            sp:expression [
+                rdf:type sp:notExists ;
+                sp:elements (
+                    [
+                      sp:object "true"^^xsd:boolean ;
+                      sp:predicate owl:deprecated ;
+                      sp:subject [
+                          sp:varName "y"^^xsd:string ;
+                        ] ;
+                    ]
+                  ) ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Filter ;
+            sp:expression [
+                rdf:type sp:notExists ;
+                sp:elements (
+                    [
+                      sp:object "true"^^xsd:boolean ;
+                      sp:predicate owl:deprecated ;
+                      sp:subject [
+                          sp:varName "s"^^xsd:string ;
+                        ] ;
+                    ]
+                  ) ;
+              ] ;
+          ]
+          [
             rdf:type sp:Optional ;
             sp:elements (
                 [
@@ -1068,19 +1247,19 @@ owl:Thing
                                         sp:varName "yStr"^^xsd:string ;
                                       ] ;
                                   ] ;
-                                sp:arg2 "”" ;
+                                sp:arg2 "" ;
                                 sp:arg3 "\"" ;
                               ] ;
-                            sp:arg2 "“" ;
+                            sp:arg2 "" ;
                             sp:arg3 "\"" ;
                           ] ;
-                        sp:arg2 "–" ;
+                        sp:arg2 "" ;
                         sp:arg3 "-" ;
                       ] ;
-                    sp:arg2 "’" ;
+                    sp:arg2 "" ;
                     sp:arg3 "'" ;
                   ] ;
-                sp:arg2 "‘" ;
+                sp:arg2 "" ;
                 sp:arg3 "'" ;
               ] ;
             sp:variable [
@@ -1124,32 +1303,13 @@ owl:Thing
           [
             rdf:type sp:Bind ;
             sp:expression [
-                rdf:type sp:replace ;
-                sp:arg1 [
-                    rdf:type sp:replace ;
-                    sp:arg1 [
-                        rdf:type sp:str ;
-                        sp:arg1 [
-                            sp:varName "z"^^xsd:string ;
-                          ] ;
-                      ] ;
-                    sp:arg2 "(/|#)[^/]*$" ;
-                    sp:arg3 "" ;
-                  ] ;
-                sp:arg2 "^.*/" ;
-                sp:arg3 "" ;
-              ] ;
-            sp:variable [
-                sp:varName "zmodule"^^xsd:string ;
-              ] ;
-          ]
-          [
-            rdf:type sp:Bind ;
-            sp:expression [
                 rdf:type sp:uri ;
                 sp:arg1 [
-                    rdf:type sp:replace ;
-                    sp:arg1 [
+                    rdf:type skosify:subs ;
+                    arg:a1 [
+                        sp:varName "z"^^xsd:string ;
+                      ] ;
+                    arg:a2 [
                         rdf:type sp:concat ;
                         sp:arg1 [
                             sp:varName "px"^^xsd:string ;
@@ -1164,10 +1324,6 @@ owl:Thing
                               ] ;
                           ] ;
                       ] ;
-                    sp:arg2 "[{]M[}]" ;
-                    sp:arg3 [
-                        sp:varName "zmodule"^^xsd:string ;
-                      ] ;
                   ] ;
               ] ;
             sp:variable [
@@ -1177,32 +1333,13 @@ owl:Thing
           [
             rdf:type sp:Bind ;
             sp:expression [
-                rdf:type sp:replace ;
-                sp:arg1 [
-                    rdf:type sp:replace ;
-                    sp:arg1 [
-                        rdf:type sp:str ;
-                        sp:arg1 [
-                            sp:varName "s"^^xsd:string ;
-                          ] ;
-                      ] ;
-                    sp:arg2 "(/|#)[^/]*$" ;
-                    sp:arg3 "" ;
-                  ] ;
-                sp:arg2 "^.*/" ;
-                sp:arg3 "" ;
-              ] ;
-            sp:variable [
-                sp:varName "smodule"^^xsd:string ;
-              ] ;
-          ]
-          [
-            rdf:type sp:Bind ;
-            sp:expression [
                 rdf:type sp:uri ;
                 sp:arg1 [
-                    rdf:type sp:replace ;
-                    sp:arg1 [
+                    rdf:type skosify:subs ;
+                    arg:a1 [
+                        sp:varName "s"^^xsd:string ;
+                      ] ;
+                    arg:a2 [
                         rdf:type sp:concat ;
                         sp:arg1 [
                             sp:varName "px"^^xsd:string ;
@@ -1217,10 +1354,6 @@ owl:Thing
                               ] ;
                           ] ;
                       ] ;
-                    sp:arg2 "[{]M[}]" ;
-                    sp:arg3 [
-                        sp:varName "smodule"^^xsd:string ;
-                      ] ;
                   ] ;
               ] ;
             sp:variable [
@@ -1230,32 +1363,13 @@ owl:Thing
           [
             rdf:type sp:Bind ;
             sp:expression [
-                rdf:type sp:replace ;
-                sp:arg1 [
-                    rdf:type sp:replace ;
-                    sp:arg1 [
-                        rdf:type sp:str ;
-                        sp:arg1 [
-                            sp:varName "y"^^xsd:string ;
-                          ] ;
-                      ] ;
-                    sp:arg2 "(/|#)[^/]*$" ;
-                    sp:arg3 "" ;
-                  ] ;
-                sp:arg2 "^.*/" ;
-                sp:arg3 "" ;
-              ] ;
-            sp:variable [
-                sp:varName "ymodule"^^xsd:string ;
-              ] ;
-          ]
-          [
-            rdf:type sp:Bind ;
-            sp:expression [
                 rdf:type sp:uri ;
                 sp:arg1 [
-                    rdf:type sp:replace ;
-                    sp:arg1 [
+                    rdf:type skosify:subs ;
+                    arg:a1 [
+                        sp:varName "y"^^xsd:string ;
+                      ] ;
+                    arg:a2 [
                         rdf:type sp:concat ;
                         sp:arg1 [
                             sp:varName "px"^^xsd:string ;
@@ -1269,10 +1383,6 @@ owl:Thing
                                   ] ;
                               ] ;
                           ] ;
-                      ] ;
-                    sp:arg2 "[{]M[}]" ;
-                    sp:arg3 [
-                        sp:varName "ymodule"^^xsd:string ;
                       ] ;
                   ] ;
               ] ;
@@ -1310,13 +1420,6 @@ owl:Thing
           [
             sp:object owl:ObjectProperty ;
             sp:predicate rdf:type ;
-            sp:subject [
-                sp:varName "skpprop"^^xsd:string ;
-              ] ;
-          ]
-          [
-            sp:object "Rule 4 a" ;
-            sp:predicate skos:historyNote ;
             sp:subject [
                 sp:varName "skpprop"^^xsd:string ;
               ] ;
@@ -1489,6 +1592,37 @@ owl:Thing
                   [
                     rdf:type sp:Filter ;
                     sp:expression [
+                        rdf:type sp:not ;
+                        sp:arg1 [
+                            rdf:type sp:regex ;
+                            sp:arg1 [
+                                rdf:type xsd:string ;
+                                sp:arg1 [
+                                    sp:varName "p"^^xsd:string ;
+                                  ] ;
+                              ] ;
+                            sp:arg2 "vocabulary" ;
+                          ] ;
+                      ] ;
+                  ]
+                  [
+                    rdf:type sp:Filter ;
+                    sp:expression [
+                        rdf:type sp:notExists ;
+                        sp:elements (
+                            [
+                              sp:object "true"^^xsd:boolean ;
+                              sp:predicate owl:deprecated ;
+                              sp:subject [
+                                  sp:varName "s"^^xsd:string ;
+                                ] ;
+                            ]
+                          ) ;
+                      ] ;
+                  ]
+                  [
+                    rdf:type sp:Filter ;
+                    sp:expression [
                         rdf:type sp:ne ;
                         sp:arg1 [
                             sp:varName "p"^^xsd:string ;
@@ -1534,19 +1668,19 @@ owl:Thing
                                                 sp:varName "yStr"^^xsd:string ;
                                               ] ;
                                           ] ;
-                                        sp:arg2 "”" ;
+                                        sp:arg2 "" ;
                                         sp:arg3 "\"" ;
                                       ] ;
-                                    sp:arg2 "“" ;
+                                    sp:arg2 "" ;
                                     sp:arg3 "\"" ;
                                   ] ;
-                                sp:arg2 "–" ;
+                                sp:arg2 "" ;
                                 sp:arg3 "-" ;
                               ] ;
-                            sp:arg2 "’" ;
+                            sp:arg2 "" ;
                             sp:arg3 "'" ;
                           ] ;
-                        sp:arg2 "‘" ;
+                        sp:arg2 "" ;
                         sp:arg3 "'" ;
                       ] ;
                     sp:variable [
@@ -1573,6 +1707,47 @@ owl:Thing
                   [
                     rdf:type sp:Bind ;
                     sp:expression [
+                        rdf:type sp:if ;
+                        sp:arg1 [
+                            rdf:type sp:exists ;
+                            sp:elements (
+                                [
+                                  sp:object rdfs:Datatype ;
+                                  sp:predicate rdf:type ;
+                                  sp:subject [
+                                      sp:varName "parent"^^xsd:string ;
+                                    ] ;
+                                ]
+                              ) ;
+                          ] ;
+                        sp:arg2 [
+                            rdf:type sp:replace ;
+                            sp:arg1 [
+                                rdf:type sp:encode_for_uri ;
+                                sp:arg1 [
+                                    rdf:type sp:str ;
+                                    sp:arg1 [
+                                        sp:varName "lparent"^^xsd:string ;
+                                      ] ;
+                                  ] ;
+                              ] ;
+                            sp:arg2 "^." ;
+                            sp:arg3 "uc($0)" ;
+                          ] ;
+                        sp:arg3 [
+                            rdf:type sp:encode_for_uri ;
+                            sp:arg1 [
+                                sp:varName "lparent"^^xsd:string ;
+                              ] ;
+                          ] ;
+                      ] ;
+                    sp:variable [
+                        sp:varName "lcpparent"^^xsd:string ;
+                      ] ;
+                  ]
+                  [
+                    rdf:type sp:Bind ;
+                    sp:expression [
                         rdf:type sp:replace ;
                         sp:arg1 [
                             rdf:type sp:str ;
@@ -1590,49 +1765,55 @@ owl:Thing
                   [
                     rdf:type sp:Bind ;
                     sp:expression [
-                        rdf:type sp:replace ;
-                        sp:arg1 [
-                            rdf:type sp:replace ;
-                            sp:arg1 [
-                                rdf:type sp:str ;
-                                sp:arg1 [
-                                    sp:varName "p"^^xsd:string ;
-                                  ] ;
-                              ] ;
-                            sp:arg2 "(/|#)[^/]*$" ;
-                            sp:arg3 "" ;
-                          ] ;
-                        sp:arg2 "^.*/" ;
-                        sp:arg3 "" ;
-                      ] ;
-                    sp:variable [
-                        sp:varName "pmodule"^^xsd:string ;
-                      ] ;
-                  ]
-                  [
-                    rdf:type sp:Bind ;
-                    sp:expression [
                         rdf:type sp:uri ;
                         sp:arg1 [
-                            rdf:type sp:replace ;
-                            sp:arg1 [
+                            rdf:type skosify:subs ;
+                            arg:a1 [
+                                sp:varName "p"^^xsd:string ;
+                              ] ;
+                            arg:a2 [
                                 rdf:type sp:concat ;
                                 sp:arg1 [
                                     sp:varName "px"^^xsd:string ;
                                   ] ;
                                 sp:arg2 [
-                                    rdf:type sp:encode_for_uri ;
+                                    rdf:type sp:if ;
                                     sp:arg1 [
-                                        rdf:type sp:str ;
+                                        rdf:type sp:exists ;
+                                        sp:elements (
+                                            [
+                                              sp:object rdfs:Datatype ;
+                                              sp:predicate rdf:type ;
+                                              sp:subject [
+                                                  sp:varName "p"^^xsd:string ;
+                                                ] ;
+                                            ]
+                                          ) ;
+                                      ] ;
+                                    sp:arg2 [
+                                        rdf:type sp:replace ;
                                         sp:arg1 [
-                                            sp:varName "xpobject"^^xsd:string ;
+                                            rdf:type sp:encode_for_uri ;
+                                            sp:arg1 [
+                                                rdf:type sp:str ;
+                                                sp:arg1 [
+                                                    sp:varName "xpobject"^^xsd:string ;
+                                                  ] ;
+                                              ] ;
+                                          ] ;
+                                        sp:arg2 "^." ;
+                                        sp:arg3 "uc($0)" ;
+                                      ] ;
+                                    sp:arg3 [
+                                        rdf:type sp:encode_for_uri ;
+                                        sp:arg1 [
+                                            rdf:type sp:str ;
+                                            sp:arg1 [
+                                                sp:varName "xpobject"^^xsd:string ;
+                                              ] ;
                                           ] ;
                                       ] ;
                                   ] ;
-                              ] ;
-                            sp:arg2 "[{]M[}]" ;
-                            sp:arg3 [
-                                sp:varName "pmodule"^^xsd:string ;
                               ] ;
                           ] ;
                       ] ;
@@ -1643,32 +1824,13 @@ owl:Thing
                   [
                     rdf:type sp:Bind ;
                     sp:expression [
-                        rdf:type sp:replace ;
-                        sp:arg1 [
-                            rdf:type sp:replace ;
-                            sp:arg1 [
-                                rdf:type sp:str ;
-                                sp:arg1 [
-                                    sp:varName "s"^^xsd:string ;
-                                  ] ;
-                              ] ;
-                            sp:arg2 "(/|#)[^/]*$" ;
-                            sp:arg3 "" ;
-                          ] ;
-                        sp:arg2 "^.*/" ;
-                        sp:arg3 "" ;
-                      ] ;
-                    sp:variable [
-                        sp:varName "smodule"^^xsd:string ;
-                      ] ;
-                  ]
-                  [
-                    rdf:type sp:Bind ;
-                    sp:expression [
                         rdf:type sp:uri ;
                         sp:arg1 [
-                            rdf:type sp:replace ;
-                            sp:arg1 [
+                            rdf:type skosify:subs ;
+                            arg:a1 [
+                                sp:varName "s"^^xsd:string ;
+                              ] ;
+                            arg:a2 [
                                 rdf:type sp:concat ;
                                 sp:arg1 [
                                     sp:varName "px"^^xsd:string ;
@@ -1683,10 +1845,6 @@ owl:Thing
                                       ] ;
                                   ] ;
                               ] ;
-                            sp:arg2 "[{]M[}]" ;
-                            sp:arg3 [
-                                sp:varName "smodule"^^xsd:string ;
-                              ] ;
                           ] ;
                       ] ;
                     sp:variable [
@@ -1696,32 +1854,13 @@ owl:Thing
                   [
                     rdf:type sp:Bind ;
                     sp:expression [
-                        rdf:type sp:replace ;
-                        sp:arg1 [
-                            rdf:type sp:replace ;
-                            sp:arg1 [
-                                rdf:type sp:str ;
-                                sp:arg1 [
-                                    sp:varName "w"^^xsd:string ;
-                                  ] ;
-                              ] ;
-                            sp:arg2 "(/|#)[^/]*$" ;
-                            sp:arg3 "" ;
-                          ] ;
-                        sp:arg2 "^.*/" ;
-                        sp:arg3 "" ;
-                      ] ;
-                    sp:variable [
-                        sp:varName "wmodule"^^xsd:string ;
-                      ] ;
-                  ]
-                  [
-                    rdf:type sp:Bind ;
-                    sp:expression [
                         rdf:type sp:uri ;
                         sp:arg1 [
-                            rdf:type sp:replace ;
-                            sp:arg1 [
+                            rdf:type skosify:subs ;
+                            arg:a1 [
+                                sp:varName "w"^^xsd:string ;
+                              ] ;
+                            arg:a2 [
                                 rdf:type sp:concat ;
                                 sp:arg1 [
                                     sp:varName "px"^^xsd:string ;
@@ -1735,10 +1874,6 @@ owl:Thing
                                           ] ;
                                       ] ;
                                   ] ;
-                              ] ;
-                            sp:arg2 "[{]M[}]" ;
-                            sp:arg3 [
-                                sp:varName "module"^^xsd:string ;
                               ] ;
                           ] ;
                       ] ;
@@ -1756,6 +1891,13 @@ owl:Thing
                     sp:subject [
                         sp:varName "s"^^xsd:string ;
                       ] ;
+                  ]
+                  [
+                    sp:object [
+                        sp:varName "px"^^xsd:string ;
+                      ] ;
+                    sp:predicate skosify:px ;
+                    sp:subject skos:Concept ;
                   ]
                   [
                     sp:object owl:Restriction ;
@@ -1847,6 +1989,36 @@ owl:Thing
                       ] ;
                   ]
                   [
+                    rdf:type sp:Filter ;
+                    sp:expression [
+                        rdf:type sp:notExists ;
+                        sp:elements (
+                            [
+                              sp:object "true"^^xsd:boolean ;
+                              sp:predicate owl:deprecated ;
+                              sp:subject [
+                                  sp:varName "p"^^xsd:string ;
+                                ] ;
+                            ]
+                          ) ;
+                      ] ;
+                  ]
+                  [
+                    rdf:type sp:Filter ;
+                    sp:expression [
+                        rdf:type sp:notExists ;
+                        sp:elements (
+                            [
+                              sp:object "true"^^xsd:boolean ;
+                              sp:predicate owl:deprecated ;
+                              sp:subject [
+                                  sp:varName "s"^^xsd:string ;
+                                ] ;
+                            ]
+                          ) ;
+                      ] ;
+                  ]
+                  [
                     rdf:type sp:Bind ;
                     sp:expression [
                         rdf:type sp:replace ;
@@ -1884,19 +2056,19 @@ owl:Thing
                                                 sp:varName "yStr"^^xsd:string ;
                                               ] ;
                                           ] ;
-                                        sp:arg2 "”" ;
+                                        sp:arg2 "" ;
                                         sp:arg3 "\"" ;
                                       ] ;
-                                    sp:arg2 "“" ;
+                                    sp:arg2 "" ;
                                     sp:arg3 "\"" ;
                                   ] ;
-                                sp:arg2 "–" ;
+                                sp:arg2 "" ;
                                 sp:arg3 "-" ;
                               ] ;
-                            sp:arg2 "’" ;
+                            sp:arg2 "" ;
                             sp:arg3 "'" ;
                           ] ;
-                        sp:arg2 "‘" ;
+                        sp:arg2 "" ;
                         sp:arg3 "'" ;
                       ] ;
                     sp:variable [
@@ -1940,49 +2112,55 @@ owl:Thing
                   [
                     rdf:type sp:Bind ;
                     sp:expression [
-                        rdf:type sp:replace ;
-                        sp:arg1 [
-                            rdf:type sp:replace ;
-                            sp:arg1 [
-                                rdf:type sp:str ;
-                                sp:arg1 [
-                                    sp:varName "p"^^xsd:string ;
-                                  ] ;
-                              ] ;
-                            sp:arg2 "(/|#)[^/]*$" ;
-                            sp:arg3 "" ;
-                          ] ;
-                        sp:arg2 "^.*/" ;
-                        sp:arg3 "" ;
-                      ] ;
-                    sp:variable [
-                        sp:varName "pmodule"^^xsd:string ;
-                      ] ;
-                  ]
-                  [
-                    rdf:type sp:Bind ;
-                    sp:expression [
                         rdf:type sp:uri ;
                         sp:arg1 [
-                            rdf:type sp:replace ;
-                            sp:arg1 [
+                            rdf:type skosify:subs ;
+                            arg:a1 [
+                                sp:varName "p"^^xsd:string ;
+                              ] ;
+                            arg:a2 [
                                 rdf:type sp:concat ;
                                 sp:arg1 [
                                     sp:varName "px"^^xsd:string ;
                                   ] ;
                                 sp:arg2 [
-                                    rdf:type sp:encode_for_uri ;
+                                    rdf:type sp:if ;
                                     sp:arg1 [
-                                        rdf:type sp:str ;
+                                        rdf:type sp:exists ;
+                                        sp:elements (
+                                            [
+                                              sp:object rdfs:Datatype ;
+                                              sp:predicate rdf:type ;
+                                              sp:subject [
+                                                  sp:varName "p"^^xsd:string ;
+                                                ] ;
+                                            ]
+                                          ) ;
+                                      ] ;
+                                    sp:arg2 [
+                                        rdf:type sp:replace ;
                                         sp:arg1 [
-                                            sp:varName "xpobject"^^xsd:string ;
+                                            rdf:type sp:encode_for_uri ;
+                                            sp:arg1 [
+                                                rdf:type sp:str ;
+                                                sp:arg1 [
+                                                    sp:varName "xpobject"^^xsd:string ;
+                                                  ] ;
+                                              ] ;
+                                          ] ;
+                                        sp:arg2 "^." ;
+                                        sp:arg3 "uc($0)" ;
+                                      ] ;
+                                    sp:arg3 [
+                                        rdf:type sp:encode_for_uri ;
+                                        sp:arg1 [
+                                            rdf:type sp:str ;
+                                            sp:arg1 [
+                                                sp:varName "xpobject"^^xsd:string ;
+                                              ] ;
                                           ] ;
                                       ] ;
                                   ] ;
-                              ] ;
-                            sp:arg2 "[{]M[}]" ;
-                            sp:arg3 [
-                                sp:varName "pmodule"^^xsd:string ;
                               ] ;
                           ] ;
                       ] ;
@@ -1993,32 +2171,13 @@ owl:Thing
                   [
                     rdf:type sp:Bind ;
                     sp:expression [
-                        rdf:type sp:replace ;
-                        sp:arg1 [
-                            rdf:type sp:replace ;
-                            sp:arg1 [
-                                rdf:type sp:str ;
-                                sp:arg1 [
-                                    sp:varName "s"^^xsd:string ;
-                                  ] ;
-                              ] ;
-                            sp:arg2 "(/|#)[^/]*$" ;
-                            sp:arg3 "" ;
-                          ] ;
-                        sp:arg2 "^.*/" ;
-                        sp:arg3 "" ;
-                      ] ;
-                    sp:variable [
-                        sp:varName "smodule"^^xsd:string ;
-                      ] ;
-                  ]
-                  [
-                    rdf:type sp:Bind ;
-                    sp:expression [
                         rdf:type sp:uri ;
                         sp:arg1 [
-                            rdf:type sp:replace ;
-                            sp:arg1 [
+                            rdf:type skosify:subs ;
+                            arg:a1 [
+                                sp:varName "s"^^xsd:string ;
+                              ] ;
+                            arg:a2 [
                                 rdf:type sp:concat ;
                                 sp:arg1 [
                                     sp:varName "px"^^xsd:string ;
@@ -2033,10 +2192,6 @@ owl:Thing
                                       ] ;
                                   ] ;
                               ] ;
-                            sp:arg2 "[{]M[}]" ;
-                            sp:arg3 [
-                                sp:varName "smodule"^^xsd:string ;
-                              ] ;
                           ] ;
                       ] ;
                     sp:variable [
@@ -2046,32 +2201,13 @@ owl:Thing
                   [
                     rdf:type sp:Bind ;
                     sp:expression [
-                        rdf:type sp:replace ;
-                        sp:arg1 [
-                            rdf:type sp:replace ;
-                            sp:arg1 [
-                                rdf:type sp:str ;
-                                sp:arg1 [
-                                    sp:varName "w"^^xsd:string ;
-                                  ] ;
-                              ] ;
-                            sp:arg2 "(/|#)[^/]*$" ;
-                            sp:arg3 "" ;
-                          ] ;
-                        sp:arg2 "^.*/" ;
-                        sp:arg3 "" ;
-                      ] ;
-                    sp:variable [
-                        sp:varName "wmodule"^^xsd:string ;
-                      ] ;
-                  ]
-                  [
-                    rdf:type sp:Bind ;
-                    sp:expression [
                         rdf:type sp:uri ;
                         sp:arg1 [
-                            rdf:type sp:replace ;
-                            sp:arg1 [
+                            rdf:type skosify:subs ;
+                            arg:a1 [
+                                sp:varName "w"^^xsd:string ;
+                              ] ;
+                            arg:a2 [
                                 rdf:type sp:concat ;
                                 sp:arg1 [
                                     sp:varName "px"^^xsd:string ;
@@ -2085,10 +2221,6 @@ owl:Thing
                                           ] ;
                                       ] ;
                                   ] ;
-                              ] ;
-                            sp:arg2 "[{]M[}]" ;
-                            sp:arg3 [
-                                sp:varName "module"^^xsd:string ;
                               ] ;
                           ] ;
                       ] ;
@@ -2164,15 +2296,29 @@ I think property paths will simplify this a lot,perhaps obviating the need for t
                 rdf:type sp:notExists ;
                 sp:elements (
                     [
-                      sp:object [
-                          sp:varName "?0"^^xsd:string ;
-                        ] ;
-                      sp:predicate rdfs:isDefinedBy ;
+                      sp:object "true"^^xsd:boolean ;
+                      sp:predicate owl:deprecated ;
                       sp:subject [
                           sp:varName "p"^^xsd:string ;
                         ] ;
                     ]
                   ) ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Filter ;
+            sp:expression [
+                rdf:type sp:not ;
+                sp:arg1 [
+                    rdf:type sp:regex ;
+                    sp:arg1 [
+                        rdf:type xsd:string ;
+                        sp:arg1 [
+                            sp:varName "p"^^xsd:string ;
+                          ] ;
+                      ] ;
+                    sp:arg2 "vocabulary" ;
+                  ] ;
               ] ;
           ]
           [
@@ -2189,11 +2335,26 @@ I think property paths will simplify this a lot,perhaps obviating the need for t
                 ]
                 [
                   sp:object [
-                      sp:varName "?1"^^xsd:string ;
+                      sp:varName "?0"^^xsd:string ;
                     ] ;
                   sp:predicate rdf:type ;
                   sp:subject [
                       sp:varName "d"^^xsd:string ;
+                    ] ;
+                ]
+                [
+                  rdf:type sp:Filter ;
+                  sp:expression [
+                      rdf:type sp:notExists ;
+                      sp:elements (
+                          [
+                            sp:object "true"^^xsd:boolean ;
+                            sp:predicate owl:deprecated ;
+                            sp:subject [
+                                sp:varName "d"^^xsd:string ;
+                              ] ;
+                          ]
+                        ) ;
                     ] ;
                 ]
               ) ;
@@ -2212,11 +2373,26 @@ I think property paths will simplify this a lot,perhaps obviating the need for t
                 ]
                 [
                   sp:object [
-                      sp:varName "?2"^^xsd:string ;
+                      sp:varName "?1"^^xsd:string ;
                     ] ;
                   sp:predicate rdf:type ;
                   sp:subject [
                       sp:varName "r"^^xsd:string ;
+                    ] ;
+                ]
+                [
+                  rdf:type sp:Filter ;
+                  sp:expression [
+                      rdf:type sp:notExists ;
+                      sp:elements (
+                          [
+                            sp:object "true"^^xsd:boolean ;
+                            sp:predicate owl:deprecated ;
+                            sp:subject [
+                                sp:varName "r"^^xsd:string ;
+                              ] ;
+                          ]
+                        ) ;
                     ] ;
                 ]
               ) ;
@@ -2241,32 +2417,13 @@ I think property paths will simplify this a lot,perhaps obviating the need for t
           [
             rdf:type sp:Bind ;
             sp:expression [
-                rdf:type sp:replace ;
-                sp:arg1 [
-                    rdf:type sp:replace ;
-                    sp:arg1 [
-                        rdf:type sp:str ;
-                        sp:arg1 [
-                            sp:varName "p"^^xsd:string ;
-                          ] ;
-                      ] ;
-                    sp:arg2 "(/|#)[^/]*$" ;
-                    sp:arg3 "" ;
-                  ] ;
-                sp:arg2 "^.*/" ;
-                sp:arg3 "" ;
-              ] ;
-            sp:variable [
-                sp:varName "pmodule"^^xsd:string ;
-              ] ;
-          ]
-          [
-            rdf:type sp:Bind ;
-            sp:expression [
                 rdf:type sp:uri ;
                 sp:arg1 [
-                    rdf:type sp:replace ;
-                    sp:arg1 [
+                    rdf:type skosify:subs ;
+                    arg:a1 [
+                        sp:varName "p"^^xsd:string ;
+                      ] ;
+                    arg:a2 [
                         rdf:type sp:concat ;
                         sp:arg1 [
                             sp:varName "px"^^xsd:string ;
@@ -2280,10 +2437,6 @@ I think property paths will simplify this a lot,perhaps obviating the need for t
                                   ] ;
                               ] ;
                           ] ;
-                      ] ;
-                    sp:arg2 "[{]M[}]" ;
-                    sp:arg3 [
-                        sp:varName "pmodule"^^xsd:string ;
                       ] ;
                   ] ;
               ] ;
@@ -2311,32 +2464,13 @@ I think property paths will simplify this a lot,perhaps obviating the need for t
           [
             rdf:type sp:Bind ;
             sp:expression [
-                rdf:type sp:replace ;
-                sp:arg1 [
-                    rdf:type sp:replace ;
-                    sp:arg1 [
-                        rdf:type sp:str ;
-                        sp:arg1 [
-                            sp:varName "d"^^xsd:string ;
-                          ] ;
-                      ] ;
-                    sp:arg2 "(/|#)[^/]*$" ;
-                    sp:arg3 "" ;
-                  ] ;
-                sp:arg2 "^.*/" ;
-                sp:arg3 "" ;
-              ] ;
-            sp:variable [
-                sp:varName "dmodule"^^xsd:string ;
-              ] ;
-          ]
-          [
-            rdf:type sp:Bind ;
-            sp:expression [
                 rdf:type sp:uri ;
                 sp:arg1 [
-                    rdf:type sp:replace ;
-                    sp:arg1 [
+                    rdf:type skosify:subs ;
+                    arg:a1 [
+                        sp:varName "d"^^xsd:string ;
+                      ] ;
+                    arg:a2 [
                         rdf:type sp:concat ;
                         sp:arg1 [
                             sp:varName "px"^^xsd:string ;
@@ -2350,10 +2484,6 @@ I think property paths will simplify this a lot,perhaps obviating the need for t
                                   ] ;
                               ] ;
                           ] ;
-                      ] ;
-                    sp:arg2 "[{]M[}]" ;
-                    sp:arg3 [
-                        sp:varName "dmodule"^^xsd:string ;
                       ] ;
                   ] ;
               ] ;
@@ -2381,32 +2511,13 @@ I think property paths will simplify this a lot,perhaps obviating the need for t
           [
             rdf:type sp:Bind ;
             sp:expression [
-                rdf:type sp:replace ;
-                sp:arg1 [
-                    rdf:type sp:replace ;
-                    sp:arg1 [
-                        rdf:type sp:str ;
-                        sp:arg1 [
-                            sp:varName "r"^^xsd:string ;
-                          ] ;
-                      ] ;
-                    sp:arg2 "(/|#)[^/]*$" ;
-                    sp:arg3 "" ;
-                  ] ;
-                sp:arg2 "^.*/" ;
-                sp:arg3 "" ;
-              ] ;
-            sp:variable [
-                sp:varName "rmodule"^^xsd:string ;
-              ] ;
-          ]
-          [
-            rdf:type sp:Bind ;
-            sp:expression [
                 rdf:type sp:uri ;
                 sp:arg1 [
-                    rdf:type sp:replace ;
-                    sp:arg1 [
+                    rdf:type skosify:subs ;
+                    arg:a1 [
+                        sp:varName "r"^^xsd:string ;
+                      ] ;
+                    arg:a2 [
                         rdf:type sp:concat ;
                         sp:arg1 [
                             sp:varName "px"^^xsd:string ;
@@ -2420,10 +2531,6 @@ I think property paths will simplify this a lot,perhaps obviating the need for t
                                   ] ;
                               ] ;
                           ] ;
-                      ] ;
-                    sp:arg2 "[{]M[}]" ;
-                    sp:arg3 [
-                        sp:varName "rmodule"^^xsd:string ;
                       ] ;
                   ] ;
               ] ;
@@ -2510,6 +2617,36 @@ I think property paths will simplify this a lot,perhaps obviating the need for t
             sp:predicate owl:inverseOf ;
             sp:subject [
                 sp:varName "subject"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Filter ;
+            sp:expression [
+                rdf:type sp:notExists ;
+                sp:elements (
+                    [
+                      sp:object "true"^^xsd:boolean ;
+                      sp:predicate owl:deprecated ;
+                      sp:subject [
+                          sp:varName "subject"^^xsd:string ;
+                        ] ;
+                    ]
+                  ) ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Filter ;
+            sp:expression [
+                rdf:type sp:notExists ;
+                sp:elements (
+                    [
+                      sp:object "true"^^xsd:boolean ;
+                      sp:predicate owl:deprecated ;
+                      sp:subject [
+                          sp:varName "object"^^xsd:string ;
+                        ] ;
+                    ]
+                  ) ;
               ] ;
           ]
           [
@@ -2694,19 +2831,19 @@ I think property paths will simplify this a lot,perhaps obviating the need for t
                                     sp:arg1 [
                                         sp:varName "psubject"^^xsd:string ;
                                       ] ;
-                                    sp:arg2 "”" ;
+                                    sp:arg2 "" ;
                                     sp:arg3 "\"" ;
                                   ] ;
-                                sp:arg2 "“" ;
+                                sp:arg2 "" ;
                                 sp:arg3 "\"" ;
                               ] ;
-                            sp:arg2 "–" ;
+                            sp:arg2 "" ;
                             sp:arg3 "-" ;
                           ] ;
-                        sp:arg2 "’" ;
+                        sp:arg2 "" ;
                         sp:arg3 "'" ;
                       ] ;
-                    sp:arg2 "‘" ;
+                    sp:arg2 "" ;
                     sp:arg3 "'" ;
                   ] ;
                 sp:arg2 "en" ;
@@ -2732,19 +2869,19 @@ I think property paths will simplify this a lot,perhaps obviating the need for t
                                     sp:arg1 [
                                         sp:varName "pobject"^^xsd:string ;
                                       ] ;
-                                    sp:arg2 "”" ;
+                                    sp:arg2 "" ;
                                     sp:arg3 "\"" ;
                                   ] ;
-                                sp:arg2 "“" ;
+                                sp:arg2 "" ;
                                 sp:arg3 "\"" ;
                               ] ;
-                            sp:arg2 "–" ;
+                            sp:arg2 "" ;
                             sp:arg3 "-" ;
                           ] ;
-                        sp:arg2 "’" ;
+                        sp:arg2 "" ;
                         sp:arg3 "'" ;
                       ] ;
-                    sp:arg2 "‘" ;
+                    sp:arg2 "" ;
                     sp:arg3 "'" ;
                   ] ;
                 sp:arg2 "en" ;
@@ -2756,32 +2893,13 @@ I think property paths will simplify this a lot,perhaps obviating the need for t
           [
             rdf:type sp:Bind ;
             sp:expression [
-                rdf:type sp:replace ;
-                sp:arg1 [
-                    rdf:type sp:replace ;
-                    sp:arg1 [
-                        rdf:type sp:str ;
-                        sp:arg1 [
-                            sp:varName "subject"^^xsd:string ;
-                          ] ;
-                      ] ;
-                    sp:arg2 "(/|#)[^/]*$" ;
-                    sp:arg3 "" ;
-                  ] ;
-                sp:arg2 "^.*/" ;
-                sp:arg3 "" ;
-              ] ;
-            sp:variable [
-                sp:varName "smodule"^^xsd:string ;
-              ] ;
-          ]
-          [
-            rdf:type sp:Bind ;
-            sp:expression [
                 rdf:type sp:uri ;
                 sp:arg1 [
-                    rdf:type sp:replace ;
-                    sp:arg1 [
+                    rdf:type skosify:subs ;
+                    arg:a1 [
+                        sp:varName "subject"^^xsd:string ;
+                      ] ;
+                    arg:a2 [
                         rdf:type sp:concat ;
                         sp:arg1 [
                             sp:varName "px"^^xsd:string ;
@@ -2796,10 +2914,6 @@ I think property paths will simplify this a lot,perhaps obviating the need for t
                               ] ;
                           ] ;
                       ] ;
-                    sp:arg2 "[{]M[}]" ;
-                    sp:arg3 [
-                        sp:varName "smodule"^^xsd:string ;
-                      ] ;
                   ] ;
               ] ;
             sp:variable [
@@ -2809,32 +2923,13 @@ I think property paths will simplify this a lot,perhaps obviating the need for t
           [
             rdf:type sp:Bind ;
             sp:expression [
-                rdf:type sp:replace ;
-                sp:arg1 [
-                    rdf:type sp:replace ;
-                    sp:arg1 [
-                        rdf:type sp:str ;
-                        sp:arg1 [
-                            sp:varName "object"^^xsd:string ;
-                          ] ;
-                      ] ;
-                    sp:arg2 "(/|#)[^/]*$" ;
-                    sp:arg3 "" ;
-                  ] ;
-                sp:arg2 "^.*/" ;
-                sp:arg3 "" ;
-              ] ;
-            sp:variable [
-                sp:varName "omodule"^^xsd:string ;
-              ] ;
-          ]
-          [
-            rdf:type sp:Bind ;
-            sp:expression [
                 rdf:type sp:uri ;
                 sp:arg1 [
-                    rdf:type sp:replace ;
-                    sp:arg1 [
+                    rdf:type skosify:subs ;
+                    arg:a1 [
+                        sp:varName "object"^^xsd:string ;
+                      ] ;
+                    arg:a2 [
                         rdf:type sp:concat ;
                         sp:arg1 [
                             sp:varName "px"^^xsd:string ;
@@ -2848,10 +2943,6 @@ I think property paths will simplify this a lot,perhaps obviating the need for t
                                   ] ;
                               ] ;
                           ] ;
-                      ] ;
-                    sp:arg2 "[{]M[}]" ;
-                    sp:arg3 [
-                        sp:varName "omodule"^^xsd:string ;
                       ] ;
                   ] ;
               ] ;
@@ -2885,6 +2976,102 @@ I think property paths will simplify this a lot,perhaps obviating the need for t
           ]
         ) ;
       rdfs:comment "Rule 10"^^xsd:string ;
+    ] ;
+  spin:rule [
+      rdf:type sp:Construct ;
+      sp:templates (
+          [
+            sp:object skos:ConceptScheme ;
+            sp:predicate rdf:type ;
+            sp:subject [
+                sp:varName "cs"^^xsd:string ;
+              ] ;
+          ]
+        ) ;
+      sp:where (
+          [
+            sp:object [
+                sp:varName "px"^^xsd:string ;
+              ] ;
+            sp:predicate skosify:px ;
+            sp:subject skos:Concept ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type sp:uri ;
+                sp:arg1 [
+                    rdf:type sp:replace ;
+                    sp:arg1 [
+                        rdf:type sp:concat ;
+                        sp:arg1 [
+                            sp:varName "px"^^xsd:string ;
+                          ] ;
+                        sp:arg2 "FIBO-CS" ;
+                      ] ;
+                    sp:arg2 "[{]M[}]|[{]D[}]|[{]O[}]" ;
+                    sp:arg3 "core" ;
+                  ] ;
+              ] ;
+            sp:variable [
+                sp:varName "cs"^^xsd:string ;
+              ] ;
+          ]
+        ) ;
+    ] ;
+  spin:rule [
+      rdf:type sp:Construct ;
+      sp:templates (
+          [
+            sp:object [
+                sp:varName "domain"^^xsd:string ;
+              ] ;
+            sp:predicate <http://purl.org/dc/terms/isPartOf> ;
+            sp:subject [
+                sp:varName "c"^^xsd:string ;
+              ] ;
+          ]
+        ) ;
+      sp:where (
+          [
+            sp:object [
+                sp:varName "s"^^xsd:string ;
+              ] ;
+            sp:predicate rdfs:isDefinedBy ;
+            sp:subject [
+                sp:varName "c"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Filter ;
+            sp:expression [
+                rdf:type sp:regex ;
+                sp:arg1 [
+                    rdf:type sp:str ;
+                    sp:arg1 [
+                        sp:varName "c"^^xsd:string ;
+                      ] ;
+                  ] ;
+                sp:arg2 "vocabulary" ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type sp:uri ;
+                sp:arg1 [
+                    rdf:type skosify:subs ;
+                    arg:a1 [
+                        sp:varName "s"^^xsd:string ;
+                      ] ;
+                    arg:a2 "https://spec.edmcouncil.org/fibo/{D}/About{D}/{D}Specification" ;
+                  ] ;
+              ] ;
+            sp:variable [
+                sp:varName "domain"^^xsd:string ;
+              ] ;
+          ]
+        ) ;
     ] ;
   spin:rule [
       rdf:type sp:Construct ;
@@ -2941,6 +3128,21 @@ I think property paths will simplify this a lot,perhaps obviating the need for t
               ] ;
           ]
           [
+            rdf:type sp:Filter ;
+            sp:expression [
+                rdf:type sp:notExists ;
+                sp:elements (
+                    [
+                      sp:object "true"^^xsd:boolean ;
+                      sp:predicate owl:deprecated ;
+                      sp:subject [
+                          sp:varName "x"^^xsd:string ;
+                        ] ;
+                    ]
+                  ) ;
+              ] ;
+          ]
+          [
             rdf:type sp:Bind ;
             sp:expression [
                 rdf:type sp:replace ;
@@ -2958,19 +3160,19 @@ I think property paths will simplify this a lot,perhaps obviating the need for t
                                         sp:varName "it"^^xsd:string ;
                                       ] ;
                                   ] ;
-                                sp:arg2 "”" ;
+                                sp:arg2 "" ;
                                 sp:arg3 "\"" ;
                               ] ;
-                            sp:arg2 "“" ;
+                            sp:arg2 "" ;
                             sp:arg3 "\"" ;
                           ] ;
-                        sp:arg2 "–" ;
+                        sp:arg2 "" ;
                         sp:arg3 "-" ;
                       ] ;
-                    sp:arg2 "’" ;
+                    sp:arg2 "" ;
                     sp:arg3 "'" ;
                   ] ;
-                sp:arg2 "‘" ;
+                sp:arg2 "" ;
                 sp:arg3 "'" ;
               ] ;
             sp:variable [
@@ -3081,8 +3283,11 @@ I think property paths will simplify this a lot,perhaps obviating the need for t
             sp:expression [
                 rdf:type sp:uri ;
                 sp:arg1 [
-                    rdf:type sp:replace ;
-                    sp:arg1 [
+                    rdf:type skosify:subs ;
+                    arg:a1 [
+                        sp:varName "lentity"^^xsd:string ;
+                      ] ;
+                    arg:a2 [
                         rdf:type sp:concat ;
                         sp:arg1 [
                             sp:varName "px"^^xsd:string ;
@@ -3093,10 +3298,6 @@ I think property paths will simplify this a lot,perhaps obviating the need for t
                                 sp:varName "lencode"^^xsd:string ;
                               ] ;
                           ] ;
-                      ] ;
-                    sp:arg2 "[{]M[}]" ;
-                    sp:arg3 [
-                        sp:varName "module"^^xsd:string ;
                       ] ;
                   ] ;
               ] ;
@@ -3146,18 +3347,17 @@ I think property paths will simplify this a lot,perhaps obviating the need for t
           [
             rdf:type sp:Filter ;
             sp:expression [
-                rdf:type sp:notExists ;
-                sp:elements (
-                    [
-                      sp:object [
-                          sp:varName "?0"^^xsd:string ;
-                        ] ;
-                      sp:predicate rdfs:isDefinedBy ;
-                      sp:subject [
-                          sp:varName "x"^^xsd:string ;
-                        ] ;
-                    ]
-                  ) ;
+                rdf:type sp:not ;
+                sp:arg1 [
+                    rdf:type sp:regex ;
+                    sp:arg1 [
+                        rdf:type xsd:string ;
+                        sp:arg1 [
+                            sp:varName "x"^^xsd:string ;
+                          ] ;
+                      ] ;
+                    sp:arg2 "vocabulary" ;
+                  ] ;
               ] ;
           ]
           [
@@ -3166,7 +3366,7 @@ I think property paths will simplify this a lot,perhaps obviating the need for t
                 rdf:type sp:notExists ;
                 sp:elements (
                     [
-                      sp:object <http://www.omg.org/techprocess/ab/SpecificationMetadata/SpecificationVersion> ;
+                      sp:object sm:SpecificationVersion ;
                       sp:predicate rdf:type ;
                       sp:subject [
                           sp:varName "x"^^xsd:string ;
@@ -3236,7 +3436,7 @@ I think property paths will simplify this a lot,perhaps obviating the need for t
                 sp:varName "it"^^xsd:string ;
               ] ;
             sp:predicate [
-                sp:varName "thep"^^xsd:string ;
+                sp:varName "thep1"^^xsd:string ;
               ] ;
             sp:subject [
                 sp:varName "x"^^xsd:string ;
@@ -3245,25 +3445,89 @@ I think property paths will simplify this a lot,perhaps obviating the need for t
           [
             rdf:type sp:Filter ;
             sp:expression [
+                rdf:type sp:notExists ;
+                sp:elements (
+                    [
+                      sp:object "true"^^xsd:boolean ;
+                      sp:predicate owl:deprecated ;
+                      sp:subject [
+                          sp:varName "x"^^xsd:string ;
+                        ] ;
+                    ]
+                  ) ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type sp:replace ;
+                sp:arg1 [
+                    rdf:type sp:str ;
+                    sp:arg1 [
+                        sp:varName "thep1"^^xsd:string ;
+                      ] ;
+                  ] ;
+                sp:arg2 "^.*(#|/)" ;
+                sp:arg3 "" ;
+              ] ;
+            sp:variable [
+                sp:varName "lnp1"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Filter ;
+            sp:expression [
                 rdf:type sp:in ;
                 sp:arg1 [
-                    sp:varName "thep"^^xsd:string ;
+                    sp:varName "lnp1"^^xsd:string ;
                   ] ;
-                sp:arg10 fibo-fnd-utl-av:definitionOrigin ;
-                sp:arg11 fibo-fnd-utl-av:synonym ;
-                sp:arg12 fibo-fnd-utl-av:explanatoryNote ;
-                sp:arg13 fibo-fnd-utl-av:adaptedFrom ;
-                sp:arg14 fibo-fnd-utl-av:definitionOrigin ;
-                sp:arg15 fibo-fnd-utl-av:synonym ;
-                sp:arg16 fibo-fnd-utl-av:explanatoryNote ;
-                sp:arg2 skos:changeNote ;
-                sp:arg3 skos:definition ;
-                sp:arg4 skos:historyNote ;
-                sp:arg5 skos:editorialNote ;
-                sp:arg6 skos:example ;
-                sp:arg7 skos:note ;
-                sp:arg8 skos:scopeNote ;
-                sp:arg9 fibo-fnd-utl-av:adaptedFrom ;
+                sp:arg10 "definitionOrigin" ;
+                sp:arg11 "synonym" ;
+                sp:arg12 "explanatoryNote" ;
+                sp:arg2 "changeNote" ;
+                sp:arg3 "definition" ;
+                sp:arg4 "historyNote" ;
+                sp:arg5 "editorialNote" ;
+                sp:arg6 "example" ;
+                sp:arg7 "note" ;
+                sp:arg8 "scopeNote" ;
+                sp:arg9 "adaptedFrom" ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type sp:if ;
+                sp:arg1 [
+                    rdf:type sp:eq ;
+                    sp:arg1 [
+                        sp:varName "lnp1"^^xsd:string ;
+                      ] ;
+                    sp:arg2 "synonym" ;
+                  ] ;
+                sp:arg2 skos:altLabel ;
+                sp:arg3 [
+                    sp:varName "thep1"^^xsd:string ;
+                  ] ;
+              ] ;
+            sp:variable [
+                sp:varName "thep"^^xsd:string ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Bind ;
+            sp:expression [
+                rdf:type sp:concat ;
+                sp:arg1 "This is rule 8 " ;
+                sp:arg2 [
+                    rdf:type xsd:string ;
+                    sp:arg1 [
+                        sp:varName "thep1"^^xsd:string ;
+                      ] ;
+                  ] ;
+              ] ;
+            sp:variable [
+                sp:varName "comment"^^xsd:string ;
               ] ;
           ]
           [
@@ -3299,19 +3563,19 @@ I think property paths will simplify this a lot,perhaps obviating the need for t
                                         sp:varName "it"^^xsd:string ;
                                       ] ;
                                   ] ;
-                                sp:arg2 "”" ;
+                                sp:arg2 "" ;
                                 sp:arg3 "\"" ;
                               ] ;
-                            sp:arg2 "“" ;
+                            sp:arg2 "" ;
                             sp:arg3 "\"" ;
                           ] ;
-                        sp:arg2 "–" ;
+                        sp:arg2 "" ;
                         sp:arg3 "-" ;
                       ] ;
-                    sp:arg2 "’" ;
+                    sp:arg2 "" ;
                     sp:arg3 "'" ;
                   ] ;
-                sp:arg2 "‘" ;
+                sp:arg2 "" ;
                 sp:arg3 "'" ;
               ] ;
             sp:variable [
@@ -3428,8 +3692,11 @@ I think property paths will simplify this a lot,perhaps obviating the need for t
             sp:expression [
                 rdf:type sp:uri ;
                 sp:arg1 [
-                    rdf:type sp:replace ;
-                    sp:arg1 [
+                    rdf:type skosify:subs ;
+                    arg:a1 [
+                        sp:varName "x"^^xsd:string ;
+                      ] ;
+                    arg:a2 [
                         rdf:type sp:concat ;
                         sp:arg1 [
                             sp:varName "px"^^xsd:string ;
@@ -3437,10 +3704,6 @@ I think property paths will simplify this a lot,perhaps obviating the need for t
                         sp:arg2 [
                             sp:varName "lencode"^^xsd:string ;
                           ] ;
-                      ] ;
-                    sp:arg2 "[{]M[}]" ;
-                    sp:arg3 [
-                        sp:varName "module"^^xsd:string ;
                       ] ;
                   ] ;
               ] ;
@@ -3480,7 +3743,7 @@ I think property paths will simplify this a lot,perhaps obviating the need for t
                             sp:arg1 [
                                 sp:varName "px"^^xsd:string ;
                               ] ;
-                            sp:arg2 "[{]M[}]" ;
+                            sp:arg2 "[{]M[}]|[{]D[}]|[{]O[}]" ;
                             sp:arg3 ".*" ;
                           ] ;
                       ] ;
@@ -3509,7 +3772,7 @@ I think property paths will simplify this a lot,perhaps obviating the need for t
                 rdf:type sp:notExists ;
                 sp:elements (
                     [
-                      sp:object <http://www.omg.org/techprocess/ab/SpecificationMetadata/SpecificationVersion> ;
+                      sp:object sm:SpecificationVersion ;
                       sp:predicate rdf:type ;
                       sp:subject [
                           sp:varName "x"^^xsd:string ;
@@ -3586,6 +3849,21 @@ I think property paths will simplify this a lot,perhaps obviating the need for t
           [
             rdf:type sp:Filter ;
             sp:expression [
+                rdf:type sp:notExists ;
+                sp:elements (
+                    [
+                      sp:object "true"^^xsd:boolean ;
+                      sp:predicate owl:deprecated ;
+                      sp:subject [
+                          sp:varName "child"^^xsd:string ;
+                        ] ;
+                    ]
+                  ) ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Filter ;
+            sp:expression [
                 rdf:type sp:ne ;
                 sp:arg1 [
                     sp:varName "parent"^^xsd:string ;
@@ -3601,6 +3879,36 @@ I think property paths will simplify this a lot,perhaps obviating the need for t
                     sp:varName "parent"^^xsd:string ;
                   ] ;
                 sp:arg2 skos:Concept ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Filter ;
+            sp:expression [
+                rdf:type sp:notExists ;
+                sp:elements (
+                    [
+                      sp:object "true"^^xsd:boolean ;
+                      sp:predicate owl:deprecated ;
+                      sp:subject [
+                          sp:varName "parent"^^xsd:string ;
+                        ] ;
+                    ]
+                  ) ;
+              ] ;
+          ]
+          [
+            rdf:type sp:Filter ;
+            sp:expression [
+                rdf:type sp:notExists ;
+                sp:elements (
+                    [
+                      sp:object "true"^^xsd:boolean ;
+                      sp:predicate owl:deprecated ;
+                      sp:subject [
+                          sp:varName "s"^^xsd:string ;
+                        ] ;
+                    ]
+                  ) ;
               ] ;
           ]
           [
@@ -3659,28 +3967,6 @@ I think property paths will simplify this a lot,perhaps obviating the need for t
           [
             rdf:type sp:Bind ;
             sp:expression [
-                rdf:type sp:replace ;
-                sp:arg1 [
-                    rdf:type sp:replace ;
-                    sp:arg1 [
-                        rdf:type sp:str ;
-                        sp:arg1 [
-                            sp:varName "parent"^^xsd:string ;
-                          ] ;
-                      ] ;
-                    sp:arg2 "(/|#)[^/]*$" ;
-                    sp:arg3 "" ;
-                  ] ;
-                sp:arg2 "^.*/" ;
-                sp:arg3 "" ;
-              ] ;
-            sp:variable [
-                sp:varName "pmodule"^^xsd:string ;
-              ] ;
-          ]
-          [
-            rdf:type sp:Bind ;
-            sp:expression [
                 rdf:type sp:if ;
                 sp:arg1 [
                     rdf:type sp:exists ;
@@ -3724,8 +4010,11 @@ I think property paths will simplify this a lot,perhaps obviating the need for t
             sp:expression [
                 rdf:type sp:uri ;
                 sp:arg1 [
-                    rdf:type sp:replace ;
-                    sp:arg1 [
+                    rdf:type skosify:subs ;
+                    arg:a1 [
+                        sp:varName "parent"^^xsd:string ;
+                      ] ;
+                    arg:a2 [
                         rdf:type sp:concat ;
                         sp:arg1 [
                             sp:varName "px"^^xsd:string ;
@@ -3733,10 +4022,6 @@ I think property paths will simplify this a lot,perhaps obviating the need for t
                         sp:arg2 [
                             sp:varName "lcpparent"^^xsd:string ;
                           ] ;
-                      ] ;
-                    sp:arg2 "[{]M[}]" ;
-                    sp:arg3 [
-                        sp:varName "pmodule"^^xsd:string ;
                       ] ;
                   ] ;
               ] ;
@@ -3747,32 +4032,13 @@ I think property paths will simplify this a lot,perhaps obviating the need for t
           [
             rdf:type sp:Bind ;
             sp:expression [
-                rdf:type sp:replace ;
-                sp:arg1 [
-                    rdf:type sp:replace ;
-                    sp:arg1 [
-                        rdf:type sp:str ;
-                        sp:arg1 [
-                            sp:varName "child"^^xsd:string ;
-                          ] ;
-                      ] ;
-                    sp:arg2 "(/|#)[^/]*$" ;
-                    sp:arg3 "" ;
-                  ] ;
-                sp:arg2 "^.*/" ;
-                sp:arg3 "" ;
-              ] ;
-            sp:variable [
-                sp:varName "cmodule"^^xsd:string ;
-              ] ;
-          ]
-          [
-            rdf:type sp:Bind ;
-            sp:expression [
                 rdf:type sp:uri ;
                 sp:arg1 [
-                    rdf:type sp:replace ;
-                    sp:arg1 [
+                    rdf:type skosify:subs ;
+                    arg:a1 [
+                        sp:varName "child"^^xsd:string ;
+                      ] ;
+                    arg:a2 [
                         rdf:type sp:concat ;
                         sp:arg1 [
                             sp:varName "px"^^xsd:string ;
@@ -3786,10 +4052,6 @@ I think property paths will simplify this a lot,perhaps obviating the need for t
                                   ] ;
                               ] ;
                           ] ;
-                      ] ;
-                    sp:arg2 "[{]M[}]" ;
-                    sp:arg3 [
-                        sp:varName "cmodule"^^xsd:string ;
                       ] ;
                   ] ;
               ] ;
@@ -3811,16 +4073,6 @@ WHERE {
 
 }"""^^xsd:string ;
     ] ;
-  spin:rule [
-      rdf:type sp:Construct ;
-      sp:text """CONSTRUCT {
-    ?cs a skos:ConceptScheme .
-}
-WHERE {
-    skos:Concept <http://www.edmcouncil.org/skosify#px> ?px .
-    BIND (URI(REPLACE(CONCAT(?px, \"FIBO-CS\"), \"[{]M[}]\", \"core\")) AS ?cs) .
-}"""^^xsd:string ;
-    ] ;
 .
 skos:Concept
   skosify:domain "be"^^xsd:string ;
@@ -3829,5 +4081,5 @@ skos:Concept
   skosify:domain "fnd"^^xsd:string ;
   skosify:domain "ind"^^xsd:string ;
   skosify:domain "sec"^^xsd:string ;
-  skosify:px "https://spec.edmcouncil.org/fibo/vocabulary#{M}-"^^xsd:string ;
+  skosify:px "https://spec.edmcouncil.org/fibo/{D}/vocabulary#"^^xsd:string ;
 .

@@ -26,13 +26,19 @@ export fibo_root="${WORKSPACE}/fibo"
 export fibo_infra_root="$(cd ${SCRIPT_DIR}/../.. ; pwd -L)"
 jena_arq=""
 
+# For testing - speedy=true leaves out some very slow processing, 
+# e.g., isDefinedBy, converstions into ttl and jsonld, and nquads
+speedy=false
+
 #
 # The products that we generate the artifacts for with this script
 #
 # ontology has to come before vocabulary because vocabulary depends on it.
 #
 family="fibo"
-products="ontology widoco glossary datadictionary vocabulary"
+# Removed for speedier testing 
+#products="ontology widoco glossary datadictionary vocabulary"
+products="ontology glossary datadictionary vocabulary "
 
 source_family_root="${WORKSPACE}/${family}"
 spec_root="${WORKSPACE}/target"
@@ -42,7 +48,7 @@ branch_root=""
 tag_root=""
 product_branch_tag=""
 #Ontology root is required for other products like widoco
-ontology_root=""
+ontology_product_tag_root=""
 
 spec_root_url="https://spec.edmcouncil.org"
 spec_family_root_url="${spec_root_url}/${family}"
@@ -206,19 +212,25 @@ function buildIndex () {
 #
 function buildVowlIndex () {
 
-  local vowlTreeP="${widoco_root}/vowltreeProd.html"
-  local vowlTreeD="${widoco_root}/vowltreeDev.html"
+  local vowlTreeP="${widoco_product_tag_root}/vowltreeProd.html"
+  local vowlTreeD="${widoco_product_tag_root}/vowltreeDev.html"
   local titleP="FIBO Widoco File Directory (Production)"
   local titleD="FIBO Widoco File Directory (Development)"
 
   echo "Step: buildVowlIndex (${vowlTree/${WORKSPACE}/})"
 
   (
-    cd ${ontology_root}
-    echo "Ontology Root: ${ontology_root/${WORKSPACE}/}"
+    cd ${ontology_product_tag_root}
+    echo "Ontology Root: ${ontology_product_tag_root/${WORKSPACE}/}"
+
+    echo "tag_root_url : ${tag_root_url}"
+    echo "GIT_BRANCH : ${GIT_BRANCH}"
+    echo "GIT_TAG_NAME : ${GIT_TAG_NAME}"
+    echo "product_branch_tag: ${product_branch_tag}"
 
     tree \
       -P '*.rdf' \
+      -I  "[0-9]*|*Ext" \
       -T "${titleD}" \
       --noreport \
       --dirsfirst \
@@ -226,34 +238,48 @@ function buildVowlIndex () {
       sed "s@${GIT_BRANCH}\/${GIT_TAG_NAME}\/\(/[^/]*/\)@${GIT_BRANCH}\/${GIT_TAG_NAME}/\\U\\1@" | \
       sed "s@\(${product_branch_tag}/.*\)\.rdf\">@\1/index-en.html\">@" | \
       sed 's@\(.*\).rdf@\1 vowl@' | \
+      sed 's/<a[^>]*\/\">\([^<]*\)<\/a>/\1/g' | \
       sed "s/>Directory Tree</>${titleD}</g" | \
       sed 's@h1><p>@h1><p>The Visual Notation for OWL Ontologies (VOWL) defines a visual language for the user-oriented representation of ontologies. It provides graphical depictions for elements of the Web Ontology Language (OWL) that are combined to a force-directed graph layout visualizing the ontology.<br/>This specification focuses on the visualization of the ontology schema (i.e. the classes, properties and datatypes, sometimes called TBox), while it also includes recommendations on how to depict individuals and data values (the ABox). FIBO uses open source software named WIDOCO (Wizard for DOCumenting Ontologies) for <a href="https://github.com/dgarijo/Widoco">VOWL</a>.<p/>@' | \
       sed 's@<a href=".*>https://spec.edmcouncil.org/.*</a>@@' > "${vowlTreeD}"
+
+   echo "Printing contents of tree ${vowlTreeD}"
+   contents=$(<${vowlTreeD})
+   echo ${contents}
+
+   echo "Suppressing failed Ontology Links"
+   failedOntologies="FundEntities,SPVs,StateEntities,PrivateLimitedCompanies,RegulatoryRequirements,AgencyMBSIssuance,DebtIssuance,IssuanceDocuments,IssuanceProcessTerms,IssuanceProcess,MBSIssuance,MuniIssuance,PrivateLabelMBSIssuance,CIV,AssetBaskets,AssetDerivatives,CommoditiesDelivery,CommodityForwards,CreditDefaultSwaps,ExerciseConventions,Forwards,Options,ReturnSwaps,Spots,DerivativesBasicsExt,OTCDerivativeMasterAgreements,SwapsExt,DerivativesStandardizedTerms,ExchangeTradedOptions,FuturesExchanges,FuturesStandardizedTerms,Futures,OptionsExchanges,OptionsStandardizedTerms,FxForwards,FxSpots,FxSwaps,RightsAndWarrants,CreditFacilities,DebtPerspectives,AccountsMain,AssetExtensions,BalanceSheetBalances,Taxation,ContractsExtensions,ContractualConstructs,ToolsAndInstruments,AddressExtensions,Documentation,PostalAddress,TemporalInfo,RegulatoryRestrictions,Amounts,Math,Quantities,Geophysical,RealEstate,Conventions,Publications,StandardsIndividuals,Standards,ConstructAspects,SocialConstructs,Time,EconomicResources,MarketTransactions,QuantifiedResources,REAClaimsEvents,REATransactions,SecuritiesTransactions,SupplyTransactions,TransactionAccounting,TransactionEvents,TransactionsExtended,IndicatorsValues,BasketIndexPublishers,BasketIndices,CreditIndices,LoanBasicTerms,LoansCollateral,LoansGeneral,LoansGuaranties,LoansParties,LoansRegulatory,LoanApplicationsTemporal,LoanBorrowersTemporal,LoanCollateralTemporal,LoanPhases,LoansAppraisal,LoansEvents,LoansStatus,CommercialLoans,LoanProducts,MortgageLoans,PersonalLoans,SecuredLoans,StudentLoans,UnsecuredLoans,DebtAnalytics,DebtInterestAmounts,DebtPricingYields,DebtRedemptionAmounts,ETOptionsTemporal,EquityPricing,CreditEvents,CreditRatings,InstrumentTemporalTerms,SecurityTradingStatuses,TemporalConcepts,AssetBackedSecurities,AssetBackedSPVs,CBOs,CDOs,CLOs,CMOs,MortgageBackedSecurities,PoolBackedSecurities,SyntheticCDOs,BondsCashflowTerms,BondsCashflowVariants,BondsCommon,BondsIssuerVariants,BondsListings,BondsTaxTreatment,DebtCashflowTerms,DebtIssuanceTerms,ParityVariants,DebtInstrumentsExt,REPOs,TradedShortTermDebt,EquityInstruments,EquityIssuanceTerms,ShareholderEquity,ShareholderRights,ShareTerms,SecuritiesExt,SecuritiesListingsExt,SecuritiesRestrictionsExt,SecuritiesTaxTreatment"
+   IFS=',' read -ra FAILED_ONTOLOGIES <<< "$failedOntologies"
+   for i in "${FAILED_ONTOLOGIES[@]}"; do
+      sed -i "s/<a.*\/$i\/index-en\.html\">\([^<]*\)<\/a>/\1/g" "${vowlTreeD}"
+   done
+
 
 
     local pfiles=$(mktemp ${tmp_dir}/pfiles.XXXXXX)
     grep -rl 'utl-av[:;.]Release' . > ${pfiles}
     cat ${pfiles} | while read file ; do mv ${file} ${file}RELEASE ; done
 
-
+    echo "Generating Production Widoco Tree"
+     #Do we need this -I '*Ext' \
     tree \
       -P '*.rdfRELEASE' \
+      -I  "[0-9]*|*Ext" \
       -T "${titleP}" \
-      -I '*Ext' \
       --noreport \
       --dirsfirst \
       -H "${tag_root_url}" | \
       sed "s@${GIT_BRANCH}\/${GIT_TAG_NAME}\/\(/[^/]*/\)@${GIT_BRANCH}\/${GIT_TAG_NAME}/\\U\\1@" | \
-      sed "s@\(${product_branch_tag}/.*\)\.rdf\">@\1/index-en.html\">@" | \
+      sed "s@\(${product_branch_tag}/.*\)\.rdfRELEASE\">@\1/index-en.html\">@" | \
       sed 's@rdfRELEASE@rdf@g' | \
       sed 's@\(.*\).rdf@\1 vowl@' | \
+      sed 's/<a[^>]*\/\">\([^<]*\)<\/a>/\1/g' | \
       sed "s/>Directory Tree</>${titleP}</g" | \
       sed 's@h1><p>@h1><p>The Visual Notation for OWL Ontologies (VOWL) defines a visual language for the user-oriented representation of ontologies. It provides graphical depictions for elements of the Web Ontology Language (OWL) that are combined to a force-directed graph layout visualizing the ontology.<br/>This specification focuses on the visualization of the ontology schema (i.e. the classes, properties and datatypes, sometimes called TBox), while it also includes recommendations on how to depict individuals and data values (the ABox). FIBO uses open source software named WIDOCO (Wizard for DOCumenting Ontologies) for <a href="https://github.com/dgarijo/Widoco">VOWL</a>.<p/>@' | \
       sed 's@<a href=".*>https://spec.edmcouncil.org/.*</a>@@' > "${vowlTreeP}"
 
    cat ${pfiles} | while read file ; do mv ${file}RELEASE ${file} ; done
    rm ${pfiles}
-
 
 
 
@@ -562,7 +588,12 @@ __HERE__
 # We want to add in a rdfs:isDefinedBy link from every class back to the ontology. 
 
   find ${tag_root}/ -type f  -name '*.rdf' -not -name '*About*'  -print | while read file ; do
-    addIsDefinedBy "${file}"
+     if [ speedy="true" ] ; then
+	 echo "Leaving out isDefinedBy because it is slow"
+     else
+	 addIsDefinedBy "${file}"
+     fi 
+  
   done
  
   return 0
@@ -777,7 +808,7 @@ function convertRdfFileTo() {
     --inline-blank-nodes \
     --infer-base-iri \
     --use-dtd-subset \
-    > "${logfile}" 2>&1
+    > "${logfile}"    # 2>&1
   rc=$?
 
   #
@@ -815,6 +846,7 @@ function ontologyConvertRdfToAllFormats() {
 
   for rdfFile in **/*.rdf ; do
     for format in json-ld turtle ; do
+      echo "converting ${rdfFile} to ${format}"
       convertRdfFileTo rdf-xml "${rdfFile}" "${format}" || return $?
     done || return $?
   done || return $?
@@ -961,12 +993,17 @@ function generateWidocoDocumentationForFile() {
   local directory="$1"
   local outputDir="${directory/ontology/widoco}"
   local rdfFile="$2"
+  local rdfFileNoExtension="${rdfFile/.ttl/}"
+
   local extension="$([[ "${rdfFile}" = *.* ]] && echo ".${rdfFile##*.}" || echo '')"
 
   echo " - processing ${rdfFile} in ${directory} with extension ${extension}"
 
-  if [ "${rdfFile}" != ".ttl" ] ; then
-    echo -n ", skipping"
+
+
+
+  if [[ "${extension}" != ".ttl" || "${rdfFile}" =~ ^[0-9].* ]] ; then
+    echo  "- skipping ${rdfFile} in ${directory} with extension ${extension}"
     return 0
   fi
 
@@ -980,18 +1017,57 @@ function generateWidocoDocumentationForFile() {
     -Xms3G \
     -jar "${fibo_infra_root}/lib/widoco/widoco-1.4.1-jar-with-dependencies.jar" \
     -ontFile "${rdfFile}" \
-    -outFolder "${outputDir}/${rdfFile}" \
+    -outFolder "${outputDir}/${rdfFileNoExtension}" \
     -rewriteAll \
     -lang en  \
+    -licensius \
     -getOntologyMetadata \
     -webVowl
   local rc=$?
   echo " - rc is ${rc}"
-  #
-  # KG: commented to make the build faster - need to revisit license
-  #
-  # -licensius \
-  #
+
+  # KG: Break on first failure - testing INFRA-229
+
+  if [ ${rc} -ne 0 ] ; then
+    error "Could not run widoco on ${rdfFile} "
+    #echo "Printing contents of file ${rdfFile} "
+    #contents=$(<${rdfFile})
+    #echo "${contents}"
+  fi
+
+  #Remove introduction section
+  if [ -f "${outputDir}/${rdfFileNoExtension}/index-en.html" ] ; then
+
+   #contents=$(<${outputDir}/${rdfFileNoExtension}/index-en.html)
+   #echo "contents of index file before modification"
+   #echo "${contents}"
+
+    echo "Replacing introduction with acknowledgements section from file ${outputDir}/${rdfFileNoExtension}/index-en.html"
+    echo "Contents of script folder ${SCRIPT_DIR}"
+    ls -al "${SCRIPT_DIR}"
+    echo "Contents of widoco-sections folder ${SCRIPT_DIR}/widoco-sections"
+    ls -al ${SCRIPT_DIR}/widoco-sections
+    cp "${SCRIPT_DIR}/widoco-sections/acknowledgements-en.html" "${outputDir}/${rdfFileNoExtension}/sections"
+    echo "Contents of folder ${outputDir}/${rdfFileNoExtension}/sections"
+    ls -al "${outputDir}/${rdfFileNoExtension}/sections"
+    sed -i "s/#introduction/#acknowledgements/g" "${outputDir}/${rdfFileNoExtension}/index-en.html"
+    sed -i "s/introduction-en/acknowledgements-en/g" "${outputDir}/${rdfFileNoExtension}/index-en.html"
+    echo "Removing description section from file ${outputDir}/${rdfFileNoExtension}/index-en.html"
+    sed -i "/#description/d" "${outputDir}/${rdfFileNoExtension}/index-en.html"
+    echo "Removing references section from file ${outputDir}/${rdfFileNoExtension}/index-en.html"
+    sed -i "/#references/d" "${outputDir}/${rdfFileNoExtension}/index-en.html"
+
+   #contents=$(<${outputDir}/${rdfFileNoExtension}/index-en.html)
+   #echo "contents of index file after modification"
+   #echo "${contents}"
+
+   echo "Breaking here just for test"
+   return 0
+
+  else
+    echo "No file found at ${outputDir}/${rdfFileNoExtension}/index-en.html"
+  fi
+
   # KG: Need to figure out why it fails on fibo/ontology/master/latest/SEC/SecuritiesExt/SecuritiesExt.ttl
   #
   # KG: Commenting out temporarily so that the build doesn't stop
@@ -1004,23 +1080,21 @@ function generateWidocoDocumentationForFile() {
   return 0
 }
 
+#
+# Produce the artifacts of the ontology product
+#
 function publishProductOntology() {
-
-  if [ "${NODE_NAME}" == "nomagic" ] ; then
-    echo "Skipping publication of product ontology since we're on node ${NODE_NAME}"
-    return 0
-  fi
 
   logRule "Publishing the ontology product"
 
   setProduct ontology || return $?
 
-  ontology_root="${tag_root}"
+  ontology_product_tag_root="${tag_root}"
   #
   # Show the ontology root directory but strip the WORKSPACE director from it to
   # save log space, it' ugly
   #
-  echo "Ontology Root: ${ontology_root/${WORKSPACE}/}"
+  echo "Ontology Root: ${ontology_product_tag_root/${WORKSPACE}/}"
 
   ontologyCopyRdfToTarget || return $?
   buildIndex  || return $?
@@ -1028,11 +1102,21 @@ function publishProductOntology() {
   ontologyBuildCats  || return $?
   ontologyCreateAboutFiles || return $?
   ontologySearchAndReplaceStuff || return $?
-  ontologyConvertRdfToAllFormats || return $?
+  if [ speedy=="true" ] ; then
+      echo "Not doing some conversions because they are slow"
+  else 
+      ontologyConvertRdfToAllFormats || return $?
+  fi 
 # ontologyAnnotateTopBraidBaseURL || return $?
   ontologyConvertMarkdownToHtml || return $?
   zipOntologyFiles || return $?
-  buildquads || return $?
+
+  if [ speedy=="true" ] ; then
+      echo "Not doing quads becuase they are slow"
+  else
+      buildquads || return $?
+  fi
+
 
   return 0
 }
@@ -1049,18 +1133,21 @@ function publishProductWidoco() {
 
   logRule "Publishing the widoco product"
 
-  setProduct widoco || return $?
+  setProduct ontology || return $?
+  ontology_product_tag_root="${tag_root}"
 
-  widoco_root="${tag_root}"
+  setProduct widoco || return $?
+  widoco_product_tag_root="${tag_root}"
+
   #
-  # Show the widoco root directory but strip the WORKSPACE director from it to
+  # Show the widoco root directory but strip the WORKSPACE directory from it to
   # save log space, it' ugly
   #
-  echo "Widoco Root: ${widoco_root/${WORKSPACE}/}"
+  echo "Widoco Root: ${widoco_product_tag_root/${WORKSPACE}/}"
 
   buildVowlIndex || return $?
 
-  generateWidocoDocumentation ${ontology_root} || return $?
+  generateWidocoDocumentation ${ontology_product_tag_root} || return $?
 
   return 0
 }
@@ -1083,7 +1170,7 @@ function vocabularyGetModules() {
   #
   # Set the memory for ARQ
   #
-  export JVM_ARGS=${JVM_ARGS:--Xmx2G}
+  export JVM_ARGS=${JVM_ARGS:--Xmx4G}
 
   echo "Query the skosify.ttl file for the list of modules (TODO: Should come from rdf-toolkit.ttl)"
 
@@ -1157,7 +1244,7 @@ function vocabularyGetOntologies() {
   #
   # Set the memory for ARQ
   #
-  export JVM_ARGS=${JVM_ARGS:--Xmx2G}
+  export JVM_ARGS=${JVM_ARGS:--Xmx4G}
 
   echo "Get Ontologies into merged file (temp0.ttl)"
 
@@ -1221,12 +1308,12 @@ function spinRunInferences() {
     set -x
 
     java \
-      -Xmx2g \
+      -Xmx4g \
       -Dlog4j.configuration="file:${JENA2ROOT}/jena-log4j.properties" \
       -cp "${JENA2ROOT}/lib/*:${fibo_infra_root}/lib:${fibo_infra_root}/lib/SPIN/spin-1.3.3.jar" \
       org.topbraid.spin.tools.RunInferences \
       http://example.org/example \
-      "${inputFile}" >> "${outputFile}"
+      "${inputFile}" >> "${outputFile}" 
 
     if [ ${PIPESTATUS[0]} -ne 0 ] ; then
       error "Could not run spin on ${inputFile}"
@@ -1289,7 +1376,7 @@ function vocabularyRunSchemifyRules() {
   #
   # Set the memory for ARQ
   #
-  export JVM_ARGS=${JVM_ARGS:--Xmx2G}
+  export JVM_ARGS=${JVM_ARGS:--Xmx4G}
 
   echo "Run the schemify rules"
 
@@ -1349,7 +1436,7 @@ function publishProductVocabulary() {
   #
   # Set the memory for ARQ
   #
-  export JVM_ARGS=${JVM_ARGS:--Xmx2G}
+  export JVM_ARGS=${JVM_ARGS:--Xmx4G}
 
   require JENAROOT || return $?
 
@@ -1359,6 +1446,7 @@ function publishProductVocabulary() {
   ontology_product_tag_root="${tag_root}"
 
   setProduct vocabulary || return $?
+  vocabulary_product_tag_root="${tag_root}"
 
   (
     cd "${SCRIPT_DIR}/fibo-vocabulary" || return $?
@@ -1490,156 +1578,480 @@ function publishProductVocabularyInner() {
   return 0
 }
 
-function nomagicGenerate() {
-
-  local output="$1"
-  local package="$2"
-  local report_wizard_dir="/home/ec2-user/MagicDraw/plugins/com.nomagic.magicdraw.reportwizard"
-
-  require NOMAGIC_SERVER || return $?
-  require NOMAGIC_USERID || return $?
-  require NOMAGIC_PASSWD || return $?
-
-  echo "Generating ${output}"
-
-  (
-    #
-    # Make sure the DISPLAY variable is unset, otherwise nomagic tries to connect to your X server
-    #
-    unset DISPLAY
-    #
-    # The default directory needs to be ${spec_root}/${family_product_branch_tag} because for some
-    # reason the -output parameter does not seem to support directory names.
-    #
-    cd "${spec_root}/${family_product_branch_tag}"
-
-    bash -x ${report_wizard_dir}/generate.sh \
-      -server "${NOMAGIC_SERVER}" \
-      -login "${NOMAGIC_USERID}" \
-      -password "${NOMAGIC_PASSWD}" \
-      -project "FIBO-Master" \
-      -template "Natural Language Glossary" \
-      -package "${package}" \
-      -output "${output}" \
-      -servertype "twcloud" \
-      -report "Default Development FIBO"
-    rc=$?
-    echo rc=${rc}
-
-    if [ ! -f "${output}" ] ; then
-      error "nomagicGenerate() did not generate ${output}"
-      exit 1
-    fi
-
-    exit 0
-  )
-
-  return $?
-}
-
-function glossaryGenerate() {
-
-  local rc
-
-  #
-  # JG>Disabling the actual calls to nomagic now until we can actually feed in the current fibo version from
-  #    the current workspace because only THEN it makes sense to run nomagic. Otherwise we can just as well
-  #    copy the latest artifacts from the fibo-publish-nomagic job. This happens in the Jenkinsfile.
-  #
-  echo "WARNING: Skipping actual calls to nomagic"
-  return 0
-
-  nomagicGenerate "development.html" "Release;Provisional;Informative" || return $?
-  nomagicGenerate "production.html" "Release" || return $?
-
-  (
-    cd "${spec_root}/${family_product_branch_tag}"
-    set -x
-    ls -al
-    cp -v ${report_wizard_dir}/*.html .
-    cp -vr ${report_wizard_dir}/resources .
-    sed -i development.html -e 's!<br>!<br/>!g'
-    sed -i production.html -e 's!<br>!<br/>!g'
-
-    sed -e '/<script /,/<\\/script>/d' development.html > devin.html
-    sed -e '/<script /,/<\\/script>/d' production.html > prodin.html
-  )
-
-  if [ ! -f ./bin/SaxonHE9-8-0-4J/saxon9he.jar ] ; then
-    error "Could not find ./bin/SaxonHE9-8-0-4J/saxon9he.jar"
-    return 1
-  fi
-
-  chmod a+x ./bin/SaxonHE9-8-0-4J/*.jar
-
-  java \
-    -cp ./bin/SaxonHE9-8-0-4J/saxon9he.jar \
-    net.sf.saxon.Transform \
-    -o:"${spec_root}/${family_product_branch_tag}/datadictionaryDEV.csv" \
-    -xsl:"${SCRIPT_DIR}/glossary-to-csv.xsl" \
-    "${spec_root}/${family_product_branch_tag}/devin.html"
-
-  java \
-    -cp ./bin/SaxonHE9-8-0-4J/saxon9he.jar \
-    net.sf.saxon.Transform \
-    -o:"${spec_root}/${family_product_branch_tag}/datadictionaryPROD.csv" \
-    -xsl:"${SCRIPT_DIR}/glossary-to-csv.xsl" \
-    "${spec_root}/${family_product_branch_tag}/prodin.html"
-
-  return ${rc}
-}
-
 #
-# This can only run on the nomagic box (nomagic.edmcouncil.org) in the context of a Jenkins slave
+# Produce all artifacts for the glossary product
 #
 function publishProductGlossary() {
 
-  if [ "${NODE_NAME}" != "nomagic" ] ; then
-    echo "Skipping publication of product glossary since we're on node ${NODE_NAME}"
-    return 0
-  fi
-
   logRule "Publishing the glossary product"
 
-  setProduct glossary || return $?
+  setProduct ontology || return $?
+  export ontology_product_tag_root="${tag_root}"
 
-  glossaryGenerate || return $?
+  setProduct glossary || return $?
+  export glossary_product_tag_root="${tag_root}"
+
+  export glossary_script_dir="${SCRIPT_DIR}/glossary"
+
+  #
+  # Set the memory for ARQ
+  #
+  export JVM_ARGS=${JVM_ARGS:--Xmx4G}
+
+  #
+  # Get ontologies for Dev
+  #
+  ${jena_arq} \
+    $(find  "${ontology_product_tag_root}" -name "*.rdf" | sed "s/^/--data=/") \
+    --data=${glossary_script_dir}/owlnames.ttl \
+    --query="${glossary_script_dir}/echo.sparql" \
+    --results=TTL > "${glossary_product_tag_root}/temp0D.ttl"
+
+  if [ ${PIPESTATUS[0]} -ne 0 ] ; then
+    error "Could not get Dev ontologies"
+    return 1
+  fi
+
+  #
+  # Get ontologies for Prod
+  #
+  ${jena_arq} \
+    $(grep -r 'utl-av[:;.]Release' "${ontology_product_tag_root}" | sed 's/:.*$//;s/^/--data=/' | grep -F ".rdf") \
+    --data=${glossary_script_dir}/owlnames.ttl \
+    --query="${glossary_script_dir}/echo.sparql" \
+    --results=TTL > "${glossary_product_tag_root}/temp0P.ttl"
+
+
+  ${jena_arq} \
+    $(find  "${ontology_product_tag_root}" -name "Corporations.rdf" | sed "s/^/--data=/") \
+    --data=${glossary_script_dir}/owlnames.ttl \
+    --query="${glossary_script_dir}/echo.sparql" \
+    --results=TTL > "${glossary_product_tag_root}/tempCD.ttl"
+
+  debug=false
+
+  echo "About to run inferences with debug = $debug"
+
+  if [ $debug == "true" ] ; then
+    echo "C"
+    rm -f "${glossary_product_tag_root}/glossaryC.ttl"
+    spinRunInferences "${glossary_product_tag_root}/tempCD.ttl" "${glossary_product_tag_root}/glossaryC.ttl"
+  else
+    rm -f "${glossary_product_tag_root}/glossaryP.ttl"
+    spinRunInferences "${glossary_product_tag_root}/temp0P.ttl" "${glossary_product_tag_root}/glossaryP.ttl"
+    rm -f "${glossary_product_tag_root}/glossaryD.ttl"
+    spinRunInferences "${glossary_product_tag_root}/temp0D.ttl" "${glossary_product_tag_root}/glossaryD.ttl"
+  fi
+  #
+  # Spin can put warnings at the start of a file.  I don't know why. Get rid of them.
+  # I figured this out, and I think I got rid of it, but this still won't hurt.
+  #
+  sed -i '/^@prefix/,$!d' "${glossary_product_tag_root}/glossaryC.ttl"
+  sed -i '/^@prefix/,$!d' "${glossary_product_tag_root}/glossaryD.ttl"
+  sed -i '/^@prefix/,$!d' "${glossary_product_tag_root}/glossaryP.ttl"
+
+  cat >"${tmp_dir}/nolabel.sq" <<EOF
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+CONSTRUCT {?s ?p ?o}
+WHERE {?s ?p ?o .
+FILTER (ISIRI (?s) || (?p != rdfs:label))
+}
+EOF
+
+  ${jena_arq} --data="${glossary_product_tag_root}/glossaryP.ttl" --query="${tmp_dir}/nolabel.sq" > "${glossary_product_tag_root}/temp2P.ttl"
+  ${jena_arq} --data="${glossary_product_tag_root}/glossaryD.ttl" --query="${tmp_dir}/nolabel.sq" > "${glossary_product_tag_root}/temp2D.ttl"
+  ${jena_arq} --data="${glossary_product_tag_root}/glossaryC.ttl" --query="${tmp_dir}/nolabel.sq" > "${glossary_product_tag_root}/temp2C.ttl"
+
+
+ java \
+   -Xmx4G \
+   -Xms4G \
+   -jar "${rdftoolkit_jar}" \
+   --source "${glossary_product_tag_root}/temp2C.ttl" \
+   --source-format turtle \
+   --target "${glossary_product_tag_root}/glossaryC.jsonld" \
+   --target-format json-ld \
+   --infer-base-iri \
+   --use-dtd-subset -ibn \
+   > log 2>&1
+
+ java \
+   -Xmx4G \
+   -Xms4G \
+   -jar "${rdftoolkit_jar}" \
+   --source "${glossary_product_tag_root}/temp2P.ttl" \
+   --source-format turtle \
+   --target "${glossary_product_tag_root}/glossaryP.jsonld" \
+   --target-format json-ld \
+   --infer-base-iri \
+   --use-dtd-subset -ibn \
+   > log 2>&1
+
+ java \
+   -Xmx4G \
+   -Xms4G \
+   -jar "${rdftoolkit_jar}" \
+   --source "${glossary_product_tag_root}/temp2D.ttl" \
+   --source-format turtle \
+   --target "${glossary_product_tag_root}/glossaryD.jsonld" \
+   --target-format json-ld \
+   --infer-base-iri \
+   --use-dtd-subset -ibn \
+   > log 2>&1
+
+  makexl "temp2C" "glossaryC"
+  makexl "temp2D" "glossaryD"
+  makexl "temp2P" "glossaryP"
+
+  return 0
+}
+
+
+#
+# What does "makexl" stand for?
+#
+function makexl () {
+
+  cat > "${tmp_dir}/makeCcsv.sparql" <<EOF
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owlnames: <http://spec.edmcouncil.org/owlnames#> 
+PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#> 
+PREFIX owl:   <http://www.w3.org/2002/07/owl#> 
+PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+
+
+
+SELECT ?Term ?Type (GROUP_CONCAT (?syn; separator=",") AS ?Synonyms) ?Definition ?GeneratedDefinition
+WHERE {?c a owlnames:Class  . 
+FILTER (REGEX (xsd:string (?c), "edmcouncil"))
+?c  owlnames:definition ?Definition ; 
+owlnames:label ?Term .
+BIND ("Class" as ?Type)
+OPTIONAL {?c owlnames:synonym ?syn}
+OPTIONAL {?c  owlnames:mdDefinition ?GeneratedDefinition}
+}
+GROUP BY ?c ?Term ?Type ?Definition ?GeneratedDefinition
+ORDER BY ?Term
+EOF
+
+  ${jena_arq} --data="${glossary_product_tag_root}/$1.ttl" --query="${tmp_dir}/makeCcsv.sparql" --results=TSV > "${glossary_product_tag_root}/$2.tsv"
+
+  cat > "${tmp_dir}/makePcsv.sparql" <<EOF
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owlnames: <http://spec.edmcouncil.org/owlnames#> 
+PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#> 
+PREFIX owl:   <http://www.w3.org/2002/07/owl#> 
+PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+
+
+
+SELECT ?Term ?Type (GROUP_CONCAT (?syn; separator=",") AS ?Synonyms) ?Definition ?GeneratedDefinition
+WHERE {?c a owlnames:Property
+FILTER (REGEX (xsd:string (?c), "edmcouncil"))
+OPTIONAL {?c  owlnames:definition ?Definition  }
+?c owlnames:label ?Term .
+BIND ("Property" as ?Type)
+OPTIONAL {?c owlnames:synonym ?syn}
+OPTIONAL {?c  owlnames:mdDefinition ?GeneratedDefinition}
+}
+GROUP BY ?c ?Term ?Type ?Definition ?GeneratedDefinition
+ORDER BY ?Term
+EOF
+
+  ${jena_arq} --data="${glossary_product_tag_root}/$1.ttl" --query="${tmp_dir}/makePcsv.sparql" --results=TSV | tail -n +2 >> "${glossary_product_tag_root}/$2.tsv"
+
+  sed -i 's/"@../"/g; s/\t\t/\t""\t/g; s/\t$/\t""/'  "${glossary_product_tag_root}/$2.tsv"
+
+  sed  's/"\t"/","/g'  "${glossary_product_tag_root}/$2.tsv" >  "${glossary_product_tag_root}/$2.csv"
+
+  cat >  "${glossary_product_tag_root}/$2.xls" <<EOF
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html xmlns:x="urn:schemas-microsoft-com:office:excel" >
+<head>
+  <xml>
+  <x:ExcelWorkbook>
+    <x:ExcelWorksheet>
+      <x:WorksheetOptions>
+        <x:FreezePanes/>
+        <x:SplitHorizontal>1</x:SplitHorizontal>
+        <x:TopRowBottomPane>1</x:TopRowBottomPane>
+        <x:ActivePane>2</x:ActivePane>
+        <x:Panes>
+          <x:Pane>
+            <x:Number>1</x:Number>
+          </x:Pane>
+          <x:Pane>
+            <x:Number>2</x:Number> 
+            <x:ActiveRow>2</x:ActiveRow> 
+          </x:Pane>
+        </x:Panes>
+      </x:WorksheetOptions>
+    </x:ExcelWorksheet>
+  </x:ExcelWorkbook>
+</xml>
+</head>
+a<body>
+<table>
+EOF
+
+  head -n 1 "${glossary_product_tag_root}/$2.tsv" | sed 's!?!!g; s!^!<tr><th bgcolor="goldenrod">!; s!\t!</th><th bgcolor="goldenrod">!g; s!$!</th></tr>!' >> "${glossary_product_tag_root}/$2.xls"
+
+  tail -n +2 "${glossary_product_tag_root}/$2.tsv" | sed 's!^"!<tr><td valign="top">!; s!"\t"!</td><td valign="top">!g; s!"$!</td></tr>!' >> "${glossary_product_tag_root}/$2.xls"
+  sed -i '2,${s/<td/<td bgcolor="azure"/g;n}' "${glossary_product_tag_root}/$2.xls"
+
+  cat >> "${glossary_product_tag_root}/$2.xls" <<EOF
+</table></bode></html>
+EOF
 
   return 0
 }
 
 #
-# This can only be run after publishProductGlossary() has been run
+# this is the new data dictionary. It is independent of any glossary work. 
 #
 function publishProductDataDictionary() {
 
-  if [ "${NODE_NAME}" != "nomagic" ] ; then
-    echo "Skipping publication of product glossary since we're on node ${NODE_NAME}"
+  if [ "${NODE_NAME}" == "nomagic" ] ; then
+    echo "Skipping publication of product data dictionary since we're on node ${NODE_NAME}"
     return 0
   fi
 
   logRule "Publishing the datadictionary product"
 
-  setProduct glossary || return $?
-
-  local glossary_root="${spec_root}/${family_product_branch_tag}"
-
-  if [ ! -f "${glossary_root}/datadictionaryDEV.csv" ] ; then
-    error "Could not find ${glossary_root}/datadictionaryDEV.csv"
-    return 1
-  fi
-
-  if [ ! -f "${glossary_root}/datadictionaryPROD.csv" ] ; then
-    error "Could not find ${glossary_root}/datadictionaryPROD.csv"
-    return 1
-  fi
+  setProduct ontology || return $?
+  export ontology_product_tag_root="${tag_root}"
 
   setProduct datadictionary || return $?
+  export datadictionary_product_tag_root="${tag_root}"
 
-  local datadictionary_root="${spec_root}/${family_product_branch_tag}"
+  (
+    cd ${ontology_product_tag_root}
+    ls
+  )
 
-  cp -v "${glossary_root}/datadictionaryDEV.csv" "${datadictionary_root}/datadictionaryDEV.html"
-  cp -v "${glossary_root}/datadictionaryPROD.csv" "${datadictionary_root}/datadictionaryPROD.html"
+  export datadictionary_script_dir="${SCRIPT_DIR}/datadictionary"
+
+  #
+  # Set the memory for ARQ
+  #
+  export JVM_ARGS=${JVM_ARGS:--Xmx4G}
+
+  #
+  # Get ontologies for Prod
+  #
+  ${jena_arq} \
+    $(grep -r 'utl-av[:;.]Release' "${ontology_product_tag_root}" | sed 's/:.*$//;s/^/--data=/' | grep -F ".rdf") \
+    --data="${datadictionary_script_dir}/AllProd.ttl" \
+    --query="${datadictionary_script_dir}/echo.sq" \
+    --results=TTL > "${tmp_dir}/temp0B.ttl"
+
+  echo "here is the start of the combined file"
+  wc    "${tmp_dir}/temp0B.ttl"
+
+  ${jena_arq} \
+    --data="${tmp_dir}/temp0B.ttl" \
+    --query="${datadictionary_script_dir}/pseudorange.sq" \
+    > "${tmp_dir}/pr.ttl"
+
+  wc "${tmp_dir}/pr.ttl"
+
+  cat > "${tmp_dir}/con1.sq" <<EOF
+PREFIX av: <https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+
+SELECT DISTINCT ?c
+WHERE {?x av:forCM true . 
+?x rdfs:subClassOf* ?c  .
+FILTER (ISIRI (?c))
+}
+EOF
+
+  ${jena_arq} \
+    --data="${tmp_dir}/temp0B.ttl" \
+    --query="${tmp_dir}/con1.sq" \
+    --results=TSV > "${tmp_dir}/CONCEPTS"
+
+  echo "Here are the concepts"
+  cat "${tmp_dir}/CONCEPTS"
+
+  cat > "${tmp_dir}/ss.sq" << EOF
+PREFIX afn: <http://jena.apache.org/ARQ/function#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+prefix skos: <http://www.w3.org/2004/02/skos/core#> 
+prefix edm: <http://www.edmcouncil.org/temp#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX av: <https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/>
+
+SELECT ?class ?table ?definition ?field ?description ?type ?r1
+WHERE {
+  ?class a owl:Class .
+  FILTER (ISIRI (?class))
+  FIlTER (REGEX (xsd:string (?class), "edmcouncil"))
+  ?class rdfs:subClassOf* ?base1 .
+  ?b1 edm:pseudodomain ?base1; a edm:PR ; edm:p ?p ; edm:pseudorange ?r1  .
+  ?p av:forDD "true"^^xsd:boolean .
+  FILTER NOT EXISTS {
+    ?class rdfs:subClassOf* ?base2 .
+# FILTER (?base2 != ?base1)
+    ?b2 a edm:PR ; edm:p ?p ; edm:pseudorange ?r2 ; edm:pseudodomain ?base2 .
+	  ?r2 rdfs:subClassOf+ ?r1
+	}
+
+  ?p rdfs:label ?field .
+  OPTIONAL {?p  skos:definition ?dx}
+  BIND (COALESCE (?dx, "(none)") AS ?description )
+  ?r1 rdfs:label ?type .
+  ?class rdfs:label ?table
+  OPTIONAL {?class skos:definition  ?dy }
+  BIND ( COALESCE (?dy, "(none)") AS ?definition )
+} 
+EOF
+
+  #
+  # Turns out, putting this into a text file and grepping over it ran faster than putting it into a triple store.
+  #
+  ${jena_arq} \
+    --data="${tmp_dir}/temp0B.ttl" \
+    --data="${tmp_dir}/pr.ttl" \
+    --query="${tmp_dir}/ss.sq" \
+    --results=TSV | sed 's/"@../"/g' > "${tmp_dir}/ssx.txt"
+
+  echo "Here are the first few lines"
+  head  "${tmp_dir}/ssx.txt"
+  #
+  # remove duplicate lines
+  #
+  sort -u "${tmp_dir}/ssx.txt" > "${tmp_dir}/ss.txt"
+  #
+  # Start with empty output
+  #
+  echo "" > "${tmp_dir}/output.tsv"
+  #
+  # The CONCEPTS are stop-classes; we don't show those.  So we treat them as DONE at the start of the processing.
+  #
+  cp "${tmp_dir}/CONCEPTS" "${tmp_dir}/DONE"
+  #
+  # Find the list of things to include.  This is too costly to include all classes.
+  #
+  cat > "${tmp_dir}/dumps.sq" <<EOF
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT DISTINCT ?c
+WHERE {
+  ?x <https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/dumpable> true .
+  ## Swap these two to include all subclasses of marked classes
+  ?c rdfs:subClassOf* ?x .
+  #BIND (?x AS ?c)
+  ?c rdfs:label ?lx
+  BIND (UCASE (?lx) AS ?l)
+} ORDER BY ?l
+EOF
+
+  ${jena_arq}  --data="${tmp_dir}/temp0B.ttl"  --query="${tmp_dir}/dumps.sq"  --results=TSV > "${tmp_dir}/dumps"
+
+  cp  "${tmp_dir}/dumps" "${tmp_dir}/pr.ttl"    "${tmp_dir}/temp0B.ttl"  ${datadictionary_product_tag_root}
+
+  echo "here are the dumps"
+  cat "${tmp_dir}/dumps"
+  echo "that was the dumps"
+
+  echo Writing into "${datadictionary_product_tag_root}/index.html"
+
+  echo "${datadictionary_script_dir}/index.template contains"
+  cat "${datadictionary_script_dir}/index.template"
+
+  sed  '/-- index of dictionaries goes here/,$d' \
+  "${datadictionary_script_dir}/index.template" > "${datadictionary_product_tag_root}/index.html"
+
+  cat >> "${datadictionary_product_tag_root}/index.html" <<EOF
+<table>
+EOF
+
+  tail -n +2 "${tmp_dir}/dumps" | while read class ; do
+    dumpdd $class
+  done
+
+  cat >> "${datadictionary_product_tag_root}/index.html" <<EOF
+</table>
+EOF
+
+  sed \
+    '1,/-- index of dictionaries goes here/d' \
+    "${datadictionary_script_dir}/index.template" >> "${datadictionary_product_tag_root}/index.html"
+
+  return 0
+}
+
+#
+# Helper Function for datadictionary
+#
+function localdd () {
+
+  if grep -q "$1" "${tmp_dir}/DONE" ; then
+    echo "I've seen it before!"
+    return 0
+  fi
+
+  echo "$1" >>  "${tmp_dir}/DONE"
+
+  grep  "^$1" "${tmp_dir}/ss.txt" | \
+  sed "s/^[^\t]*\t//; s/\t[^\t]*$//; 2,\$s/^[^\t]*\t[^\t]*\t/\t\"\"\t/" >> "${tmp_dir}/output.tsv"
+
+  echo "Finished tsv sed for $1"
+
+  #tdbquery --loc=TEMP  --query=temp2.sq --results=TSV   > next
+  grep "^$1" "${tmp_dir}/ss.txt" | sed 's/^.*\t//'  |  while read uri ; do
+    localdd "$(echo "${uri}" | sed 's/\r//')"
+  done
+
+  return 0
+}
+
+
+#
+# Helper Function for datadictionary
+#
+function dumpdd () {
+
+  echo "Creating Data Dictionary for $1"
+  # Extract the filename from the local part of the class IRI
+  local t=${1##*/}
+  local fname=${t%>*}
+
+  cat >> "${datadictionary_product_tag_root}/index.html" << EOF
+<tr><td>${fname}</td><td><a href="${fname}.xls">excel</a></td><td><a href="${fname}.csv">CSV</a></td></tr>
+EOF
+
+  # Reset the output to blank
+  echo "" > "${tmp_dir}/output.tsv"
+
+  #Reset the "seen" list to be the stopclasses
+  cp  "${tmp_dir}/CONCEPTS"  "${tmp_dir}/DONE"
+
+  localdd $1
+
+  cat > "${datadictionary_product_tag_root}/${fname}.csv" <<EOF
+Table,Definition,Field,Field Definition,Type
+EOF
+
+  sed 's/"\t"/","/g; s/^\t"/,"/' "${tmp_dir}/output.tsv" > "${datadictionary_product_tag_root}/${fname}.csv"
+
+  cat > "${datadictionary_product_tag_root}/${fname}.xls" <<EOF
+<table border=1>
+<tr><th  bgcolor="goldenrod">Table</th><th  bgcolor="goldenrod">Definition</th><th  bgcolor="goldenrod">Field</th><th  bgcolor="goldenrod">Field Definition</th><th  bgcolor="goldenrod">Type</th></tr>
+EOF
+
+  tail -n +2 "${tmp_dir}/output.tsv" | \
+    sed 's!"\t"!</td><td valign="top">!g; s!^"!<td valign="top">!; s!^\t"!<td/><td valign="top">!; s!"$!</td>!g; s!^!<tr>!; s!$!</tr>!' >> \
+    "${datadictionary_product_tag_root}/${fname}.xls"
+
+  cat >>"${datadictionary_product_tag_root}/${fname}.xls"  <<EOF
+</table>
+EOF
+
+  sed -i '4,${s/<td/<td bgcolor="azure"/g;n}' "${datadictionary_product_tag_root}/${fname}.xls"
 
   return 0
 }
@@ -1654,7 +2066,7 @@ function quadify () {
   #
   # Set the memory for ARQ
   #
-  export JVM_ARGS=${JVM_ARGS:--Xmx2G}
+  export JVM_ARGS=${JVM_ARGS:--Xmx4G}
 
   cat >"${tmpont}" << __HERE__
 SELECT ?o WHERE {?o a <http://www.w3.org/2002/07/owl#Ontology> }
@@ -1673,6 +2085,7 @@ function buildquads () {
 
   local ProdQuadsFile="${tag_root}/prod.fibo.nq"
   local DevQuadsFile="${tag_root}/dev.fibo.nq"
+  echo "starting buildquads" 
 
   (
     cd ${spec_root}
@@ -1687,6 +2100,7 @@ function buildquads () {
 	  zip ${ProdQuadsFile}.zip ${ProdQuadsFile}
 	  zip ${DevQuadsFile}.zip ${DevQuadsFile}
   )
+  echo "finished buildquads" 
 }
 
 #
