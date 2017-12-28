@@ -1622,6 +1622,10 @@ function publishProductGlossaryReactApp() {
     #
     cd "${SCRIPT_DIR}/../../site/fibo/glossary" || return $?
 
+    ls -al
+
+    npm install || return $?
+
     npm run build || return $?
 
     cp -vR build/* "${glossary_product_tag_root}/"
