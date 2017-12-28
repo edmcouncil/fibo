@@ -28,7 +28,7 @@ jena_arq=""
 
 # For testing - speedy=true leaves out some very slow processing, 
 # e.g., isDefinedBy, converstions into ttl and jsonld, and nquads
-speedy=false
+speedy=true
 
 #
 # The products that we generate the artifacts for with this script
@@ -600,7 +600,7 @@ __HERE__
   #
   # We want to add in a rdfs:isDefinedBy link from every class back to the ontology.
   #
-  if [ speedy == "true" ] ; then
+  if [ "${speedy}" == "true" ] ; then
 	  echo "Leaving out isDefinedBy because it is slow"
 	else
 	  find ${tag_root}/ -type f  -name '*.rdf' -not -name '*About*'  -print | while read file ; do
@@ -1112,7 +1112,7 @@ function publishProductOntology() {
   ontologyBuildCats  || return $?
   ontologyCreateAboutFiles || return $?
   ontologySearchAndReplaceStuff || return $?
-  if [ speedy=="true" ] ; then
+  if [ "${speedy}" == "true" ] ; then
     echo "Not doing some conversions because they are slow"
   else 
     ontologyConvertRdfToAllFormats || return $?
@@ -1121,7 +1121,7 @@ function publishProductOntology() {
   ontologyConvertMarkdownToHtml || return $?
   zipOntologyFiles || return $?
 
-  if [ ${speedy} == "true" ] ; then
+  if [ "${speedy}" == "true" ] ; then
     echo "Not doing quads because they are slow"
   else
     buildquads || return $?
