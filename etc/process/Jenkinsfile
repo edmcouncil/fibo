@@ -183,6 +183,10 @@ pipeline {
         sh 'cp -vr . ${NGINX_SPEC_ROOT}/ > published-files.log 2>&1'
         echo 'Successfully copied all files to destination, see published-files.log in the workspace'
         archiveArtifacts artifacts: 'published-files.log', fingerprint: true
+        sh 'rm published-files.log'
+
+        archiveArtifacts artifacts: '**.tar.gz.log', fingerprint: true
+        sh "find . -name '*.tar.gz.log' -delete"
 
         //setGitHubPullRequestStatus context: 'fibo-publish', message: '', state: 'SUCCESS'
       }
