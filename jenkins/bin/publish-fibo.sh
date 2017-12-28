@@ -38,7 +38,8 @@ speedy=false
 family="fibo"
 # Removed for speedier testing 
 #products="ontology widoco glossary datadictionary vocabulary"
-products="ontology glossary datadictionary vocabulary "
+#products="ontology glossary datadictionary vocabulary "
+products="ontology glossary"
 
 source_family_root="${WORKSPACE}/${family}"
 spec_root="${WORKSPACE}/target"
@@ -1591,6 +1592,65 @@ function publishProductGlossary() {
   setProduct glossary || return $?
   export glossary_product_tag_root="${tag_root}"
 
+  debug=true
+
+  publishProductGlossaryContent || return $?
+  publishProductGlossaryReactApp || return $?
+
+  return 0
+}
+
+#
+# Produce all artifacts for the glossary product
+#
+function publishProductGlossaryReactApp() {
+
+  logRule "Publishing the glossary product"
+
+  setProduct ontology || return $?
+  export ontology_product_tag_root="${tag_root}"
+
+  setProduct glossary || return $?
+  export glossary_product_tag_root="${tag_root}"
+
+  echo "Build the React app"
+
+  (
+    set -x
+    #
+    # Go to the site/fibo/glossary directory to build the code
+    #
+    cd "${SCRIPT_DIR}/../../site/fibo/glossary" || return $?
+
+    npm run build || return $?
+
+    cp -vR build/* "${glossary_product_tag_root}/"
+  )
+  rc=$?
+
+  if ((rc != 0)) ; then
+    error "Could not build the react app"
+    return ${rc}
+  fi
+
+  echo "Successfully built the React App for the Glossary Product"
+
+  return 0
+}
+
+#
+# Produce all artifacts for the glossary product
+#
+function publishProductGlossaryContent() {
+
+  logRule "Publishing the content files of the glossary product"
+
+  setProduct ontology || return $?
+  export ontology_product_tag_root="${tag_root}"
+
+  setProduct glossary || return $?
+  export glossary_product_tag_root="${tag_root}"
+
   export glossary_script_dir="${SCRIPT_DIR}/glossary"
 
   #
@@ -1628,8 +1688,6 @@ function publishProductGlossary() {
     --query="${glossary_script_dir}/echo.sparql" \
     --results=TTL > "${glossary_product_tag_root}/tempCD.ttl"
 
-  debug=false
-
   echo "About to run inferences with debug = $debug"
 
   if [ $debug == "true" ] ; then
@@ -1646,9 +1704,12 @@ function publishProductGlossary() {
   # Spin can put warnings at the start of a file.  I don't know why. Get rid of them.
   # I figured this out, and I think I got rid of it, but this still won't hurt.
   #
-  sed -i '/^@prefix/,$!d' "${glossary_product_tag_root}/glossaryC.ttl"
-  sed -i '/^@prefix/,$!d' "${glossary_product_tag_root}/glossaryD.ttl"
-  sed -i '/^@prefix/,$!d' "${glossary_product_tag_root}/glossaryP.ttl"
+  if [ $debug == "true" ] ; then
+    sed -i '/^@prefix/,$!d' "${glossary_product_tag_root}/glossaryC.ttl"
+  else
+    sed -i '/^@prefix/,$!d' "${glossary_product_tag_root}/glossaryD.ttl"
+    sed -i '/^@prefix/,$!d' "${glossary_product_tag_root}/glossaryP.ttl"
+  fi
 
   cat >"${tmp_dir}/nolabel.sq" <<EOF
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
@@ -1658,50 +1719,56 @@ FILTER (ISIRI (?s) || (?p != rdfs:label))
 }
 EOF
 
-  ${jena_arq} --data="${glossary_product_tag_root}/glossaryP.ttl" --query="${tmp_dir}/nolabel.sq" > "${glossary_product_tag_root}/temp2P.ttl"
-  ${jena_arq} --data="${glossary_product_tag_root}/glossaryD.ttl" --query="${tmp_dir}/nolabel.sq" > "${glossary_product_tag_root}/temp2D.ttl"
-  ${jena_arq} --data="${glossary_product_tag_root}/glossaryC.ttl" --query="${tmp_dir}/nolabel.sq" > "${glossary_product_tag_root}/temp2C.ttl"
+  if [ $debug == "true" ] ; then
+    ${jena_arq} --data="${glossary_product_tag_root}/glossaryC.ttl" --query="${tmp_dir}/nolabel.sq" > "${glossary_product_tag_root}/temp2C.ttl"
+  else
+    ${jena_arq} --data="${glossary_product_tag_root}/glossaryP.ttl" --query="${tmp_dir}/nolabel.sq" > "${glossary_product_tag_root}/temp2P.ttl"
+    ${jena_arq} --data="${glossary_product_tag_root}/glossaryD.ttl" --query="${tmp_dir}/nolabel.sq" > "${glossary_product_tag_root}/temp2D.ttl"
+  fi
 
+  if [ $debug == "true" ] ; then
+    java \
+      -Xmx4G \
+      -Xms4G \
+      -jar "${rdftoolkit_jar}" \
+      --source "${glossary_product_tag_root}/temp2C.ttl" \
+      --source-format turtle \
+      --target "${glossary_product_tag_root}/glossaryC.jsonld" \
+      --target-format json-ld \
+      --infer-base-iri \
+      --use-dtd-subset -ibn \
+      > log 2>&1
+  else
+    java \
+      -Xmx4G \
+      -Xms4G \
+      -jar "${rdftoolkit_jar}" \
+      --source "${glossary_product_tag_root}/temp2P.ttl" \
+      --source-format turtle \
+      --target "${glossary_product_tag_root}/glossaryP.jsonld" \
+      --target-format json-ld \
+      --infer-base-iri \
+      --use-dtd-subset -ibn \
+      > log 2>&1
+    java \
+      -Xmx4G \
+      -Xms4G \
+      -jar "${rdftoolkit_jar}" \
+      --source "${glossary_product_tag_root}/temp2D.ttl" \
+      --source-format turtle \
+      --target "${glossary_product_tag_root}/glossaryD.jsonld" \
+      --target-format json-ld \
+      --infer-base-iri \
+      --use-dtd-subset -ibn \
+      > log 2>&1
+  fi
 
- java \
-   -Xmx4G \
-   -Xms4G \
-   -jar "${rdftoolkit_jar}" \
-   --source "${glossary_product_tag_root}/temp2C.ttl" \
-   --source-format turtle \
-   --target "${glossary_product_tag_root}/glossaryC.jsonld" \
-   --target-format json-ld \
-   --infer-base-iri \
-   --use-dtd-subset -ibn \
-   > log 2>&1
-
- java \
-   -Xmx4G \
-   -Xms4G \
-   -jar "${rdftoolkit_jar}" \
-   --source "${glossary_product_tag_root}/temp2P.ttl" \
-   --source-format turtle \
-   --target "${glossary_product_tag_root}/glossaryP.jsonld" \
-   --target-format json-ld \
-   --infer-base-iri \
-   --use-dtd-subset -ibn \
-   > log 2>&1
-
- java \
-   -Xmx4G \
-   -Xms4G \
-   -jar "${rdftoolkit_jar}" \
-   --source "${glossary_product_tag_root}/temp2D.ttl" \
-   --source-format turtle \
-   --target "${glossary_product_tag_root}/glossaryD.jsonld" \
-   --target-format json-ld \
-   --infer-base-iri \
-   --use-dtd-subset -ibn \
-   > log 2>&1
-
-  makexl "temp2C" "glossaryC"
-  makexl "temp2D" "glossaryD"
-  makexl "temp2P" "glossaryP"
+  if [ $debug == "true" ] ; then
+    makexl "temp2C" "glossaryC"
+  else
+    makexl "temp2D" "glossaryD"
+    makexl "temp2P" "glossaryP"
+  fi
 
   return 0
 }
