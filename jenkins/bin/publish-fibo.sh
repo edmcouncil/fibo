@@ -494,7 +494,14 @@ function ontologyCopyRdfToTarget() {
 #    [ "${module}" == "ext" ] && continue
     upperModule=$(echo ${module} | tr '[:lower:]' '[:upper:]')
     [ "${module}" == "${upperModule}" ] && continue
-    mv ${module} ${upperModule}
+    if ! mv ${module} ${upperModule} ; then
+      echo "Cannot move ${module} to ${upperModule}:"
+      (
+        set -x
+        ls -al ${upperModule}/
+        ls -al ${module}/
+      )
+    fi
   done
   modules=""
   module_directories=""
