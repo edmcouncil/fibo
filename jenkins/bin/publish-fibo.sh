@@ -123,14 +123,14 @@ function initTools() {
   #
   export TMPDIR="${tmp_dir}"
 
-  echo "fibo_root=${fibo_root}"
+  echo "fibo_root=${fibo_root/${WORKSPACE}/}"
 
   if [ ! -d "${fibo_root}" ] ; then
     error "fibo_root directory not found (${fibo_root})"
     return 1
   fi
 
-  echo fibo_infra_root=${fibo_infra_root}
+  echo "fibo_infra_root=${fibo_infra_root/${WORKSPACE}/}"
 
   if [ ! -d "${fibo_infra_root}" ] ; then
     error "fibo_infra_root directory not found (${fibo_infra_root})"
@@ -171,9 +171,9 @@ function initWorkspaceVars() {
   #
   [ -d "${tmp_dir}" ] && rm -rf "${tmp_dir}"
   mkdir -p "${tmp_dir}" >/dev/null 2>&1
-  echo "tmp_dir=${tmp_dir}"
+  echo "tmp_dir=${tmp_dir/${WORKSPACE}/}"
 
-  echo "source_family_root=${source_family_root}"
+  echo "source_family_root=${source_family_root/${WORKSPACE}/}"
 
   if [ ! -d "${source_family_root}" ] ; then
     error "source_family_root directory not found (${source_family_root})"
@@ -494,6 +494,11 @@ function ontologyCopyRdfToTarget() {
 #    [ "${module}" == "ext" ] && continue
     upperModule=$(echo ${module} | tr '[:lower:]' '[:upper:]')
     [ "${module}" == "${upperModule}" ] && continue
+    #
+    # In case we didn't clean the workspace before the job run we still might have the uppercase directories
+    # of the previous run which need to be removed or else the subsequent mv command will fail.
+    #
+    rm -rf ${upperModule} >/dev/null 2>&1
     if ! mv ${module} ${upperModule} ; then
       echo "Cannot move ${module} to ${upperModule}:"
       (
@@ -592,17 +597,16 @@ __HERE__
     find ${tag_root}/ -type f \( -name '*.rdf' -o -name '*.ttl' -o -name '*.md' \) -exec sed -i -f ${sedfile} {} \;
   )
 
-
-# We want to add in a rdfs:isDefinedBy link from every class back to the ontology. 
-
-  find ${tag_root}/ -type f  -name '*.rdf' -not -name '*About*'  -print | while read file ; do
-     if [ speedy="true" ] ; then
-	 echo "Leaving out isDefinedBy because it is slow"
-     else
-	 addIsDefinedBy "${file}"
-     fi 
-  
-  done
+  #
+  # We want to add in a rdfs:isDefinedBy link from every class back to the ontology.
+  #
+  if [ speedy == "true" ] ; then
+	  echo "Leaving out isDefinedBy because it is slow"
+	else
+	  find ${tag_root}/ -type f  -name '*.rdf' -not -name '*About*'  -print | while read file ; do
+	    addIsDefinedBy "${file}"
+    done
+  fi
  
   return 0
 }
@@ -693,7 +697,7 @@ function fixTopBraidBaseURICookie() {
   local baseURI
   local uri
 
-  echo "Annotating ${ontologyFile}"
+  echo "Annotating ${ontologyFile/${WORKSPACE}/}"
 
   echo "CSV output of query is:"
 
@@ -823,14 +827,14 @@ function convertRdfFileTo() {
   # For the turtle files, we want the base annotations to be the versionIRI
   #
   if [ "${targetFormat}" == "turtle" ] ; then
-    echo "Adjusting ttl base URI for ${rdfFile}"
+    echo "Adjusting ttl base URI for ${rdfFile/${WORKSPACE}/}"
     sed -i "s?^\(\(# baseURI:\)\|\(@base\)\).*ontology/?&${GIT_BRANCH}/${GIT_TAG_NAME}/?" "${targetFile}"
     sed -i "s@${GIT_BRANCH}/${GIT_TAG_NAME}/${GIT_BRANCH}/${GIT_TAG_NAME}/@${GIT_BRANCH}/${GIT_TAG_NAME}/@" \
 	  "${targetFile}"
   fi 
 
   if grep -q "ERROR" "${logfile}"; then
-    echo "Found errors during conversion of ${rdfFile} to \"${targetFormat}\":"
+    echo "Found errors during conversion of ${rdfFile/${WORKSPACE}/} to \"${targetFormat}\":"
     cat "${logfile}"
     rm "${logfile}"
     return 1
@@ -854,7 +858,7 @@ function ontologyConvertRdfToAllFormats() {
 
   for rdfFile in **/*.rdf ; do
     for format in json-ld turtle ; do
-      echo "converting ${rdfFile} to ${format}"
+      echo "converting ${rdfFile/${WORKSPACE}/} to ${format}"
       convertRdfFileTo rdf-xml "${rdfFile}" "${format}" || return $?
     done || return $?
   done || return $?
@@ -896,7 +900,7 @@ function zipWholeTagDir() {
     tar -cvzf "${tarGzFile}" "${tag_root/${spec_root}/.}"
   )
 
-  echo "Created ${tarGzFile}:"
+  echo "Created ${tarGzFile/${WORKSPACE}/}:"
   ls -al "${tarGzFile}" || return $?
 
   return 0
@@ -1005,20 +1009,17 @@ function generateWidocoDocumentationForFile() {
 
   local extension="$([[ "${rdfFile}" = *.* ]] && echo ".${rdfFile##*.}" || echo '')"
 
-  echo " - processing ${rdfFile} in ${directory} with extension ${extension}"
-
-
-
+  echo " - processing ${rdfFile/${WORKSPACE}/} in ${directory/${WORKSPACE}/} with extension ${extension}"
 
   if [[ "${extension}" != ".ttl" || "${rdfFile}" =~ ^[0-9].* ]] ; then
-    echo  "- skipping ${rdfFile} in ${directory} with extension ${extension}"
+    echo  "- skipping ${rdfFile/${WORKSPACE}/} in ${directory/${WORKSPACE}/} with extension ${extension}"
     return 0
   fi
 
-  mkdir -p outputDir >/dev/null 2>&1
+  mkdir -p "${outputDir}" >/dev/null 2>&1
 
-  echo "Running widoco tool on ${rdfFile} to generate documentation:"
-  echo " - outFolder ${outputDir}"
+  echo "Running widoco tool on ${rdfFile/${WORKSPACE}/} to generate documentation:"
+  echo " - outFolder ${outputDir/${WORKSPACE}/}"
 
   java \
     -Xmx3G \
@@ -1046,14 +1047,14 @@ function generateWidocoDocumentationForFile() {
   #Remove introduction section
   if [ -f "${outputDir}/${rdfFileNoExtension}/index-en.html" ] ; then
 
-   #contents=$(<${outputDir}/${rdfFileNoExtension}/index-en.html)
-   #echo "contents of index file before modification"
-   #echo "${contents}"
+    #contents=$(<${outputDir}/${rdfFileNoExtension}/index-en.html)
+    #echo "contents of index file before modification"
+    #echo "${contents}"
 
     echo "Replacing introduction with acknowledgements section from file ${outputDir}/${rdfFileNoExtension}/index-en.html"
-    echo "Contents of script folder ${SCRIPT_DIR}"
+    echo "Contents of script folder ${SCRIPT_DIR/${WORKSPACE}/}"
     ls -al "${SCRIPT_DIR}"
-    echo "Contents of widoco-sections folder ${SCRIPT_DIR}/widoco-sections"
+    echo "Contents of widoco-sections folder ${SCRIPT_DIR/${WORKSPACE}/}/widoco-sections"
     ls -al ${SCRIPT_DIR}/widoco-sections
     cp "${SCRIPT_DIR}/widoco-sections/acknowledgements-en.html" "${outputDir}/${rdfFileNoExtension}/sections"
     echo "Contents of folder ${outputDir}/${rdfFileNoExtension}/sections"
@@ -1065,12 +1066,12 @@ function generateWidocoDocumentationForFile() {
     echo "Removing references section from file ${outputDir}/${rdfFileNoExtension}/index-en.html"
     sed -i "/#references/d" "${outputDir}/${rdfFileNoExtension}/index-en.html"
 
-   #contents=$(<${outputDir}/${rdfFileNoExtension}/index-en.html)
-   #echo "contents of index file after modification"
-   #echo "${contents}"
+    #contents=$(<${outputDir}/${rdfFileNoExtension}/index-en.html)
+    #echo "contents of index file after modification"
+    #echo "${contents}"
 
-   echo "Breaking here just for test"
-   return 0
+    echo "Breaking here just for test"
+    return 0
 
   else
     echo "No file found at ${outputDir}/${rdfFileNoExtension}/index-en.html"
@@ -1111,20 +1112,19 @@ function publishProductOntology() {
   ontologyCreateAboutFiles || return $?
   ontologySearchAndReplaceStuff || return $?
   if [ speedy=="true" ] ; then
-      echo "Not doing some conversions because they are slow"
+    echo "Not doing some conversions because they are slow"
   else 
-      ontologyConvertRdfToAllFormats || return $?
+    ontologyConvertRdfToAllFormats || return $?
   fi 
 # ontologyAnnotateTopBraidBaseURL || return $?
   ontologyConvertMarkdownToHtml || return $?
   zipOntologyFiles || return $?
 
-  if [ speedy=="true" ] ; then
-      echo "Not doing quads becuase they are slow"
+  if [ ${speedy} == "true" ] ; then
+    echo "Not doing quads because they are slow"
   else
-      buildquads || return $?
+    buildquads || return $?
   fi
-
 
   return 0
 }
@@ -1294,11 +1294,11 @@ function vocabularyGetOntologies() {
     return 1
   fi
 
-  echo "Generated ${tmp_dir}/temp0.ttl:"
+  echo "Generated ${tmp_dir/${WORKSPACE}/}/temp0.ttl:"
 
   head -n200 "${tmp_dir}/temp0.ttl"
 
-  echo "Generated ${tmp_dir}/temp0B.ttl:"
+  echo "Generated ${tmp_dir/${WORKSPACE}/}/temp0B.ttl:"
 
   head -n200 "${tmp_dir}/temp0B.ttl"
 
@@ -1350,13 +1350,13 @@ function vocabularyRunSpin() {
   spinRunInferences "${tmp_dir}/temp0.ttl" "${tmp_dir}/temp1.ttl" || return $?
   spinRunInferences "${tmp_dir}/temp0B.ttl" "${tmp_dir}/temp1B.ttl" || return $?
 
-  echo "Generated ${tmp_dir}/temp1.ttl:"
-  echo "Generated ${tmp_dir}/temp1B.ttl:"
+  echo "Generated ${tmp_dir/${WORKSPACE}/}/temp1.ttl:"
+  echo "Generated ${tmp_dir/${WORKSPACE}/}/temp1B.ttl:"
 
-  echo "Printing first 50 lines of ${tmp_dir}/temp1.ttl"
+  echo "Printing first 50 lines of ${tmp_dir/${WORKSPACE}/}/temp1.ttl"
   head -n50 "${tmp_dir}/temp1.ttl"
 
-  echo "Printing first 50 lines of ${tmp_dir}/temp1B.ttl"
+  echo "Printing first 50 lines of ${tmp_dir/${WORKSPACE}/}/temp1B.ttl"
   head -n50 "${tmp_dir}/temp1B.ttl"
 
   #The first three lines contain some WARN statements - removing it to complete the build.
@@ -2037,7 +2037,7 @@ EOF
 
   echo Writing into "${datadictionary_product_tag_root}/index.html"
 
-  echo "${datadictionary_script_dir}/index.template contains"
+  echo "${datadictionary_script_dir/${WORKSPACE}/}/index.template contains"
   cat "${datadictionary_script_dir}/index.template"
 
   sed  '/-- index of dictionaries goes here/,$d' \
@@ -2094,6 +2094,7 @@ function localdd () {
 function dumpdd () {
 
   echo "Creating Data Dictionary for $1"
+
   # Extract the filename from the local part of the class IRI
   local t=${1##*/}
   local fname=${t%>*}
@@ -2163,7 +2164,8 @@ function buildquads () {
 
   local ProdQuadsFile="${tag_root}/prod.fibo.nq"
   local DevQuadsFile="${tag_root}/dev.fibo.nq"
-  echo "starting buildquads" 
+
+  echo "starting buildquads"
 
   (
     cd ${spec_root}
@@ -2178,7 +2180,10 @@ function buildquads () {
 	  zip ${ProdQuadsFile}.zip ${ProdQuadsFile}
 	  zip ${DevQuadsFile}.zip ${DevQuadsFile}
   )
-  echo "finished buildquads" 
+
+  echo "finished buildquads"
+
+  return 0
 }
 
 #
