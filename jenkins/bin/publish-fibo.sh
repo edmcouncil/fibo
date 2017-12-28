@@ -898,11 +898,13 @@ function zipWholeTagDir() {
   (
     cd ${spec_root}
     set -x
-    tar -cvzf "${tarGzFile}" "${tag_root/${spec_root}/.}"
+    tar -czf "${tarGzFile}" "${tag_root/${spec_root}/.}"
   )
+  [ $? -ne 0 ] && return 1
 
-  echo "Created ${tarGzFile/${WORKSPACE}/}, saving contents list in ${tarGzContentsFile}"
-  ls -al "${tarGzFile}" > "${tarGzContentsFile}" || return $?
+  echo "Created ${tarGzFile/${WORKSPACE}/},"
+  echo "saving contents list in ${tarGzContentsFile/${WORKSPACE}/}"
+  ls -al "${tarGzFile}" > "${tarGzContentsFile}" 2>&1 || return $?
 
   return 0
 }
@@ -917,8 +919,18 @@ function copySiteFiles() {
 
     #Replace GIT BRANCH and TAG in the glossary index html
     #
-    # JG>I commented this out since this doesn't make sense it seems. There is no string "GIT_BRANCH" in
-    # index.html and even if there were I think it should always point to master/latest anyway (which it already does)
+    # DA>JG, I commented this out since this doesn't make sense it seems.
+    #    There is no string "GIT_BRANCH" in index.html and even if there
+    #    were I think it should always point to master/latest anyway (which it
+    #    already does)
+    #
+    # JG>DA yes I understand but we better rethink this whole model, most files
+    #    should reside in one of the versioned product directories, not in any
+    #    of the /static directories. For the overall site pages, that span all
+    #    versions we should have a special environment variable in the main
+    #    Jenkinsfile (in the fibo repo) that holds the BRANCH/TAG value of the
+    #    version of fibo-infra that should be used as the source of those
+    #    files.
     #
     #echo "Replacing GIT_BRANCH  $GIT_BRANCH"
     #sed -i "s/GIT_BRANCH/$GIT_BRANCH/g" "static/glossary/index.html"
@@ -926,9 +938,12 @@ function copySiteFiles() {
     #echo "Replacing GIT_TAG_NAME  $GIT_TAG_NAME"
     #sed -i "s/GIT_TAG_NAME/$GIT_TAG_NAME/g" "static/glossary/index.html"
 
-    cp -vr * "${spec_root}/"
+    cp -r * "${spec_root}/"
   )
-  cp -v ${fibo_infra_root}/LICENSE "${spec_root}"
+  #
+  # JG>Why is this file not in the fibo repo itself?
+  #
+  cp ${fibo_infra_root}/LICENSE "${spec_root}"
 
   (
     cd "${spec_root}"
