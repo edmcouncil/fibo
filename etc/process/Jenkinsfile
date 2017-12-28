@@ -177,16 +177,15 @@ pipeline {
         sh 'ls -al'
         sh 'find . -name \'.git\' -exec rm -rf {} \\; || true'
         sh 'find . -name \'.gitignore\' -exec rm -f {} \\; || true'
+        sh 'find . -name \'temp*\' -exec rm -f {} \\; || true'
 
         echo "Copy all generated content to ${env.NGINX_SPEC_ROOT}:"
         sh 'ls -al ${NGINX_SPEC_ROOT}/'
         sh 'cp -vr . ${NGINX_SPEC_ROOT}/ > published-files.log 2>&1'
         echo 'Successfully copied all files to destination, see published-files.log in the workspace'
-        archiveArtifacts artifacts: 'published-files.log', fingerprint: true
-        sh 'rm published-files.log'
 
-        archiveArtifacts artifacts: '**.tar.gz.log', fingerprint: true
-        sh "find . -name '*.tar.gz.log' -delete"
+        archiveArtifacts artifacts: '**/*.log', fingerprint: true
+        sh 'find . -name \'*.log\' -exec rm -f {} \\; || true'
 
         //setGitHubPullRequestStatus context: 'fibo-publish', message: '', state: 'SUCCESS'
       }
