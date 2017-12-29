@@ -25,9 +25,10 @@ tmp_dir="${WORKSPACE}/tmp"
 export fibo_root="${WORKSPACE}/fibo"
 export fibo_infra_root="$(cd ${SCRIPT_DIR}/../.. ; pwd -L)"
 jena_arq=""
-
+#
 # For testing - speedy=true leaves out some very slow processing, 
 # e.g., isDefinedBy, converstions into ttl and jsonld, and nquads
+#
 speedy=true
 
 #
@@ -601,7 +602,7 @@ __HERE__
   # We want to add in a rdfs:isDefinedBy link from every class back to the ontology.
   #
   if [ "${speedy}" == "true" ] ; then
-	  echo "Leaving out isDefinedBy because it is slow"
+	  echo "speedy=true -> Leaving out isDefinedBy because it is slow"
 	else
 	  find ${tag_root}/ -type f  -name '*.rdf' -not -name '*About*'  -print | while read file ; do
 	    addIsDefinedBy "${file}"
@@ -812,6 +813,7 @@ function convertRdfFileTo() {
   java \
     -Xmx2G \
     -Xms2G \
+    -Dfile.encoding=UTF-8 \
     -jar "${rdftoolkit_jar}" \
     --source "${rdfFile}" \
     --source-format "${sourceFormat}" \
@@ -1040,6 +1042,7 @@ function generateWidocoDocumentationForFile() {
   java \
     -Xmx3G \
     -Xms3G \
+    -Dfile.encoding=UTF-8 \
     -jar "${fibo_infra_root}/lib/widoco/widoco-1.4.1-jar-with-dependencies.jar" \
     -ontFile "${rdfFile}" \
     -outFolder "${outputDir}/${rdfFileNoExtension}" \
@@ -1128,7 +1131,7 @@ function publishProductOntology() {
   ontologyCreateAboutFiles || return $?
   ontologySearchAndReplaceStuff || return $?
   if [ "${speedy}" == "true" ] ; then
-    echo "Not doing some conversions because they are slow"
+    echo "speedy=true -> Not doing some conversions because they are slow"
   else 
     ontologyConvertRdfToAllFormats || return $?
   fi 
@@ -1137,7 +1140,7 @@ function publishProductOntology() {
   zipOntologyFiles || return $?
 
   if [ "${speedy}" == "true" ] ; then
-    echo "Not doing quads because they are slow"
+    echo "speedy=true -> Not doing quads because they are slow"
   else
     buildquads || return $?
   fi
@@ -1333,6 +1336,7 @@ function spinRunInferences() {
 
     java \
       -Xmx4g \
+      -Dfile.encoding=UTF-8 \
       -Dlog4j.configuration="file:${JENA2ROOT}/jena-log4j.properties" \
       -cp "${JENA2ROOT}/lib/*:${fibo_infra_root}/lib:${fibo_infra_root}/lib/SPIN/spin-1.3.3.jar" \
       org.topbraid.spin.tools.RunInferences \
@@ -1632,20 +1636,20 @@ function publishProductGlossaryReactApp() {
 
   logRule "Publishing the glossary product"
 
-  setProduct ontology || return $?
-  export ontology_product_tag_root="${tag_root}"
-
-  setProduct glossary || return $?
-  export glossary_product_tag_root="${tag_root}"
+  require glossary_product_tag_root || return $?
 
   echo "Build the React app"
 
   (
     set -x
     #
-    # Go to the site/fibo/glossary directory to build the code
+    # Go to the /app directory to build the code of the React App (which is currently
+    # just for the glossary but might soon be extended to cover the other products as well,
+    # which why the /app directory is not called /app-glossary or so)
     #
-    cd "${SCRIPT_DIR}/../../site/fibo/glossary" || return $?
+    cd "${SCRIPT_DIR}/../../app" || return $?
+
+    echo "Current directory is $(pwd)"
 
     ls -al
 
@@ -1674,11 +1678,8 @@ function publishProductGlossaryContent() {
 
   logRule "Publishing the content files of the glossary product"
 
-  setProduct ontology || return $?
-  export ontology_product_tag_root="${tag_root}"
-
-  setProduct glossary || return $?
-  export glossary_product_tag_root="${tag_root}"
+  require ontology_product_tag_root || return $?
+  require glossary_product_tag_root || return $?
 
   export glossary_script_dir="${SCRIPT_DIR}/glossary"
 
@@ -1694,7 +1695,7 @@ function publishProductGlossaryContent() {
     $(find  "${ontology_product_tag_root}" -name "*.rdf" | sed "s/^/--data=/") \
     --data=${glossary_script_dir}/owlnames.ttl \
     --query="${glossary_script_dir}/echo.sparql" \
-    --results=TTL > "${glossary_product_tag_root}/temp0D.ttl"
+    --results=TTL > "${tmp_dir}/temp0D.ttl"
 
   if [ ${PIPESTATUS[0]} -ne 0 ] ; then
     error "Could not get Dev ontologies"
@@ -1708,26 +1709,26 @@ function publishProductGlossaryContent() {
     $(grep -r 'utl-av[:;.]Release' "${ontology_product_tag_root}" | sed 's/:.*$//;s/^/--data=/' | grep -F ".rdf") \
     --data=${glossary_script_dir}/owlnames.ttl \
     --query="${glossary_script_dir}/echo.sparql" \
-    --results=TTL > "${glossary_product_tag_root}/temp0P.ttl"
+    --results=TTL > "${tmp_dir}/temp0P.ttl"
 
 
   ${jena_arq} \
     $(find  "${ontology_product_tag_root}" -name "Corporations.rdf" | sed "s/^/--data=/") \
     --data=${glossary_script_dir}/owlnames.ttl \
     --query="${glossary_script_dir}/echo.sparql" \
-    --results=TTL > "${glossary_product_tag_root}/tempCD.ttl"
+    --results=TTL > "${tmp_dir}/tempCD.ttl"
 
   echo "About to run inferences with debug = $debug"
 
-  if [ $debug == "true" ] ; then
-    echo "C"
+  if [ "${debug}" == "true" ] ; then
+    echo "debug=true so only generating the 'C' version of the glossary"
     rm -f "${glossary_product_tag_root}/glossaryC.ttl"
-    spinRunInferences "${glossary_product_tag_root}/tempCD.ttl" "${glossary_product_tag_root}/glossaryC.ttl"
+    spinRunInferences "${tmp_dir}/tempCD.ttl" "${glossary_product_tag_root}/glossaryC.ttl"
   else
     rm -f "${glossary_product_tag_root}/glossaryP.ttl"
-    spinRunInferences "${glossary_product_tag_root}/temp0P.ttl" "${glossary_product_tag_root}/glossaryP.ttl"
+    spinRunInferences "${tmp_dir}/temp0P.ttl" "${glossary_product_tag_root}/glossaryP.ttl"
     rm -f "${glossary_product_tag_root}/glossaryD.ttl"
-    spinRunInferences "${glossary_product_tag_root}/temp0D.ttl" "${glossary_product_tag_root}/glossaryD.ttl"
+    spinRunInferences "${tmp_dir}/temp0D.ttl" "${glossary_product_tag_root}/glossaryD.ttl"
   fi
   #
   # Spin can put warnings at the start of a file.  I don't know why. Get rid of them.
@@ -1740,7 +1741,7 @@ function publishProductGlossaryContent() {
     sed -i '/^@prefix/,$!d' "${glossary_product_tag_root}/glossaryP.ttl"
   fi
 
-  cat >"${tmp_dir}/nolabel.sq" <<EOF
+  cat > "${tmp_dir}/nolabel.sq" <<EOF
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
 CONSTRUCT {?s ?p ?o}
 WHERE {?s ?p ?o .
@@ -1748,19 +1749,20 @@ FILTER (ISIRI (?s) || (?p != rdfs:label))
 }
 EOF
 
-  if [ $debug == "true" ] ; then
-    ${jena_arq} --data="${glossary_product_tag_root}/glossaryC.ttl" --query="${tmp_dir}/nolabel.sq" > "${glossary_product_tag_root}/temp2C.ttl"
+  if [ "${debug}" == "true" ] ; then
+    ${jena_arq} --data="${glossary_product_tag_root}/glossaryC.ttl" --query="${tmp_dir}/nolabel.sq" > "${tmp_dir}/temp2C.ttl"
   else
-    ${jena_arq} --data="${glossary_product_tag_root}/glossaryP.ttl" --query="${tmp_dir}/nolabel.sq" > "${glossary_product_tag_root}/temp2P.ttl"
-    ${jena_arq} --data="${glossary_product_tag_root}/glossaryD.ttl" --query="${tmp_dir}/nolabel.sq" > "${glossary_product_tag_root}/temp2D.ttl"
+    ${jena_arq} --data="${glossary_product_tag_root}/glossaryP.ttl" --query="${tmp_dir}/nolabel.sq" > "${tmp_dir}/temp2P.ttl"
+    ${jena_arq} --data="${glossary_product_tag_root}/glossaryD.ttl" --query="${tmp_dir}/nolabel.sq" > "${tmp_dir}/temp2D.ttl"
   fi
 
   if [ $debug == "true" ] ; then
     java \
       -Xmx4G \
       -Xms4G \
+      -Dfile.encoding=UTF-8 \
       -jar "${rdftoolkit_jar}" \
-      --source "${glossary_product_tag_root}/temp2C.ttl" \
+      --source "${tmp_dir}/temp2C.ttl" \
       --source-format turtle \
       --target "${glossary_product_tag_root}/glossaryC.jsonld" \
       --target-format json-ld \
@@ -1771,8 +1773,9 @@ EOF
     java \
       -Xmx4G \
       -Xms4G \
+      -Dfile.encoding=UTF-8 \
       -jar "${rdftoolkit_jar}" \
-      --source "${glossary_product_tag_root}/temp2P.ttl" \
+      --source "${tmp_dir}/temp2P.ttl" \
       --source-format turtle \
       --target "${glossary_product_tag_root}/glossaryP.jsonld" \
       --target-format json-ld \
@@ -1782,8 +1785,9 @@ EOF
     java \
       -Xmx4G \
       -Xms4G \
+      -Dfile.encoding=UTF-8 \
       -jar "${rdftoolkit_jar}" \
-      --source "${glossary_product_tag_root}/temp2D.ttl" \
+      --source "${tmp_dir}/temp2D.ttl" \
       --source-format turtle \
       --target "${glossary_product_tag_root}/glossaryD.jsonld" \
       --target-format json-ld \
@@ -1792,11 +1796,11 @@ EOF
       > log 2>&1
   fi
 
-  if [ $debug == "true" ] ; then
-    makexl "temp2C" "glossaryC"
+  if [ "${debug}" == "true" ] ; then
+    glossaryMakeExcel "${tmp_dir}/temp2C.ttl" "${glossary_product_tag_root}/glossaryC"
   else
-    makexl "temp2D" "glossaryD"
-    makexl "temp2P" "glossaryP"
+    glossaryMakeExcel "${tmp_dir}/temp2D.ttl" "${glossary_product_tag_root}/glossaryD"
+    glossaryMakeExcel "${tmp_dir}/temp2P.ttl" "${glossary_product_tag_root}/glossaryP"
   fi
 
   return 0
@@ -1804,9 +1808,12 @@ EOF
 
 
 #
-# What does "makexl" stand for?
+# What does "glossaryMakeExcel" stand for?
 #
-function makexl () {
+function glossaryMakeExcel () {
+
+  local dataTurtle="$1"
+  local glossaryBaseName="$2"
 
   cat > "${tmp_dir}/makeCcsv.sparql" <<EOF
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -1815,22 +1822,23 @@ PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
 PREFIX owl:   <http://www.w3.org/2002/07/owl#> 
 PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
 
-
-
 SELECT ?Term ?Type (GROUP_CONCAT (?syn; separator=",") AS ?Synonyms) ?Definition ?GeneratedDefinition
-WHERE {?c a owlnames:Class  . 
-FILTER (REGEX (xsd:string (?c), "edmcouncil"))
-?c  owlnames:definition ?Definition ; 
-owlnames:label ?Term .
-BIND ("Class" as ?Type)
-OPTIONAL {?c owlnames:synonym ?syn}
-OPTIONAL {?c  owlnames:mdDefinition ?GeneratedDefinition}
+WHERE {
+  ?c a owlnames:Class  .
+  FILTER (REGEX (xsd:string (?c), "edmcouncil"))
+  ?c  owlnames:definition ?Definition ;
+  owlnames:label ?Term .
+
+  BIND ("Class" as ?Type)
+
+  OPTIONAL {?c owlnames:synonym ?syn}
+  OPTIONAL {?c  owlnames:mdDefinition ?GeneratedDefinition}
 }
 GROUP BY ?c ?Term ?Type ?Definition ?GeneratedDefinition
 ORDER BY ?Term
 EOF
 
-  ${jena_arq} --data="${glossary_product_tag_root}/$1.ttl" --query="${tmp_dir}/makeCcsv.sparql" --results=TSV > "${glossary_product_tag_root}/$2.tsv"
+  ${jena_arq} --data="${dataTurtle}" --query="${tmp_dir}/makeCcsv.sparql" --results=TSV > "${glossaryBaseName}.tsv"
 
   cat > "${tmp_dir}/makePcsv.sparql" <<EOF
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -1839,28 +1847,32 @@ PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
 PREFIX owl:   <http://www.w3.org/2002/07/owl#> 
 PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
 
-
-
 SELECT ?Term ?Type (GROUP_CONCAT (?syn; separator=",") AS ?Synonyms) ?Definition ?GeneratedDefinition
-WHERE {?c a owlnames:Property
-FILTER (REGEX (xsd:string (?c), "edmcouncil"))
-OPTIONAL {?c  owlnames:definition ?Definition  }
-?c owlnames:label ?Term .
-BIND ("Property" as ?Type)
-OPTIONAL {?c owlnames:synonym ?syn}
-OPTIONAL {?c  owlnames:mdDefinition ?GeneratedDefinition}
+WHERE {
+  ?c a owlnames:Property
+
+  FILTER (REGEX (xsd:string (?c), "edmcouncil"))
+
+  OPTIONAL {?c  owlnames:definition ?Definition}
+
+  ?c owlnames:label ?Term .
+
+  BIND ("Property" as ?Type)
+
+  OPTIONAL {?c owlnames:synonym ?syn}
+  OPTIONAL {?c  owlnames:mdDefinition ?GeneratedDefinition}
 }
 GROUP BY ?c ?Term ?Type ?Definition ?GeneratedDefinition
 ORDER BY ?Term
 EOF
 
-  ${jena_arq} --data="${glossary_product_tag_root}/$1.ttl" --query="${tmp_dir}/makePcsv.sparql" --results=TSV | tail -n +2 >> "${glossary_product_tag_root}/$2.tsv"
+  ${jena_arq} --data="${dataTurtle}" --query="${tmp_dir}/makePcsv.sparql" --results=TSV | tail -n +2 >> "${glossaryBaseName}.tsv"
 
-  sed -i 's/"@../"/g; s/\t\t/\t""\t/g; s/\t$/\t""/'  "${glossary_product_tag_root}/$2.tsv"
+  sed -i 's/"@../"/g; s/\t\t/\t""\t/g; s/\t$/\t""/' "${glossaryBaseName}.tsv"
 
-  sed  's/"\t"/","/g'  "${glossary_product_tag_root}/$2.tsv" >  "${glossary_product_tag_root}/$2.csv"
+  sed 's/"\t"/","/g' "${glossaryBaseName}.tsv" > "${glossaryBaseName}.csv"
 
-  cat >  "${glossary_product_tag_root}/$2.xls" <<EOF
+  cat >  "${glossaryBaseName}.xls" <<EOF
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
 <html xmlns:x="urn:schemas-microsoft-com:office:excel" >
 <head>
@@ -1890,12 +1902,12 @@ a<body>
 <table>
 EOF
 
-  head -n 1 "${glossary_product_tag_root}/$2.tsv" | sed 's!?!!g; s!^!<tr><th bgcolor="goldenrod">!; s!\t!</th><th bgcolor="goldenrod">!g; s!$!</th></tr>!' >> "${glossary_product_tag_root}/$2.xls"
+  head -n 1 "${glossaryBaseName}.tsv" | sed 's!?!!g; s!^!<tr><th bgcolor="goldenrod">!; s!\t!</th><th bgcolor="goldenrod">!g; s!$!</th></tr>!' >> "${glossaryBaseName}.xls"
 
-  tail -n +2 "${glossary_product_tag_root}/$2.tsv" | sed 's!^"!<tr><td valign="top">!; s!"\t"!</td><td valign="top">!g; s!"$!</td></tr>!' >> "${glossary_product_tag_root}/$2.xls"
-  sed -i '2,${s/<td/<td bgcolor="azure"/g;n}' "${glossary_product_tag_root}/$2.xls"
+  tail -n +2 "${glossaryBaseName}.tsv" | sed 's!^"!<tr><td valign="top">!; s!"\t"!</td><td valign="top">!g; s!"$!</td></tr>!' >> "${glossaryBaseName}.xls"
+  sed -i '2,${s/<td/<td bgcolor="azure"/g;n}' "${glossaryBaseName}.xls"
 
-  cat >> "${glossary_product_tag_root}/$2.xls" <<EOF
+  cat >> "${glossaryBaseName}.xls" <<EOF
 </table></bode></html>
 EOF
 
