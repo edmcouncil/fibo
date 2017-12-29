@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { TableRow, TableCell } from 'material-ui/Table'
-import Card, { CardContent } from 'material-ui/Card'
 import Collapse from 'material-ui/transitions/Collapse'
 
 class TblRow extends Component {

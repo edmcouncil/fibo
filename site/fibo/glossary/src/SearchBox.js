@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import React from 'react'
 import { withStyles } from 'material-ui/styles'
 import Input from 'material-ui/Input'
