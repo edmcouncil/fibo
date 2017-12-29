@@ -1628,6 +1628,8 @@ function publishProductGlossary() {
 #
 function publishProductGlossaryReactApp() {
 
+  local rc
+
   logRule "Publishing the glossary product"
 
   setProduct ontology || return $?
@@ -1651,7 +1653,7 @@ function publishProductGlossaryReactApp() {
 
     npm run build || return $?
 
-    cp -vR build/* "${glossary_product_tag_root}/"
+    cp -vR build/* "${glossary_product_tag_root}/" > glossary-build-directory.log 2>&1
   )
   rc=$?
 
