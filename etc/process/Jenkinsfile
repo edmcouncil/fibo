@@ -46,18 +46,16 @@ pipeline {
       agent {
         label 'stardog'
       }
+      environment {
+        LC_ALL = 'en_US.UTF-8'
+        LANG = 'en_US.UTF-8'
+        LANGUAGE = 'en_US.UTF-8'
+      }
 
       steps {
-
-        //setGitHubPullRequestStatus context: 'fibo-publish', message: '', state: 'PENDING'
-
-        //
-        // Clean the workspace on this node, for now. Takes more time but we need to test this with a clean slate
-        // every time. Once this all works fine we can skip this step.
-        //
-        // JG>We can clean the workspace in the settings of the job here: https://jenkins.edmcouncil.org/job/fibo/configure
-        //    (Look under Behaviors). That' better than to always do it since this causes a lot of extra time.
-        //sh "rm -rf ${env.WORKSPACE}/*"
+        echo "Cleaning workspace:"
+        sh 'rm -rf ${WORKSPACE}/* || true'
+        echo "Done cleaning"
 
         //
         // Copy the rdf-toolkit.jar file artifact from the rdf-toolkit-build job (pre-requisite for running publish script)
@@ -84,24 +82,24 @@ pipeline {
           git branch: env.FIBO_INFRA_BRANCH, credentialsId: 'edmcjenkins_at_edmcouncil.org', url: 'git@github.com:edmcouncil/fibo-infra.git'
           //
           // git credentialsId: 'edmcjenkins_at_edmcouncil.org', url: 'git@github.com:edmcouncil/fibo-infra.git'
-          echo 'Checked out fibo-infra repo'
+          echo "Checked out fibo-infra repo, branch ${env.FIBO_INFRA_BRANCH}"
           //
           // Stash all the tools in the bin directory
           //
-          stash includes: 'bin/**', name: 'infra-bin'
+          //stash includes: 'bin/**', name: 'infra-bin'
           //
           // Stash all the jenkins related stuff in the jenkins directory
           //
-          stash includes: 'jenkins/**', name: 'infra-jenkins'
+          //stash includes: 'jenkins/**', name: 'infra-jenkins'
         }
         //
         // Then run the init command on the fibo-publish script which will set all the GIT_* and JIRA_* vars
         // correctly and store their values in some .env files.
         //
         dir('fibo-infra') {
-          echo 'Execute the publish-fibo.sh script:'
+          echo 'Execute the publish-fibo.sh script (just to initialize the environment variables):'
           sh './jenkins/bin/publish-fibo.sh init'
-          echo 'Finished executing the publish-fibo script'
+          echo 'Finished executing the publish-fibo script (init section)'
         }
         initEnvironment()
         //
@@ -132,7 +130,6 @@ pipeline {
       }
 
       steps {
-        cleanWs()
         //
         // Execute the publish script
         //
@@ -175,10 +172,12 @@ pipeline {
 
       steps {
 
+        echo "Cleaning workspace:"
+        sh 'rm -rf .* * || true'
+        echo "Done cleaning"
+
         sh 'test -d ${NGINX_SPEC_ROOT}'
         sh 'pwd'
-        echo "Cleaning workspace before unstashing fresh content"
-        sh 'rm -rf *'
 
         echo 'Unstashing the output of the publish-script as it ran on the stardog node'
         unstash 'publish-script-output-stardog-node'
@@ -219,6 +218,11 @@ pipeline {
 
 def initEnvironment() {
 
+  //
+  // Read the GIT and JIRA environment variables from files in the ./env directory
+  // that have been created by the publish-fibo.sh script so that we can reuse that
+  // logic elsewhere in the Jenkinsfile pipeline.
+  //
   env.GIT_BRANCH    = readFile './env/GIT_BRANCH'.trim()
   env.GIT_TAG_NAME  = readFile './env/GIT_TAG_NAME'.trim()
   env.GIT_AUTHOR    = readFile './env/GIT_AUTHOR'.trim()
