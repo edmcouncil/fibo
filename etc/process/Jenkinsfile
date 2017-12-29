@@ -174,10 +174,16 @@ pipeline {
 
         echo 'Unstashing the output of the publish-script as it ran on the stardog node'
         unstash 'publish-script-output-stardog-node'
-        sh 'ls -al'
+        //
+        // TODO: The cleanups below should be done by the publish script
+        //
         sh 'find . -name \'.git\' -exec rm -rf {} \\; || true'
         sh 'find . -name \'.gitignore\' -exec rm -f {} \\; || true'
-        sh 'find . -name \'temp*\' -exec rm -f {} \\; || true'
+        sh 'find . -type d -name node_modules -exec rm -rf {} \\; || true'
+        sh 'find . -type d -name build -exec rm -rf {} \\; || true'
+        sh 'find . -type d -name \'temp*\' -exec rm -rf {} \\; || true'
+        sh 'find . -type f -name \'temp*\' -exec rm -f {} \\; || true'
+        sh 'ls -al'
 
         echo "Copy all generated content to ${env.NGINX_SPEC_ROOT}:"
         sh 'ls -al ${NGINX_SPEC_ROOT}/'
