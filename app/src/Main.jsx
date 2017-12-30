@@ -33,10 +33,10 @@ class Main extends Component {
     const sortedGlossary = glossary.sort(sortFunction)
 
     return (
-      <div id="main" className='Main'>
+      <div id='main' className='Main'>
         <header className='Main-header'>
           <img src={logo} className='Main-logo' alt='logo' />
-          <h1 className="Main-title">FIBO Glossary</h1>
+          <h1 className='Main-title'>FIBO Glossary</h1>
         </header>
         <SearchBox />
         <Table>
