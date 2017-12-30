@@ -961,21 +961,20 @@ function zipOntologyFiles () {
 
   local zipttlDevFile="${tag_root}/dev.ttl.zip"
   local ziprdfDevFile="${tag_root}/dev.rdf.zip"
-  local zipjsonldDevFile="${tag_root}/dev.jsonld.zip"local zipttlProdFile="${tag_root}/prod.ttl.zip"
+  local zipjsonldDevFile="${tag_root}/dev.jsonld.zip"
+  local zipttlProdFile="${tag_root}/prod.ttl.zip"
   local ziprdfProdFile="${tag_root}/prod.rdf.zip"
   local zipjsonldProdFile="${tag_root}/prod.jsonld.zip"
     
   (
     cd "${spec_root}"
-#
+    #
     # Make sure that everything is world readable before we zip it
     #
     chmod -R g+r,o+r .
     #    zip -r ${zipttlDevFile} "${family_product_branch_tag}" -x \*.rdf \*.zip  \*.jsonld \*AboutFIBOProd.ttl
     zip -r ${ziprdfDevFile} "${family_product_branch_tag}" -x \*.ttl \*.zip \*.jsonld \*AboutFIBOProd.rdf
     zip -r ${zipjsonldDevFile} "${family_product_branch_tag}" -x \*.ttl \*.zip \*.rdf \*AboutFIBOProd.jsonld
-
-
 
     grep -r 'utl-av[:;.]Release' "${family_product_branch_tag}" | grep -F ".ttl" | sed 's/:.*$//' | xargs zip -r ${zipttlProdFile}
     find  "${family_product_branch_tag}" -name '*About*.ttl' -print | grep -v "AboutFIBODev.ttl" |  xargs zip ${zipttlProdFile}
@@ -1137,7 +1136,7 @@ function publishProductOntology() {
   fi 
 # ontologyAnnotateTopBraidBaseURL || return $?
   ontologyConvertMarkdownToHtml || return $?
-  zipOntologyFiles || return $?
+  zipOntologyFiles > ontology-zips.log 2>&1 || return $?
 
   if [ "${speedy}" == "true" ] ; then
     echo "speedy=true -> Not doing quads because they are slow"
