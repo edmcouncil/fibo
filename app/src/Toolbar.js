@@ -7,7 +7,7 @@ import MenuItem from 'material-ui/MenuItem'
 import DropDownMenu from 'material-ui/DropDownMenu'
 import Divider from 'material-ui/Divider';
 import {Toolbar as MuiToolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar'
-import SearchBox from './SearchBox'
+import GlossarySearch from './GlossarySearch'
 import logo from './fibo-logo.png'
 
 export default class Toolbar extends React.Component {
@@ -51,7 +51,7 @@ export default class Toolbar extends React.Component {
           <ToolbarTitle text="Options" />
           <FontIcon className="muidocs-icon-custom-sort" />
           <ToolbarSeparator />
-          <SearchBox />
+          <GlossarySearch sortedGlossary={this.props.sortedGlossary} handleSearchInput={this.props.handleSearchInput} />
           <IconMenu
             iconButtonElement={
               <IconButton touch={true}>

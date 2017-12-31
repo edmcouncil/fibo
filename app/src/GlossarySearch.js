@@ -1,18 +1,16 @@
 import React from 'react'
 import IconSearch from 'material-ui/svg-icons/action/search'
 import AutoComplete from 'material-ui/AutoComplete';
+import * as glossaryHelpers from './glossary-helpers'
 
-export class SearchBox extends React.Component {
+export class GlossarySearch extends React.Component {
 
-  state = {
-    searchText: 'Search',
-  };
-
-  handleUpdateInput = (searchText) => {
-    this.setState({
-      searchText: searchText,
-    });
-  };
+  constructor (props) {
+    super(props)
+    this.state = {
+      searchTerms: props.sortedGlossary.map((item, index) => glossaryHelpers.termLabelOrId(item))
+    }
+  }
 
   handleNewRequest = () => {
     this.setState({
@@ -20,34 +18,23 @@ export class SearchBox extends React.Component {
     });
   };
 
-  terms = [
-      'Red',
-      'Orange',
-      'Yellow',
-      'Green',
-      'Blue',
-      'Purple',
-      'Black',
-      'White',
-    ]
-
   render () {
     return (
       <form onSubmit={this.handleSubmit}>
         <IconSearch />
         <AutoComplete
-          hintText="Type 'r', case insensitive"
+          hintText="Search for any term, case insensitive"
           searchText={this.state.searchText}
-          onUpdateInput={this.handleUpdateInput}
+          onUpdateInput={this.props.handleSearchInput}
           onNewRequest={this.handleNewRequest}
-          dataSource={this.terms}
+          dataSource={this.state.searchTerms}
           filter={(searchText, key) => (key.indexOf(searchText) !== -1)}
           openOnFocus={true}
+          fullWidth={true}
         />
       </form>
     )
   }
 }
 
-//export default (withStyles(styles)(SearchBox))
-export default SearchBox
+export default GlossarySearch

@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
-import logo from './fibo-logo.png'
 import './Main.css'
-import SearchBox from './SearchBox'
 import GlossaryTable from './GlossaryTable'
 import Toolbar from './Toolbar'
 import unsortedGlossary from './data/test-glossary.json'
@@ -13,13 +11,12 @@ class Main extends Component {
     this.state = {searchTerm: '', sortedGlossary: this.sortGlossary(unsortedGlossary)}
   }
 
-  componentDidMount() {
-    console.log('componentDidMount')
-  }
-
-  handleSearchInput(e) {
-    this.setState({searchTerm: e.target.value})
-  }
+  handleSearchInput = (searchTerm) => {
+    console.log('Search Term: ' + searchTerm)
+    this.setState({
+      searchTerm: searchTerm
+    })
+  };
 
   sortFunction = (a,b) => {
     let nameA = ((a['owlnames:label'] && a['owlnames:label']['@value']) || a['@id']).toUpperCase()
@@ -51,22 +48,8 @@ class Main extends Component {
 
     return (
       <div id='main' className='Main'>
-        {/* <header className='Main-header'>
-          <img src={logo} className='Main-logo' alt='logo' />
-          <h1 className='Main-title'>FIBO Glossary</h1>
-        </header> */}
-        <Toolbar/>
-        {(() => {
-          if (this.state.sortedGlossary == null) {
-            return (
-              <div>Loading</div>
-            )
-          } else {
-            return (
-              <GlossaryTable sortedGlossary={this.state.sortedGlossary} />
-            )
-          }
-        })()}
+        <Toolbar sortedGlossary={this.state.sortedGlossary} handleSearchInput={this.handleSearchInput}/>
+        <GlossaryTable sortedGlossary={this.state.sortedGlossary} searchTerm={this.state.searchTerm}/>
       </div>
     );
   }

@@ -1,55 +1,6 @@
 import React from 'react'
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table'
-
-// const GlossaryCell = (item) => (
-  // {
-  //   (
-  //     item['owlnames:label'] &&
-  //     item['owlnames:label']['@value']
-  //   ) || item['@id']
-  // }
-  // <p>
-  //   {
-  //     item['owlnames:synonym'] && (
-  //       'Synonym: ' + (
-  //         Array.isArray(item['owlnames:synonym']
-  //       ) ?
-  //       item['owlnames:synonym'].map(
-  //         (synonym, index) => {
-  //           return ' ' + synonym['@value']
-  //         }
-  //       ) :
-  //       item['owlnames:synonym']['@value'])
-  //     )
-  //   }
-  // </p>
-  // <p>
-  //   {
-  //     'Definition: ' + (
-  //       (item['owlnames:definition'] && item['owlnames:definition']['@value']) || ''
-  //     )
-  //   }
-  // </p>
-// )
-
-const termLabel = item => item['owlnames:label'] && item['owlnames:label']['@value']
-const termLabelOrId = item => termLabel(item) || item['@id']
-
-const termSynonym = item => item['owlnames:synonym'] && (
-  'Synonym: ' + (
-    Array.isArray(item['owlnames:synonym']
-  ) ?
-  item['owlnames:synonym'].map(
-    (synonym, index) => {
-      return ' ' + synonym['@value']
-    }
-  ) :
-  item['owlnames:synonym']['@value'])
-)
-
-const termDefinition = item => 'Definition: ' + (
-  (item['owlnames:definition'] && item['owlnames:definition']['@value']) || ''
-)
+import * as glossaryHelpers from './glossary-helpers'
 
 const rowFunction = (item, index) => (
   <TableRow key={index}>
@@ -59,12 +10,12 @@ const rowFunction = (item, index) => (
         wordWrap: "break-word"
       }}
     >
-      {termLabelOrId(item)}
+      {glossaryHelpers.termLabelOrId(item)}
       <p>
-        {termSynonym(item)}
+        {glossaryHelpers.termSynonym(item)}
       </p>
       <p>
-        {termDefinition(item)}
+        {glossaryHelpers.termDefinition(item)}
       </p>
     </TableRowColumn>
   </TableRow> 
@@ -78,7 +29,17 @@ const Rows = props => {
       </TableRow>
     )
   } else {
-    return props.sortedGlossary.map(rowFunction)
+    if (props.searchTerm === '') {
+      return (
+        props.sortedGlossary.map(rowFunction)
+      )
+    } else {
+      return (
+        props.sortedGlossary.filter(item =>
+          glossaryHelpers.termLabelOrId(item).indexOf(props.searchTerm) !== -1
+        ).map(rowFunction)
+      )
+    }
   }
 }
 
