@@ -13,6 +13,6 @@ export const termSynonym = item => item['owlnames:synonym'] && (
   item['owlnames:synonym']['@value'])
 )
 
-export const termDefinition = item => 'Definition: ' + (
+export const termDefinition = item => (
   (item['owlnames:definition'] && item['owlnames:definition']['@value']) || ''
 )

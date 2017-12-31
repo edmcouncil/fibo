@@ -1,25 +1,24 @@
 import React from 'react'
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table'
 import Highlighter from 'react-highlighter'
+import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import * as glossaryHelpers from './glossary-helpers'
 
 const rowFunction = (item, index) => (
-  <TableRow key={index}>
-    <TableRowColumn
-      style={{
-        whiteSpace: "normal",
-        wordWrap: "break-word"
-      }}
-    >
-      <Highlighter search={this.searchTerm} matchStyle={{ backgroundColor: 'yellow' }}>{glossaryHelpers.termLabelOrId(item)}</Highlighter>
-      <p>
-        {glossaryHelpers.termSynonym(item)}
-      </p>
-      <p>
-        {glossaryHelpers.termDefinition(item)}
-      </p>
-    </TableRowColumn>
-  </TableRow> 
+  <Card>
+    <CardHeader
+      title={<Highlighter search={this.searchTerm} matchStyle={{ backgroundColor: 'yellow' }}>{glossaryHelpers.termLabelOrId(item)}</Highlighter>}
+      subtitle={glossaryHelpers.termDefinition(item)}
+      actAsExpander={true}
+      showExpandableButton={true}
+    />
+    <CardText expandable={true}>
+       {glossaryHelpers.termSynonym(item)}
+    </CardText>
+    <CardText expandable={true}>
+       abc
+    </CardText>
+  </Card>
 )
 
 const FilteredGlossaryItems = props => {
@@ -36,13 +35,11 @@ const FilteredGlossaryItems = props => {
   }
 }
 
-const Rows = props => {
+const GlossaryTable = props => {
   this.searchTerm = props.searchTerm
   if (! Array.isArray(props.sortedGlossary) || props.sortedGlossary.length === 0) {
     return (
-      <TableRow>
-        <TableRowColumn>No Glossary</TableRowColumn>
-      </TableRow>
+      <div>No Glossary</div>
     )
   } else {
     return (
@@ -50,31 +47,5 @@ const Rows = props => {
     )
   }
 }
-
-const GlossaryTable = props => (
-  <Table
-    fixedHeader={true}
-    fixedFooter={false}
-    selectable={false}
-    multiSelectable={false}
-  >
-    <TableHeader
-      displaySelectAll={false}
-      adjustForCheckbox={false}
-    >
-      <TableRow>
-        <TableHeaderColumn>Term</TableHeaderColumn>
-      </TableRow>
-      </TableHeader>
-    <TableBody
-      displayRowCheckbox={false}
-      deselectOnClickaway={true}
-      showRowHover={true}
-      stripedRows={true}
-    >
-      <Rows {...props} />
-    </TableBody>
-  </Table>
-)
 
 export default GlossaryTable
