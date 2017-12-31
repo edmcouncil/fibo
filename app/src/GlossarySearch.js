@@ -20,7 +20,8 @@ export class GlossarySearch extends React.Component {
 
   render () {
     return (
-      <form onSubmit={this.handleSubmit}>
+      // <form onSubmit={this.handleSubmit}>
+      <div>
         <IconSearch />
         <AutoComplete
           hintText="Search"
@@ -28,11 +29,11 @@ export class GlossarySearch extends React.Component {
           onUpdateInput={this.props.handleSearchInput}
           onNewRequest={this.handleNewRequest}
           dataSource={this.state.searchTerms}
+          maxSearchResults={100}
           filter={(searchText, key) => (key.indexOf(searchText) !== -1)}
           openOnFocus={true}
-          fullWidth={true}
         />
-      </form>
+      </div>
     )
   }
 }

@@ -48,9 +48,6 @@ export default class Toolbar extends React.Component {
           </DropDownMenu>
         </ToolbarGroup>
         <ToolbarGroup>
-          <ToolbarTitle text="Options" />
-          <FontIcon className="muidocs-icon-custom-sort" />
-          <ToolbarSeparator />
           <GlossarySearch sortedGlossary={this.props.sortedGlossary} handleSearchInput={this.props.handleSearchInput} />
           <IconMenu
             iconButtonElement={
