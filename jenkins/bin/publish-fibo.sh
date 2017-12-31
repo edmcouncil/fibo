@@ -1802,6 +1802,24 @@ EOF
     glossaryMakeExcel "${tmp_dir}/temp2P.ttl" "${glossary_product_tag_root}/glossaryP"
   fi
 
+  #
+  # JG>Since I didn't figure out yet how to make webpack load .jsonld files as if they
+  #    were normal .json files I need to have some symlinks here from .json to .jsonld
+  #    so that these json-ld files can be downloaded with either extension. This is
+  #    a temporary measure. We might actually want to generate real plain vanilla JSON
+  #    files with a simplified structure allowing others to include the glossary more
+  #    easily into their own apps.
+  #
+  (
+    cd "${glossary_product_tag_root}"
+    if [ "${debug}" == "true" ] ; then
+      ln -s "glossaryC.jsonld" "glossaryC.json"
+    else
+      ln -s "glossaryD.jsonld" "glossaryD.json"
+      ln -s "glossaryP.jsonld" "glossaryP.json"
+    fi
+  )
+
   return 0
 }
 
