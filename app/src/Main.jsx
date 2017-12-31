@@ -3,6 +3,7 @@ import logo from './fibo-logo.png'
 import './Main.css'
 import SearchBox from './SearchBox'
 import GlossaryTable from './GlossaryTable'
+import Toolbar from './Toolbar'
 import unsortedGlossary from './data/test-glossary.json'
 
 class Main extends Component {
@@ -50,11 +51,11 @@ class Main extends Component {
 
     return (
       <div id='main' className='Main'>
-        <header className='Main-header'>
+        {/* <header className='Main-header'>
           <img src={logo} className='Main-logo' alt='logo' />
           <h1 className='Main-title'>FIBO Glossary</h1>
-        </header>
-        <SearchBox />
+        </header> */}
+        <Toolbar/>
         {(() => {
           if (this.state.sortedGlossary == null) {
             return (
