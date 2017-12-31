@@ -1,6 +1,8 @@
 export const termLabel = item => item['owlnames:label'] && item['owlnames:label']['@value']
 export const termLabelOrId = item => termLabel(item) || item['@id']
 
+export const termHasSynonym = item => 'owlnames:synonym' in item
+
 export const termSynonym = item => item['owlnames:synonym'] && (
   'Synonym: ' + (
     Array.isArray(item['owlnames:synonym']

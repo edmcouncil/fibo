@@ -9,15 +9,16 @@ const rowFunction = (item, index) => (
     <CardHeader
       title={<Highlighter search={this.searchTerm} matchStyle={{ backgroundColor: 'yellow' }}>{glossaryHelpers.termLabelOrId(item)}</Highlighter>}
       subtitle={glossaryHelpers.termDefinition(item)}
+      initiallyExpanded={false}
       actAsExpander={true}
-      showExpandableButton={true}
+      showExpandableButton={glossaryHelpers.termHasSynonym(item)}
     />
-    <CardText expandable={true}>
+    {glossaryHelpers.termHasSynonym(item) ? 
+      <CardText expandable={false}>
        {glossaryHelpers.termSynonym(item)}
-    </CardText>
-    <CardText expandable={true}>
-       abc
-    </CardText>
+      </CardText> : ''
+    }
+    
   </Card>
 )
 
