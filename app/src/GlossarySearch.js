@@ -23,7 +23,7 @@ export class GlossarySearch extends React.Component {
       <form onSubmit={this.handleSubmit}>
         <IconSearch />
         <AutoComplete
-          hintText="Search for any term, case insensitive"
+          hintText="Search"
           searchText={this.state.searchText}
           onUpdateInput={this.props.handleSearchInput}
           onNewRequest={this.handleNewRequest}

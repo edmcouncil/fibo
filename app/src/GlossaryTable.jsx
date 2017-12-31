@@ -1,5 +1,6 @@
 import React from 'react'
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table'
+import Highlighter from 'react-highlighter'
 import * as glossaryHelpers from './glossary-helpers'
 
 const rowFunction = (item, index) => (
@@ -10,7 +11,7 @@ const rowFunction = (item, index) => (
         wordWrap: "break-word"
       }}
     >
-      {glossaryHelpers.termLabelOrId(item)}
+      <Highlighter search={this.searchTerm} matchStyle={{ backgroundColor: 'yellow' }}>{glossaryHelpers.termLabelOrId(item)}</Highlighter>
       <p>
         {glossaryHelpers.termSynonym(item)}
       </p>
@@ -21,7 +22,22 @@ const rowFunction = (item, index) => (
   </TableRow> 
 )
 
+const FilteredGlossaryItems = props => {
+  if (props.searchTerm === '') {
+    return (
+      props.sortedGlossary
+    )
+  } else {
+    return (
+      props.sortedGlossary.filter(item =>
+        glossaryHelpers.termLabelOrId(item).indexOf(props.searchTerm) !== -1
+      )
+    )
+  }
+}
+
 const Rows = props => {
+  this.searchTerm = props.searchTerm
   if (! Array.isArray(props.sortedGlossary) || props.sortedGlossary.length === 0) {
     return (
       <TableRow>
@@ -29,17 +45,9 @@ const Rows = props => {
       </TableRow>
     )
   } else {
-    if (props.searchTerm === '') {
-      return (
-        props.sortedGlossary.map(rowFunction)
-      )
-    } else {
-      return (
-        props.sortedGlossary.filter(item =>
-          glossaryHelpers.termLabelOrId(item).indexOf(props.searchTerm) !== -1
-        ).map(rowFunction)
-      )
-    }
+    return (
+      FilteredGlossaryItems(props).map(rowFunction)
+    )
   }
 }
 
