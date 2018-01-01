@@ -29,7 +29,7 @@ jena_arq=""
 # For testing - speedy=true leaves out some very slow processing, 
 # e.g., isDefinedBy, converstions into ttl and jsonld, and nquads
 #
-speedy=true
+speedy=false
 
 #
 # The products that we generate the artifacts for with this script
@@ -1618,7 +1618,7 @@ function publishProductGlossary() {
   setProduct glossary || return $?
   export glossary_product_tag_root="${tag_root}"
 
-  debug=true
+  debug=false
 
   publishProductGlossaryContent || return $?
   publishProductGlossaryReactApp || return $?
