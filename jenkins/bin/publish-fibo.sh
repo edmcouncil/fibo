@@ -25,9 +25,10 @@ tmp_dir="${WORKSPACE}/tmp"
 export fibo_root="${WORKSPACE}/fibo"
 export fibo_infra_root="$(cd ${SCRIPT_DIR}/../.. ; pwd -L)"
 jena_arq=""
-
+#
 # For testing - speedy=true leaves out some very slow processing, 
 # e.g., isDefinedBy, converstions into ttl and jsonld, and nquads
+#
 speedy=false
 
 #
@@ -38,7 +39,8 @@ speedy=false
 family="fibo"
 # Removed for speedier testing 
 #products="ontology widoco glossary datadictionary vocabulary"
-products="ontology glossary datadictionary vocabulary "
+#products="ontology glossary datadictionary vocabulary "
+products="ontology glossary"
 
 source_family_root="${WORKSPACE}/${family}"
 spec_root="${WORKSPACE}/target"
@@ -122,14 +124,14 @@ function initTools() {
   #
   export TMPDIR="${tmp_dir}"
 
-  echo "fibo_root=${fibo_root}"
+  echo "fibo_root=${fibo_root/${WORKSPACE}/}"
 
   if [ ! -d "${fibo_root}" ] ; then
     error "fibo_root directory not found (${fibo_root})"
     return 1
   fi
 
-  echo fibo_infra_root=${fibo_infra_root}
+  echo "fibo_infra_root=${fibo_infra_root/${WORKSPACE}/}"
 
   if [ ! -d "${fibo_infra_root}" ] ; then
     error "fibo_infra_root directory not found (${fibo_infra_root})"
@@ -170,9 +172,9 @@ function initWorkspaceVars() {
   #
   [ -d "${tmp_dir}" ] && rm -rf "${tmp_dir}"
   mkdir -p "${tmp_dir}" >/dev/null 2>&1
-  echo "tmp_dir=${tmp_dir}"
+  echo "tmp_dir=${tmp_dir/${WORKSPACE}/}"
 
-  echo "source_family_root=${source_family_root}"
+  echo "source_family_root=${source_family_root/${WORKSPACE}/}"
 
   if [ ! -d "${source_family_root}" ] ; then
     error "source_family_root directory not found (${source_family_root})"
@@ -493,7 +495,19 @@ function ontologyCopyRdfToTarget() {
 #    [ "${module}" == "ext" ] && continue
     upperModule=$(echo ${module} | tr '[:lower:]' '[:upper:]')
     [ "${module}" == "${upperModule}" ] && continue
-    mv ${module} ${upperModule}
+    #
+    # In case we didn't clean the workspace before the job run we still might have the uppercase directories
+    # of the previous run which need to be removed or else the subsequent mv command will fail.
+    #
+    rm -rf ${upperModule} >/dev/null 2>&1
+    if ! mv ${module} ${upperModule} ; then
+      echo "Cannot move ${module} to ${upperModule}:"
+      (
+        set -x
+        ls -al ${upperModule}/
+        ls -al ${module}/
+      )
+    fi
   done
   modules=""
   module_directories=""
@@ -584,17 +598,16 @@ __HERE__
     find ${tag_root}/ -type f \( -name '*.rdf' -o -name '*.ttl' -o -name '*.md' \) -exec sed -i -f ${sedfile} {} \;
   )
 
-
-# We want to add in a rdfs:isDefinedBy link from every class back to the ontology. 
-
-  find ${tag_root}/ -type f  -name '*.rdf' -not -name '*About*'  -print | while read file ; do
-     if [ speedy="true" ] ; then
-	 echo "Leaving out isDefinedBy because it is slow"
-     else
-	 addIsDefinedBy "${file}"
-     fi 
-  
-  done
+  #
+  # We want to add in a rdfs:isDefinedBy link from every class back to the ontology.
+  #
+  if [ "${speedy}" == "true" ] ; then
+	  echo "speedy=true -> Leaving out isDefinedBy because it is slow"
+	else
+	  find ${tag_root}/ -type f  -name '*.rdf' -not -name '*About*'  -print | while read file ; do
+	    addIsDefinedBy "${file}"
+    done
+  fi
  
   return 0
 }
@@ -685,7 +698,7 @@ function fixTopBraidBaseURICookie() {
   local baseURI
   local uri
 
-  echo "Annotating ${ontologyFile}"
+  echo "Annotating ${ontologyFile/${WORKSPACE}/}"
 
   echo "CSV output of query is:"
 
@@ -800,6 +813,7 @@ function convertRdfFileTo() {
   java \
     -Xmx2G \
     -Xms2G \
+    -Dfile.encoding=UTF-8 \
     -jar "${rdftoolkit_jar}" \
     --source "${rdfFile}" \
     --source-format "${sourceFormat}" \
@@ -815,14 +829,14 @@ function convertRdfFileTo() {
   # For the turtle files, we want the base annotations to be the versionIRI
   #
   if [ "${targetFormat}" == "turtle" ] ; then
-    echo "Adjusting ttl base URI for ${rdfFile}"
+    echo "Adjusting ttl base URI for ${rdfFile/${WORKSPACE}/}"
     sed -i "s?^\(\(# baseURI:\)\|\(@base\)\).*ontology/?&${GIT_BRANCH}/${GIT_TAG_NAME}/?" "${targetFile}"
     sed -i "s@${GIT_BRANCH}/${GIT_TAG_NAME}/${GIT_BRANCH}/${GIT_TAG_NAME}/@${GIT_BRANCH}/${GIT_TAG_NAME}/@" \
 	  "${targetFile}"
   fi 
 
   if grep -q "ERROR" "${logfile}"; then
-    echo "Found errors during conversion of ${rdfFile} to \"${targetFormat}\":"
+    echo "Found errors during conversion of ${rdfFile/${WORKSPACE}/} to \"${targetFormat}\":"
     cat "${logfile}"
     rm "${logfile}"
     return 1
@@ -846,7 +860,7 @@ function ontologyConvertRdfToAllFormats() {
 
   for rdfFile in **/*.rdf ; do
     for format in json-ld turtle ; do
-      echo "converting ${rdfFile} to ${format}"
+      echo "converting ${rdfFile/${WORKSPACE}/} to ${format}"
       convertRdfFileTo rdf-xml "${rdfFile}" "${format}" || return $?
     done || return $?
   done || return $?
@@ -878,6 +892,7 @@ function vocabularyConvertTurtleToAllFormats() {
 function zipWholeTagDir() {
 
   local tarGzFile="${branch_root}/${GIT_TAG_NAME}.tar.gz"
+  local tarGzContentsFile="${branch_root}/${GIT_TAG_NAME}.tar.gz.log"
   local zipttlFile="${branch_root}/${GIT_TAG_NAME}.ttl.zip"
   local ziprdfFile="${branch_root}/${GIT_TAG_NAME}.rdf.zip"
   local zipjsonFile="${branch_root}/${GIT_TAG_NAME}.jsonld.zip"
@@ -885,11 +900,13 @@ function zipWholeTagDir() {
   (
     cd ${spec_root}
     set -x
-    tar -cvzf "${tarGzFile}" "${tag_root/${spec_root}/.}"
+    tar -czf "${tarGzFile}" "${tag_root/${spec_root}/.}"
   )
+  [ $? -ne 0 ] && return 1
 
-  echo "Created ${tarGzFile}:"
-  ls -al "${tarGzFile}" || return $?
+  echo "Created ${tarGzFile/${WORKSPACE}/},"
+  echo "saving contents list in ${tarGzContentsFile/${WORKSPACE}/}"
+  ls -al "${tarGzFile}" > "${tarGzContentsFile}" 2>&1 || return $?
 
   return 0
 }
@@ -904,8 +921,18 @@ function copySiteFiles() {
 
     #Replace GIT BRANCH and TAG in the glossary index html
     #
-    # JG>I commented this out since this doesn't make sense it seems. There is no string "GIT_BRANCH" in
-    # index.html and even if there were I think it should always point to master/latest anyway (which it already does)
+    # DA>JG, I commented this out since this doesn't make sense it seems.
+    #    There is no string "GIT_BRANCH" in index.html and even if there
+    #    were I think it should always point to master/latest anyway (which it
+    #    already does)
+    #
+    # JG>DA yes I understand but we better rethink this whole model, most files
+    #    should reside in one of the versioned product directories, not in any
+    #    of the /static directories. For the overall site pages, that span all
+    #    versions we should have a special environment variable in the main
+    #    Jenkinsfile (in the fibo repo) that holds the BRANCH/TAG value of the
+    #    version of fibo-infra that should be used as the source of those
+    #    files.
     #
     #echo "Replacing GIT_BRANCH  $GIT_BRANCH"
     #sed -i "s/GIT_BRANCH/$GIT_BRANCH/g" "static/glossary/index.html"
@@ -913,9 +940,12 @@ function copySiteFiles() {
     #echo "Replacing GIT_TAG_NAME  $GIT_TAG_NAME"
     #sed -i "s/GIT_TAG_NAME/$GIT_TAG_NAME/g" "static/glossary/index.html"
 
-    cp -vr * "${spec_root}/"
+    cp -r * "${spec_root}/"
   )
-  cp -v ${fibo_infra_root}/LICENSE "${spec_root}"
+  #
+  # JG>Why is this file not in the fibo repo itself?
+  #
+  cp ${fibo_infra_root}/LICENSE "${spec_root}"
 
   (
     cd "${spec_root}"
@@ -931,21 +961,20 @@ function zipOntologyFiles () {
 
   local zipttlDevFile="${tag_root}/dev.ttl.zip"
   local ziprdfDevFile="${tag_root}/dev.rdf.zip"
-  local zipjsonldDevFile="${tag_root}/dev.jsonld.zip"local zipttlProdFile="${tag_root}/prod.ttl.zip"
+  local zipjsonldDevFile="${tag_root}/dev.jsonld.zip"
+  local zipttlProdFile="${tag_root}/prod.ttl.zip"
   local ziprdfProdFile="${tag_root}/prod.rdf.zip"
   local zipjsonldProdFile="${tag_root}/prod.jsonld.zip"
     
   (
     cd "${spec_root}"
-#
+    #
     # Make sure that everything is world readable before we zip it
     #
     chmod -R g+r,o+r .
     #    zip -r ${zipttlDevFile} "${family_product_branch_tag}" -x \*.rdf \*.zip  \*.jsonld \*AboutFIBOProd.ttl
     zip -r ${ziprdfDevFile} "${family_product_branch_tag}" -x \*.ttl \*.zip \*.jsonld \*AboutFIBOProd.rdf
     zip -r ${zipjsonldDevFile} "${family_product_branch_tag}" -x \*.ttl \*.zip \*.rdf \*AboutFIBOProd.jsonld
-
-
 
     grep -r 'utl-av[:;.]Release' "${family_product_branch_tag}" | grep -F ".ttl" | sed 's/:.*$//' | xargs zip -r ${zipttlProdFile}
     find  "${family_product_branch_tag}" -name '*About*.ttl' -print | grep -v "AboutFIBODev.ttl" |  xargs zip ${zipttlProdFile}
@@ -997,24 +1026,22 @@ function generateWidocoDocumentationForFile() {
 
   local extension="$([[ "${rdfFile}" = *.* ]] && echo ".${rdfFile##*.}" || echo '')"
 
-  echo " - processing ${rdfFile} in ${directory} with extension ${extension}"
-
-
-
+  echo " - processing ${rdfFile/${WORKSPACE}/} in ${directory/${WORKSPACE}/} with extension ${extension}"
 
   if [[ "${extension}" != ".ttl" || "${rdfFile}" =~ ^[0-9].* ]] ; then
-    echo  "- skipping ${rdfFile} in ${directory} with extension ${extension}"
+    echo  "- skipping ${rdfFile/${WORKSPACE}/} in ${directory/${WORKSPACE}/} with extension ${extension}"
     return 0
   fi
 
-  mkdir -p outputDir >/dev/null 2>&1
+  mkdir -p "${outputDir}" >/dev/null 2>&1
 
-  echo "Running widoco tool on ${rdfFile} to generate documentation:"
-  echo " - outFolder ${outputDir}"
+  echo "Running widoco tool on ${rdfFile/${WORKSPACE}/} to generate documentation:"
+  echo " - outFolder ${outputDir/${WORKSPACE}/}"
 
   java \
     -Xmx3G \
     -Xms3G \
+    -Dfile.encoding=UTF-8 \
     -jar "${fibo_infra_root}/lib/widoco/widoco-1.4.1-jar-with-dependencies.jar" \
     -ontFile "${rdfFile}" \
     -outFolder "${outputDir}/${rdfFileNoExtension}" \
@@ -1038,14 +1065,14 @@ function generateWidocoDocumentationForFile() {
   #Remove introduction section
   if [ -f "${outputDir}/${rdfFileNoExtension}/index-en.html" ] ; then
 
-   #contents=$(<${outputDir}/${rdfFileNoExtension}/index-en.html)
-   #echo "contents of index file before modification"
-   #echo "${contents}"
+    #contents=$(<${outputDir}/${rdfFileNoExtension}/index-en.html)
+    #echo "contents of index file before modification"
+    #echo "${contents}"
 
     echo "Replacing introduction with acknowledgements section from file ${outputDir}/${rdfFileNoExtension}/index-en.html"
-    echo "Contents of script folder ${SCRIPT_DIR}"
+    echo "Contents of script folder ${SCRIPT_DIR/${WORKSPACE}/}"
     ls -al "${SCRIPT_DIR}"
-    echo "Contents of widoco-sections folder ${SCRIPT_DIR}/widoco-sections"
+    echo "Contents of widoco-sections folder ${SCRIPT_DIR/${WORKSPACE}/}/widoco-sections"
     ls -al ${SCRIPT_DIR}/widoco-sections
     cp "${SCRIPT_DIR}/widoco-sections/acknowledgements-en.html" "${outputDir}/${rdfFileNoExtension}/sections"
     echo "Contents of folder ${outputDir}/${rdfFileNoExtension}/sections"
@@ -1057,12 +1084,12 @@ function generateWidocoDocumentationForFile() {
     echo "Removing references section from file ${outputDir}/${rdfFileNoExtension}/index-en.html"
     sed -i "/#references/d" "${outputDir}/${rdfFileNoExtension}/index-en.html"
 
-   #contents=$(<${outputDir}/${rdfFileNoExtension}/index-en.html)
-   #echo "contents of index file after modification"
-   #echo "${contents}"
+    #contents=$(<${outputDir}/${rdfFileNoExtension}/index-en.html)
+    #echo "contents of index file after modification"
+    #echo "${contents}"
 
-   echo "Breaking here just for test"
-   return 0
+    echo "Breaking here just for test"
+    return 0
 
   else
     echo "No file found at ${outputDir}/${rdfFileNoExtension}/index-en.html"
@@ -1102,21 +1129,20 @@ function publishProductOntology() {
   ontologyBuildCats  || return $?
   ontologyCreateAboutFiles || return $?
   ontologySearchAndReplaceStuff || return $?
-  if [ speedy=="true" ] ; then
-      echo "Not doing some conversions because they are slow"
+  if [ "${speedy}" == "true" ] ; then
+    echo "speedy=true -> Not doing some conversions because they are slow"
   else 
-      ontologyConvertRdfToAllFormats || return $?
+    ontologyConvertRdfToAllFormats || return $?
   fi 
 # ontologyAnnotateTopBraidBaseURL || return $?
   ontologyConvertMarkdownToHtml || return $?
-  zipOntologyFiles || return $?
+  zipOntologyFiles > ontology-zips.log 2>&1 || return $?
 
-  if [ speedy=="true" ] ; then
-      echo "Not doing quads becuase they are slow"
+  if [ "${speedy}" == "true" ] ; then
+    echo "speedy=true -> Not doing quads because they are slow"
   else
-      buildquads || return $?
+    buildquads || return $?
   fi
-
 
   return 0
 }
@@ -1286,11 +1312,11 @@ function vocabularyGetOntologies() {
     return 1
   fi
 
-  echo "Generated ${tmp_dir}/temp0.ttl:"
+  echo "Generated ${tmp_dir/${WORKSPACE}/}/temp0.ttl:"
 
   head -n200 "${tmp_dir}/temp0.ttl"
 
-  echo "Generated ${tmp_dir}/temp0B.ttl:"
+  echo "Generated ${tmp_dir/${WORKSPACE}/}/temp0B.ttl:"
 
   head -n200 "${tmp_dir}/temp0B.ttl"
 
@@ -1309,6 +1335,7 @@ function spinRunInferences() {
 
     java \
       -Xmx4g \
+      -Dfile.encoding=UTF-8 \
       -Dlog4j.configuration="file:${JENA2ROOT}/jena-log4j.properties" \
       -cp "${JENA2ROOT}/lib/*:${fibo_infra_root}/lib:${fibo_infra_root}/lib/SPIN/spin-1.3.3.jar" \
       org.topbraid.spin.tools.RunInferences \
@@ -1342,13 +1369,13 @@ function vocabularyRunSpin() {
   spinRunInferences "${tmp_dir}/temp0.ttl" "${tmp_dir}/temp1.ttl" || return $?
   spinRunInferences "${tmp_dir}/temp0B.ttl" "${tmp_dir}/temp1B.ttl" || return $?
 
-  echo "Generated ${tmp_dir}/temp1.ttl:"
-  echo "Generated ${tmp_dir}/temp1B.ttl:"
+  echo "Generated ${tmp_dir/${WORKSPACE}/}/temp1.ttl:"
+  echo "Generated ${tmp_dir/${WORKSPACE}/}/temp1B.ttl:"
 
-  echo "Printing first 50 lines of ${tmp_dir}/temp1.ttl"
+  echo "Printing first 50 lines of ${tmp_dir/${WORKSPACE}/}/temp1.ttl"
   head -n50 "${tmp_dir}/temp1.ttl"
 
-  echo "Printing first 50 lines of ${tmp_dir}/temp1B.ttl"
+  echo "Printing first 50 lines of ${tmp_dir/${WORKSPACE}/}/temp1B.ttl"
   head -n50 "${tmp_dir}/temp1B.ttl"
 
   #The first three lines contain some WARN statements - removing it to complete the build.
@@ -1591,6 +1618,68 @@ function publishProductGlossary() {
   setProduct glossary || return $?
   export glossary_product_tag_root="${tag_root}"
 
+  debug=false
+
+  publishProductGlossaryContent || return $?
+  publishProductGlossaryReactApp || return $?
+
+  return 0
+}
+
+#
+# Produce all artifacts for the glossary product
+#
+function publishProductGlossaryReactApp() {
+
+  local rc
+
+  logRule "Publishing the glossary product"
+
+  require glossary_product_tag_root || return $?
+
+  echo "Build the React app"
+
+  (
+    set -x
+    #
+    # Go to the /app directory to build the code of the React App (which is currently
+    # just for the glossary but might soon be extended to cover the other products as well,
+    # which why the /app directory is not called /app-glossary or so)
+    #
+    cd "${SCRIPT_DIR}/../../app" || return $?
+
+    echo "Current directory is $(pwd)"
+
+    ls -al
+
+    npm install || return $?
+
+    npm run build || return $?
+
+    cp -vR build/* "${glossary_product_tag_root}/" > glossary-build-directory.log 2>&1
+  )
+  rc=$?
+
+  if ((rc != 0)) ; then
+    error "Could not build the react app"
+    return ${rc}
+  fi
+
+  echo "Successfully built the React App for the Glossary Product"
+
+  return 0
+}
+
+#
+# Produce all artifacts for the glossary product
+#
+function publishProductGlossaryContent() {
+
+  logRule "Publishing the content files of the glossary product"
+
+  require ontology_product_tag_root || return $?
+  require glossary_product_tag_root || return $?
+
   export glossary_script_dir="${SCRIPT_DIR}/glossary"
 
   #
@@ -1605,7 +1694,7 @@ function publishProductGlossary() {
     $(find  "${ontology_product_tag_root}" -name "*.rdf" | sed "s/^/--data=/") \
     --data=${glossary_script_dir}/owlnames.ttl \
     --query="${glossary_script_dir}/echo.sparql" \
-    --results=TTL > "${glossary_product_tag_root}/temp0D.ttl"
+    --results=TTL > "${tmp_dir}/temp0D.ttl"
 
   if [ ${PIPESTATUS[0]} -ne 0 ] ; then
     error "Could not get Dev ontologies"
@@ -1619,38 +1708,39 @@ function publishProductGlossary() {
     $(grep -r 'utl-av[:;.]Release' "${ontology_product_tag_root}" | sed 's/:.*$//;s/^/--data=/' | grep -F ".rdf") \
     --data=${glossary_script_dir}/owlnames.ttl \
     --query="${glossary_script_dir}/echo.sparql" \
-    --results=TTL > "${glossary_product_tag_root}/temp0P.ttl"
+    --results=TTL > "${tmp_dir}/temp0P.ttl"
 
 
   ${jena_arq} \
     $(find  "${ontology_product_tag_root}" -name "Corporations.rdf" | sed "s/^/--data=/") \
     --data=${glossary_script_dir}/owlnames.ttl \
     --query="${glossary_script_dir}/echo.sparql" \
-    --results=TTL > "${glossary_product_tag_root}/tempCD.ttl"
-
-  debug=false
+    --results=TTL > "${tmp_dir}/tempCD.ttl"
 
   echo "About to run inferences with debug = $debug"
 
-  if [ $debug == "true" ] ; then
-    echo "C"
+  if [ "${debug}" == "true" ] ; then
+    echo "debug=true so only generating the 'C' version of the glossary"
     rm -f "${glossary_product_tag_root}/glossaryC.ttl"
-    spinRunInferences "${glossary_product_tag_root}/tempCD.ttl" "${glossary_product_tag_root}/glossaryC.ttl"
+    spinRunInferences "${tmp_dir}/tempCD.ttl" "${glossary_product_tag_root}/glossaryC.ttl"
   else
     rm -f "${glossary_product_tag_root}/glossaryP.ttl"
-    spinRunInferences "${glossary_product_tag_root}/temp0P.ttl" "${glossary_product_tag_root}/glossaryP.ttl"
+    spinRunInferences "${tmp_dir}/temp0P.ttl" "${glossary_product_tag_root}/glossaryP.ttl"
     rm -f "${glossary_product_tag_root}/glossaryD.ttl"
-    spinRunInferences "${glossary_product_tag_root}/temp0D.ttl" "${glossary_product_tag_root}/glossaryD.ttl"
+    spinRunInferences "${tmp_dir}/temp0D.ttl" "${glossary_product_tag_root}/glossaryD.ttl"
   fi
   #
   # Spin can put warnings at the start of a file.  I don't know why. Get rid of them.
   # I figured this out, and I think I got rid of it, but this still won't hurt.
   #
-  sed -i '/^@prefix/,$!d' "${glossary_product_tag_root}/glossaryC.ttl"
-  sed -i '/^@prefix/,$!d' "${glossary_product_tag_root}/glossaryD.ttl"
-  sed -i '/^@prefix/,$!d' "${glossary_product_tag_root}/glossaryP.ttl"
+  if [ $debug == "true" ] ; then
+    sed -i '/^@prefix/,$!d' "${glossary_product_tag_root}/glossaryC.ttl"
+  else
+    sed -i '/^@prefix/,$!d' "${glossary_product_tag_root}/glossaryD.ttl"
+    sed -i '/^@prefix/,$!d' "${glossary_product_tag_root}/glossaryP.ttl"
+  fi
 
-  cat >"${tmp_dir}/nolabel.sq" <<EOF
+  cat > "${tmp_dir}/nolabel.sq" <<EOF
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
 CONSTRUCT {?s ?p ?o}
 WHERE {?s ?p ?o .
@@ -1658,59 +1748,89 @@ FILTER (ISIRI (?s) || (?p != rdfs:label))
 }
 EOF
 
-  ${jena_arq} --data="${glossary_product_tag_root}/glossaryP.ttl" --query="${tmp_dir}/nolabel.sq" > "${glossary_product_tag_root}/temp2P.ttl"
-  ${jena_arq} --data="${glossary_product_tag_root}/glossaryD.ttl" --query="${tmp_dir}/nolabel.sq" > "${glossary_product_tag_root}/temp2D.ttl"
-  ${jena_arq} --data="${glossary_product_tag_root}/glossaryC.ttl" --query="${tmp_dir}/nolabel.sq" > "${glossary_product_tag_root}/temp2C.ttl"
+  if [ "${debug}" == "true" ] ; then
+    ${jena_arq} --data="${glossary_product_tag_root}/glossaryC.ttl" --query="${tmp_dir}/nolabel.sq" > "${tmp_dir}/temp2C.ttl"
+  else
+    ${jena_arq} --data="${glossary_product_tag_root}/glossaryP.ttl" --query="${tmp_dir}/nolabel.sq" > "${tmp_dir}/temp2P.ttl"
+    ${jena_arq} --data="${glossary_product_tag_root}/glossaryD.ttl" --query="${tmp_dir}/nolabel.sq" > "${tmp_dir}/temp2D.ttl"
+  fi
 
+  if [ $debug == "true" ] ; then
+    java \
+      -Xmx4G \
+      -Xms4G \
+      -Dfile.encoding=UTF-8 \
+      -jar "${rdftoolkit_jar}" \
+      --source "${tmp_dir}/temp2C.ttl" \
+      --source-format turtle \
+      --target "${glossary_product_tag_root}/glossaryC.jsonld" \
+      --target-format json-ld \
+      --infer-base-iri \
+      --use-dtd-subset -ibn \
+      > log 2>&1
+  else
+    java \
+      -Xmx4G \
+      -Xms4G \
+      -Dfile.encoding=UTF-8 \
+      -jar "${rdftoolkit_jar}" \
+      --source "${tmp_dir}/temp2P.ttl" \
+      --source-format turtle \
+      --target "${glossary_product_tag_root}/glossaryP.jsonld" \
+      --target-format json-ld \
+      --infer-base-iri \
+      --use-dtd-subset -ibn \
+      > log 2>&1
+    java \
+      -Xmx4G \
+      -Xms4G \
+      -Dfile.encoding=UTF-8 \
+      -jar "${rdftoolkit_jar}" \
+      --source "${tmp_dir}/temp2D.ttl" \
+      --source-format turtle \
+      --target "${glossary_product_tag_root}/glossaryD.jsonld" \
+      --target-format json-ld \
+      --infer-base-iri \
+      --use-dtd-subset -ibn \
+      > log 2>&1
+  fi
 
- java \
-   -Xmx4G \
-   -Xms4G \
-   -jar "${rdftoolkit_jar}" \
-   --source "${glossary_product_tag_root}/temp2C.ttl" \
-   --source-format turtle \
-   --target "${glossary_product_tag_root}/glossaryC.jsonld" \
-   --target-format json-ld \
-   --infer-base-iri \
-   --use-dtd-subset -ibn \
-   > log 2>&1
+  if [ "${debug}" == "true" ] ; then
+    glossaryMakeExcel "${tmp_dir}/temp2C.ttl" "${glossary_product_tag_root}/glossaryC"
+  else
+    glossaryMakeExcel "${tmp_dir}/temp2D.ttl" "${glossary_product_tag_root}/glossaryD"
+    glossaryMakeExcel "${tmp_dir}/temp2P.ttl" "${glossary_product_tag_root}/glossaryP"
+  fi
 
- java \
-   -Xmx4G \
-   -Xms4G \
-   -jar "${rdftoolkit_jar}" \
-   --source "${glossary_product_tag_root}/temp2P.ttl" \
-   --source-format turtle \
-   --target "${glossary_product_tag_root}/glossaryP.jsonld" \
-   --target-format json-ld \
-   --infer-base-iri \
-   --use-dtd-subset -ibn \
-   > log 2>&1
-
- java \
-   -Xmx4G \
-   -Xms4G \
-   -jar "${rdftoolkit_jar}" \
-   --source "${glossary_product_tag_root}/temp2D.ttl" \
-   --source-format turtle \
-   --target "${glossary_product_tag_root}/glossaryD.jsonld" \
-   --target-format json-ld \
-   --infer-base-iri \
-   --use-dtd-subset -ibn \
-   > log 2>&1
-
-  makexl "temp2C" "glossaryC"
-  makexl "temp2D" "glossaryD"
-  makexl "temp2P" "glossaryP"
+  #
+  # JG>Since I didn't figure out yet how to make webpack load .jsonld files as if they
+  #    were normal .json files I need to have some symlinks here from .json to .jsonld
+  #    so that these json-ld files can be downloaded with either extension. This is
+  #    a temporary measure. We might actually want to generate real plain vanilla JSON
+  #    files with a simplified structure allowing others to include the glossary more
+  #    easily into their own apps.
+  #
+  (
+    cd "${glossary_product_tag_root}"
+    if [ "${debug}" == "true" ] ; then
+      ln -s "glossaryC.jsonld" "glossaryC.json"
+    else
+      ln -s "glossaryD.jsonld" "glossaryD.json"
+      ln -s "glossaryP.jsonld" "glossaryP.json"
+    fi
+  )
 
   return 0
 }
 
 
 #
-# What does "makexl" stand for?
+# What does "glossaryMakeExcel" stand for?
 #
-function makexl () {
+function glossaryMakeExcel () {
+
+  local dataTurtle="$1"
+  local glossaryBaseName="$2"
 
   cat > "${tmp_dir}/makeCcsv.sparql" <<EOF
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -1719,22 +1839,23 @@ PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
 PREFIX owl:   <http://www.w3.org/2002/07/owl#> 
 PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
 
-
-
 SELECT ?Term ?Type (GROUP_CONCAT (?syn; separator=",") AS ?Synonyms) ?Definition ?GeneratedDefinition
-WHERE {?c a owlnames:Class  . 
-FILTER (REGEX (xsd:string (?c), "edmcouncil"))
-?c  owlnames:definition ?Definition ; 
-owlnames:label ?Term .
-BIND ("Class" as ?Type)
-OPTIONAL {?c owlnames:synonym ?syn}
-OPTIONAL {?c  owlnames:mdDefinition ?GeneratedDefinition}
+WHERE {
+  ?c a owlnames:Class  .
+  FILTER (REGEX (xsd:string (?c), "edmcouncil"))
+  ?c  owlnames:definition ?Definition ;
+  owlnames:label ?Term .
+
+  BIND ("Class" as ?Type)
+
+  OPTIONAL {?c owlnames:synonym ?syn}
+  OPTIONAL {?c  owlnames:mdDefinition ?GeneratedDefinition}
 }
 GROUP BY ?c ?Term ?Type ?Definition ?GeneratedDefinition
 ORDER BY ?Term
 EOF
 
-  ${jena_arq} --data="${glossary_product_tag_root}/$1.ttl" --query="${tmp_dir}/makeCcsv.sparql" --results=TSV > "${glossary_product_tag_root}/$2.tsv"
+  ${jena_arq} --data="${dataTurtle}" --query="${tmp_dir}/makeCcsv.sparql" --results=TSV > "${glossaryBaseName}.tsv"
 
   cat > "${tmp_dir}/makePcsv.sparql" <<EOF
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -1743,28 +1864,32 @@ PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>
 PREFIX owl:   <http://www.w3.org/2002/07/owl#> 
 PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
 
-
-
 SELECT ?Term ?Type (GROUP_CONCAT (?syn; separator=",") AS ?Synonyms) ?Definition ?GeneratedDefinition
-WHERE {?c a owlnames:Property
-FILTER (REGEX (xsd:string (?c), "edmcouncil"))
-OPTIONAL {?c  owlnames:definition ?Definition  }
-?c owlnames:label ?Term .
-BIND ("Property" as ?Type)
-OPTIONAL {?c owlnames:synonym ?syn}
-OPTIONAL {?c  owlnames:mdDefinition ?GeneratedDefinition}
+WHERE {
+  ?c a owlnames:Property
+
+  FILTER (REGEX (xsd:string (?c), "edmcouncil"))
+
+  OPTIONAL {?c  owlnames:definition ?Definition}
+
+  ?c owlnames:label ?Term .
+
+  BIND ("Property" as ?Type)
+
+  OPTIONAL {?c owlnames:synonym ?syn}
+  OPTIONAL {?c  owlnames:mdDefinition ?GeneratedDefinition}
 }
 GROUP BY ?c ?Term ?Type ?Definition ?GeneratedDefinition
 ORDER BY ?Term
 EOF
 
-  ${jena_arq} --data="${glossary_product_tag_root}/$1.ttl" --query="${tmp_dir}/makePcsv.sparql" --results=TSV | tail -n +2 >> "${glossary_product_tag_root}/$2.tsv"
+  ${jena_arq} --data="${dataTurtle}" --query="${tmp_dir}/makePcsv.sparql" --results=TSV | tail -n +2 >> "${glossaryBaseName}.tsv"
 
-  sed -i 's/"@../"/g; s/\t\t/\t""\t/g; s/\t$/\t""/'  "${glossary_product_tag_root}/$2.tsv"
+  sed -i 's/"@../"/g; s/\t\t/\t""\t/g; s/\t$/\t""/' "${glossaryBaseName}.tsv"
 
-  sed  's/"\t"/","/g'  "${glossary_product_tag_root}/$2.tsv" >  "${glossary_product_tag_root}/$2.csv"
+  sed 's/"\t"/","/g' "${glossaryBaseName}.tsv" > "${glossaryBaseName}.csv"
 
-  cat >  "${glossary_product_tag_root}/$2.xls" <<EOF
+  cat >  "${glossaryBaseName}.xls" <<EOF
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
 <html xmlns:x="urn:schemas-microsoft-com:office:excel" >
 <head>
@@ -1794,12 +1919,12 @@ a<body>
 <table>
 EOF
 
-  head -n 1 "${glossary_product_tag_root}/$2.tsv" | sed 's!?!!g; s!^!<tr><th bgcolor="goldenrod">!; s!\t!</th><th bgcolor="goldenrod">!g; s!$!</th></tr>!' >> "${glossary_product_tag_root}/$2.xls"
+  head -n 1 "${glossaryBaseName}.tsv" | sed 's!?!!g; s!^!<tr><th bgcolor="goldenrod">!; s!\t!</th><th bgcolor="goldenrod">!g; s!$!</th></tr>!' >> "${glossaryBaseName}.xls"
 
-  tail -n +2 "${glossary_product_tag_root}/$2.tsv" | sed 's!^"!<tr><td valign="top">!; s!"\t"!</td><td valign="top">!g; s!"$!</td></tr>!' >> "${glossary_product_tag_root}/$2.xls"
-  sed -i '2,${s/<td/<td bgcolor="azure"/g;n}' "${glossary_product_tag_root}/$2.xls"
+  tail -n +2 "${glossaryBaseName}.tsv" | sed 's!^"!<tr><td valign="top">!; s!"\t"!</td><td valign="top">!g; s!"$!</td></tr>!' >> "${glossaryBaseName}.xls"
+  sed -i '2,${s/<td/<td bgcolor="azure"/g;n}' "${glossaryBaseName}.xls"
 
-  cat >> "${glossary_product_tag_root}/$2.xls" <<EOF
+  cat >> "${glossaryBaseName}.xls" <<EOF
 </table></bode></html>
 EOF
 
@@ -1959,7 +2084,7 @@ EOF
 
   echo Writing into "${datadictionary_product_tag_root}/index.html"
 
-  echo "${datadictionary_script_dir}/index.template contains"
+  echo "${datadictionary_script_dir/${WORKSPACE}/}/index.template contains"
   cat "${datadictionary_script_dir}/index.template"
 
   sed  '/-- index of dictionaries goes here/,$d' \
@@ -2016,6 +2141,7 @@ function localdd () {
 function dumpdd () {
 
   echo "Creating Data Dictionary for $1"
+
   # Extract the filename from the local part of the class IRI
   local t=${1##*/}
   local fname=${t%>*}
@@ -2085,7 +2211,8 @@ function buildquads () {
 
   local ProdQuadsFile="${tag_root}/prod.fibo.nq"
   local DevQuadsFile="${tag_root}/dev.fibo.nq"
-  echo "starting buildquads" 
+
+  echo "starting buildquads"
 
   (
     cd ${spec_root}
@@ -2100,7 +2227,10 @@ function buildquads () {
 	  zip ${ProdQuadsFile}.zip ${ProdQuadsFile}
 	  zip ${DevQuadsFile}.zip ${DevQuadsFile}
   )
-  echo "finished buildquads" 
+
+  echo "finished buildquads"
+
+  return 0
 }
 
 #
