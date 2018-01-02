@@ -29,7 +29,7 @@ jena_arq=""
 # For testing - speedy=true leaves out some very slow processing, 
 # e.g., isDefinedBy, converstions into ttl and jsonld, and nquads
 #
-speedy=false
+speedy=true
 
 #
 # The products that we generate the artifacts for with this script
@@ -604,6 +604,8 @@ __HERE__
   if [ "${speedy}" == "true" ] ; then
 	  echo "speedy=true -> Leaving out isDefinedBy because it is slow"
 	else
+	  #${tag_root}/ -type f  -name '*.rdf' -not -name '*About*'  -print | \
+	  #xargs -P $(nproc) -I fileName
 	  find ${tag_root}/ -type f  -name '*.rdf' -not -name '*About*'  -print | while read file ; do
 	    addIsDefinedBy "${file}"
     done
@@ -651,6 +653,10 @@ WHERE {
 }
 __HERE__
 
+  #
+  # Set the memory for ARQ
+  #
+  export JVM_ARGS=${JVM_ARGS:--Xmx4G}
 
   local outfile=$(mktemp ${tmp_dir}/out.XXXXXX)
   #
@@ -811,8 +817,8 @@ function convertRdfFileTo() {
   esac
 
   java \
-    -Xmx2G \
-    -Xms2G \
+    -Xmx4G \
+    -Xms4G \
     -Dfile.encoding=UTF-8 \
     -jar "${rdftoolkit_jar}" \
     --source "${rdfFile}" \
@@ -1330,11 +1336,13 @@ function spinRunInferences() {
 
   require JENA2ROOT || return $?
 
+  [ -f "${outputFile}" ] && rm -f "${outputFile}"
+
   (
     set -x
 
     java \
-      -Xmx4g \
+      -Xmx6g \
       -Dfile.encoding=UTF-8 \
       -Dlog4j.configuration="file:${JENA2ROOT}/jena-log4j.properties" \
       -cp "${JENA2ROOT}/lib/*:${fibo_infra_root}/lib:${fibo_infra_root}/lib/SPIN/spin-1.3.3.jar" \
@@ -1509,6 +1517,11 @@ function publishProductVocabularyInner() {
   echo "second run of spin"
   spinRunInferences "${tmp_dir}/temp2.ttl" "${tmp_dir}/tc.ttl" || return $?
   spinRunInferences "${tmp_dir}/temp2B.ttl" "${tmp_dir}/tcB.ttl" || return $?
+
+  #
+  # Set the memory for ARQ
+  #
+  export JVM_ARGS=${JVM_ARGS:--Xmx4G}
 
   echo "ENDING SPIN"
   #
@@ -1721,13 +1734,11 @@ function publishProductGlossaryContent() {
 
   if [ "${debug}" == "true" ] ; then
     echo "debug=true so only generating the 'C' version of the glossary"
-    rm -f "${glossary_product_tag_root}/glossaryC.ttl"
     spinRunInferences "${tmp_dir}/tempCD.ttl" "${glossary_product_tag_root}/glossaryC.ttl"
   else
-    rm -f "${glossary_product_tag_root}/glossaryP.ttl"
-    spinRunInferences "${tmp_dir}/temp0P.ttl" "${glossary_product_tag_root}/glossaryP.ttl"
-    rm -f "${glossary_product_tag_root}/glossaryD.ttl"
-    spinRunInferences "${tmp_dir}/temp0D.ttl" "${glossary_product_tag_root}/glossaryD.ttl"
+    spinRunInferences "${tmp_dir}/temp0P.ttl" "${glossary_product_tag_root}/glossaryP.ttl" &
+    spinRunInferences "${tmp_dir}/temp0D.ttl" "${glossary_product_tag_root}/glossaryD.ttl" &
+    wait
   fi
   #
   # Spin can put warnings at the start of a file.  I don't know why. Get rid of them.
@@ -1831,6 +1842,11 @@ function glossaryMakeExcel () {
 
   local dataTurtle="$1"
   local glossaryBaseName="$2"
+
+  #
+  # Set the memory for ARQ
+  #
+  export JVM_ARGS=${JVM_ARGS:--Xmx4G}
 
   cat > "${tmp_dir}/makeCcsv.sparql" <<EOF
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -2294,6 +2310,22 @@ function main() {
     return 0
   fi
 
+  #
+  # If we specified any parameters (other than "init") then
+  # assume that these are the product names we need to run
+  #
+  if [ $# -gt 0 ] ; then
+    products="$*"
+    echo "Going to run the following products: ${products}"
+  else
+    #
+    # Since we'e running the whole show from one call to this script,
+    # ensure that publishing it all is the last step. Otherwise do not
+    # forget to call this one last.
+    #
+    products="${products} publish"
+  fi
+
   for product in ${products} ; do
     case ${product} in
       ontology)
@@ -2311,15 +2343,20 @@ function main() {
       datadictionary)
         publishProductDataDictionary || return $?
         ;;
+      publish)
+        #
+        # "publish" is not really a product but an action that should come after
+        # all the products have been run
+        #
+        zipWholeTagDir || return $?
+        copySiteFiles || return $?
+        ;;
       *)
         echo "ERROR: Unknown product ${product}"
         ;;
      esac
   done
 
-  zipWholeTagDir || return $?
-
-  copySiteFiles || return $?
 }
 
 main $@

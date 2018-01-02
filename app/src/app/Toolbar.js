@@ -1,13 +1,12 @@
 import React from 'react'
 import IconMenu from 'material-ui/IconMenu'
 import IconButton from 'material-ui/IconButton'
-import FontIcon from 'material-ui/FontIcon'
 import NavigationExpandMoreIcon from 'material-ui/svg-icons/navigation/expand-more'
 import MenuItem from 'material-ui/MenuItem'
 import DropDownMenu from 'material-ui/DropDownMenu'
 import Divider from 'material-ui/Divider';
-import {Toolbar as MuiToolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar'
-import GlossarySearch from './GlossarySearch'
+import {Toolbar as MuiToolbar, ToolbarGroup, ToolbarSeparator} from 'material-ui/Toolbar'
+import GlossarySearch from '../glossary/GlossarySearch'
 import logo from './fibo-logo.png'
 
 export default class Toolbar extends React.Component {
@@ -29,7 +28,7 @@ export default class Toolbar extends React.Component {
             value={this.state.value} 
             onChange={this.handleChange}
             autoWidth={false}
-            width="400px"
+            width="800px"
           >
             <MenuItem value={1} primaryText="FIBO Home" />
             <Divider />
@@ -47,8 +46,9 @@ export default class Toolbar extends React.Component {
             />
           </DropDownMenu>
         </ToolbarGroup>
-        <ToolbarGroup>
+        <ToolbarGroup lastChild={true}>
           <GlossarySearch sortedGlossary={this.props.sortedGlossary} handleSearchInput={this.props.handleSearchInput} />
+          <ToolbarSeparator/>
           <IconMenu
             iconButtonElement={
               <IconButton touch={true}>
