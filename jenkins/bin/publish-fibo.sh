@@ -2294,6 +2294,22 @@ function main() {
     return 0
   fi
 
+  #
+  # If we specified any parameters (other than "init") then
+  # assume that these are the product names we need to run
+  #
+  if [ $# -gt 0 ] ; then
+    products="$*"
+    echo "Going to run the following products: ${products}"
+  else
+    #
+    # Since we'e running the whole show from one call to this script,
+    # ensure that publishing it all is the last step. Otherwise do not
+    # forget to call this one last.
+    #
+    products="${products} publish"
+  fi
+
   for product in ${products} ; do
     case ${product} in
       ontology)
@@ -2311,15 +2327,20 @@ function main() {
       datadictionary)
         publishProductDataDictionary || return $?
         ;;
+      publish)
+        #
+        # "publish" is not really a product but an action that should come after
+        # all the products have been run
+        #
+        zipWholeTagDir || return $?
+        copySiteFiles || return $?
+        ;;
       *)
         echo "ERROR: Unknown product ${product}"
         ;;
      esac
   done
 
-  zipWholeTagDir || return $?
-
-  copySiteFiles || return $?
 }
 
 main $@
