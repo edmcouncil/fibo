@@ -651,6 +651,10 @@ WHERE {
 }
 __HERE__
 
+  #
+  # Set the memory for ARQ
+  #
+  export JVM_ARGS=${JVM_ARGS:--Xmx4G}
 
   local outfile=$(mktemp ${tmp_dir}/out.XXXXXX)
   #
@@ -1510,6 +1514,11 @@ function publishProductVocabularyInner() {
   spinRunInferences "${tmp_dir}/temp2.ttl" "${tmp_dir}/tc.ttl" || return $?
   spinRunInferences "${tmp_dir}/temp2B.ttl" "${tmp_dir}/tcB.ttl" || return $?
 
+  #
+  # Set the memory for ARQ
+  #
+  export JVM_ARGS=${JVM_ARGS:--Xmx4G}
+
   echo "ENDING SPIN"
   #
   # 5) Merge the ConceptScheme triples with the SKOS triples
@@ -1831,6 +1840,11 @@ function glossaryMakeExcel () {
 
   local dataTurtle="$1"
   local glossaryBaseName="$2"
+
+  #
+  # Set the memory for ARQ
+  #
+  export JVM_ARGS=${JVM_ARGS:--Xmx4G}
 
   cat > "${tmp_dir}/makeCcsv.sparql" <<EOF
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>

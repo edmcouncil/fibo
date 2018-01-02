@@ -4,8 +4,10 @@
 //
 export const termHasLabel = item => 'owlnames:label' in item
 
+export const termId = item => item['@id']
+
 export const termLabel = item => termHasLabel(item) && item['owlnames:label']['@value']
-export const termLabelOrId = item => termLabel(item) || item['@id']
+export const termLabelOrId = item => termLabel(item) || termId(item)
 
 export const termHasSynonym = item => 'owlnames:synonym' in item
 
