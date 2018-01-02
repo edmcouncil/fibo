@@ -29,7 +29,7 @@ jena_arq=""
 # For testing - speedy=true leaves out some very slow processing, 
 # e.g., isDefinedBy, converstions into ttl and jsonld, and nquads
 #
-speedy=false
+speedy=true
 
 #
 # The products that we generate the artifacts for with this script
@@ -815,8 +815,8 @@ function convertRdfFileTo() {
   esac
 
   java \
-    -Xmx2G \
-    -Xms2G \
+    -Xmx4G \
+    -Xms4G \
     -Dfile.encoding=UTF-8 \
     -jar "${rdftoolkit_jar}" \
     --source "${rdfFile}" \
