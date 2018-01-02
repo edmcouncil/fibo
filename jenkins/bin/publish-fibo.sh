@@ -27,9 +27,13 @@ export fibo_infra_root="$(cd ${SCRIPT_DIR}/../.. ; pwd -L)"
 jena_arq=""
 #
 # For testing - speedy=true leaves out some very slow processing, 
-# e.g., isDefinedBy, converstions into ttl and jsonld, and nquads
+# e.g., isDefinedBy, conversations into ttl and jsonld, and nquads
 #
-speedy=true
+# TODO: Make this settable via an environment variable so that we can override
+#       this in the Jenkinsfile (so that master for instance will never be built
+#       with speedy=true)
+#
+speedy=false
 
 #
 # The products that we generate the artifacts for with this script
@@ -37,7 +41,13 @@ speedy=true
 # ontology has to come before vocabulary because vocabulary depends on it.
 #
 family="fibo"
-# Removed for speedier testing 
+#
+# DA>Removed for speedier testing
+# JG>It's not really relevant anymore what products are mentioned here
+#    since the Jenkinsfile now specifies which particular product it's
+#    going to build (in order to be able to run those product builds in
+#    parallel).
+#
 #products="ontology widoco glossary datadictionary vocabulary"
 #products="ontology glossary datadictionary vocabulary "
 products="ontology glossary"
