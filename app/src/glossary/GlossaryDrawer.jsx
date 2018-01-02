@@ -1,9 +1,14 @@
 import React from 'react'
-import {Card, CardHeader, CardText} from 'material-ui/Card'
+import {Card, CardHeader, CardTitle, CardText} from 'material-ui/Card'
+import Divider from 'material-ui/Divider'
 import Drawer from 'material-ui/Drawer'
 import ContentClear from 'material-ui/svg-icons/content/clear'
-import TextField from 'material-ui/TextField'
 import * as glossaryHelpers from './glossary-helpers'
+
+const itemFieldTitleStyle = {
+  fontSize: 14, 
+  fontWeight: "bold"
+}
 
 class GlossaryDrawer extends React.Component {
 
@@ -51,19 +56,37 @@ class GlossaryDrawer extends React.Component {
           actAsExpander={true}
           showExpandableButton={glossaryHelpers.termHasSynonym(this.props.item)}
         />
+        <Divider />
+        <CardTitle title="ID" titleStyle={itemFieldTitleStyle} />
+        <CardText>{glossaryHelpers.termId(this.props.item)}</CardText>
+        <CardTitle title="Logical Definition" titleStyle={itemFieldTitleStyle} />
+        <CardText>{glossaryHelpers.termLogicalDefinitionNoBreaks(this.props.item)}</CardText>
+        <CardTitle title="Synonyms" titleStyle={itemFieldTitleStyle} />
         <CardText>
-        <TextField
-            defaultValue={glossaryHelpers.termId(this.props.item)}
-            floatingLabelText="ID"
-          /><br />
-        {glossaryHelpers.termHasSynonym(this.props.item) ? 
-          <span>
-          <TextField
-            defaultValue={glossaryHelpers.termSynonym(this.props.item)}
-            floatingLabelText="Synonym(s)"
-          /><br /></span>
-           : ''
-        }
+        <ul>
+          {
+            glossaryHelpers.termSynonymArray(this.props.item).forEach(
+              (synonym) => (
+                <li>{synonym}</li>
+              )
+            )
+          }
+        </ul>
+        </CardText>
+
+        
+
+        <CardTitle title="Kind Of" titleStyle={itemFieldTitleStyle} />
+        <CardText>
+        <ul>
+          {
+            glossaryHelpers.termSynonymArray(this.props.item).forEach(
+              (synonym) => (
+                <li>{synonym}</li>
+              )
+            )
+          }
+        </ul>
         </CardText>
       </Card>
     </Drawer>

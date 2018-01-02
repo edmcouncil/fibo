@@ -28,7 +28,7 @@ export default class Toolbar extends React.Component {
             value={this.state.value} 
             onChange={this.handleChange}
             autoWidth={false}
-            width="400px"
+            width="800px"
           >
             <MenuItem value={1} primaryText="FIBO Home" />
             <Divider />
@@ -46,7 +46,7 @@ export default class Toolbar extends React.Component {
             />
           </DropDownMenu>
         </ToolbarGroup>
-        <ToolbarGroup>
+        <ToolbarGroup lastChild={true}>
           <GlossarySearch sortedGlossary={this.props.sortedGlossary} handleSearchInput={this.props.handleSearchInput} />
           <ToolbarSeparator/>
           <IconMenu
