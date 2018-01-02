@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import './Main.css'
-import GlossaryTable from './GlossaryTable'
+import Glossary from '../glossary/Glossary'
 import Toolbar from './Toolbar'
-import unsortedGlossary from './data/test-glossary.json'
+import unsortedGlossary from '../data/test-glossary.json'
 
 class Main extends Component {
 
@@ -49,7 +49,7 @@ class Main extends Component {
     return (
       <div id='main' className='Main'>
         <Toolbar sortedGlossary={this.state.sortedGlossary} handleSearchInput={this.handleSearchInput}/>
-        <GlossaryTable sortedGlossary={this.state.sortedGlossary} searchTerm={this.state.searchTerm}/>
+        <Glossary sortedGlossary={this.state.sortedGlossary} searchTerm={this.state.searchTerm}/>
       </div>
     );
   }
