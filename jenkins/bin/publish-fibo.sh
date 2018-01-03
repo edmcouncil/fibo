@@ -347,29 +347,38 @@ function initGitVars() {
     echo "GIT_COMMIT was empty, is now: ${GIT_COMMIT}"
   fi
 
-  export GIT_COMMENT=$(cd ${fibo_root} ; git log --format=%B -n 1 ${GIT_COMMIT} | grep -v "^$")
-  echo "GIT_COMMENT=${GIT_COMMENT}"
+  if [ -z "${GIT_COMMENT}" ] ; then
+    export GIT_COMMENT=$(cd ${fibo_root} ; git log --format=%B -n 1 ${GIT_COMMIT} | grep -v "^$")
+    echo "GIT_COMMENT was empty, is now ${GIT_COMMENT}"
+  fi
 
-  export GIT_AUTHOR=$(cd ${source_family_root} ; git show -s --pretty=%an)
-  echo "GIT_AUTHOR=${GIT_AUTHOR}"
+  if [ -z "${GIT_AUTHOR}" ] ; then
+    export GIT_AUTHOR=$(cd ${source_family_root} ; git show -s --pretty=%an)
+    echo "GIT_AUTHOR was empty, is now ${GIT_AUTHOR}"
+  fi
 
   #
   # Get the git branch name to be used as directory names and URL fragments and make it
   # all lower case
   #
-  export GIT_BRANCH=$(cd ${source_family_root} ; git rev-parse --abbrev-ref HEAD | tr '[:upper:]' '[:lower:]')
+  # Note that we always do the subsequent replacements on the GIT_BRANCH value since Jenkins
+  # might have specified the value for GIT_BRANCH which might need to be corrected.
+  #
+  if [ -z "${GIT_BRANCH}" ] ; then
+    export GIT_BRANCH=$(cd ${source_family_root} ; git rev-parse --abbrev-ref HEAD | tr '[:upper:]' '[:lower:]')
+    echo "GIT_BRANCH was empty, is now ${GIT_BRANCH} (before replacements)"
+  fi
   #
   # Replace all slashes in a branch name with dashes so that we don't mess up the URLs for the ontologies
   #
   export GIT_BRANCH="${GIT_BRANCH//\//-}"
-  echo "GIT_BRANCH=${GIT_BRANCH}"
-
   #
   # Strip the "heads-tags-" prefix from the Branch name if its in there.
   #
   if [[ "${GIT_BRANCH}" =~ ^heads-tags-(.*)$ ]] ; then
     GIT_BRANCH="${BASH_REMATCH[0]}"
   fi
+  echo "GIT_BRANCH=${GIT_BRANCH}"
 
   #
   # If the current commit has a tag associated to it then the Git Tag Message Plugin in Jenkins will
@@ -1834,8 +1843,11 @@ EOF
   (
     cd "${glossary_product_tag_root}"
     if [ "${debug}" == "true" ] ; then
+      rm -f glossaryC.json
       ln -s "glossaryC.jsonld" "glossaryC.json"
     else
+      rm -f glossaryP.json	
+      rm -f glossaryD.json	
       ln -s "glossaryD.jsonld" "glossaryD.json"
       ln -s "glossaryP.jsonld" "glossaryP.json"
     fi
