@@ -1926,6 +1926,7 @@ EOF
   sed -i 's/"@../"/g; s/\t\t/\t""\t/g; s/\t$/\t""/' "${glossaryBaseName}.tsv"
 
   sed 's/"\t"/","/g' "${glossaryBaseName}.tsv" > "${glossaryBaseName}.csv"
+  sed -i '1s/\t[?]/,/g;1s/^[?]//' "${glossaryBaseName}.csv"
 
   cat >  "${glossaryBaseName}.xls" <<EOF
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
