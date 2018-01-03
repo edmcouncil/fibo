@@ -1665,7 +1665,7 @@ function publishProductGlossaryReactApp() {
 
   local rc
 
-  logRule "Publishing the glossary product"
+  logRule "Publishing the glossary product react app"
 
   require glossary_product_tag_root || return $?
 
