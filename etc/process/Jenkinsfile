@@ -131,7 +131,7 @@ pipeline {
         // Now stash all files in the env directory for reuse in the other worker nodes
         // used by the next products
         //
-        stash includes: '**', name: 'all-ontology-data'
+        stash includes: '**', name: 'ontology-data'
       }
     } // end of stage 'Build Product Ontology'
 
@@ -142,8 +142,9 @@ pipeline {
             label 'stardog'
           }
           steps {
-            unstash 'all-ontology-data'
+            unstash 'ontology-data'
             sh "./fibo-infra/jenkins/bin/publish-fibo.sh widoco"
+            stash includes: 'target/fibo/widoco/**', name: 'widoco-data'
           }
         }
         stage("Build Glossary") {
@@ -158,8 +159,9 @@ pipeline {
             nodejs 'NodeJS'
           }
           steps {
-            unstash 'all-ontology-data'
+            unstash 'ontology-data'
             sh "./fibo-infra/jenkins/bin/publish-fibo.sh glossary"
+            stash includes: 'target/fibo/glossary/**', name: 'glossary-data'
           }
         }
         stage("Build Vocabulary") {
@@ -167,8 +169,9 @@ pipeline {
             label 'stardog'
           }
           steps {
-            unstash 'all-ontology-data'
+            unstash 'ontology-data'
             sh "./fibo-infra/jenkins/bin/publish-fibo.sh vocabulary"
+            stash includes: 'target/fibo/vocabulary/**', name: 'vocabulary-data'
           }
         }
         stage("Build Datadictionary") {
@@ -178,6 +181,7 @@ pipeline {
           steps {
             unstash 'all-ontology-data'
             sh "./fibo-infra/jenkins/bin/publish-fibo.sh datadictionary"
+            stash includes: 'target/fibo/datadictionary/**', name: 'datadictionary'
           }
         }
       }
@@ -189,6 +193,11 @@ pipeline {
       }
 
       steps {
+        unstash 'ontology-data'
+        unstash 'widoco-data'
+        unstash 'glossary-data'
+        unstash 'vocabulary-data'
+        unstash 'datadictionary-data'
         //
         // Now after all the above is done, make sure we run the final
         // publish step which zips it all up into the target directory
