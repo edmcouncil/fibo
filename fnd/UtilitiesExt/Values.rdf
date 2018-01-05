@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE rdf:RDF [
+	<!ENTITY SpecificationMetadata "http://www.omg.org/techprocess/ab/SpecificationMetadata/">
+	<!ENTITY dct "http://purl.org/dc/terms/">
 	<!ENTITY fibo-fnd-dt-fd "https://spec.edmcouncil.org/fibo/FND/DatesAndTimes/FinancialDates/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/">
 	<!ENTITY fibo-fnd-utlx-val "https://spec.edmcouncil.org/fibo/FND/UtilitiesExt/Values/">
@@ -7,9 +9,13 @@
 	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
 	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
 	<!ENTITY skos "http://www.w3.org/2004/02/skos/core#">
+	<!ENTITY terms "http://purl.org/dc/terms/">
 	<!ENTITY xsd "http://www.w3.org/2001/XMLSchema#">
 ]>
 <rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/FND/UtilitiesExt/Values/"
+	xmlns="https://spec.edmcouncil.org/fibo/FND/UtilitiesExt/Values/"
+	xmlns:SpecificationMetadata="http://www.omg.org/techprocess/ab/SpecificationMetadata/"
+	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fibo-fnd-dt-fd="https://spec.edmcouncil.org/fibo/FND/DatesAndTimes/FinancialDates/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/"
 	xmlns:fibo-fnd-utlx-val="https://spec.edmcouncil.org/fibo/FND/UtilitiesExt/Values/"
@@ -17,27 +23,25 @@
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
 	xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+	xmlns:terms="http://purl.org/dc/terms/"
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema#">
 	
 	<owl:Ontology rdf:about="https://spec.edmcouncil.org/fibo/FND/UtilitiesExt/Values/">
-		<rdfs:label xml:lang="en">Values</rdfs:label>
+		<rdfs:label xml:lang="en">Values Ontology</rdfs:label>
+		<terms:abstract>The Values ontology introduces a set of foundational classes that represent “values” as OWL classes where a value is an immutable piece of information without a specific lifetime or identity independent of the properties that have a value as their subject.  Subtypes of Value are intended to include semantic, business relevant classes that are not independent, mediating or relative things. 
+While Values as defined here, in some cases, seem to replicate XSD data types they are intended to use, extend and build-on XSD data types for “business meaningful values”. 
+Business meaningful values (which we will call “Business Semantic Values”) are things like amount, name, postal address, mass, duration, currency and metrics – concepts that make sense in the business domain and are the types of properties of business entities, but not they are not business entities in themselves.  These values are the type (range) of properties that represent the qualities and characteristics of the entities in our business domain such as people, places, transactions and financial instruments. In contrast to semantic values, primitive datatypes, such as “Real”, “Integer” or “String”, frequently have no business meaning on their own.
+As the intent of the Value classes is to capture business meaning, the Value classes are not intended to be used directly in domain models. Subclasses of Value classes that capture business semantics are intended for use in domain models. In other languages, such as UML, this intent to only use subclasses is known as an “Abstract” class.</terms:abstract>
+		<terms:license xml:lang="en">&amp;sm;MITLicense</terms:license>
+		<SpecificationMetadata:copyright xml:lang="en">Copyright (c) 2015-2017 EDM Council</SpecificationMetadata:copyright>
+		<rdfs:seeAlso rdf:datatype="&xsd;anyURI">https://www.iso.org/standard/39479.html</rdfs:seeAlso>
+		<owl:imports rdf:resource="http://www.omg.org/techprocess/ab/20140801/SpecificationMetadata/"/>
 		<owl:imports rdf:resource="http://www.w3.org/2004/02/skos/core"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/DatesAndTimes/FinancialDates/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/FND/UtilitiesExt/Values/"/>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Informative"/>
 	</owl:Ontology>
-	
-	<owl:Class rdf:about="&fibo-fnd-utlx-val;AtomicValue">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-utlx-val;Value"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-utlx-val;hasValue"/>
-				<owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:cardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">atomic value</rdfs:label>
-	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-utlx-val;BasisPointsValue">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-utlx-val;DecimalValue"/>
@@ -105,12 +109,6 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-utlx-val;hasValue"/>
-				<owl:allValuesFrom rdf:resource="&xsd;decimal"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-utlx-val;hasValue"/>
 				<owl:onDataRange rdf:resource="&xsd;decimal"/>
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
@@ -119,14 +117,19 @@
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Where there are specific business reasons or business knowledge defining numbers with known limitations such as maximum values, positive-only and so on, these will be defined as sub-types of this Type.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-fnd-utlx-val;IntegerValue">
+	<owl:Class rdf:about="&fibo-fnd-utlx-val;FloatingPointValue">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-utlx-val;NumericValue"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-utlx-val;hasValue"/>
-				<owl:allValuesFrom rdf:resource="&xsd;integer"/>
+				<owl:onDataRange rdf:resource="&owl;real"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-utlx-val;IntegerValue">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-utlx-val;DecimalValue"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-utlx-val;hasValue"/>
@@ -135,10 +138,11 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">integer value</rdfs:label>
+		<skos:definition xml:lang="en">An IntegerValue is a SingleValue that represents an Integer using an xsd:integer.</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-utlx-val;NegativeIntegerValue">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-utlx-val;NumericValue"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-utlx-val;IntegerValue"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-utlx-val;hasValue"/>
@@ -156,7 +160,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-utlx-val;NonNegativeIntegerValue">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-utlx-val;NumericValue"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-utlx-val;IntegerValue"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-utlx-val;hasValue"/>
@@ -174,7 +178,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-utlx-val;NonNegativeNumber">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-utlx-val;NumericValue"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-utlx-val;IntegerValue"/>
 		<rdfs:label xml:lang="en">non-negative number</rdfs:label>
 		<skos:editorialNote xml:lang="en">This has no corresponding XML datatype.</skos:editorialNote>
 	</owl:Class>
@@ -185,8 +189,9 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-utlx-val;NumericValue">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-utlx-val;AtomicValue"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-utlx-val;SingleValue"/>
 		<rdfs:label xml:lang="en">numeric value</rdfs:label>
+		<skos:definition xml:lang="en">A NumericValue is a SingleValue intended to represent any number without restriction as to precision, scale or representation. The number is contained in the hasValue property.</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-utlx-val;PercentageValue">
@@ -196,7 +201,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-utlx-val;PositiveIntegerValue">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-utlx-val;NumericValue"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-utlx-val;IntegerValue"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-utlx-val;hasValue"/>
@@ -213,13 +218,19 @@
 		<rdfs:label xml:lang="en">positive integer value</rdfs:label>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-fnd-utlx-val;SingleValue">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-utlx-val;Value"/>
+		<rdfs:label xml:lang="en">atomic value</rdfs:label>
+		<skos:definition xml:lang="en">A SingleValue is a Value with exactly one distinguished &quot;hasValue&quot; property that represents the primary data element of that value. Other properties of a SingleValue may be defined to qualify hasValue, such as a unit, namespace or defining authority.</skos:definition>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-fnd-utlx-val;TemporalValue">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-utlx-val;AtomicValue"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-utlx-val;SingleValue"/>
 		<rdfs:label xml:lang="en">temporal value</rdfs:label>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-utlx-val;TextValue">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-utlx-val;AtomicValue"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-utlx-val;SingleValue"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-utlx-val;hasValue"/>
@@ -260,7 +271,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-utlx-val;TrueFalseValue">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-utlx-val;AtomicValue"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-utlx-val;SingleValue"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-utlx-val;hasValue"/>
@@ -278,7 +289,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-utlx-val;URIValue">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-utlx-val;AtomicValue"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-utlx-val;SingleValue"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-utlx-val;hasValue"/>
@@ -298,11 +309,17 @@
 	
 	<owl:Class rdf:about="&fibo-fnd-utlx-val;Value">
 		<rdfs:label xml:lang="en">Value</rdfs:label>
+		<skos:definition xml:lang="en">A Value is an immutable piece of information without a specific lifetime or identity independent of the properties that have such a value as their subject.  Subtypes of Value are intended to include semantic, business relevant types that are not independent, mediating or relative things. Value is not intended to be used directly (a concept known as &quot;abstract&quot; in other languages such as UML), but is intended to have subclasses that are used in domain models.
+All properties of a value instance (with the exception of annotations) are defined as part of the identity of the value instance. The set of such properties is immutable. All instances of Value with the same set of properties are equivalent. Note that while the above is not directly expressible in OWL, the above constraints and semantics of values are asserted by this specification.</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom xml:lang="en">[ISO11404] The identification of members of a datatype family, subtypes of a datatype, and the resulting datatypes of datatype generators may require the syntactic designation of specific values of a datatype.</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
 	
-	<owl:DatatypeProperty rdf:about="&fibo-fnd-utlx-val;hasValue">
+	<rdf:Description rdf:about="&fibo-fnd-utlx-val;hasValue">
+		<rdf:type rdf:resource="&owl;DatatypeProperty"/>
+		<rdf:type rdf:resource="&owl;FunctionalProperty"/>
 		<rdfs:label xml:lang="en">hasValue</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-utlx-val;AtomicValue"/>
-	</owl:DatatypeProperty>
+		<rdfs:domain rdf:resource="&fibo-fnd-utlx-val;SingleValue"/>
+		<skos:definition xml:lang="en">hasValue is a datatype property of a SingleValue that represents the primary primitive data of that SingleValue. The range of hasValue is unrestricted as it is intended to be restricted in subtypes of SingleValue for a particular purpose with a particular data type.</skos:definition>
+	</rdf:Description>
 
 </rdf:RDF>

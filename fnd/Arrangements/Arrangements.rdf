@@ -2,6 +2,7 @@
 <!DOCTYPE rdf:RDF [
 	<!ENTITY dct "http://purl.org/dc/terms/">
 	<!ENTITY fibo-fnd-arr-arr "https://spec.edmcouncil.org/fibo/FND/Arrangements/Arrangements/">
+	<!ENTITY fibo-fnd-rel-rel "https://spec.edmcouncil.org/fibo/FND/Relations/Relations/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/">
 	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
 	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
@@ -13,6 +14,7 @@
 <rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/FND/Arrangements/Arrangements/"
 	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fibo-fnd-arr-arr="https://spec.edmcouncil.org/fibo/FND/Arrangements/Arrangements/"
+	xmlns:fibo-fnd-rel-rel="https://spec.edmcouncil.org/fibo/FND/Relations/Relations/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -23,6 +25,7 @@
 	
 	<owl:Ontology rdf:about="https://spec.edmcouncil.org/fibo/FND/Arrangements/Arrangements/">
 		<rdfs:label>Arrangements Ontology</rdfs:label>
+		<dct:abstract>This ontology defines abstract structural concepts, including arrangement and collection, for use in other FIBO ontology elements. These abstract concepts are further refined to support definition of identifiers, codes, quantities, and schemata that organize and classify such identifiers and codes.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">http://www.omg.org/techprocess/ab/SpecificationMetadata/MITLicense</dct:license>
 		<sm:contentLanguage rdf:datatype="&xsd;anyURI">http://www.omg.org/spec/ODM/</sm:contentLanguage>
 		<sm:contentLanguage rdf:datatype="&xsd;anyURI">http://www.w3.org/standards/techs/owl#w3c_all</sm:contentLanguage>
@@ -30,26 +33,40 @@
 Copyright (c) 2014-2017 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/</sm:dependsOn>
 		<sm:fileAbbreviation>fibo-fnd-arr-arr</sm:fileAbbreviation>
-		<sm:fileAbstract>This ontology defines abstract structural concepts, including arrangement and collection, for use in other FIBO ontology elements. These abstract concepts are further refined to support definition of identifiers, codes, quantities, and schemata that organize and classify such identifiers and codes.</sm:fileAbstract>
 		<sm:filename>Arrangements.rdf</sm:filename>
 		<rdfs:seeAlso rdf:resource="https://spec.edmcouncil.org/fibo/AboutTheEDMC-FIBOFamily/"/>
 		<rdfs:seeAlso rdf:resource="https://spec.edmcouncil.org/fibo/FND/AboutFND/"/>
 		<rdfs:seeAlso rdf:resource="https://spec.edmcouncil.org/fibo/FND/Arrangements/AboutArrangements/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/FND/20170201/Arrangements/Arrangements/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/FND/20171201/Arrangements/Arrangements/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/FND/20140801/Arrangements/Arrangements.rdf version of this ontology was introduced as a part of the issue resolutions identified in the FIBO FND 1.0 FTF report and in https://spec.edmcouncil.org/fibo/FND/1.0/AboutFND-1.0/.  It was further revised in the FTF in advance of the Long Beach meeting to promote Collection to the top level in the hierarchy, resulting in https://spec.edmcouncil.org/fibo/FND/20141101/Arrangements/Arrangements/.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/FND/20141101/Arrangements/Arrangements.rdf version of this ontology was revised as a part of the issue resolutions identified in the FIBO FND 1.2 RTF report to add a definition for a structured collection.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/FND/20170201/Arrangements/Arrangements.rdf version of this ontology was revised as a part of the issue resolutions identified in the FIBO FND 1.3 RTF report to add a general definition for scheme.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
 	<owl:Class rdf:about="&fibo-fnd-arr-arr;Arrangement">
 		<rdfs:label>arrangement</rdfs:label>
-		<skos:definition>a structure or means of organizing information such as a schema, numbering system, organization scheme, measurement system, taxonomy, or language for organizing information</skos:definition>
+		<skos:definition>an organizing structure for something</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-arr-arr;Collection">
-		<rdfs:label xml:lang="en">collection</rdfs:label>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-arr;Arrangement"/>
+		<rdfs:label>collection</rdfs:label>
 		<skos:definition>a grouping of some variable number of things (may be zero) that have some shared significance</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-arr-arr;Scheme">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-arr;Arrangement"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;defines"/>
+				<owl:someValuesFrom rdf:resource="&owl;Thing"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>scheme</rdfs:label>
+		<skos:definition>a structure or means of organizing information such as a schema, numbering system, organization scheme, measurement system, taxonomy, or language for organizing information</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-arr-arr;StructuredCollection">
