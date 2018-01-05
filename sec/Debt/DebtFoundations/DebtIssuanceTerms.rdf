@@ -8,7 +8,7 @@
 	<!ENTITY fibo-fnd-acc-cur "https://spec.edmcouncil.org/fibo/FND/Accounting/CurrencyAmount/">
 	<!ENTITY fibo-fnd-arrxx-ins "https://spec.edmcouncil.org/fibo/FND/ArrangementsExt/ToolsAndInstruments/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/">
-	<!ENTITY fibo-fnd-utl-val "https://spec.edmcouncil.org/fibo/FND/Utilities/Values/">
+	<!ENTITY fibo-fnd-utlx-val "https://spec.edmcouncil.org/fibo/FND/UtilitiesExt/Values/">
 	<!ENTITY fibo-sec-dbt-bo-bo "https://spec.edmcouncil.org/fibo/SEC/Debt/Bonds/BondsCommon/">
 	<!ENTITY fibo-sec-dbt-dbt-iss "https://spec.edmcouncil.org/fibo/SEC/Debt/DebtFoundations/DebtIssuanceTerms/">
 	<!ENTITY fibo-sec-dbt-dbtx-gtyx "https://spec.edmcouncil.org/fibo/SEC/Debt/DebtFoundationsExt/GuarantyExt/">
@@ -19,7 +19,7 @@
 	<!ENTITY skos "http://www.w3.org/2004/02/skos/core#">
 	<!ENTITY xsd "http://www.w3.org/2001/XMLSchema#">
 ]>
-<rdf:RDF
+<rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/SEC/Debt/DebtFoundations/DebtIssuanceTerms/"
 	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fibo-be-fctx-spv="https://spec.edmcouncil.org/fibo/BE/FunctionalEntitiesExt/SPVs/"
 	xmlns:fibo-bp-iss-doc="https://spec.edmcouncil.org/fibo/BP/SecuritiesIssuance/IssuanceDocuments/"
@@ -28,7 +28,7 @@
 	xmlns:fibo-fnd-acc-cur="https://spec.edmcouncil.org/fibo/FND/Accounting/CurrencyAmount/"
 	xmlns:fibo-fnd-arrxx-ins="https://spec.edmcouncil.org/fibo/FND/ArrangementsExt/ToolsAndInstruments/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/"
-	xmlns:fibo-fnd-utl-val="https://spec.edmcouncil.org/fibo/FND/Utilities/Values/"
+	xmlns:fibo-fnd-utlx-val="https://spec.edmcouncil.org/fibo/FND/UtilitiesExt/Values/"
 	xmlns:fibo-sec-dbt-bo-bo="https://spec.edmcouncil.org/fibo/SEC/Debt/Bonds/BondsCommon/"
 	xmlns:fibo-sec-dbt-dbt-iss="https://spec.edmcouncil.org/fibo/SEC/Debt/DebtFoundations/DebtIssuanceTerms/"
 	xmlns:fibo-sec-dbt-dbtx-gtyx="https://spec.edmcouncil.org/fibo/SEC/Debt/DebtFoundationsExt/GuarantyExt/"
@@ -52,7 +52,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/Accounting/CurrencyAmount/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/ArrangementsExt/ToolsAndInstruments/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/Utilities/Values/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/UtilitiesExt/Values/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/SEC/Debt/Bonds/BondsCommon/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/SEC/Debt/DebtFoundationsExt/DebtInstrumentsExt/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/SEC/Debt/DebtFoundationsExt/GuarantyExt/"/>
@@ -275,14 +275,14 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbt-iss;debtIssuancePurpose"/>
+				<owl:onClass rdf:resource="&fibo-fnd-utlx-val;TextValue"/>
 				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-				<owl:onDataRange rdf:resource="&xsd;string"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbt-iss;debtIssuancePurpose"/>
-				<owl:someValuesFrom rdf:resource="&xsd;string"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-utlx-val;TextValue"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">municipal bond issue information</rdfs:label>
@@ -337,12 +337,12 @@
 		<skos:definition xml:lang="en">Infomation on Takedown quantity of the Debt security handled by the underwriter (that will be brought into DTC).</skos:definition>
 	</owl:Class>
 	
-	<owl:DatatypeProperty rdf:about="&fibo-sec-dbt-dbt-iss;bankQualified.1">
+	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-dbt-iss;bankQualified.1">
 		<rdfs:label xml:lang="en">bank qualified</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-dbt-dbt-iss;MunicipalBondIssueInformation"/>
-		<rdfs:range rdf:resource="&xsd;boolean"/>
+		<rdfs:range rdf:resource="&fibo-fnd-utlx-val;TrueFalseValue"/>
 		<skos:definition xml:lang="en">Designation given to a public purpose bond offering by the issuer if it reasonably expects to issue in the calendar year of such offering no more than $10 million par amount of bonds of the type required to be included in making such calculation under the Internal Revenue Code.  When purchased by a commercial bank for its portfolio, the bank may receive an 80% tax deduction for the interest cost of carry for the issue.  A bond that is bank qualified is also known as a qualified tax-exempt obligation.</skos:definition>
-	</owl:DatatypeProperty>
+	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-dbt-iss;becomesPartOfTerms">
 		<rdfs:subPropertyOf rdf:resource="&fibo-bp-iss-trm;becomesPartOf"/>
@@ -352,12 +352,12 @@
 		<skos:definition xml:lang="en">The information required throughout the life of the Security becomes the Issuance information maintained for that security.</skos:definition>
 	</owl:ObjectProperty>
 	
-	<owl:DatatypeProperty rdf:about="&fibo-sec-dbt-dbt-iss;debtIssuancePurpose">
+	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-dbt-iss;debtIssuancePurpose">
 		<rdfs:label xml:lang="en">debt issuance purpose</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-dbt-dbt-iss;DebtInstrumentIssueInformation"/>
-		<rdfs:range rdf:resource="&xsd;string"/>
+		<rdfs:range rdf:resource="&fibo-fnd-utlx-val;TextValue"/>
 		<skos:definition xml:lang="en">Purpose of the Issue of a Debt Security.</skos:definition>
-	</owl:DatatypeProperty>
+	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-dbt-iss;describedIn">
 		<rdfs:subPropertyOf rdf:resource="&fibo-bp-iss-trm;finalStateDescribedIn"/>
@@ -402,16 +402,16 @@
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-dbt-iss;oID">
 		<rdfs:label xml:lang="en">o i d</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-dbt-dbt-iss;BondIssueInformation"/>
-		<rdfs:range rdf:resource="&fibo-fnd-utl-val;PercentageValue"/>
+		<rdfs:range rdf:resource="&fibo-fnd-utlx-val;PercentageValue"/>
 		<skos:definition xml:lang="en">Discount from par value at the time a bond or other debt instrument is issued.</skos:definition>
 	</owl:ObjectProperty>
 	
-	<owl:DatatypeProperty rdf:about="&fibo-sec-dbt-dbt-iss;toBeBankQualified">
+	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-dbt-iss;toBeBankQualified">
 		<rdfs:label xml:lang="en">to be bank qualified</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-dbt-dbt-iss;MunicipalBondIssuanceProcessInformation"/>
-		<rdfs:range rdf:resource="&xsd;boolean"/>
+		<rdfs:range rdf:resource="&fibo-fnd-utlx-val;TrueFalseValue"/>
 		<skos:definition xml:lang="en">Designation given to a public purpose bond offering by the issuer if it reasonably expects to issue in the calendar year of such offering no more than $10 million par amount of bonds of the type required to be included in making such calculation under the Internal Revenue Code.  When purchased by a commercial bank for its portfolio, the bank may receive an 80% tax deduction for the interest cost of carry for the issue.  A bond that is bank qualified is also known as a qualified tax-exempt obligation.</skos:definition>
-	</owl:DatatypeProperty>
+	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-dbt-iss;underwriterTakedownAmount">
 		<rdfs:label xml:lang="en">underwriter takedown amount</rdfs:label>
