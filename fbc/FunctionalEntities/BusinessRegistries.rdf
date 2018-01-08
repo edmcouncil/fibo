@@ -87,14 +87,32 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-fct-breg;hasTransliteratedAddress"/>
-				<owl:onClass rdf:resource="&fibo-fbc-fct-breg;RegistrationAddress"/>
+				<owl:onClass>
+					<owl:Class>
+						<owl:unionOf rdf:parseType="Collection">
+							<rdf:Description rdf:about="&fibo-fbc-fct-breg;RegistrationAddress">
+							</rdf:Description>
+							<rdf:Description rdf:about="&fibo-be-le-fbo;RegisteredAddress">
+							</rdf:Description>
+						</owl:unionOf>
+					</owl:Class>
+				</owl:onClass>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-fct-breg;hasHeadquartersAddress"/>
-				<owl:someValuesFrom rdf:resource="&fibo-be-le-fbo;RegisteredAddress"/>
+				<owl:someValuesFrom>
+					<owl:Class>
+						<owl:unionOf rdf:parseType="Collection">
+							<rdf:Description rdf:about="&fibo-fbc-fct-breg;RegistrationAddress">
+							</rdf:Description>
+							<rdf:Description rdf:about="&fibo-be-le-fbo;RegisteredAddress">
+							</rdf:Description>
+						</owl:unionOf>
+					</owl:Class>
+				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 	</owl:Class>
@@ -114,7 +132,7 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>business registration authority</rdfs:label>
-		<skos:definition>a registration authority that is responsible for maintaining a registry of business entities for a particular jurisdiction</skos:definition>
+		<skos:definition>a registration authority that is responsible for maintaining a registry of business entities</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/gleif-registration-authorities-list</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:explanatoryNote>A business registry may include any government-managed registry for registering a business, such as a state department of corporations in the US, as well as other registries such as a local operating unit (LOU) for registration of legal entity identifiers (LEIs).  Any sanctioned registration authority as defined by the Registration Authorities List, published by GLEIF, is a business registration authority in this sense.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
@@ -142,7 +160,7 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>business registry</rdfs:label>
-		<skos:definition>a registry for registering and maintaining information about business entities for a particular jurisdiction</skos:definition>
+		<skos:definition>a registry for registering and maintaining information about business entities</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/gleif-registration-authorities-list</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
 	
@@ -271,7 +289,7 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 	<owl:Class rdf:about="&fibo-fbc-fct-breg;RegistrationAddress">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-plc-adr;PhysicalAddress"/>
 		<rdfs:label>registration address</rdfs:label>
-		<skos:definition>an address for a business, such as its legal address, headquarters address, address registered for obtaining a license, and so forth</skos:definition>
+		<skos:definition>an address for an organization used to register that organization in any registry, such as its legal address, headquarters address, a local address used to obtain a license or pay taxes in some jurisdiction, etc.</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
 	
@@ -371,7 +389,16 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 	<owl:ObjectProperty rdf:about="&fibo-fbc-fct-breg;hasHeadquartersAddress">
 		<rdfs:subPropertyOf rdf:resource="&fibo-be-le-fbo;hasPrimaryAddress"/>
 		<rdfs:label>has headquarters address</rdfs:label>
-		<rdfs:range rdf:resource="&fibo-fbc-fct-breg;RegistrationAddress"/>
+		<rdfs:range>
+			<owl:Class>
+				<owl:unionOf rdf:parseType="Collection">
+					<rdf:Description rdf:about="&fibo-fbc-fct-breg;RegistrationAddress">
+					</rdf:Description>
+					<rdf:Description rdf:about="&fibo-be-le-fbo;RegisteredAddress">
+					</rdf:Description>
+				</owl:unionOf>
+			</owl:Class>
+		</rdfs:range>
 		<skos:definition>identifies the headquarters address for the registered entity</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
 	</owl:ObjectProperty>
@@ -417,8 +444,9 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 	<owl:DatatypeProperty rdf:about="&fibo-fbc-fct-breg;hasRegistryName">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;hasName"/>
 		<rdfs:label>has registry name</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fbc-fct-ra;Registry"/>
 		<rdfs:range rdf:resource="&xsd;string"/>
-		<skos:definition>a name for the business registry in which the business registration identifier for the legal entity is registered</skos:definition>
+		<skos:definition>a name for the registry, for example, for a business registry in which a business registration identifier for the legal entity is registered</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
 	</owl:DatatypeProperty>
 	
@@ -447,7 +475,7 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-fct-breg;hasValidationAuthority">
-		<rdfs:label>has validation source</rdfs:label>
+		<rdfs:label>has validation authority</rdfs:label>
 		<rdfs:range rdf:resource="&fibo-fbc-fct-breg;BusinessRegistrationAuthority"/>
 		<skos:definition>identifies the business registration authority for the legal entity, used by the Local Operating Unit (LOU) as the basis for validation, as defined in the GLEIF Registration Authorities List</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
@@ -459,11 +487,11 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<skos:definition>an indicator of the level of validation performed by the registrar with respect to the legal entity</skos:definition>
 	</owl:DatatypeProperty>
 	
-	<owl:DatatypeProperty rdf:about="&fibo-fbc-fct-breg;hasWebSite">
+	<owl:DatatypeProperty rdf:about="&fibo-fbc-fct-breg;hasWebsite">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-plc-vrt;hasURL"/>
-		<rdfs:label>has Web site</rdfs:label>
+		<rdfs:label>has website</rdfs:label>
 		<rdfs:range rdf:resource="&xsd;anyURI"/>
-		<skos:definition>a web site associated with the organization responsible for the register</skos:definition>
+		<skos:definition>a website associated with the organization responsible for the register</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/gleif-registration-authorities-list</fibo-fnd-utl-av:adaptedFrom>
 	</owl:DatatypeProperty>
 
