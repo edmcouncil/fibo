@@ -1108,7 +1108,8 @@ function generateWidocoDocumentationForFile() {
     sed -i "/#description/d" "${outputDir}/${rdfFileNoExtension}/index-en.html"
     echo "Removing references section from file ${outputDir}/${rdfFileNoExtension}/index-en.html"
     sed -i "/#references/d" "${outputDir}/${rdfFileNoExtension}/index-en.html"
-
+    echo "Replace the default image for license with the MIT license image"
+    sed -i "s/https:\/\/img.shields.io\/badge\/License-license name goes here-blue.svg/https:\/\/img.shields.io\/github\/license\/mashape\/apistatus.svg/g" "${outputDir}/${rdfFileNoExtension}/index-en.html"
     #contents=$(<${outputDir}/${rdfFileNoExtension}/index-en.html)
     #echo "contents of index file after modification"
     #echo "${contents}"
