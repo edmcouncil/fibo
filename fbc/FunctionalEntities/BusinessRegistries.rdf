@@ -9,7 +9,9 @@
 	<!ENTITY fibo-fbc-fct-breg "https://spec.edmcouncil.org/fibo/FBC/FunctionalEntities/BusinessRegistries/">
 	<!ENTITY fibo-fbc-fct-ra "https://spec.edmcouncil.org/fibo/FBC/FunctionalEntities/RegistrationAuthorities/">
 	<!ENTITY fibo-fnd-aap-agt "https://spec.edmcouncil.org/fibo/FND/AgentsAndPeople/Agents/">
+	<!ENTITY fibo-fnd-arr-cd "https://spec.edmcouncil.org/fibo/FND/Arrangements/Codes/">
 	<!ENTITY fibo-fnd-arr-id "https://spec.edmcouncil.org/fibo/FND/Arrangements/IdentifiersAndIndices/">
+	<!ENTITY fibo-fnd-arr-lif "https://spec.edmcouncil.org/fibo/FND/Arrangements/Lifecycles/">
 	<!ENTITY fibo-fnd-dt-fd "https://spec.edmcouncil.org/fibo/FND/DatesAndTimes/FinancialDates/">
 	<!ENTITY fibo-fnd-law-jur "https://spec.edmcouncil.org/fibo/FND/Law/Jurisdiction/">
 	<!ENTITY fibo-fnd-plc-adr "https://spec.edmcouncil.org/fibo/FND/Places/Addresses/">
@@ -34,7 +36,9 @@
 	xmlns:fibo-fbc-fct-breg="https://spec.edmcouncil.org/fibo/FBC/FunctionalEntities/BusinessRegistries/"
 	xmlns:fibo-fbc-fct-ra="https://spec.edmcouncil.org/fibo/FBC/FunctionalEntities/RegistrationAuthorities/"
 	xmlns:fibo-fnd-aap-agt="https://spec.edmcouncil.org/fibo/FND/AgentsAndPeople/Agents/"
+	xmlns:fibo-fnd-arr-cd="https://spec.edmcouncil.org/fibo/FND/Arrangements/Codes/"
 	xmlns:fibo-fnd-arr-id="https://spec.edmcouncil.org/fibo/FND/Arrangements/IdentifiersAndIndices/"
+	xmlns:fibo-fnd-arr-lif="https://spec.edmcouncil.org/fibo/FND/Arrangements/Lifecycles/"
 	xmlns:fibo-fnd-dt-fd="https://spec.edmcouncil.org/fibo/FND/DatesAndTimes/FinancialDates/"
 	xmlns:fibo-fnd-law-jur="https://spec.edmcouncil.org/fibo/FND/Law/Jurisdiction/"
 	xmlns:fibo-fnd-plc-adr="https://spec.edmcouncil.org/fibo/FND/Places/Addresses/"
@@ -98,14 +102,21 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-fct-breg;hasTransliteratedAddress"/>
-				<owl:onClass rdf:resource="&fibo-fnd-plc-adr;Address"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 	</owl:Class>
+	
+	<fibo-fbc-fct-breg:EntityStatus rdf:about="&fibo-fbc-fct-breg;ActiveStatus">
+		<rdf:type rdf:resource="&owl;NamedIndividual"/>
+		<rdfs:label>active status</rdfs:label>
+		<skos:definition>as of the last report or update, the entity reported that it was legally registered and operating</skos:definition>
+		<fibo-fnd-rel-rel:hasTag>ACTIVE</fibo-fnd-rel-rel:hasTag>
+	</fibo-fbc-fct-breg:EntityStatus>
+	
+	<fibo-fbc-fct-breg:RegistrationStatus rdf:about="&fibo-fbc-fct-breg;AnnulledStatus">
+		<rdf:type rdf:resource="&owl;NamedIndividual"/>
+		<rdfs:label>annulled status</rdfs:label>
+		<skos:definition>status indicating that the registration was determined to be erroneous or invalid after issuance</skos:definition>
+		<fibo-fnd-rel-rel:hasTag>ANNULLED</fibo-fnd-rel-rel:hasTag>
+	</fibo-fbc-fct-breg:RegistrationStatus>
 	
 	<owl:Class rdf:about="&fibo-fbc-fct-breg;BusinessRegisterIdentifier">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-id;Identifier"/>
@@ -157,6 +168,13 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-ra;Registry"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-fct-breg;hasRegistryName"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+				<owl:onDataRange rdf:resource="&xsd;string"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isManagedBy"/>
 				<owl:onClass rdf:resource="&fibo-fbc-fct-breg;BusinessRegistrationAuthority"/>
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
@@ -169,12 +187,6 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-fct-breg;hasRegistryName"/>
-				<owl:someValuesFrom rdf:resource="&xsd;string"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label>business registry</rdfs:label>
 		<skos:definition>a registry for registering and maintaining information about business entities</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/gleif-registration-authorities-list</fibo-fnd-utl-av:adaptedFrom>
@@ -184,35 +196,15 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-ra;RegistryEntry"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-fct-breg;hasEntityExpiration"/>
-				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;DateTimeStamp"/>
-				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-fct-breg;hasEntityExpirationReason"/>
-				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-				<owl:onDataRange rdf:resource="&xsd;string"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-fct-breg;hasRegistrationStatus"/>
+				<owl:onClass rdf:resource="&fibo-fbc-fct-breg;RegistrationStatus"/>
 				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-				<owl:onDataRange rdf:resource="&xsd;string"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-fct-breg;hasEntityStatus"/>
-				<owl:someValuesFrom rdf:resource="&xsd;string"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-fct-breg;hasRegistrationStatusRevisionDate"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;Date"/>
+				<owl:someValuesFrom rdf:resource="&xsd;string"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -224,6 +216,20 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<rdfs:label>business registry entry</rdfs:label>
 		<skos:definition>an entry in a business registry</skos:definition>
 	</owl:Class>
+	
+	<fibo-fbc-fct-breg:RegistrationStatus rdf:about="&fibo-fbc-fct-breg;CancelledStatus">
+		<rdf:type rdf:resource="&owl;NamedIndividual"/>
+		<rdfs:label>cancelled status</rdfs:label>
+		<skos:definition>status indicating that the registration was abandoned prior to issuance</skos:definition>
+		<fibo-fnd-rel-rel:hasTag>CANCELLED</fibo-fnd-rel-rel:hasTag>
+	</fibo-fbc-fct-breg:RegistrationStatus>
+	
+	<fibo-fbc-fct-breg:RegistrationStatus rdf:about="&fibo-fbc-fct-breg;DuplicateStatus">
+		<rdf:type rdf:resource="&owl;NamedIndividual"/>
+		<rdfs:label>duplicate status</rdfs:label>
+		<skos:definition>status indicating that the registration was determined to be a duplicate registration of the same entity as another registration; duplicate status is assigned to the non-surviving registration (i.e. the identifier that should no longer be used)</skos:definition>
+		<fibo-fnd-rel-rel:hasTag>DUPLICATE</fibo-fnd-rel-rel:hasTag>
+	</fibo-fbc-fct-breg:RegistrationStatus>
 	
 	<rdfs:Datatype rdf:about="&fibo-fbc-fct-breg;EntityExpirationReasonEnumeration">
 		<rdfs:label>entity expiration reason enumeration</rdfs:label>
@@ -251,92 +257,13 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
 	</rdfs:Datatype>
 	
-	<rdfs:Datatype rdf:about="&fibo-fbc-fct-breg;EntityRegistrationStatusEnumeration">
-		<rdfs:label>entity registration status enumeration</rdfs:label>
-		<owl:equivalentClass>
-			<rdfs:Datatype>
-				<owl:oneOf>
-					<rdf:Description>
-						<rdf:first>PENDING_VALIDATION</rdf:first>
-						<rdf:rest>
-							<rdf:Description>
-								<rdf:first>ISSUED</rdf:first>
-								<rdf:rest>
-									<rdf:Description>
-										<rdf:first>DUPLICATE</rdf:first>
-										<rdf:rest>
-											<rdf:Description>
-												<rdf:first>LAPSED</rdf:first>
-												<rdf:rest>
-													<rdf:Description>
-														<rdf:first>MERGED</rdf:first>
-														<rdf:rest>
-															<rdf:Description>
-																<rdf:first>RETIRED</rdf:first>
-																<rdf:rest>
-																	<rdf:Description>
-																		<rdf:first>ANNULLED</rdf:first>
-																		<rdf:rest>
-																			<rdf:Description>
-																				<rdf:first>CANCELLED</rdf:first>
-																				<rdf:rest>
-																					<rdf:Description>
-																						<rdf:first>TRANSFERRED</rdf:first>
-																						<rdf:rest>
-																							<rdf:Description>
-																								<rdf:first>PENDING_TRANSFER</rdf:first>
-																								<rdf:rest>
-																									<rdf:Description>
-																										<rdf:first>PENDING_ARCHIVAL</rdf:first>
-																										<rdf:rest rdf:resource="&rdf;nil"/>
-																									</rdf:Description>
-																								</rdf:rest>
-																							</rdf:Description>
-																						</rdf:rest>
-																					</rdf:Description>
-																				</rdf:rest>
-																			</rdf:Description>
-																		</rdf:rest>
-																	</rdf:Description>
-																</rdf:rest>
-															</rdf:Description>
-														</rdf:rest>
-													</rdf:Description>
-												</rdf:rest>
-											</rdf:Description>
-										</rdf:rest>
-									</rdf:Description>
-								</rdf:rest>
-							</rdf:Description>
-						</rdf:rest>
-					</rdf:Description>
-				</owl:oneOf>
-			</rdfs:Datatype>
-		</owl:equivalentClass>
-		<skos:definition>an enumerated datatype specifying the status of the LEI registration as specified by the registration authority (GLEIF or LOU)</skos:definition>
+	<owl:Class rdf:about="&fibo-fbc-fct-breg;EntityStatus">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-lif;LifecycleStage"/>
+		<rdfs:label>entity status</rdfs:label>
+		<skos:definition>a lifecycle stage indicating the operational and/or legal status of an entity as specified in a given business registry for that entity</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
-	</rdfs:Datatype>
-	
-	<rdfs:Datatype rdf:about="&fibo-fbc-fct-breg;EntityStatusEnumeration">
-		<rdfs:label>entity status enumeration</rdfs:label>
-		<owl:equivalentClass>
-			<rdfs:Datatype>
-				<owl:oneOf>
-					<rdf:Description>
-						<rdf:first>ACTIVE</rdf:first>
-						<rdf:rest>
-							<rdf:Description>
-								<rdf:first>INACTIVE</rdf:first>
-								<rdf:rest rdf:resource="&rdf;nil"/>
-							</rdf:Description>
-						</rdf:rest>
-					</rdf:Description>
-				</owl:oneOf>
-			</rdfs:Datatype>
-		</owl:equivalentClass>
-		<skos:definition>an enumerated datatype specifying the operational and/or legal registration status of an entity as specified in the LEI registry for that entity</skos:definition>
-		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
-	</rdfs:Datatype>
+		<fibo-fnd-utl-av:explanatoryNote>In some jurisdictions, there may be other possible values for entity status, such as suspended in the State of California, thus the individuals provided herein are not intended to be exhaustive.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
 	
 	<rdfs:Datatype rdf:about="&fibo-fbc-fct-breg;EntityValidationLevelEnumeration">
 		<rdfs:label>entity validation level enumeration</rdfs:label>
@@ -364,6 +291,27 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
 	</rdfs:Datatype>
 	
+	<fibo-fbc-fct-breg:EntityStatus rdf:about="&fibo-fbc-fct-breg;InactiveStatus">
+		<rdf:type rdf:resource="&owl;NamedIndividual"/>
+		<rdfs:label>inactive status</rdfs:label>
+		<skos:definition>the entity that was assigned the identifier (business, LEI, or other) is no longer legally registered and/or operating, whether as a result of business closure, acquisition by or merger with another (or new) entity, or determination of illegitimacy</skos:definition>
+		<fibo-fnd-rel-rel:hasTag>INACTIVE</fibo-fnd-rel-rel:hasTag>
+	</fibo-fbc-fct-breg:EntityStatus>
+	
+	<fibo-fbc-fct-breg:RegistrationStatus rdf:about="&fibo-fbc-fct-breg;IssuedStatus">
+		<rdf:type rdf:resource="&owl;NamedIndividual"/>
+		<rdfs:label>issued status</rdfs:label>
+		<skos:definition>status indicating that the registration has been validated and issued, and which identifies an entity that was operating legally as of the last update</skos:definition>
+		<fibo-fnd-rel-rel:hasTag>ISSUED</fibo-fnd-rel-rel:hasTag>
+	</fibo-fbc-fct-breg:RegistrationStatus>
+	
+	<fibo-fbc-fct-breg:RegistrationStatus rdf:about="&fibo-fbc-fct-breg;LapsedStatus">
+		<rdf:type rdf:resource="&owl;NamedIndividual"/>
+		<rdfs:label>lapsed status</rdfs:label>
+		<skos:definition>status indicating that the registration that has not been renewed by the specified renewal date and is not known by public sources to have ceased operation as of the last update</skos:definition>
+		<fibo-fnd-rel-rel:hasTag>LAPSED</fibo-fnd-rel-rel:hasTag>
+	</fibo-fbc-fct-breg:RegistrationStatus>
+	
 	<owl:Class rdf:about="&fibo-fbc-fct-breg;LegalEntityIdentifierRegistry">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-breg;BusinessRegistry"/>
 		<rdfs:subClassOf>
@@ -383,20 +331,6 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-breg;BusinessRegistryEntry"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-fct-breg;hasEntityCategory"/>
-				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-				<owl:onDataRange rdf:resource="&xsd;string"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-fct-breg;hasEntityExpirationReason"/>
-				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-				<owl:onDataRange rdf:resource="&fibo-fbc-fct-breg;EntityExpirationReasonEnumeration"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-fct-breg;hasValidationAuthority"/>
 				<owl:onClass rdf:resource="&fibo-fbc-fct-breg;BusinessRegistrationAuthority"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
@@ -404,14 +338,8 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-fct-breg;hasEntityStatus"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-fct-breg;EntityStatusEnumeration"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-fct-breg;hasRegistrationStatus"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-fct-breg;EntityRegistrationStatusEnumeration"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-fct-breg;RegistrationStatus"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -459,12 +387,92 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<fibo-fnd-utl-av:explanatoryNote>LOUs supply registration, renewal and other services, and act as the primary interface for legal entities wishing to obtain an LEI.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-fbc-fct-breg;LocalOperatingUnitIdentifier">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-cd;CodeElement"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-id;Identifier"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-aap-agt;identifies"/>
+				<owl:onClass rdf:resource="&fibo-fbc-fct-breg;LocalOperatingUnit"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>local operating unit identifier</rdfs:label>
+		<skos:definition>an identifier that uniquely identifies a local operating unit (LOU), issued by the Global Legal Entity Identifier Foundation (GLEIF)</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/gleif-registration-authorities-list</fibo-fnd-utl-av:adaptedFrom>
+	</owl:Class>
+	
+	<fibo-fbc-fct-breg:RegistrationStatus rdf:about="&fibo-fbc-fct-breg;MergedStatus">
+		<rdf:type rdf:resource="&owl;NamedIndividual"/>
+		<rdfs:label>merged status</rdfs:label>
+		<skos:definition>status indicating that the registration is for an entity that has been merged into another legal entity, such that this legal entity no longer exists as an independently operating entity</skos:definition>
+		<fibo-fnd-rel-rel:hasTag>MERGED</fibo-fnd-rel-rel:hasTag>
+	</fibo-fbc-fct-breg:RegistrationStatus>
+	
+	<fibo-fbc-fct-breg:RegistrationStatus rdf:about="&fibo-fbc-fct-breg;PendingArchivalStatus">
+		<rdf:type rdf:resource="&owl;NamedIndividual"/>
+		<rdfs:label>pending archival status</rdfs:label>
+		<skos:definition>status indicating that the registration is about to be transferred to a different registration authority, after which its registration status will revert to a non-pending status</skos:definition>
+		<fibo-fnd-rel-rel:hasTag>PENDING_ARCHIVAL</fibo-fnd-rel-rel:hasTag>
+	</fibo-fbc-fct-breg:RegistrationStatus>
+	
+	<fibo-fbc-fct-breg:RegistrationStatus rdf:about="&fibo-fbc-fct-breg;PendingTransferStatus">
+		<rdf:type rdf:resource="&owl;NamedIndividual"/>
+		<rdfs:label>pending transfer status</rdfs:label>
+		<skos:definition>status indicating that the registration has requested transfer to a different registration authority, and for which transfer is in progress</skos:definition>
+		<fibo-fnd-rel-rel:hasTag>PENDING_TRANSFER</fibo-fnd-rel-rel:hasTag>
+	</fibo-fbc-fct-breg:RegistrationStatus>
+	
+	<fibo-fbc-fct-breg:RegistrationStatus rdf:about="&fibo-fbc-fct-breg;PendingValidationStatus">
+		<rdf:type rdf:resource="&owl;NamedIndividual"/>
+		<rdfs:label>pending validation status</rdfs:label>
+		<skos:definition>status indicating that an application for registration has been submitted and is in process, pending validation</skos:definition>
+		<fibo-fnd-rel-rel:hasTag>PENDING_VALIDATION</fibo-fnd-rel-rel:hasTag>
+	</fibo-fbc-fct-breg:RegistrationStatus>
+	
 	<owl:Class rdf:about="&fibo-fbc-fct-breg;RegistrationAddress">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-plc-adr;PhysicalAddress"/>
 		<rdfs:label>registration address</rdfs:label>
 		<skos:definition>an address for an organization used to register that organization in any registry, such as its legal address, headquarters address, a local address used to obtain a license or pay taxes in some jurisdiction, etc.</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-fct-breg;RegistrationAuthorityCode">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-cd;CodeElement"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-id;Identifier"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-aap-agt;identifies"/>
+				<owl:onClass rdf:resource="&fibo-fbc-fct-breg;BusinessRegistry"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>registration authority code</rdfs:label>
+		<skos:definition>an identifier that uniquely identifies a business registry, issued by the Global Legal Entity Identifier Foundation (GLEIF)</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/gleif-registration-authorities-list</fibo-fnd-utl-av:adaptedFrom>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-fct-breg;RegistrationStatus">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-lif;LifecycleStage"/>
+		<rdfs:label>registration status</rdfs:label>
+		<skos:definition>a lifecycle stage indicating the status of a given registration of something, such as a business or legal entity, as specified by the registration authority</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:explanatoryNote>There may be other possible values for registration status, depending on the registry, thus the individuals provided herein are not intended to be exhaustive.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<fibo-fbc-fct-breg:RegistrationStatus rdf:about="&fibo-fbc-fct-breg;RetiredStatus">
+		<rdf:type rdf:resource="&owl;NamedIndividual"/>
+		<rdfs:label>retired status</rdfs:label>
+		<skos:definition>status indicating that the registration is for an entity that has ceased operation, without having been merged into another entity</skos:definition>
+		<fibo-fnd-rel-rel:hasTag>RETIRED</fibo-fnd-rel-rel:hasTag>
+	</fibo-fbc-fct-breg:RegistrationStatus>
+	
+	<fibo-fbc-fct-breg:RegistrationStatus rdf:about="&fibo-fbc-fct-breg;TransferredStatus">
+		<rdf:type rdf:resource="&owl;NamedIndividual"/>
+		<rdfs:label>transferred status</rdfs:label>
+		<skos:definition>status indicating that the registration that has been transferred to a different registration authority</skos:definition>
+		<fibo-fnd-rel-rel:hasTag>TRANSFERRED</fibo-fnd-rel-rel:hasTag>
+	</fibo-fbc-fct-breg:RegistrationStatus>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-fbc-fct-breg;hasAddressLine1">
 		<rdfs:label>has address line 1</rdfs:label>
@@ -500,6 +508,22 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<fibo-fnd-utl-av:explanatoryNote>This element SHALL be omitted if address line 3 is omitted.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:DatatypeProperty>
 	
+	<owl:DatatypeProperty rdf:about="&fibo-fbc-fct-breg;hasAlternativeLanguageLegalName">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;hasLegalName"/>
+		<rdfs:label>has alternative language legal name</rdfs:label>
+		<rdfs:range rdf:resource="&xsd;string"/>
+		<skos:definition>a registered legal name for the entity in an alternative language used in the legal jurisdiction in which the entity is registered</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
+	</owl:DatatypeProperty>
+	
+	<owl:DatatypeProperty rdf:about="&fibo-fbc-fct-breg;hasAutomaticallyTransliteratedLegalName">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fbc-fct-breg;hasTransliteratedLegalName"/>
+		<rdfs:label>has automatically transliterated legal name</rdfs:label>
+		<rdfs:range rdf:resource="&xsd;string"/>
+		<skos:definition>an auto-generated ASCII-transliterated representation of the legal name for the entity</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
+	</owl:DatatypeProperty>
+	
 	<owl:DatatypeProperty rdf:about="&fibo-fbc-fct-breg;hasCity">
 		<rdfs:label>has city</rdfs:label>
 		<rdfs:range rdf:resource="&xsd;string"/>
@@ -515,20 +539,13 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
 	</owl:ObjectProperty>
 	
-	<owl:DatatypeProperty rdf:about="&fibo-fbc-fct-breg;hasEntityCategory">
-		<rdfs:label>has entity category</rdfs:label>
+	<owl:DatatypeProperty rdf:about="&fibo-fbc-fct-breg;hasEntityExpirationDate">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDateValue"/>
+		<rdfs:label>has entity expiration date</rdfs:label>
 		<rdfs:range rdf:resource="&xsd;string"/>
-		<skos:definition>indicates whether the entity fits a certain profile (i.e., is a branch, fund, or sole proprietorship) according to the GLEIF Common Data Format (CDF)</skos:definition>
+		<skos:definition>the date on which an entity ceased to exist</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
 	</owl:DatatypeProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-fbc-fct-breg;hasEntityExpiration">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDateTimeStamp"/>
-		<rdfs:label>has entity expiration</rdfs:label>
-		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;DateTimeStamp"/>
-		<skos:definition>the date and time on which an entity ceased to exist</skos:definition>
-		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
-	</owl:ObjectProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-fbc-fct-breg;hasEntityExpirationReason">
 		<rdfs:label>has entity expiration reason</rdfs:label>
@@ -537,12 +554,13 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
 	</owl:DatatypeProperty>
 	
-	<owl:DatatypeProperty rdf:about="&fibo-fbc-fct-breg;hasEntityStatus">
+	<owl:ObjectProperty rdf:about="&fibo-fbc-fct-breg;hasEntityStatus">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;has"/>
 		<rdfs:label>has entity status</rdfs:label>
-		<rdfs:range rdf:resource="&xsd;string"/>
+		<rdfs:range rdf:resource="&fibo-fbc-fct-breg;EntityStatus"/>
 		<skos:definition>indicates the status of the entity (i.e., active, inactive)</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
-	</owl:DatatypeProperty>
+	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-fct-breg;hasHeadquartersAddress">
 		<rdfs:subPropertyOf rdf:resource="&fibo-be-le-fbo;hasPrimaryAddress"/>
@@ -552,22 +570,6 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
 	</owl:ObjectProperty>
 	
-	<owl:DatatypeProperty rdf:about="&fibo-fbc-fct-breg;hasInternationalOrganizationName">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;hasFormalName"/>
-		<rdfs:label>has international organization name</rdfs:label>
-		<rdfs:range rdf:resource="&xsd;string"/>
-		<skos:definition>an international name for the organization responsible for the register (i.e., in English)</skos:definition>
-		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/gleif-registration-authorities-list</fibo-fnd-utl-av:adaptedFrom>
-	</owl:DatatypeProperty>
-	
-	<owl:DatatypeProperty rdf:about="&fibo-fbc-fct-breg;hasLocalOrganizationName">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;hasFormalName"/>
-		<rdfs:label>has local organization name</rdfs:label>
-		<rdfs:range rdf:resource="&xsd;string"/>
-		<skos:definition>a local name for the organization responsible for the register</skos:definition>
-		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/gleif-registration-authorities-list</fibo-fnd-utl-av:adaptedFrom>
-	</owl:DatatypeProperty>
-	
 	<owl:DatatypeProperty rdf:about="&fibo-fbc-fct-breg;hasPostalCode">
 		<rdfs:label>has postal code</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fbc-fct-breg;RegistrationAddress"/>
@@ -576,19 +578,37 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
 	</owl:DatatypeProperty>
 	
-	<owl:DatatypeProperty rdf:about="&fibo-fbc-fct-breg;hasRegistrationStatus">
-		<rdfs:label>has registration status</rdfs:label>
+	<owl:DatatypeProperty rdf:about="&fibo-fbc-fct-breg;hasPreferredTransliteratedLegalName">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fbc-fct-breg;hasTransliteratedLegalName"/>
+		<rdfs:label>has preferred transliterated legal name</rdfs:label>
 		<rdfs:range rdf:resource="&xsd;string"/>
-		<skos:definition>the status of a specific registration, such as a registered identifier or license</skos:definition>
+		<skos:definition>a preferred ASCII-transliterated representation of the legal name for the entity</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
 	</owl:DatatypeProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-fbc-fct-breg;hasRegistrationStatusRevisionDate">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDate"/>
+	<owl:DatatypeProperty rdf:about="&fibo-fbc-fct-breg;hasPriorLegalName">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;hasLegalName"/>
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;wasFormerlyKnownAs"/>
+		<rdfs:label>has prior legal name</rdfs:label>
+		<rdfs:range rdf:resource="&xsd;string"/>
+		<skos:definition>a primary legal name that was used previously for the entity</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
+	</owl:DatatypeProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fbc-fct-breg;hasRegistrationStatus">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;has"/>
+		<rdfs:label>has registration status</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fbc-fct-breg;RegistrationStatus"/>
+		<skos:definition>indicates the status of a specific registration, such as for an identifier or license</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:DatatypeProperty rdf:about="&fibo-fbc-fct-breg;hasRegistrationStatusRevisionDate">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDateValue"/>
 		<rdfs:label>has registration status revision date</rdfs:label>
-		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Date"/>
+		<rdfs:range rdf:resource="&xsd;string"/>
 		<skos:definition>the date that the status of a specific registration in the registry was revised</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
-	</owl:ObjectProperty>
+	</owl:DatatypeProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-fbc-fct-breg;hasRegistryName">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-aap-agt;hasName"/>
@@ -599,13 +619,13 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
 	</owl:DatatypeProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-fbc-fct-breg;hasRenewalDate">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDate"/>
+	<owl:DatatypeProperty rdf:about="&fibo-fbc-fct-breg;hasRenewalDate">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDateValue"/>
 		<rdfs:label>has renewal date</rdfs:label>
-		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Date"/>
+		<rdfs:range rdf:resource="&xsd;string"/>
 		<skos:definition>the date by which a specific registration in the registry must be renewed or updated</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
-	</owl:ObjectProperty>
+	</owl:DatatypeProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-fct-breg;hasSubdivision">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;has"/>
@@ -615,15 +635,33 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
 	</owl:ObjectProperty>
 	
+	<owl:DatatypeProperty rdf:about="&fibo-fbc-fct-breg;hasTradingOrOperationalName">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-aap-agt;hasName"/>
+		<rdfs:label>has trading or operational name</rdfs:label>
+		<rdfs:range rdf:resource="&xsd;string"/>
+		<skos:definition>a &apos;trading as&apos;, &apos;brand name&apos;, &apos;doing business as&apos;, or &apos;operating under&apos; name currently used by the entity in addition to, but not replacing, the (primary) legal, official registered name</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
+	</owl:DatatypeProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-fct-breg;hasTransliteratedAddress">
-		<rdfs:subPropertyOf rdf:resource="&fibo-be-le-fbo;hasPrimaryAddress"/>
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-plc-adr;hasAddress"/>
 		<rdfs:label>has transliterated address</rdfs:label>
 		<rdfs:range rdf:resource="&fibo-fnd-plc-adr;Address"/>
 		<skos:definition>identifies a transliterated (i.e., in Latin or Romanized ASCII) address for the registered entity</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
 	</owl:ObjectProperty>
 	
+	<owl:DatatypeProperty rdf:about="&fibo-fbc-fct-breg;hasTransliteratedLegalName">
+		<rdfs:subPropertyOf rdf:resource="&fibo-be-le-lei;hasTransliteratedName"/>
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;hasLegalName"/>
+		<rdfs:label>has transliterated legal name</rdfs:label>
+		<rdfs:range rdf:resource="&xsd;string"/>
+		<skos:definition>an optional ASCII-transliterated (i.e. Latin- or Romanized) representation of the legal name for the entity</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
+	</owl:DatatypeProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-fct-breg;hasValidationAuthority">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;has"/>
 		<rdfs:label>has validation authority</rdfs:label>
 		<rdfs:range rdf:resource="&fibo-fbc-fct-breg;BusinessRegistrationAuthority"/>
 		<skos:definition>identifies the business registration authority for the legal entity, used by the Local Operating Unit (LOU) as the basis for validation, as defined in the GLEIF Registration Authorities List</skos:definition>
