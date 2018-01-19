@@ -1,0 +1,90 @@
+PREFIX av: <https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/>
+PREFIX afn: <http://jena.apache.org/ARQ/function#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+prefix skos: <http://www.w3.org/2004/02/skos/core#> 
+prefix edm: <http://www.edmcouncil.org/ddgraph#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+prefix fibo-der-rtd-irswp: <https://spec.edmcouncil.org/fibo/DER/RateDerivatives/IRSwaps/> 
+
+
+CONSTRUCT {
+?domain ?thisp ?type ; rdfs:label ?dlabel .
+?thisp rdfs:subPropertyOf ?p .
+?thisp rdfs:label ?plabel .
+?thisp edm:comparison ?carddir .
+?thisp edm:cardinality ?card .
+?thisp skos:definition ?pdef .
+?p rdfs:subPropertyOf edm:connectedTo ; skos:definition ?pdef ; rdfs:label ?plabel . 
+?type rdfs:label ?rlabel ; skos:definition ?tdef . 
+?domain ?annotation ?sdef .
+?domain skos:broader ?parent .
+?child skos:broader ?domain . 
+}
+WHERE {
+#  ?domain rdfs:subClassOf* ?base .
+# BIND (<https://spec.edmcouncil.org/fibo/DER/RateDerivatives/IRSwaps/InterestRateSwap> AS ?base)
+ ?domain a owl:Class ; rdfs:label ?dlabel .
+# OPTIONAL {?domain rdfs:subClassOf ?parent. FILTER (ISIRI (?parent))}
+# OPTIONAL {?domain owl:equivalentClass / owl:unionOf / rdf:rest*/rdf:first ?child}
+ OPTIONAL {?domain ?annotation ?sdef .
+    FILTER (?annotation IN (
+        skos:notation,
+	av:synonym,
+        av:adaptedFrom,
+	av:explanatoryNote,
+	av:definitionOrigin, 
+	av:nameOrigin, 
+	av:termOrigin,
+	skos:example, 
+	av:abbreviation,
+        skos:editorialNote, 
+        skos:definition))
+    
+ }
+
+
+   FILTER (REGEX (xsd:string (?domain), "edmcouncil"))
+
+ {
+  { ?p rdfs:domain ?domain .
+    OPTIONAL {?p rdfs:range ?type. ?type rdfs:label ?rlabel ; skos:definition ?tdef .}
+}
+UNION
+{?domain (rdfs:subClassOf* | owl:equivalentClass)
+         / owl:intersectionOf*
+	 /rdf:rest*
+	 /rdf:first?
+	 / rdfs:subClassOf? ?x .
+	  ?x a owl:Restriction ;
+	    owl:onProperty ?p ; 
+	    ?metap ?type .
+OPTIONAL {?x  ?cardp ?card .
+          FILTER (?cardp IN (owl:minQualifiedCardinality,
+	                     owl:maxQualifiedCardinality,
+			     owl:qualifiedCardinality,
+			     owl:minCardinality,
+			     owl:maxQualifiedCardinality,
+			     owl:qualifiedCardinality)) .
+	  BIND (REPLACE (REPLACE (STR (?cardp), "^.*#", ""), "(...).*$", "$1") AS ?cardn)
+	  BIND (IF ((?cardn = "min"), ">", IF ((?cardn = "max"), "<", "="))  AS ?carddir)
+	  }
+   FILTER EXISTS   { {  ?type a owl:Class } UNION  {  ?type a  rdfs:Datatype}} .
+
+
+OPTIONAL {?type rdfs:label ?rlabel }
+FILTER (ISIRI (?type))
+
+
+}
+
+}
+# ?p av:forDD "true"^^xsd:boolean .
+OPTIONAL {?p skos:definition ?pdef .}
+OPTIONAL {?p rdfs:label ?plabel . }
+BIND (COALESCE (?rlabel, " ") AS ?rlabel1)
+BIND ((IRI (CONCAT (xsd:string (?p), "-", REPLACE (?dlabel, "[ )(]", "") , "-", REPLACE (?rlabel1, "[ )(]", ""))))  as ?thisp)
+FILTER (REGEX (xsd:string (?p), "edmcouncil"))
+?p av:forDD true .
+} 
