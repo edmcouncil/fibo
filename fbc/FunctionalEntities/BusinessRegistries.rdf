@@ -187,6 +187,12 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-fct-ra;hasRegistryEntry"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-fct-breg;BusinessRegistryEntry"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label>business registry</rdfs:label>
 		<skos:definition>a registry for registering and maintaining information about business entities</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/gleif-registration-authorities-list</fibo-fnd-utl-av:adaptedFrom>
@@ -204,7 +210,18 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-fct-breg;hasRegistrationStatusRevisionDate"/>
-				<owl:someValuesFrom rdf:resource="&xsd;string"/>
+				<owl:someValuesFrom>
+					<rdfs:Datatype>
+						<owl:unionOf rdf:parseType="Collection">
+							<rdf:Description rdf:about="&xsd;string">
+							</rdf:Description>
+							<rdf:Description rdf:about="&xsd;dateTime">
+							</rdf:Description>
+							<rdf:Description rdf:about="&xsd;dateTimeStamp">
+							</rdf:Description>
+						</owl:unionOf>
+					</rdfs:Datatype>
+				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -319,6 +336,12 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isManagedBy"/>
 				<owl:onClass rdf:resource="&fibo-fbc-fct-breg;LocalOperatingUnit"/>
 				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-fct-ra;hasRegistryEntry"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-fct-breg;LegalEntityIdentifierRegistryEntry"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>legal entity identifier registry</rdfs:label>
@@ -540,9 +563,19 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 	</owl:ObjectProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-fbc-fct-breg;hasEntityExpirationDate">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDateValue"/>
 		<rdfs:label>has entity expiration date</rdfs:label>
-		<rdfs:range rdf:resource="&xsd;string"/>
+		<rdfs:range>
+			<rdfs:Datatype>
+				<owl:unionOf rdf:parseType="Collection">
+					<rdf:Description rdf:about="&xsd;string">
+					</rdf:Description>
+					<rdf:Description rdf:about="&xsd;dateTime">
+					</rdf:Description>
+					<rdf:Description rdf:about="&xsd;dateTimeStamp">
+					</rdf:Description>
+				</owl:unionOf>
+			</rdfs:Datatype>
+		</rdfs:range>
 		<skos:definition>the date on which an entity ceased to exist</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
 	</owl:DatatypeProperty>
@@ -569,6 +602,24 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<skos:definition>identifies the headquarters address for the registered entity</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
 	</owl:ObjectProperty>
+	
+	<owl:DatatypeProperty rdf:about="&fibo-fbc-fct-breg;hasInitialRegistrationDate">
+		<rdfs:label>has initial registration date</rdfs:label>
+		<rdfs:range>
+			<rdfs:Datatype>
+				<owl:unionOf rdf:parseType="Collection">
+					<rdf:Description rdf:about="&xsd;string">
+					</rdf:Description>
+					<rdf:Description rdf:about="&xsd;dateTime">
+					</rdf:Description>
+					<rdf:Description rdf:about="&xsd;dateTimeStamp">
+					</rdf:Description>
+				</owl:unionOf>
+			</rdfs:Datatype>
+		</rdfs:range>
+		<skos:definition>the date on which an identifier was first registered</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
+	</owl:DatatypeProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-fbc-fct-breg;hasPostalCode">
 		<rdfs:label>has postal code</rdfs:label>
@@ -603,9 +654,19 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 	</owl:ObjectProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-fbc-fct-breg;hasRegistrationStatusRevisionDate">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDateValue"/>
 		<rdfs:label>has registration status revision date</rdfs:label>
-		<rdfs:range rdf:resource="&xsd;string"/>
+		<rdfs:range>
+			<rdfs:Datatype>
+				<owl:unionOf rdf:parseType="Collection">
+					<rdf:Description rdf:about="&xsd;string">
+					</rdf:Description>
+					<rdf:Description rdf:about="&xsd;dateTime">
+					</rdf:Description>
+					<rdf:Description rdf:about="&xsd;dateTimeStamp">
+					</rdf:Description>
+				</owl:unionOf>
+			</rdfs:Datatype>
+		</rdfs:range>
 		<skos:definition>the date that the status of a specific registration in the registry was revised</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
 	</owl:DatatypeProperty>
@@ -620,9 +681,19 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 	</owl:DatatypeProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-fbc-fct-breg;hasRenewalDate">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDateValue"/>
 		<rdfs:label>has renewal date</rdfs:label>
-		<rdfs:range rdf:resource="&xsd;string"/>
+		<rdfs:range>
+			<rdfs:Datatype>
+				<owl:unionOf rdf:parseType="Collection">
+					<rdf:Description rdf:about="&xsd;string">
+					</rdf:Description>
+					<rdf:Description rdf:about="&xsd;dateTime">
+					</rdf:Description>
+					<rdf:Description rdf:about="&xsd;dateTimeStamp">
+					</rdf:Description>
+				</owl:unionOf>
+			</rdfs:Datatype>
+		</rdfs:range>
 		<skos:definition>the date by which a specific registration in the registry must be renewed or updated</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
 	</owl:DatatypeProperty>
