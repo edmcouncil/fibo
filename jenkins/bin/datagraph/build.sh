@@ -16,7 +16,7 @@ EOF
 
 #arq  $(find $fiboroot/be $fiboroot/bp $fiboroot/cae $fiboroot/civ $fiboroot/der $fiboroot/fbc $fiboroot/fnd $fiboroot/ind $fiboroot/loan $fiboroot/md $fiboroot/sec -name "*.rdf" | sed "s/^/--data=/") --data=AllProd.ttl --query=echo.sq --results=TTL> combined.ttl
 
-arq  $(grep -r 'utl-av[:;.]Release' "${fiboroot}" | grep -F ".rdf" |   sed 's/:.*$//' |  sed "s/^/--data=/") --data=AllProd.ttl --query=echo.sq --results=TTL> combined.ttl
+arq  $(grep -r 'utl-av[:;.]hasMaturity.*Release' "${fiboroot}" | grep -F ".rdf" |   sed 's/:.*$//' |  sed "s/^/--data=/") --data=AllProd.ttl --query=echo.sq --results=TTL> combined.ttl
 
 echo "finished combining"
 
