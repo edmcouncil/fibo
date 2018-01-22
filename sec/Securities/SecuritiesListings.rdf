@@ -45,6 +45,7 @@
 	
 	<owl:Ontology rdf:about="https://spec.edmcouncil.org/fibo/SEC/Securities/SecuritiesListings/">
 		<rdfs:label>Securities Listings Ontology</rdfs:label>
+		<dct:abstract>This ontology defines the fundamental concepts for listing securities, such as registered, listed, and exchange-traded security, the notion of a securities exchange, and related services.</dct:abstract>
 		<dct:license rdf:resource="&sm;MITLicense"/>
 		<sm:contentLanguage rdf:resource="http://www.omg.org/spec/ODM/"/>
 		<sm:contentLanguage rdf:resource="http://www.w3.org/standards/techs/owl#w3c_all"/>
@@ -53,7 +54,6 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:resource="https://spec.edmcouncil.org/fibo/FBC/"/>
 		<sm:dependsOn rdf:resource="https://spec.edmcouncil.org/fibo/FND/"/>
 		<sm:fileAbbreviation>fibo-sec-sec-lst</sm:fileAbbreviation>
-		<dct:abstract>This ontology defines the fundamental concepts for listing securities, such as registered, listed, and exchange-traded security, the notion of a securities exchange, and related services.</dct:abstract>
 		<sm:filename>SecuritiesListings.rdf</sm:filename>
 		<rdfs:seeAlso rdf:resource="https://spec.edmcouncil.org/fibo/AboutTheEDMC-FIBOFamily/"/>
 		<rdfs:seeAlso rdf:resource="https://spec.edmcouncil.org/fibo/SEC/AboutSEC/"/>
@@ -171,15 +171,25 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-fct-ra;hasRegistrationDate"/>
-				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;Date"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;mayBeTradedIn"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-fct-mkt;Market"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;mayBeTradedIn"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-fct-mkt;Market"/>
+				<owl:onProperty rdf:resource="&fibo-fbc-fct-ra;hasRegistrationDate"/>
+				<owl:someValuesFrom>
+					<rdfs:Datatype>
+						<owl:unionOf rdf:parseType="Collection">
+							<rdf:Description rdf:about="&xsd;string">
+							</rdf:Description>
+							<rdf:Description rdf:about="&xsd;dateTime">
+							</rdf:Description>
+							<rdf:Description rdf:about="&xsd;dateTimeStamp">
+							</rdf:Description>
+						</owl:unionOf>
+					</rdfs:Datatype>
+				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>registered security</rdfs:label>
