@@ -10,14 +10,14 @@ prefix fibo-der-rtd-irswp: <https://spec.edmcouncil.org/fibo/DER/RateDerivatives
 
 
 CONSTRUCT {
-?domain ?thisp ?type ; rdfs:label ?dlabel .
+?domain ?thisp ?ntype ; rdfs:label ?dlabel .
 ?thisp rdfs:subPropertyOf ?p .
 ?thisp rdfs:label ?plabel .
 ?thisp edm:comparison ?carddir .
 ?thisp edm:cardinality ?card .
 ?thisp skos:definition ?pdef .
 ?p rdfs:subPropertyOf edm:connectedTo ; skos:definition ?pdef ; rdfs:label ?plabel . 
-?type rdfs:label ?rlabel ; skos:definition ?tdef . 
+?ntype rdfs:label ?rlabelX ; skos:definition ?tdef . 
 ?domain ?annotation ?sdef .
 ?domain skos:broader ?parent .
 ?child skos:broader ?domain . 
@@ -85,6 +85,15 @@ OPTIONAL {?p skos:definition ?pdef .}
 OPTIONAL {?p rdfs:label ?plabel . }
 BIND (COALESCE (?rlabel, " ") AS ?rlabel1)
 BIND ((IRI (CONCAT (xsd:string (?p), "-", REPLACE (?dlabel, "[ )(]", "") , "-", REPLACE (?rlabel1, "[ )(]", ""))))  as ?thisp)
+BIND ((IRI (CONCAT (xsd:string (?p),  "-", REPLACE (?dlabel, "[ )(]", ""))))  as ?thisc)
 FILTER (REGEX (xsd:string (?p), "edmcouncil"))
 ?p av:forDD true .
+?p a ?proptype.
+BIND (IF ((?proptype = owl:DatatypeProperty), ?thisc ,
+        ?type)     AS ?ntype)
+
+BIND (IF ((?proptype = owl:DatatypeProperty), CONCAT (?dlabel, " ", REPLACE (?plabel, "^has ", "")) ,
+        ?rlabel)     AS ?lableT)
+BIND (COALESCE (?lableT, ?rlabel) AS ?rlabelX)
+
 } 

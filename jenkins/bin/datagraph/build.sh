@@ -16,7 +16,11 @@ EOF
 
 #arq  $(find $fiboroot/be $fiboroot/bp $fiboroot/cae $fiboroot/civ $fiboroot/der $fiboroot/fbc $fiboroot/fnd $fiboroot/ind $fiboroot/loan $fiboroot/md $fiboroot/sec -name "*.rdf" | sed "s/^/--data=/") --data=AllProd.ttl --query=echo.sq --results=TTL> combined.ttl
 
-arq  $(grep -r 'utl-av[:;.]hasMaturity.*Release' "${fiboroot}" | grep -F ".rdf" |   sed 's/:.*$//' |  sed "s/^/--data=/") --data=AllProd.ttl --query=echo.sq --results=TTL> combined.ttl
+# arq  $(grep -r 'utl-av[:;.]hasMaturity.*Release' "${fiboroot}" | grep -F ".rdf" |   sed 's/:.*$//' |  sed "s/^/--data=/") --data=AllProd.ttl --query=echo.sq --results=TTL> combined.ttl
+
+
+
+arq  $(grep -r 'utl-av[:;.]hasMaturity.*\(Release\|Provisional\)' "${fiboroot}" | grep -F ".rdf" |   sed 's/:.*$//' |  sed "s/^/--data=/") --data=AllProd.ttl --query=echo.sq --results=TTL> combined.ttl
 
 echo "finished combining"
 
@@ -33,7 +37,11 @@ prefix skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 prefix dedm:   <http://www.edmcouncil.org/ddgraph#> 
 
-CONSTRUCT {?child ?p ?parent}
+CONSTRUCT {?child ?p ?parent.   dedm:unionOf rdfs:label "union of";
+                                             skos:definition "related parts to the union" .
+?parent rdfs:label ?plabel . 
+?child rdfs:label ?clabel . 
+}
 WHERE {
 {  {?child rdfs:subClassOf ?parent. FILTER (ISIRI (?parent))
     BIND (skos:broader AS ?p)} UNION
@@ -44,6 +52,10 @@ WHERE {
 }
    FILTER (REGEX (xsd:string (?parent), "edmcouncil"))
    FILTER (REGEX (xsd:string (?child), "edmcouncil"))
+
+?parent rdfs:label ?plabel . 
+?child rdfs:label ?clabel . 
+
 }
 EOF
 
@@ -61,6 +73,32 @@ WHERE {?a rdfs:subPropertyOf ?b}
 EOF
 
 arq --data=combined.ttl  --query=subp.sq > subp.ttl
+
+
+
+cat >maturity.sq <<EOF
+PREFIX av: <https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/>
+PREFIX afn: <http://jena.apache.org/ARQ/function#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+prefix skos: <http://www.w3.org/2004/02/skos/core#> 
+prefix edm: <http://www.edmcouncil.org/ddgraph#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+prefix fibo-der-rtd-irswp: <https://spec.edmcouncil.org/fibo/DER/RateDerivatives/IRSwaps/> 
+
+
+CONSTRUCT {?c av:hasMaturityLevel ?level }
+WHERE {?c a owl:Class . 
+FILTER (REGEX (xsd:string (?c), "edmcouncil"))
+BIND (IRI(REPLACE (xsd:string (?c) , "/[^/]*$", "/")) as ?cstring)
+?cstring av:hasMaturityLevel ?level . 
+}
+EOF
+
+# arq --data=combined.ttl  --query=maturity.sq > maturity.ttl
+
+
 
 cat > filter.sq <<EOF
 PREFIX afn: <http://jena.apache.org/ARQ/function#>
@@ -96,7 +134,9 @@ WHERE {
 EOF
 
 
-arq --data=pr1.ttl --data=parent.ttl --data=subp.ttl --query=filter.sq > pr2.ttl
+arq --data=pr1.ttl --data=parent.ttl      --data=subp.ttl --query=filter.sq > pr2.ttl
+# --data=maturity.ttl
+
 
 sed -i "s/@en//g" pr2.ttl
 
