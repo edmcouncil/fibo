@@ -40,7 +40,11 @@ prefix dedm:   <http://www.edmcouncil.org/ddgraph#>
 CONSTRUCT {?child ?p ?parent.   dedm:unionOf rdfs:label "union of";
                                              skos:definition "related parts to the union" .
 ?parent rdfs:label ?plabel . 
-?child rdfs:label ?clabel . 
+?child rdfs:label ?clabel .
+
+?parent skos:definition ?pdef .
+?child skos:definition ?cdef . 
+
 }
 WHERE {
 {  {?child rdfs:subClassOf ?parent. FILTER (ISIRI (?parent))
@@ -55,6 +59,9 @@ WHERE {
 
 ?parent rdfs:label ?plabel . 
 ?child rdfs:label ?clabel . 
+
+OPTIONAL {?parent skos:definition ?pdef}
+OPTIONAL {?child skos:definition ?cdef}
 
 }
 EOF
@@ -96,7 +103,7 @@ BIND (IRI(REPLACE (xsd:string (?c) , "/[^/]*$", "/")) as ?cstring)
 }
 EOF
 
-# arq --data=combined.ttl  --query=maturity.sq > maturity.ttl
+arq --data=combined.ttl  --query=maturity.sq > maturity.ttl
 
 
 
@@ -134,8 +141,9 @@ WHERE {
 EOF
 
 
-arq --data=pr1.ttl --data=parent.ttl      --data=subp.ttl --query=filter.sq > pr2.ttl
-# --data=maturity.ttl
+arq --data=maturity.ttl --data=pr1.ttl --data=parent.ttl      --data=subp.ttl --query=filter.sq > pr2.ttl
+#arq  --data=pr1.ttl --data=parent.ttl      --data=subp.ttl --query=filter.sq > pr2.ttl
+
 
 
 sed -i "s/@en//g" pr2.ttl

@@ -11,6 +11,8 @@ prefix fibo-der-rtd-irswp: <https://spec.edmcouncil.org/fibo/DER/RateDerivatives
 
 CONSTRUCT {
 ?domain ?thisp ?ntype ; rdfs:label ?dlabel .
+?ntype skos:broader  ?parent .
+?parent rdfs:label ?pnohas . 
 ?thisp rdfs:subPropertyOf ?p .
 ?thisp rdfs:label ?plabel .
 ?thisp edm:comparison ?carddir .
@@ -19,15 +21,11 @@ CONSTRUCT {
 ?p rdfs:subPropertyOf edm:connectedTo ; skos:definition ?pdef ; rdfs:label ?plabel . 
 ?ntype rdfs:label ?rlabelX ; skos:definition ?tdef . 
 ?domain ?annotation ?sdef .
-?domain skos:broader ?parent .
-?child skos:broader ?domain . 
 }
 WHERE {
 #  ?domain rdfs:subClassOf* ?base .
 # BIND (<https://spec.edmcouncil.org/fibo/DER/RateDerivatives/IRSwaps/InterestRateSwap> AS ?base)
  ?domain a owl:Class ; rdfs:label ?dlabel .
-# OPTIONAL {?domain rdfs:subClassOf ?parent. FILTER (ISIRI (?parent))}
-# OPTIONAL {?domain owl:equivalentClass / owl:unionOf / rdf:rest*/rdf:first ?child}
  OPTIONAL {?domain ?annotation ?sdef .
     FILTER (?annotation IN (
         skos:notation,
@@ -84,16 +82,40 @@ FILTER (ISIRI (?type))
 OPTIONAL {?p skos:definition ?pdef .}
 OPTIONAL {?p rdfs:label ?plabel . }
 BIND (COALESCE (?rlabel, " ") AS ?rlabel1)
-BIND ((IRI (CONCAT (xsd:string (?p), "-", REPLACE (?dlabel, "[ )(]", "") , "-", REPLACE (?rlabel1, "[ )(]", ""))))  as ?thisp)
-BIND ((IRI (CONCAT (xsd:string (?p),  "-", REPLACE (?dlabel, "[ )(]", ""))))  as ?thisc)
+BIND ((IRI (CONCAT (xsd:string (?p), "-", REPLACE (?dlabel, "[ )(,']", "") , "-", REPLACE (?rlabel1, "[ )(]", ""))))  as ?thisp)
+BIND ((IRI (CONCAT (xsd:string (?p),  "-", REPLACE (?dlabel, "[ )(,']", ""))))  as ?thisc)
 FILTER (REGEX (xsd:string (?p), "edmcouncil"))
 ?p av:forDD true .
 ?p a ?proptype.
-BIND (IF ((?proptype = owl:DatatypeProperty), ?thisc ,
-        ?type)     AS ?ntype)
+#BIND (IF ((?proptype = owl:DatatypeProperty), ?thisc ,
+#        ?type)     AS ?ntype)
 
-BIND (IF ((?proptype = owl:DatatypeProperty), CONCAT (?dlabel, " ", REPLACE (?plabel, "^has ", "")) ,
-        ?rlabel)     AS ?lableT)
+
+BIND (IF ((?type IN (<https://spec.edmcouncil.org/fibo/FND/Utilities/BusinessFacingTypes/text>,
+                    <https://spec.edmcouncil.org/fibo/FND/DatesAndTimes/FinancialDates/Date>)),
+		    ?thisc, ?type) AS ?ntype)
+
+BIND (IF ((?type IN (<https://spec.edmcouncil.org/fibo/FND/Utilities/BusinessFacingTypes/text>,
+                    <https://spec.edmcouncil.org/fibo/FND/DatesAndTimes/FinancialDates/Date>)),
+		    CONCAT (?dlabel, " ", REPLACE (?plabel, "^has ", "")) ,
+		    ?rlabel) AS ?lableT)
+
+#OPTIONAL { av:forDD rdf:type owl:DatatypeProperty . 
+#FILTER (?type IN (<https://spec.edmcouncil.org/fibo/FND/Utilities/BusinessFacingTypes/text>,
+#                    <https://spec.edmcouncil.org/fibo/FND/DatesAndTimes/FinancialDates/Date>)) 
+#BIND (IRI (CONCAT ("http://spec.edmcouncil.org/fibo/GEN/", REPLACE(REPLACE (?plabel, "^has ", ""), " )(,'", ""))) AS ?parent)
+#}
+
+BIND (IRI (CONCAT ("http://spec.edmcouncil.org/fibo/GEN/", REPLACE(REPLACE (?plabel, "^has ", ""), "[ )(,']", ""))) AS ?proto)
+BIND (IF ((?type IN (<https://spec.edmcouncil.org/fibo/FND/Utilities/BusinessFacingTypes/text>,
+                     <https://spec.edmcouncil.org/fibo/FND/DatesAndTimes/FinancialDates/Date>)),
+		    ?proto, ?nothing) AS ?parent)
+
+BIND (REPLACE (?plabel, "^has ", "") AS ?pnohas)
+
+#BIND (IF ((?proptype = owl:DatatypeProperty), CONCAT (?dlabel, " ", REPLACE (?plabel, "^has ", "")) ,
+#        ?rlabel)     AS ?lableT)
 BIND (COALESCE (?lableT, ?rlabel) AS ?rlabelX)
+
 
 } 
