@@ -153,18 +153,6 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;WrittenContract"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-aap-agt;isIdentifiedBy"/>
-				<owl:allValuesFrom rdf:resource="&fibo-fbc-fi-fi;FinancialInstrumentIdentifier"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;hasIssuer"/>
-				<owl:allValuesFrom rdf:resource="&fibo-fbc-fi-fi;Issuer"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;isLegallyRecordedIn"/>
 				<owl:onClass rdf:resource="&fibo-fnd-law-jur;Jurisdiction"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
@@ -172,9 +160,15 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;isTransferable"/>
+				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;isNegotiable"/>
 				<owl:onDataRange rdf:resource="&xsd;boolean"/>
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isIssuedBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-fi;Issuer"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>financial instrument</rdfs:label>
@@ -231,6 +225,27 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<fibo-fnd-utl-av:explanatoryNote>With respect to certificates of deposit for securities, voting-trust certificates, or collateral- trust certificates, or with respect to certificates of interest or shares in an unincorporated investment trust not having a board of directors or of the fixed, restricted management, or unit type, the term issuer means the person or persons performing the acts and assuming the duties of depositor or manager pursuant to the provisions of the trust or other agreement or instrument under which such securities are issued; and except that with respect to equipment-trust certificates or like securities, the term issuer means the person by whom the equipment or property is, or is to be, used.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-fbc-fi-fi;NegotiableSecurity">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;Security"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;TransferableContract"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;isNegotiable"/>
+				<owl:hasValue rdf:datatype="&xsd;boolean">true</owl:hasValue>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>negotiable security</rdfs:label>
+		<skos:definition>a security that can be transferred or delivered to another party</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-fi-fi;NonNegotiableSecurity">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;Security"/>
+		<rdfs:label>non-negotiable security</rdfs:label>
+		<owl:disjointWith rdf:resource="&fibo-fbc-fi-fi;NegotiableSecurity"/>
+		<skos:definition>a security that is not transferable to another party</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Certain securities that can be redeemed by the issuer may not be &apos;negotiable&apos;, such as savings bonds and certificates of deposit.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-fbc-fi-fi;Option">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;DerivativeInstrument"/>
 		<rdfs:label>option</rdfs:label>
@@ -267,24 +282,16 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;FinancialInstrument"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;isTransferable"/>
-				<owl:hasValue rdf:datatype="&xsd;boolean">true</owl:hasValue>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;isLegallyRecordedIn"/>
 				<owl:onClass rdf:resource="&fibo-fnd-law-jur;Jurisdiction"/>
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>security</rdfs:label>
-		<skos:definition>a transferable financial instrument that can be bought or sold</skos:definition>
-		<skos:editorialNote>This is a publicly traded security (corresponding to the scope of Security in ISO 20022) and therefore does not include privately held equity or equity in companies that are not publicly traded.</skos:editorialNote>
+		<skos:definition>a financial instrument that can be bought or sold</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom>Securities Exchange Act of 1934, as amended 12 August 2012</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:explanatoryNote>A security can be any note, stock, treasury stock, security future, security-based swap, bond, debenture,certificate of interest or participation in any profit-sharing agreement or in any oil, gas, or other mineral royalty or lease, any collateral-trust certificate, preorganization certificate or subscription, transferable share, investment contract, voting-trust certificate, certificate of deposit for a security, any put, call, straddle, option, or privilege on any security, certificate of deposit, or group or index of securities (including any interest therein or based on the value thereof), or any put, call, straddle, option, or privilege entered into on a national securities exchange relating to foreign currency, or in general, any instrument commonly known as a security, or any certificate of interest or participation in, temporary or interim certificate for, receipt for, or warrant or right to subscribe to or purchase, any of the foregoing; but shall not include currency or any note, draft, bill of exchange, or bankers&apos; acceptance which has a maturity at the time of issuance of not exceeding nine months, exclusive of days of grace, or any renewal thereof the maturity of which is likewise limited.</fibo-fnd-utl-av:explanatoryNote>
-		<fibo-fnd-utl-av:explanatoryNote>A security may be traded over the counter, or through an exchange, or via some other trading venue such as an electronic trading platform.</fibo-fnd-utl-av:explanatoryNote>
-		<fibo-fnd-utl-av:synonym>negotiable security</fibo-fnd-utl-av:synonym>
+		<fibo-fnd-utl-av:explanatoryNote>Some securities may be traded over the counter, or through an exchange, or via some other trading venue such as an electronic trading platform.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-fi-fi;StandardizedTermsSet">
@@ -296,9 +303,11 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-fi-fi;hasIssuer">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-pty-pty;hasPartyInRole"/>
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;isIssuedBy"/>
 		<rdfs:label>has issuer</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fbc-fi-fi;FinancialInstrument"/>
 		<rdfs:range rdf:resource="&fibo-fbc-fi-fi;Issuer"/>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
 		<skos:definition>relates an instrument to the party that issued it</skos:definition>
 	</owl:ObjectProperty>
 	
@@ -311,7 +320,6 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-fi-fi;hasValueExpressedIn">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;has"/>
 		<rdfs:label>has value expressed in</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fbc-fi-fi;FinancialInstrument"/>
 		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;Currency"/>
@@ -327,10 +335,18 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<skos:definition>jurisdiction (country, county, state, province, city) in which the financial instrument is legally recorded for regulatory and/or tax purposes</skos:definition>
 	</owl:ObjectProperty>
 	
+	<owl:DatatypeProperty rdf:about="&fibo-fbc-fi-fi;isNegotiable">
+		<rdfs:label>is negotiable</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fbc-fi-fi;FinancialInstrument"/>
+		<rdfs:range rdf:resource="&xsd;boolean"/>
+		<skos:definition>specifies whether a particular financial instrument is or is not negotiable</skos:definition>
+	</owl:DatatypeProperty>
+	
 	<owl:DatatypeProperty rdf:about="&fibo-fbc-fi-fi;isTransferable">
 		<rdfs:label>is transferable</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fbc-fi-fi;FinancialInstrument"/>
 		<rdfs:range rdf:resource="&xsd;boolean"/>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
 		<skos:definition>specifies whether a particular financial instrument is or is not transferable</skos:definition>
 	</owl:DatatypeProperty>
 	
