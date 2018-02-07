@@ -113,6 +113,27 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
+	<owl:Class rdf:about="&fibo-fbc-pas-fpas;AgencyAgreement">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;MutualContractualAgreement"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;hasContractParty"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-fpas;RegisteredAgent"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>agency agreement</rdfs:label>
+		<skos:definition>an agreement that designates a party as a registered agent to represent and act on behalf of another party in some, typically legal, financial, or medical capacity</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://thelawdictionary.org/agent/</fibo-fnd-utl-av:adaptedFrom>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-pas-fpas;AgentForServiceOfProcess">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;RegisteredAgent"/>
+		<rdfs:label>agent for service of process</rdfs:label>
+		<skos:definition>a registered agent (person or organization) designated by a business entity, such as a corporation, to receive legal correspondence on behalf of the business entity in the jurisdiction in which the agent&apos;s address is located</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.law.cornell.edu/wex/agent_for_service_of_process</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:explanatoryNote>The person may be an officer of the corporation or a third party, such as the corporation&apos;s attorney, or a company providing such agency services.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
 	<fibo-fbc-pas-fpas:TradeLifecycleStage rdf:about="&fibo-fbc-pas-fpas;AmendedTrade">
 		<rdf:type rdf:resource="&owl;NamedIndividual"/>
 		<rdfs:label>amended trade</rdfs:label>
@@ -607,6 +628,36 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<skos:definition>an instance of a phase in an occurrence of a given product lifecycle</skos:definition>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-fbc-pas-fpas;RegisteredAgent">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;LegalAgent"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractParty"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
+				<owl:someValuesFrom>
+					<owl:Class>
+						<owl:intersectionOf rdf:parseType="Collection">
+							<owl:Restriction>
+								<owl:onProperty rdf:resource="&fibo-fnd-pty-pty;isAPartyTo"/>
+								<owl:someValuesFrom rdf:resource="&fibo-fbc-fct-rga;AgencyAgreement"/>
+							</owl:Restriction>
+							<owl:Restriction>
+								<owl:onProperty rdf:resource="&fibo-be-le-lp;isRecognizedIn"/>
+								<owl:someValuesFrom rdf:resource="&fibo-fnd-law-jur;Jurisdiction"/>
+							</owl:Restriction>
+						</owl:intersectionOf>
+					</owl:Class>
+				</owl:someValuesFrom>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>registered agent</rdfs:label>
+		<skos:definition>a legal agent designated by another party (person or organization), to represent and acts on their behalf under a formal agency agreement</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://thelawdictionary.org/agent/</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:explanatoryNote>Agency capacity, as specified in an agency agreement, may include power of attorney, the ability to act as an agent in certain kinds of transactions such as real estate, tax, audit or other financial or legal transactions, as a fiduciary, including as a trustee or legal guardian, for service of process, and so forth.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:synonym>resident agent</fibo-fnd-utl-av:synonym>
+		<fibo-fnd-utl-av:synonym>statutory agent</fibo-fnd-utl-av:synonym>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-fbc-pas-fpas;RegulatedCommodity">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-pas;Commodity"/>
 		<rdfs:subClassOf>
@@ -960,6 +1011,13 @@ Copyright (c) 2015-2017 Object Management Group, Inc.</sm:copyright>
 		<rdfs:domain rdf:resource="&fibo-fnd-arr-arr;Collection"/>
 		<skos:definition>an essential part, component, or element of some collection or set</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.merriam-webster.com/dictionary/constituent</fibo-fnd-utl-av:adaptedFrom>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fbc-pas-fpas;hasLegalAgent">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;hasPartyInRole"/>
+		<rdfs:label>has registered agent</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fbc-pas-fpas;LegalAgent"/>
+		<skos:definition>identifies a party as one that has the legal, medical or financial capacity to act on behalf of someone else under specific circumstances</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-fbc-pas-fpas;hasNominalNumberOfUnits">
