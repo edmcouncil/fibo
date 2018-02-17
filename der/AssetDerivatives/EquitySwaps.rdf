@@ -4,6 +4,8 @@
 	<!ENTITY fibo-der-ass-ass "https://spec.edmcouncil.org/fibo/DER/AssetDerivatives/AssetDerivatives/">
 	<!ENTITY fibo-der-ass-eqs "https://spec.edmcouncil.org/fibo/DER/AssetDerivatives/EquitySwaps/">
 	<!ENTITY fibo-der-der-rsw "https://spec.edmcouncil.org/fibo/DER/DerivativesContracts/ReturnSwaps/">
+	<!ENTITY fibo-der-drc-bsc "https://spec.edmcouncil.org/fibo/DER/DerivativesContracts/DerivativesBasics/">
+	<!ENTITY fibo-der-drc-swp "https://spec.edmcouncil.org/fibo/DER/DerivativesContracts/Swaps/">
 	<!ENTITY fibo-fnd-acc-cur "https://spec.edmcouncil.org/fibo/FND/Accounting/CurrencyAmount/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/">
 	<!ENTITY fibo-fnd-utl-val "https://spec.edmcouncil.org/fibo/FND/Utilities/Values/">
@@ -18,6 +20,8 @@
 	xmlns:fibo-der-ass-ass="https://spec.edmcouncil.org/fibo/DER/AssetDerivatives/AssetDerivatives/"
 	xmlns:fibo-der-ass-eqs="https://spec.edmcouncil.org/fibo/DER/AssetDerivatives/EquitySwaps/"
 	xmlns:fibo-der-der-rsw="https://spec.edmcouncil.org/fibo/DER/DerivativesContracts/ReturnSwaps/"
+	xmlns:fibo-der-drc-bsc="https://spec.edmcouncil.org/fibo/DER/DerivativesContracts/DerivativesBasics/"
+	xmlns:fibo-der-drc-swp="https://spec.edmcouncil.org/fibo/DER/DerivativesContracts/Swaps/"
 	xmlns:fibo-fnd-acc-cur="https://spec.edmcouncil.org/fibo/FND/Accounting/CurrencyAmount/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/"
 	xmlns:fibo-fnd-utl-val="https://spec.edmcouncil.org/fibo/FND/Utilities/Values/"
@@ -49,8 +53,14 @@
 		<rdfs:subClassOf rdf:resource="&fibo-der-ass-ass;RealizedVariableSwapSideTerms"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-ass-eqs;underlying"/>
+				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
 				<owl:someValuesFrom rdf:resource="&fibo-der-ass-ass;EquityIndexObservable"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-acc-cur;hasNotionalAmount"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">correlation leg terms</rdfs:label>
@@ -84,7 +94,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-ass-eqs;DispersionSwapContract">
-		<rdfs:subClassOf rdf:resource="https://spec.edmcouncil.org/fibo/DER/DerivativesContracts/Swaps/Swap"/>
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-swp;Swap"/>
 		<rdfs:label xml:lang="en">dispersion swap contract</rdfs:label>
 	</owl:Class>
 	
@@ -92,7 +102,7 @@
 		<rdfs:subClassOf rdf:resource="&fibo-der-ass-eqs;DispersionLegTerms"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-ass-eqs;underlying.6"/>
+				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
 				<owl:someValuesFrom rdf:resource="&fibo-der-ass-ass;SetOfEquityIndexConstituentsObservable"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -104,7 +114,7 @@
 		<rdfs:subClassOf rdf:resource="&fibo-der-ass-eqs;DispersionLegTerms"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-ass-eqs;underlying.7"/>
+				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
 				<owl:someValuesFrom rdf:resource="&fibo-der-ass-ass;EquityIndexObservable"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -115,7 +125,7 @@
 	<owl:Class rdf:about="&fibo-der-ass-eqs;DispersionSwapTransaction">
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="https://spec.edmcouncil.org/fibo/DER/DerivativesContracts/Swaps/hasTransactionLeg"/>
+				<owl:onProperty rdf:resource="&fibo-der-drc-swp;hasLeg"/>
 				<owl:onClass rdf:resource="&fibo-der-ass-eqs;DispersionLeg"/>
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">2</owl:qualifiedCardinality>
 			</owl:Restriction>
@@ -162,7 +172,7 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-ass-eqs;underlying.1"/>
+				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
 				<owl:someValuesFrom rdf:resource="&fibo-der-ass-ass;SingleShareObservable"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -181,7 +191,7 @@
 		<rdfs:subClassOf rdf:resource="&fibo-der-ass-ass;StatisticalSwapContract"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="https://spec.edmcouncil.org/fibo/DER/DerivativesContracts/DerivativesBasics/hasUnderlier"/>
+				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
 				<owl:someValuesFrom rdf:resource="&fibo-der-ass-ass;EquityObservable"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -191,10 +201,10 @@
 	
 	<owl:Class rdf:about="&fibo-der-ass-eqs;EquityDividendSwap">
 		<rdfs:subClassOf rdf:resource="&fibo-der-ass-ass;EquityDerivativeContract"/>
-		<rdfs:subClassOf rdf:resource="https://spec.edmcouncil.org/fibo/DER/DerivativesContracts/Swaps/Swap"/>
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-swp;Swap"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="https://spec.edmcouncil.org/fibo/DER/DerivativesContracts/DerivativesBasics/hasUnderlier"/>
+				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
 				<owl:someValuesFrom rdf:resource="&fibo-der-ass-ass;EquityObservable"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -207,7 +217,7 @@
 		<rdfs:subClassOf rdf:resource="&fibo-der-der-rsw;ReturnSwapContract"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="https://spec.edmcouncil.org/fibo/DER/DerivativesContracts/DerivativesBasics/hasUnderlier"/>
+				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
 				<owl:someValuesFrom rdf:resource="&fibo-der-ass-ass;EquityObservable"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -220,7 +230,7 @@
 		<rdfs:subClassOf rdf:resource="&fibo-der-ass-ass;StatisticalSwapContract"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="https://spec.edmcouncil.org/fibo/DER/DerivativesContracts/DerivativesBasics/hasUnderlier"/>
+				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
 				<owl:someValuesFrom rdf:resource="&fibo-der-ass-ass;EquityObservable"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -234,7 +244,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-ass-eqs;SwapStrikeTerms">
-		<rdfs:subClassOf rdf:resource="https://spec.edmcouncil.org/fibo/DER/DerivativesContracts/Swaps/SwapLeg"/>
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-swp;SwapLeg"/>
 		<rdfs:label xml:lang="en">swap strike terms</rdfs:label>
 		<skos:definition xml:lang="en">Formal terms defining the strike leg on a swap that has a strike leg.</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">This kind of leg exists for variance swaps and other similar swaps. The realization of this leg is not a cashflow but a netting out against the terms defined in the other leg. Notes from Strike Leg: The abstract leg implied by the strike in a statistical swap. 
@@ -252,7 +262,7 @@ Further Notes:This is effectively an abstract leg - there are no streams of paym
 		<rdfs:subClassOf rdf:resource="&fibo-der-ass-ass;RealizedVariableSwapSideTerms"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-ass-eqs;underlying.8"/>
+				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
 				<owl:someValuesFrom rdf:resource="&fibo-der-ass-ass;EquityIndexObservable"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -319,12 +329,6 @@ Further Notes:This is effectively an abstract leg - there are no streams of paym
 		<skos:definition xml:lang="en">Whether material non cash dividends are applicable.</skos:definition>
 	</owl:DatatypeProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-der-ass-eqs;notionalAmount">
-		<rdfs:label xml:lang="en">notional amount</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-ass-eqs;CorrelationLegTerms"/>
-		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
-	</owl:ObjectProperty>
-	
 	<owl:DatatypeProperty rdf:about="&fibo-der-ass-eqs;pricingSource">
 		<rdfs:label xml:lang="en">pricing source</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-der-ass-eqs;TotalReturnLeg"/>
@@ -344,6 +348,7 @@ Further Notes:This is effectively an abstract leg - there are no streams of paym
 	</owl:DatatypeProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-der-ass-eqs;relativeNotionalAmount">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasNotionalAmount"/>
 		<rdfs:label xml:lang="en">relative notional amount</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-der-ass-eqs;CorrelationLegTerms"/>
 		<skos:definition xml:lang="en">A notional amount specified by reference.</skos:definition>
@@ -361,36 +366,6 @@ Further Notes:This is effectively an abstract leg - there are no streams of paym
 		<rdfs:domain rdf:resource="&fibo-der-ass-eqs;SwapStrikeTerms"/>
 		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
 		<skos:definition xml:lang="en">The strike amount defined for this leg.</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-der-ass-eqs;underlying">
-		<rdfs:label xml:lang="en">underlying</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-ass-eqs;CorrelationLegTerms"/>
-		<rdfs:range rdf:resource="&fibo-der-ass-ass;EquityIndexObservable"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-der-ass-eqs;underlying.1">
-		<rdfs:label xml:lang="en">underlying</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-ass-eqs;DividendStream"/>
-		<rdfs:range rdf:resource="&fibo-der-ass-ass;SingleShareObservable"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-der-ass-eqs;underlying.6">
-		<rdfs:label xml:lang="en">underlying</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-ass-eqs;DispersionSwapIndexConstituentsLegTerms"/>
-		<rdfs:range rdf:resource="&fibo-der-ass-ass;SetOfEquityIndexConstituentsObservable"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-der-ass-eqs;underlying.7">
-		<rdfs:label xml:lang="en">underlying</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-ass-eqs;DispersionSwapIndexLegTerms"/>
-		<rdfs:range rdf:resource="&fibo-der-ass-ass;EquityIndexObservable"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-der-ass-eqs;underlying.8">
-		<rdfs:label xml:lang="en">underlying</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-ass-eqs;VarianceLegTerms"/>
-		<rdfs:range rdf:resource="&fibo-der-ass-ass;EquityIndexObservable"/>
 	</owl:ObjectProperty>
 
 </rdf:RDF>
