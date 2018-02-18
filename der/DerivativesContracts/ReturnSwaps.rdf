@@ -3,6 +3,10 @@
 	<!ENTITY dct "http://purl.org/dc/terms/">
 	<!ENTITY fibo-der-ass-ass "https://spec.edmcouncil.org/fibo/DER/AssetDerivatives/AssetDerivatives/">
 	<!ENTITY fibo-der-der-rsw "https://spec.edmcouncil.org/fibo/DER/DerivativesContracts/ReturnSwaps/">
+	<!ENTITY fibo-der-drc-bsc "https://spec.edmcouncil.org/fibo/DER/DerivativesContracts/DerivativesBasics/">
+	<!ENTITY fibo-der-drc-swp "https://spec.edmcouncil.org/fibo/DER/DerivativesContracts/Swaps/">
+	<!ENTITY fibo-fbc-fi-fi "https://spec.edmcouncil.org/fibo/FBC/FinancialInstruments/FinancialInstruments/">
+	<!ENTITY fibo-fnd-rel-rel "https://spec.edmcouncil.org/fibo/FND/Relations/Relations/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/">
 	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
 	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
@@ -14,6 +18,10 @@
 	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fibo-der-ass-ass="https://spec.edmcouncil.org/fibo/DER/AssetDerivatives/AssetDerivatives/"
 	xmlns:fibo-der-der-rsw="https://spec.edmcouncil.org/fibo/DER/DerivativesContracts/ReturnSwaps/"
+	xmlns:fibo-der-drc-bsc="https://spec.edmcouncil.org/fibo/DER/DerivativesContracts/DerivativesBasics/"
+	xmlns:fibo-der-drc-swp="https://spec.edmcouncil.org/fibo/DER/DerivativesContracts/Swaps/"
+	xmlns:fibo-fbc-fi-fi="https://spec.edmcouncil.org/fibo/FBC/FinancialInstruments/FinancialInstruments/"
+	xmlns:fibo-fnd-rel-rel="https://spec.edmcouncil.org/fibo/FND/Relations/Relations/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -37,10 +45,10 @@
 	</owl:Ontology>
 	
 	<owl:Class rdf:about="&fibo-der-der-rsw;AssetDerivativeContract">
-		<rdfs:subClassOf rdf:resource="https://spec.edmcouncil.org/fibo/FBC/FinancialInstruments/FinancialInstruments/DerivativeInstrument"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;DerivativeInstrument"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="https://spec.edmcouncil.org/fibo/DER/DerivativesContracts/DerivativesBasics/hasUnderlier"/>
+				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
 				<owl:someValuesFrom rdf:resource="&fibo-der-ass-ass;AssetUnderlier"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -48,6 +56,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-der-rsw;AssetReturnCommitment">
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-bsc;DerivativeTransactionTerms"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-der-rsw;definedAs"/>
@@ -58,6 +67,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-der-rsw;AssetReturnStream">
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-swp;SwapLeg"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-der-rsw;hasReferenceAsset"/>
@@ -70,10 +80,10 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-der-rsw;ReturnLeg">
-		<rdfs:subClassOf rdf:resource="https://spec.edmcouncil.org/fibo/DER/DerivativesContracts/Swaps/SwapLeg"/>
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-swp;SwapLeg"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-der-rsw;embodiesAssetReturnCommitment"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;embodies"/>
 				<owl:someValuesFrom rdf:resource="&fibo-der-der-rsw;AssetReturnCommitment"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -82,7 +92,7 @@
 	
 	<owl:Class rdf:about="&fibo-der-der-rsw;ReturnSwapContract">
 		<rdfs:subClassOf rdf:resource="&fibo-der-der-rsw;AssetDerivativeContract"/>
-		<rdfs:subClassOf rdf:resource="https://spec.edmcouncil.org/fibo/DER/DerivativesContracts/Swaps/Swap"/>
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-swp;Swap"/>
 		<rdfs:label xml:lang="en">return swap contract</rdfs:label>
 	</owl:Class>
 	
@@ -110,14 +120,8 @@
 		<rdfs:range rdf:resource="&fibo-der-der-rsw;AssetReturnStream"/>
 	</owl:ObjectProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-der-der-rsw;embodiesAssetReturnCommitment">
-		<rdfs:label xml:lang="en">embodies asset return commitment</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-der-rsw;ReturnLeg"/>
-		<rdfs:range rdf:resource="&fibo-der-der-rsw;AssetReturnCommitment"/>
-	</owl:ObjectProperty>
-	
 	<owl:ObjectProperty rdf:about="&fibo-der-der-rsw;hasFundingLeg">
-		<rdfs:subPropertyOf rdf:resource="https://spec.edmcouncil.org/fibo/DER/DerivativesContracts/Swaps/hasTransactionLeg"/>
+		<rdfs:subPropertyOf rdf:resource="&fibo-der-drc-swp;hasLeg"/>
 		<rdfs:label xml:lang="en">has funding leg</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-der-der-rsw;ReturnSwapTransaction"/>
 	</owl:ObjectProperty>
@@ -129,7 +133,7 @@
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-der-rsw;hasReturnLeg">
-		<rdfs:subPropertyOf rdf:resource="https://spec.edmcouncil.org/fibo/DER/DerivativesContracts/Swaps/hasTransactionLeg"/>
+		<rdfs:subPropertyOf rdf:resource="&fibo-der-drc-swp;hasLeg"/>
 		<rdfs:label xml:lang="en">has return leg</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-der-der-rsw;ReturnSwapTransaction"/>
 		<rdfs:range rdf:resource="&fibo-der-der-rsw;ReturnLeg"/>
