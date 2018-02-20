@@ -25,9 +25,25 @@ arq  $(grep -r 'utl-av[:;.]hasMaturity.*\(Release\|Provisional\)' "${fiboroot}" 
 echo "finished combining"
 
 
+cat >badlabels.sq <<EOF
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+prefix skos: <http://www.w3.org/2004/02/skos/core#> 
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
 
-# arq --data=combined.ttl --query=pseudorange.sq > pr.ttl
+CONSTRUCT {?s rdfs:label ?badlabel}
+WHERE {?s ?p ?o .
+FILTER NOT EXISTS {?s rdfs:label ?l}
+FILTER (REGEX (xsd:string (?s), "edmcouncil"))
+BIND (REPLACE (xsd:string (?s), "^.*/", "bad label ") AS ?badlabel)
+}
+EOF
+
+
+
+arq --data=combined.ttl --query=badlabels.sq > badlabels.ttl
 
 cat > subclass.sq <<EOF
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
@@ -37,8 +53,10 @@ prefix skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 prefix dedm:   <http://www.edmcouncil.org/ddgraph#> 
 
-CONSTRUCT {?child ?p ?parent.   dedm:unionOf rdfs:label "union of";
-                                             skos:definition "related parts to the union" .
+CONSTRUCT {?child ?p ?parent.
+   dedm:unionOf rdfs:label "union of";
+      skos:definition "related parts to the union" .
+
 ?parent rdfs:label ?plabel . 
 ?child rdfs:label ?clabel .
 
@@ -52,7 +70,10 @@ WHERE {
   {?child (owl:equivalentClass | rdfs:subClassOf)  / owl:unionOf / rdf:rest*/rdf:first ?parent .
     BIND (dedm:unionOf AS ?p)}  UNION 
   {?parent (owl:equivalentClass | rdfs:subClassOf)  / owl:unionOf / rdf:rest*/rdf:first ?child .
-    BIND (skos:broader AS ?p)}
+    BIND (skos:broader AS ?p)}  UNION 
+  {?child (owl:equivalentClass | rdfs:subClassOf)  / owl:intersectionOf / rdf:rest*/rdf:first ?parent .
+    BIND (skos:broader AS ?p)}  
+
 }
    FILTER (REGEX (xsd:string (?parent), "edmcouncil"))
    FILTER (REGEX (xsd:string (?child), "edmcouncil"))
@@ -67,7 +88,7 @@ OPTIONAL {?child skos:definition ?cdef}
 EOF
 
 arq --data=combined.ttl  --query=subclass.sq > parent.ttl
-arq --data=combined.ttl --data=AllProd.ttl  --query=pseudorange1.sq > pr1.ttl
+arq --data=badlabels.ttl --data=combined.ttl --data=AllProd.ttl  --query=pseudorange1.sq > pr1.ttl
 
 
 cat > subp.sq <<EOF
@@ -116,6 +137,8 @@ prefix skos: <http://www.w3.org/2004/02/skos/core#>
 prefix edm: <http://www.edmcouncil.org/temp#>
 prefix dedm:   <http://www.edmcouncil.org/ddgraph#> 
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX av: <https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/>
+
 
 # This filters out redundant links, based on broader.  The
 # subPropertyOf in this situation is linking the reified properties to
@@ -137,11 +160,14 @@ WHERE {
        ?x skos:broader+ ?o
       }
     FILTER (?pa != edm:subPropertyOf)
+
+    FILTER EXISTS {?s ?notm ?o .
+                   FILTER (?notm != av:hasMaturityLevel)  }
 }
 EOF
 
 
-arq --data=maturity.ttl --data=pr1.ttl --data=parent.ttl      --data=subp.ttl --query=filter.sq > pr2.ttl
+arq  --data=maturity.ttl --data=pr1.ttl --data=parent.ttl      --data=subp.ttl --query=filter.sq > pr2.ttl
 #arq  --data=pr1.ttl --data=parent.ttl      --data=subp.ttl --query=filter.sq > pr2.ttl
 
 
