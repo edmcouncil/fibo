@@ -4,6 +4,7 @@
 	<!ENTITY fibo-fnd-agr-ctr "https://spec.edmcouncil.org/fibo/FND/Agreements/Contracts/">
 	<!ENTITY fibo-fnd-agrx-con "https://spec.edmcouncil.org/fibo/FND/AgreementsExt/ContractualConstructs/">
 	<!ENTITY fibo-fnd-agrx-ctrx "https://spec.edmcouncil.org/fibo/FND/AgreementsExt/ContractsExtensions/">
+	<!ENTITY fibo-fnd-rel-rel "https://spec.edmcouncil.org/fibo/FND/Relations/Relations/">
 	<!ENTITY fibo-fnd-soc-asp "https://spec.edmcouncil.org/fibo/FND/SocialConstructsExt/ConstructAspects/">
 	<!ENTITY fibo-fnd-soc-pty "https://spec.edmcouncil.org/fibo/FND/SocialConstructsExt/LegalConstructParties/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/">
@@ -18,6 +19,7 @@
 	xmlns:fibo-fnd-agr-ctr="https://spec.edmcouncil.org/fibo/FND/Agreements/Contracts/"
 	xmlns:fibo-fnd-agrx-con="https://spec.edmcouncil.org/fibo/FND/AgreementsExt/ContractualConstructs/"
 	xmlns:fibo-fnd-agrx-ctrx="https://spec.edmcouncil.org/fibo/FND/AgreementsExt/ContractsExtensions/"
+	xmlns:fibo-fnd-rel-rel="https://spec.edmcouncil.org/fibo/FND/Relations/Relations/"
 	xmlns:fibo-fnd-soc-asp="https://spec.edmcouncil.org/fibo/FND/SocialConstructsExt/ConstructAspects/"
 	xmlns:fibo-fnd-soc-pty="https://spec.edmcouncil.org/fibo/FND/SocialConstructsExt/LegalConstructParties/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/"
@@ -32,6 +34,7 @@
 		<dct:abstract>This ontology provides additional contractual constructs including contractual obligations and their beneficiaries and obligors, contractual rights and options and the conferral or variation of these by contract.</dct:abstract>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/Agreements/Contracts/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/AgreementsExt/ContractsExtensions/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/SocialConstructsExt/ConstructAspects/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/SocialConstructsExt/LegalConstructParties/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/"/>
@@ -42,13 +45,19 @@
 	<owl:Class rdf:about="&fibo-fnd-agr-ctr;Contract">
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-agrx-con;confers"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;confers"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fnd-agrx-con;ContractualRight"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-agrx-con;mandates"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;embodies"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-agrx-con;ContractualAgreement"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;mandates"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fnd-agrx-ctrx;ContractuallyConferredCommitment"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -61,7 +70,6 @@
 				<owl:someValuesFrom rdf:resource="&fibo-fnd-agrx-con;ContractualRight"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<owl:equivalentClass rdf:resource="&fibo-fnd-agr-ctr;ContractualCommitment"/>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-agrx-con;ContractualAgreement">
@@ -74,7 +82,7 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-agrx-con;confersContractualCommitment"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;confers"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fnd-agrx-ctrx;ContractuallyConferredCommitment"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -123,8 +131,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-agrx-con;hasContractualBasis"/>
-				<owl:onClass rdf:resource="&fibo-fnd-agr-ctr;Contract"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:minQualifiedCardinality>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-agr-ctr;Contract"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -144,39 +151,10 @@
 		<rdfs:range rdf:resource="&fibo-fnd-agr-ctr;Contract"/>
 	</owl:ObjectProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-fnd-agrx-con;confers">
-		<rdfs:label xml:lang="en">confers</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-agr-ctr;Contract"/>
-		<rdfs:range rdf:resource="&fibo-fnd-agrx-con;ContractualRight"/>
-		<skos:definition xml:lang="en">Some right conferred by the contract, by one party upon the other, for example the right to occupy some space unmolested or the right to receive some cash flows.</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-fnd-agrx-con;confersContractualCommitment">
-		<rdfs:label xml:lang="en">confers contractual commitment</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-agrx-con;ContractualAgreement"/>
-		<rdfs:range rdf:resource="&fibo-fnd-agrx-ctrx;ContractuallyConferredCommitment"/>
-		<owl:inverseOf rdf:resource="&fibo-fnd-agrx-ctrx;contractualCommitmentConferredBy"/>
-		<skos:definition xml:lang="en">Some Contractual Commitment which arises from the Contractual Agreement and is documented in the Contract which evidences the agreement between the parties.</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-fnd-agrx-con;contractEmbodies">
-		<rdfs:label xml:lang="en">contract embodies</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-agr-ctr;Contract"/>
-		<rdfs:range rdf:resource="&fibo-fnd-agrx-con;ContractualAgreement"/>
-	</owl:ObjectProperty>
-	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-agrx-con;hasContractualBasis">
 		<rdfs:label xml:lang="en">has contractual basis</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fnd-agrx-con;ContractualRight"/>
 		<rdfs:range rdf:resource="&fibo-fnd-agr-ctr;Contract"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-fnd-agrx-con;mandates">
-		<rdfs:label xml:lang="en">mandates</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-agr-ctr;Contract"/>
-		<rdfs:range rdf:resource="&fibo-fnd-agrx-ctrx;ContractuallyConferredCommitment"/>
-		<owl:inverseOf rdf:resource="&fibo-fnd-agrx-ctrx;mandatedBy"/>
-		<skos:definition xml:lang="en">Some obligation set out by the contract, by one party upon the other.</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-agrx-con;setsOutRight">

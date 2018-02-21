@@ -3,8 +3,8 @@
 	<!ENTITY dct "http://purl.org/dc/terms/">
 	<!ENTITY fibo-der-derx-ma "https://spec.edmcouncil.org/fibo/DER/DerivativesContractsExt/OTCDerivativeMasterAgreements/">
 	<!ENTITY fibo-fnd-agr-ctr "https://spec.edmcouncil.org/fibo/FND/Agreements/Contracts/">
-	<!ENTITY fibo-fnd-agrx-con "https://spec.edmcouncil.org/fibo/FND/AgreementsExt/ContractualConstructs/">
 	<!ENTITY fibo-fnd-agrx-ctrx "https://spec.edmcouncil.org/fibo/FND/AgreementsExt/ContractsExtensions/">
+	<!ENTITY fibo-fnd-rel-rel "https://spec.edmcouncil.org/fibo/FND/Relations/Relations/">
 	<!ENTITY fibo-fnd-txn-ecr "https://spec.edmcouncil.org/fibo/FND/TransactionsExt/EconomicResources/">
 	<!ENTITY fibo-fnd-txn-rea "https://spec.edmcouncil.org/fibo/FND/TransactionsExt/REATransactions/">
 	<!ENTITY fibo-fnd-txn-txnx "https://spec.edmcouncil.org/fibo/FND/TransactionsExt/TransactionsExtended/">
@@ -19,8 +19,8 @@
 	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fibo-der-derx-ma="https://spec.edmcouncil.org/fibo/DER/DerivativesContractsExt/OTCDerivativeMasterAgreements/"
 	xmlns:fibo-fnd-agr-ctr="https://spec.edmcouncil.org/fibo/FND/Agreements/Contracts/"
-	xmlns:fibo-fnd-agrx-con="https://spec.edmcouncil.org/fibo/FND/AgreementsExt/ContractualConstructs/"
 	xmlns:fibo-fnd-agrx-ctrx="https://spec.edmcouncil.org/fibo/FND/AgreementsExt/ContractsExtensions/"
+	xmlns:fibo-fnd-rel-rel="https://spec.edmcouncil.org/fibo/FND/Relations/Relations/"
 	xmlns:fibo-fnd-txn-ecr="https://spec.edmcouncil.org/fibo/FND/TransactionsExt/EconomicResources/"
 	xmlns:fibo-fnd-txn-rea="https://spec.edmcouncil.org/fibo/FND/TransactionsExt/REATransactions/"
 	xmlns:fibo-fnd-txn-txnx="https://spec.edmcouncil.org/fibo/FND/TransactionsExt/TransactionsExtended/"
@@ -37,7 +37,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/DER/DerivativesContractsExt/OTCDerivativeMasterAgreements/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/Agreements/Contracts/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/AgreementsExt/ContractsExtensions/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/AgreementsExt/ContractualConstructs/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/TransactionsExt/EconomicResources/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/TransactionsExt/REATransactions/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/"/>
@@ -56,7 +56,7 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-txn-rea;ContractualTransaction"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-txn-txnx;governedBy"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isGovernedBy"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fnd-txn-txnx;MasterAgreement"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -69,31 +69,18 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;WrittenContract"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-agrx-con;mandates"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-derx-ma;MasterAgreementObligation"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;governs"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-agrx-ctrx;ContractualRelationship"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-txn-txnx;governs"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-agrx-ctrx;ContractualRelationship"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;mandates"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-derx-ma;MasterAgreementObligation"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">master agreement</rdfs:label>
 		<skos:definition xml:lang="en">A legal contract which is deemed to apply to a number of future activities between the parties thereto and having force over future agreements or contracts to be brought into effect between those parties.</skos:definition>
 	</owl:Class>
-	
-	<owl:ObjectProperty rdf:about="&fibo-fnd-txn-txnx;governedBy">
-		<rdfs:label xml:lang="en">governed by</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-txn-txnx;CoveredTransaction"/>
-		<rdfs:range rdf:resource="&fibo-fnd-txn-txnx;MasterAgreement"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-fnd-txn-txnx;governs">
-		<rdfs:label xml:lang="en">governs</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-txn-txnx;MasterAgreement"/>
-		<rdfs:range rdf:resource="&fibo-fnd-agrx-ctrx;ContractualRelationship"/>
-		<skos:definition xml:lang="en">The contractual relationship defined by the master agreement.</skos:definition>
-	</owl:ObjectProperty>
 
 </rdf:RDF>
