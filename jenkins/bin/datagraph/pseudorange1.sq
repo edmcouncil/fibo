@@ -7,7 +7,7 @@ prefix skos: <http://www.w3.org/2004/02/skos/core#>
 prefix edm: <http://www.edmcouncil.org/ddgraph#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 prefix fibo-der-rtd-irswp: <https://spec.edmcouncil.org/fibo/DER/RateDerivatives/IRSwaps/> 
-
+prefix dedm:  <http://www.edmcouncil.org/ddgraph#> 
 
 CONSTRUCT {
 ?domain ?thisp ?ntype ; rdfs:label ?dlabel .
@@ -46,10 +46,20 @@ WHERE {
    FILTER (REGEX (xsd:string (?domain), "edmcouncil"))
 
  {
-  { ?p rdfs:domain ?domain .
+
+   {
+   BIND (dedm:connectedTo AS ?p)
+   BIND ("connected to"  AS ?rlabel)
+   BIND ("" AS ?tdef)
+   BIND (owl:Class  AS ?type)
+   }
+
+   UNION 
+ 
+  { ?p rdfs:domainX ?domain .
     OPTIONAL {?p rdfs:range ?type. ?type rdfs:label ?rlabel ; skos:definition ?tdef .}
-}
-UNION
+  }
+  UNION
 {?domain (rdfs:subClassOf* | owl:equivalentClass)
          / owl:intersectionOf*
 	 /rdf:rest*
@@ -87,6 +97,7 @@ BIND ((IRI (CONCAT (xsd:string (?p),  "-", REPLACE (?dlabel, "[ )(,']", ""))))  
 FILTER (REGEX (xsd:string (?p), "edmcouncil"))
 #?p av:forDD true .
 FILTER NOT EXISTS {?p av:forDD false .}
+#MINUS {?p av:forDD false .}
 ?p a ?proptype.
 #BIND (IF ((?proptype = owl:DatatypeProperty), ?thisc ,
 #        ?type)     AS ?ntype)

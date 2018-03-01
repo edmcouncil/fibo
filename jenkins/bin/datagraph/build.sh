@@ -37,7 +37,7 @@ CONSTRUCT {?s rdfs:label ?badlabel}
 WHERE {?s ?p ?o .
 FILTER NOT EXISTS {?s rdfs:label ?l}
 FILTER (REGEX (xsd:string (?s), "edmcouncil"))
-BIND (REPLACE (xsd:string (?s), "^.*/", "bad label ") AS ?badlabel)
+BIND (REPLACE (xsd:string (?s), "^.*/", "undefined label for ") AS ?badlabel)
 }
 EOF
 
