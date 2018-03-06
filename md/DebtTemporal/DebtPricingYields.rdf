@@ -2,6 +2,7 @@
 <!DOCTYPE rdf:RDF [
 	<!ENTITY dct "http://purl.org/dc/terms/">
 	<!ENTITY fibo-bp-prc-fcp "https://spec.edmcouncil.org/fibo/BP/Process/FinancialContextAndProcess/">
+	<!ENTITY fibo-fbc-dae-dbt "https://spec.edmcouncil.org/fibo/FBC/DebtAndEquities/Debt/">
 	<!ENTITY fibo-fnd-acc-cur "https://spec.edmcouncil.org/fibo/FND/Accounting/CurrencyAmount/">
 	<!ENTITY fibo-fnd-accx-acc "https://spec.edmcouncil.org/fibo/FND/AccountingExt/AccountsMain/">
 	<!ENTITY fibo-fnd-arrxx-meth "https://spec.edmcouncil.org/fibo/FND/ArrangementsExt/MethodsAndRules/">
@@ -25,7 +26,7 @@
 	<!ENTITY fibo-sec-dbt-ab-mbs "https://spec.edmcouncil.org/fibo/SEC/Debt/AssetBacked/MortgageBackedSecurities/">
 	<!ENTITY fibo-sec-dbt-bo-cft "https://spec.edmcouncil.org/fibo/SEC/Debt/Bonds/BondsCashflowTerms/">
 	<!ENTITY fibo-sec-dbt-dbt-cft "https://spec.edmcouncil.org/fibo/SEC/Debt/DebtFoundations/DebtCashflowTerms/">
-	<!ENTITY fibo-sec-dbt-dbtx-dbtx "https://spec.edmcouncil.org/fibo/SEC/Debt/DebtFoundationsExt/DebtInstrumentsExt/">
+	<!ENTITY fibo-sec-dbt-dbti "https://spec.edmcouncil.org/fibo/SEC/Debt/DebtInstruments/">
 	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
 	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
 	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
@@ -35,6 +36,7 @@
 <rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/MD/DebtTemporal/DebtPricingYields/"
 	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fibo-bp-prc-fcp="https://spec.edmcouncil.org/fibo/BP/Process/FinancialContextAndProcess/"
+	xmlns:fibo-fbc-dae-dbt="https://spec.edmcouncil.org/fibo/FBC/DebtAndEquities/Debt/"
 	xmlns:fibo-fnd-acc-cur="https://spec.edmcouncil.org/fibo/FND/Accounting/CurrencyAmount/"
 	xmlns:fibo-fnd-accx-acc="https://spec.edmcouncil.org/fibo/FND/AccountingExt/AccountsMain/"
 	xmlns:fibo-fnd-arrxx-meth="https://spec.edmcouncil.org/fibo/FND/ArrangementsExt/MethodsAndRules/"
@@ -58,7 +60,7 @@
 	xmlns:fibo-sec-dbt-ab-mbs="https://spec.edmcouncil.org/fibo/SEC/Debt/AssetBacked/MortgageBackedSecurities/"
 	xmlns:fibo-sec-dbt-bo-cft="https://spec.edmcouncil.org/fibo/SEC/Debt/Bonds/BondsCashflowTerms/"
 	xmlns:fibo-sec-dbt-dbt-cft="https://spec.edmcouncil.org/fibo/SEC/Debt/DebtFoundations/DebtCashflowTerms/"
-	xmlns:fibo-sec-dbt-dbtx-dbtx="https://spec.edmcouncil.org/fibo/SEC/Debt/DebtFoundationsExt/DebtInstrumentsExt/"
+	xmlns:fibo-sec-dbt-dbti="https://spec.edmcouncil.org/fibo/SEC/Debt/DebtInstruments/"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
@@ -96,9 +98,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/SEC/Debt/AssetBacked/MortgageBackedSecurities/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/SEC/Debt/Bonds/BondsCashflowTerms/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/SEC/Debt/DebtFoundations/DebtCashflowTerms/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/SEC/Debt/DebtFoundationsExt/DebtInstrumentsExt/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/SEC/Debt/DebtInstruments/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/SEC/SecuritiesExt/SchedulesExt/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/SEC/SecuritiesExt/SecuritiesListingsExt/"/>
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/MD/DebtTemporal/DebtPricingYields/"/>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Provisional"/>
@@ -133,7 +133,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-md-dbtx-py;AccruedInterestAmount">
-		<rdfs:subClassOf rdf:resource="https://spec.edmcouncil.org/fibo/FBC/DebtAndEquities/Debt/Interest"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;Interest"/>
 		<rdfs:label xml:lang="en">accrued interest amount</rdfs:label>
 		<skos:definition xml:lang="en">The interest accrued on the bond or debt instrument at the time that the price is quoted. If this is a dirty price, this is the amount of accrued interest that is included in the price. This is therefore passed on to the purchaser of the bond or debt instrument.</skos:definition>
 	</owl:Class>
@@ -669,7 +669,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-md-dbtx-py;isDefaultMethodFor"/>
-				<owl:someValuesFrom rdf:resource="https://spec.edmcouncil.org/fibo/SEC/Debt/DebtInstruments/TradableDebtInstrument"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-dbti;TradableDebtInstrument"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">native yield calculation method</rdfs:label>
@@ -694,7 +694,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-md-dbtx-py;NextPut">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbt-cft;PutOfIssue"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbti;PutEvent"/>
 		<rdfs:label xml:lang="en">next put</rdfs:label>
 		<skos:definition xml:lang="en">The next available put date for the issue, as at the current time.</skos:definition>
 	</owl:Class>
@@ -1012,7 +1012,7 @@
 	<owl:ObjectProperty rdf:about="&fibo-md-dbtx-py;dayCountBasis">
 		<rdfs:label xml:lang="en">day count basis</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-md-dbtx-py;YieldCalculationMethod"/>
-		<rdfs:range rdf:resource="&fibo-sec-dbt-dbtx-dbtx;DayCountBasis"/>
+		<rdfs:range rdf:resource="&fibo-fbc-dae-dbt;DayCountConvention"/>
 		<skos:definition xml:lang="en">The convention used to calculate the number of days in an interest payment period.</skos:definition>
 	</owl:ObjectProperty>
 	
@@ -1144,7 +1144,7 @@
 	
 	<owl:ObjectProperty rdf:about="&fibo-md-dbtx-py;hasInterestRate">
 		<rdfs:label xml:lang="en">has interest rate</rdfs:label>
-		<rdfs:domain rdf:resource="https://spec.edmcouncil.org/fibo/SEC/Debt/DebtInstruments/TradableDebtInstrument"/>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-dbti;TradableDebtInstrument"/>
 		<rdfs:range rdf:resource="&fibo-md-dbtx-int;DebtSecurityInterestAmount"/>
 	</owl:ObjectProperty>
 	
@@ -1156,7 +1156,7 @@
 	
 	<owl:ObjectProperty rdf:about="&fibo-md-dbtx-py;hasMaturity">
 		<rdfs:label xml:lang="en">has maturity</rdfs:label>
-		<rdfs:domain rdf:resource="https://spec.edmcouncil.org/fibo/SEC/Debt/DebtInstruments/TradableDebtInstrument"/>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-dbti;TradableDebtInstrument"/>
 		<rdfs:range rdf:resource="&fibo-md-temx-ins;Maturity"/>
 	</owl:ObjectProperty>
 	
@@ -1208,7 +1208,7 @@
 	<owl:ObjectProperty rdf:about="&fibo-md-dbtx-py;hasYield">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-inf-inf;details"/>
 		<rdfs:label xml:lang="en">has yield</rdfs:label>
-		<rdfs:domain rdf:resource="https://spec.edmcouncil.org/fibo/SEC/Debt/DebtInstruments/TradableDebtInstrument"/>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-dbti;TradableDebtInstrument"/>
 		<rdfs:range rdf:resource="&fibo-md-dbtx-py;DebtInstrumentYield"/>
 	</owl:ObjectProperty>
 	
@@ -1232,7 +1232,7 @@
 	<owl:ObjectProperty rdf:about="&fibo-md-dbtx-py;isDefaultMethodFor">
 		<rdfs:label xml:lang="en">is default method for</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-md-dbtx-py;NativeYieldCalculationMethod"/>
-		<rdfs:range rdf:resource="https://spec.edmcouncil.org/fibo/SEC/Debt/DebtInstruments/TradableDebtInstrument"/>
+		<rdfs:range rdf:resource="&fibo-sec-dbt-dbti;TradableDebtInstrument"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-md-dbtx-py;isSpreadBetween">
@@ -1451,7 +1451,7 @@
 		</rdfs:subClassOf>
 	</owl:Class>
 	
-	<owl:Class rdf:about="https://spec.edmcouncil.org/fibo/SEC/Debt/DebtInstruments/TradableDebtInstrument">
+	<owl:Class rdf:about="&fibo-sec-dbt-dbti;TradableDebtInstrument">
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-md-dbtx-py;hasInterestRate"/>
