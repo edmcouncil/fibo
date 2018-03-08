@@ -31,14 +31,14 @@
 	
 	<owl:Ontology rdf:about="https://spec.edmcouncil.org/fibo/SEC/Securities/ParametricSchedules/">
 		<rdfs:label>Parametric Schedules Ontology</rdfs:label>
+		<dct:abstract>This ontology defines concepts related to parametric schedules, including how to represent individual schedules as well as related date periods, explicit dates, and other concepts needed for parametric schedule representation.</dct:abstract>
 		<dct:license rdf:resource="&sm;MITLicense"/>
 		<sm:contentLanguage rdf:resource="http://www.omg.org/spec/ODM/"/>
 		<sm:contentLanguage rdf:resource="http://www.w3.org/standards/techs/owl#w3c_all"/>
-		<sm:copyright>Copyright (c) 2016-2017 EDM Council, Inc.
-Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2016-2018 EDM Council, Inc.
+Copyright (c) 2016-2018 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:resource="https://spec.edmcouncil.org/fibo/FND/"/>
 		<sm:fileAbbreviation>fibo-sec-sec-sch</sm:fileAbbreviation>
-		<dct:abstract>This ontology defines concepts related to parametric schedules, including how to represent individual schedules as well as related date periods, explicit dates, and other concepts needed for parametric schedule representation.</dct:abstract>
 		<sm:filename>ParametricSchedules.rdf</sm:filename>
 		<rdfs:seeAlso rdf:resource="https://spec.edmcouncil.org/fibo/AboutTheEDMC-FIBOFamily/"/>
 		<rdfs:seeAlso rdf:resource="https://spec.edmcouncil.org/fibo/SEC/AboutSEC/"/>
@@ -48,18 +48,9 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/DatesAndTimes/Occurrences/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/FND/Utilities/AnnotationVocabulary/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/SEC/20170201/Securities/ParametricSchedules/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/SEC/20180301/Securities/ParametricSchedules/"/>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
-	
-	<owl:Class rdf:about="&fibo-fnd-dt-bd;DayOfMonth">
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-fnd-dt-bd;DayOfWeek">
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-fnd-dt-bd;EndOfMonth">
-	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-sch;AuctionDateRule">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-bd;BusinessRecurrenceIntervalConvention"/>
@@ -126,6 +117,7 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 	</owl:Class>
 	
 	<rdfs:Datatype rdf:about="&fibo-sec-sec-sch;DayTypeSelection">
+		<rdfs:label>day type selection</rdfs:label>
 		<owl:equivalentClass>
 			<rdfs:Datatype>
 				<owl:oneOf>
@@ -161,8 +153,20 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 				</owl:oneOf>
 			</rdfs:Datatype>
 		</owl:equivalentClass>
-		<skos:definition>a datatype used to characterize a duration as a number of days between two</skos:definition>
+		<skos:definition>an enumeration used to characterize date determination for recurrence interval in some schedule</skos:definition>
 	</rdfs:Datatype>
+	
+	<owl:Class rdf:about="&fibo-sec-sec-sch;ExplicitlyScheduledEvent">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-oc;Occurrence"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-dt-oc;exemplifies"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-sch;ScheduledEvent"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>explicitly scheduled event</rdfs:label>
+		<skos:definition>an occurrence of a specific occurence kind (scheduled event) and that occurs as part of some regular schedule</skos:definition>
+	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-sch;FloatingRateNoteDate">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-fd;CalculatedDate"/>
@@ -236,8 +240,7 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-dt-fd;hasRecurrenceStartDate"/>
-				<owl:onClass rdf:resource="&fibo-sec-sec-sch;PeriodicScheduledEventDate"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-sch;PeriodicScheduledEventDate"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>parametric schedule</rdfs:label>
@@ -287,6 +290,18 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 		<fibo-fnd-utl-av:explanatoryNote>FpML for CalculationPeriod &apos;A type defining the parameters used in the calculation of a fixed or floating rate calculation period amount. This type forms part of cashflows representation of a swap stream.&apos;</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-sec-sec-sch;ScheduledEvent">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-oc;OccurrenceKind"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isIncludedIn"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;RegularSchedule"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>scheduled event</rdfs:label>
+		<skos:definition>a class of events that are incorporated in some regular schedule</skos:definition>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-sec-sec-sch;SettlementDateRule">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-bd;BusinessRecurrenceIntervalConvention"/>
 		<rdfs:label>settlement date rule</rdfs:label>
@@ -324,5 +339,11 @@ Copyright (c) 2016-2017 Object Management Group, Inc.</sm:copyright>
 		<skos:definition>an auction date for US 13 week and 26 week Treasury bills</skos:definition>
 		<skos:editorialNote>Per FpML notes/definition, this is every Monday except on New York holidays when it will be on a Tuesday.</skos:editorialNote>
 	</owl:Class>
+	
+	<owl:DatatypeProperty rdf:about="&fibo-sec-sec-sch;usesDayTypeSelection">
+		<rdfs:label>uses day selection</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-sec-sec-sch;DayTypeSelection"/>
+		<skos:definition>indicates a classifier for a business recurrence interval</skos:definition>
+	</owl:DatatypeProperty>
 
 </rdf:RDF>
