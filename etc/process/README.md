@@ -66,19 +66,19 @@ Here are the primary products and their product keys (more about that later):
    serializations, including RDF/XML, Turtle, JSON-LD and NQUADS. See the Supported Formats table below to access FIBO
    in these forms.
 
-1. [`glossary`](https://spec.edmcouncil.org/fibo/glossary/master/latest/)
+1. [`glossary`](https://spec.edmcouncil.org/fibo/ontology/glossary/master/latest/)
 
    The FIBO Glossary.	This is a searchable Glossary of terms in HTML.
 
-1. [`vocabulary`](https://spec.edmcouncil.org/fibo/vocabulary/master/latest/)
+1. [`vocabulary`](https://spec.edmcouncil.org/fibo/ontology/vocabulary/master/latest/)
 
    The FIBO Vocabulary consists of a SKOS-taxonomy of terms.
 
-1. [`datadictionary`](https://spec.edmcouncil.org/fibo/datadictionary/master/latest/)
+1. [`datadictionary`](https://spec.edmcouncil.org/fibo/ontology/datadictionary/master/latest/)
 
    The FIBO Data Dictionary	is a spreadsheet version (in the form of a CSV file) of the terms and definitions in FIBO.
 
-1. [`widoco`](https://spec.edmcouncil.org/fibo/widoco/master/latest/)
+1. [`widoco`](https://spec.edmcouncil.org/fibo/ontology/widoco/master/latest/)
 
    The FIBO Ontologies VOWL Visualization	The Visual Notation for OWL Ontologies (VOWL) defines a visual language for the user-oriented representation of ontologies. It provides graphical depictions for elements of the Web Ontology Language (OWL) that are combined to a force-directed graph layout visualizing the ontology.
    
@@ -113,7 +113,7 @@ Here are the primary products and their product keys (more about that later):
    
    >The schema.org product has its own build/test/deploy/publish cycle and is not published on 
    >https://spec.edmcouncil.org, where in a later phase it is expected to end up under 
-   >https://spec.edmcouncil.org/fibo/schema.org . 
+   >https://spec.edmcouncil.org/fibo/ontology/schema.org . 
    >At the moment it is published here: http://schema.org/docs/financial.html
 
 
@@ -121,15 +121,15 @@ These are the "product keys", as they're also used in the URLs that
 are published on https://spec.edmcouncil.org:
 
 - `https://spec.edmcouncil.org/fibo/ontology/...`
-- `https://spec.edmcouncil.org/fibo/glossary/...`
-- `https://spec.edmcouncil.org/fibo/vocabulary/...`
-- `https://spec.edmcouncil.org/fibo/datadictionary/...`
-- `https://spec.edmcouncil.org/fibo/widoco/...`
+- `https://spec.edmcouncil.org/fibo/ontology/glossary/...`
+- `https://spec.edmcouncil.org/fibo/ontology/vocabulary/...`
+- `https://spec.edmcouncil.org/fibo/ontology/datadictionary/...`
+- `https://spec.edmcouncil.org/fibo/ontology/widoco/...`
 
 Then actually, we do also have a few other "products" that can be treated in the same
 way as the above products, so we assign product keys to them as well:
 
-1. [`doc`](https://spec.edmcouncil.org/fibo/doc/)
+1. [`doc`](https://spec.edmcouncil.org/fibo/ontology/doc/)
 
    The primary generated FIBO documentation. Special software, still to be developed
    (although parts already exist), will be used to generate an HTML5 website with the
@@ -213,7 +213,7 @@ The branch and tag name come back in the URL of a published artifact on https://
 for instance like:
 
 - `https://spec.edmcouncil.org/fibo/ontology/master/BE/latest/Corporations/..` -> 'master/latest'
-- `https://spec.edmcouncil.org/fibo/vocabulary/master/2017Q4/all.ttl`  -> 'master/2017Q4'
+- `https://spec.edmcouncil.org/fibo/ontology/vocabulary/master/2017Q4/all.ttl`  -> 'master/2017Q4'
 
 See for a more detailed explanation below
 
