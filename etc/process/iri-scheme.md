@@ -62,7 +62,7 @@ https://spec.edmcouncil.org/fibo/ontology/master/latest/FND/AgentsAndPeople/Peop
 The above OWL class IRI could be represented in the documentation as follows:
 
 ```
-https://spec.edmcouncil.org/fibo/widoco/master/latest/FND/AgentsAndPeople/People/index-en.html#Adult
+https://spec.edmcouncil.org/fibo/ontology/widoco/master/latest/FND/AgentsAndPeople/People/index-en.html#Adult
 ```
 
 ## Static files IRI scheme
