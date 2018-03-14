@@ -24,10 +24,10 @@ SELECT DISTINCT ?error
 WHERE {
   ?ont a owl:Ontology .
   FILTER (REGEX (xsd:string (?ont), "edmcouncil"))	
-  ?ont rdfs:label ?l  ;
+  FILTER NOT EXISTS {?ont rdfs:label ?l  ;
                skos:definition ?def ;
 	       sm:copyright ?cr ;
 	       dct:license ?lic ;
-	       dct:abstract ?abs .
+	       dct:abstract ?abs .}
 BIND (concat ("PRODERROR: ", afn:localname(?ont), " has to have appropriate metadata.") AS ?error)
 }
