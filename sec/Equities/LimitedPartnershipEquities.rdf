@@ -7,7 +7,7 @@
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
 	<!ENTITY fibo-sec-eq-eq "https://spec.edmcouncil.org/fibo/ontology/SEC/Equities/EquityInstruments/">
 	<!ENTITY fibo-sec-eq-lpe "https://spec.edmcouncil.org/fibo/ontology/SEC/Equities/LimitedPartnershipEquities/">
-	<!ENTITY fibo-sec-secx-resx "https://spec.edmcouncil.org/fibo/ontology/SEC/SecuritiesExt/SecuritiesRestrictionsExt/">
+	<!ENTITY fibo-sec-sec-rst "https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesRestrictions/">
 	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
 	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
 	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
@@ -22,7 +22,7 @@
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
 	xmlns:fibo-sec-eq-eq="https://spec.edmcouncil.org/fibo/ontology/SEC/Equities/EquityInstruments/"
 	xmlns:fibo-sec-eq-lpe="https://spec.edmcouncil.org/fibo/ontology/SEC/Equities/LimitedPartnershipEquities/"
-	xmlns:fibo-sec-secx-resx="https://spec.edmcouncil.org/fibo/ontology/SEC/SecuritiesExt/SecuritiesRestrictionsExt/"
+	xmlns:fibo-sec-sec-rst="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesRestrictions/"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
@@ -38,7 +38,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Equities/EquityInstruments/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/SecuritiesExt/SecuritiesRestrictionsExt/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesRestrictions/"/>
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Equities/LimitedPartnershipEquities/"/>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Provisional"/>
 	</owl:Ontology>
@@ -47,8 +47,20 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;TransferableContract"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;hasCounterparty"/>
+				<owl:someValuesFrom rdf:resource="&fibo-be-ptr-ptr;LimitedPartner"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;confers"/>
 				<owl:someValuesFrom rdf:resource="&fibo-sec-eq-eq;VotingRight"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;defines"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-eq-lpe;LimitedPartnershipUnitRestriction"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -57,55 +69,15 @@
 				<owl:someValuesFrom rdf:resource="&fibo-sec-eq-eq;SecurityPaymentStatus"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-eq-lpe;definesRestrictions"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-eq-lpe;LimitedPartnershipUnitRestriction"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-eq-lpe;limitedPartnerhipUnitHasHolderLimitedPartner"/>
-				<owl:someValuesFrom rdf:resource="&fibo-be-ptr-ptr;LimitedPartner"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">limited partnership unit</rdfs:label>
 		<skos:definition xml:lang="en">A limited partnership is a form of partnership similar to a general partnership, except that in addition to one or more general partners (GPs) there are one or more limited partners (LPs).</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Like shareholders in a corporation, the LPs have limited liability, i.e. they are only liable on debts incurred by the firm to the extent of their registered investment, and they have no management authority. The GPs pay the LPs the equivalent of a dividend on their investment, the nature and extent of which is usually defined in the partnership agreement.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-eq-lpe;LimitedPartnershipUnitRestriction">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-secx-resx;SecurityContractualRestriction"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-rst;ContractualRestriction"/>
 		<rdfs:label xml:lang="en">limited partnership unit restriction</rdfs:label>
 		<skos:definition xml:lang="en">Restrictions on ownership or transfer of the Units.</skos:definition>
 	</owl:Class>
-	
-	<owl:ObjectProperty rdf:about="&fibo-sec-eq-lpe;definesRestrictions">
-		<rdfs:label xml:lang="en">defines restrictions</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-eq-lpe;LimitedPartnershipUnit"/>
-		<rdfs:range rdf:resource="&fibo-sec-eq-lpe;LimitedPartnershipUnitRestriction"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-sec-eq-lpe;investorType">
-		<rdfs:label xml:lang="en">defines investor type</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-eq-lpe;LimitedPartnershipUnitRestriction"/>
-		<rdfs:range rdf:resource="&fibo-sec-secx-resx;InvestorType"/>
-		<skos:definition xml:lang="en">Type of investor that is allowed to hold the security.</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-sec-eq-lpe;limitedPartnerhipUnitHasHolderLimitedPartner">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-agr-ctr;hasCounterparty"/>
-		<rdfs:label xml:lang="en">limited partnerhip unit has holder limited partner</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-eq-lpe;LimitedPartnershipUnit"/>
-		<rdfs:range rdf:resource="&fibo-be-ptr-ptr;LimitedPartner"/>
-		<skos:definition xml:lang="en">The holder of the Limited Partnership Unit is a Limited Partner.</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:DatatypeProperty rdf:about="&fibo-sec-eq-lpe;restricted">
-		<rdfs:label xml:lang="en">restricted</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-eq-lpe;LimitedPartnershipUnitRestriction"/>
-		<rdfs:range rdf:resource="&xsd;boolean"/>
-		<skos:definition xml:lang="en">Yes = Restricted; No = Free.</skos:definition>
-	</owl:DatatypeProperty>
 
 </rdf:RDF>
