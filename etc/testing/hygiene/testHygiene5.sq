@@ -1,0 +1,33 @@
+prefix fibo-der-rtd-irswp: <http://spec.edmcouncil.org/fibo/DER/RateDerivatives/IRSwaps/> 
+prefix fibo-der-drc-swp: <http://spec.edmcouncil.org/fibo/DER/DerivativesContracts/Swaps/> 
+prefix fibo-ind-ir-ir: <http://spec.edmcouncil.org/fibo/IND/InterestRates/InterestRates/> 
+prefix ex:    <http://www.example.org/time#> 
+prefix owl:   <http://www.w3.org/2002/07/owl#> 
+prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+prefix spin:  <http://spinrdf.org/spin#> 
+prefix xsd:   <http://www.w3.org/2001/XMLSchema#> 
+prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> 
+prefix sp:    <http://spinrdf.org/sp#> 
+prefix fibo-test-lattice: <http://www.omg.org/spec/fibo/etc/testing/patterns/lattice#> 
+prefix fibo-fnd-aap-agt: <http://spec.edmcouncil.org/fibo/FND/AgentsAndPeople/Agents/> 
+prefix fibo-fnd-pty-rl: <http://spec.edmcouncil.org/fibo/FND/Parties/Roles/>
+prefix afn: <http://jena.hpl.hp.com/ARQ/function#>
+prefix sm: <http://www.omg.org/techprocess/ab/SpecificationMetadata/>
+prefix skos: <http://www.w3.org/2004/02/skos/core#>
+prefix dct: <http://purl.org/dc/terms/>
+prefix fibo-fnd-utl-av: <https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/>
+##
+# banner Every Ontology defined in FIBO must have a rdfs:label, skos:definition, sm:copyright, dct:license, dct:abstract
+
+
+SELECT DISTINCT ?error
+WHERE {
+  ?ont a owl:Ontology .
+  FILTER (REGEX (xsd:string (?ont), "edmcouncil"))	
+  FILTER NOT EXISTS {?ont rdfs:label ?l  ;
+               skos:definition ?def ;
+	       sm:copyright ?cr ;
+	       dct:license ?lic ;
+	       dct:abstract ?abs .}
+BIND (concat ("PRODERROR: ", xsd:string(?ont), " has to have appropriate metadata.") AS ?error)
+}
