@@ -2,6 +2,7 @@
 <!DOCTYPE rdf:RDF [
 	<!ENTITY dct "http://purl.org/dc/terms/">
 	<!ENTITY fibo-fnd-acc-cur "https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/">
+	<!ENTITY fibo-fnd-arr-arr "https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Arrangements/">
 	<!ENTITY fibo-fnd-oac-own "https://spec.edmcouncil.org/fibo/ontology/FND/OwnershipAndControl/Ownership/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
 	<!ENTITY fibo-loan-loan-loan "https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoanBasicTerms/">
@@ -20,6 +21,7 @@
 <rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/AssetBacked/AssetBackedSecurities/"
 	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fibo-fnd-acc-cur="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"
+	xmlns:fibo-fnd-arr-arr="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Arrangements/"
 	xmlns:fibo-fnd-oac-own="https://spec.edmcouncil.org/fibo/ontology/FND/OwnershipAndControl/Ownership/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
 	xmlns:fibo-loan-loan-loan="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoanBasicTerms/"
@@ -40,6 +42,7 @@
 		<dct:abstract>Debt securities backed by a pool of assets, including loans of various kinds, credit card pools and home equity lines of credit, as well as esoteric assets.</dct:abstract>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/FunctionalEntities/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Arrangements/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/OwnershipAndControl/Ownership/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoanBasicTerms/"/>
@@ -94,7 +97,7 @@
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-ab-abs;LoanPool"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-ab-abs;hasConstituent"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-arr-arr;hasConstituent"/>
 				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-ab-abs;AutoLoanPoolConstituent"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -194,7 +197,7 @@
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-ab-abs;LoanPool"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-ab-abs;hasConstituent.1"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-arr-arr;hasConstituent"/>
 				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-ab-abs;HomeEquityLineOfCreditPoolConstituent"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -223,7 +226,7 @@
 	<owl:Class rdf:about="&fibo-sec-dbt-ab-abs;LoanPoolConstituent">
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-ab-abs;isConstituentOf"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-arr-arr;isConstituentOf"/>
 				<owl:onClass rdf:resource="&fibo-sec-dbt-ab-abs;LoanPool"/>
 				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
 			</owl:Restriction>
@@ -270,28 +273,6 @@
 		<skos:definition xml:lang="en">a textual description of the cash flow used as an asset.</skos:definition>
 	</owl:DatatypeProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-ab-abs;hasConsituent">
-		<rdfs:label xml:lang="en">has consituent</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-ab-abs;LoanPool"/>
-		<rdfs:range rdf:resource="&fibo-sec-dbt-ab-abs;LoanPoolConstituent"/>
-		<owl:inverseOf rdf:resource="&fibo-sec-dbt-ab-abs;isConstituentOf"/>
-		<skos:definition xml:lang="en">The loans which make up the pool of Loans grouped as an Asset for example to be used as Collateral for a Security. Note: Implied from the definition of Loan Participation Note.</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-ab-abs;hasConstituent">
-		<rdfs:subPropertyOf rdf:resource="&fibo-sec-dbt-ab-abs;hasConsituent"/>
-		<rdfs:label xml:lang="en">has constituent</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-ab-abs;AutoLoanPool"/>
-		<rdfs:range rdf:resource="&fibo-sec-dbt-ab-abs;AutoLoanPoolConstituent"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-ab-abs;hasConstituent.1">
-		<rdfs:subPropertyOf rdf:resource="&fibo-sec-dbt-ab-abs;hasConsituent"/>
-		<rdfs:label xml:lang="en">has constituent</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-ab-abs;HomeEquityLineOfCreditPool"/>
-		<rdfs:range rdf:resource="&fibo-sec-dbt-ab-abs;HomeEquityLineOfCreditPoolConstituent"/>
-	</owl:ObjectProperty>
-	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-ab-abs;hasUnderlyingAssets">
 		<rdfs:label xml:lang="en">has underlying assets</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-dbt-ab-abs;CashAssetBackedSecurityInstrument"/>
@@ -315,12 +296,6 @@
 		<rdfs:label xml:lang="en">has underlying cashflow</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-dbt-ab-abs;EsotericABS"/>
 		<rdfs:range rdf:resource="&fibo-sec-dbt-ab-abs;PromisedCashFlowAsset"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-ab-abs;isConstituentOf">
-		<rdfs:label xml:lang="en">is constituent of</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-ab-abs;LoanPoolConstituent"/>
-		<rdfs:range rdf:resource="&fibo-sec-dbt-ab-abs;LoanPool"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-ab-abs;poolHasLoanType">
