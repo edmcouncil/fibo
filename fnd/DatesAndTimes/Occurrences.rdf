@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE rdf:RDF [
 	<!ENTITY dct "http://purl.org/dc/terms/">
+	<!ENTITY fibo-fnd-arr-arr "https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Arrangements/">
+	<!ENTITY fibo-fnd-dt-bd "https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/BusinessDates/">
 	<!ENTITY fibo-fnd-dt-fd "https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/">
 	<!ENTITY fibo-fnd-dt-oc "https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/Occurrences/">
 	<!ENTITY fibo-fnd-plc-loc "https://spec.edmcouncil.org/fibo/ontology/FND/Places/Locations/">
@@ -15,6 +17,8 @@
 ]>
 <rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/Occurrences/"
 	xmlns:dct="http://purl.org/dc/terms/"
+	xmlns:fibo-fnd-arr-arr="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Arrangements/"
+	xmlns:fibo-fnd-dt-bd="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/BusinessDates/"
 	xmlns:fibo-fnd-dt-fd="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"
 	xmlns:fibo-fnd-dt-oc="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/Occurrences/"
 	xmlns:fibo-fnd-plc-loc="https://spec.edmcouncil.org/fibo/ontology/FND/Places/Locations/"
@@ -33,8 +37,10 @@
 		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
 		<sm:contentLanguage rdf:datatype="&xsd;anyURI">http://www.omg.org/spec/ODM/</sm:contentLanguage>
 		<sm:contentLanguage rdf:datatype="&xsd;anyURI">http://www.w3.org/standards/techs/owl#w3c_all</sm:contentLanguage>
-		<sm:copyright>Copyright (c) 2014-2017 EDM Council, Inc.
-Copyright (c) 2014-2017 Object Management Group, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2014-2018 EDM Council, Inc.
+Copyright (c) 2014-2018 Object Management Group, Inc.</sm:copyright>
+		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Arrangements/</sm:dependsOn>
+		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/BusinessDates/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/Places/Locations/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/</sm:dependsOn>
@@ -44,11 +50,13 @@ Copyright (c) 2014-2017 Object Management Group, Inc.</sm:copyright>
 		<rdfs:seeAlso rdf:resource="https://spec.edmcouncil.org/fibo/ontology/AboutTheEDMC-FIBOFamily/"/>
 		<rdfs:seeAlso rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/AboutDatesAndTimes/"/>
 		<rdfs:seeAlso rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/AboutFND/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Arrangements/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/BusinessDates/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Places/Locations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20171101/DatesAndTimes/Occurrences/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20180301/DatesAndTimes/Occurrences/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20141101/DatesAndTimes/Occurrences/ version of this ontology was revised to address the issue resolutions in the FIBO FND 1.3 RTF report, primarily to add properties that are relevant to the inputs and outputs from processes, events, systems and the like.</skos:changeNote>
 		<skos:changeNote>This ontology was added to Foundations in advance of the December 2014 Long Beach meeting in support of the SEC specification.  It is also needed to provide temporal relationships for Ownership and Control.
 
@@ -64,21 +72,39 @@ They are modularized this way to minimize the ontological committments that are 
 	
 	<owl:Class rdf:about="&fibo-fnd-dt-fd;AdHocScheduleEntry">
 		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;comprises"/>
-				<owl:onClass rdf:resource="&fibo-fnd-dt-oc;OccurrenceKind"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-			</owl:Restriction>
+			<owl:Class>
+				<owl:unionOf rdf:parseType="Collection">
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;comprises"/>
+						<owl:onClass rdf:resource="&fibo-fnd-dt-oc;OccurrenceKind"/>
+						<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+					</owl:Restriction>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&fibo-fnd-dt-oc;hasOccurrence"/>
+						<owl:onClass rdf:resource="&fibo-fnd-dt-oc;Occurrence"/>
+						<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+					</owl:Restriction>
+				</owl:unionOf>
+			</owl:Class>
 		</rdfs:subClassOf>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-dt-fd;RegularSchedule">
 		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;comprises"/>
-				<owl:onClass rdf:resource="&fibo-fnd-dt-oc;OccurrenceKind"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-			</owl:Restriction>
+			<owl:Class>
+				<owl:unionOf rdf:parseType="Collection">
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;comprises"/>
+						<owl:onClass rdf:resource="&fibo-fnd-dt-oc;OccurrenceKind"/>
+						<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+					</owl:Restriction>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&fibo-fnd-dt-oc;hasOccurrence"/>
+						<owl:onClass rdf:resource="&fibo-fnd-dt-oc;Occurrence"/>
+						<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+					</owl:Restriction>
+				</owl:unionOf>
+			</owl:Class>
 		</rdfs:subClassOf>
 	</owl:Class>
 	
@@ -88,11 +114,20 @@ They are modularized this way to minimize the ontological committments that are 
 	
 	<owl:Class rdf:about="&fibo-fnd-dt-fd;ScheduleStub">
 		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;comprises"/>
-				<owl:onClass rdf:resource="&fibo-fnd-dt-oc;OccurrenceKind"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-			</owl:Restriction>
+			<owl:Class>
+				<owl:unionOf rdf:parseType="Collection">
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;comprises"/>
+						<owl:onClass rdf:resource="&fibo-fnd-dt-oc;OccurrenceKind"/>
+						<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+					</owl:Restriction>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&fibo-fnd-dt-oc;hasOccurrence"/>
+						<owl:onClass rdf:resource="&fibo-fnd-dt-oc;Occurrence"/>
+						<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+					</owl:Restriction>
+				</owl:unionOf>
+			</owl:Class>
 		</rdfs:subClassOf>
 	</owl:Class>
 	
@@ -102,16 +137,43 @@ They are modularized this way to minimize the ontological committments that are 
 	
 	<owl:Class rdf:about="&fibo-fnd-dt-oc;Occurrence">
 		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-dt-oc;exemplifies"/>
-				<owl:onClass rdf:resource="&fibo-fnd-dt-oc;OccurrenceKind"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-			</owl:Restriction>
+			<owl:Class>
+				<owl:unionOf rdf:parseType="Collection">
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&fibo-fnd-dt-bd;holdsDuring"/>
+						<owl:onClass rdf:resource="&fibo-fnd-dt-fd;DatePeriod"/>
+						<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+					</owl:Restriction>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&fibo-fnd-dt-oc;hasEventDate"/>
+						<owl:onDataRange>
+							<rdfs:Datatype>
+								<owl:unionOf rdf:parseType="Collection">
+									<rdf:Description rdf:about="&xsd;string">
+									</rdf:Description>
+									<rdf:Description rdf:about="&xsd;dateTime">
+									</rdf:Description>
+									<rdf:Description rdf:about="&xsd;dateTimeStamp">
+									</rdf:Description>
+								</owl:unionOf>
+							</rdfs:Datatype>
+						</owl:onDataRange>
+						<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+					</owl:Restriction>
+				</owl:unionOf>
+			</owl:Class>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-plc-loc;isLocatedAt"/>
 				<owl:onClass rdf:resource="&fibo-fnd-plc-loc;Location"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-dt-oc;exemplifies"/>
+				<owl:onClass rdf:resource="&fibo-fnd-dt-oc;OccurrenceKind"/>
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -142,10 +204,11 @@ They are modularized this way to minimize the ontological committments that are 
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>occurrence kind</rdfs:label>
-		<skos:definition>An OccurrenceKind is a type of event, which has a description. An OccurrenceKind may or may not ever happen, and thus does not have a Date. An OccurrenceKind happens as an Occurrence, which does have a Date.</skos:definition>
+		<skos:definition>instances of OccurrenceKind are types of events, each having a description</skos:definition>
 		<skos:editorialNote>In order for other ontologies to accept FinancialDates without committing to the particular notions of &apos;Occurrence&apos; and &apos;OccurrenceKind&apos; that is modeled here, all aspects of Occurrences are captured in this ontolog</skos:editorialNote>
 		<skos:example>Loan origination</skos:example>
 		<skos:example>Trade settlement</skos:example>
+		<fibo-fnd-utl-av:explanatoryNote>As types (or categories) of events, OccurenceKinds do not happen; OccurenceKinds describe Occurrences which happen and exemplify an OccurenceKind. As occurrences are things that actually happen, they have an actual date where as OccurenceKinds do not have an actual date.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<rdf:Description rdf:about="&fibo-fnd-dt-oc;exemplifies">
@@ -154,8 +217,7 @@ They are modularized this way to minimize the ontological committments that are 
 		<rdfs:label>exemplifies</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fnd-dt-oc;Occurrence"/>
 		<rdfs:range rdf:resource="&fibo-fnd-dt-oc;OccurrenceKind"/>
-		<owl:inverseOf rdf:resource="&fibo-fnd-dt-oc;hasOccurrence"/>
-		<skos:definition>illustrates by example</skos:definition>
+		<skos:definition>is a realization or example of</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.merriam-webster.com/dictionary/exemplify</fibo-fnd-utl-av:adaptedFrom>
 	</rdf:Description>
 	
@@ -163,6 +225,23 @@ They are modularized this way to minimize the ontological committments that are 
 		<rdfs:label>has description</rdfs:label>
 		<rdfs:range rdf:resource="&xsd;string"/>
 		<skos:definition>a textual description of something</skos:definition>
+	</owl:DatatypeProperty>
+	
+	<owl:DatatypeProperty rdf:about="&fibo-fnd-dt-oc;hasEventDate">
+		<rdfs:label>has event date</rdfs:label>
+		<rdfs:range>
+			<rdfs:Datatype>
+				<owl:unionOf rdf:parseType="Collection">
+					<rdf:Description rdf:about="&xsd;string">
+					</rdf:Description>
+					<rdf:Description rdf:about="&xsd;dateTime">
+					</rdf:Description>
+					<rdf:Description rdf:about="&xsd;dateTimeStamp">
+					</rdf:Description>
+				</owl:unionOf>
+			</rdfs:Datatype>
+		</rdfs:range>
+		<skos:definition>the date or date and time associated with an event (occurrence)</skos:definition>
 	</owl:DatatypeProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-dt-oc;hasInput">
@@ -175,10 +254,8 @@ They are modularized this way to minimize the ontological committments that are 
 	<owl:ObjectProperty rdf:about="&fibo-fnd-dt-oc;hasOccurrence">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;has"/>
 		<rdfs:label>has occurrence</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-dt-oc;OccurrenceKind"/>
 		<rdfs:range rdf:resource="&fibo-fnd-dt-oc;Occurrence"/>
-		<owl:equivalentProperty rdf:resource="&fibo-fnd-dt-oc;isExemplifiedBy"/>
-		<skos:definition>identifies occurrences of a given occurrence kind</skos:definition>
+		<skos:definition>identifies events of a given occurrence kind, typically as they occur in a schedule</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-dt-oc;hasOutput">

@@ -26,11 +26,12 @@ SELECT DISTINCT ?error
 WHERE {
   ?e a ?c .
   FILTER (REGEX (xsd:string (?e), "edmcouncil"))
+  FILTER NOT EXISTS {?e owl:deprecated "true"^^xsd:boolean}
   FILTER (?c in (owl:Class,
           owl:ObjectProperty,
           owl:AnnotationProperty,
           owl:DatatypeProperty))
   FILTER NOT EXISTS { ?e rdfs:label | fibo-fnd-utl-av:abbreviation ?l  ;
           skos:definition ?def .}
-BIND (concat ("PRODERROR: ", xsd:string(?e), " has to have label and definition.") AS ?error)
+BIND (concat ("WARN: ", xsd:string(?e), " has to have label and definition.") AS ?error)
 }
