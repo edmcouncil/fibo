@@ -17,13 +17,14 @@ prefix fibo-fnd-utl-av: <https://spec.edmcouncil.org/fibo/ontology/FND/Utilities
 ##
 # banner If we refer to something, it should have a type. 
 
-SELECT DISTINCT ?error 
+SELECT DISTINCT ?error
 WHERE {
   ?s ?p ?o .
   FILTER (ISIRI (?o))
   FILTER (REGEX (xsd:string (?o), "edmcouncil"))
- FILTER NOT EXISTS {?o a []}
-
+  FILTER NOT EXISTS {?o a []}
+  FILTER (! (?p IN (owl:versionIRI, sm:dependsOn ,
+                    rdfs:seeAlso))) 
 BIND (concat ("ERROR:", xsd:string (?o), " is referenced but has no type.")
 	  AS ?error)
  } 
