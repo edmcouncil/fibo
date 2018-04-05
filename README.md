@@ -9,12 +9,12 @@ server: https://wiki.edmcouncil.org.
 
 ## Directories
 
-Directory                | Purpose | Confluence |
+Directory                | Purpose | FIBO Content Team Wiki |
 :----------------------- |:------- |:-----------|
 [/etc](./etc/README.md)  | Everything that is not a published OWL ontology in a financial domain | [INFRA](https://wiki.edmcouncil.org/display/INFRA) |
 [/be](./be/README.md)    | Business Entities | [BE](https://wiki.edmcouncil.org/display/BE) |
-[/bp](./bp/README.md)    | .. | .. |
-[/cae](./cae/README.md)  | .. | .. |
+[/bp](./bp/README.md)    | Business Process | .. |
+[/cae](./cae/README.md)  | Corporate Actions & Events | .. |
 [/civ](./civ/README.md)  | .. | .. |
 [/der](./der/README.md)  | Derivatives | [DER](https://wiki.edmcouncil.org/display/DER) |
 [/fnd](./fnd/README.md)  | Foundations | [FND](https://wiki.edmcouncil.org/display/FND) |
