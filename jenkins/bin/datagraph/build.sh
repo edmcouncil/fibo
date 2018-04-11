@@ -94,13 +94,40 @@ arq --data=badlabels.ttl --data=combined.ttl --data=AllProd.ttl  --query=pseudor
 cat > subp.sq <<EOF
 prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 prefix edm: <http://www.edmcouncil.org/temp#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
 
-
-CONSTRUCT {?a edm:subPropertyOf ?b}
-WHERE {?a rdfs:subPropertyOf ?b}
+CONSTRUCT {?a rdfs:subPropertyOf ?b .
+?b rdfs:label ?label ; a ?type .
+}
+WHERE {?a rdfs:subPropertyOf ?b .
+?b rdfs:label ?label .
+?b a ?type .
+}
 EOF
 
 arq --data=combined.ttl  --query=subp.sq > subp.ttl
+
+
+
+
+cat > invp.sq <<EOF
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix edm: <http://www.edmcouncil.org/temp#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+
+CONSTRUCT {?a owl:inverseOf ?i .
+?a rdfs:label ?label ; a ?type .
+?i rdfs:label ?ilabel ; a ?itype .
+}
+WHERE {
+?a owl:inverseOf  ?i ; rdfs:label ?label ; a ?type .
+          ?i rdfs:label ?ilabel ; rdf:type ?itype .
+}
+EOF
+
+arq --data=combined.ttl  --query=invp.sq > invp.ttl
 
 
 
@@ -159,7 +186,7 @@ WHERE {
        ?s ?pb ?x .
        ?x skos:broader+ ?o
       }
-    FILTER (?pa != edm:subPropertyOf)
+#    FILTER (?pa != edm:subPropertyOf)
 
     FILTER EXISTS {?s ?notm ?o .
                    FILTER (?notm != av:hasMaturityLevel)  }
@@ -167,7 +194,7 @@ WHERE {
 EOF
 
 
-arq  --data=maturity.ttl --data=pr1.ttl --data=parent.ttl      --data=subp.ttl --query=filter.sq > pr2.ttl
+arq  --data=maturity.ttl --data=pr1.ttl --data=parent.ttl  --data=invp.ttl    --data=subp.ttl --query=filter.sq > pr2.ttl
 #arq  --data=pr1.ttl --data=parent.ttl      --data=subp.ttl --query=filter.sq > pr2.ttl
 
 
