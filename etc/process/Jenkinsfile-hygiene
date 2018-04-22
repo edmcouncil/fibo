@@ -119,6 +119,14 @@ pipeline {
           echo 'Checked out the LCC repo'
         }
         echo 'Checked it all out'
+        dir('jena') {
+          sh 'curl --location --output jena.tar.gz --url http://apache.mirror.anlx.net/jena/binaries/apache-jena-3.7.0.tar.gz'
+          sh 'tar xvzf jena.tar.gz'
+          sh 'rm jena.tar.gz'
+        }
+        dir('spin') {
+          sh 'curl --location --output spin.jar --url https://www.topquadrant.com/repository/spin/org/topbraid/spin/2.0.0/spin-2.0.0.jar'
+        }
       }
     } // end of stage 'Prepare'
 
@@ -150,7 +158,7 @@ pipeline {
         //    a symlink /usr/local/jena which will always point to the latest
         //     installed version.
         //
-        JENA_HOME = '/usr/local/apache-jena-2.12.0'
+        JENA_HOME = "${env.WORKSPACE}/jena"
       }
       steps {
         echo "JENA_HOME=${JENA_HOME}"
@@ -160,31 +168,33 @@ pipeline {
           for lib in `ls $JENA_HOME/lib/*.jar`; do
             JENA_LIBS=$JENA_LIBS:$lib
           done
-          export CLASSPATH=$CLASSPATH:/usr/local/SPIN-from-RIF/:$JENA_LIBS:/usr/local/SPIN-from-RIF/SPIN/spin-1.3.3.jar
+          #export CLASSPATH=$CLASSPATH:/usr/local/SPIN-from-RIF/:$JENA_LIBS:/usr/local/SPIN-from-RIF/SPIN/spin-1.3.3.jar
+          export CLASSPATH=$CLASSPATH:${WORKSPACE}/spin/spin.jar:$JENA_LIBS
+          mkdir target >/dev/null 2>&1 || true
           echo "Calling arq"
           #
           # Get ontologies for Dev
           #
-          /usr/local/jena/bin/arq $(find  . -name "*.rdf" | grep -v "/etc/" | sed "s/^/--data=/") \
-            --query=etc/testing/echo.sq \
-            --results=TTL > DEV.ttl
+          ./jena/bin/arq $(find ./fibo -name "*.rdf" | grep -v "/etc/" | sed "s/^/--data=/") \
+            --query=./fibo/etc/testing/echo.sq \
+            --results=TTL > target/DEV.ttl
 
           #
           # Get ontologies for Prod
           #
-          /usr/local/jena/bin/arq \
-            $(grep -r 'utl-av[:;.]Release' . | sed 's/:.*$//;s/^/--data=/' | grep -F ".rdf") \
-            --query=etc/testing/echo.sq \
-            --results=TTL > PROD.ttl
+          ./jena/bin/arq \
+            $(grep -r 'utl-av[:;.]Release' ./fibo | sed 's/:.*$//;s/^/--data=/' | grep -F ".rdf") \
+            --query=./fibo/etc/testing/echo.sq \
+            --results=TTL > target/PROD.ttl
 
           echo "Running tests"
           echo "Errors in DEV"
           echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-          find etc -name 'testHygiene*.sq' -exec grep "banner" {} \\; -exec /usr/local/jena/bin/arq --data=DEV.ttl --query={} \\; | sed 's/PRODERROR/WARN/'
+          find ./fibo/etc -name 'testHygiene*.sq' -exec grep "banner" {} \\; -exec ./jena/bin/arq --data=DEV.ttl --query={} \\; | sed 's/PRODERROR/WARN/'
           echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
           echo "Errors in PROD"
           echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-          find etc -name 'testHygiene*.sq' -exec grep "banner" {} \\; -exec /usr/local/jena/bin/arq --data=PROD.ttl --query={} \\; | sed 's/PRODERROR/ERROR/'
+          find ./fibo/etc -name 'testHygiene*.sq' -exec grep "banner" {} \\; -exec ./jena/bin/arq --data=PROD.ttl --query={} \\; | sed 's/PRODERROR/ERROR/'
           echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
         '''
       }
