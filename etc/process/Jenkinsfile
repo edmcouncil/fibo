@@ -77,10 +77,43 @@ pipeline {
         // Then check out the fibo-infra repo content into the ./fibo-infra directory
         //
         dir('fibo-infra') {
+          checkout \
+            changelog: false,
+            poll: false,
+            scm: [
+              $class: 'GitSCM',
+              branches: [
+                [name: "*/${env.FIBO_INFRA_BRANCH}"]
+              ],
+              doGenerateSubmoduleConfigurations: false,
+              extensions: [
+                [
+                  $class: 'CheckoutOption',
+                  timeout: 1
+                ], [
+                  $class: 'CloneOption',
+                  noTags: true,
+                  reference: '',
+                  shallow: true,
+                  timeout: 1
+                ], [
+                  $class: 'PruneStaleBranch'
+                ], [
+                  $class: 'IgnoreNotifyCommit'
+                ]
+              ],
+              submoduleCfg: [],
+              userRemoteConfigs: [
+                [
+                  credentialsId: '50cac519-d41c-4765-8563-c43b7f55c877',
+                  url: 'https://github.com/edmcouncil/fibo-infra.git'
+                ]
+              ]
+            ]
           //
           // If you want to check out a specific version of fibo-infra add the "branch:" parameter
           //
-          git branch: env.FIBO_INFRA_BRANCH, credentialsId: 'edmcjenkins_at_edmcouncil.org', url: 'git@github.com:edmcouncil/fibo-infra.git'
+          //git branch: env.FIBO_INFRA_BRANCH, credentialsId: 'edmcjenkins_at_edmcouncil.org', url: 'git@github.com:edmcouncil/fibo-infra.git'
           //
           // git credentialsId: 'edmcjenkins_at_edmcouncil.org', url: 'git@github.com:edmcouncil/fibo-infra.git'
           echo "Checked out fibo-infra repo, branch ${env.FIBO_INFRA_BRANCH}"
