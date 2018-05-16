@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE rdf:RDF [
 	<!ENTITY dct "http://purl.org/dc/terms/">
+	<!ENTITY fibo-fbc-dae-dbt "https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/">
 	<!ENTITY fibo-fnd-acc-cur "https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/">
 	<!ENTITY fibo-fnd-agr-ctr "https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/">
 	<!ENTITY fibo-fnd-agrx-ctrx "https://spec.edmcouncil.org/fibo/ontology/FND/AgreementsExt/ContractsExtensions/">
@@ -28,6 +29,7 @@
 ]>
 <rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoanBasicTerms/"
 	xmlns:dct="http://purl.org/dc/terms/"
+	xmlns:fibo-fbc-dae-dbt="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"
 	xmlns:fibo-fnd-acc-cur="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"
 	xmlns:fibo-fnd-agr-ctr="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"
 	xmlns:fibo-fnd-agrx-ctrx="https://spec.edmcouncil.org/fibo/ontology/FND/AgreementsExt/ContractsExtensions/"
@@ -140,7 +142,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-loan-loan;LoanConditions">
-		<rdfs:subClassOf rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/DebtTerms"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;DebtTerms"/>
 		<rdfs:label xml:lang="en">loan conditions</rdfs:label>
 		<skos:definition xml:lang="en">Conditions which must be met by the Borrower during the course of the loan. Breach of these conditions will have predetermined consequences.</skos:definition>
 	</owl:Class>
@@ -153,6 +155,18 @@
 				<owl:onProperty rdf:resource="&fibo-loan-loan-loan;hasInterestTerms"/>
 				<owl:onClass rdf:resource="&fibo-loan-loan-loan;LoanInterestPaymentTermsSet"/>
 				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;hasBorrower"/>
+				<owl:someValuesFrom rdf:resource="&fibo-loan-loan-pty;LoanBorrower"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;hasLender"/>
+				<owl:someValuesFrom rdf:resource="&fibo-loan-loan-pty;LoanLender"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -175,20 +189,8 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-loan-loan-loan;hasBorrower"/>
-				<owl:someValuesFrom rdf:resource="&fibo-loan-loan-pty;LoanBorrower"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-loan-loan-loan;hasConditions"/>
 				<owl:someValuesFrom rdf:resource="&fibo-loan-loan-loan;LoanConditions"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-loan-loan-loan;hasLender"/>
-				<owl:someValuesFrom rdf:resource="&fibo-loan-loan-pty;LoanLender"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -334,7 +336,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-loan-loan;LoanInterestPaymentTermsSet">
-		<rdfs:subClassOf rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/InterestPaymentTerms"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;InterestPaymentTerms"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-loan-loan-loan;loanInterestRateCap"/>
@@ -407,7 +409,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-loan-loan;LoanPrincipalRepaymentTerms">
-		<rdfs:subClassOf rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/PrincipalRepaymentTerms"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;PrincipalRepaymentTerms"/>
 		<rdfs:label xml:lang="en">loan principal repayment terms</rdfs:label>
 		<skos:definition xml:lang="en">Terms governing the repayment of principal of the loan.</skos:definition>
 	</owl:Class>
@@ -569,7 +571,7 @@
 	</owl:DatatypeProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-loan-loan-loan;drawnDownBy">
-		<rdfs:subPropertyOf rdf:resource="&fibo-sec-dbt-dbt-fin;hasBorrowingParty"/>
+		<rdfs:subPropertyOf rdf:resource="&fibo-fbc-dae-dbt;hasBorrower"/>
 		<rdfs:label xml:lang="en">drawn down by</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-loan-loan-loan;LoanDrawdown"/>
 		<rdfs:range rdf:resource="&fibo-loan-loan-pty;LoanBorrower"/>
@@ -633,13 +635,6 @@
 		<rdfs:range rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/InterestRates/InterestRates/ReferenceInterestRate"/>
 	</owl:ObjectProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-loan-loan-loan;hasBorrower">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-agr-ctr;hasCounterparty"/>
-		<rdfs:label xml:lang="en">has borrower</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-loan-loan;LoanContract"/>
-		<rdfs:range rdf:resource="&fibo-loan-loan-pty;LoanBorrower"/>
-	</owl:ObjectProperty>
-	
 	<owl:ObjectProperty rdf:about="&fibo-loan-loan-loan;hasConditions">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-agr-ctr;hasContractualElement"/>
 		<rdfs:label xml:lang="en">has conditions  (please review)</rdfs:label>
@@ -652,13 +647,6 @@
 		<rdfs:label xml:lang="en">has interest terms  (please review)</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-loan-loan-loan;LoanContract"/>
 		<rdfs:range rdf:resource="&fibo-loan-loan-loan;LoanInterestPaymentTermsSet"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-loan-loan-loan;hasLender">
-		<rdfs:subPropertyOf rdf:resource="&fibo-sec-dbt-dbt-fin;hasLendingParty"/>
-		<rdfs:label xml:lang="en">has lender</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-loan-loan;LoanContract"/>
-		<rdfs:range rdf:resource="&fibo-loan-loan-pty;LoanLender"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-loan-loan-loan;hasLoanPhase">
