@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE rdf:RDF [
 	<!ENTITY dct "http://purl.org/dc/terms/">
+	<!ENTITY fibo-fbc-dae-dbt "https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/">
 	<!ENTITY fibo-fnd-acc-cur "https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/">
-	<!ENTITY fibo-fnd-accx-acc "https://spec.edmcouncil.org/fibo/ontology/FND/AccountingExt/AccountsMain/">
 	<!ENTITY fibo-fnd-accx-assx "https://spec.edmcouncil.org/fibo/ontology/FND/AccountingExt/AssetExtensions/">
 	<!ENTITY fibo-fnd-agr-ctr "https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
@@ -16,12 +16,13 @@
 	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
 	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
 	<!ENTITY skos "http://www.w3.org/2004/02/skos/core#">
+	<!ENTITY sm "http://www.omg.org/techprocess/ab/SpecificationMetadata/">
 	<!ENTITY xsd "http://www.w3.org/2001/XMLSchema#">
 ]>
 <rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoansCollateral/"
 	xmlns:dct="http://purl.org/dc/terms/"
+	xmlns:fibo-fbc-dae-dbt="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"
 	xmlns:fibo-fnd-acc-cur="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"
-	xmlns:fibo-fnd-accx-acc="https://spec.edmcouncil.org/fibo/ontology/FND/AccountingExt/AccountsMain/"
 	xmlns:fibo-fnd-accx-assx="https://spec.edmcouncil.org/fibo/ontology/FND/AccountingExt/AssetExtensions/"
 	xmlns:fibo-fnd-agr-ctr="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
@@ -35,14 +36,17 @@
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
 	xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+	xmlns:sm="http://www.omg.org/techprocess/ab/SpecificationMetadata/"
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema#">
 	
 	<owl:Ontology rdf:about="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoansCollateral/">
 		<rdfs:label xml:lang="en">LoansCollateral</rdfs:label>
 		<dct:abstract>This ontology describes the concept of loan collateral and loan property collateral in the context of collateralized securitized loans.</dct:abstract>
+		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
+		<sm:copyright>Copyright (c) 2015-2018 EDM Council, Inc.
+Copyright (c) 2015-2018 Object Management Group, Inc.</sm:copyright>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/AccountingExt/AccountsMain/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/AccountingExt/AssetExtensions/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/OwnershipAndControl/Ownership/"/>
@@ -61,17 +65,17 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-loan-col;LoanCollateral">
-		<rdfs:subClassOf rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/Collateral"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;Collateral"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-loan-loan-col;pledgedBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-loan-loan-pty;CollateralProvider"/>
+				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;isCollateralizationOf"/>
+				<owl:someValuesFrom rdf:resource="&fibo-loan-typ-sec;CollateralizedSecuredLoan"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-loan-loan-col;supports"/>
-				<owl:someValuesFrom rdf:resource="&fibo-loan-typ-sec;CollateralizedSecuredLoan"/>
+				<owl:onProperty rdf:resource="&fibo-loan-loan-col;pledgedBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-loan-loan-pty;CollateralProvider"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">loan collateral  (please review)</rdfs:label>
@@ -88,7 +92,7 @@
 		<rdfs:subClassOf rdf:resource="&fibo-loan-loan-col;LoanCollateral"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-accx-acc;takesFormOf"/>
+				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;isCollateralizedBy"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fnd-accx-assx;PropertyAsset"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -177,17 +181,5 @@
 		<rdfs:domain rdf:resource="&fibo-loan-loan-col;LoanPropertyCollateral"/>
 		<skos:definition xml:lang="en">Time Until Declassification - For Spanish VPO loans, time (in months) until property will be declassified as VPO property Further notes: PoC SDM Data note: Converted to date for declassification to avoid dirty data (AO )</skos:definition>
 	</owl:DatatypeProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-loan-loan-col;providedBy">
-		<rdfs:label>provided by</rdfs:label>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-loan-loan-col;supports">
-		<rdfs:label xml:lang="en">supports  (please review)</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-loan-col;LoanCollateral"/>
-		<rdfs:range rdf:resource="&fibo-loan-typ-sec;CollateralizedSecuredLoan"/>
-		<skos:definition xml:lang="en">A loan which is supported by the Collateral</skos:definition>
-		<skos:editorialNote xml:lang="en">Relationship introduced in PoC work, as inverse of another relationship already in model (&quot;collateraized by&quot;).</skos:editorialNote>
-	</owl:ObjectProperty>
 
 </rdf:RDF>
