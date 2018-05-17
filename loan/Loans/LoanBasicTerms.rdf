@@ -14,6 +14,7 @@
 	<!ENTITY fibo-fnd-tim-tim "https://spec.edmcouncil.org/fibo/ontology/FND/TimeExt/Time/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
 	<!ENTITY fibo-fnd-utl-val "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Values/">
+	<!ENTITY fibo-ln-ln-ln "https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanCore/">
 	<!ENTITY fibo-loan-loan-gen "https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoansGeneral/">
 	<!ENTITY fibo-loan-loan-gty "https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoansGuaranties/">
 	<!ENTITY fibo-loan-loan-loan "https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoanBasicTerms/">
@@ -42,6 +43,7 @@
 	xmlns:fibo-fnd-tim-tim="https://spec.edmcouncil.org/fibo/ontology/FND/TimeExt/Time/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
 	xmlns:fibo-fnd-utl-val="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Values/"
+	xmlns:fibo-ln-ln-ln="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanCore/"
 	xmlns:fibo-loan-loan-gen="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoansGeneral/"
 	xmlns:fibo-loan-loan-gty="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoansGuaranties/"
 	xmlns:fibo-loan-loan-loan="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoanBasicTerms/"
@@ -76,6 +78,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Values/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/InterestRates/InterestRates/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/MarketIndices/BasketIndices/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanCore/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoansGeneral/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoansGuaranties/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoansParties/"/>
@@ -86,6 +89,64 @@
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoanBasicTerms/"/>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Provisional"/>
 	</owl:Ontology>
+	
+	<owl:Class rdf:about="&fibo-ln-ln-ln;LoanContract">
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-loan-loan-loan;hasInterestTerms"/>
+				<owl:onClass rdf:resource="&fibo-loan-loan-loan;LoanInterestPaymentTermsSet"/>
+				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-agrx-ele;hasProvisions"/>
+				<owl:someValuesFrom rdf:resource="&fibo-loan-loan-loan;LoanTerminationProvisions"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-loan-loan-loan;establishes"/>
+				<owl:someValuesFrom rdf:resource="&fibo-loan-loan-loan;LoanInterestPaymentCommitment"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-loan-loan-loan;establishes.1"/>
+				<owl:someValuesFrom rdf:resource="&fibo-loan-loan-loan;LoanPrincipalRepaymentCommitment"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-loan-loan-loan;hasConditions"/>
+				<owl:someValuesFrom rdf:resource="&fibo-loan-loan-loan;LoanConditions"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-loan-loan-loan;hasPaymentSchedule"/>
+				<owl:someValuesFrom rdf:resource="&fibo-loan-loan-loan;LoanPaymentSchedule"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-loan-loan-loan;hasPrepaymentTerms"/>
+				<owl:someValuesFrom rdf:resource="&fibo-loan-loan-loan;LoanPrepaymentTermsSet"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-loan-loan-loan;hasPrincipalTerms"/>
+				<owl:someValuesFrom rdf:resource="&fibo-loan-loan-loan;LoanPrincipalRepaymentTerms"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-loan-loan-loan;setsOutTermsFor"/>
+				<owl:someValuesFrom rdf:resource="&fibo-loan-loan-loan;LoanDrawdown"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-loan-loan;AutoLoanPurpose">
 		<rdfs:subClassOf rdf:resource="&fibo-loan-loan-loan;LoanPurposeSelection"/>
@@ -145,81 +206,6 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;DebtTerms"/>
 		<rdfs:label xml:lang="en">loan conditions</rdfs:label>
 		<skos:definition xml:lang="en">Conditions which must be met by the Borrower during the course of the loan. Breach of these conditions will have predetermined consequences.</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-loan-loan-loan;LoanContract">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;MutualContractualAgreement"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;WrittenContract"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-loan-loan-loan;hasInterestTerms"/>
-				<owl:onClass rdf:resource="&fibo-loan-loan-loan;LoanInterestPaymentTermsSet"/>
-				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;hasBorrower"/>
-				<owl:someValuesFrom rdf:resource="&fibo-loan-loan-pty;LoanBorrower"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;hasLender"/>
-				<owl:someValuesFrom rdf:resource="&fibo-loan-loan-pty;LoanLender"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-agrx-ele;hasProvisions"/>
-				<owl:someValuesFrom rdf:resource="&fibo-loan-loan-loan;LoanTerminationProvisions"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-loan-loan-loan;establishes"/>
-				<owl:someValuesFrom rdf:resource="&fibo-loan-loan-loan;LoanInterestPaymentCommitment"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-loan-loan-loan;establishes.1"/>
-				<owl:someValuesFrom rdf:resource="&fibo-loan-loan-loan;LoanPrincipalRepaymentCommitment"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-loan-loan-loan;hasConditions"/>
-				<owl:someValuesFrom rdf:resource="&fibo-loan-loan-loan;LoanConditions"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-loan-loan-loan;hasPaymentSchedule"/>
-				<owl:someValuesFrom rdf:resource="&fibo-loan-loan-loan;LoanPaymentSchedule"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-loan-loan-loan;hasPrepaymentTerms"/>
-				<owl:someValuesFrom rdf:resource="&fibo-loan-loan-loan;LoanPrepaymentTermsSet"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-loan-loan-loan;hasPrincipalTerms"/>
-				<owl:someValuesFrom rdf:resource="&fibo-loan-loan-loan;LoanPrincipalRepaymentTerms"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-loan-loan-loan;setsOutTermsFor"/>
-				<owl:someValuesFrom rdf:resource="&fibo-loan-loan-loan;LoanDrawdown"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">loan contract</rdfs:label>
-		<skos:definition xml:lang="en">The Contract which embodies a loan from one party (the Lender) to another party (the Borrower).</skos:definition>
-		<skos:editorialNote xml:lang="en">Reiew notes from PoC review sessions: A contract is set up on a loan, and there are additional aspects that pertain to each party on that loan. See: Loan borrower Association (the action term) Proposal: Use the entity of Contract (specialized for loan contracts). Rationale: Most of these terms are similar to those for a Bond, which is a securitry and as such is a Contract. Would then identify facts about the contract as a contract e.g. maturity) and also sets of contractual terms such as interst payment trerms and principal repayment terms. Conclusion: modeled this as a Contract. Extensively re-built the archetypal &quot;Debt&quot; model to distinguish between Debt (an amount owed) and Debt Finance (an amount extended by one party to another at a point in time, which is then a debt). Original notes from PoC: Unique identifier for each loan. The loan ID should not change through the life of the transaction. If the original loan ID canot be maintained in this field enter the original ID followed by the new ID, comma delimited ( We handle this as an attribute of mortgage loan rether than loan - since ensuring uniqueness and stability will be handled across the class of mortgage loans before attempting this across any broader class of general loans )</skos:editorialNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-loan-loan;LoanDrawdown">
@@ -492,7 +478,7 @@
 	
 	<owl:DatatypeProperty rdf:about="&fibo-loan-loan-loan;aRMConvertible">
 		<rdfs:label xml:lang="en">a r m convertible  (please review)</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-loan-loan;LoanContract"/>
+		<rdfs:domain rdf:resource="&fibo-ln-ln-ln;LoanContract"/>
 		<rdfs:range rdf:resource="&xsd;boolean"/>
 		<skos:definition xml:lang="en">Whether the Loan can be converted into an ARM.</skos:definition>
 	</owl:DatatypeProperty>
@@ -533,7 +519,7 @@
 	
 	<owl:DatatypeProperty rdf:about="&fibo-loan-loan-loan;assumable">
 		<rdfs:label xml:lang="en">assumable  (please review)</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-loan-loan;LoanContract"/>
+		<rdfs:domain rdf:resource="&fibo-ln-ln-ln;LoanContract"/>
 		<rdfs:range rdf:resource="&xsd;boolean"/>
 		<skos:definition xml:lang="en">Whethre another borrower may take ownership of the property and assume the payments on this loan.</skos:definition>
 	</owl:DatatypeProperty>
@@ -587,20 +573,20 @@
 	
 	<owl:DatatypeProperty rdf:about="&fibo-loan-loan-loan;escrowApplicable">
 		<rdfs:label xml:lang="en">escrow applicable  (please review)</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-loan-loan;LoanContract"/>
+		<rdfs:domain rdf:resource="&fibo-ln-ln-ln;LoanContract"/>
 		<rdfs:range rdf:resource="&xsd;boolean"/>
 		<skos:definition xml:lang="en">Whether the servicer is contractually responsible for maintaining an escrow against the account for payment of txes and insurance.</skos:definition>
 	</owl:DatatypeProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-loan-loan-loan;establishes">
 		<rdfs:label xml:lang="en">establishes  (please review)</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-loan-loan;LoanContract"/>
+		<rdfs:domain rdf:resource="&fibo-ln-ln-ln;LoanContract"/>
 		<rdfs:range rdf:resource="&fibo-loan-loan-loan;LoanInterestPaymentCommitment"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-loan-loan-loan;establishes.1">
 		<rdfs:label xml:lang="en">establishes  (please review)</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-loan-loan;LoanContract"/>
+		<rdfs:domain rdf:resource="&fibo-ln-ln-ln;LoanContract"/>
 		<rdfs:range rdf:resource="&fibo-loan-loan-loan;LoanPrincipalRepaymentCommitment"/>
 	</owl:ObjectProperty>
 	
@@ -638,14 +624,14 @@
 	<owl:ObjectProperty rdf:about="&fibo-loan-loan-loan;hasConditions">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-agr-ctr;hasContractualElement"/>
 		<rdfs:label xml:lang="en">has conditions  (please review)</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-loan-loan;LoanContract"/>
+		<rdfs:domain rdf:resource="&fibo-ln-ln-ln;LoanContract"/>
 		<rdfs:range rdf:resource="&fibo-loan-loan-loan;LoanConditions"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-loan-loan-loan;hasInterestTerms">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-agr-ctr;hasContractualElement"/>
 		<rdfs:label xml:lang="en">has interest terms  (please review)</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-loan-loan;LoanContract"/>
+		<rdfs:domain rdf:resource="&fibo-ln-ln-ln;LoanContract"/>
 		<rdfs:range rdf:resource="&fibo-loan-loan-loan;LoanInterestPaymentTermsSet"/>
 	</owl:ObjectProperty>
 	
@@ -657,41 +643,41 @@
 	
 	<owl:ObjectProperty rdf:about="&fibo-loan-loan-loan;hasPaymentSchedule">
 		<rdfs:label xml:lang="en">has payment schedule  (please review)</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-loan-loan;LoanContract"/>
+		<rdfs:domain rdf:resource="&fibo-ln-ln-ln;LoanContract"/>
 		<rdfs:range rdf:resource="&fibo-loan-loan-loan;LoanPaymentSchedule"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-loan-loan-loan;hasPrepaymentTerms">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-agr-ctr;hasContractualElement"/>
 		<rdfs:label xml:lang="en">has prepayment terms  (please review)</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-loan-loan;LoanContract"/>
+		<rdfs:domain rdf:resource="&fibo-ln-ln-ln;LoanContract"/>
 		<rdfs:range rdf:resource="&fibo-loan-loan-loan;LoanPrepaymentTermsSet"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-loan-loan-loan;hasPrincipalTerms">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-agr-ctr;hasContractualElement"/>
 		<rdfs:label xml:lang="en">has principal terms  (please review)</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-loan-loan;LoanContract"/>
+		<rdfs:domain rdf:resource="&fibo-ln-ln-ln;LoanContract"/>
 		<rdfs:range rdf:resource="&fibo-loan-loan-loan;LoanPrincipalRepaymentTerms"/>
 	</owl:ObjectProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-loan-loan-loan;loanAmortizationPaymentsNumber">
 		<rdfs:label xml:lang="en">loan amortization payments number  (please review)</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-loan-loan;LoanContract"/>
+		<rdfs:domain rdf:resource="&fibo-ln-ln-ln;LoanContract"/>
 		<rdfs:range rdf:resource="&xsd;decimal"/>
 		<skos:definition xml:lang="en">The number of payments contractually required at origination to repay the loan. For monthly paying loans this is the number of months from the contractual first payment date to the maturity date.</skos:definition>
 	</owl:DatatypeProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-loan-loan-loan;loanAmortizationPeriod">
 		<rdfs:label xml:lang="en">loan amortization period  (please review)</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-loan-loan;LoanContract"/>
+		<rdfs:domain rdf:resource="&fibo-ln-ln-ln;LoanContract"/>
 		<rdfs:range rdf:resource="&fibo-fnd-tim-tim;DatePeriod"/>
 		<skos:definition xml:lang="en">Loan Term, that is the original contractual term of the loan, in months.</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-loan-loan-loan;loanAnnualPrePaymentsRate">
 		<rdfs:label xml:lang="en">loan annual pre payments rate  (please review)</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-loan-loan;LoanContract"/>
+		<rdfs:domain rdf:resource="&fibo-ln-ln-ln;LoanContract"/>
 		<rdfs:range rdf:resource="&fibo-fnd-utl-val;PercentageValue"/>
 		<skos:definition xml:lang="en">Percentage amount of pre-payments allowed (without penalty ) under the loan contract in any given year</skos:definition>
 	</owl:ObjectProperty>
@@ -705,7 +691,7 @@
 	
 	<owl:DatatypeProperty rdf:about="&fibo-loan-loan-loan;loanFurtherAdvancesAllowed">
 		<rdfs:label xml:lang="en">loan further advances allowed  (please review)</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-loan-loan;LoanContract"/>
+		<rdfs:domain rdf:resource="&fibo-ln-ln-ln;LoanContract"/>
 		<rdfs:range rdf:resource="&xsd;boolean"/>
 		<skos:definition xml:lang="en">Whether the lender allows the borrower the possibility to have further advances i.e. advances above the original loan balance.</skos:definition>
 	</owl:DatatypeProperty>
@@ -759,14 +745,14 @@
 	
 	<owl:ObjectProperty rdf:about="&fibo-loan-loan-loan;loanMaximumAllowedBalance">
 		<rdfs:label xml:lang="en">loan maximum allowed balance  (please review)</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-loan-loan;LoanContract"/>
+		<rdfs:domain rdf:resource="&fibo-ln-ln-ln;LoanContract"/>
 		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
 		<skos:definition xml:lang="en">Maximum balance - For loans with flexible re-draw facilities, the maximum loan amount that could potentially be outstanding</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-loan-loan-loan;loanOriginalAdvanceAmount">
 		<rdfs:label xml:lang="en">loan original advance amount  (please review)</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-loan-loan;LoanContract"/>
+		<rdfs:domain rdf:resource="&fibo-ln-ln-ln;LoanContract"/>
 		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
 		<skos:definition xml:lang="en">The Original Balance of the loan, that is the amount advanced under this loan. Further notes: PoC workings: Original balance (inclusive of fees)</skos:definition>
 	</owl:ObjectProperty>
@@ -785,21 +771,21 @@
 	
 	<owl:ObjectProperty rdf:about="&fibo-loan-loan-loan;loanPaymentFrequency">
 		<rdfs:label xml:lang="en">loan payment frequency  (please review)</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-loan-loan;LoanContract"/>
+		<rdfs:domain rdf:resource="&fibo-ln-ln-ln;LoanContract"/>
 		<rdfs:range rdf:resource="&fibo-fnd-tim-tim;Frequency"/>
 		<skos:definition xml:lang="en">Payment Frequency - Frequency of payments due, i.e. number of months between payments. Further notes: This is defined as a frequency, i.e. the reciprocal of a period of time. Corresponding Data model entries: Monthly Quarterly Semi annually Annual Bullet Other (to provide details, if applicable) No data Note that not all of these correspond to frequency. Therefore one possibility is that this term is not present. Arrangements such as bullet payments are part of the principal and interest payment terms. This term is retained as a fact about the Loan Contract because the lender may be contractually obliged to make payments with this regularity, which combine interest, principal and other amounts (Tax, ESCROW etc.).</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-loan-loan-loan;loanPeriodicPayment">
 		<rdfs:label xml:lang="en">loan periodic payment  (please review)</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-loan-loan;LoanContract"/>
+		<rdfs:domain rdf:resource="&fibo-ln-ln-ln;LoanContract"/>
 		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
 		<skos:definition xml:lang="en">Periodic contractual payment due (the payment due if there are no other payment arrangements in force)</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-loan-loan-loan;loanPeriodicPaymentType">
 		<rdfs:label xml:lang="en">loan periodic payment type  (please review)</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-loan-loan;LoanContract"/>
+		<rdfs:domain rdf:resource="&fibo-ln-ln-ln;LoanContract"/>
 		<skos:definition xml:lang="en">Periodic payment type. May combine interst and principal amounts. See selection of values. May also be principal interest and ESCROW.</skos:definition>
 	</owl:DatatypeProperty>
 	
@@ -815,14 +801,14 @@
 	
 	<owl:ObjectProperty rdf:about="&fibo-loan-loan-loan;loanRetainedAmount">
 		<rdfs:label xml:lang="en">loan retained amount  (please review)</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-loan-loan;LoanContract"/>
+		<rdfs:domain rdf:resource="&fibo-ln-ln-ln;LoanContract"/>
 		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
 		<skos:definition xml:lang="en">Retained amount, this is an amount the Issuer will be obliged to fund to the borrower at a later date, for example construction deposit.</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-loan-loan-loan;loanRetainedAmountDate">
 		<rdfs:label xml:lang="en">loan retained amount date  (please review)</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-loan-loan;LoanContract"/>
+		<rdfs:domain rdf:resource="&fibo-ln-ln-ln;LoanContract"/>
 		<skos:definition xml:lang="en">Date when the retained amount is to be drawn by.</skos:definition>
 	</owl:DatatypeProperty>
 	
@@ -842,7 +828,7 @@
 	
 	<owl:DatatypeProperty rdf:about="&fibo-loan-loan-loan;maturityDate">
 		<rdfs:label xml:lang="en">maturity date  (please review)</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-loan-loan;LoanContract"/>
+		<rdfs:domain rdf:resource="&fibo-ln-ln-ln;LoanContract"/>
 		<skos:definition xml:lang="en">The date when the loan matures and is due to be repaid.</skos:definition>
 	</owl:DatatypeProperty>
 	
@@ -856,7 +842,7 @@
 	<owl:ObjectProperty rdf:about="&fibo-loan-loan-loan;mayHave">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-inf-inf;details"/>
 		<rdfs:label xml:lang="en">may have  (please review)</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-loan-loan;LoanContract"/>
+		<rdfs:domain rdf:resource="&fibo-ln-ln-ln;LoanContract"/>
 		<rdfs:range rdf:resource="&fibo-loan-loan-loan;LoanStandardizationDocumentation"/>
 	</owl:ObjectProperty>
 	
@@ -944,14 +930,14 @@
 	
 	<owl:ObjectProperty rdf:about="&fibo-loan-loan-loan;setsOutTermsFor">
 		<rdfs:label xml:lang="en">sets out terms for  (please review)</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-loan-loan;LoanContract"/>
+		<rdfs:domain rdf:resource="&fibo-ln-ln-ln;LoanContract"/>
 		<rdfs:range rdf:resource="&fibo-loan-loan-loan;LoanDrawdown"/>
 		<skos:definition xml:lang="en">Extended credit (debt or Credit depending on the Viewpoint) has terms set out in a Contract, governing the terms fo extension of the cerdit, payment of interest, principal repayment and any other required clauses defining conditions of the loan or credit. Note feb 2010: term created in Sept 2008 as part of upper ontology. Review and perhaps specialise the kind of contract this relationship comes from.</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-loan-loan-loan;specifies">
 		<rdfs:label xml:lang="en">specifies  (please review)</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-loan-loan;LoanContract"/>
+		<rdfs:domain rdf:resource="&fibo-ln-ln-ln;LoanContract"/>
 		<rdfs:range rdf:resource="&fibo-loan-loan-loan;LoanRetainedAmount"/>
 	</owl:ObjectProperty>
 	

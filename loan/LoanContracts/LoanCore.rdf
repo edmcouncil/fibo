@@ -84,6 +84,9 @@
 	<owl:Ontology rdf:about="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanCore/">
 		<rdfs:label>Loan Core Ontology</rdfs:label>
 		<dct:abstract>This ontology defines the fundamental concepts for loans, with  emphasis on mortgages.  The loan contract is the core concept. It includes includes the primary obligations to fund the loan and to pay it back according to payment schedules. The contract is also connected to various parties including borrower, lender, and originator.  Kinds of loans covered in this ontology include open and closed end, secured and mortgages.  Another major thread of the loan core ontology is credit risk assessment, which includes property appraisals, security agreements, pre-approvals, credit scores and credit reports.</dct:abstract>
+		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
+		<sm:copyright>Copyright (c) 2016-2018 EDM Council, Inc.
+Copyright (c) 2016-2018 Object Management Group, Inc.</sm:copyright>
 		<sm:fileAbbreviation>fibo-ln-ln-ln</sm:fileAbbreviation>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LEIEntities/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/"/>
@@ -866,6 +869,7 @@
 	
 	<owl:Class rdf:about="&fibo-ln-ln-ln;LoanContract">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;CreditAgreement"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;MutualContractualAgreement"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;WrittenContract"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
@@ -918,6 +922,18 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;hasBorrower"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-dae-dbt;Borrower"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;hasLender"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-dae-dbt;Lender"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-pas-caa;realizes"/>
 				<owl:someValuesFrom rdf:resource="&fibo-ln-ln-ln;LoanOffer"/>
 			</owl:Restriction>
@@ -926,18 +942,6 @@
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-acc-cur;hasMonetaryAmount"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;hasContractParty"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-dae-dbt;Borrower"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;hasContractParty"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-dae-dbt;Lender"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -972,20 +976,8 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-ln-ln-ln;hasBorrower"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-pty-pty;IndependentParty"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-ln-ln-ln;hasFirstRateChangeTerm"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;ExplicitDuration"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-ln-ln-ln;hasLender"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-pty-pty;IndependentParty"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -1119,7 +1111,7 @@
 				<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;Date"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label>mportgage loan contract</rdfs:label>
+		<rdfs:label>mortgage loan contract</rdfs:label>
 		<owl:equivalentClass>
 			<owl:Class>
 				<owl:intersectionOf rdf:parseType="Collection">
@@ -1222,8 +1214,8 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-com-com;Request"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-ln-ln-ln;hasBorrower"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-pty-pty;IndependentParty"/>
+				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;hasBorrower"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-dae-dbt;Borrower"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -1968,12 +1960,6 @@ As needed, use the worksFor property to connect appraisers to the appraisal mana
 		<fibo-fnd-utl-av:adaptedFrom>the 2015 Revised HMDA regulation.</fibo-fnd-utl-av:adaptedFrom>
 	</owl:DatatypeProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-ln-ln-ln;hasBorrower">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-pty-pty;hasParty"/>
-		<rdfs:label>has borrower (i)</rdfs:label>
-		<skos:definition>relates something to an actual or potential borrower (e.g. a LoanContract to the borrowing party, or a CreditInquiry to a potential borrower)</skos:definition>
-	</owl:ObjectProperty>
-	
 	<owl:ObjectProperty rdf:about="&fibo-ln-ln-ln;hasClosingDate">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-agr-ctr;hasEffectiveDate"/>
 		<rdfs:label>has closing date</rdfs:label>
@@ -2006,12 +1992,6 @@ As needed, use the worksFor property to connect appraisers to the appraisal mana
 		<skos:definition>relates a loan contract to a period of time in months after origination during which the interest rate cannot change.</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom>the 2015 Revised HMDA regulation.</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:usageNote>This does not apply if the loan has fixed rate.</fibo-fnd-utl-av:usageNote>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-ln-ln-ln;hasLender">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-pty-pty;hasParty"/>
-		<rdfs:label>has lender</rdfs:label>
-		<skos:definition>relates something to an actual or potential lender. .e.g. a LoanContract to the lending party, or a pre-approval request to a potential lender</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-ln-ln-ln;hasLoanMaturityPeriod">
