@@ -7,6 +7,7 @@
 	<!ENTITY fibo-fnd-inf-tem "https://spec.edmcouncil.org/fibo/ontology/FND/InformationExt/TemporalInfo/">
 	<!ENTITY fibo-fnd-tim-tim "https://spec.edmcouncil.org/fibo/ontology/FND/TimeExt/Time/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
+	<!ENTITY fibo-ln-ln-ln "https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanCore/">
 	<!ENTITY fibo-loan-loan-gen "https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoansGeneral/">
 	<!ENTITY fibo-loan-loan-loan "https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoanBasicTerms/">
 	<!ENTITY fibo-loan-loan-pty "https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoansParties/">
@@ -29,6 +30,7 @@
 	xmlns:fibo-fnd-inf-tem="https://spec.edmcouncil.org/fibo/ontology/FND/InformationExt/TemporalInfo/"
 	xmlns:fibo-fnd-tim-tim="https://spec.edmcouncil.org/fibo/ontology/FND/TimeExt/Time/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
+	xmlns:fibo-ln-ln-ln="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanCore/"
 	xmlns:fibo-loan-loan-gen="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoansGeneral/"
 	xmlns:fibo-loan-loan-loan="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoanBasicTerms/"
 	xmlns:fibo-loan-loan-pty="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoansParties/"
@@ -55,6 +57,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/TimeExt/Time/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanCore/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanTypes/MortgageLoans/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoanBasicTerms/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoansGeneral/"/>
@@ -66,18 +69,7 @@
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Provisional"/>
 	</owl:Ontology>
 	
-	<owl:Class rdf:about="&fibo-loan-tem-app;LoanApplicant">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-inf-msg;Applicant"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-loan-tem-app;mayBecome"/>
-				<owl:someValuesFrom rdf:resource="&fibo-loan-loan-pty;LoanBorrower"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">loan applicant</rdfs:label>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-loan-tem-app;LoanApplication">
+	<owl:Class rdf:about="&fibo-ln-ln-ln;LoanApplication">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-inf-msg;ApplicationInformation"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
@@ -97,11 +89,19 @@
 				<owl:someValuesFrom rdf:resource="&fibo-loan-loan-loan;LoanDrawdown"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">loan application</rdfs:label>
 		<owl:disjointWith rdf:resource="&fibo-loan-tem-ph;DisbursedLoan"/>
 		<owl:disjointWith rdf:resource="&fibo-loan-tem-ph;RepaidLoan"/>
-		<skos:definition xml:lang="en">A loan which is being applied for and has not yet been disbursed.</skos:definition>
-		<skos:editorialNote xml:lang="en">There are several statuses applicable to the application. Application embeds the Assessment Information. then: &quot;Application&quot; (v) &quot;Application&quot; (n) we could add the verb? document supports the application. Application (noun derived from a verb)</skos:editorialNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-loan-tem-app;LoanApplicant">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-inf-msg;Applicant"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-loan-tem-app;mayBecome"/>
+				<owl:someValuesFrom rdf:resource="&fibo-loan-loan-pty;LoanBorrower"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">loan applicant</rdfs:label>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-tem-app;LoanApplicationAtAgreementStage">
@@ -137,7 +137,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-loan-tem-bor;isAbout.1"/>
-				<owl:someValuesFrom rdf:resource="&fibo-loan-tem-app;LoanApplication"/>
+				<owl:someValuesFrom rdf:resource="&fibo-ln-ln-ln;LoanApplication"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -174,7 +174,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-tem-app;MortgageLoanApplication">
-		<rdfs:subClassOf rdf:resource="&fibo-loan-tem-app;LoanApplication"/>
+		<rdfs:subClassOf rdf:resource="&fibo-ln-ln-ln;LoanApplication"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-loan-tem-app;appraisedBy"/>
@@ -198,20 +198,20 @@
 	
 	<owl:ObjectProperty rdf:about="&fibo-loan-tem-app;applicationDate">
 		<rdfs:label xml:lang="en">application date  (please review)</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-tem-app;LoanApplication"/>
+		<rdfs:domain rdf:resource="&fibo-ln-ln-ln;LoanApplication"/>
 		<rdfs:range rdf:resource="&fibo-fnd-tim-tim;Date"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-loan-tem-app;applicationPhase">
 		<rdfs:label xml:lang="en">application phase  (please review)</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-tem-app;LoanApplication"/>
+		<rdfs:domain rdf:resource="&fibo-ln-ln-ln;LoanApplication"/>
 		<rdfs:range rdf:resource="&fibo-loan-tem-app;LoanApplicationPhase"/>
 		<skos:definition xml:lang="en">The phase within the application lifecycle, that this Loan Application is at,</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-loan-tem-app;appraisedBy">
 		<rdfs:label xml:lang="en">appraised by  (please review)</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-tem-app;LoanApplication"/>
+		<rdfs:domain rdf:resource="&fibo-ln-ln-ln;LoanApplication"/>
 		<rdfs:range rdf:resource="&fibo-loan-tem-app;LoanAppraiser"/>
 	</owl:ObjectProperty>
 	
@@ -259,7 +259,7 @@
 	
 	<owl:DatatypeProperty rdf:about="&fibo-loan-tem-app;intendedLoanPurpose">
 		<rdfs:label xml:lang="en">intended loan purpose  (please review)</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-tem-app;LoanApplication"/>
+		<rdfs:domain rdf:resource="&fibo-ln-ln-ln;LoanApplication"/>
 		<rdfs:range rdf:resource="&xsd;string"/>
 		<skos:definition xml:lang="en">The purpose to which the loaned funds are to be put.</skos:definition>
 	</owl:DatatypeProperty>
@@ -272,7 +272,7 @@
 	
 	<owl:ObjectProperty rdf:about="&fibo-loan-tem-app;mayBecome.1">
 		<rdfs:label xml:lang="en">may become  (please review)</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-tem-app;LoanApplication"/>
+		<rdfs:domain rdf:resource="&fibo-ln-ln-ln;LoanApplication"/>
 		<rdfs:range rdf:resource="&fibo-loan-loan-loan;LoanDrawdown"/>
 	</owl:ObjectProperty>
 	

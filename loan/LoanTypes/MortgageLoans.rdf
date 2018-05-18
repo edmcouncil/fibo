@@ -4,6 +4,7 @@
 	<!ENTITY fibo-fnd-acc-cur "https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/">
 	<!ENTITY fibo-fnd-tim-tim "https://spec.edmcouncil.org/fibo/ontology/FND/TimeExt/Time/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
+	<!ENTITY fibo-ln-ln-ln "https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanCore/">
 	<!ENTITY fibo-loan-loan-gty "https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoansGuaranties/">
 	<!ENTITY fibo-loan-loan-loan "https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoanBasicTerms/">
 	<!ENTITY fibo-loan-loan-pty "https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoansParties/">
@@ -22,6 +23,7 @@
 	xmlns:fibo-fnd-acc-cur="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"
 	xmlns:fibo-fnd-tim-tim="https://spec.edmcouncil.org/fibo/ontology/FND/TimeExt/Time/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
+	xmlns:fibo-ln-ln-ln="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanCore/"
 	xmlns:fibo-loan-loan-gty="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoansGuaranties/"
 	xmlns:fibo-loan-loan-loan="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoanBasicTerms/"
 	xmlns:fibo-loan-loan-pty="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoansParties/"
@@ -42,6 +44,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/TimeExt/Time/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanCore/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanTypes/SecuredLoans/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoanBasicTerms/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoansGuaranties/"/>
@@ -52,28 +55,42 @@
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Provisional"/>
 	</owl:Ontology>
 	
+	<owl:Class rdf:about="&fibo-ln-ln-ln;MortgageLoanContract">
+		<rdfs:subClassOf rdf:resource="&fibo-ln-ln-ln;LoanContract"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-loan-loan-loan;setsOutTermsFor"/>
+				<owl:someValuesFrom rdf:resource="&fibo-loan-typ-mtg;MortgageLoan"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-ln-ln-ln;MortgageLoanPurpose">
+		<rdfs:subClassOf rdf:resource="&fibo-loan-loan-loan;LoanPurposeSelection"/>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-loan-typ-mtg;CombinationMortgage">
-		<rdfs:subClassOf rdf:resource="&fibo-loan-typ-mtg;MortgageLoanPurpose"/>
+		<rdfs:subClassOf rdf:resource="&fibo-ln-ln-ln;MortgageLoanPurpose"/>
 		<rdfs:label xml:lang="en">Combination Mortgage</rdfs:label>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-typ-mtg;Construction">
-		<rdfs:subClassOf rdf:resource="&fibo-loan-typ-mtg;MortgageLoanPurpose"/>
+		<rdfs:subClassOf rdf:resource="&fibo-ln-ln-ln;MortgageLoanPurpose"/>
 		<rdfs:label xml:lang="en">Construction</rdfs:label>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-typ-mtg;DebtConsolidation">
-		<rdfs:subClassOf rdf:resource="&fibo-loan-typ-mtg;MortgageLoanPurpose"/>
+		<rdfs:subClassOf rdf:resource="&fibo-ln-ln-ln;MortgageLoanPurpose"/>
 		<rdfs:label xml:lang="en">Debt Consolidation</rdfs:label>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-typ-mtg;EquityRelease">
-		<rdfs:subClassOf rdf:resource="&fibo-loan-typ-mtg;MortgageLoanPurpose"/>
+		<rdfs:subClassOf rdf:resource="&fibo-ln-ln-ln;MortgageLoanPurpose"/>
 		<rdfs:label xml:lang="en">Equity Release</rdfs:label>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-typ-mtg;GovernmentSponsoredLoan">
-		<rdfs:subClassOf rdf:resource="&fibo-loan-typ-mtg;MortgageLoanPurpose"/>
+		<rdfs:subClassOf rdf:resource="&fibo-ln-ln-ln;MortgageLoanPurpose"/>
 		<rdfs:label xml:lang="en">Government Sponsored Loan</rdfs:label>
 	</owl:Class>
 	
@@ -85,7 +102,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-typ-mtg;InvestmentHomeLoanContract">
-		<rdfs:subClassOf rdf:resource="&fibo-loan-typ-mtg;MortgageLoanContract"/>
+		<rdfs:subClassOf rdf:resource="&fibo-ln-ln-ln;MortgageLoanContract"/>
 		<rdfs:label xml:lang="en">investment home loan contract  (please review)</rdfs:label>
 		<owl:disjointWith rdf:resource="&fibo-loan-typ-mtg;SecondHomeLoanContract"/>
 		<skos:definition xml:lang="en">A loan for a second or subsequent property which is taken out for investment purposes.</skos:definition>
@@ -93,7 +110,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-typ-mtg;InvestmentMortgage">
-		<rdfs:subClassOf rdf:resource="&fibo-loan-typ-mtg;MortgageLoanPurpose"/>
+		<rdfs:subClassOf rdf:resource="&fibo-ln-ln-ln;MortgageLoanPurpose"/>
 		<rdfs:label xml:lang="en">Investment Mortgage</rdfs:label>
 	</owl:Class>
 	
@@ -141,32 +158,13 @@
 		<rdfs:label xml:lang="en">mortgage loan borrower information  (please review)</rdfs:label>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-loan-typ-mtg;MortgageLoanContract">
-		<rdfs:subClassOf rdf:resource="&fibo-loan-loan-loan;LoanContract"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-loan-loan-loan;setsOutTermsFor"/>
-				<owl:someValuesFrom rdf:resource="&fibo-loan-typ-mtg;MortgageLoan"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">mortgage loan contract  (please review)</rdfs:label>
-		<skos:definition xml:lang="en">A mortgage loan contract setting out the terms and conditions for a mortgage.</skos:definition>
-		<skos:editorialNote xml:lang="en">IMP PoC notes: Loan purpose. Permissible answers: Purchase Re-mortgage Renovation Equity release Construction Debt consolidation Other (to provide details, if applicable) Re-mortgage with Equity Release Re-mortgage on Different Terms Combination Mortgage Investment Mortgage Right to Buy Government Sponsored Loan No data - these have now been defined as a selectable list of loan purposes which are specific to mortgage loans.</skos:editorialNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-loan-typ-mtg;MortgageLoanPurpose">
-		<rdfs:subClassOf rdf:resource="&fibo-loan-loan-loan;LoanPurposeSelection"/>
-		<rdfs:label xml:lang="en">mortgage loan purpose</rdfs:label>
-		<skos:definition xml:lang="en">A purpose for which a Mortgage Loan may be taken out.</skos:definition>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-loan-typ-mtg;Purchase">
-		<rdfs:subClassOf rdf:resource="&fibo-loan-typ-mtg;MortgageLoanPurpose"/>
+		<rdfs:subClassOf rdf:resource="&fibo-ln-ln-ln;MortgageLoanPurpose"/>
 		<rdfs:label xml:lang="en">Purchase</rdfs:label>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-typ-mtg;Remortgage">
-		<rdfs:subClassOf rdf:resource="&fibo-loan-typ-mtg;MortgageLoanPurpose"/>
+		<rdfs:subClassOf rdf:resource="&fibo-ln-ln-ln;MortgageLoanPurpose"/>
 		<rdfs:label xml:lang="en">Remortgage</rdfs:label>
 	</owl:Class>
 	
@@ -181,7 +179,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-typ-mtg;Renovation">
-		<rdfs:subClassOf rdf:resource="&fibo-loan-typ-mtg;MortgageLoanPurpose"/>
+		<rdfs:subClassOf rdf:resource="&fibo-ln-ln-ln;MortgageLoanPurpose"/>
 		<rdfs:label xml:lang="en">Renovation</rdfs:label>
 	</owl:Class>
 	
@@ -192,7 +190,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-typ-mtg;RightToBuy">
-		<rdfs:subClassOf rdf:resource="&fibo-loan-typ-mtg;MortgageLoanPurpose"/>
+		<rdfs:subClassOf rdf:resource="&fibo-ln-ln-ln;MortgageLoanPurpose"/>
 		<rdfs:label xml:lang="en">Right To Buy</rdfs:label>
 	</owl:Class>
 	
@@ -203,7 +201,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-typ-mtg;SecondHomeLoanContract">
-		<rdfs:subClassOf rdf:resource="&fibo-loan-typ-mtg;MortgageLoanContract"/>
+		<rdfs:subClassOf rdf:resource="&fibo-ln-ln-ln;MortgageLoanContract"/>
 		<rdfs:label xml:lang="en">second home loan contract  (please review)</rdfs:label>
 	</owl:Class>
 	
@@ -244,7 +242,7 @@
 	
 	<owl:ObjectProperty rdf:about="&fibo-loan-typ-mtg;loanMortgageMandateAmount">
 		<rdfs:label xml:lang="en">loan mortgage mandate amount  (please review)</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-typ-mtg;MortgageLoanContract"/>
+		<rdfs:domain rdf:resource="&fibo-ln-ln-ln;MortgageLoanContract"/>
 		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
 		<skos:definition xml:lang="en">Mortgage Mandate - Amount of mortgage mandate that can be converted into a proper mortgage at a later stage.</skos:definition>
 	</owl:ObjectProperty>
@@ -265,8 +263,8 @@
 	
 	<owl:ObjectProperty rdf:about="&fibo-loan-typ-mtg;mortgagePurpose">
 		<rdfs:label xml:lang="en">mortgage purpose  (please review)</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-typ-mtg;MortgageLoanContract"/>
-		<rdfs:range rdf:resource="&fibo-loan-typ-mtg;MortgageLoanPurpose"/>
+		<rdfs:domain rdf:resource="&fibo-ln-ln-ln;MortgageLoanContract"/>
+		<rdfs:range rdf:resource="&fibo-ln-ln-ln;MortgageLoanPurpose"/>
 		<skos:definition xml:lang="en">The purpose for which the Mortgage Loan has been taken out.</skos:definition>
 	</owl:ObjectProperty>
 

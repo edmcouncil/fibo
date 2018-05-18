@@ -2,9 +2,11 @@
 <!DOCTYPE rdf:RDF [
 	<!ENTITY dct "http://purl.org/dc/terms/">
 	<!ENTITY fibo-be-le-lp "https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/">
+	<!ENTITY fibo-fbc-dae-dbt "https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/">
 	<!ENTITY fibo-fnd-agr-ctr "https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/">
 	<!ENTITY fibo-fnd-rel-rel "https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
+	<!ENTITY fibo-ln-ln-ln "https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanCore/">
 	<!ENTITY fibo-loan-loan-gty "https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoansGuaranties/">
 	<!ENTITY fibo-loan-loan-loan "https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoanBasicTerms/">
 	<!ENTITY fibo-loan-loan-pty "https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoansParties/">
@@ -19,9 +21,11 @@
 <rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoansParties/"
 	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fibo-be-le-lp="https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/"
+	xmlns:fibo-fbc-dae-dbt="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"
 	xmlns:fibo-fnd-agr-ctr="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"
 	xmlns:fibo-fnd-rel-rel="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
+	xmlns:fibo-ln-ln-ln="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanCore/"
 	xmlns:fibo-loan-loan-gty="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoansGuaranties/"
 	xmlns:fibo-loan-loan-loan="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoanBasicTerms/"
 	xmlns:fibo-loan-loan-pty="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoansParties/"
@@ -44,6 +48,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/PartiesExt/PartyRoleContext/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanCore/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoanBasicTerms/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoansGuaranties/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansTemporal/LoanApplicationsTemporal/"/>
@@ -71,7 +76,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-loan-loan-pty;borrows.1"/>
-				<owl:onClass rdf:resource="&fibo-loan-loan-loan;LoanContract"/>
+				<owl:onClass rdf:resource="&fibo-ln-ln-ln;LoanContract"/>
 				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -106,7 +111,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-loan-pty;LoanBorrower">
-		<rdfs:subClassOf rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/Borrower"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;Borrower"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractCounterparty"/>
 		<rdfs:subClassOf rdf:resource="&fibo-loan-loan-loan;LoanParty"/>
 		<rdfs:subClassOf>
@@ -133,7 +138,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-loan-pty;LoanLender">
-		<rdfs:subClassOf rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/Lender"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;Lender"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractPrincipal"/>
 		<rdfs:subClassOf rdf:resource="&fibo-loan-loan-loan;LoanParty"/>
 		<rdfs:label xml:lang="en">loan lender  (please review)</rdfs:label>
@@ -171,13 +176,13 @@
 	<owl:ObjectProperty rdf:about="&fibo-loan-loan-pty;borrows.1">
 		<rdfs:label xml:lang="en">borrows  (please review)</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-loan-loan-pty;Cosigner"/>
-		<rdfs:range rdf:resource="&fibo-loan-loan-loan;LoanContract"/>
+		<rdfs:range rdf:resource="&fibo-ln-ln-ln;LoanContract"/>
 		<owl:inverseOf rdf:resource="&fibo-loan-loan-pty;hasCoBorower"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-loan-loan-pty;hasCoBorower">
 		<rdfs:label xml:lang="en">has co borower  (please review)</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-loan-loan;LoanContract"/>
+		<rdfs:domain rdf:resource="&fibo-ln-ln-ln;LoanContract"/>
 		<rdfs:range rdf:resource="&fibo-loan-loan-pty;Cosigner"/>
 	</owl:ObjectProperty>
 	
