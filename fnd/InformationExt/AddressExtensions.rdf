@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE rdf:RDF [
 	<!ENTITY dct "http://purl.org/dc/terms/">
+	<!ENTITY fibo-fnd-arr-id "https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/IdentifiersAndIndices/">
 	<!ENTITY fibo-fnd-inf-adrx "https://spec.edmcouncil.org/fibo/ontology/FND/InformationExt/AddressExtensions/">
 	<!ENTITY fibo-fnd-law-jur "https://spec.edmcouncil.org/fibo/ontology/FND/Law/Jurisdiction/">
 	<!ENTITY fibo-fnd-plc-adr "https://spec.edmcouncil.org/fibo/ontology/FND/Places/Addresses/">
@@ -8,6 +9,7 @@
 	<!ENTITY fibo-fnd-plcx-gph "https://spec.edmcouncil.org/fibo/ontology/FND/PlacesExt/Geophysical/">
 	<!ENTITY fibo-fnd-rel-rel "https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
+	<!ENTITY lcc-cr "http://www.omg.org/spec/LCC/Countries/CountryRepresentation/">
 	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
 	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
 	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
@@ -16,6 +18,7 @@
 ]>
 <rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/ontology/FND/InformationExt/AddressExtensions/"
 	xmlns:dct="http://purl.org/dc/terms/"
+	xmlns:fibo-fnd-arr-id="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/IdentifiersAndIndices/"
 	xmlns:fibo-fnd-inf-adrx="https://spec.edmcouncil.org/fibo/ontology/FND/InformationExt/AddressExtensions/"
 	xmlns:fibo-fnd-law-jur="https://spec.edmcouncil.org/fibo/ontology/FND/Law/Jurisdiction/"
 	xmlns:fibo-fnd-plc-adr="https://spec.edmcouncil.org/fibo/ontology/FND/Places/Addresses/"
@@ -23,6 +26,7 @@
 	xmlns:fibo-fnd-plcx-gph="https://spec.edmcouncil.org/fibo/ontology/FND/PlacesExt/Geophysical/"
 	xmlns:fibo-fnd-rel-rel="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
+	xmlns:lcc-cr="http://www.omg.org/spec/LCC/Countries/CountryRepresentation/"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
@@ -32,6 +36,8 @@
 	<owl:Ontology rdf:about="https://spec.edmcouncil.org/fibo/ontology/FND/InformationExt/AddressExtensions/">
 		<rdfs:label xml:lang="en">AddressExtensions</rdfs:label>
 		<dct:abstract>Extensions to the main Address ontology in Places. An address is defined as an index to a location to which communications may be delivered. This ontology fleshes out that concept by defining kinds of address including geolocation and network addresses.</dct:abstract>
+		<owl:imports rdf:resource="http://www.omg.org/spec/LCC/Countries/CountryRepresentation/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/IdentifiersAndIndices/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Law/Jurisdiction/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Places/Addresses/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Places/Locations/"/>
@@ -48,6 +54,12 @@
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-inf-adrx;identifiesPhysicalArea"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fnd-plcx-gph;GeophysicalLocation"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;uses"/>
+				<owl:someValuesFrom rdf:resource="&lcc-cr;GeographicCoordinateSystem"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">geolocation coordinates</rdfs:label>
@@ -68,22 +80,15 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-inf-adrx;NetworkAddress">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-plc-adr;Address"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-plc-adr;VirtualAddress"/>
 		<rdfs:label xml:lang="en">network address</rdfs:label>
 	</owl:Class>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-inf-adrx;identifiesPhysicalArea">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-inf-adrx;isIndexTo"/>
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-arr-id;isIndexTo"/>
 		<rdfs:label xml:lang="en">identifies physical area</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fnd-inf-adrx;GeolocationCoordinates"/>
 		<rdfs:range rdf:resource="&fibo-fnd-plcx-gph;GeophysicalLocation"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-fnd-inf-adrx;isIndexTo">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
-		<rdfs:label xml:lang="en">is index to</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-plc-adr;Address"/>
-		<rdfs:range rdf:resource="&fibo-fnd-plc-loc;Location"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-inf-adrx;isSuitableIn">
@@ -91,8 +96,5 @@
 		<rdfs:domain rdf:resource="&fibo-fnd-inf-adrx;LegallyDeliverableLocation"/>
 		<rdfs:range rdf:resource="&fibo-fnd-law-jur;Jurisdiction"/>
 	</owl:ObjectProperty>
-	
-	<owl:Class rdf:about="&fibo-fnd-plc-adr;Address">
-	</owl:Class>
 
 </rdf:RDF>
