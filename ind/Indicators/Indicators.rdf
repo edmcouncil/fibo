@@ -49,9 +49,9 @@ Copyright (c) 2014-2018 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/"/>
 		<sm:fileAbbreviation>fibo-ind-ind-ind</sm:fileAbbreviation>
 		<sm:filename>Indicators.rdf</sm:filename>
-		<rdfs:seeAlso rdf:resource="https://spec.edmcouncil.org/fibo/ontology/AboutTheEDMC-FIBOFamily/"/>
-		<rdfs:seeAlso rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/AboutIND/"/>
-		<rdfs:seeAlso rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/Indicators/AboutIndicators/"/>
+		<rdfs:seeAlso rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/EconomicIndicators/MetadataINDEconomicIndicators/"/>
+		<rdfs:seeAlso rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/MetadataIND/"/>
+		<rdfs:seeAlso rdf:resource="https://spec.edmcouncil.org/fibo/ontology/MetadataFIBO/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/Publishers/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Arrangements/"/>
@@ -61,9 +61,9 @@ Copyright (c) 2014-2018 Object Management Group, Inc.</sm:copyright>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Analytics/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/20180601/Indicators/Indicators/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/20180701/Indicators/Indicators/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20140601/Indicators/Indicators.rdf version of this ontology was modified per the issue resolutions identified in the FIBO IND 1.0 FTF 1 report.</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20160801/Indicators/Indicators.rdf version of this ontology was modified per the FIBO 2.0 RFC, namely, to take advantage of content added via the FIBO FND 1.1 with respect to higher-level concepts of Rate, ExchangeRate, and InterestRate and revise the definition of TermStructure to better support concepts such as yield curves.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20160801/Indicators/Indicators.rdf version of this ontology was modified per the FIBO 2.0 RFC, namely, to integrate concepts recently added to the FND domain including Rate, ExchangeRate, InterestRate and StructuredCollection and revise definitions of TermStructure and Volatility to better support concepts such as yield curves and analysis of market rates generally.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -176,7 +176,7 @@ Copyright (c) 2014-2018 Object Management Group, Inc.</sm:copyright>
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;StatisticalMeasure"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasOperand"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasArgument"/>
 				<owl:onClass rdf:resource="&fibo-ind-ind-ind;MarketRate"/>
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">2</owl:qualifiedCardinality>
 			</owl:Restriction>
@@ -186,15 +186,29 @@ Copyright (c) 2014-2018 Object Management Group, Inc.</sm:copyright>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ind-ind-ind;PriceStructure">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-arr;StructuredCollection"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-arr;DatedStructuredCollection"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;comprises"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-arr-arr;hasConstituent"/>
 				<owl:someValuesFrom rdf:resource="&fibo-ind-ind-ind;QuotedPrice"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>price structure</rdfs:label>
 		<skos:definition>a structured collection of quoted prices, such as market prices for some index or security, such that volatility may be constructed for the structure</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-ind-ind-ind;PriceVolatility">
+		<rdfs:subClassOf rdf:resource="&fibo-ind-ind-ind;Volatility"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasArgument"/>
+				<owl:someValuesFrom rdf:resource="&fibo-ind-ind-ind;PriceStructure"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>price volatility</rdfs:label>
+		<skos:definition>a statistical measure of the rate of change in pricing for a given security or market index</skos:definition>
+		<skos:editorialNote>Volatility is modeled here as a structured collection, comprised of a series of individual prices of something (a security, index, etc., typically quoted prices), dates, and the source for those prices for some overall period of time</skos:editorialNote>
+		<fibo-fnd-utl-av:explanatoryNote>Volatility can be determined using the standard deviation or variance among prices for the security or market index over some period of time. For a specific security, volatility may measure the amount and frequency in rapid price fluctuation. It is computed as the annualized standard deviation of the percentage change in a security&apos;s daily price.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ind-ind-ind;PublishedFinancialInformation">
@@ -242,10 +256,10 @@ Copyright (c) 2014-2018 Object Management Group, Inc.</sm:copyright>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ind-ind-ind;TermStructure">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-arr;StructuredCollection"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-arr;DatedStructuredCollection"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasPart"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-arr-arr;hasConstituent"/>
 				<owl:someValuesFrom rdf:resource="&fibo-ind-ind-ind;MarketRate"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -269,14 +283,11 @@ Copyright (c) 2014-2018 Object Management Group, Inc.</sm:copyright>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasArgument"/>
-				<owl:someValuesFrom rdf:resource="&fibo-ind-ind-ind;PriceStructure"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-arr-arr;DatedStructuredCollection"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>volatility</rdfs:label>
-		<skos:definition>a statistical measure of the rate of change in pricing for a given security or market index</skos:definition>
-		<skos:editorialNote>Volatility is modeled here as a structured collection, comprised of a series of individual prices of something (a security, index, etc., typically quoted prices), dates, and the source for those prices for some overall period of time</skos:editorialNote>
-		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">OptionsEducation.org</fibo-fnd-utl-av:adaptedFrom>
-		<fibo-fnd-utl-av:explanatoryNote>Volatility can be determined using the standard deviation or variance among prices for the security or market index over some period of time. For a specific security, volatility may measure the amount and frequency in rapid price fluctuation. It is computed as the annualized standard deviation of the percentage change in a security&apos;s daily price.</fibo-fnd-utl-av:explanatoryNote>
+		<skos:definition>a statistical measure of the dispersion around the average of some random variable over some period of time</skos:definition>
 	</owl:Class>
 	
 	<owl:ObjectProperty rdf:about="&fibo-ind-ind-ind;hasQuotationDate">
@@ -289,6 +300,7 @@ Copyright (c) 2014-2018 Object Management Group, Inc.</sm:copyright>
 	</owl:ObjectProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-ind-ind-ind;hasQuotationDateTime">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-arr-arr;isAssociatedWithDateTime"/>
 		<rdfs:label>has quotation date and time</rdfs:label>
 		<rdfs:range>
 			<rdfs:Datatype>
@@ -309,8 +321,7 @@ Copyright (c) 2014-2018 Object Management Group, Inc.</sm:copyright>
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
 		<rdfs:label>is volatility of</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-ind-ind-ind;Volatility"/>
-		<rdfs:range rdf:resource="&fibo-ind-ind-ind;MarketRate"/>
-		<skos:definition>indicates the market rate to which the volatility measure applies and of which it is a measure</skos:definition>
+		<skos:definition>indicates something to which the volatility measure applies and of which it is a measure</skos:definition>
 	</owl:ObjectProperty>
 
 </rdf:RDF>
