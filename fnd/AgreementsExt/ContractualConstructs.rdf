@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE rdf:RDF [
 	<!ENTITY dct "http://purl.org/dc/terms/">
+	<!ENTITY fibo-fnd-agr-agr "https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Agreements/">
 	<!ENTITY fibo-fnd-agr-ctr "https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/">
 	<!ENTITY fibo-fnd-agrx-con "https://spec.edmcouncil.org/fibo/ontology/FND/AgreementsExt/ContractualConstructs/">
 	<!ENTITY fibo-fnd-agrx-ctrx "https://spec.edmcouncil.org/fibo/ontology/FND/AgreementsExt/ContractsExtensions/">
 	<!ENTITY fibo-fnd-rel-rel "https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/">
 	<!ENTITY fibo-fnd-soc-asp "https://spec.edmcouncil.org/fibo/ontology/FND/SocialConstructsExt/ConstructAspects/">
-	<!ENTITY fibo-fnd-soc-pty "https://spec.edmcouncil.org/fibo/ontology/FND/SocialConstructsExt/LegalConstructParties/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
 	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
 	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
@@ -16,12 +16,12 @@
 ]>
 <rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/ontology/FND/AgreementsExt/ContractualConstructs/"
 	xmlns:dct="http://purl.org/dc/terms/"
+	xmlns:fibo-fnd-agr-agr="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Agreements/"
 	xmlns:fibo-fnd-agr-ctr="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"
 	xmlns:fibo-fnd-agrx-con="https://spec.edmcouncil.org/fibo/ontology/FND/AgreementsExt/ContractualConstructs/"
 	xmlns:fibo-fnd-agrx-ctrx="https://spec.edmcouncil.org/fibo/ontology/FND/AgreementsExt/ContractsExtensions/"
 	xmlns:fibo-fnd-rel-rel="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"
 	xmlns:fibo-fnd-soc-asp="https://spec.edmcouncil.org/fibo/ontology/FND/SocialConstructsExt/ConstructAspects/"
-	xmlns:fibo-fnd-soc-pty="https://spec.edmcouncil.org/fibo/ontology/FND/SocialConstructsExt/LegalConstructParties/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -32,11 +32,11 @@
 	<owl:Ontology rdf:about="https://spec.edmcouncil.org/fibo/ontology/FND/AgreementsExt/ContractualConstructs/">
 		<rdfs:label xml:lang="en">ContractualConstructs</rdfs:label>
 		<dct:abstract>This ontology provides additional contractual constructs including contractual obligations and their beneficiaries and obligors, contractual rights and options and the conferral or variation of these by contract.</dct:abstract>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Agreements/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/AgreementsExt/ContractsExtensions/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/SocialConstructsExt/ConstructAspects/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/SocialConstructsExt/LegalConstructParties/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/AgreementsExt/ContractualConstructs/"/>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Informative"/>
@@ -91,8 +91,8 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-agrx-con;ContractualBeneficiary">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-agr;Beneficiary"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractParty"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-soc-pty;Beneficiary"/>
 		<rdfs:label xml:lang="en">contractual beneficiary</rdfs:label>
 	</owl:Class>
 	
@@ -109,11 +109,11 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-agrx-con;ContractualObligor">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-agr;Obligor"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractParty"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-soc-pty;Obligor"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-soc-pty;obligedTo"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-agrx-con;obligedTo"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fnd-agrx-con;ContractualBeneficiary"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -155,6 +155,12 @@
 		<rdfs:label xml:lang="en">has contractual basis</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fnd-agrx-con;ContractualRight"/>
 		<rdfs:range rdf:resource="&fibo-fnd-agr-ctr;Contract"/>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-agrx-con;obligedTo">
+		<rdfs:label xml:lang="en">obliged to</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fnd-agr-agr;Obligor"/>
+		<rdfs:range rdf:resource="&fibo-fnd-agr-agr;Beneficiary"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-agrx-con;setsOutRight">
