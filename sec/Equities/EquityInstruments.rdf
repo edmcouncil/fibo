@@ -8,7 +8,7 @@
 	<!ENTITY fibo-fnd-acc-aeq "https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/AccountingEquity/">
 	<!ENTITY fibo-fnd-acc-cur "https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/">
 	<!ENTITY fibo-fnd-agr-ctr "https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/">
-	<!ENTITY fibo-fnd-agrx-con "https://spec.edmcouncil.org/fibo/ontology/FND/AgreementsExt/ContractualConstructs/">
+	<!ENTITY fibo-fnd-law-lcap "https://spec.edmcouncil.org/fibo/ontology/FND/Law/LegalCapacity/">
 	<!ENTITY fibo-fnd-oac-own "https://spec.edmcouncil.org/fibo/ontology/FND/OwnershipAndControl/Ownership/">
 	<!ENTITY fibo-fnd-pty-pty "https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Parties/">
 	<!ENTITY fibo-fnd-pty-rl "https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Roles/">
@@ -32,7 +32,7 @@
 	xmlns:fibo-fnd-acc-aeq="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/AccountingEquity/"
 	xmlns:fibo-fnd-acc-cur="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"
 	xmlns:fibo-fnd-agr-ctr="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"
-	xmlns:fibo-fnd-agrx-con="https://spec.edmcouncil.org/fibo/ontology/FND/AgreementsExt/ContractualConstructs/"
+	xmlns:fibo-fnd-law-lcap="https://spec.edmcouncil.org/fibo/ontology/FND/Law/LegalCapacity/"
 	xmlns:fibo-fnd-oac-own="https://spec.edmcouncil.org/fibo/ontology/FND/OwnershipAndControl/Ownership/"
 	xmlns:fibo-fnd-pty-pty="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Parties/"
 	xmlns:fibo-fnd-pty-rl="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Roles/"
@@ -66,7 +66,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/AccountingEquity/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/AgreementsExt/ContractualConstructs/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Law/LegalCapacity/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/OwnershipAndControl/Ownership/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Roles/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
@@ -176,10 +176,10 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-eq-eq;VotingRight">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-agrx-con;ContractualRight"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-law-lcap;ContractualRight"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-eq-eq;votingRestrictions"/>
+				<owl:onProperty rdf:resource="&fibo-sec-eq-eq;hasVotingRestriction"/>
 				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
 				<owl:onDataRange rdf:resource="&xsd;string"/>
 			</owl:Restriction>
@@ -197,9 +197,9 @@
 				<owl:someValuesFrom rdf:resource="&fibo-fnd-agr-ctr;WrittenContract"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">voting right</rdfs:label>
-		<skos:definition xml:lang="en">The right of a stockholder to vote on matters of corporate policy as well as on who is to compose the board of directors.</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Most voting involves decisions on issuing securities, initiating stock splits, and making substantial changes in the corporation&apos;s operations.</fibo-fnd-utl-av:explanatoryNote>
+		<rdfs:label>voting right</rdfs:label>
+		<skos:definition>a contractual right that specifies shareholder voting entitlements, such as to elect directors, elect outside auditors, and vote on matters of corporate policy</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Most voting involves decisions on issuing securities, initiating stock splits, and making substantial changes in the corporation&apos;s operations.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-sec-eq-eq;confersNumberOfVotesPerShare">
@@ -227,19 +227,19 @@
 		<fibo-fnd-utl-av:synonym xml:lang="en">has float</fibo-fnd-utl-av:synonym>
 	</owl:DatatypeProperty>
 	
+	<owl:DatatypeProperty rdf:about="&fibo-sec-eq-eq;hasVotingRestriction">
+		<rdfs:label xml:lang="en">has voting restriction</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-sec-eq-eq;VotingRight"/>
+		<rdfs:range rdf:resource="&xsd;string"/>
+		<skos:definition>specifies restrictions on voting rights, if any</skos:definition>
+	</owl:DatatypeProperty>
+	
 	<owl:DatatypeProperty rdf:about="&fibo-sec-eq-eq;indicatesNumberOfShares">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasAmount"/>
 		<rdfs:label xml:lang="en">indicates number of shares</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-eq-eq;EquityPosition"/>
 		<rdfs:range rdf:resource="&xsd;positiveInteger"/>
 		<skos:definition xml:lang="en">indicates the number of shares associated with the position</skos:definition>
-	</owl:DatatypeProperty>
-	
-	<owl:DatatypeProperty rdf:about="&fibo-sec-eq-eq;votingRestrictions">
-		<rdfs:label xml:lang="en">voting restrictions</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-eq-eq;VotingRight"/>
-		<rdfs:range rdf:resource="&xsd;string"/>
-		<skos:definition xml:lang="en">Details of restrictions on voting rights, for the case where type of voting is Restricted.</skos:definition>
 	</owl:DatatypeProperty>
 
 </rdf:RDF>
