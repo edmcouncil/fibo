@@ -4,6 +4,7 @@
 	<!ENTITY fibo-be-fct-fct "https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/FunctionalEntities/">
 	<!ENTITY fibo-be-fct-pub "https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/Publishers/">
 	<!ENTITY fibo-be-le-fbo "https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/FormalBusinessOrganizations/">
+	<!ENTITY fibo-be-le-lei "https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LEIEntities/">
 	<!ENTITY fibo-be-le-lp "https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/">
 	<!ENTITY fibo-be-oac-exec "https://spec.edmcouncil.org/fibo/ontology/BE/OwnershipAndControl/Executives/">
 	<!ENTITY fibo-fbc-fct-rga "https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/RegulatoryAgencies/">
@@ -38,6 +39,7 @@
 	xmlns:fibo-be-fct-fct="https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/FunctionalEntities/"
 	xmlns:fibo-be-fct-pub="https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/Publishers/"
 	xmlns:fibo-be-le-fbo="https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/FormalBusinessOrganizations/"
+	xmlns:fibo-be-le-lei="https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LEIEntities/"
 	xmlns:fibo-be-le-lp="https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/"
 	xmlns:fibo-be-oac-exec="https://spec.edmcouncil.org/fibo/ontology/BE/OwnershipAndControl/Executives/"
 	xmlns:fibo-fbc-fct-rga="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/RegulatoryAgencies/"
@@ -86,6 +88,7 @@ Copyright (c) 2015-2018 Object Management Group, Inc.</sm:copyright>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/FunctionalEntities/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/Publishers/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/FormalBusinessOrganizations/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LEIEntities/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/OwnershipAndControl/Executives/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/RegulatoryAgencies/"/>
@@ -1003,9 +1006,26 @@ Copyright (c) 2015-2018 Object Management Group, Inc.</sm:copyright>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>unique trade identifier</rdfs:label>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
 		<skos:definition>a globally unique identifier for a trade, unique to the transaction known to and used by all relevant parties, as required by various regulatory agencies around the world</skos:definition>
 		<fibo-fnd-utl-av:abbreviation>UTI</fibo-fnd-utl-av:abbreviation>
 		<fibo-fnd-utl-av:adaptedFrom>Unique Trade Identifier (UTI): Generation, Communication and Matching, as of 20 July 2015, described in http://www2.isda.org/attachment/NzczMg==/2015%20July%2020%20UTI%20Best%20Practice%20v11.6_final.pdf</fibo-fnd-utl-av:adaptedFrom>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-pas-fpas;UniqueTransactionIdentifier">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;TradeIdentifier"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-pas-fpas;hasGeneratingEntityIdentifier"/>
+				<owl:someValuesFrom rdf:resource="&fibo-be-le-lei;LegalEntityIdentifier"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>unique transaction identifier</rdfs:label>
+		<skos:definition>a globally unique identifier for a reportable transaction, whose primary purpose is to uniquely identify individual OTC derivatives transactions in reports to trade repositories</skos:definition>
+		<fibo-fnd-utl-av:abbreviation>UTI</fibo-fnd-utl-av:abbreviation>
+		<fibo-fnd-utl-av:adaptedFrom>Harmonization of the Unique Transaction Identifier - Technical Guidance, 20 Feb 2017, described in https://www.bis.org/cpmi/publ/d158.pdf</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:adaptedFrom>Unique Trade Identifier (UTI): Generation, Communication and Matching, as of 20 July 2015, described in http://www2.isda.org/attachment/NzczMg==/2015%20July%2020%20UTI%20Best%20Practice%20v11.6_final.pdf</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:explanatoryNote>In particular, a UTI will help to ensure the consistent aggregation of OTC derivatives transactions by minimising the likelihood that the same transaction will be counted more than once (for instance, because it is reported by more than one counterparty to a transaction, or to more than one trade repository (TR)).</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-pas-fpas;facilitates">
@@ -1021,6 +1041,26 @@ Copyright (c) 2015-2018 Object Management Group, Inc.</sm:copyright>
 		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
 		<skos:definition>an essential part, component, or element of some collection or set</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.merriam-webster.com/dictionary/constituent</fibo-fnd-utl-av:adaptedFrom>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fbc-pas-fpas;hasGeneratingEntity">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;generates"/>
+		<rdfs:label>has generating entity</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-be-le-lp;LegalEntity"/>
+		<skos:definition>specifies a legal entity that generates something</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fbc-pas-fpas;hasGeneratingEntityIdentifier">
+		<rdfs:label>has generating entity identifier</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fbc-pas-fpas;UniqueTransactionIdentifier"/>
+		<owl:propertyChainAxiom rdf:parseType="Collection">
+			<rdf:Description rdf:about="&fibo-fbc-pas-fpas;hasGeneratingEntity">
+			</rdf:Description>
+			<rdf:Description rdf:about="&fibo-fnd-aap-agt;isIdentifiedBy">
+			</rdf:Description>
+		</owl:propertyChainAxiom>
+		<skos:definition>specifies an identifier for the entity that generated something</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Note that the range of is identified by must be that entity&apos;s LEI in the context of a UTI</fibo-fnd-utl-av:explanatoryNote>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-pas-fpas;hasLegalAgent">
@@ -1070,7 +1110,7 @@ Copyright (c) 2015-2018 Object Management Group, Inc.</sm:copyright>
 	<owl:ObjectProperty rdf:about="&fibo-fbc-pas-fpas;hasSettlementDate">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasEndDate"/>
 		<rdfs:label>has settlement date</rdfs:label>
-		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Date"/>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;CalculatedDate"/>
 		<skos:definition>a predicate indicating the date by which an executed order or transaction must be settled</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom>Barron&apos;s Dictionary of Business and Economics Terms, Fifth Edition, 2012</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:explanatoryNote>Settlement might involve either a buyer paying in cash or a seller delivering the relevant instrument(s) and receiving the proceeds as specified by the terms of a given transaction.</fibo-fnd-utl-av:explanatoryNote>
@@ -1088,6 +1128,7 @@ Copyright (c) 2015-2018 Object Management Group, Inc.</sm:copyright>
 		<rdfs:label>has trade repository namespace</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fbc-pas-fpas;UniqueTradeIdentifier"/>
 		<rdfs:range rdf:resource="&xsd;string"/>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
 		<skos:definition>indicates the trade repository namespace component of a unique trade identifier</skos:definition>
 	</owl:DatatypeProperty>
 	
@@ -1096,6 +1137,7 @@ Copyright (c) 2015-2018 Object Management Group, Inc.</sm:copyright>
 		<rdfs:label>has trade repository transaction identifier</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fbc-pas-fpas;UniqueTradeIdentifier"/>
 		<rdfs:range rdf:resource="&xsd;string"/>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
 		<skos:definition>indicates the transaction identifier component of a unique trade identifier, which is unique at the repository level</skos:definition>
 	</owl:DatatypeProperty>
 	
