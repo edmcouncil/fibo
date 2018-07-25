@@ -86,9 +86,9 @@ Copyright (c) 2014-2018 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/IND/Indicators/Indicators/</sm:dependsOn>
 		<sm:fileAbbreviation>fibo-ind-ei-ei</sm:fileAbbreviation>
 		<sm:filename>EconomicIndicators.rdf</sm:filename>
-		<rdfs:seeAlso rdf:resource="https://spec.edmcouncil.org/fibo/ontology/AboutTheEDMC-FIBOFamily/"/>
-		<rdfs:seeAlso rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/AboutIND/"/>
-		<rdfs:seeAlso rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/EconomicIndicators/AboutEconomicIndicators/"/>
+		<rdfs:seeAlso rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/EconomicIndicators/MetadataINDEconomicIndicators/"/>
+		<rdfs:seeAlso rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/MetadataIND/"/>
+		<rdfs:seeAlso rdf:resource="https://spec.edmcouncil.org/fibo/ontology/MetadataFIBO/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/FunctionalEntities/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/Publishers/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/GovernmentEntities/GovernmentEntities/"/>
@@ -116,7 +116,7 @@ Copyright (c) 2014-2018 Object Management Group, Inc.</sm:copyright>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Analytics/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/Indicators/Indicators/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/20180601/EconomicIndicators/EconomicIndicators/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/20180701/EconomicIndicators/EconomicIndicators/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20140601/EconomicIndicators/EconomicIndicators.rdf version of this ontology was modified per the issue resolutions identified in the FIBO IND 1.0 FTF 1 report.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20150501/EconomicIndicators/EconomicIndicators.rdf version of this ontology was modified per the issue resolutions identified in the FIBO IND 1.0 FTF 3 report.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20160801/EconomicIndicators/EconomicIndicators.rdf version of this ontology was modified per the FIBO 2.0 RFC. Primary changes include the addition of a number of statistical measures (mean, total, etc.) and their use in existing and new indicators, and the addition of several more economic indicators.</skos:changeNote>
@@ -133,12 +133,49 @@ Copyright (c) 2014-2018 Object Management Group, Inc.</sm:copyright>
 		</rdfs:subClassOf>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-ind-ei-ei;AnnualizedStandardDeviation">
+		<rdfs:subClassOf rdf:resource="&fibo-ind-ei-ei;StandardDeviation"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-ind-ei-ei;hasReferencePeriod"/>
+				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;ExplicitRecurrenceInterval"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>annualized standard deviation</rdfs:label>
+		<skos:definition>the standard deviation for some measure over a specific reference period</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Standard deviation applied to the annual rate of return of an investment provides insights on the historical volatility of that investment. The greater the standard deviation of the price of a security, the greater the volatility.  Multiplying monthly standard deviation by the square root of twelve (12) is an industry standard method of approximating annualized standard deviations of monthly returns.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-ind-ei-ei;ArithmeticMean">
 		<rdfs:subClassOf rdf:resource="&fibo-ind-ei-ei;Mean"/>
 		<rdfs:label>arithmetic mean</rdfs:label>
 		<skos:definition>the sum of a collection of numbers divided by the number of numbers in the collection</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://en.wikipedia.org/wiki/Arithmetic_mean</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:explanatoryNote>While the arithmetic mean is often used to report central tendencies, it is not a robust statistic, meaning that it is greatly influenced by outliers (values that are very much larger or smaller than most of the values). Notably, for skewed distributions, such as the distribution of income for which a few people&apos;s incomes are substantially greater than most people&apos;s, the arithmetic mean may not accord with one&apos;s notion of &apos;middle&apos;, and robust statistics, such as the median, may be a better description of central tendency.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-ind-ei-ei;AverageAbsoluteDeviation">
+		<rdfs:subClassOf rdf:resource="&fibo-ind-ei-ei;Dispersion"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasArgument"/>
+				<owl:someValuesFrom>
+					<owl:Class>
+						<owl:unionOf rdf:parseType="Collection">
+							<rdf:Description rdf:about="&fibo-ind-ei-ei;Mean">
+							</rdf:Description>
+							<rdf:Description rdf:about="&fibo-ind-ei-ei;Median">
+							</rdf:Description>
+						</owl:unionOf>
+					</owl:Class>
+				</owl:someValuesFrom>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>average absolute deviation</rdfs:label>
+		<skos:definition>the average of the absolute deviations from a central point</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>The central point can be the mean, median, mode, or the result of another measure of central tendency.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:synonym>mean absolute deviation</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ind-ei-ei;AverageDailyEarnings">
@@ -467,6 +504,34 @@ Copyright (c) 2014-2018 Object Management Group, Inc.</sm:copyright>
 		<rdfs:label>difference</rdfs:label>
 		<skos:definition>a quantity by which amounts differ; the remainder left after subtraction of one value from another</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://en.oxforddictionaries.com/definition/difference</fibo-fnd-utl-av:adaptedFrom>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-ind-ei-ei;Dispersion">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-qt-qtu;QuantityValue"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;Expression"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;StatisticalMeasure"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-arr-arr;hasCollectionSize"/>
+				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+				<owl:onDataRange rdf:resource="&xsd;nonNegativeInteger"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
+				<owl:someValuesFrom rdf:resource="&fibo-ind-ei-ei;FinitePopulation"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-ind-ei-ei;hasObservedValue"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-arr-arr;StructuredCollection"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>dispersion</rdfs:label>
+		<skos:definition>a measure of difference between the observed value of a variable and some other value</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>The sign of the deviation (positive or negative), indicates the direction of that difference (the deviation is positive when the observed value exceeds the reference value). The magnitude of the value indicates the size of the difference.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ind-ei-ei;EconomicIndicator">
@@ -930,9 +995,47 @@ A household may be located in a housing unit or in a set of collective living qu
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-qt-qtu;QuantityValue"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;Expression"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;StatisticalMeasure"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasObservedValue"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-arr-arr;StructuredCollection"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label>mean</rdfs:label>
 		<skos:definition>the most common measure of central tendency, the average of a set of numbers</skos:definition>
+		<fibo-fnd-utl-av:abbreviation>μ</fibo-fnd-utl-av:abbreviation>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.statcan.gc.ca/edu/power-pouvoir/glossary-glossaire/5214842-eng.htm#m</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:explanatoryNote>A moment is a specific quantitative measure, used in both mechanics and statistics, of the shape of a set of points. Given that the points represent probability density from a statistical viewpoint, the zeroth moment is the total probability (i.e. one), the first moment is the mean, the second central moment is the variance, the third central moment is the skewness, and the fourth central moment (with normalization and shift) is the kurtosis.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:synonym>expected value</fibo-fnd-utl-av:synonym>
+		<fibo-fnd-utl-av:synonym>first (raw) moment</fibo-fnd-utl-av:synonym>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-ind-ei-ei;Median">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-qt-qtu;QuantityValue"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;Expression"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;StatisticalMeasure"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasObservedValue"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-arr-arr;StructuredCollection"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>median</rdfs:label>
+		<skos:definition>the value separating the higher half of a data sample, a population, or a probability distribution, from the lower half</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>The basic advantage of the median in describing data compared to the mean is that it is not skewed by extremely large or small values, and may provide a better idea of a &apos;typical&apos; value.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-ind-ei-ei;MedianAbsoluteDeviation">
+		<rdfs:subClassOf rdf:resource="&fibo-ind-ei-ei;Dispersion"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasArgument"/>
+				<owl:someValuesFrom rdf:resource="&fibo-ind-ei-ei;Median"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>median absolute deviation</rdfs:label>
+		<skos:definition>the median of the absolute deviations from the data&apos;s median</skos:definition>
+		<fibo-fnd-utl-av:abbreviation>median absolute deviation</fibo-fnd-utl-av:abbreviation>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ind-ei-ei;MetropolitanStatisticalArea">
@@ -1154,13 +1257,28 @@ A household may be located in a housing unit or in a set of collective living qu
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ind-ei-ei;StandardDeviation">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-qt-qtu;QuantityValue"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;Expression"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;StatisticalMeasure"/>
+		<rdfs:subClassOf rdf:resource="&fibo-ind-ei-ei;Dispersion"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasArgument"/>
+				<owl:someValuesFrom>
+					<owl:Class>
+						<owl:unionOf rdf:parseType="Collection">
+							<rdf:Description rdf:about="&fibo-ind-ei-ei;Mean">
+							</rdf:Description>
+							<rdf:Description rdf:about="&fibo-ind-ei-ei;Variance">
+							</rdf:Description>
+						</owl:unionOf>
+					</owl:Class>
+				</owl:someValuesFrom>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label>standard deviation</rdfs:label>
 		<skos:definition>the square root of variance, standard deviation, measures the spread or dispersion around the mean of a data set</skos:definition>
+		<fibo-fnd-utl-av:abbreviation>SD</fibo-fnd-utl-av:abbreviation>
+		<fibo-fnd-utl-av:abbreviation>σ</fibo-fnd-utl-av:abbreviation>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.statcan.gc.ca/edu/power-pouvoir/glossary-glossaire/5214842-eng.htm#s</fibo-fnd-utl-av:adaptedFrom>
-		<fibo-fnd-utl-av:explanatoryNote>Standard deviation is the most widely-used measure of spread.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:explanatoryNote>Standard deviation is the most widely-used measure of spread, using squared deviations, but may not be robust.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ind-ei-ei;StatisticalArea">
@@ -1383,12 +1501,19 @@ A household may be located in a housing unit or in a set of collective living qu
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ind-ei-ei;Variance">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-qt-qtu;QuantityValue"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;Expression"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;StatisticalMeasure"/>
+		<rdfs:subClassOf rdf:resource="&fibo-ind-ei-ei;Dispersion"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasArgument"/>
+				<owl:someValuesFrom rdf:resource="&fibo-ind-ei-ei;Mean"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label>variance</rdfs:label>
 		<skos:definition>a measure of spread, calculated as the average squared deviation of each number from the mean of a data set</skos:definition>
+		<fibo-fnd-utl-av:abbreviation>μ2</fibo-fnd-utl-av:abbreviation>
+		<fibo-fnd-utl-av:abbreviation>σ2</fibo-fnd-utl-av:abbreviation>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.statcan.gc.ca/edu/power-pouvoir/glossary-glossaire/5214842-eng.htm#v</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:synonym>second moment</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
 	<owl:NamedIndividual rdf:about="&fibo-ind-ei-ei;Weekly">
@@ -1439,6 +1564,14 @@ A household may be located in a housing unit or in a set of collective living qu
 		<fibo-fnd-utl-av:adaptedFrom rdf:resource="http://www.investopedia.com/terms/w/working-age-population.asp"/>
 		<fibo-fnd-utl-av:explanatoryNote>The working-age population is the total population in a region, within a set range of ages, that is considered to be able and likely to work. The working-age population measure is used to give an estimate of the total number of potential workers within an economy. For example, in the U.S., it is 16, whereas in Canada it is 15.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:DatatypeProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-ind-ei-ei;hasObservedValue">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-utl-alx;hasArgument"/>
+		<rdfs:label>has observed value</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fnd-arr-arr;StructuredCollection"/>
+		<skos:definition>specifies a collection of values over which some analysis is performed</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>For certain calculations, such as certain measures of dispersion, date value pairs are expected as input, in other words, a dated structured collection.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-ind-ei-ei;hasPeriodicity">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasRecurrenceInterval"/>
@@ -1546,5 +1679,19 @@ A household may be located in a housing unit or in a set of collective living qu
 		<skos:definition>a predicate indicating whether some published formal method is applied that compensates for seasonal variations in the population or index value</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote>Example explanation from the US Bureau of Labor Statistics: Because price data are used for different purposes by different groups, the Bureau of Labor Statistics publishes seasonally adjusted as well as unadjusted changes each month. ...  Seasonal factors used in computing the seasonally adjusted indexes are derived by the X-13ARIMA-SEATS Seasonal Adjustment Method.  Seasonally adjusted indexes and seasonal factors are computed annually.  Each year, the last five years of seasonally adjusted data are revised.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:DatatypeProperty>
+	
+	<owl:Class rdf:about="&fibo-ind-ind-ind;Volatility">
+		<rdfs:subClassOf rdf:resource="&fibo-ind-ei-ei;Dispersion"/>
+		<rdfs:subClassOf>
+			<owl:Class>
+				<owl:unionOf rdf:parseType="Collection">
+					<rdf:Description rdf:about="&fibo-ind-ei-ei;Variance">
+					</rdf:Description>
+					<rdf:Description rdf:about="&fibo-ind-ei-ei;StandardDeviation">
+					</rdf:Description>
+				</owl:unionOf>
+			</owl:Class>
+		</rdfs:subClassOf>
+	</owl:Class>
 
 </rdf:RDF>
