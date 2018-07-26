@@ -14,6 +14,7 @@ prefix fibo-fnd-pty-rl: <http://spec.edmcouncil.org/fibo/FND/Parties/Roles/>
 prefix afn: <http://jena.hpl.hp.com/ARQ/function#>
 prefix fibo-fnd-utl-av: <https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/>
 prefix sm: <http://www.omg.org/techprocess/ab/SpecificationMetadata/>
+prefix dct: <http://purl.org/dc/terms/>
 
 ##
 # banner If we refer to something, it should have a type. 
@@ -24,8 +25,8 @@ WHERE {
   FILTER (ISIRI (?o))
   FILTER (REGEX (xsd:string (?o), "edmcouncil"))
   FILTER NOT EXISTS {?o a []}
-  FILTER (! (?p IN (owl:versionIRI, sm:dependsOn , owl:imports , sm:specificationVersionURL,
-                    rdfs:seeAlso))) 
+  FILTER (! (?p IN (owl:versionIRI, sm:dependsOn , owl:imports , sm:specificationVersionURL, dct:isPartOf, 
+  	            sm:isVersionOf, rdfs:seeAlso))) 
 BIND (concat ("ERROR:", xsd:string (?o), " is referenced by ", afn:localname (?p), " but has no type.")
 	  AS ?error)
  } 
