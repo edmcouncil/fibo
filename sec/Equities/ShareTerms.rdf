@@ -16,7 +16,6 @@
 	<!ENTITY fibo-sec-dbt-bo-cft "https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/Bonds/BondsCashflowTerms/">
 	<!ENTITY fibo-sec-eq-eq "https://spec.edmcouncil.org/fibo/ontology/SEC/Equities/EquityInstruments/">
 	<!ENTITY fibo-sec-eq-sha "https://spec.edmcouncil.org/fibo/ontology/SEC/Equities/ShareTerms/">
-	<!ENTITY fibo-sec-eq-shr "https://spec.edmcouncil.org/fibo/ontology/SEC/Equities/ShareholderRights/">
 	<!ENTITY fibo-sec-sec-lst "https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesListings/">
 	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
 	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
@@ -41,7 +40,6 @@
 	xmlns:fibo-sec-dbt-bo-cft="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/Bonds/BondsCashflowTerms/"
 	xmlns:fibo-sec-eq-eq="https://spec.edmcouncil.org/fibo/ontology/SEC/Equities/EquityInstruments/"
 	xmlns:fibo-sec-eq-sha="https://spec.edmcouncil.org/fibo/ontology/SEC/Equities/ShareTerms/"
-	xmlns:fibo-sec-eq-shr="https://spec.edmcouncil.org/fibo/ontology/SEC/Equities/ShareholderRights/"
 	xmlns:fibo-sec-sec-lst="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesListings/"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -67,7 +65,6 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/MD/EquityTemporal/EquityPricing/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/Bonds/BondsCashflowTerms/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Equities/EquityInstruments/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Equities/ShareholderRights/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesListings/"/>
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Equities/ShareTerms/"/>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Provisional"/>
@@ -216,6 +213,24 @@
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">This is not the security or the exchange but the listing of the security on the exchange. Facts defined for Equity Listing are facts about that security listed on that exchange or trading facility.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-sec-eq-sha;EquityVotingRightsTerms">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-sha;CompanyEquityTermsSet"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;definesTermsFor"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-eq-eq;VotingRight"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">equity voting rights terms</rdfs:label>
+		<skos:definition xml:lang="en">Terms setting out the voting rights of the Holder.</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-eq-sha;ExtraordinaryVotingRight">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;VotingRight"/>
+		<rdfs:label xml:lang="en">extraordinary voting right</rdfs:label>
+		<skos:definition xml:lang="en">The right to vote at extraordinary meetings, as opposed to being able to vote at annual general meetings.</skos:definition>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-sec-eq-sha;NonCumulativePreferenceShare">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-sha;PreferredShare"/>
 		<rdfs:label xml:lang="en">non cumulative preference share</rdfs:label>
@@ -262,6 +277,12 @@
 		<rdfs:label xml:lang="en">ordinary dividend terms</rdfs:label>
 		<skos:definition xml:lang="en">Formal terms about the Dividend payments on an Ordinary Share.</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">These are terms that are not contractually binding on the company.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-eq-sha;OrdinaryVotingRight">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;VotingRight"/>
+		<rdfs:label xml:lang="en">ordinary voting right</rdfs:label>
+		<skos:definition xml:lang="en">The voting rights conferred on holders of Ordinary Shares in the company. The precise details of these rights such as what shareholders may vote on and how their voting right is exercised, are defined in the Company Constitution or Articles of Incorporation / Articles of Association.</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-eq-sha;ParticipatingPreferenceShare">
@@ -335,7 +356,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-eq-sha;mayConfer"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-eq-shr;ExtraordinaryVotingRight"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-eq-sha;ExtraordinaryVotingRight"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">preference share</rdfs:label>
@@ -551,7 +572,7 @@
 	<owl:ObjectProperty rdf:about="&fibo-sec-eq-sha;mayConfer">
 		<rdfs:label xml:lang="en">may confer</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-eq-sha;PreferredShare"/>
-		<rdfs:range rdf:resource="&fibo-sec-eq-shr;ExtraordinaryVotingRight"/>
+		<rdfs:range rdf:resource="&fibo-sec-eq-sha;ExtraordinaryVotingRight"/>
 		<skos:definition xml:lang="en">The right of the holder of the Preference Shares to vote on matters affecting the business of the issuing company. A preference share may confer some voting rights whereby the holder may vote in extraordinary general meetings. These are not the same as the ordinary voting rights conferred by ordinary shares.</skos:definition>
 	</owl:ObjectProperty>
 	
