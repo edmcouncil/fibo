@@ -50,8 +50,8 @@
 		<dct:abstract>This ontology defines partnerships and related concepts. The concepts distinguish general from limited partners, as well as the types of equity that they hold. Included are abstract definitions of partnership types based on whether they have general, limited or both kinds of partners. Both legally incorporated and non incorporated forms of partnerships are covered.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
 		<sm:contentLanguage rdf:datatype="&xsd;anyURI">http://www.w3.org/standards/techs/owl#w3c_all</sm:contentLanguage>
-		<sm:copyright>Copyright (c) 2013-2018 EDM Council, Inc.
-Copyright (c) 2013-2018 Object Management Group, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2013-2018 EDM Council, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2013-2018 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/CorporateBodies/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/FormalBusinessOrganizations/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/</sm:dependsOn>
@@ -60,9 +60,6 @@ Copyright (c) 2013-2018 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/</sm:dependsOn>
 		<sm:fileAbbreviation>fibo-be-ptr-ptr</sm:fileAbbreviation>
 		<sm:filename>Partnerships.rdf</sm:filename>
-		<rdfs:seeAlso rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/BE/MetadataBE/</rdfs:seeAlso>
-		<rdfs:seeAlso rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/BE/Partnerships/MetadataBEPartnerships/</rdfs:seeAlso>
-		<rdfs:seeAlso rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/MetadataFIBO/</rdfs:seeAlso>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/CorporateBodies/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/FormalBusinessOrganizations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/"/>
@@ -76,7 +73,7 @@ Copyright (c) 2013-2018 Object Management Group, Inc.</sm:copyright>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Roles/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/20180701/Partnerships/Partnerships/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/20180801/Partnerships/Partnerships/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20131101/Partnerships/Partnerships.rdf version of this ontology was modified per the issue resolutions identified in the FIBO BE 1.0 FTF report.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20160201/Partnerships/Partnerships.rdf version of this ontology was modified per the FIBO 2.0 RFC to reference shareholders&apos; equity vs. stockholders&apos; equity and correct a number of restrictions.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
@@ -147,16 +144,21 @@ Copyright (c) 2013-2018 Object Management Group, Inc.</sm:copyright>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-ptr-ptr;LegallyIncorporatedPartnership">
-		<rdfs:subClassOf rdf:resource="&fibo-be-le-cb;Corporation"/>
 		<rdfs:subClassOf rdf:resource="&fibo-be-ptr-ptr;Partnership"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasMember"/>
-				<owl:onClass rdf:resource="&fibo-be-ptr-ptr;LegallyIncorporatedPartnershipMember"/>
+				<owl:onClass>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&fibo-fnd-pty-rl;playsRole"/>
+						<owl:someValuesFrom rdf:resource="&fibo-be-ptr-ptr;LegallyIncorporatedPartnershipMember"/>
+					</owl:Restriction>
+				</owl:onClass>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">2</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>legally incorporated partnership</rdfs:label>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
 		<skos:definition>Any partnership which is defined as a legal person within a given jurisdiction, for example a limited liability partnership (if that is a legal person).</skos:definition>
 		<skos:editorialNote>The precise details and definition of these may vary from one jurisdiction to another. This type of entity is defined by being a legal person in its own right, as distinct from the usual type of partnership where the partners remain jointly and severally liable for debts.</skos:editorialNote>
 	</owl:Class>
@@ -164,6 +166,7 @@ Copyright (c) 2013-2018 Object Management Group, Inc.</sm:copyright>
 	<owl:Class rdf:about="&fibo-be-ptr-ptr;LegallyIncorporatedPartnershipMember">
 		<rdfs:subClassOf rdf:resource="&fibo-be-ptr-ptr;Partner"/>
 		<rdfs:label>legally incorporated partnership member</rdfs:label>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
 		<skos:definition>a party that is a member or partner in a legally incorporated partnership such as an LLC or LLP</skos:definition>
 	</owl:Class>
 	
@@ -261,29 +264,26 @@ Copyright (c) 2013-2018 Object Management Group, Inc.</sm:copyright>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isGovernedBy"/>
-				<owl:onClass rdf:resource="&fibo-be-ptr-ptr;PartnershipAgreement"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:minQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-be-le-fbo;hasEquity"/>
-				<owl:onClass rdf:resource="&fibo-be-ptr-ptr;PartnershipEquity"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:minQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasMember"/>
-				<owl:onClass rdf:resource="&fibo-be-ptr-ptr;Partner"/>
+				<owl:onClass>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&fibo-fnd-pty-rl;playsRole"/>
+						<owl:someValuesFrom rdf:resource="&fibo-be-ptr-ptr;Partner"/>
+					</owl:Restriction>
+				</owl:onClass>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">2</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-pty-pty;hasPartyInRole"/>
-				<owl:someValuesFrom rdf:resource="&fibo-be-ptr-ptr;Partner"/>
+				<owl:onProperty rdf:resource="&fibo-be-le-fbo;hasEquity"/>
+				<owl:someValuesFrom rdf:resource="&fibo-be-ptr-ptr;PartnershipEquity"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isGovernedBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-be-ptr-ptr;PartnershipAgreement"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>partnership</rdfs:label>
@@ -321,8 +321,7 @@ Copyright (c) 2013-2018 Object Management Group, Inc.</sm:copyright>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-acc-aeq;representsAnInterestIn"/>
-				<owl:onClass rdf:resource="&fibo-be-ptr-ptr;Partnership"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:minQualifiedCardinality>
+				<owl:someValuesFrom rdf:resource="&fibo-be-ptr-ptr;Partnership"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>partnership equity</rdfs:label>
@@ -330,7 +329,6 @@ Copyright (c) 2013-2018 Object Management Group, Inc.</sm:copyright>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-ptr-ptr;PartnershipIncorporatedByEquity">
-		<rdfs:subClassOf rdf:resource="&fibo-be-le-cb;StockCorporation"/>
 		<rdfs:subClassOf rdf:resource="&fibo-be-ptr-ptr;PartnershipWithLimitedPartners"/>
 		<rdfs:label>partnership incorporated by equity</rdfs:label>
 		<skos:definition>a partnership incorporated via the issuance of equity, with limited partners (i.e., partners whose liability is limited) that are necessarily not natural persons (i.e., cannot be individuals)</skos:definition>
@@ -349,8 +347,12 @@ Copyright (c) 2013-2018 Object Management Group, Inc.</sm:copyright>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasMember"/>
-				<owl:onClass rdf:resource="&fibo-be-ptr-ptr;CorporateLimitedPartner"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:minQualifiedCardinality>
+				<owl:someValuesFrom>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&fibo-fnd-pty-rl;playsRole"/>
+						<owl:someValuesFrom rdf:resource="&fibo-be-ptr-ptr;CorporateLimitedPartner"/>
+					</owl:Restriction>
+				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>partnership with corporate limited partners</rdfs:label>
@@ -371,7 +373,12 @@ Copyright (c) 2013-2018 Object Management Group, Inc.</sm:copyright>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasMember"/>
-				<owl:onClass rdf:resource="&fibo-be-ptr-ptr;GeneralPartner"/>
+				<owl:onClass>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&fibo-fnd-pty-rl;playsRole"/>
+						<owl:someValuesFrom rdf:resource="&fibo-be-ptr-ptr;GeneralPartner"/>
+					</owl:Restriction>
+				</owl:onClass>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">2</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -392,8 +399,12 @@ Copyright (c) 2013-2018 Object Management Group, Inc.</sm:copyright>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasMember"/>
-				<owl:onClass rdf:resource="&fibo-be-ptr-ptr;LimitedPartner"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:minQualifiedCardinality>
+				<owl:someValuesFrom>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&fibo-fnd-pty-rl;playsRole"/>
+						<owl:someValuesFrom rdf:resource="&fibo-be-ptr-ptr;LimitedPartner"/>
+					</owl:Restriction>
+				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>partnership with limited partners</rdfs:label>
@@ -406,8 +417,12 @@ Copyright (c) 2013-2018 Object Management Group, Inc.</sm:copyright>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasMember"/>
-				<owl:onClass rdf:resource="&fibo-be-ptr-ptr;NaturalPersonLimitedPartner"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:minQualifiedCardinality>
+				<owl:someValuesFrom>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&fibo-fnd-pty-rl;playsRole"/>
+						<owl:someValuesFrom rdf:resource="&fibo-be-ptr-ptr;NaturalPersonLimitedPartner"/>
+					</owl:Restriction>
+				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>partnership with natural person limited partners</rdfs:label>
@@ -416,7 +431,6 @@ Copyright (c) 2013-2018 Object Management Group, Inc.</sm:copyright>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-ptr-ptr;PartnershipWithOnlyLimitedPartners">
-		<rdfs:subClassOf rdf:resource="&fibo-be-le-cb;Corporation"/>
 		<rdfs:subClassOf rdf:resource="&fibo-be-ptr-ptr;PartnershipWithLimitedPartners"/>
 		<rdfs:label>partnership with only limited partners</rdfs:label>
 		<skos:definition>a partnership having limited partners but no general partners</skos:definition>
