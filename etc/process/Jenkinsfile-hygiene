@@ -203,8 +203,6 @@ pipeline {
 	      -exec ./jena/bin/arq --data=./target/DEV.ttl --query={} \\; | sed 's/PRODERROR/WARN/g' \
 	      > /tmp/console1.txt
 	  cat /tmp/console1.txt
-	  grep -q "ERROR:" /tmp/console1.txt && exit 1
-	  rm /tmp/console1.txt
           echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
           echo "Errors in PROD"
           echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
@@ -213,9 +211,11 @@ pipeline {
 	      -exec grep "banner" {} \\; \
 	      -exec ./jena/bin/arq --data=./target/PROD.ttl --query={} \\; | sed 's/PRODERROR/ERROR/g' \
 	      > /tmp/console1.txt	      
-	  cat /tmp/console1.txt
-	  grep -q "ERROR:" /tmp/console1.txt && exit 1
+	  cat /tmp/console2.txt
+	  grep  "ERROR:" /tmp/console2.txt && exit 1
+	  grep  "ERROR:" /tmp/console1.txt && exit 1
 	  rm /tmp/console1.txt
+	  rm /tmp/console2.txt
           echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
         '''
         archiveArtifacts artifacts: 'target/*.ttl', fingerprint: true
