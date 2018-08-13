@@ -201,15 +201,21 @@ pipeline {
 	      -name 'testHygiene*.sq' \
 	      -exec grep "banner" {} \\; \
 	      -exec ./jena/bin/arq --data=./target/DEV.ttl --query={} \\; | sed 's/PRODERROR/WARN/g' \
-	       |  grep -z "ERROR:" && exit 1 
-           echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-           echo "Errors in PROD"
-           echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-	   find ./fibo/etc \
-	       -name 'testHygiene*.sq' \
-	       -exec grep "banner" {} \\; \
-	       -exec ./jena/bin/arq --data=./target/PROD.ttl --query={} \\; | sed 's/PRODERROR/ERROR/g' \
-	        |  grep -z "ERROR:" && exit 1 
+	      > /tmp/console1.txt
+	  cat /tmp/console1.txt
+	  grep -q "ERROR:" /tmp/console1.txt && exit 1
+	  rm /tmp/console1.txt
+          echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+          echo "Errors in PROD"
+          echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+	  find ./fibo/etc \
+	      -name 'testHygiene*.sq' \
+	      -exec grep "banner" {} \\; \
+	      -exec ./jena/bin/arq --data=./target/PROD.ttl --query={} \\; | sed 's/PRODERROR/ERROR/g' \
+	      > /tmp/console1.txt	      
+	  cat /tmp/console1.txt
+	  grep -q "ERROR:" /tmp/console1.txt && exit 1
+	  rm /tmp/console1.txt
           echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
         '''
         archiveArtifacts artifacts: 'target/*.ttl', fingerprint: true
