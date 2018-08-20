@@ -12,6 +12,8 @@
 	<!ENTITY fibo-fnd-utl-val "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Values/">
 	<!ENTITY fibo-sec-dbt-bo-bo "https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/Bonds/BondsCommon/">
 	<!ENTITY fibo-sec-dbt-dbt-iss "https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtFoundations/DebtIssuanceTerms/">
+	<!ENTITY fibo-sec-dbt-dbti "https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtInstruments/">
+	<!ENTITY fibo-sec-sec-iss "https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesIssuance/">
 	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
 	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
 	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
@@ -31,6 +33,8 @@
 	xmlns:fibo-fnd-utl-val="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Values/"
 	xmlns:fibo-sec-dbt-bo-bo="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/Bonds/BondsCommon/"
 	xmlns:fibo-sec-dbt-dbt-iss="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtFoundations/DebtIssuanceTerms/"
+	xmlns:fibo-sec-dbt-dbti="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtInstruments/"
+	xmlns:fibo-sec-sec-iss="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesIssuance/"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
@@ -52,7 +56,9 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Values/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/Bonds/BondsCommon/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtInstruments/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/Pools/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesIssuance/"/>
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtFoundations/DebtIssuanceTerms/"/>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Provisional"/>
 	</owl:Ontology>
@@ -69,7 +75,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbt-iss;isANumberOf"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-dbt-iss;BondOfferIssue"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-dbt-iss;BondOffering"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">bond issuance program</rdfs:label>
@@ -88,24 +94,24 @@
 		<skos:definition xml:lang="en">The prospectus for the bond issue describes the terms of the issue and each of the instruments included in the bond issue. Term origin:SMER</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-dbt-dbt-iss;BondOfferIssue">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbt-iss;DebtOfferIssue"/>
+	<owl:Class rdf:about="&fibo-sec-dbt-dbt-iss;BondOffering">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbti;DebtOffering"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbt-iss;describedIn"/>
+				<owl:onProperty rdf:resource="&fibo-sec-sec-iss;isEvidencedBy"/>
 				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-dbt-iss;BondIssueProspectus"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">bond offer issue</rdfs:label>
-		<skos:definition xml:lang="en">An Issue of one or more Bonds, as all or part of an Offering of these bonds to the market.</skos:definition>
+		<rdfs:label xml:lang="en">bond offering</rdfs:label>
+		<skos:definition xml:lang="en">a debt offering of one or more bonds, as all or part of an offering of those bonds to the market</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-dbt-dbt-iss;BondOfferIssueWithWarrant">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbt-iss;BondOfferIssue"/>
+	<owl:Class rdf:about="&fibo-sec-dbt-dbt-iss;BondOfferingWithWarrant">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbt-iss;BondOffering"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-bp-iss-trm;isIssueOf"/>
-				<owl:allValuesFrom>
+				<owl:someValuesFrom>
 					<owl:Class>
 						<owl:unionOf rdf:parseType="Collection">
 							<rdf:Description rdf:about="&fibo-der-drc-raw;TraditionalWarrant">
@@ -114,28 +120,12 @@
 							</rdf:Description>
 						</owl:unionOf>
 					</owl:Class>
-				</owl:allValuesFrom>
+				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-bp-iss-trm;isIssueOf"/>
-				<owl:onClass>
-					<owl:Class>
-						<owl:unionOf rdf:parseType="Collection">
-							<rdf:Description rdf:about="&fibo-der-drc-raw;TraditionalWarrant">
-							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-sec-dbt-bo-bo;Bond">
-							</rdf:Description>
-						</owl:unionOf>
-					</owl:Class>
-				</owl:onClass>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:minQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">bond offer issue with warrant</rdfs:label>
+		<rdfs:label xml:lang="en">bond offering with warrant</rdfs:label>
 		<owl:disjointWith rdf:resource="&fibo-sec-dbt-dbt-iss;MTNIssue"/>
-		<skos:definition xml:lang="en">A bond issue where the issue includes a Warrant attached. Further notes: ISO 10962 CFI definition is A bond that is issued together with one or more warrant(s) attached as part of the offer, the warrant(s) granting the holder the right to purchase a designated security, often the common stock of the issuer of the debt, at a specified price. Review notes: This need not be any specific type of bond. The warrant is used as a sweetener to encourage people to subscribe to a new bond issue. The Bond and the Warrant trade together as a unit (called &quot;Bond Unit&quot;).</skos:definition>
+		<skos:definition xml:lang="en">a bond offering where the issue includes a warrant; Further notes: ISO 10962 CFI definition is A bond that is issued together with one or more warrant(s) attached as part of the offer, the warrant(s) granting the holder the right to purchase a designated security, often the common stock of the issuer of the debt, at a specified price. Review notes: This need not be any specific type of bond. The warrant is used as a sweetener to encourage people to subscribe to a new bond issue. The Bond and the Warrant trade together as a unit (called &quot;Bond Unit&quot;).</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-dbt-iss;DebtGuarantor">
@@ -175,7 +165,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbt-iss;isANumberOf"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-dbt-iss;DebtOfferIssue"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-dbti;DebtOffering"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">debt issuance program</rdfs:label>
@@ -199,31 +189,8 @@
 		<rdfs:label xml:lang="en">debt issue underwriter</rdfs:label>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-dbt-dbt-iss;DebtOfferIssue">
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-bp-iss-trm;isIssueOf"/>
-				<owl:someValuesFrom rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtInstruments/TradableDebtInstrument"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-bp-iss-trm;underwrittenBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-dbt-iss;DebtIssueUnderwriter"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbt-iss;describedIn"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-dbt-iss;DebtIssueProspectus"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">debt offer issue</rdfs:label>
-		<skos:definition xml:lang="en">An Issue of one or more debt securities, as all or part of an Offering of securities to the market.</skos:definition>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-sec-dbt-dbt-iss;MTNIssue">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbt-iss;BondOfferIssue"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbt-iss;BondOffering"/>
 		<rdfs:label xml:lang="en">m t n issue</rdfs:label>
 	</owl:Class>
 	
@@ -353,13 +320,6 @@
 		<skos:definition xml:lang="en">Purpose of the Issue of a Debt Security.</skos:definition>
 	</owl:DatatypeProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-dbt-iss;describedIn">
-		<rdfs:subPropertyOf rdf:resource="&fibo-bp-iss-trm;finalStateDescribedIn"/>
-		<rdfs:label xml:lang="en">described in</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-dbt-iss;DebtOfferIssue"/>
-		<rdfs:range rdf:resource="&fibo-sec-dbt-dbt-iss;DebtIssueProspectus"/>
-	</owl:ObjectProperty>
-	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-dbt-iss;hasDebtIssuancePurpose">
 		<rdfs:label xml:lang="en">has debt issuance purpose</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-dbt-dbt-iss;DebtIssuanceProcessInformation"/>
@@ -377,7 +337,7 @@
 		<rdfs:subPropertyOf rdf:resource="&fibo-bp-iss-trm;isCollectionOf"/>
 		<rdfs:label xml:lang="en">is a number of</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-dbt-dbt-iss;DebtIssuanceProgram"/>
-		<rdfs:range rdf:resource="&fibo-sec-dbt-dbt-iss;DebtOfferIssue"/>
+		<rdfs:range rdf:resource="&fibo-sec-dbt-dbti;DebtOffering"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-dbt-iss;issueNominalAmount">
@@ -413,5 +373,26 @@
 		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
 		<skos:definition xml:lang="en">Takedown amount of the security handled by the underwriter(that will be brought into DTC).</skos:definition>
 	</owl:ObjectProperty>
+	
+	<owl:Class rdf:about="&fibo-sec-dbt-dbti;DebtOffering">
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-bp-iss-trm;isIssueOf"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-dbti;TradableDebtInstrument"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-sec-iss;isEvidencedBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-dbt-iss;DebtIssueProspectus"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-sec-iss;isUnderwrittenBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-dbt-iss;DebtIssueUnderwriter"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+	</owl:Class>
 
 </rdf:RDF>
