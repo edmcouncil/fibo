@@ -296,16 +296,16 @@ pipeline {
 
         echo "Copy all generated content to ${env.NGINX_SPEC_ROOT}:"
         sh 'ls -al ${NGINX_SPEC_ROOT}/'
-        sh """cp -vr . ${NGINX_SPEC_ROOT}/ > published-files.log 2>&1 || true 
+        sh '''cp -vr . ${NGINX_SPEC_ROOT}/ > published-files.log 2>&1 || true 
 	    rc=$?  
-            if ({rc == 0}); then  
+            if ((rc == 0)); then  
 	      echo "Successfully copied all files to destination, see published-files.log in the workspace"  
 	    else    
 	      echo "Some files may not have been copied"   
 	      tail published-files.log
 	      exit 1
             fi 
-        """
+        '''
         archiveArtifacts artifacts: '**/*.log', fingerprint: true
         sh 'find . -name \'*.log\' -exec rm -f {} \\; || true'
 
