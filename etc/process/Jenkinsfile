@@ -197,28 +197,7 @@ pipeline {
             unstash 'ontology-data'
             sh "./fibo-infra/jenkins/bin/publish-fibo.sh glossary"
             stash includes: 'target/fibo/glossary/**', name: 'glossary-data'
-            archiveArtifacts artifacts: '*.log', fingerprint: true
-          }
-        }
-        stage("Build Vocabulary") {
-          agent {
-            label 'stardog'
-          }
-          steps {
-            unstash 'ontology-data'
-            sh "./fibo-infra/jenkins/bin/publish-fibo.sh vocabulary"
-            stash includes: 'target/fibo/vocabulary/**', name: 'vocabulary-data'
-            archiveArtifacts artifacts: '*.log', fingerprint: true
-          }
-        }
-        stage("Build Datadictionary") {
-          agent {
-            label 'stardog'
-          }
-          steps {
-            unstash 'ontology-data'
-            sh "./fibo-infra/jenkins/bin/publish-fibo.sh datadictionary"
-            stash includes: 'target/fibo/datadictionary/**', name: 'datadictionary-data'
+	    stash includes 'target/fibo/ontology/**', name: 'ontology-data'
             archiveArtifacts artifacts: '*.log', fingerprint: true
           }
         }
@@ -234,8 +213,8 @@ pipeline {
         unstash 'ontology-data'
         unstash 'widoco-data'
         unstash 'glossary-data'
-        unstash 'vocabulary-data'
-        unstash 'datadictionary-data'
+        // unstash 'vocabulary-data'
+        // unstash 'datadictionary-data'
         //
         // Now after all the above is done, make sure we run the final
         // publish step which zips it all up into the target directory
