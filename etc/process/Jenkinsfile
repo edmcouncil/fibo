@@ -193,18 +193,6 @@ pipeline {
 		archiveArtifacts artifacts: '*.log', fingerprint: true
             }
         }
-	stage("Build Datadictionary") {
-            agent {
-		label 'stardog'
-            }
-            steps {
-		unstash 'ontology-data'
-		sh "./fibo-infra/jenkins/bin/publish-fibo.sh datadictionary"
-		stash includes: 'target/fibo/datadictionary/**', name: 'datadictionary-data'
-		archiveArtifacts artifacts: '*.log', fingerprint: true
-            }
-        }
-
         stage("Build Glossary") {
           agent {
             label 'stardog'
@@ -220,7 +208,28 @@ pipeline {
             unstash 'ontology-data'
             sh "./fibo-infra/jenkins/bin/publish-fibo.sh glossary"
             stash includes: 'target/fibo/glossary/**', name: 'glossary-data'
-	    stash includes: 'target/fibo/ontology/**', name: 'ontology-data'
+            archiveArtifacts artifacts: '*.log', fingerprint: true
+          }
+        }
+        stage("Build Vocabulary") {
+          agent {
+            label 'stardog'
+          }
+          steps {
+            unstash 'ontology-data'
+            sh "./fibo-infra/jenkins/bin/publish-fibo.sh vocabulary"
+            stash includes: 'target/fibo/vocabulary/**', name: 'vocabulary-data'
+            archiveArtifacts artifacts: '*.log', fingerprint: true
+          }
+        }
+        stage("Build Datadictionary") {
+          agent {
+            label 'stardog'
+          }
+          steps {
+            unstash 'ontology-data'
+            sh "./fibo-infra/jenkins/bin/publish-fibo.sh datadictionary"
+            stash includes: 'target/fibo/datadictionary/**', name: 'datadictionary-data'
             archiveArtifacts artifacts: '*.log', fingerprint: true
           }
         }
@@ -237,7 +246,7 @@ pipeline {
         unstash 'widoco-data'
         unstash 'glossary-data'
 	unstash 'fibopedia-data'  
-        // unstash 'vocabulary-data'
+        unstash 'vocabulary-data'
         unstash 'datadictionary-data'
         //
         // Now after all the above is done, make sure we run the final
@@ -297,7 +306,7 @@ pipeline {
         sh 'find . -type f -name \'temp*\' -exec rm -f {} \\; || true'
         sh 'ls -al'
 
-        echo "Copy all generated content to ${env.NGINX_SPEC_ROOT}:"
+        echo "Copy all generated content to ${NGINX_SPEC_ROOT}:"
         sh 'ls -al ${NGINX_SPEC_ROOT}/'
         sh '''cp -vr . ${NGINX_SPEC_ROOT}/ > published-files.log 2>&1 || true 
 	    rc=$?  
