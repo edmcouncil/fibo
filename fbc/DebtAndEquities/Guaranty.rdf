@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE rdf:RDF [
 	<!ENTITY dct "http://purl.org/dc/terms/">
+	<!ENTITY fibo-be-ge-ge "https://spec.edmcouncil.org/fibo/ontology/BE/GovernmentEntities/GovernmentEntities/">
 	<!ENTITY fibo-be-le-lp "https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/">
+	<!ENTITY fibo-fbc-dae-dbt "https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/">
 	<!ENTITY fibo-fbc-dae-gty "https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Guaranty/">
+	<!ENTITY fibo-fbc-pas-caa "https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/ClientsAndAccounts/">
+	<!ENTITY fibo-fbc-pas-fpas "https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/">
 	<!ENTITY fibo-fnd-acc-cur "https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/">
 	<!ENTITY fibo-fnd-agr-agr "https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Agreements/">
 	<!ENTITY fibo-fnd-agr-ctr "https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/">
@@ -22,8 +26,12 @@
 ]>
 <rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Guaranty/"
 	xmlns:dct="http://purl.org/dc/terms/"
+	xmlns:fibo-be-ge-ge="https://spec.edmcouncil.org/fibo/ontology/BE/GovernmentEntities/GovernmentEntities/"
 	xmlns:fibo-be-le-lp="https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/"
+	xmlns:fibo-fbc-dae-dbt="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"
 	xmlns:fibo-fbc-dae-gty="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Guaranty/"
+	xmlns:fibo-fbc-pas-caa="https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/ClientsAndAccounts/"
+	xmlns:fibo-fbc-pas-fpas="https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/"
 	xmlns:fibo-fnd-acc-cur="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"
 	xmlns:fibo-fnd-agr-agr="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Agreements/"
 	xmlns:fibo-fnd-agr-ctr="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"
@@ -52,7 +60,11 @@
 		<sm:dependsOn rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/"/>
 		<sm:fileAbbreviation>fibo-fbc-dae-gty</sm:fileAbbreviation>
 		<sm:filename>Guaranty.rdf</sm:filename>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/GovernmentEntities/GovernmentEntities/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/ClientsAndAccounts/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Agreements/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"/>
@@ -63,10 +75,41 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Roles/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/20180801/DebtAndEquities/Guaranty/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/20181001/DebtAndEquities/Guaranty/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20180801/DebtAndEquities/Guaranty/ version of this ontology was added to the FBC domain via the FIBO 2.0 RFC in support of several FIBO debt-oriented initiatives.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20181001/DebtAndEquities/Guaranty/ version of this ontology revised to incorporate refinement of the concept of a guaranty as needed for debt securities and loans.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
+	
+	<owl:Class rdf:about="&fibo-fbc-dae-gty;CollateralizedGuaranty">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-gty;Guaranty"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;isCollateralizedBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-dae-dbt;Collateral"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>collateralized guaranty</rdfs:label>
+		<skos:definition>a guaranty that takes the form of some asset that is pledged by a borrower to a lender (usually in return for a loan)</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>In some cases, the lender may require the borrower to place pledged assets such as cash or securities in a separate account that the lender controls.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-dae-gty;GovernmentGuaranty">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-gty;Guaranty"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-dae-gty;isGuaranteedBy"/>
+				<owl:someValuesFrom>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
+						<owl:someValuesFrom rdf:resource="&fibo-be-ge-ge;Polity"/>
+					</owl:Restriction>
+				</owl:someValuesFrom>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>government guaranty</rdfs:label>
+		<skos:definition>a guaranty provided by a government entity, e.g. for a government-backed security</skos:definition>
+	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-dae-gty;Guarantor">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractThirdParty"/>
@@ -130,6 +173,94 @@
 		<rdfs:isDefinedBy rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Guaranty/"/>
 		<skos:definition>a commitment whereby something, such as a debt, cash flows on a debt instrument (e.g., interest payments), or performance of some obligation, is guaranteed if the person or organization with primary liability fails to perform</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom>Barron&apos;s Dictionary of Business and Economics Terms, Fifth Edition, 2012</fibo-fnd-utl-av:adaptedFrom>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-dae-gty;InsuranceBackedGuaranty">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-gty;Guaranty"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-pas-caa;isRealizedBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-dae-gty;InsurancePolicy"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>insurance-backed guaranty</rdfs:label>
+		<skos:definition>a guaranty that is realized as an insurance policy</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-dae-gty;InsurancePolicy">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractDocument"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;hasCounterparty"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-dae-gty;Policyholder"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isIssuedBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-dae-gty;Insurer"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>insurance policy</rdfs:label>
+		<skos:definition>a contract document that (1) puts an indemnity cover into effect, (2) serves as a legal evidence of the insurance agreement, (3) sets out the exact terms on which the indemnity cover has been provided, and (4) states associated information such as the (a) specific risks and perils covered, (b) duration of coverage, (c) amount of premium, (d) mode of premium payment, and (e) deductibles, if any</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-dae-gty;Insurer">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;FinancialServiceProvider"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractOriginator"/>
+		<rdfs:label>insurer</rdfs:label>
+		<skos:definition>a financial service provider that issues an insurance policy</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-dae-gty;JointGuaranty">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-gty;Guaranty"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-dae-gty;isGuaranteedBy"/>
+				<owl:onClass rdf:resource="&fibo-fbc-dae-gty;Guarantor"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">2</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>joint guaranty</rdfs:label>
+		<skos:definition>a guaranty provided by two or more parties, jointly and severally</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-dae-gty;LetterOfCredit">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;Collateral"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isIssuedBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-pty-pty;PartyInRole"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>letter of credit</rdfs:label>
+		<skos:definition>a letter from a bank or other creditworthy institution guaranteeing that a buyer&apos;s payment to a seller will be received on time and for the correct amount</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>In some states in the U.S., the issuer is not limited to financial institutions -- it is simply a written instrument, addressed by one person to another, requesting the latter to give credit to the person in whose favor it is drawn.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:explanatoryNote>In the event that the buyer is unable to make payment, the bank or other issuer is required to cover the full or remaining amount.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-dae-gty;LetterOfCreditGuaranty">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-gty;CollateralizedGuaranty"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-pas-caa;isRealizedBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-dae-gty;LetterOfCredit"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>letter of credit guaranty</rdfs:label>
+		<skos:definition>a guaranty that takes the form of a letter of credit, i.e., a document issued by a bank guaranteeing the payment up to a stated amount for a specified period</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-dae-gty;NegativePledge">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-gty;Guaranty"/>
+		<rdfs:label>negative pledge</rdfs:label>
+		<skos:definition>a guaranty whereby the issuer will not pledge any assets if doing so would result in less security for lender(s) or investor(s)</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-dae-gty;Policyholder">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractCounterparty"/>
+		<rdfs:label>policyholder</rdfs:label>
+		<skos:definition>a counterparty to and typically owner of an insurance policy; an insured party</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-dae-gty;PriorityLevel">
