@@ -3,9 +3,9 @@
 	<!ENTITY dct "http://purl.org/dc/terms/">
 	<!ENTITY fibo-be-le-cb "https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/CorporateBodies/">
 	<!ENTITY fibo-bp-iss-trm "https://spec.edmcouncil.org/fibo/ontology/BP/SecuritiesIssuance/IssuanceProcessTerms/">
+	<!ENTITY fibo-fbc-dae-dbt "https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/">
 	<!ENTITY fibo-fnd-acc-aeq "https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/AccountingEquity/">
 	<!ENTITY fibo-fnd-acc-cur "https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/">
-	<!ENTITY fibo-fnd-accx-acc "https://spec.edmcouncil.org/fibo/ontology/FND/AccountingExt/AccountsMain/">
 	<!ENTITY fibo-fnd-oac-own "https://spec.edmcouncil.org/fibo/ontology/FND/OwnershipAndControl/Ownership/">
 	<!ENTITY fibo-fnd-rel-rel "https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
@@ -28,9 +28,9 @@
 	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fibo-be-le-cb="https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/CorporateBodies/"
 	xmlns:fibo-bp-iss-trm="https://spec.edmcouncil.org/fibo/ontology/BP/SecuritiesIssuance/IssuanceProcessTerms/"
+	xmlns:fibo-fbc-dae-dbt="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"
 	xmlns:fibo-fnd-acc-aeq="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/AccountingEquity/"
 	xmlns:fibo-fnd-acc-cur="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"
-	xmlns:fibo-fnd-accx-acc="https://spec.edmcouncil.org/fibo/ontology/FND/AccountingExt/AccountsMain/"
 	xmlns:fibo-fnd-oac-own="https://spec.edmcouncil.org/fibo/ontology/FND/OwnershipAndControl/Ownership/"
 	xmlns:fibo-fnd-rel-rel="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
@@ -60,8 +60,6 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/AccountingEquity/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/AccountingExt/AccountsMain/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/InformationExt/InfoCore/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/OwnershipAndControl/Ownership/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
@@ -74,7 +72,6 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/AssetBackedSecurities/SyntheticCDOs/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/Bonds/BondsCashflowVariants/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/Bonds/BondsCommon/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtFoundations/DebtFinance/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtFoundations/DebtIssuanceTerms/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtInstruments/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/Pools/"/>
@@ -104,6 +101,12 @@
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-ab-pbs;CollateralizedDebt">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbti;PubliclyIssuedDebt"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;isCollateralizedBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-aeq;FinancialAsset"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">collateralized debt</rdfs:label>
 		<skos:definition xml:lang="en">Debt issued under some Security, with some Collateral.</skos:definition>
 	</owl:Class>
@@ -118,18 +121,6 @@
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-ab-pbs;StructuredFinanceInstrument"/>
 		<rdfs:label xml:lang="en">collateralized obligation instrument</rdfs:label>
 		<skos:definition xml:lang="en">Pending further investigation. At present: CDO = issued against pool of securities MBS = issued against pool of individual debts (base loans) Action: identify if this is the case. Option 1: Model as it was; Option 2: Add a level of detail in between, whereby there is a pool of pools or some other such thing Option 3: this is a terminological thing only in that CDOs are never referred to as a parent of CMO for purely teerminological reasons as per ABS v MBS in which case we would add in a terminological layer.</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-sec-dbt-ab-pbs;DebtCollateral">
-		<rdfs:subClassOf rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/Collateral"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-accx-acc;takesFormOf"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-aeq;FinancialAsset"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">debt collateral</rdfs:label>
-		<skos:definition xml:lang="en">Debt Assets pledged to a lender until a loan is repaid. Further notes: This provides one means by which some extension of finance (such as a loan, debt or equity issue) is under-written.</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-ab-pbs;PoolBackedDealProspectus">
