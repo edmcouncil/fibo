@@ -8,7 +8,6 @@
 	<!ENTITY fibo-fnd-dt-fd "https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/">
 	<!ENTITY fibo-fnd-dt-oc "https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/Occurrences/">
 	<!ENTITY fibo-fnd-rel-rel "https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/">
-	<!ENTITY fibo-fnd-tim-tim "https://spec.edmcouncil.org/fibo/ontology/FND/TimeExt/Time/">
 	<!ENTITY fibo-fnd-utl-alx "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Analytics/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
 	<!ENTITY fibo-fnd-utl-val "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Values/">
@@ -31,7 +30,6 @@
 	xmlns:fibo-fnd-dt-fd="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"
 	xmlns:fibo-fnd-dt-oc="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/Occurrences/"
 	xmlns:fibo-fnd-rel-rel="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"
-	xmlns:fibo-fnd-tim-tim="https://spec.edmcouncil.org/fibo/ontology/FND/TimeExt/Time/"
 	xmlns:fibo-fnd-utl-alx="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Analytics/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
 	xmlns:fibo-fnd-utl-val="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Values/"
@@ -56,14 +54,10 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/Occurrences/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/TimeExt/Time/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Analytics/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Values/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/Indicators/Indicators/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/MD/DebtTemporal/DebtAnalytics/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/MD/DebtTemporal/DebtPricingYields/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/MD/TemporalCore/InstrumentTemporalTerms/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtInstruments/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/ParametricSchedules/"/>
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtFoundations/DebtCashflowTerms/"/>
@@ -116,22 +110,14 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;InterestPaymentTerms"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbt-cft;interestPaymentDayAndMonth"/>
-				<owl:onClass rdf:resource="&fibo-fnd-tim-tim;DayMonthValue"/>
-				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">12</owl:maxQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbt-cft;interestPaymentDayAndMonth"/>
-				<owl:onClass rdf:resource="&fibo-fnd-tim-tim;DayMonthValue"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:minQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;hasAccrualBasis"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fbc-dae-dbt;DayCountConvention"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-dt-fd;hasRecurrenceInterval"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-bd;DayOfMonth"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -258,20 +244,6 @@
 		<rdfs:range rdf:resource="&xsd;boolean"/>
 	</owl:DatatypeProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-dbt-cft;compoundingFrequency">
-		<rdfs:label>compounding frequency</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-dbt-cft;DebtSecurityInterestPaymentTerms"/>
-		<rdfs:range rdf:resource="&fibo-fnd-tim-tim;Frequency"/>
-		<skos:definition>The frequency at which the interest is compounded. This is established at the initial stages of securing the instrument. Generally, interest tends to be calculated on an annual basis although other terms may be established at the time of the loan.</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-dbt-cft;datedDate">
-		<rdfs:label>dated date</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-dbt-cft;DebtSecurityInterestPaymentTerms"/>
-		<rdfs:range rdf:resource="&fibo-fnd-tim-tim;Date"/>
-		<skos:definition>the date on which an interest paying debt instrument begins to accrue interest</skos:definition>
-	</owl:ObjectProperty>
-	
 	<owl:DatatypeProperty rdf:about="&fibo-sec-dbt-dbt-cft;daysToCallNotification">
 		<rdfs:label>days to call notification</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-dbt-dbti;CallNotificationProvision"/>
@@ -306,20 +278,6 @@
 		<rdfs:range rdf:resource="&xsd;boolean"/>
 		<skos:definition>Whether the issuer has the option to extend the debt rather than refinancing. If not, the issuer may only refinance the debt by calling the issue and creating a new issue.</skos:definition>
 	</owl:DatatypeProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-dbt-cft;extendableDate">
-		<rdfs:label>extendable date</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-dbt-cft;ExtendableMaturityRedemptionTerms"/>
-		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;CalculatedDate"/>
-		<skos:definition>Date to which the Maturity Date may be extended. This date is determined at the set-up of the bond. Note this date is adjustable according to various applicable parameters or terms. May have a rolling extendable maturity date. The bond holder may choose to extend. Usually a 13 month rolling extendable maturity.</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-dbt-cft;extendablePeriod">
-		<rdfs:label>extendable period</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-dbt-cft;ExtendableMaturityRedemptionTerms"/>
-		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;DatePeriod"/>
-		<skos:definition>Period during which the Maturity Date may be extended.</skos:definition>
-	</owl:ObjectProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-sec-dbt-dbt-cft;extraordinaryCallProvision">
 		<rdfs:label>extraordinary call provision</rdfs:label>
@@ -377,6 +335,38 @@
 		<rdfs:range rdf:resource="&fibo-sec-dbt-dbt-cft;Base"/>
 	</owl:ObjectProperty>
 	
+	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-dbt-cft;hasCompoundingFrequency">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasRecurrenceInterval"/>
+		<rdfs:label>has compounding frequency</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-dbt-cft;DebtSecurityInterestPaymentTerms"/>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;RecurrenceInterval"/>
+		<skos:definition>The frequency at which the interest is compounded. This is established at the initial stages of securing the instrument. Generally, interest tends to be calculated on an annual basis although other terms may be established at the time of the loan.</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-dbt-cft;hasExtendableDate">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDate"/>
+		<rdfs:label>has extendable date</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-dbt-cft;ExtendableMaturityRedemptionTerms"/>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;CalculatedDate"/>
+		<skos:definition>Date to which the Maturity Date may be extended. This date is determined at the set-up of the bond. Note this date is adjustable according to various applicable parameters or terms. May have a rolling extendable maturity date. The bond holder may choose to extend. Usually a 13 month rolling extendable maturity.</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-dbt-cft;hasExtendablePeriod">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDatePeriod"/>
+		<rdfs:label>has extendable period</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-dbt-cft;ExtendableMaturityRedemptionTerms"/>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;DatePeriod"/>
+		<skos:definition>Period during which the Maturity Date may be extended.</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-dbt-cft;hasInterestAccrualStartDate">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasStartDate"/>
+		<rdfs:label>has interest accrual start date</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-dbt-cft;DebtSecurityInterestPaymentTerms"/>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Date"/>
+		<skos:definition>the date on which an interest paying debt instrument begins to accrue interest</skos:definition>
+	</owl:ObjectProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-dbt-cft;hasInterestTerms">
 		<rdfs:label>has interest terms</rdfs:label>
 	</owl:ObjectProperty>
@@ -412,17 +402,10 @@
 		<rdfs:label>has redemption terms</rdfs:label>
 	</owl:ObjectProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-dbt-cft;interestPaymentDayAndMonth">
-		<rdfs:label>interest payment day and month</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-dbt-cft;DebtSecurityInterestPaymentTerms"/>
-		<rdfs:range rdf:resource="&fibo-fnd-tim-tim;DayMonthValue"/>
-		<skos:definition>The regular dates of interest payment in any given year during the life of the debt instrument.</skos:definition>
-	</owl:ObjectProperty>
-	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-dbt-cft;interestPaymentFrequency">
 		<rdfs:label>interest payment frequency</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-dbt-dbt-cft;DebtSecurityInterestPaymentTerms"/>
-		<rdfs:range rdf:resource="&fibo-fnd-tim-tim;Frequency"/>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;RecurrenceInterval"/>
 		<skos:definition>Frequency of payment of Interest on the debt.</skos:definition>
 	</owl:ObjectProperty>
 	
@@ -524,7 +507,7 @@
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-dbt-cft;putFrequency">
 		<rdfs:label>put frequency</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-dbt-dbti;PutFeature"/>
-		<rdfs:range rdf:resource="&fibo-fnd-tim-tim;Frequency"/>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;RecurrenceInterval"/>
 		<skos:definition>Frequency of Tender or Put period.</skos:definition>
 	</owl:ObjectProperty>
 	
