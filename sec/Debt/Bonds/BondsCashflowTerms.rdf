@@ -17,7 +17,6 @@
 	<!ENTITY fibo-fnd-utl-val "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Values/">
 	<!ENTITY fibo-md-dbtx-int "https://spec.edmcouncil.org/fibo/ontology/MD/DebtTemporal/DebtInterestAmounts/">
 	<!ENTITY fibo-sec-dbt-bo-cft "https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/Bonds/BondsCashflowTerms/">
-	<!ENTITY fibo-sec-dbt-dbt-cft "https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtFoundations/DebtCashflowTerms/">
 	<!ENTITY fibo-sec-dbt-dbti "https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtInstruments/">
 	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
 	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
@@ -43,7 +42,6 @@
 	xmlns:fibo-fnd-utl-val="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Values/"
 	xmlns:fibo-md-dbtx-int="https://spec.edmcouncil.org/fibo/ontology/MD/DebtTemporal/DebtInterestAmounts/"
 	xmlns:fibo-sec-dbt-bo-cft="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/Bonds/BondsCashflowTerms/"
-	xmlns:fibo-sec-dbt-dbt-cft="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtFoundations/DebtCashflowTerms/"
 	xmlns:fibo-sec-dbt-dbti="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtInstruments/"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -75,7 +73,6 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/Indicators/Indicators/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/InterestRates/InterestRates/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/MD/DebtTemporal/DebtInterestAmounts/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtFoundations/DebtCashflowTerms/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtInstruments/"/>
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/Bonds/BondsCashflowTerms/"/>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Provisional"/>
@@ -90,12 +87,6 @@
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-bo-cft;BondAmortizationPaymentTerms">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bo-cft;BondPrincipalRepaymentTermsSet"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbt-cft;hasPrincipalAmortizationType"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-dbt-cft;AmortizationType"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">bond amortization payment terms</rdfs:label>
 		<owl:disjointWith rdf:resource="&fibo-sec-dbt-bo-cft;BondBulletPrincipalRepaymentTermsSet"/>
 	</owl:Class>
@@ -107,7 +98,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-bo-cft;BondCallTermsSet">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbt-cft;DebtCallTerms"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbti;CallFeature"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-bo-cft;premium"/>
@@ -127,7 +118,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-bo-cft;BondCouponInterestTerms">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbt-cft;DebtSecurityInterestPaymentTerms"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;InterestPaymentTerms"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-bo-cft;couponPaymentCurrency"/>
@@ -172,7 +163,7 @@
 	<owl:Class rdf:about="&fibo-sec-dbt-bo-cft;BondPrincipalRepaymentTermsSet">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbti;TradableDebtInstrumentRedemptionProvision"/>
 		<rdfs:label xml:lang="en">bond principal repayment terms set</rdfs:label>
-		<owl:disjointWith rdf:resource="&fibo-sec-dbt-dbt-cft;DebtCallTerms"/>
+		<owl:disjointWith rdf:resource="&fibo-sec-dbt-dbti;CallFeature"/>
 		<skos:definition xml:lang="en">Terms for the repayment of the Principal on a Bond security.</skos:definition>
 	</owl:Class>
 	
@@ -279,8 +270,8 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasFormula"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bo-cft;FixedInterestCalculationFormula"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasExpression"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bo-cft;FixedInterestCalculation"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">bond fixed coupon terms set</rdfs:label>
@@ -292,7 +283,7 @@
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bo-cft;BondCouponInterestTerms"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasFormula"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasExpression"/>
 				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bo-cft;VariableInterestCalculationFormula"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -348,31 +339,17 @@
 		<skos:definition xml:lang="en">The scheduled date of the first regular coupon payment, that is the start of payments according to a regular repeating series of coupon periods, after any non standard (long or short) first coupon period in the schedule.</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-dbt-bo-cft;FixedInterestAmount">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbt-cft;Margin"/>
-		<rdfs:label xml:lang="en">fixed interest amount</rdfs:label>
-		<skos:definition xml:lang="en">The Fixed Interest amount which is the parameter of the Expression. This is the only parameter in this expression.</skos:definition>
-		<skos:editorialNote xml:lang="en">This duplicates the simple fact &quot;Interest Amount&quot; in the Fixed Interest expression and is essentially redundant. It is included only to show how the parameter relationship for Interst Calculation Expression is specialized (and thereby overridden) for the Fixed Interest Expression.</skos:editorialNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-sec-dbt-bo-cft;FixedInterestCalculationFormula">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbt-cft;InterestCalculationFormula"/>
-		<rdfs:label xml:lang="en">fixed interest calculation formula</rdfs:label>
-		<skos:definition xml:lang="en">Formula for Fixed Interest.</skos:definition>
-		<fibo-fnd-utl-av:usageNote xml:lang="en">This limits the more general interest calculation formula, for fixed interest rates. Alternatively this formula can be ignored and the interest rate specified directly as a value in the Interest Terms. It is provided here for completeness.</fibo-fnd-utl-av:usageNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-sec-dbt-bo-cft;FixedInterestExpression">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbt-cft;InterestCalculationExpression"/>
+	<owl:Class rdf:about="&fibo-sec-dbt-bo-cft;FixedInterestCalculation">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;Expression"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-bo-cft;hasParameter"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bo-cft;FixedInterestAmount"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasArgument"/>
+				<owl:onClass rdf:resource="&fibo-fbc-dae-dbt;FixedInterestRate"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">fixed interest expression</rdfs:label>
-		<skos:definition xml:lang="en">Expression of the value of a fixed interest amount.</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">This is a numerical amount only. The operand Base does not exist and the Margin operand is over-ridden by the single property Interest Amount here, i.e. this sub-class of Interest Calculation Expression restricts those operands by not having them (this cannot be shown graphically).</fibo-fnd-utl-av:explanatoryNote>
+		<rdfs:label xml:lang="en">fixed interest calculation</rdfs:label>
+		<skos:definition xml:lang="en">an expression used to determine a fixed interest payment amount</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-bo-cft;HoldersOptionCall">
@@ -543,7 +520,7 @@
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-bo-cft;RedemptionPayment">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-psch;PaymentEvent"/>
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbt-cft;RedemptionEvent"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbti;RedemptionEvent"/>
 		<rdfs:label xml:lang="en">redemption payment</rdfs:label>
 	</owl:Class>
 	
@@ -552,7 +529,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;comprises"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-dbt-cft;RedemptionEvent"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-dbti;RedemptionEvent"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">redemption schedule</rdfs:label>
@@ -618,7 +595,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-bo-cft;StepEvent">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbt-cft;PrescriptiveEvent"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbti;PrescriptiveEvent"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;definesTermsFor"/>
@@ -657,14 +634,14 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-bo-cft;VariableInterestCalculationFormula">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbt-cft;InterestCalculationFormula"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbti;FullyIndexedInterestRate"/>
 		<rdfs:label xml:lang="en">variable interest calculation formula</rdfs:label>
 		<skos:definition xml:lang="en">Formula for the calculation of variable interest.</skos:definition>
 		<skos:editorialNote xml:lang="en">This inherits all the facts about Interest Calculation Formula without alteration.</skos:editorialNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-bo-cft;VariableInterestExpression">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbt-cft;InterestCalculationExpression"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;Expression"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-bo-cft;cap"/>
@@ -679,7 +656,15 @@
 				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasArgument"/>
+				<owl:onClass rdf:resource="&fibo-sec-dbt-dbti;FullyIndexedInterestRate"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">variable interest expression</rdfs:label>
+		<skos:definition xml:lang="en">an expression used to determine a variable interest payment amount</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-bo-cft;ZeroCouponAndOIDBondCallTermsSet">
@@ -797,7 +782,7 @@
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bo-cft;couponPaymentFrequency">
-		<rdfs:subPropertyOf rdf:resource="&fibo-sec-dbt-dbt-cft;interestPaymentFrequency"/>
+		<rdfs:subPropertyOf rdf:resource="&fibo-fbc-dae-dbt;hasInterestPaymentFrequency"/>
 		<rdfs:label xml:lang="en">coupon payment frequency</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-dbt-bo-cft;BondCouponInterestTerms"/>
 		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;RecurrenceInterval"/>
@@ -867,13 +852,6 @@
 		<rdfs:label xml:lang="en">has inflation bond factor</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-dbt-bo-cft;InflationBondVariableCouponTermsSet"/>
 		<rdfs:range rdf:resource="&fibo-md-dbtx-int;InflationBondFactor"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bo-cft;hasParameter">
-		<rdfs:subPropertyOf rdf:resource="&fibo-sec-dbt-dbt-cft;hasMarginParameter"/>
-		<rdfs:label xml:lang="en">has parameter</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-bo-cft;FixedInterestExpression"/>
-		<rdfs:range rdf:resource="&fibo-sec-dbt-bo-cft;FixedInterestAmount"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bo-cft;hasPercentage">
@@ -1039,7 +1017,7 @@
 	</owl:DatatypeProperty>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-dbti;CallEvent">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbt-cft;RedemptionEvent"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbti;RedemptionEvent"/>
 	</owl:Class>
 
 </rdf:RDF>
