@@ -182,6 +182,17 @@ pipeline {
             archiveArtifacts artifacts: '*.log', fingerprint: true
           }
         }
+	stage("Build Fibopedia") {
+	    agent {
+		label 'stardog'
+	    }
+	    steps {
+		unstash 'ontology-data'
+		sh "./fibo-infra/jenkins/bin/publish-fibo.sh fibopedia"
+		stash includes: 'target/fibo/fibopedia/**', name: 'fibopedia-data'
+		archiveArtifacts artifacts: '*.log', fingerprint: true
+            }
+        }
         stage("Build Glossary") {
           agent {
             label 'stardog'
@@ -234,6 +245,7 @@ pipeline {
         unstash 'ontology-data'
         unstash 'widoco-data'
         unstash 'glossary-data'
+	unstash 'fibopedia-data'  
         unstash 'vocabulary-data'
         unstash 'datadictionary-data'
         //
@@ -296,10 +308,16 @@ pipeline {
 
         echo "Copy all generated content to ${env.NGINX_SPEC_ROOT}:"
         sh 'ls -al ${NGINX_SPEC_ROOT}/'
-        // sh 'cp -vr . ${NGINX_SPEC_ROOT}/ > published-files.log 2>&1'
-	sh 'cp -vr . ${NGINX_SPEC_ROOT}/ '
-        echo 'Successfully copied all files to destination, see published-files.log in the workspace'
-
+        sh '''cp -vr . ${NGINX_SPEC_ROOT}/ > published-files.log 2>&1 || true
+	    rc=$?
+            if ((rc == 0)); then
+	      echo "Successfully copied all files to destination, see published-files.log in the workspace"
+	    else
+	      echo "Some files may not have been copied"
+	      tail published-files.log
+	      exit 1
+            fi
+        '''
         archiveArtifacts artifacts: '**/*.log', fingerprint: true
         sh 'find . -name \'*.log\' -exec rm -f {} \\; || true'
 
