@@ -1,3 +1,4 @@
+prefix fibo-fnd-rel-rel: <https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/> 
 prefix fibo-der-rtd-irswp: <http://spec.edmcouncil.org/fibo/DER/RateDerivatives/IRSwaps/> 
 prefix fibo-der-drc-swp: <http://spec.edmcouncil.org/fibo/DER/DerivativesContracts/Swaps/> 
 prefix fibo-ind-ir-ir: <http://spec.edmcouncil.org/fibo/IND/InterestRates/InterestRates/> 
@@ -13,15 +14,24 @@ prefix fibo-fnd-aap-agt: <http://spec.edmcouncil.org/fibo/FND/AgentsAndPeople/Ag
 prefix fibo-fnd-pty-rl: <http://spec.edmcouncil.org/fibo/FND/Parties/Roles/>
 prefix afn: <http://jena.apache.org/ARQ/function#>
 prefix fibo-fnd-utl-av: <https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/>
+prefix sm: <http://www.omg.org/techprocess/ab/SpecificationMetadata/>
+prefix dct: <http://purl.org/dc/terms/> 
 
 ##
-# banner Subproperties  ranges should not cross
+# banner Text should not use special characters
 
-SELECT DISTINCT ?error
+SELECT #?error
+# COUNT ( DISTINCT ?error)
+?s ?o ?error
 WHERE {
-  ?p1 rdfs:range ?D1 . 
-  ?p1 rdfs:subPropertyOf ?p2 .
-  ?p2 rdfs:range ?D2 .
-  ?D2 rdfs:subClassOf+ ?D1 .
-BIND (concat ("PRODERROR: Crossed ranges. ", afn:localname(?p1), " < ", afn:localname (?p2), " but the range ", afn:localname (?D1), " is a superclass of ", afn:localname (?D2)) AS ?error)
-}
+  ?s ?p ?o
+  FILTER (DATATYPE(?o)=xsd:string)
+  FILTER (REGEX (xsd:string (?s), "edmcouncil")) 
+  BIND (afn:localname (?p) AS ?prop)
+  BIND ("[ÁáÇçÉéÍíÕõÖöäÄèÈμΜσΣa-zA-Z\\\\;'?@$%#&:/\"<*>,._+=)(\\[\\]{}0-9\n\t -]" AS ?reg)
+  BIND (REPLACE (xsd:string (?o), ?reg, "")  AS ?bads)
+#  FILTER (!REGEX (?o, (CONCAT ("^", ?reg, "*$"))))
+  FILTER (?bads != "")
+  BIND (concat ("PRODERROR:", xsd:string(?o), " has a bad character |", ?bads, "|")
+	  AS ?error)
+ } 

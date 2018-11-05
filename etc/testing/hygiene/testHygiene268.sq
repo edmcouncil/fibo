@@ -1,3 +1,4 @@
+prefix fibo-fnd-rel-rel: <https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/> 
 prefix fibo-der-rtd-irswp: <http://spec.edmcouncil.org/fibo/DER/RateDerivatives/IRSwaps/> 
 prefix fibo-der-drc-swp: <http://spec.edmcouncil.org/fibo/DER/DerivativesContracts/Swaps/> 
 prefix fibo-ind-ir-ir: <http://spec.edmcouncil.org/fibo/IND/InterestRates/InterestRates/> 
@@ -13,15 +14,22 @@ prefix fibo-fnd-aap-agt: <http://spec.edmcouncil.org/fibo/FND/AgentsAndPeople/Ag
 prefix fibo-fnd-pty-rl: <http://spec.edmcouncil.org/fibo/FND/Parties/Roles/>
 prefix afn: <http://jena.apache.org/ARQ/function#>
 prefix fibo-fnd-utl-av: <https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/>
+prefix sm: <http://www.omg.org/techprocess/ab/SpecificationMetadata/>
+prefix dct: <http://purl.org/dc/terms/> 
 
 ##
-# banner Subproperties  ranges should not cross
+# banner We should not make explicit references to owl:Thing
 
 SELECT DISTINCT ?error
 WHERE {
-  ?p1 rdfs:range ?D1 . 
-  ?p1 rdfs:subPropertyOf ?p2 .
-  ?p2 rdfs:range ?D2 .
-  ?D2 rdfs:subClassOf+ ?D1 .
-BIND (concat ("PRODERROR: Crossed ranges. ", afn:localname(?p1), " < ", afn:localname (?p2), " but the range ", afn:localname (?D1), " is a superclass of ", afn:localname (?D2)) AS ?error)
-}
+ {
+  {?s ?p owl:Thing .}
+  UNION
+  {?s rdfs:subClassOf|owl:equivalentClass [?p owl:Thing]}
+  }
+  FILTER (REGEX (xsd:string (?s), "edmcouncil")) 
+  FILTER (?p != owl:someValuesFrom)
+  BIND (afn:localname (?p) AS ?prop)
+  BIND (concat ("PRODERROR:", xsd:string (?s), " has an explicit reference to owl:Thing (", ?prop, ").")
+	  AS ?error)
+ } 

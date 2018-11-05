@@ -19,6 +19,7 @@
 	<!ENTITY fibo-fnd-law-jur "https://spec.edmcouncil.org/fibo/ontology/FND/Law/Jurisdiction/">
 	<!ENTITY fibo-fnd-org-fm "https://spec.edmcouncil.org/fibo/ontology/FND/Organizations/FormalOrganizations/">
 	<!ENTITY fibo-fnd-plc-adr "https://spec.edmcouncil.org/fibo/ontology/FND/Places/Addresses/">
+	<!ENTITY fibo-fnd-plc-cty "https://spec.edmcouncil.org/fibo/ontology/FND/Places/Countries/">
 	<!ENTITY fibo-fnd-plc-vrt "https://spec.edmcouncil.org/fibo/ontology/FND/Places/VirtualPlaces/">
 	<!ENTITY fibo-fnd-rel-rel "https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
@@ -51,6 +52,7 @@
 	xmlns:fibo-fnd-law-jur="https://spec.edmcouncil.org/fibo/ontology/FND/Law/Jurisdiction/"
 	xmlns:fibo-fnd-org-fm="https://spec.edmcouncil.org/fibo/ontology/FND/Organizations/FormalOrganizations/"
 	xmlns:fibo-fnd-plc-adr="https://spec.edmcouncil.org/fibo/ontology/FND/Places/Addresses/"
+	xmlns:fibo-fnd-plc-cty="https://spec.edmcouncil.org/fibo/ontology/FND/Places/Countries/"
 	xmlns:fibo-fnd-plc-vrt="https://spec.edmcouncil.org/fibo/ontology/FND/Places/VirtualPlaces/"
 	xmlns:fibo-fnd-rel-rel="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
@@ -94,10 +96,11 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Law/Jurisdiction/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Organizations/FormalOrganizations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Places/Addresses/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Places/Countries/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Places/VirtualPlaces/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/20180801/FunctionalEntities/BusinessRegistries/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/20181001/FunctionalEntities/BusinessRegistries/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20150801/FunctionalEntities/BusinessRegistries.rdf version of this ontology was modified per the issue resolutions identified in the FIBO FBC 1.1 RTF report.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20160801/FunctionalEntities/BusinessRegistries.rdf version of this ontology was modified per FIBO 2.0 RFC primarily to loosen the constraints on address properties and better support standards including ISO 9362 (BIC codes), ISO 13616 (IBAN and BBAN codes), and ISO 17442 (the GLIEF LEI standard).</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
@@ -326,6 +329,34 @@
 		<skos:definition>an enumerated datatype specifying the reason that a legal entity ceased to exist and/or operate as specified in the LEI registry for that entity</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
 	</rdfs:Datatype>
+	
+	<owl:Class rdf:about="&fibo-fbc-fct-breg;EntityLegalFormRegistry">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-ra;Registry"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-fct-ra;hasRegistryEntry"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-fct-breg;EntityLegalFormRegistryEntry"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>entity legal form registry</rdfs:label>
+		<skos:definition>a registry for registering and maintaining information about the legal forms that are valid for business entities for a particular jurisdiction following the ISO 20275 standard</skos:definition>
+		<fibo-fnd-utl-av:abbreviation>ELF registry</fibo-fnd-utl-av:abbreviation>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/code-lists/iso-20275-entity-legal-forms-code-list</fibo-fnd-utl-av:adaptedFrom>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-fct-breg;EntityLegalFormRegistryEntry">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-ra;RegistryEntry"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;comprises"/>
+				<owl:someValuesFrom rdf:resource="&fibo-be-le-lei;EntityLegalFormIdentifier"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>entity legal form registry entry</rdfs:label>
+		<skos:definition>an entry in an entity legal form registry that conforms to ISO 20275 and the Global Legal Entity Identifier Foundation (GLEIF) Entity Legal Form (ELF) code structure</skos:definition>
+		<fibo-fnd-utl-av:abbreviation>ELF registry entry</fibo-fnd-utl-av:abbreviation>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/code-lists/iso-20275-entity-legal-forms-code-list</fibo-fnd-utl-av:adaptedFrom>
+	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-fct-breg;EntityStatus">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-lif;LifecycleStage"/>
@@ -629,7 +660,7 @@ NAICS was developed under the auspices of the Office of Management and Budget (O
 	<owl:NamedIndividual rdf:about="&fibo-fbc-fct-breg;SocietyForWorldwideInterbankFinancialTelecommunication">
 		<rdf:type rdf:resource="&fibo-be-le-fbo;NotForProfitOrganization"/>
 		<rdfs:label>Society for Worldwide Interbank Financial Telecommunication (SWIFT)</rdfs:label>
-		<skos:definition>individual representing the Society for Worldwide Interbank Financial Telecommunication (SWIFT) legal entity, which is a global member-owned cooperative and the world’s leading provider of secure financial messaging services</skos:definition>
+		<skos:definition>individual representing the Society for Worldwide Interbank Financial Telecommunication (SWIFT) legal entity, which is a global member-owned cooperative and the world&apos;s leading provider of secure financial messaging services</skos:definition>
 		<fibo-fbc-fct-breg:hasHeadquartersAddress rdf:resource="&fibo-fbc-fct-breg;SWIFTHeadquartersAddress"/>
 		<fibo-fbc-fct-breg:hasWebsite rdf:datatype="&xsd;anyURI">https://www.swift.com/</fibo-fbc-fct-breg:hasWebsite>
 		<fibo-fnd-rel-rel:hasLegalName>Society for Worldwide Interbank Financial Telecommunication SCRL/CVBA</fibo-fnd-rel-rel:hasLegalName>
@@ -751,6 +782,7 @@ NAICS was developed under the auspices of the Office of Management and Budget (O
 		<rdfs:range rdf:resource="&xsd;string"/>
 		<skos:definition>the name of the city</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:usageNote>This property should be used in cases where a formal individual for the business center or municipality is not available.  Note that Geonames could be used as a source in addition to FIBO, however, in cases where an individual is desired.</fibo-fnd-utl-av:usageNote>
 	</owl:DatatypeProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-fct-breg;hasCountry">
@@ -820,6 +852,12 @@ NAICS was developed under the auspices of the Office of Management and Budget (O
 		<skos:definition>the date on which an identifier or other registered item was first registered</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
 	</owl:DatatypeProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fbc-fct-breg;hasMunicipality">
+		<rdfs:label>has municipality</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fnd-plc-cty;Municipality"/>
+		<skos:definition>identifies a business center, city, or municipality</skos:definition>
+	</owl:ObjectProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-fbc-fct-breg;hasPostalCode">
 		<rdfs:label>has postal code</rdfs:label>

@@ -21,7 +21,6 @@
 	<!ENTITY fibo-loan-loan-pty "https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoansParties/">
 	<!ENTITY fibo-loan-tem-ph "https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansTemporal/LoanPhases/">
 	<!ENTITY fibo-md-temx-tem "https://spec.edmcouncil.org/fibo/ontology/MD/TemporalCore/TemporalConcepts/">
-	<!ENTITY fibo-sec-dbt-dbt-fin "https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtFoundations/DebtFinance/">
 	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
 	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
 	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
@@ -50,7 +49,6 @@
 	xmlns:fibo-loan-loan-pty="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoansParties/"
 	xmlns:fibo-loan-tem-ph="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansTemporal/LoanPhases/"
 	xmlns:fibo-md-temx-tem="https://spec.edmcouncil.org/fibo/ontology/MD/TemporalCore/TemporalConcepts/"
-	xmlns:fibo-sec-dbt-dbt-fin="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtFoundations/DebtFinance/"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
@@ -85,7 +83,6 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansTemporal/LoanPhases/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/MD/TemporalCore/CreditEvents/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/MD/TemporalCore/TemporalConcepts/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtFoundations/DebtFinance/"/>
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoanBasicTerms/"/>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Provisional"/>
 	</owl:Ontology>
@@ -224,7 +221,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-loan-loan;LoanDrawdown">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbt-fin;DebtFinance"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;Debt"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-loan-loan-gty;guaranteedBy"/>
@@ -243,6 +240,31 @@
 				<owl:onProperty rdf:resource="&fibo-loan-loan-loan;maturity"/>
 				<owl:onClass rdf:resource="&fibo-md-temx-tem;TimedDurationSpecification"/>
 				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;isCollateralizedBy"/>
+				<owl:onClass rdf:resource="&fibo-fbc-dae-dbt;Collateral"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;hasBorrower"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-dae-dbt;Borrower"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;hasLender"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-dae-dbt;Lender"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;hasContractualElement"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-dae-dbt;DebtTerms"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
