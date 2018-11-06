@@ -23,7 +23,7 @@
 	<!ENTITY fibo-ind-ei-ei "https://spec.edmcouncil.org/fibo/ontology/IND/EconomicIndicators/EconomicIndicators/">
 	<!ENTITY fibo-ind-ind-ind "https://spec.edmcouncil.org/fibo/ontology/IND/Indicators/Indicators/">
 	<!ENTITY fibo-ind-ir-ir "https://spec.edmcouncil.org/fibo/ontology/IND/InterestRates/InterestRates/">
-	<!ENTITY fibo-md-dbtx-int "https://spec.edmcouncil.org/fibo/ontology/MD/DebtTemporal/DebtInterestAmounts/">
+	<!ENTITY fibo-md-temx-ins "https://spec.edmcouncil.org/fibo/ontology/MD/TemporalCore/InstrumentTemporalTerms/">
 	<!ENTITY fibo-sec-dbt-bnd "https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/Bonds/">
 	<!ENTITY fibo-sec-dbt-dbti "https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtInstruments/">
 	<!ENTITY fibo-sec-dbt-tstd "https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/TradedShortTermDebt/">
@@ -60,7 +60,7 @@
 	xmlns:fibo-ind-ei-ei="https://spec.edmcouncil.org/fibo/ontology/IND/EconomicIndicators/EconomicIndicators/"
 	xmlns:fibo-ind-ind-ind="https://spec.edmcouncil.org/fibo/ontology/IND/Indicators/Indicators/"
 	xmlns:fibo-ind-ir-ir="https://spec.edmcouncil.org/fibo/ontology/IND/InterestRates/InterestRates/"
-	xmlns:fibo-md-dbtx-int="https://spec.edmcouncil.org/fibo/ontology/MD/DebtTemporal/DebtInterestAmounts/"
+	xmlns:fibo-md-temx-ins="https://spec.edmcouncil.org/fibo/ontology/MD/TemporalCore/InstrumentTemporalTerms/"
 	xmlns:fibo-sec-dbt-bnd="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/Bonds/"
 	xmlns:fibo-sec-dbt-dbti="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtInstruments/"
 	xmlns:fibo-sec-dbt-tstd="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/TradedShortTermDebt/"
@@ -101,7 +101,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/EconomicIndicators/EconomicIndicators/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/Indicators/Indicators/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/InterestRates/InterestRates/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/MD/DebtTemporal/DebtInterestAmounts/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/MD/TemporalCore/InstrumentTemporalTerms/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtInstruments/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/TradedShortTermDebt/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Equities/EquityInstruments/"/>
@@ -111,7 +111,7 @@
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Provisional"/>
 	</owl:Ontology>
 	
-	<owl:Class rdf:about="&fibo-sec-dbt-bnd;AmortizingSecurity">
+	<owl:Class rdf:about="&fibo-sec-dbt-bnd;AmortizingBond">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;Bond"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
@@ -121,27 +121,27 @@
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">amortizing bond</rdfs:label>
 		<owl:disjointWith rdf:resource="&fibo-sec-dbt-bnd;BulletBond"/>
-		<skos:definition xml:lang="en">A bond with terms mandating amortization of the principal</skos:definition>
+		<skos:definition xml:lang="en">a bond that regularly pays down the principal (face value) on the debt along with its interest expense over the life of the bond</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-bnd;Bond">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbti;TradableDebtInstrument"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-md-dbtx-int;bondHasCoupon"/>
-				<owl:someValuesFrom rdf:resource="&fibo-md-dbtx-int;BondCoupon"/>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-bnd;bondHasCoupon"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;BondCoupon"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-bnd;hasCouponStructureTerms"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;BondCouponStructureType"/>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-bnd;hasCouponStructure"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;CouponStructure"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbti;hasRepaymentTerms"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;BondPrincipalRepaymentTermsSet"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;BondPrincipalRepaymentTerms"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -156,18 +156,18 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-bnd;BondAmortizationPaymentTerms">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;BondPrincipalRepaymentTermsSet"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;BondPrincipalRepaymentTerms"/>
 		<rdfs:label xml:lang="en">bond amortization payment terms</rdfs:label>
-		<owl:disjointWith rdf:resource="&fibo-sec-dbt-bnd;BondBulletPrincipalRepaymentTermsSet"/>
+		<owl:disjointWith rdf:resource="&fibo-sec-dbt-bnd;BondBulletPrincipalRepaymentTerms"/>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-dbt-bnd;BondBulletPrincipalRepaymentTermsSet">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;BondPrincipalRepaymentTermsSet"/>
-		<rdfs:label xml:lang="en">bond bullet principal repayment terms set</rdfs:label>
+	<owl:Class rdf:about="&fibo-sec-dbt-bnd;BondBulletPrincipalRepaymentTerms">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;BondPrincipalRepaymentTerms"/>
+		<rdfs:label xml:lang="en">bond bullet principal repayment terms</rdfs:label>
 		<skos:definition xml:lang="en">Terms for payment of Principal as a single amount of payment of the full Principal.</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-dbt-bnd;BondCallTermsSet">
+	<owl:Class rdf:about="&fibo-sec-dbt-bnd;BondCallTerms">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbti;CallFeature"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
@@ -176,7 +176,7 @@
 				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">bond call terms set</rdfs:label>
+		<rdfs:label xml:lang="en">bond call terms</rdfs:label>
 		<skos:definition xml:lang="en">The terms and conditions in which a bond can be redeemed by the issuer prior to its maturity. Usually a premium is paid to the bond owner when the bond is called.</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Also known as a &quot;redeemable bond&quot;. The main cause of a call is a decline in interest rates. If interest rates have declined since a company first issued the bonds, it will likely want to refinance this debt at a lower rate of interest. The company will call its current bonds and reissue them at a lower rate of interest. The maturity date of a callable debt instrument is the latest and final possible date at which the security will be retired and principal will be redeemed at par. Conesnsus:Review</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
@@ -200,6 +200,13 @@
 		<skos:definition xml:lang="en">Contractual specifications when a Convertible Bond can be converted to another security (usually of the same issuer).</skos:definition>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-sec-dbt-bnd;BondCoupon">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-acc-cur;InterestRate"/>
+		<rdfs:label xml:lang="en">bond coupon</rdfs:label>
+		<skos:definition xml:lang="en">Mechanism whereby an investor receives income from interest payments, which are usually made periodically.</skos:definition>
+		<fibo-fnd-utl-av:synonym xml:lang="en">bond interest</fibo-fnd-utl-av:synonym>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-sec-dbt-bnd;BondCouponInterestTerms">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;InterestPaymentTerms"/>
 		<rdfs:subClassOf>
@@ -213,27 +220,8 @@
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">For stepped coupons, several set of this information may exist, with these coming into force.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-dbt-bnd;BondCouponStructureType">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractualElement"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;definesTermsFor"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;BondCouponInterestTerms"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-bnd;specifies.1"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;CouponSchedule"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">bond coupon structure type</rdfs:label>
-		<skos:definition xml:lang="en">A set of contractual terms defining the interest payments for a coupon of a bond, beginning with terms describing stepped or conditional coupon structures if these exist.</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Multiple sets of Interest Payment Terms may exist for one Security. This covers for example Step-up interest features.</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-sec-dbt-bnd;BondExtraordinaryRedemption">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;BondPrincipalRepaymentTermsSet"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;BondPrincipalRepaymentTerms"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-bnd;hasExtraordinaryRedemptionMethod"/>
@@ -241,6 +229,13 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">bond extraordinary redemption</rdfs:label>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-dbt-bnd;BondFixedCoupon">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;BondCoupon"/>
+		<rdfs:label xml:lang="en">bond fixed coupon</rdfs:label>
+		<owl:disjointWith rdf:resource="&fibo-sec-dbt-bnd;BondVariableCoupon"/>
+		<skos:definition xml:lang="en">Mechanism whereby an investor receives income from interest payments, which are usually made periodically. These are for a fixed amount.</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-bnd;BondInsurance">
@@ -262,19 +257,24 @@
 		<skos:definition xml:lang="en">The person or entity responsible for maintaining records on behalf of the issuer that identify the owners of a registered bond issue. The trustee under a bond contract often also acts as registrar.</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-dbt-bnd;BondPrincipalRepaymentTermsSet">
+	<owl:Class rdf:about="&fibo-sec-dbt-bnd;BondPrincipalRepaymentTerms">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbti;TradableDebtInstrumentRedemptionProvision"/>
-		<rdfs:label xml:lang="en">bond principal repayment terms set</rdfs:label>
+		<rdfs:label xml:lang="en">bond principal repayment terms</rdfs:label>
 		<owl:disjointWith rdf:resource="&fibo-sec-dbt-dbti;CallFeature"/>
 		<skos:definition xml:lang="en">Terms for the repayment of the Principal on a Bond security.</skos:definition>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-sec-dbt-bnd;BondVariableCoupon">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;BondCoupon"/>
+		<rdfs:label xml:lang="en">bond variable coupon</rdfs:label>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-sec-dbt-bnd;BondWithMandatorySinkingFund">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;AmortizingSecurity"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;AmortizingBond"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-bnd;mandatesSinkingFundAsDescribedIn"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;MandatorySinkingFundTermsSet"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;MandatorySinkingFundTerms"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">bond with mandatory sinking fund</rdfs:label>
@@ -294,7 +294,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-bnd;BondWithPublishedSinkingFund">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;AmortizingSecurity"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;AmortizingBond"/>
 		<rdfs:label xml:lang="en">bond with published sinking fund</rdfs:label>
 		<skos:definition xml:lang="en">Bonds where the amortizing is via a known and published schedule.</skos:definition>
 	</owl:Class>
@@ -317,7 +317,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-bnd;hasRepaymentTerms"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;BondBulletPrincipalRepaymentTermsSet"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;BondBulletPrincipalRepaymentTerms"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">bullet bond</rdfs:label>
@@ -335,7 +335,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbti;hasCallFeature"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;BondCallTermsSet"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;BondCallTerms"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>callable bond</rdfs:label>
@@ -373,8 +373,8 @@
 		<rdfs:label xml:lang="en">claw back call</rdfs:label>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-dbt-bnd;ConditionalCouponTermsSet">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;BondCouponStructureType"/>
+	<owl:Class rdf:about="&fibo-sec-dbt-bnd;ConditionalCouponTerms">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;CouponStructure"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-bnd;hasTermForOneCoupon"/>
@@ -382,12 +382,12 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">conditional coupon type</rdfs:label>
-		<owl:disjointWith rdf:resource="&fibo-sec-dbt-bnd;SingleCouponTermsSet"/>
-		<owl:disjointWith rdf:resource="&fibo-sec-dbt-bnd;SteppedCouponTermsSet"/>
+		<owl:disjointWith rdf:resource="&fibo-sec-dbt-bnd;SingleCouponTerms"/>
+		<owl:disjointWith rdf:resource="&fibo-sec-dbt-bnd;SteppedCouponTerms"/>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-bnd;ControlledAmortizationBond">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;AmortizingSecurity"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;AmortizingBond"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-bnd;hasPrincipalAmortizationTerms"/>
@@ -448,7 +448,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-bnd;CouponConditionalTerm">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;BondCouponStructureType"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;CouponStructure"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;definesTermsFor"/>
@@ -482,6 +482,25 @@
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">coupon schedule</rdfs:label>
 		<skos:definition xml:lang="en">a regular schedule of coupon payments</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-dbt-bnd;CouponStructure">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractualElement"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;definesTermsFor"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;BondCouponInterestTerms"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-bnd;specifies.1"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;CouponSchedule"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">coupon structure</rdfs:label>
+		<skos:definition xml:lang="en">A set of contractual terms defining the interest payments for a coupon of a bond, beginning with terms describing stepped or conditional coupon structures if these exist.</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Multiple sets of Interest Payment Terms may exist for one Security. This covers for example Step-up interest features.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-bnd;DanishBorrowerCall">
@@ -531,42 +550,6 @@
 		<rdfs:label xml:lang="en">debt european call exercise type</rdfs:label>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-dbt-bnd;DebtFixedCouponTermsSet">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;BondCouponInterestTerms"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-bnd;fixedCouponAmount"/>
-				<owl:allValuesFrom rdf:resource="&fibo-fnd-utl-val;PercentageValue"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasExpression"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;FixedInterestCalculation"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">bond fixed coupon terms set</rdfs:label>
-		<owl:disjointWith rdf:resource="&fibo-sec-dbt-bnd;DebtVariableCouponTermsSet"/>
-		<skos:definition xml:lang="en">Terms for payment of Interest on a Bond, where this pays a fixed rate of interest.</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-sec-dbt-bnd;DebtVariableCouponTermsSet">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;BondCouponInterestTerms"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasExpression"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;VariableInterestCalculationFormula"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-bnd;specifiesBaseRate"/>
-				<owl:someValuesFrom rdf:resource="&fibo-ind-ind-ind;MarketRate"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">bond variable coupon terms set</rdfs:label>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-sec-dbt-bnd;EntireCall">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbti;CallEvent"/>
 		<rdfs:label xml:lang="en">entire call</rdfs:label>
@@ -587,18 +570,27 @@
 		<rdfs:label xml:lang="en">extraordinary redemption method</rdfs:label>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-dbt-bnd;FRNTermsSet">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;DebtVariableCouponTermsSet"/>
+	<owl:Class rdf:about="&fibo-sec-dbt-bnd;FRNCoupon">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;BondVariableCoupon"/>
+		<rdfs:label xml:lang="en">f r n coupon</rdfs:label>
+		<owl:disjointWith rdf:resource="&fibo-sec-dbt-bnd;IndexLinkedCoupon"/>
+		<owl:disjointWith rdf:resource="&fibo-sec-dbt-bnd;InflationBondVariableCoupon"/>
+		<owl:disjointWith rdf:resource="&fibo-sec-dbt-bnd;WACBondCoupon"/>
+		<skos:definition xml:lang="en">Mechanism whereby an investor receives income from interest payments, which are usually made periodically. These are for a variable amount based on a specified Interest rate.</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-dbt-bnd;FRNTerms">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;VariableCouponTerms"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-bnd;specifiesBaseRate"/>
 				<owl:someValuesFrom rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/Bonds/fibo-ind-ir-ir;ReferenceInterestRate"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">f r n terms set</rdfs:label>
-		<owl:disjointWith rdf:resource="&fibo-sec-dbt-bnd;IndexLinkedCouponTermsSet"/>
-		<owl:disjointWith rdf:resource="&fibo-sec-dbt-bnd;InflationBondVariableCouponTermsSet"/>
-		<skos:definition xml:lang="en">Terms setting out the interest payments determination and dates for Flating Rate Note interest.</skos:definition>
+		<rdfs:label xml:lang="en">f r n terms</rdfs:label>
+		<owl:disjointWith rdf:resource="&fibo-sec-dbt-bnd;IndexLinkedCouponTerms"/>
+		<owl:disjointWith rdf:resource="&fibo-sec-dbt-bnd;InflationBondVariableCouponTerms"/>
+		<skos:definition xml:lang="en">termsting out the interest payments determination and dates for Flating Rate Note interest.</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-bnd;FirstRegularCouponDate">
@@ -611,19 +603,38 @@
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;Bond"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-md-dbtx-int;bondHasCoupon"/>
-				<owl:someValuesFrom rdf:resource="&fibo-md-dbtx-int;BondFixedCoupon"/>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-bnd;bondHasCoupon"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;BondFixedCoupon"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-bnd;hasCouponInterestTerms"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;DebtFixedCouponTermsSet"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;FixedCouponTerms"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">fixed coupon bond</rdfs:label>
 		<owl:disjointWith rdf:resource="&fibo-sec-dbt-bnd;VariableCouponBond"/>
 		<skos:definition xml:lang="en">A bond which pays a fixed rate of interest at regular intervals.</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-dbt-bnd;FixedCouponTerms">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;BondCouponInterestTerms"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-bnd;fixedCouponAmount"/>
+				<owl:allValuesFrom rdf:resource="&fibo-fnd-utl-val;PercentageValue"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasExpression"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;FixedInterestCalculation"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">bond fixed coupon terms</rdfs:label>
+		<owl:disjointWith rdf:resource="&fibo-sec-dbt-bnd;VariableCouponTerms"/>
+		<skos:definition xml:lang="en">Terms for payment of Interest on a Bond, where this pays a fixed rate of interest.</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-bnd;FixedInterestCalculation">
@@ -643,14 +654,14 @@
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;VariableCouponBond"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-md-dbtx-int;bondHasCoupon"/>
-				<owl:someValuesFrom rdf:resource="&fibo-md-dbtx-int;FRNCoupon"/>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-bnd;bondHasCoupon"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;FRNCoupon"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-bnd;hasCouponVariableInterestTerms"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;FRNTermsSet"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;FRNTerms"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">floating rate note</rdfs:label>
@@ -665,7 +676,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-bnd;FullyAmortizingBond">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;AmortizingSecurity"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;AmortizingBond"/>
 		<rdfs:label xml:lang="en">fully amortizing bond</rdfs:label>
 		<skos:definition xml:lang="en">Securities that return principal to investors throughout the life of the security are said to be fully amortizing. They are designed to closely reflect the full repayment of the underlying loans through scheduled interest and principal payments.</skos:definition>
 		<fibo-fnd-utl-av:definitionOrigin xml:lang="en">http://www.investinginbonds.com/learnmore.asp?catid=11&amp;subcatid=57&amp;id=15</fibo-fnd-utl-av:definitionOrigin>
@@ -725,7 +736,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-bnd;hasPrincipalRepaymentTerms.1"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;IndexLinkedPrincipalDeterminationTermsSet"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;IndexLinkedPrincipalDeterminationTerms"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">index amortizing bond</rdfs:label>
@@ -735,14 +746,14 @@
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;VariableCouponBond"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-md-dbtx-int;bondHasCoupon"/>
-				<owl:someValuesFrom rdf:resource="&fibo-md-dbtx-int;IndexLinkedCoupon"/>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-bnd;bondHasCoupon"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;IndexLinkedCoupon"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-bnd;hasCouponVariableInterestTerms"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;IndexLinkedCouponTermsSet"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;IndexLinkedCouponTerms"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">index based coupon bond</rdfs:label>
@@ -750,19 +761,26 @@
 		<skos:editorialNote xml:lang="en">Might also be referred to as Index Linked, but more commonly the term Index Linked refers to principal. So this term has a made up name for this kind of bond, following OTPP review in which we dealt with the distinction between index linked interest and index linked principal amounts. .</skos:editorialNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-dbt-bnd;IndexLinkedCouponTermsSet">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;DebtVariableCouponTermsSet"/>
+	<owl:Class rdf:about="&fibo-sec-dbt-bnd;IndexLinkedCoupon">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;BondVariableCoupon"/>
+		<rdfs:label xml:lang="en">index linked coupon</rdfs:label>
+		<owl:disjointWith rdf:resource="&fibo-sec-dbt-bnd;InflationBondVariableCoupon"/>
+		<owl:disjointWith rdf:resource="&fibo-sec-dbt-bnd;WACBondCoupon"/>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-dbt-bnd;IndexLinkedCouponTerms">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;VariableCouponTerms"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-bnd;specifiesBaseRate"/>
 				<owl:someValuesFrom rdf:resource="&fibo-ind-ei-ei;EconomicIndicator"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">index linked coupon terms set</rdfs:label>
-		<owl:disjointWith rdf:resource="&fibo-sec-dbt-bnd;InflationBondVariableCouponTermsSet"/>
+		<rdfs:label xml:lang="en">index linked coupon terms</rdfs:label>
+		<owl:disjointWith rdf:resource="&fibo-sec-dbt-bnd;InflationBondVariableCouponTerms"/>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-dbt-bnd;IndexLinkedPrincipalDeterminationTermsSet">
+	<owl:Class rdf:about="&fibo-sec-dbt-bnd;IndexLinkedPrincipalDeterminationTerms">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbti;TradableDebtInstrumentRedemptionProvision"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
@@ -776,7 +794,7 @@
 				<owl:someValuesFrom rdf:resource="&fibo-ind-ei-ei;InflationRate"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">index linked principal determination terms set</rdfs:label>
+		<rdfs:label xml:lang="en">index linked principal determination terms</rdfs:label>
 		<skos:definition xml:lang="en">Terms for payment of the principal. These link the principal amounts to some underlying index or interest rate.</skos:definition>
 		<skos:editorialNote xml:lang="en">Terms are linked to the calculation of the factor - see definition for Inflation Bond. This has been renamed from Principal Repayment Terms to Principal Determination Terms, since further review indicates a term whereby the principal amount itself varies, and this is borne out by the notes made at the original review, where this was mislabeled.</skos:editorialNote>
 	</owl:Class>
@@ -798,41 +816,41 @@
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;IndexLinkedSecurity"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-bnd;hasPrincipalRepaymentTerms"/>
+				<owl:onClass rdf:resource="&fibo-sec-dbt-bnd;IndexLinkedPrincipalDeterminationTerms"/>
+				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-bnd;hasPrincipalRepaymentTerms"/>
+				<owl:onClass rdf:resource="&fibo-sec-dbt-bnd;InflationBondPrincipalRepaymentTerms"/>
+				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-bnd;specifiesCoupon"/>
-				<owl:onClass rdf:resource="&fibo-md-dbtx-int;InflationBondVariableCoupon"/>
+				<owl:onClass rdf:resource="&fibo-sec-dbt-bnd;InflationBondVariableCoupon"/>
 				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-bnd;hasPrincipalRepaymentTerms"/>
-				<owl:onClass rdf:resource="&fibo-sec-dbt-bnd;IndexLinkedPrincipalDeterminationTermsSet"/>
-				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-bnd;hasPrincipalRepaymentTerms"/>
-				<owl:onClass rdf:resource="&fibo-sec-dbt-bnd;InflationBondPrincipalRepaymentTermsSet"/>
-				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-md-dbtx-int;hasFactor"/>
-				<owl:someValuesFrom rdf:resource="&fibo-md-dbtx-int;InflationBondFactor"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-bnd;hasCouponVariableInterestTerms"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;InflationBondVariableCouponTermsSet"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;InflationBondVariableCouponTerms"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-bnd;hasFactor"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;InflationBondFactor"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-bnd;hasInterestPaymentTerms"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;InflationBondInterestPaymentTermsSet"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;InflationBondInterestPaymentTerms"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -844,7 +862,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-bnd;hasPrincipalRepaymentTerms"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;InflationBondPrincipalRepaymentTermsSet"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;InflationBondPrincipalRepaymentTerms"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">inflation bond</rdfs:label>
@@ -853,19 +871,25 @@
 Further Notes:Additional review with OTPP May 05 2010 indicates that this is part of a classification of bonds where the principal amount itself varies according to some index, a point which was not understood at the original review session. Terms and labels revised to fit this picture.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-dbt-bnd;InflationBondInterestPaymentTermsSet">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;BondCouponStructureType"/>
-		<rdfs:label xml:lang="en">inflation bond interest payment terms set</rdfs:label>
+	<owl:Class rdf:about="&fibo-sec-dbt-bnd;InflationBondFactor">
+		<rdfs:subClassOf rdf:resource="&fibo-md-temx-ins;ReferenceFactor"/>
+		<rdfs:label xml:lang="en">inflation bond factor</rdfs:label>
+		<skos:definition xml:lang="en">The factor which is used in determining the principal on an inflation bond. This is used either in calculating the interest payments, in calculating the principal payback or more typically both. Further notes: This is a dated parameter, that is it varies over time.</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-dbt-bnd;InflationBondInterestPaymentTerms">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;CouponStructure"/>
+		<rdfs:label xml:lang="en">inflation bond interest payment terms</rdfs:label>
 		<skos:definition xml:lang="en">Terms for the payment of interest on an Inflation Bond.</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">These may for example specify that the interest payments are by way of coupone calculated with reference to the inflation rate that is referenced for that bond, or they may not (for example they may specify a fixed coupon amount). Therefore these terms may specify any potential interest payment arrangement used on bonds.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-dbt-bnd;InflationBondPrincipalRepaymentTermsSet">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;IndexLinkedPrincipalDeterminationTermsSet"/>
+	<owl:Class rdf:about="&fibo-sec-dbt-bnd;InflationBondPrincipalRepaymentTerms">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;IndexLinkedPrincipalDeterminationTerms"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-bnd;refersTo"/>
-				<owl:onClass rdf:resource="&fibo-md-dbtx-int;InflationBondFactor"/>
+				<owl:onClass rdf:resource="&fibo-sec-dbt-bnd;InflationBondFactor"/>
 				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -875,19 +899,25 @@ Further Notes:Additional review with OTPP May 05 2010 indicates that this is par
 				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;InflationFactorExpression"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">inflation bond principal repayment terms set</rdfs:label>
+		<rdfs:label xml:lang="en">inflation bond principal repayment terms</rdfs:label>
 		<skos:definition xml:lang="en">Terms specifying how the principal amount on an Inflation Bond is to be paid down. Further notes: This is typically but not necessarily with reference to the Inflation rate that is referred to for this bond. Further model action: identify and model terms for the case where the bond principal repayments are not pegged to an inflation rate.</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-dbt-bnd;InflationBondVariableCouponTermsSet">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;DebtVariableCouponTermsSet"/>
+	<owl:Class rdf:about="&fibo-sec-dbt-bnd;InflationBondVariableCoupon">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;BondVariableCoupon"/>
+		<rdfs:label xml:lang="en">inflation bond variable coupon</rdfs:label>
+		<owl:disjointWith rdf:resource="&fibo-sec-dbt-bnd;WACBondCoupon"/>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-dbt-bnd;InflationBondVariableCouponTerms">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;VariableCouponTerms"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-bnd;hasInflationBondFactor"/>
-				<owl:allValuesFrom rdf:resource="&fibo-md-dbtx-int;InflationBondFactor"/>
+				<owl:allValuesFrom rdf:resource="&fibo-sec-dbt-bnd;InflationBondFactor"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">inflation bond variable coupon terms set</rdfs:label>
+		<rdfs:label xml:lang="en">inflation bond variable coupon terms</rdfs:label>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-bnd;InflationFactorExpression">
@@ -950,7 +980,7 @@ Further Notes:Additional review with OTPP May 05 2010 indicates that this is par
 		<skos:definition xml:lang="en">A full schedule of dates and payments for a Mandatory Sinking Fund style of Call.</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-dbt-bnd;MandatorySinkingFundTermsSet">
+	<owl:Class rdf:about="&fibo-sec-dbt-bnd;MandatorySinkingFundTerms">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;BondAmortizationPaymentTerms"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
@@ -1059,7 +1089,7 @@ Further Notes:Additional review with OTPP May 05 2010 indicates that this is par
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-bnd;PartialCallFeature">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;BondCallTermsSet"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;BondCallTerms"/>
 		<rdfs:label xml:lang="en">partial call feature</rdfs:label>
 		<skos:definition xml:lang="en">These are terms whereby the issuer can recall part of the issue on scheduled dates but there is no specific amount defined for those dates. Consenus:Yes</skos:definition>
 	</owl:Class>
@@ -1173,8 +1203,8 @@ Further Notes:Additional review with OTPP May 05 2010 indicates that this is par
 		<rdfs:label xml:lang="en">serial number call</rdfs:label>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-dbt-bnd;SingleCouponTermsSet">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;BondCouponStructureType"/>
+	<owl:Class rdf:about="&fibo-sec-dbt-bnd;SingleCouponTerms">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;CouponStructure"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;definesTermsFor"/>
@@ -1189,11 +1219,11 @@ Further Notes:Additional review with OTPP May 05 2010 indicates that this is par
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">single coupon type</rdfs:label>
-		<owl:disjointWith rdf:resource="&fibo-sec-dbt-bnd;SteppedCouponTermsSet"/>
+		<owl:disjointWith rdf:resource="&fibo-sec-dbt-bnd;SteppedCouponTerms"/>
 		<skos:definition xml:lang="en">A set of coupon terms which remain the same through the life of the Bond. This is the default and is the case when there is not a Step Coupon or Conditional Coupon.</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-dbt-bnd;SinkingFundAmortizationTermsSet">
+	<owl:Class rdf:about="&fibo-sec-dbt-bnd;SinkingFundAmortizationTerms">
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-bnd;includes"/>
@@ -1263,7 +1293,7 @@ Further Notes:Additional review with OTPP May 05 2010 indicates that this is par
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;definesTermsFor"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;DebtFixedCouponTermsSet"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;FixedCouponTerms"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">step event</rdfs:label>
@@ -1285,15 +1315,15 @@ Further Notes:Additional review with OTPP May 05 2010 indicates that this is par
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;Bond"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-bnd;hasCouponStructureTerms"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;SteppedCouponTermsSet"/>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-bnd;hasCouponStructure"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;SteppedCouponTerms"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">step up bond</rdfs:label>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-dbt-bnd;SteppedCouponTermsSet">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;BondCouponStructureType"/>
+	<owl:Class rdf:about="&fibo-sec-dbt-bnd;SteppedCouponTerms">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;CouponStructure"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-bnd;hasSchedule"/>
@@ -1357,11 +1387,28 @@ Further Notes:Additional review with OTPP May 05 2010 indicates that this is par
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;Bond"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-md-dbtx-int;bondHasCoupon"/>
-				<owl:someValuesFrom rdf:resource="&fibo-md-dbtx-int;BondVariableCoupon"/>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-bnd;bondHasCoupon"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;BondVariableCoupon"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">variable coupon bond</rdfs:label>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-dbt-bnd;VariableCouponTerms">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;BondCouponInterestTerms"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasExpression"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;VariableInterestCalculationFormula"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-bnd;specifiesBaseRate"/>
+				<owl:someValuesFrom rdf:resource="&fibo-ind-ind-ind;MarketRate"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">bond variable coupon terms</rdfs:label>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-bnd;VariableDebtPrincipal">
@@ -1418,15 +1465,20 @@ Further Notes:Additional review with OTPP May 05 2010 indicates that this is par
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">This would typically be a bond where the principal is not a fixed amount but is varied according to some index, that is the actual amount of the debt itself varies, independently of whether the principal is amortized or not, and regardless of whether the coupon is fixed or variable (though a coupon of a fixed percentage would translate to a variable monetary amount).</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-dbt-bnd;ZeroCouponAndOIDBondCallTermsSet">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;BondCallTermsSet"/>
+	<owl:Class rdf:about="&fibo-sec-dbt-bnd;WACBondCoupon">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;BondVariableCoupon"/>
+		<rdfs:label xml:lang="en">w a c bond coupon</rdfs:label>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-dbt-bnd;ZeroCouponAndOIDBondCallTerms">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;BondCallTerms"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;comprises"/>
 				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;ZeroCouponBondCall"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">zero coupon and o i d bond call terms set</rdfs:label>
+		<rdfs:label xml:lang="en">zero coupon and o i d bond call terms</rdfs:label>
 		<skos:definition xml:lang="en">Terms defining the Call options for a Zero Coupon or OID Bond.</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Fannie Mae also issues zero-coupon callable debt securities. Zero-coupon notes are debt securities on which no coupon interest is paid to the investor. Rather, the security is purchased at a discounted dollar price and matures at par. If the option on a callable zero-coupon security is exercised, it is redeemed at a higher dollar price than the original issue price. The yield for a callable zero-coupon security is based on the difference between the original discounted price and the principal payment at the call date.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
@@ -1436,13 +1488,13 @@ Further Notes:Additional review with OTPP May 05 2010 indicates that this is par
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-bnd;hasZeroCouponCallTerms"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;ZeroCouponAndOIDBondCallTermsSet"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;ZeroCouponAndOIDBondCallTerms"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-bnd;hasZeroCouponTerms"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;ZeroCouponTermsSet"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;ZeroCouponTerms"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">zero coupon bond</rdfs:label>
@@ -1462,7 +1514,7 @@ Further Notes:Additional review with OTPP May 05 2010 indicates that this is par
 		<skos:definition xml:lang="en">Call of a Zero Coupon bond.</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-dbt-bnd;ZeroCouponTermsSet">
+	<owl:Class rdf:about="&fibo-sec-dbt-bnd;ZeroCouponTerms">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;BondAmortizationPaymentTerms"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
@@ -1477,7 +1529,7 @@ Further Notes:Additional review with OTPP May 05 2010 indicates that this is par
 				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:maxQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">zero coupon terms set</rdfs:label>
+		<rdfs:label xml:lang="en">zero coupon terms</rdfs:label>
 		<skos:definition xml:lang="en">Terms for payment of Interest on a Bond, where this pays a zero rate of interest.</skos:definition>
 	</owl:Class>
 	
@@ -1490,10 +1542,14 @@ Further Notes:Additional review with OTPP May 05 2010 indicates that this is par
 	
 	<owl:DatatypeProperty rdf:about="&fibo-sec-dbt-bnd;baseOffsetBusinessDays">
 		<rdfs:label xml:lang="en">base offset business days</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;FRNTermsSet"/>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;FRNTerms"/>
 		<rdfs:range rdf:resource="&xsd;integer"/>
 		<skos:definition xml:lang="en">Number of days before the coupon refix date, when the value of the underlying base is to be taken from. Also known as Lookback.</skos:definition>
 	</owl:DatatypeProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bnd;bondHasCoupon">
+		<rdfs:label>bond has coupon</rdfs:label>
+	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bnd;callAmount">
 		<rdfs:label xml:lang="en">call amount</rdfs:label>
@@ -1504,7 +1560,7 @@ Further Notes:Additional review with OTPP May 05 2010 indicates that this is par
 	
 	<owl:DatatypeProperty rdf:about="&fibo-sec-dbt-bnd;callConditions">
 		<rdfs:label xml:lang="en">call conditions</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;BondCallTermsSet"/>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;BondCallTerms"/>
 		<rdfs:range rdf:resource="&xsd;string"/>
 		<skos:definition xml:lang="en">The conditions under which a bond can be called back by the issuer.</skos:definition>
 	</owl:DatatypeProperty>
@@ -1545,7 +1601,7 @@ Further Notes:Additional review with OTPP May 05 2010 indicates that this is par
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bnd;couponFrequencyForAccrualCalculations">
 		<rdfs:label xml:lang="en">coupon frequency for accrual calculations</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;ZeroCouponTermsSet"/>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;ZeroCouponTerms"/>
 		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;RecurrenceInterval"/>
 		<skos:definition xml:lang="en">The frequency to be used in the calculation of accruals. Supersedes the Coupon Payment Frequency.</skos:definition>
 	</owl:ObjectProperty>
@@ -1618,7 +1674,7 @@ Further Notes:Additional review with OTPP May 05 2010 indicates that this is par
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bnd;fixedCouponAmount">
 		<rdfs:subPropertyOf rdf:resource="&fibo-sec-dbt-bnd;annualCouponRate"/>
 		<rdfs:label xml:lang="en">fixed coupon amount</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;DebtFixedCouponTermsSet"/>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;FixedCouponTerms"/>
 		<rdfs:range rdf:resource="&fibo-fnd-utl-val;PercentageValue"/>
 		<skos:definition xml:lang="en">Fixed interest payment amount due on each Interest Payment Date. This is derived from the Annual Coupon Rate.</skos:definition>
 	</owl:ObjectProperty>
@@ -1676,7 +1732,7 @@ Further Notes:Additional review with OTPP May 05 2010 indicates that this is par
 		<rdfs:range rdf:resource="&fibo-sec-dbt-bnd;BondCouponInterestTerms"/>
 	</owl:ObjectProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bnd;hasCouponStructureTerms">
+	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bnd;hasCouponStructure">
 		<rdfs:label>has coupon structure terms</rdfs:label>
 	</owl:ObjectProperty>
 	
@@ -1684,7 +1740,7 @@ Further Notes:Additional review with OTPP May 05 2010 indicates that this is par
 		<rdfs:subPropertyOf rdf:resource="&fibo-sec-dbt-bnd;hasCouponInterestTerms"/>
 		<rdfs:label xml:lang="en">has coupon variable interest terms</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;VariableCouponBond"/>
-		<rdfs:range rdf:resource="&fibo-sec-dbt-bnd;DebtVariableCouponTermsSet"/>
+		<rdfs:range rdf:resource="&fibo-sec-dbt-bnd;VariableCouponTerms"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bnd;hasEntireOrPartialCallChoice">
@@ -1695,7 +1751,7 @@ Further Notes:Additional review with OTPP May 05 2010 indicates that this is par
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bnd;hasExerciseType">
 		<rdfs:label xml:lang="en">has exercise type</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;BondCallTermsSet"/>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;BondCallTerms"/>
 		<rdfs:range rdf:resource="&fibo-der-der-ex;ExerciseDatesConvention"/>
 	</owl:ObjectProperty>
 	
@@ -1703,6 +1759,10 @@ Further Notes:Additional review with OTPP May 05 2010 indicates that this is par
 		<rdfs:label xml:lang="en">has extraordinary redemption method</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;BondExtraordinaryRedemption"/>
 		<rdfs:range rdf:resource="&fibo-sec-dbt-bnd;ExtraordinaryRedemptionMethod"/>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bnd;hasFactor">
+		<rdfs:label>has factor</rdfs:label>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bnd;hasFinalMaturityDate">
@@ -1723,14 +1783,14 @@ Further Notes:Additional review with OTPP May 05 2010 indicates that this is par
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bnd;hasInflationBondFactor">
 		<rdfs:subPropertyOf rdf:resource="&fibo-sec-dbt-bnd;specifiesBaseRate"/>
 		<rdfs:label xml:lang="en">has inflation bond factor</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;InflationBondVariableCouponTermsSet"/>
-		<rdfs:range rdf:resource="&fibo-md-dbtx-int;InflationBondFactor"/>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;InflationBondVariableCouponTerms"/>
+		<rdfs:range rdf:resource="&fibo-sec-dbt-bnd;InflationBondFactor"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bnd;hasInterestPaymentTerms">
 		<rdfs:label xml:lang="en">has interest payment terms</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;InflationBond"/>
-		<rdfs:range rdf:resource="&fibo-sec-dbt-bnd;InflationBondInterestPaymentTermsSet"/>
+		<rdfs:range rdf:resource="&fibo-sec-dbt-bnd;InflationBondInterestPaymentTerms"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bnd;hasMunicipalBondCapitalType">
@@ -1783,7 +1843,7 @@ Further Notes:Additional review with OTPP May 05 2010 indicates that this is par
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bnd;hasPrincipalAmortizationTerms">
 		<rdfs:label xml:lang="en">has principal amortization terms</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;AmortizingSecurity"/>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;AmortizingBond"/>
 		<rdfs:range rdf:resource="&fibo-sec-dbt-bnd;BondAmortizationPaymentTerms"/>
 	</owl:ObjectProperty>
 	
@@ -1798,7 +1858,7 @@ Further Notes:Additional review with OTPP May 05 2010 indicates that this is par
 		<rdfs:label xml:lang="en">has principal repayment terms</rdfs:label>
 		<rdfs:label>has principal repayment terms</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;InflationBond"/>
-		<rdfs:range rdf:resource="&fibo-sec-dbt-bnd;IndexLinkedPrincipalDeterminationTermsSet"/>
+		<rdfs:range rdf:resource="&fibo-sec-dbt-bnd;IndexLinkedPrincipalDeterminationTerms"/>
 		<skos:definition xml:lang="en">The terms for payment of the principal. These are linked to a published market index.</skos:definition>
 	</owl:ObjectProperty>
 	
@@ -1806,13 +1866,13 @@ Further Notes:Additional review with OTPP May 05 2010 indicates that this is par
 		<rdfs:subPropertyOf rdf:resource="&fibo-sec-dbt-bnd;hasPrincipalAmortizationTerms"/>
 		<rdfs:label xml:lang="en">has principal repayment terms</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;IndexAmortizingBond"/>
-		<rdfs:range rdf:resource="&fibo-sec-dbt-bnd;IndexLinkedPrincipalDeterminationTermsSet"/>
+		<rdfs:range rdf:resource="&fibo-sec-dbt-bnd;IndexLinkedPrincipalDeterminationTerms"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bnd;hasPublishedSinkingFundAmortizationTermsDescription">
 		<rdfs:label xml:lang="en">has published sinking fund amortization terms description</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;BondWithPublishedSinkingFund"/>
-		<rdfs:range rdf:resource="&fibo-sec-dbt-bnd;SinkingFundAmortizationTermsSet"/>
+		<rdfs:range rdf:resource="&fibo-sec-dbt-bnd;SinkingFundAmortizationTerms"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bnd;hasRemarketingAgent">
@@ -1826,19 +1886,19 @@ Further Notes:Additional review with OTPP May 05 2010 indicates that this is par
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bnd;hasRepaymentTerms">
 		<rdfs:label xml:lang="en">has repayment terms</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;BulletBond"/>
-		<rdfs:range rdf:resource="&fibo-sec-dbt-bnd;BondBulletPrincipalRepaymentTermsSet"/>
+		<rdfs:range rdf:resource="&fibo-sec-dbt-bnd;BondBulletPrincipalRepaymentTerms"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bnd;hasSchedule">
 		<rdfs:label xml:lang="en">has schedule</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;SteppedCouponTermsSet"/>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;SteppedCouponTerms"/>
 		<rdfs:range rdf:resource="&fibo-sec-dbt-bnd;StepSchedule"/>
 		<skos:definition xml:lang="en">The schedule of dates and interest amounts applicable from those dates, forming part of the terms of the Stepped Coupon.</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bnd;hasTermForOneCoupon">
 		<rdfs:label xml:lang="en">has term for one coupon</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;ConditionalCouponTermsSet"/>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;ConditionalCouponTerms"/>
 		<rdfs:range rdf:resource="&fibo-sec-dbt-bnd;CouponConditionalTerm"/>
 	</owl:ObjectProperty>
 	
@@ -1853,19 +1913,19 @@ Further Notes:Additional review with OTPP May 05 2010 indicates that this is par
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bnd;hasZeroCouponCallTerms">
 		<rdfs:label xml:lang="en">has zero coupon call terms</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;ZeroCouponBond"/>
-		<rdfs:range rdf:resource="&fibo-sec-dbt-bnd;ZeroCouponAndOIDBondCallTermsSet"/>
+		<rdfs:range rdf:resource="&fibo-sec-dbt-bnd;ZeroCouponAndOIDBondCallTerms"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bnd;hasZeroCouponTerms">
 		<rdfs:subPropertyOf rdf:resource="&fibo-sec-dbt-bnd;hasCouponInterestTerms"/>
 		<rdfs:label xml:lang="en">has zero coupon terms</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;ZeroCouponBond"/>
-		<rdfs:range rdf:resource="&fibo-sec-dbt-bnd;ZeroCouponTermsSet"/>
+		<rdfs:range rdf:resource="&fibo-sec-dbt-bnd;ZeroCouponTerms"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bnd;includes">
 		<rdfs:label xml:lang="en">includes</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;SinkingFundAmortizationTermsSet"/>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;SinkingFundAmortizationTerms"/>
 		<rdfs:range rdf:resource="&fibo-sec-dbt-bnd;RedemptionSchedule"/>
 		<skos:definition xml:lang="en">The schedule for payment of scheduled amounts of principal on pre-defined dates.</skos:definition>
 	</owl:ObjectProperty>
@@ -1923,7 +1983,7 @@ Further Notes:Additional review with OTPP May 05 2010 indicates that this is par
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bnd;lockoutPeriod">
 		<rdfs:label xml:lang="en">lockout period</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;BondCallTermsSet"/>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;BondCallTerms"/>
 		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;DatePeriod"/>
 		<skos:definition xml:lang="en">The lockout period refers to the amount of time for which a callable security cannot be called and only interest coupon payments are received by the security holder. For example, with a 10-year noncall 3-year (&quot;10nc3&quot;) debt security, the security cannot be called for the first three years.</skos:definition>
 	</owl:ObjectProperty>
@@ -1944,12 +2004,12 @@ Further Notes:Additional review with OTPP May 05 2010 indicates that this is par
 		<rdfs:subPropertyOf rdf:resource="&fibo-sec-dbt-bnd;hasPrincipalAmortizationTerms"/>
 		<rdfs:label xml:lang="en">mandates sinking fund as described in</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;BondWithMandatorySinkingFund"/>
-		<rdfs:range rdf:resource="&fibo-sec-dbt-bnd;MandatorySinkingFundTermsSet"/>
+		<rdfs:range rdf:resource="&fibo-sec-dbt-bnd;MandatorySinkingFundTerms"/>
 	</owl:ObjectProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-sec-dbt-bnd;mandatory">
 		<rdfs:label xml:lang="en">mandatory</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;SinkingFundAmortizationTermsSet"/>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;SinkingFundAmortizationTerms"/>
 		<rdfs:range rdf:resource="&xsd;boolean"/>
 		<skos:definition xml:lang="en">Whether the SF is mandatory or conditional on some event (No means conditional)</skos:definition>
 	</owl:DatatypeProperty>
@@ -1964,7 +2024,7 @@ Further Notes:Additional review with OTPP May 05 2010 indicates that this is par
 	<owl:DatatypeProperty rdf:about="&fibo-sec-dbt-bnd;mandatorySinkingFund">
 		<rdfs:label xml:lang="en">mandatory sinking fund</rdfs:label>
 		<rdfs:label>mandatory sinking fund</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;MandatorySinkingFundTermsSet"/>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;MandatorySinkingFundTerms"/>
 		<rdfs:domain rdf:resource="&fibo-sec-dbt-dbti;CallFeature"/>
 		<rdfs:range rdf:resource="&xsd;boolean"/>
 		<skos:definition>Whether there is a Mandatory Sinking fund feature.</skos:definition>
@@ -1978,23 +2038,16 @@ Further Notes:Additional review with OTPP May 05 2010 indicates that this is par
 		<skos:definition xml:lang="en">Whether the debenture is unsecured (Naked = Yes) or is secured (Naked = No).</skos:definition>
 	</owl:DatatypeProperty>
 	
-	<owl:DatatypeProperty rdf:about="&fibo-sec-dbt-bnd;notional">
-		<rdfs:label xml:lang="en">notional</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;AmortizingSecurity"/>
-		<rdfs:range rdf:resource="&xsd;boolean"/>
-		<skos:definition xml:lang="en">The amortizing security pays interest only and no principal over its life.</skos:definition>
-	</owl:DatatypeProperty>
-	
 	<owl:DatatypeProperty rdf:about="&fibo-sec-dbt-bnd;paysVariableCoupon">
 		<rdfs:label xml:lang="en">pays variable coupon</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;InflationBondInterestPaymentTermsSet"/>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;InflationBondInterestPaymentTerms"/>
 		<rdfs:range rdf:resource="&xsd;boolean"/>
-		<skos:definition xml:lang="en">Whether the interest payable on the Inflation Bond is variable with reference to the Factor. If Yes, then the terms include an Inflation Bond Variable Coupon. If No, then the terms may be any coupon or set of coupons, by inheritance of this fact from the parent class of Bond Coupon Terms Set.</skos:definition>
+		<skos:definition xml:lang="en">Whether the interest payable on the Inflation Bond is variable with reference to the Factor. If Yes, then the terms include an Inflation Bond Variable Coupon. If No, then the terms may be any coupon or set of coupons, by inheritance of this fact from the parent class of Bond Coupon terms.</skos:definition>
 	</owl:DatatypeProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-sec-dbt-bnd;peggedToInflationRate">
 		<rdfs:label xml:lang="en">pegged to inflation rate</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;InflationBondPrincipalRepaymentTermsSet"/>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;InflationBondPrincipalRepaymentTerms"/>
 		<rdfs:range rdf:resource="&xsd;boolean"/>
 		<skos:definition xml:lang="en">Whether the principal repayment is made with reference to the inflation rate via the Inflation Rate Factor calculated for the bond.</skos:definition>
 	</owl:DatatypeProperty>
@@ -2008,7 +2061,7 @@ Further Notes:Additional review with OTPP May 05 2010 indicates that this is par
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bnd;premium">
 		<rdfs:label xml:lang="en">premium</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;BondCallTermsSet"/>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;BondCallTerms"/>
 		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
 		<skos:definition xml:lang="en">A premium paid to the bond owner when the bond is called.</skos:definition>
 	</owl:ObjectProperty>
@@ -2044,13 +2097,13 @@ Further Notes:Additional review with OTPP May 05 2010 indicates that this is par
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bnd;refersTo">
 		<rdfs:subPropertyOf rdf:resource="&fibo-sec-dbt-bnd;specifiesIndexParameter"/>
 		<rdfs:label xml:lang="en">refers to</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;InflationBondPrincipalRepaymentTermsSet"/>
-		<rdfs:range rdf:resource="&fibo-md-dbtx-int;InflationBondFactor"/>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;InflationBondPrincipalRepaymentTerms"/>
+		<rdfs:range rdf:resource="&fibo-sec-dbt-bnd;InflationBondFactor"/>
 	</owl:ObjectProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-sec-dbt-bnd;resetDateOffsetDays">
 		<rdfs:label xml:lang="en">reset date offset days</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;DebtVariableCouponTermsSet"/>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;VariableCouponTerms"/>
 		<rdfs:range rdf:resource="&xsd;integer"/>
 		<skos:definition xml:lang="en">Number of days from the Coupon Payment Date that the Coupon Rate is reset. Offset - Relative date e.g. 2 days before Rate rest may be the Fixing date. Payment is separate from this, so this is an Accrual term. Payment dates may also be specified relative to.</skos:definition>
 	</owl:DatatypeProperty>
@@ -2090,13 +2143,13 @@ Further Notes:Additional review with OTPP May 05 2010 indicates that this is par
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bnd;specifies.1">
 		<rdfs:label xml:lang="en">specifies</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;BondCouponStructureType"/>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;CouponStructure"/>
 		<rdfs:range rdf:resource="&fibo-sec-dbt-bnd;CouponSchedule"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bnd;specifiesBaseRate">
 		<rdfs:label xml:lang="en">specifies base rate</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;DebtVariableCouponTermsSet"/>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;VariableCouponTerms"/>
 		<rdfs:range rdf:resource="&fibo-ind-ind-ind;MarketRate"/>
 		<skos:definition xml:lang="en">The variable parameter specified in the variable terms, for the Base value in calculating variable interest rates. Note: this is also identified as the &quot;Operand&quot; for the Base part of the Formula which is included in these Terms.</skos:definition>
 	</owl:ObjectProperty>
@@ -2105,19 +2158,19 @@ Further Notes:Additional review with OTPP May 05 2010 indicates that this is par
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-agr-ctr;definesTermsFor"/>
 		<rdfs:label xml:lang="en">specifies coupon</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;InflationBond"/>
-		<rdfs:range rdf:resource="&fibo-md-dbtx-int;InflationBondVariableCoupon"/>
+		<rdfs:range rdf:resource="&fibo-sec-dbt-bnd;InflationBondVariableCoupon"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bnd;specifiesIndexParameter">
 		<rdfs:label xml:lang="en">specifies index parameter</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;IndexLinkedPrincipalDeterminationTermsSet"/>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;IndexLinkedPrincipalDeterminationTerms"/>
 		<rdfs:range rdf:resource="&fibo-ind-ei-ei;InflationRate"/>
 		<skos:definition xml:lang="en">The term specified in the formula for determination of principal paydown amounts.</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-sec-dbt-bnd;superSinker">
 		<rdfs:label xml:lang="en">super sinker</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;MandatorySinkingFundTermsSet"/>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;MandatorySinkingFundTerms"/>
 		<rdfs:range rdf:resource="&xsd;boolean"/>
 		<skos:definition xml:lang="en">A colloquial term for a term maturity, usually from a single family mortgage revenue issue with several term maturities, that will be the first to be called from a sinking fund into which all proceeds from prepayments of mortgages financed by the issue are deposited.  The maturity&apos;s priority status under the call provisions means that it is likely to be redeemed in its entirety well before the stated maturity date.</skos:definition>
 	</owl:DatatypeProperty>
