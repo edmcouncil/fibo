@@ -2,7 +2,6 @@
 <!DOCTYPE rdf:RDF [
 	<!ENTITY dct "http://purl.org/dc/terms/">
 	<!ENTITY fibo-der-ass-ass "https://spec.edmcouncil.org/fibo/ontology/DER/AssetDerivatives/AssetDerivatives/">
-	<!ENTITY fibo-der-der-ex "https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/ExerciseConventions/">
 	<!ENTITY fibo-der-der-fwd "https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Forwards/">
 	<!ENTITY fibo-der-der-opt "https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Options/">
 	<!ENTITY fibo-der-drc-bsc "https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/DerivativesBasics/">
@@ -23,6 +22,7 @@
 	<!ENTITY fibo-fnd-txn-sec "https://spec.edmcouncil.org/fibo/ontology/FND/TransactionsExt/SecuritiesTransactions/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
 	<!ENTITY fibo-fnd-utl-val "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Values/">
+	<!ENTITY fibo-sec-dbt-ex "https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/ExerciseConventions/">
 	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
 	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
 	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
@@ -32,7 +32,6 @@
 <rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Options/"
 	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fibo-der-ass-ass="https://spec.edmcouncil.org/fibo/ontology/DER/AssetDerivatives/AssetDerivatives/"
-	xmlns:fibo-der-der-ex="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/ExerciseConventions/"
 	xmlns:fibo-der-der-fwd="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Forwards/"
 	xmlns:fibo-der-der-opt="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Options/"
 	xmlns:fibo-der-drc-bsc="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/DerivativesBasics/"
@@ -53,6 +52,7 @@
 	xmlns:fibo-fnd-txn-sec="https://spec.edmcouncil.org/fibo/ontology/FND/TransactionsExt/SecuritiesTransactions/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
 	xmlns:fibo-fnd-utl-val="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Values/"
+	xmlns:fibo-sec-dbt-ex="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/ExerciseConventions/"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
@@ -64,7 +64,6 @@
 		<dct:abstract>Concepts common to all option contracts and their corresponding transactions. An option gives one party (the holder) the right to purchase or sell the underlying commodity at a given time or times in the future (as determined by the exercise convention), if they choose to do so. Includes option features, these being definitions of how the option comes into or ceases being in force when a given event occurs along with a range of other variations.</dct:abstract>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/AssetDerivatives/AssetDerivatives/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/DerivativesBasics/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/ExerciseConventions/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Forwards/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/ExchangeTradedDerivatives/ExchangeTradedOptions/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"/>
@@ -87,6 +86,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Values/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/Indicators/Indicators/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/ExerciseConventions/"/>
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Options/"/>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Provisional"/>
 	</owl:Ontology>
@@ -96,6 +96,20 @@
 		<rdfs:label xml:lang="en">absolute price strike specification</rdfs:label>
 		<owl:disjointWith rdf:resource="&fibo-der-der-opt;PercentageStrikePriceSpecification"/>
 		<skos:definition xml:lang="en">Expression of the strike price as an absolute monetary price at which the option is to be struck.</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-der-opt;AsianExerciseConvention">
+		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;OptionWriterCommitment"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-ex;EuropeanExerciseConvention"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-ex;hasExerciseWindow"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;DatePeriod"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">asian exercise convention</rdfs:label>
+		<skos:definition xml:lang="en">Commitment to pay out on an option on the basis of a rolling average strike, which the other party may or may not choose to exercise against.</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Definition of Asian Exercise Convention: Exercise convention whereby exercise tracks an underlying on a defined time period, anchored to a given time. The Asian Exercise Convention takes the European Date Exercise Convention but commits to a strike which is determined according to an average (or rolling average) value.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-der-opt;AssetMaximumOrMinimumPayoutCommitment">
@@ -579,7 +593,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-der-opt;optionExerciseTermsSpecifies"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-der-ex;ExerciseDatesConvention"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-ex;ExerciseConvention"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">option exercise time terms</rdfs:label>
@@ -1188,7 +1202,7 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;optionExerciseTermsSpecifies">
 		<rdfs:label xml:lang="en">option exercise terms specifies</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-der-der-opt;OptionExerciseTimeTermsSet"/>
-		<rdfs:range rdf:resource="&fibo-der-der-ex;ExerciseDatesConvention"/>
+		<rdfs:range rdf:resource="&fibo-sec-dbt-ex;ExerciseConvention"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;paymentAmount">
