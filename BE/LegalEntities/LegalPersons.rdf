@@ -68,9 +68,10 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Roles/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/20180801/LegalEntities/LegalPersons/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/20181101/LegalEntities/LegalPersons/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20131101/LegalEntities/LegalPersons.rdf version of this ontology was modified per the issue resolutions identified in the FIBO BE 1.0 FTF report.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20160201/LegalEntities/LegalPersons.rdf version of this ontology was modified per the FIBO 2.0 RFC to normalize restrictions on business license.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20180801/LegalEntities/LegalPersons.rdf version of this ontology was modified to generalize the definition of natural person and eliminate references to legally capable person.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -153,7 +154,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>legal entity</rdfs:label>
-		<owl:disjointWith rdf:resource="&fibo-be-le-lp;NaturalPerson"/>
+		<owl:disjointWith rdf:resource="&fibo-be-le-lp;LegallyCompetentNaturalPerson"/>
 		<skos:definition>a partnership, corporation, or other organization having the capacity to negotiate contracts, assume financial obligations, and pay off debts, organized under the laws of some jurisdiction</skos:definition>
 		<skos:example>Examples of eligible legal entities include, without limitation:
 -   all financial intermediaries;
@@ -188,12 +189,22 @@
 		<fibo-fnd-utl-av:explanatoryNote>To have legal personality means to be capable of having legal rights and duties within a certain legal system, such as to enter into contracts, sue, and be sued. Legal personality is a prerequisite to legal capacity, the ability of any legal person to amend (enter into, transfer, etc.) rights and obligations.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-be-le-lp;NaturalPerson">
+	<owl:Class rdf:about="&fibo-be-le-lp;LegallyCompetentNaturalPerson">
 		<rdfs:subClassOf rdf:resource="&fibo-be-le-lp;LegalPerson"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-aap-ppl;Adult"/>
-		<rdfs:label xml:lang="en">natural person</rdfs:label>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-aap-ppl;Person"/>
+		<rdfs:label>legally competent natural person</rdfs:label>
 		<owl:disjointWith rdf:resource="&fibo-fnd-aap-ppl;IncapacitatedAdult"/>
-		<skos:definition>A person of maturity who in the eyes of the law is able to assume obligations.</skos:definition>
+		<skos:definition>a person who is considered competent, under the circumstances, to enter into a contract, conduct business, or participate in other activities that generally require the mental ability to understand problems and make decisions on his or her own behalf</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>Black&apos;s Law Dictionary (U.S.)</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:adaptedFrom>the Contract Act of 1872 (India)</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:explanatoryNote>The definition of mental competence, and potentially of the age of majority, is a function of the situation and law in a given jurisdiction.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-be-le-lp;NaturalPerson">
+		<rdfs:label xml:lang="en">natural person</rdfs:label>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&fibo-be-le-lp;LegallyCompetentNaturalPerson"/>
+		<skos:definition>A person of maturity who in the eyes of the law is able to assume obligations</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-le-lp;NotForProfitObjective">
@@ -212,7 +223,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isConferredOn"/>
-				<owl:someValuesFrom rdf:resource="&fibo-be-le-lp;NaturalPerson"/>
+				<owl:someValuesFrom rdf:resource="&fibo-be-le-lp;LegallyCompetentNaturalPerson"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>power of attorney</rdfs:label>
@@ -251,7 +262,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasIdentity"/>
-				<owl:onClass rdf:resource="&fibo-be-le-lp;NaturalPerson"/>
+				<owl:onClass rdf:resource="&fibo-be-le-lp;LegallyCompetentNaturalPerson"/>
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -315,7 +326,7 @@
 			</owl:Class>
 		</rdfs:domain>
 		<rdfs:range rdf:resource="&fibo-fnd-law-jur;Jurisdiction"/>
-		<skos:definition>indicates the jurisdiction in which a legal person is authorized to conduct business or an agreement may be acknowledged and possibly enforceable</skos:definition>
+		<skos:definition>indicates the jurisdiction in which a legal person is considered competent to enter into a contract, conduct business, or participate in other activities, or in which an agreement may be acknowledged and possibly enforceable</skos:definition>
 	</owl:ObjectProperty>
 
 </rdf:RDF>
