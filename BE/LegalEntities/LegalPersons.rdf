@@ -71,7 +71,7 @@
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/20181101/LegalEntities/LegalPersons/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20131101/LegalEntities/LegalPersons.rdf version of this ontology was modified per the issue resolutions identified in the FIBO BE 1.0 FTF report.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20160201/LegalEntities/LegalPersons.rdf version of this ontology was modified per the FIBO 2.0 RFC to normalize restrictions on business license.</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20180801/LegalEntities/LegalPersons.rdf version of this ontology was modified to generalize the definition of natural person and eliminate references to legally capable person.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20180801/LegalEntities/LegalPersons.rdf version of this ontology was modified to rationalize natural person and legally capable person in a new concept, namely legally competent natural person, and simplify / merge the legal person and formal organization class hierarchies.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -126,7 +126,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-le-lp;CharteredLegalPerson">
-		<rdfs:subClassOf rdf:resource="&fibo-be-le-lp;JuridicalPerson"/>
+		<rdfs:subClassOf rdf:resource="&fibo-be-le-lp;LegalEntity"/>
 		<rdfs:label>chartered legal person</rdfs:label>
 		<skos:definition>a legal person created by a royal charter or decree</skos:definition>
 		<skos:editorialNote>In a monarchy or principality, the monarch typically vests the power to create such bodies, in an entity called (for example) the Privy Council.</skos:editorialNote>
@@ -134,18 +134,16 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-le-lp;JuridicalPerson">
-		<rdfs:subClassOf rdf:resource="&fibo-be-le-lp;LegalEntity"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-org-fm;FormalOrganization"/>
 		<rdfs:label>juridical person</rdfs:label>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&fibo-be-le-lp;LegalEntity"/>
 		<skos:definition>an entity, as a firm, that is not a single natural person, as a human being, authorized by law with duties and rights, recognized as a legal authority having a distinct identity, a legal personality</skos:definition>
 		<fibo-fnd-utl-av:definitionOrigin>Black&apos;s Law Dictionary Free Online, see http://thelawdictionary.org/juridical-person/</fibo-fnd-utl-av:definitionOrigin>
-		<fibo-fnd-utl-av:synonym>artificial person</fibo-fnd-utl-av:synonym>
-		<fibo-fnd-utl-av:synonym>juridical entity</fibo-fnd-utl-av:synonym>
-		<fibo-fnd-utl-av:synonym>juristic person</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-le-lp;LegalEntity">
 		<rdfs:subClassOf rdf:resource="&fibo-be-le-lp;LegalPerson"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-org-fm;FormalOrganization"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-be-le-lp;isOrganizedIn"/>
@@ -155,7 +153,7 @@
 		</rdfs:subClassOf>
 		<rdfs:label>legal entity</rdfs:label>
 		<owl:disjointWith rdf:resource="&fibo-be-le-lp;LegallyCompetentNaturalPerson"/>
-		<skos:definition>a partnership, corporation, or other organization having the capacity to negotiate contracts, assume financial obligations, and pay off debts, organized under the laws of some jurisdiction</skos:definition>
+		<skos:definition>a legal person that is a partnership, corporation, or other organization having the capacity to negotiate contracts, assume financial obligations, and pay off debts, organized under the laws of some jurisdiction</skos:definition>
 		<skos:example>Examples of eligible legal entities include, without limitation:
 -   all financial intermediaries;
 -   banks and finance companies;
@@ -166,7 +164,12 @@
 -   counterparties to financial transactions.</skos:example>
 		<skos:scopeNote>The term &apos;legal entities&apos; includes, but is not limited to, unique parties that are legally or financially responsible for the performance of financial transactions or have the legal right in their jurisdiction to enter independently into legal contracts, regardless of whether they are incorporated or constituted in some other way (e.g. trust, partnership, contractual). It excludes natural persons, but includes governmental organizations and supranationals.</skos:scopeNote>
 		<fibo-fnd-utl-av:adaptedFrom>Barron&apos;s Dictionary of Banking Terms, Sixth Edition, 2012, definition of legal entity</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:adaptedFrom>Black&apos;s Law Dictionary Free Online, see http://thelawdictionary.org/juridical-person/</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:adaptedFrom>ISO 17442, Financial services - Legal Entity Identifier (LEI), first edition, 2012-06-01, section 3.1</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:synonym>artificial person</fibo-fnd-utl-av:synonym>
+		<fibo-fnd-utl-av:synonym>juridical entity</fibo-fnd-utl-av:synonym>
+		<fibo-fnd-utl-av:synonym>juridical person</fibo-fnd-utl-av:synonym>
+		<fibo-fnd-utl-av:synonym>juristic person</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-le-lp;LegalPerson">
@@ -282,7 +285,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-le-lp;StatutoryBody">
-		<rdfs:subClassOf rdf:resource="&fibo-be-le-lp;JuridicalPerson"/>
+		<rdfs:subClassOf rdf:resource="&fibo-be-le-lp;LegalEntity"/>
 		<rdfs:label>statutory body</rdfs:label>
 		<skos:definition>a body set up by a government to consider evidence and make judgements in some field of activity</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.collinsdictionary.com/dictionary/english/statutory-body</fibo-fnd-utl-av:adaptedFrom>
