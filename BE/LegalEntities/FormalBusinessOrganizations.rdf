@@ -69,9 +69,10 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Places/Addresses/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/20180801/LegalEntities/FormalBusinessOrganizations/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/20181101/LegalEntities/FormalBusinessOrganizations/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20131101/LegalEntities/FormalBusinessOrganizations.rdf version of this ontology was modified per the issue resolutions identified in the FIBO BE 1.0 FTF report.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20160201/LegalEntities/FormalBusinessOrganizations.rdf version of this ontology was modified per the FIBO 2.0 RFC to address minor bug fixes.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20180801/LegalEntities/FormalBusinessOrganizations.rdf version of this ontology was modified as a part of a simplification strategy for the organizational class hierarchy.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -89,46 +90,24 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-le-fbo;FormallyConstitutedOrganization">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-org-fm;FormalOrganization"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isClassifiedBy"/>
-				<owl:onClass rdf:resource="&fibo-fnd-arr-cls;IndustrySectorClassifier"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isGovernedBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-be-le-fbo;OrganizationCoveringAgreement"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label>formally constituted organization</rdfs:label>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&fibo-be-le-lp;LegalEntity"/>
 		<skos:definition>Any organization with some formal contractual agreement among its principals</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-le-fbo;FormallyConstitutedOrganizationMember">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-pty-pty;OrganizationMember"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
-				<owl:someValuesFrom>
-					<owl:Restriction>
-						<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isMemberOf"/>
-						<owl:allValuesFrom rdf:resource="&fibo-be-le-fbo;FormallyConstitutedOrganization"/>
-					</owl:Restriction>
-				</owl:someValuesFrom>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label>formally constituted organization member</rdfs:label>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
 		<skos:definition>A member of some formally constituted organization.</skos:definition>
 		<skos:editorialNote>This party may hold some equity in the formally constituted organization and may or may not have some responsibilities or potential liabilitiy in respect of the activities of that organization. Terms setting out the position of the member in these and other matters are defined in the organization covering agreement, to which the member may be a signatory.</skos:editorialNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-le-fbo;JointVenture">
-		<rdfs:subClassOf rdf:resource="&fibo-be-le-fbo;FormallyConstitutedOrganization"/>
+		<rdfs:subClassOf rdf:resource="&fibo-be-le-lp;LegalEntity"/>
 		<rdfs:label>joint venture</rdfs:label>
-		<skos:definition>A formal venture between two or more business entities</skos:definition>
+		<skos:definition>a legal entity that is a formal venture between two or more business entities</skos:definition>
 		<skos:editorialNote>Detailed properties still to be modeled. This will be similar to Partnership in that it will have two or more venture partners (need to determine best label for these), and some formal standing. Also to research: whether JVs are only instituted via mutual share ownership and therefore may only be between limited companies (or may only be a limited company but may have other types of legal person and/or legal entity as venture partners).</skos:editorialNote>
 	</owl:Class>
 	
@@ -262,41 +241,25 @@
 	<owl:ObjectProperty rdf:about="&fibo-be-le-fbo;hasEquity">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;has"/>
 		<rdfs:label>has equity</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-be-le-fbo;FormallyConstitutedOrganization"/>
+		<rdfs:domain rdf:resource="&fibo-be-le-lp;LegalEntity"/>
 		<rdfs:range rdf:resource="&fibo-fnd-acc-aeq;OwnersEquity"/>
-		<skos:definition>the formally constituted organization has some form of owners&apos; equity</skos:definition>
+		<skos:definition>indicates owners&apos; equity associated with the entity</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-be-le-fbo;hasInternalEntity">
 		<rdfs:subPropertyOf rdf:resource="&fibo-be-le-fbo;hasSubUnit"/>
 		<rdfs:label>has internal entity</rdfs:label>
-		<rdfs:domain>
-			<owl:Class>
-				<owl:unionOf rdf:parseType="Collection">
-					<rdf:Description rdf:about="&fibo-fnd-org-fm;FormalOrganization">
-					</rdf:Description>
-					<rdf:Description rdf:about="&fibo-be-le-lp;LegalEntity">
-					</rdf:Description>
-				</owl:unionOf>
-			</owl:Class>
-		</rdfs:domain>
+		<rdfs:domain rdf:resource="&fibo-fnd-org-fm;FormalOrganization"/>
 		<rdfs:range rdf:resource="&fibo-be-le-fbo;OrganizationalSubUnit"/>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
 		<skos:definition>the organization has some part which is formally defined as an Internal Entity, for example for reporting, management or accounting purposes</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>This property is considered redundant with hasSubUnit and has been deprecated as a consequence.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-be-le-fbo;hasOperatingAddress">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-plc-adr;hasAddress"/>
 		<rdfs:label>has operating address</rdfs:label>
-		<rdfs:domain>
-			<owl:Class>
-				<owl:unionOf rdf:parseType="Collection">
-					<rdf:Description rdf:about="&fibo-fnd-org-fm;FormalOrganization">
-					</rdf:Description>
-					<rdf:Description rdf:about="&fibo-be-le-lp;LegalEntity">
-					</rdf:Description>
-				</owl:unionOf>
-			</owl:Class>
-		</rdfs:domain>
+		<rdfs:domain rdf:resource="&fibo-fnd-org-org;Organization"/>
 		<rdfs:range rdf:resource="&fibo-fnd-plc-adr;PhysicalAddress"/>
 		<skos:definition>address at which the organization carries out its operations</skos:definition>
 	</owl:ObjectProperty>
@@ -304,50 +267,23 @@
 	<owl:ObjectProperty rdf:about="&fibo-be-le-fbo;hasPrimaryAddress">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-plc-adr;hasAddress"/>
 		<rdfs:label>has primary address</rdfs:label>
-		<rdfs:domain>
-			<owl:Class>
-				<owl:unionOf rdf:parseType="Collection">
-					<rdf:Description rdf:about="&fibo-fnd-org-fm;FormalOrganization">
-					</rdf:Description>
-					<rdf:Description rdf:about="&fibo-be-le-lp;LegalEntity">
-					</rdf:Description>
-				</owl:unionOf>
-			</owl:Class>
-		</rdfs:domain>
+		<rdfs:domain rdf:resource="&fibo-fnd-org-org;Organization"/>
 		<rdfs:range rdf:resource="&fibo-fnd-plc-adr;PhysicalAddress"/>
-		<skos:definition>The main address at which communications to the organization may be addressed; its headquarters address.</skos:definition>
+		<skos:definition>the main address at which communications to the organization may be addressed in some geographic region</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-be-le-fbo;hasRegisteredAddress">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-plc-adr;hasAddress"/>
 		<rdfs:label>has registered address</rdfs:label>
-		<rdfs:domain>
-			<owl:Class>
-				<owl:unionOf rdf:parseType="Collection">
-					<rdf:Description rdf:about="&fibo-fnd-org-fm;FormalOrganization">
-					</rdf:Description>
-					<rdf:Description rdf:about="&fibo-be-le-lp;LegalEntity">
-					</rdf:Description>
-				</owl:unionOf>
-			</owl:Class>
-		</rdfs:domain>
+		<rdfs:domain rdf:resource="&fibo-fnd-org-org;Organization"/>
 		<rdfs:range rdf:resource="&fibo-be-le-fbo;RegisteredAddress"/>
-		<skos:definition>The organization has an address at which it is registered and at which legal papers may be served on it.</skos:definition>
+		<skos:definition>an address at which an organization is registered and at which legal papers may be served on it</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-be-le-fbo;hasSignatory">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-pty-pty;hasPartyInRole"/>
 		<rdfs:label>has signatory</rdfs:label>
-		<rdfs:domain>
-			<owl:Class>
-				<owl:unionOf rdf:parseType="Collection">
-					<rdf:Description rdf:about="&fibo-fnd-org-fm;FormalOrganization">
-					</rdf:Description>
-					<rdf:Description rdf:about="&fibo-be-le-lp;LegalEntity">
-					</rdf:Description>
-				</owl:unionOf>
-			</owl:Class>
-		</rdfs:domain>
+		<rdfs:domain rdf:resource="&fibo-fnd-org-org;Organization"/>
 		<rdfs:range rdf:resource="&fibo-be-le-lp;Signatory"/>
 		<skos:definition>has a party which is authorized to sign contracts on behalf of the entity</skos:definition>
 	</owl:ObjectProperty>
@@ -355,16 +291,7 @@
 	<owl:ObjectProperty rdf:about="&fibo-be-le-fbo;hasSubUnit">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;hasPart"/>
 		<rdfs:label>has sub-unit</rdfs:label>
-		<rdfs:domain>
-			<owl:Class>
-				<owl:unionOf rdf:parseType="Collection">
-					<rdf:Description rdf:about="&fibo-fnd-org-fm;FormalOrganization">
-					</rdf:Description>
-					<rdf:Description rdf:about="&fibo-be-le-lp;LegalEntity">
-					</rdf:Description>
-				</owl:unionOf>
-			</owl:Class>
-		</rdfs:domain>
+		<rdfs:domain rdf:resource="&fibo-fnd-org-org;Organization"/>
 		<rdfs:range rdf:resource="&fibo-be-le-fbo;OrganizationalSubUnit"/>
 		<owl:inverseOf rdf:resource="&fibo-be-le-fbo;isSubUnitOf"/>
 		<skos:definition>relates a formally constituted organization to a sub-unit of that organization</skos:definition>
@@ -374,17 +301,25 @@
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;isPartOf"/>
 		<rdfs:label>is sub-unit of</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-be-le-fbo;OrganizationalSubUnit"/>
-		<rdfs:range>
-			<owl:Class>
-				<owl:unionOf rdf:parseType="Collection">
-					<rdf:Description rdf:about="&fibo-fnd-org-fm;FormalOrganization">
-					</rdf:Description>
-					<rdf:Description rdf:about="&fibo-be-le-lp;LegalEntity">
-					</rdf:Description>
-				</owl:unionOf>
-			</owl:Class>
-		</rdfs:range>
+		<rdfs:range rdf:resource="&fibo-fnd-org-org;Organization"/>
 		<skos:definition>relates a sub-unit of an organization to the larger entity, which may or may not be co-located with that entity</skos:definition>
 	</owl:ObjectProperty>
+	
+	<owl:Class rdf:about="&fibo-be-le-lp;LegalEntity">
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isGovernedBy"/>
+				<owl:onClass rdf:resource="&fibo-be-le-fbo;OrganizationCoveringAgreement"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isClassifiedBy"/>
+				<owl:onClass rdf:resource="&fibo-fnd-arr-cls;IndustrySectorClassifier"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+	</owl:Class>
 
 </rdf:RDF>
