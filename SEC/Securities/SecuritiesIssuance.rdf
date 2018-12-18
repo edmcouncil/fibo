@@ -89,7 +89,8 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Quantities/QuantitiesAndUnits/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20180801/Securities/SecuritiesIssuance/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20181201/Securities/SecuritiesIssuance/"/>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20180801/Securities/SecuritiesIssuance/ version of this ontology was modified to refine the concept of a securities underwriter.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -423,9 +424,33 @@
 				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
+				<owl:someValuesFrom>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&fibo-fnd-pty-pty;isAPartyTo"/>
+						<owl:someValuesFrom rdf:resource="&fibo-sec-sec-iss;SecurityUnderwritingArrangement"/>
+					</owl:Restriction>
+				</owl:someValuesFrom>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label>security underwriter</rdfs:label>
-		<skos:definition>an organization(s) responsible for raising the capital necessary for the issuance of securities on behalf of corporations and governments issuing the securities (both equity and debt)</skos:definition>
-		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.investopedia.com/</fibo-fnd-utl-av:adaptedFrom>
+		<skos:definition>a party that has purchased from an issuer with a view to, or sells for an issuer in connection with, the distribution of any security, or participates or has a direct or indirect participation in any such undertaking, or participates or has a participation in the direct or indirect underwriting of any such undertaking; but such term shall not include a person whose interest is limited to a commission from an underwriter or dealer not in excess of the usual and customary distributor&apos;s or seller&apos;s commission</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>Section 3a of the Investment Company Act of 1940 as amended in January, 2012, https://www.sec.gov/about/laws/ica40.pdf</fibo-fnd-utl-av:adaptedFrom>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-sec-iss;SecurityUnderwritingArrangement">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-fse;UnderwritingArrangement"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-pty-pty;hasPartyInRole"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-iss;SecurityUnderwriter"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>security underwriting arrangement</rdfs:label>
+		<skos:definition>an underwriting arrangement between an organization (typically an investment bank) and a securities issuer that commits the underwriter to assuming risk involved in buying a new issue of securities from an issuing corporation or government entity and reselling it to the public, either directly or through dealers</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>Barron&apos;s Dictionary of Business and Economics Terms, Fifth Edition, 2012</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-sec-iss;hasActualClosingDate">
