@@ -8,6 +8,7 @@
 	<!ENTITY fibo-fnd-arr-cd "https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Codes/">
 	<!ENTITY fibo-fnd-dt-fd "https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/">
 	<!ENTITY fibo-fnd-dt-oc "https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/Occurrences/">
+	<!ENTITY fibo-fnd-org-fm "https://spec.edmcouncil.org/fibo/ontology/FND/Organizations/FormalOrganizations/">
 	<!ENTITY fibo-fnd-rel-rel "https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
 	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
@@ -25,6 +26,7 @@
 	xmlns:fibo-fnd-arr-cd="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Codes/"
 	xmlns:fibo-fnd-dt-fd="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"
 	xmlns:fibo-fnd-dt-oc="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/Occurrences/"
+	xmlns:fibo-fnd-org-fm="https://spec.edmcouncil.org/fibo/ontology/FND/Organizations/FormalOrganizations/"
 	xmlns:fibo-fnd-rel-rel="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
@@ -43,13 +45,14 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Codes/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/Occurrences/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Organizations/FormalOrganizations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/CreditEvents/"/>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Provisional"/>
 	</owl:Ontology>
 	
 	<owl:Class rdf:about="&fibo-fbc-dae-cre;Bankruptcy">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-cre;CreditEvent"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-cre;EntityCreditEvent"/>
 		<rdfs:label xml:lang="en">bankruptcy</rdfs:label>
 		<skos:definition xml:lang="en">a state or condition in which a party is insolvent or unable to meet debt obligations</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom>Barron&apos;s Dictionary of Banking Terms, Sixth Edition, 2012</fibo-fnd-utl-av:adaptedFrom>
@@ -63,6 +66,12 @@
 		<skos:editorialNote xml:lang="en">ISDA has combinations of credit event types. These are: Bankruptcy Failure to pay principal Failure to pay interest Obligation Default Obligation Acceleration Repudiation / Moratorium Distressed Ratings Downgrade Maturity Extension Writedown Not yes/no: Restructuring (Restructuring structure) Failure to Pay (Failure to Pay structure) Default Requirement (Monetary Amount) - applies to: Obligation Acceleration, Obligation Default, Repudiation/Moratorium, Restructuring Credit Event notice (Notice) Review note: term not in FpML, called Failure to Repair event (May equate to ISDA &quot;Failure To Pay&quot;) Conclusion: It is the same thing. Added as synonym Modeling note: Note that some of these are simple &quot;Yes/no&quot; conditions i.e. the event has happened or it has not. Others comprise more detailed information. However, 4 of those that are given as &quot;yes/no&quot; in FpML do in fact have the additional fact of Default Requirement. So almost none are simple yes/no or list entry terms. Modeled accordingly. Note also that the term Credit Event is defined more widely than just in CDS, for example in credit indices or just as business events generally. Therefore some of the CDS-specific terms here won&apos;t apply in those other contexts. Review comment: 22 styles of ISDA agreements for CDS as well, with different combinations of terms. FpML Full Definition: &apos;This element contains all the ISDA terms relating to credit events.&apos;</skos:editorialNote>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-fbc-dae-cre;DefaultEvent">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-cre;CreditEvent"/>
+		<rdfs:label xml:lang="en">default event</rdfs:label>
+		<skos:definition xml:lang="en">Event in which something is not paid that should be</skos:definition>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-fbc-dae-cre;DistressedRatingsDowngrade">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-cre;ObligationCreditEvent"/>
 		<rdfs:label xml:lang="en">distressed ratings downgrade</rdfs:label>
@@ -74,7 +83,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-dae-cre;pertainsTo"/>
-				<owl:someValuesFrom rdf:resource="&fibo-be-le-cb;Corporation"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-org-fm;FormalOrganization"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">entity credit event</rdfs:label>
@@ -120,6 +129,12 @@
 		<rdfs:label xml:lang="en">hard credit event</rdfs:label>
 		<skos:definition xml:lang="en">Hard default. This is defined by the event not being repairable.</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Soft and Hard defaults are defined by whether or not the event is repairable. Typically defined by the crossing of some threshold in some measurement. If you don&apos;t repair, this becomes a &quot;failure to repair&quot; credit event. The &quot;failure to repair&quot; triggers either a hard default or there is a whole lot of possible terms about the extension of the grace period.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-dae-cre;InstallmentDefault">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-cre;DefaultEvent"/>
+		<rdfs:label xml:lang="en">installment default</rdfs:label>
+		<skos:definition xml:lang="en">Non payment of a call by the beneficial owner, resulting in either a court action by the issuer or the sale of the securities to recover costs and/or a forfeit of partially paid securities. SWIFT = INDE</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-dae-cre;MaturityExtension">
