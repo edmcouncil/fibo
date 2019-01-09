@@ -84,12 +84,6 @@
 				<owl:someValuesFrom rdf:resource="&owl;Thing"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isIssuedBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-arr-rt;RatingIssuer"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label>rating</rdfs:label>
 		<skos:definition>point of reference indicating a value on some scale for something</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote>A given rating may apply at some point in time, as a part of a lifecycle or process, or generally.  Typically ratings reflect an assessment of a state of affairs at some point in time, however.</fibo-fnd-utl-av:explanatoryNote>
@@ -97,6 +91,7 @@
 	
 	<owl:Class rdf:about="&fibo-fnd-arr-rt;RatingAgency">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-rt;RatingIssuer"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-rt;RatingParty"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasIdentity"/>
@@ -120,15 +115,22 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-arr-rt;RatingParty">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-pty-pty;PartyInRole"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-pas;ServiceProvider"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;issues"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fnd-arr-rt;Rating"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;provides"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-arr-rt;RatingService"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label>rating party</rdfs:label>
 		<skos:definition>party that assigns a value to something according to some rating scheme</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>A rating party may be the same as the issuer, or possibly a distinct party that uses a given scheme but provides an independent rating.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-arr-rt;RatingScheme">
@@ -147,6 +149,24 @@
 		</rdfs:subClassOf>
 		<rdfs:label>rating scheme</rdfs:label>
 		<skos:definition>system for assigning a value to something according to some scale with respect to quality, a standard, or ranking</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-arr-rt;RatingService">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-pas;Service"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isProvidedBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-arr-rt;RatingParty"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;uses"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-arr-rt;RatingScheme"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>rating party</rdfs:label>
+		<skos:definition>service that assigns a value to something according to some rating scheme</skos:definition>
 	</owl:Class>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-fnd-arr-rt;hasRankInScheme">
