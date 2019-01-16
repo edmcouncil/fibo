@@ -2,6 +2,8 @@
 <!DOCTYPE rdf:RDF [
 	<!ENTITY dct "http://purl.org/dc/terms/">
 	<!ENTITY fibo-fnd-arr-arr "https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Arrangements/">
+	<!ENTITY fibo-fnd-arr-doc "https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Documents/">
+	<!ENTITY fibo-fnd-arr-rep "https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Reporting/">
 	<!ENTITY fibo-fnd-arr-rt "https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Ratings/">
 	<!ENTITY fibo-fnd-dt-oc "https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/Occurrences/">
 	<!ENTITY fibo-fnd-org-fm "https://spec.edmcouncil.org/fibo/ontology/FND/Organizations/FormalOrganizations/">
@@ -19,6 +21,8 @@
 <rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Ratings/"
 	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fibo-fnd-arr-arr="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Arrangements/"
+	xmlns:fibo-fnd-arr-doc="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Documents/"
+	xmlns:fibo-fnd-arr-rep="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Reporting/"
 	xmlns:fibo-fnd-arr-rt="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Ratings/"
 	xmlns:fibo-fnd-dt-oc="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/Occurrences/"
 	xmlns:fibo-fnd-org-fm="https://spec.edmcouncil.org/fibo/ontology/FND/Organizations/FormalOrganizations/"
@@ -40,6 +44,8 @@
 		<sm:contentLanguage rdf:datatype="&xsd;anyURI">http://www.w3.org/standards/techs/owl#w3c_all</sm:contentLanguage>
 		<sm:copyright>Copyright (c) 2019 EDM Council, Inc.</sm:copyright>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Arrangements/</sm:dependsOn>
+		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Documents/</sm:dependsOn>
+		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Reporting/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/Occurrences/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/Organizations/FormalOrganizations/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Parties/</sm:dependsOn>
@@ -49,6 +55,8 @@
 		<sm:fileAbbreviation>fibo-fnd-arr-rt</sm:fileAbbreviation>
 		<sm:filename>Ratings.rdf</sm:filename>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Arrangements/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Documents/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Reporting/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/Occurrences/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Organizations/FormalOrganizations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Parties/"/>
@@ -69,6 +77,13 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-dt-oc;hasOutput"/>
+				<owl:onClass rdf:resource="&fibo-fnd-arr-rep;Report"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isProvidedBy"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fnd-pty-pty;PartyInRole"/>
 			</owl:Restriction>
@@ -81,19 +96,12 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-oc;Occurrence"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-dt-oc;hasOutput"/>
-				<owl:onClass rdf:resource="&fibo-fnd-arr-rt;Rating"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-dt-oc;exemplifies"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fnd-arr-rt;Assessment"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>assessment event</rdfs:label>
-		<skos:definition>a specific event involving the evaluation or estimation of the nature, quality, or ability of someone or something</skos:definition>
+		<skos:definition>event involving the evaluation or estimation of the nature, quality, or ability of someone or something</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-arr-rt;Rating">
@@ -106,28 +114,19 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-arr-rt;hasRankOnScale"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
-				<owl:onDataRange rdf:resource="&xsd;decimal"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasDefinition"/>
-				<owl:onClass rdf:resource="&fibo-fnd-arr-rt;RatingScale"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-arr-rt;hasRating"/>
+				<owl:onClass rdf:resource="&fibo-fnd-arr-rt;RatingScore"/>
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasTag"/>
-				<owl:onDataRange rdf:resource="&xsd;string"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isIssuedBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-arr-rt;RatingParty"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>rating</rdfs:label>
-		<skos:definition>point of reference indicating a value on some scale (e.g., classification, ranking, grade) for something</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote>A given rating may apply at some point in time, as a part of a lifecycle or process, or generally.  Typically ratings reflect an assessment of a state of affairs at some point in time, however.</fibo-fnd-utl-av:explanatoryNote>
+		<skos:definition>grade or score given to someone or something as a result of an assessment</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-arr-rt;RatingAgency">
@@ -141,6 +140,43 @@
 		</rdfs:subClassOf>
 		<rdfs:label>rating agency</rdfs:label>
 		<skos:definition>rating issuer that is a formal organization (commercial, governmental, or academic) responsible for managing one or more rating schemes and publishing ratings based on those schemes</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-arr-rt;RatingAssessment">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-rt;Assessment"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-dt-oc;hasOutput"/>
+				<owl:onClass rdf:resource="&fibo-fnd-arr-rt;RatingReport"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-dt-oc;hasOutput"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-arr-rt;Rating"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isProvidedBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-arr-rt;RatingParty"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>rating assessment</rdfs:label>
+		<skos:definition>assessment resulting in a grade or score and potentially a report describing the score and the process used to determine that score</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-arr-rt;RatingAssessmentEvent">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-rt;AssessmentEvent"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-dt-oc;exemplifies"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-arr-rt;RatingAssessment"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>rating assessment event</rdfs:label>
+		<skos:definition>assessment event resulting in a score or grade</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-arr-rt;RatingIssuer">
@@ -174,6 +210,36 @@
 		<fibo-fnd-utl-av:explanatoryNote>A rating party may be the same as the issuer, or possibly a distinct party that uses a given scheme but provides an independent rating.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-fnd-arr-rt;RatingReport">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-rep;Report"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-arr-rt;rates"/>
+				<owl:minCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-arr-doc;isAbout"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-arr-rt;RatingAssessmentEvent"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-arr-rt;hasRating"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-arr-rt;RatingScore"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isProvidedBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-arr-rt;RatingParty"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>rating report</rdfs:label>
+		<skos:definition>report describing the outcome of an assessment</skos:definition>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-fnd-arr-rt;RatingScale">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-arr;Scheme"/>
 		<rdfs:subClassOf>
@@ -190,6 +256,40 @@
 		</rdfs:subClassOf>
 		<rdfs:label>rating scale</rdfs:label>
 		<skos:definition>system for assigning a value to something according to some scale with respect to quality, a standard, or ranking</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-arr-rt;RatingScore">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-rel-rel;Reference"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-arr-rt;rates"/>
+				<owl:minCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-arr-rt;hasRankOnScale"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+				<owl:onDataRange rdf:resource="&xsd;decimal"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasDefinition"/>
+				<owl:onClass rdf:resource="&fibo-fnd-arr-rt;RatingScale"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasTag"/>
+				<owl:onDataRange rdf:resource="&xsd;string"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>rating score</rdfs:label>
+		<skos:definition>point of reference indicating a value on some scale (e.g., classification, ranking, grade) for something</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>A given rating may apply at some point in time, as a part of a lifecycle or process, or generally.  Typically ratings reflect an assessment of a state of affairs at some point in time, however.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-arr-rt;RatingService">
@@ -219,15 +319,14 @@
 	
 	<owl:DatatypeProperty rdf:about="&fibo-fnd-arr-rt;hasRankOnScale">
 		<rdfs:label>has rank on scale</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-arr-rt;Rating"/>
+		<rdfs:domain rdf:resource="&fibo-fnd-arr-rt;RatingScore"/>
 		<rdfs:range rdf:resource="&xsd;decimal"/>
 		<skos:definition>indicates an ordering applied to a given grade on a specific rating scale</skos:definition>
 	</owl:DatatypeProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-arr-rt;hasRating">
 		<rdfs:label>has rating</rdfs:label>
-		<rdfs:range rdf:resource="&fibo-fnd-arr-rt;Rating"/>
-		<owl:inverseOf rdf:resource="&fibo-fnd-arr-rt;rates"/>
+		<rdfs:range rdf:resource="&fibo-fnd-arr-rt;RatingScore"/>
 		<skos:definition>indicates something that has been assigned a grade according to a particular rating scale</skos:definition>
 	</owl:ObjectProperty>
 	
