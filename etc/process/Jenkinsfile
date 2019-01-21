@@ -11,10 +11,13 @@ pipeline {
   agent none
 
   environment {
-    FIBO_INFRA_BRANCH = 'master'
-    LC_ALL = 'en_US.UTF-8'
-    LANG = 'en_US.UTF-8'
-    LANGUAGE = 'en_US.UTF-8'
+    ONTPUB_FAMILY       = 'fibo'
+    ONTPUB_SPEC_HOST    = 'spec.edmcouncil.org'
+    ONTPUB_IS_DARK_MODE = 0
+    ONTPUB_IMAGE        = 'edmcouncil/ontology-publisher:latest'
+    LC_ALL              = 'en_US.UTF-8'
+    LANG                = 'en_US.UTF-8'
+    LANGUAGE            = 'en_US.UTF-8'
   }
 
   options {
@@ -43,194 +46,420 @@ pipeline {
 
   stages {
 
-    stage('Prepare') {
+    stage ('Hygiene Tests') {
       agent {
-        label 'stardog'
+        docker {
+          image env.ONTPUB_IMAGE
+          label 'docker'
+          alwaysPull true
+          args  "\
+            --network none \
+            --name ontology-publisher-${env.BUILD_NUMBER}-hygiene \
+          "
+        }
       }
-      environment {
-        LC_ALL = 'en_US.UTF-8'
-        LANG = 'en_US.UTF-8'
-        LANGUAGE = 'en_US.UTF-8'
-      }
-
       steps {
-        echo "Cleaning workspace:"
-        sh 'rm -rf ${WORKSPACE}/* || true'
-        echo "Done cleaning"
-
-        //
-        // Copy the rdf-toolkit.jar file artifact from the rdf-toolkit-build job (pre-requisite for running publish script)
-        //
-        step([$class: 'CopyArtifact', filter: '**/rdf-toolkit.jar', fingerprintArtifacts: true, flatten: true, projectName: 'rdf-toolkit-build'])
-        //
-        // Copy the pellet jar from the build-pellet job
-        //
-        // step([$class: 'CopyArtifact', filter: '**/pellet-cli-*.jar', fingerprintArtifacts: true, flatten: true, projectName: 'build-pellet', target: 'pellet'])
-        //
-        // Check out the fibo repo' content into the ./fibo directory
-        //
-        dir('fibo') {
-          checkout scm
-          echo 'Checked out fibo repo'
+        dir('input') {
+          dir('fibo') {
+//          checkout scm
+            checkout([
+                    $class: 'GitSCM',
+                    branches: scm.branches,
+                    doGenerateSubmoduleConfigurations: false,
+                    extensions: [
+                            [$class: 'LocalBranch', localBranch: '**'],
+                            [$class: 'CheckoutOption', timeout: 1],
+                            [$class: 'CloneOption', depth: 2, noTags: false, reference: '/var/lib/git/fibo', shallow: true, timeout: 1],
+                            [$class: 'AuthorInChangelog'],
+                            [$class: 'PruneStaleBranch'],
+                            [$class: 'IgnoreNotifyCommit']
+                    ],
+                    submoduleCfg: [],
+                    userRemoteConfigs: [
+                            [credentialsId: '50cac519-d41c-4765-8563-c43b7f55c877', url: 'https://github.com/edmcouncil/fibo.git']
+                    ]
+            ])
+          }
+          dir('LCC') { git url: 'https://github.com/edmcouncil/LCC.git', credentialsId: 'edmcjenkins' }
         }
-        //
-        // Then check out the fibo-infra repo content into the ./fibo-infra directory
-        //
-        dir('fibo-infra') {
-          checkout \
-            changelog: false,
-            poll: false,
-            scm: [
-              $class: 'GitSCM',
-              branches: [
-                [name: "*/${env.FIBO_INFRA_BRANCH}"]
-              ],
-              doGenerateSubmoduleConfigurations: false,
-              extensions: [
-                [
-                  $class: 'CheckoutOption',
-                  timeout: 1
-                ], [
-                  $class: 'CloneOption',
-                  noTags: true,
-                  reference: '',
-                  shallow: true,
-                  timeout: 1
-                ], [
-                  $class: 'PruneStaleBranch'
-                ], [
-                  $class: 'IgnoreNotifyCommit'
-                ]
-              ],
-              submoduleCfg: [],
-              userRemoteConfigs: [
-                [
-                  credentialsId: '50cac519-d41c-4765-8563-c43b7f55c877',
-                  url: 'https://github.com/edmcouncil/fibo-infra.git'
-                ]
-              ]
-            ]
-          //
-          // If you want to check out a specific version of fibo-infra add the "branch:" parameter
-          //
-          //git branch: env.FIBO_INFRA_BRANCH, credentialsId: 'edmcjenkins_at_edmcouncil.org', url: 'git@github.com:edmcouncil/fibo-infra.git'
-          //
-          // git credentialsId: 'edmcjenkins_at_edmcouncil.org', url: 'git@github.com:edmcouncil/fibo-infra.git'
-          echo "Checked out fibo-infra repo, branch ${env.FIBO_INFRA_BRANCH}"
-          //
-          // Stash all the tools in the bin directory
-          //
-          //stash includes: 'bin/**', name: 'infra-bin'
-          //
-          // Stash all the jenkins related stuff in the jenkins directory
-          //
-          //stash includes: 'jenkins/**', name: 'infra-jenkins'
-        }
-        //
-        // Then run the init command on the fibo-publish script which will set all the GIT_* and JIRA_* vars
-        // correctly and store their values in some .env files.
-        //
-        dir('fibo-infra') {
-          echo 'Execute the publish-fibo.sh script (just to initialize the environment variables):'
-          sh './jenkins/bin/publish-fibo.sh init'
-          echo 'Finished executing the publish-fibo script (init section)'
-        }
-        initEnvironment()
-        //
-        // Now stash all files in the env directory for reuse in other workspaces on other agents/slaves
-        //
-        stash includes: 'env/**', name: 'environment'
-        //
-        // Then check out the LCC repo into the ./LCC directory
-        //
-        dir('LCC') {
-          git url: 'https://github.com/edmcouncil/LCC.git', credentialsId: 'edmcjenkins'
-          echo 'Checked out the LCC repo'
-        }
-        echo 'Checked it all out'
-      }
-    } // end of stage 'Prepare'
-
-    stage('Build Product Ontology') {
-      agent {
-        label 'stardog'
-      }
-
-      steps {
         //
         // Execute the publish script
         //
-        sh "./fibo-infra/jenkins/bin/publish-fibo.sh ontology"
+        sh "/publisher/publish.sh hygiene"
+      }
+      post {
+        success {
+          slackSend color: 'good', message: "${env.JOB_NAME} - #${env.BUILD_NUMBER} Hygiene Test was successful (<${env.BUILD_URL}|Open>)"
+        }
+        failure {
+          echo "ERROR: Hygiene Test failed for job ${env.BUILD_NUMBER}"
+          slackSend color: 'bad', message: "${env.JOB_NAME} - #${env.BUILD_NUMBER} Hygiene Test failed (<${env.BUILD_URL}|Open>)"
+        }
+      }
+    }
+
+    stage('Build Product Ontology') {
+      agent {
+        docker {
+          image env.ONTPUB_IMAGE
+          label 'docker'
+          alwaysPull true
+          args  "\
+            --network none \
+            --name ontology-publisher-${env.BUILD_NUMBER}-ontology \
+          "
+        }
+      }
+      steps {
+        dir('input') {
+          dir('fibo') {
+//          checkout scm
+            checkout([
+                    $class: 'GitSCM',
+                    branches: scm.branches,
+                    doGenerateSubmoduleConfigurations: false,
+                    extensions: [
+                            [$class: 'LocalBranch', localBranch: '**'],
+                            [$class: 'CheckoutOption', timeout: 1],
+                            [$class: 'CloneOption', depth: 2, noTags: false, reference: '/var/lib/git/fibo', shallow: true, timeout: 1],
+                            [$class: 'AuthorInChangelog'],
+                            [$class: 'PruneStaleBranch'],
+                            [$class: 'IgnoreNotifyCommit']
+                    ],
+                    submoduleCfg: [],
+                    userRemoteConfigs: [
+                            [credentialsId: '50cac519-d41c-4765-8563-c43b7f55c877', url: 'https://github.com/edmcouncil/fibo.git']
+                    ]
+            ])
+          }
+          dir('LCC') { git url: 'https://github.com/edmcouncil/LCC.git', credentialsId: 'edmcjenkins' }
+        }
         //
-        // Now stash all files in the env directory for reuse in the other worker nodes
-        // used by the next products
+        // Execute the publish script
         //
-        stash includes: '**', name: 'ontology-data'
+        sh "/publisher/publish.sh ontology"
+      }
+      post {
+        success {
+          stash name: 'output-ontology', includes: 'output/fibo/ontology/**'
+          slackSend color: 'good', message: 'Ontology Product has been built'
+        }
+        failure {
+          echo 'ERROR: Couldn\'t build product: ontology'
+          slackSend color: 'bad', message: 'Ontology Product Build failed'
+        }
+        always {
+          archiveArtifacts artifacts: 'output/fibo/ontology/**/*.log', fingerprint: true
+        }
       }
     } // end of stage 'Build Product Ontology'
 
     stage('Build Other Products') {
       parallel {
-        stage("Build Widoco") {
+//        stage("Build Widoco") {
+//          agent {
+//            docker {
+//              image env.ONTPUB_IMAGE
+//              label 'docker'
+//              alwaysPull true
+//              args  "\
+//                --network none \
+//                --name ontology-publisher-${env.BUILD_NUMBER}-widoco \
+//              "
+//            }
+//          }
+//          steps {
+//            dir('input') {
+//              dir('fibo') {
+////          checkout scm
+//                checkout([
+//                        $class: 'GitSCM',
+//                        branches: scm.branches,
+//                        doGenerateSubmoduleConfigurations: false,
+//                        extensions: [
+//                                [$class: 'LocalBranch', localBranch: '**'],
+//                                [$class: 'CheckoutOption', timeout: 1],
+//                                [$class: 'CloneOption', depth: 2, noTags: false, reference: '/var/lib/git/fibo', shallow: true, timeout: 1],
+//                                [$class: 'AuthorInChangelog'],
+//                                [$class: 'PruneStaleBranch'],
+//                                [$class: 'IgnoreNotifyCommit']
+//                        ],
+//                        submoduleCfg: [],
+//                        userRemoteConfigs: [
+//                                [credentialsId: '50cac519-d41c-4765-8563-c43b7f55c877', url: 'https://github.com/edmcouncil/fibo.git']
+//                        ]
+//                ])
+//              }
+//              dir('LCC') { git url: 'https://github.com/edmcouncil/LCC.git', credentialsId: 'edmcjenkins' }
+//            }
+//            unstash 'output-ontology'
+//            sh "/publisher/publish.sh widoco"
+//          }
+//          post {
+//            success {
+//              stash name: 'output-widoco', includes: 'output/fibo/widoco/**'
+//            }
+//            failure {
+//              echo 'ERROR: Couldn\'t build product: widoco'
+//            }
+//            always {
+//              archiveArtifacts artifacts: 'output/fibo/widoco/**/*.log', fingerprint: true
+//            }
+//          }
+//        }
+//        stage("Build Fibopedia") {
+//          agent {
+//            docker {
+//              image env.ONTPUB_IMAGE
+//              label 'docker'
+//              alwaysPull true
+//              args  "\
+//                --network none \
+//                --name ontology-publisher-${env.BUILD_NUMBER}-fibopedia \
+//              "
+//            }
+//          }
+//          steps {
+//            dir('input') {
+//              dir('fibo') {
+////          checkout scm
+//                checkout([
+//                        $class: 'GitSCM',
+//                        branches: scm.branches,
+//                        doGenerateSubmoduleConfigurations: false,
+//                        extensions: [
+//                                [$class: 'LocalBranch', localBranch: '**'],
+//                                [$class: 'CheckoutOption', timeout: 1],
+//                                [$class: 'CloneOption', depth: 2, noTags: false, reference: '/var/lib/git/fibo', shallow: true, timeout: 1],
+//                                [$class: 'AuthorInChangelog'],
+//                                [$class: 'PruneStaleBranch'],
+//                                [$class: 'IgnoreNotifyCommit']
+//                        ],
+//                        submoduleCfg: [],
+//                        userRemoteConfigs: [
+//                                [credentialsId: '50cac519-d41c-4765-8563-c43b7f55c877', url: 'https://github.com/edmcouncil/fibo.git']
+//                        ]
+//                ])
+//              }
+//              dir('LCC') { git url: 'https://github.com/edmcouncil/LCC.git', credentialsId: 'edmcjenkins' }
+//            }
+//            sh "/publisher/publish.sh fibopedia"
+//          }
+//          post {
+//            success {
+//              stash name: 'output-fibopedia', includes: 'output/fibo/fibopedia/**'
+//            }
+//            failure {
+//              echo 'ERROR: Couldn\'t build product: fibopedia'
+//            }
+//            always {
+//              archiveArtifacts artifacts: 'output/fibo/fibopedia/**/*.log', fingerprint: true
+//            }
+//          }
+//        }
+//        stage("Build Glossary") {
+//          agent {
+//            docker {
+//              image env.ONTPUB_IMAGE
+//              label 'docker'
+//              alwaysPull true
+//              args  "\
+//                --network none \
+//                --name ontology-publisher-${env.BUILD_NUMBER}-glossary \
+//              "
+//            }
+//          }
+//          steps {
+//            dir('input') {
+//              dir('fibo') {
+////          checkout scm
+//                checkout([
+//                        $class: 'GitSCM',
+//                        branches: scm.branches,
+//                        doGenerateSubmoduleConfigurations: false,
+//                        extensions: [
+//                                [$class: 'LocalBranch', localBranch: '**'],
+//                                [$class: 'CheckoutOption', timeout: 1],
+//                                [$class: 'CloneOption', depth: 2, noTags: false, reference: '/var/lib/git/fibo', shallow: true, timeout: 1],
+//                                [$class: 'AuthorInChangelog'],
+//                                [$class: 'PruneStaleBranch'],
+//                                [$class: 'IgnoreNotifyCommit']
+//                        ],
+//                        submoduleCfg: [],
+//                        userRemoteConfigs: [
+//                                [credentialsId: '50cac519-d41c-4765-8563-c43b7f55c877', url: 'https://github.com/edmcouncil/fibo.git']
+//                        ]
+//                ])
+//              }
+//              dir('LCC') { git url: 'https://github.com/edmcouncil/LCC.git', credentialsId: 'edmcjenkins' }
+//            }
+//            unstash 'output-ontology'
+//            sh "/publisher/publish.sh glossary"
+//          }
+//          post {
+//            success {
+//              stash name: 'output-glossary', includes: 'output/fibo/glossary/**'
+//            }
+//            failure {
+//              echo 'ERROR: Couldn\'t build product: glossary'
+//            }
+//            always {
+//              archiveArtifacts artifacts: 'output/fibo/glossary/**/*.log', fingerprint: true
+//            }
+//          }
+//        }
+//        stage("Build Vocabulary") {
+//          agent {
+//            docker {
+//              image env.ONTPUB_IMAGE
+//              label 'docker'
+//              alwaysPull true
+//              args  "\
+//                --network none \
+//                --name ontology-publisher-${env.BUILD_NUMBER}-vocabulary \
+//              "
+//            }
+//          }
+//          steps {
+//            dir('input') {
+//              dir('fibo') {
+////          checkout scm
+//                checkout([
+//                        $class: 'GitSCM',
+//                        branches: scm.branches,
+//                        doGenerateSubmoduleConfigurations: false,
+//                        extensions: [
+//                                [$class: 'LocalBranch', localBranch: '**'],
+//                                [$class: 'CheckoutOption', timeout: 1],
+//                                [$class: 'CloneOption', depth: 2, noTags: false, reference: '/var/lib/git/fibo', shallow: true, timeout: 1],
+//                                [$class: 'AuthorInChangelog'],
+//                                [$class: 'PruneStaleBranch'],
+//                                [$class: 'IgnoreNotifyCommit']
+//                        ],
+//                        submoduleCfg: [],
+//                        userRemoteConfigs: [
+//                                [credentialsId: '50cac519-d41c-4765-8563-c43b7f55c877', url: 'https://github.com/edmcouncil/fibo.git']
+//                        ]
+//                ])
+//              }
+//              dir('LCC') { git url: 'https://github.com/edmcouncil/LCC.git', credentialsId: 'edmcjenkins' }
+//            }
+//            unstash 'output-ontology'
+//            sh "/publisher/publish.sh vocabulary"
+//          }
+//          post {
+//            success {
+//              stash name: 'output-vocabulary', includes: 'output/fibo/vocabulary/**'
+//            }
+//            failure {
+//              echo 'ERROR: Couldn\'t build product: vocabulary'
+//            }
+//            always {
+//              archiveArtifacts artifacts: 'output/fibo/vocabulary/**/*.log', fingerprint: true
+//            }
+//          }
+//        }
+//        stage("Build Datadictionary") {
+//          agent {
+//            docker {
+//              image env.ONTPUB_IMAGE
+//              label 'docker'
+//              alwaysPull true
+//              args  "\
+//                --network none \
+//                --name ontology-publisher-${env.BUILD_NUMBER}-datadictionary \
+//              "
+//            }
+//          }
+//          steps {
+//            dir('input') {
+//              dir('fibo') {
+////          checkout scm
+//                checkout([
+//                        $class: 'GitSCM',
+//                        branches: scm.branches,
+//                        doGenerateSubmoduleConfigurations: false,
+//                        extensions: [
+//                                [$class: 'LocalBranch', localBranch: '**'],
+//                                [$class: 'CheckoutOption', timeout: 1],
+//                                [$class: 'CloneOption', depth: 2, noTags: false, reference: '/var/lib/git/fibo', shallow: true, timeout: 1],
+//                                [$class: 'AuthorInChangelog'],
+//                                [$class: 'PruneStaleBranch'],
+//                                [$class: 'IgnoreNotifyCommit']
+//                        ],
+//                        submoduleCfg: [],
+//                        userRemoteConfigs: [
+//                                [credentialsId: '50cac519-d41c-4765-8563-c43b7f55c877', url: 'https://github.com/edmcouncil/fibo.git']
+//                        ]
+//                ])
+//              }
+//              dir('LCC') { git url: 'https://github.com/edmcouncil/LCC.git', credentialsId: 'edmcjenkins' }
+//            }
+//            unstash 'output-ontology'
+//            sh "/publisher/publish.sh datadictionary"
+//          }
+//          post {
+//            success {
+//              stash name: 'output-datadictionary', includes: 'output/fibo/datadictionary/**'
+//            }
+//            failure {
+//              echo 'ERROR: Couldn\'t build product: ontology'
+//            }
+//            always {
+//              archiveArtifacts artifacts: 'output/fibo/datadictionary/**/*.log', fingerprint: true
+//            }
+//          }
+//        }
+        stage("Build Book") {
           agent {
-            label 'stardog'
-          }
-          steps {
-            unstash 'ontology-data'
-            sh "./fibo-infra/jenkins/bin/publish-fibo.sh widoco"
-            stash includes: 'target/fibo/widoco/**', name: 'widoco-data'
-            archiveArtifacts artifacts: '*.log', fingerprint: true
-          }
-        }
-	stage("Build Fibopedia") {
-	    agent {
-		label 'stardog'
-	    }
-	    steps {
-		unstash 'ontology-data'
-		sh "./fibo-infra/jenkins/bin/publish-fibo.sh fibopedia"
-		stash includes: 'target/fibo/fibopedia/**', name: 'fibopedia-data'
-		archiveArtifacts artifacts: '*.log', fingerprint: true
+            docker {
+              image env.ONTPUB_IMAGE
+              label 'docker'
+              alwaysPull true
+              args  "\
+                --network none \
+                --name ontology-publisher-${env.BUILD_NUMBER}-book \
+              "
             }
-        }
-        stage("Build Glossary") {
-          agent {
-            label 'stardog'
-          }
-          tools {
-            //
-            // This installs the NodeJS tools as they are configured in the "Global Tool Configuration"
-            // of Jenkins: https://jenkins.edmcouncil.org/configureTools/
-            //
-            nodejs 'NodeJS'
           }
           steps {
-            unstash 'ontology-data'
-            sh "./fibo-infra/jenkins/bin/publish-fibo.sh glossary"
-            stash includes: 'target/fibo/glossary/**', name: 'glossary-data'
-            archiveArtifacts artifacts: '*.log', fingerprint: true
+            dir('input') {
+              dir('fibo') {
+//          checkout scm
+                checkout([
+                        $class: 'GitSCM',
+                        branches: scm.branches,
+                        doGenerateSubmoduleConfigurations: false,
+                        extensions: [
+                                [$class: 'LocalBranch', localBranch: '**'],
+                                [$class: 'CheckoutOption', timeout: 1],
+                                [$class: 'CloneOption', depth: 2, noTags: false, reference: '/var/lib/git/fibo', shallow: true, timeout: 1],
+                                [$class: 'AuthorInChangelog'],
+                                [$class: 'PruneStaleBranch'],
+                                [$class: 'IgnoreNotifyCommit']
+                        ],
+                        submoduleCfg: [],
+                        userRemoteConfigs: [
+                                [credentialsId: '50cac519-d41c-4765-8563-c43b7f55c877', url: 'https://github.com/edmcouncil/fibo.git']
+                        ]
+                ])
+              }
+              dir('LCC') { git url: 'https://github.com/edmcouncil/LCC.git', credentialsId: 'edmcjenkins' }
+            }
+            unstash 'output-ontology'
+            sh "/publisher/publish.sh book"
           }
-        }
-        stage("Build Vocabulary") {
-          agent {
-            label 'stardog'
-          }
-          steps {
-            unstash 'ontology-data'
-            sh "./fibo-infra/jenkins/bin/publish-fibo.sh vocabulary"
-            stash includes: 'target/fibo/vocabulary/**', name: 'vocabulary-data'
-            archiveArtifacts artifacts: '*.log', fingerprint: true
-          }
-        }
-        stage("Build Datadictionary") {
-          agent {
-            label 'stardog'
-          }
-          steps {
-            unstash 'ontology-data'
-            sh "./fibo-infra/jenkins/bin/publish-fibo.sh datadictionary"
-            stash includes: 'target/fibo/datadictionary/**', name: 'datadictionary-data'
-            archiveArtifacts artifacts: '*.log', fingerprint: true
+          post {
+            success {
+              stash name: 'output-book', includes: 'output/fibo/book/**'
+              archiveArtifacts artifacts: 'output/fibo/book/**/*.pdf', fingerprint: true
+            }
+            failure {
+              echo 'ERROR: Couldn\'t build product: book'
+            }
+            always {
+              archiveArtifacts artifacts: 'output/fibo/book/**/*.log', fingerprint: true
+            }
           }
         }
       }
@@ -238,26 +467,56 @@ pipeline {
 
     stage('Build Final Content') {
       agent {
-        label 'stardog'
+        docker {
+          image env.ONTPUB_IMAGE
+          label 'docker'
+          alwaysPull true
+          args  "\
+                --network none \
+                --name ontology-publisher-${env.BUILD_NUMBER}-publish \
+              "
+        }
       }
-
       steps {
-        unstash 'ontology-data'
-        unstash 'widoco-data'
-        unstash 'glossary-data'
-	unstash 'fibopedia-data'  
-        unstash 'vocabulary-data'
-        unstash 'datadictionary-data'
+        dir('input') {
+          dir('fibo') {
+//          checkout scm
+            checkout([
+                    $class: 'GitSCM',
+                    branches: scm.branches,
+                    doGenerateSubmoduleConfigurations: false,
+                    extensions: [
+                            [$class: 'LocalBranch', localBranch: '**'],
+                            [$class: 'CheckoutOption', timeout: 1],
+                            [$class: 'CloneOption', depth: 2, noTags: false, reference: '/var/lib/git/fibo', shallow: true, timeout: 1],
+                            [$class: 'AuthorInChangelog'],
+                            [$class: 'PruneStaleBranch'],
+                            [$class: 'IgnoreNotifyCommit']
+                    ],
+                    submoduleCfg: [],
+                    userRemoteConfigs: [
+                            [credentialsId: '50cac519-d41c-4765-8563-c43b7f55c877', url: 'https://github.com/edmcouncil/fibo.git']
+                    ]
+            ])
+          }
+          dir('LCC') { git url: 'https://github.com/edmcouncil/LCC.git', credentialsId: 'edmcjenkins' }
+        }
+        unstash 'output-ontology'
+        unstash 'output-widoco'
+        unstash 'output-glossary'
+	      unstash 'output-fibopedia'
+        unstash 'output-vocabulary'
+        unstash 'output-datadictionary'
+        unstash 'output-book'
         //
         // Now after all the above is done, make sure we run the final
         // publish step which zips it all up into the target directory
         //
-        sh "./fibo-infra/jenkins/bin/publish-fibo.sh publish"
-
+        sh "/publisher/publish.sh publish"
         //
-        // Archive the artifacts generated by the publish-fibo.sh script
+        // Archive the artifacts generated by the publish command
         //
-        dir('target') {
+        dir('output') {
           stash([
             name: 'publish-script-output-stardog-node',
             includes: '**',
@@ -309,14 +568,14 @@ pipeline {
         echo "Copy all generated content to ${NGINX_SPEC_ROOT}:"
         sh 'ls -al ${NGINX_SPEC_ROOT}/'
         sh '''cp -vr . ${NGINX_SPEC_ROOT}/ > published-files.log 2>&1 || true
-	    rc=$?
-            if ((rc == 0)); then
-	      echo "Successfully copied all files to destination, see published-files.log in the workspace"
-	    else
-	      echo "Some files may not have been copied"
-	      tail published-files.log
-	      exit 1
-            fi
+	        rc=$?
+          if ((rc == 0)); then
+	          echo "Successfully copied all files to destination, see published-files.log in the workspace"
+	        else
+	          echo "Some files may not have been copied"
+	          tail published-files.log
+	          exit 1
+          fi
         '''
         archiveArtifacts artifacts: '**/*.log', fingerprint: true
         sh 'find . -name \'*.log\' -exec rm -f {} \\; || true'
@@ -325,36 +584,4 @@ pipeline {
       }
     } // end of stage "Publish"
   } // end of stages
-
-//  post {
-//    failure {
-//      mail(
-//        to: 'jacobus.geluk@bnymellon.com',
-//        subject: "Failed Pipeline: ${currentBuild.fullDisplayName}",
-//        body: "Something is wrong with ${env.BUILD_URL}"
-//      )
-//    }
-//  }
 } // end of pipeline
-
-def initEnvironment() {
-
-  //
-  // Read the GIT and JIRA environment variables from files in the ./env directory
-  // that have been created by the publish-fibo.sh script so that we can reuse that
-  // logic elsewhere in the Jenkinsfile pipeline.
-  //
-  env.GIT_BRANCH    = readFile './env/GIT_BRANCH'.trim()
-  env.GIT_TAG_NAME  = readFile './env/GIT_TAG_NAME'.trim()
-  env.GIT_AUTHOR    = readFile './env/GIT_AUTHOR'.trim()
-  env.GIT_COMMENT   = readFile './env/GIT_COMMENT'.trim()
-  env.GIT_COMMIT    = readFile './env/GIT_COMMIT'.trim()
-  env.JIRA_ISSUE    = readFile './env/JIRA_ISSUE'.trim()
-
-  echo "GIT_BRANCH=${env.GIT_BRANCH}"
-  echo "GIT_TAG_NAME=${env.GIT_TAG_NAME}"
-  echo "GIT_AUTHOR=${env.GIT_AUTHOR}"
-  echo "GIT_COMMENT=${env.GIT_COMMENT}"
-  echo "GIT_COMMIT=${env.GIT_COMMIT}"
-  echo "JIRA_ISSUE=${env.JIRA_ISSUE}"
-}
