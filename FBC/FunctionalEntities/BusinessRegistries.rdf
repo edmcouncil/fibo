@@ -70,8 +70,8 @@
 		<dct:abstract>This ontology extends the Registration Authorities ontology to define specific kinds of registries, such as business entity registries, registries for identifiers and codes of various sorts, and registries for financial institutions and intermediaries based on jurisdiction, who regulates them, and the services they provide.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
 		<sm:contentLanguage rdf:datatype="&xsd;anyURI">http://www.w3.org/standards/techs/owl#w3c_all</sm:contentLanguage>
-		<sm:copyright>Copyright (c) 2015-2018 EDM Council, Inc.</sm:copyright>
-		<sm:copyright>Copyright (c) 2015-2018 Object Management Group, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2015-2019 EDM Council, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2015-2019 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">http://www.omg.org/spec/LCC/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/BE/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/RegistrationAuthorities/</sm:dependsOn>
@@ -103,7 +103,7 @@
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/20190101/FunctionalEntities/BusinessRegistries/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20150801/FunctionalEntities/BusinessRegistries.rdf version of this ontology was modified per the issue resolutions identified in the FIBO FBC 1.1 RTF report.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20160801/FunctionalEntities/BusinessRegistries.rdf version of this ontology was modified per FIBO 2.0 RFC primarily to loosen the constraints on address properties and better support standards including ISO 9362 (BIC codes), ISO 13616 (IBAN and BBAN codes), and ISO 17442 (the GLIEF LEI standard).</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20180801/FunctionalEntities/BusinessRegistries.rdf version of this ontology was modified to generalize certain unions where they were no longer required.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20180801/FunctionalEntities/BusinessRegistries.rdf version of this ontology was modified to generalize certain unions where they were no longer required, and add individuals for entity expiration reason and validation level to better align with the GLEIF LEI data.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -305,8 +305,39 @@
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
 	</owl:NamedIndividual>
 	
+	<owl:Class rdf:about="&fibo-fbc-fct-breg;EntityExpirationReason">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-cd;CodeElement"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasTag"/>
+				<owl:onDataRange rdf:resource="&xsd;string"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>entity expiration reason</rdfs:label>
+		<skos:definition>code for the reason that a legal entity ceased to exist and/or operate</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
+	</owl:Class>
+	
+	<owl:NamedIndividual rdf:about="&fibo-fbc-fct-breg;EntityExpirationReasonCorporateAction">
+		<rdf:type rdf:resource="&fibo-fbc-fct-breg;EntityExpirationReason"/>
+		<rdfs:label>entity expiration reason - corporate action</rdfs:label>
+		<skos:definition>an expiration reason indicating that an entity was acquired or merged with another entity</skos:definition>
+		<fibo-fnd-rel-rel:hasTag>CORPORATE_ACTION</fibo-fnd-rel-rel:hasTag>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
+	</owl:NamedIndividual>
+	
+	<owl:NamedIndividual rdf:about="&fibo-fbc-fct-breg;EntityExpirationReasonDissolved">
+		<rdf:type rdf:resource="&fibo-fbc-fct-breg;EntityExpirationReason"/>
+		<rdfs:label>entity expiration reason - disolved</rdfs:label>
+		<skos:definition>an expiration reason indicating that an entity ceased to operate</skos:definition>
+		<fibo-fnd-rel-rel:hasTag>DISSOLVED</fibo-fnd-rel-rel:hasTag>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
+	</owl:NamedIndividual>
+	
 	<rdfs:Datatype rdf:about="&fibo-fbc-fct-breg;EntityExpirationReasonEnumeration">
 		<rdfs:label>entity expiration reason enumeration</rdfs:label>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
 		<owl:equivalentClass>
 			<rdfs:Datatype>
 				<owl:oneOf>
@@ -330,6 +361,14 @@
 		<skos:definition>an enumerated datatype specifying the reason that a legal entity ceased to exist and/or operate as specified in the LEI registry for that entity</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
 	</rdfs:Datatype>
+	
+	<owl:NamedIndividual rdf:about="&fibo-fbc-fct-breg;EntityExpirationReasonOther">
+		<rdf:type rdf:resource="&fibo-fbc-fct-breg;EntityExpirationReason"/>
+		<rdfs:label>entity expiration reason - other</rdfs:label>
+		<skos:definition>an expiration reason that is neither of dissolved nor corporate action</skos:definition>
+		<fibo-fnd-rel-rel:hasTag>OTHER</fibo-fnd-rel-rel:hasTag>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
+	</owl:NamedIndividual>
 	
 	<owl:Class rdf:about="&fibo-fbc-fct-breg;EntityLegalFormRegistry">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-ra;Registry"/>
@@ -367,8 +406,31 @@
 		<fibo-fnd-utl-av:explanatoryNote>In some jurisdictions, there may be other possible values for entity status, such as suspended in the State of California, thus the individuals provided herein are not intended to be exhaustive.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-fbc-fct-breg;EntityValidationLevel">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-cd;CodeElement"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasTag"/>
+				<owl:onDataRange rdf:resource="&xsd;string"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>entity validation level</rdfs:label>
+		<skos:definition>code for the level of validation performed by the GLEIF or LOU with respect to the reference data provided by the registrant</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
+	</owl:Class>
+	
+	<owl:NamedIndividual rdf:about="&fibo-fbc-fct-breg;EntityValidationLevelEntitySuppliedOnly">
+		<rdf:type rdf:resource="&fibo-fbc-fct-breg;EntityValidationLevel"/>
+		<rdfs:label>entity validation level - entity-supplied only</rdfs:label>
+		<skos:definition>Based on the validation procedures in use by the LOU responsible for the record, the information associated with this record has significant reliance on the information that a submitter provided due to the unavailability of corroborating information.</skos:definition>
+		<fibo-fnd-rel-rel:hasTag>ENTITY_SUPPLIED_ONLY</fibo-fnd-rel-rel:hasTag>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
+	</owl:NamedIndividual>
+	
 	<rdfs:Datatype rdf:about="&fibo-fbc-fct-breg;EntityValidationLevelEnumeration">
 		<rdfs:label>entity validation level enumeration</rdfs:label>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
 		<owl:equivalentClass>
 			<rdfs:Datatype>
 				<owl:oneOf>
@@ -392,6 +454,22 @@
 		<skos:definition>an enumerated datatype specifying the level of validation performed by the GLEIF or LOU with respect to the reference data provided by the registrant</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
 	</rdfs:Datatype>
+	
+	<owl:NamedIndividual rdf:about="&fibo-fbc-fct-breg;EntityValidationLevelFullyCorroborated">
+		<rdf:type rdf:resource="&fibo-fbc-fct-breg;EntityValidationLevel"/>
+		<rdfs:label>entity validation level - fully corroborated</rdfs:label>
+		<skos:definition>Based on the validation procedures in use by the LOU responsible for the record, there is sufficient information contained in authoritative public sources to corroborate the information that the submitter has provided for the record.</skos:definition>
+		<fibo-fnd-rel-rel:hasTag>FULLY_CORROBORATED</fibo-fnd-rel-rel:hasTag>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
+	</owl:NamedIndividual>
+	
+	<owl:NamedIndividual rdf:about="&fibo-fbc-fct-breg;EntityValidationLevelPartiallyCorroborated">
+		<rdf:type rdf:resource="&fibo-fbc-fct-breg;EntityValidationLevel"/>
+		<rdfs:label>entity validation level - partially corroborated</rdfs:label>
+		<skos:definition>Based on the validation procedures in use by the LOU responsible for the record, the information supplied by the registrant can be partially corroborated by public authoritative sources, while some of the record is dependent upon the information that the registrant submitted, either due to conflicts with authoritative information, or due to data unavailability.</skos:definition>
+		<fibo-fnd-rel-rel:hasTag>PARTIALLY_CORROBORATED</fibo-fnd-rel-rel:hasTag>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
+	</owl:NamedIndividual>
 	
 	<owl:NamedIndividual rdf:about="&fibo-fbc-fct-breg;ISO9362RegistrationAuthority">
 		<rdf:type rdf:resource="&fibo-fbc-fct-ra;RegistrationAuthority"/>
@@ -467,7 +545,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-fct-breg;hasValidationLevel"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-fct-breg;EntityValidationLevelEnumeration"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-fct-breg;EntityValidationLevel"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -794,12 +872,12 @@ NAICS was developed under the auspices of the Office of Management and Budget (O
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
 	</owl:DatatypeProperty>
 	
-	<owl:DatatypeProperty rdf:about="&fibo-fbc-fct-breg;hasEntityExpirationReason">
+	<owl:ObjectProperty rdf:about="&fibo-fbc-fct-breg;hasEntityExpirationReason">
 		<rdfs:label>has entity expiration reason</rdfs:label>
-		<rdfs:range rdf:resource="&xsd;string"/>
+		<rdfs:range rdf:resource="&fibo-fbc-fct-breg;EntityExpirationReason"/>
 		<skos:definition>indicates the reason that an entity ceased to exist (i.e., disolved, merged with another entity, etc.)</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
-	</owl:DatatypeProperty>
+	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-fct-breg;hasEntityStatus">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;has"/>
@@ -983,11 +1061,11 @@ NAICS was developed under the auspices of the Office of Management and Budget (O
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.swift.com/standards/data-standards/bic?tl=en#BICPolicyandDatarecord</fibo-fnd-utl-av:adaptedFrom>
 	</owl:DatatypeProperty>
 	
-	<owl:DatatypeProperty rdf:about="&fibo-fbc-fct-breg;hasValidationLevel">
+	<owl:ObjectProperty rdf:about="&fibo-fbc-fct-breg;hasValidationLevel">
 		<rdfs:label>has validation level</rdfs:label>
-		<rdfs:range rdf:resource="&xsd;string"/>
+		<rdfs:range rdf:resource="&fibo-fbc-fct-breg;EntityValidationLevel"/>
 		<skos:definition>an indicator of the level of validation performed by the registrar with respect to the legal entity</skos:definition>
-	</owl:DatatypeProperty>
+	</owl:ObjectProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-fbc-fct-breg;hasWebsite">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-plc-vrt;hasURL"/>
