@@ -4,6 +4,7 @@
 	<!ENTITY fibo-bp-prc-fcp "https://spec.edmcouncil.org/fibo/ontology/BP/Process/FinancialContextAndProcess/">
 	<!ENTITY fibo-fbc-dae-crt "https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/CreditRatings/">
 	<!ENTITY fibo-fbc-dae-dbt "https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/">
+	<!ENTITY fibo-fbc-fi-fi "https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/">
 	<!ENTITY fibo-fnd-acc-cur "https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/">
 	<!ENTITY fibo-fnd-accx-acc "https://spec.edmcouncil.org/fibo/ontology/FND/AccountingExt/AccountsMain/">
 	<!ENTITY fibo-fnd-arrxx-meth "https://spec.edmcouncil.org/fibo/ontology/FND/ArrangementsExt/MethodsAndRules/">
@@ -37,6 +38,7 @@
 	xmlns:fibo-bp-prc-fcp="https://spec.edmcouncil.org/fibo/ontology/BP/Process/FinancialContextAndProcess/"
 	xmlns:fibo-fbc-dae-crt="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/CreditRatings/"
 	xmlns:fibo-fbc-dae-dbt="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"
+	xmlns:fibo-fbc-fi-fi="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"
 	xmlns:fibo-fnd-acc-cur="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"
 	xmlns:fibo-fnd-accx-acc="https://spec.edmcouncil.org/fibo/ontology/FND/AccountingExt/AccountsMain/"
 	xmlns:fibo-fnd-arrxx-meth="https://spec.edmcouncil.org/fibo/ontology/FND/ArrangementsExt/MethodsAndRules/"
@@ -72,6 +74,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BP/Process/FinancialContextAndProcess/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/CreditRatings/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/AccountingExt/AccountsMain/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/ArrangementsExt/MethodsAndRules/"/>
@@ -99,15 +102,6 @@
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/MD/DebtTemporal/DebtPricingYields/"/>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Provisional"/>
 	</owl:Ontology>
-	
-	<owl:Class rdf:about="&fibo-loan-loan-loan;LoanDrawdown">
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-md-dbtx-py;hasLoanMaturity"/>
-				<owl:someValuesFrom rdf:resource="&fibo-md-dbtx-py;LoanMaturity"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-md-dbtx-py;AbsolatePrepaymentRateFormula">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-math-math;Formula"/>
@@ -137,14 +131,14 @@
 	<owl:Class rdf:about="&fibo-md-dbtx-py;AlgoDebtCreditSpread">
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-md-dbtx-py;refersToCreditRating"/>
-				<owl:someValuesFrom rdf:resource="&fibo-md-dbtx-py;IssuerCreditRating"/>
+				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;hasTimeToMaturity"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;ExplicitDuration"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-md-dbtx-py;refersToMaturity"/>
-				<owl:someValuesFrom rdf:resource="&fibo-md-temx-ins;Maturity"/>
+				<owl:onProperty rdf:resource="&fibo-md-dbtx-py;refersToCreditRating"/>
+				<owl:someValuesFrom rdf:resource="&fibo-md-dbtx-py;IssuerCreditRating"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -346,8 +340,10 @@
 						<owl:unionOf rdf:parseType="Collection">
 							<rdf:Description rdf:about="&fibo-md-dbtx-aly;LifeAnalytic">
 							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-md-temx-ins;Maturity">
-							</rdf:Description>
+							<owl:Restriction>
+								<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;hasTimeToMaturity"/>
+								<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;ExplicitDuration"/>
+							</owl:Restriction>
 							<rdf:Description rdf:about="&fibo-sec-dbt-dbti;PrescriptiveEvent">
 							</rdf:Description>
 							<rdf:Description rdf:about="&fibo-sec-dbt-dbti;RedemptionEvent">
@@ -466,7 +462,12 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-md-dbtx-py;hasOutlookPeriod"/>
-				<owl:someValuesFrom rdf:resource="&fibo-md-temx-ins;Maturity"/>
+				<owl:someValuesFrom>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;hasTimeToMaturity"/>
+						<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;ExplicitDuration"/>
+					</owl:Restriction>
+				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">debt yield to maturity</rdfs:label>
@@ -580,17 +581,6 @@
 	<owl:Class rdf:about="&fibo-md-dbtx-py;LoanAge">
 		<rdfs:label xml:lang="en">loan age</rdfs:label>
 		<skos:definition xml:lang="en">The age of the loan.</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-md-dbtx-py;LoanMaturity">
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-md-dbtx-py;inRelationTo"/>
-				<owl:someValuesFrom rdf:resource="&fibo-md-dbtx-py;ThePresent"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">loan maturity</rdfs:label>
-		<skos:definition xml:lang="en">THe length of time from the present until the loan or mortgage matures, that is the date when the last of the principal is paid off along with all interest.</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-md-dbtx-py;LoanPoolAnalytic">
@@ -827,11 +817,6 @@
 		<rdfs:subClassOf rdf:resource="&fibo-md-dbtx-py;YieldCalculationMethod"/>
 		<rdfs:label xml:lang="en">spanish yield calculation method</rdfs:label>
 		<skos:definition xml:lang="en">The method used in determining annual yield in Spanish corporate bonds.</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-md-dbtx-py;ThePresent">
-		<rdfs:label xml:lang="en">the present</rdfs:label>
-		<skos:definition xml:lang="en">Now.</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-md-dbtx-py;USCorporateBondYieldCalculationMethod">
@@ -1138,18 +1123,6 @@
 		<rdfs:range rdf:resource="&fibo-md-dbtx-int;DebtSecurityInterestAmount"/>
 	</owl:ObjectProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-md-dbtx-py;hasLoanMaturity">
-		<rdfs:label xml:lang="en">has loan maturity</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-loan-loan;LoanDrawdown"/>
-		<rdfs:range rdf:resource="&fibo-md-dbtx-py;LoanMaturity"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-md-dbtx-py;hasMaturity">
-		<rdfs:label xml:lang="en">has maturity</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-dbti;TradableDebtInstrument"/>
-		<rdfs:range rdf:resource="&fibo-md-temx-ins;Maturity"/>
-	</owl:ObjectProperty>
-	
 	<owl:ObjectProperty rdf:about="&fibo-md-dbtx-py;hasOutlookPeriod">
 		<rdfs:label xml:lang="en">has outlook period</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-md-dbtx-py;DebtInstrumentYield"/>
@@ -1158,8 +1131,10 @@
 				<owl:unionOf rdf:parseType="Collection">
 					<rdf:Description rdf:about="&fibo-md-dbtx-aly;LifeAnalytic">
 					</rdf:Description>
-					<rdf:Description rdf:about="&fibo-md-temx-ins;Maturity">
-					</rdf:Description>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;hasTimeToMaturity"/>
+						<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;ExplicitDuration"/>
+					</owl:Restriction>
 					<rdf:Description rdf:about="&fibo-sec-dbt-dbti;PrescriptiveEvent">
 					</rdf:Description>
 					<rdf:Description rdf:about="&fibo-sec-dbt-dbti;RedemptionEvent">
@@ -1202,12 +1177,6 @@
 		<rdfs:range rdf:resource="&fibo-md-dbtx-py;DebtInstrumentYield"/>
 	</owl:ObjectProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-md-dbtx-py;inRelationTo">
-		<rdfs:label xml:lang="en">in relation to</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-md-dbtx-py;LoanMaturity"/>
-		<rdfs:range rdf:resource="&fibo-md-dbtx-py;ThePresent"/>
-	</owl:ObjectProperty>
-	
 	<owl:ObjectProperty rdf:about="&fibo-md-dbtx-py;interpolatedBetween">
 		<rdfs:label>interpolated between</rdfs:label>
 	</owl:ObjectProperty>
@@ -1229,12 +1198,6 @@
 		<rdfs:label xml:lang="en">is spread between</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-md-dbtx-py;DebtPriceSpread"/>
 		<rdfs:range rdf:resource="&fibo-md-dbtx-py;DebtSecurityPrice"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-md-dbtx-py;loanMaturityValue">
-		<rdfs:label xml:lang="en">loan maturity value</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-md-dbtx-py;LoanMaturity"/>
-		<rdfs:range rdf:resource="&fibo-md-temx-tem;TimedDurationSpecification"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-md-dbtx-py;macCaulaysDurationHasValue">
@@ -1329,12 +1292,6 @@
 		<rdfs:label xml:lang="en">refers to credit rating</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-md-dbtx-py;AlgoDebtCreditSpread"/>
 		<rdfs:range rdf:resource="&fibo-md-dbtx-py;IssuerCreditRating"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-md-dbtx-py;refersToMaturity">
-		<rdfs:label xml:lang="en">refers to maturity</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-md-dbtx-py;AlgoDebtCreditSpread"/>
-		<rdfs:range rdf:resource="&fibo-md-temx-ins;Maturity"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-md-dbtx-py;relativeTo">
@@ -1442,18 +1399,6 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-dbti;TradableDebtInstrument">
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-md-dbtx-py;hasInterestRate"/>
-				<owl:someValuesFrom rdf:resource="&fibo-md-dbtx-int;DebtSecurityInterestAmount"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-md-dbtx-py;hasMaturity"/>
-				<owl:someValuesFrom rdf:resource="&fibo-md-temx-ins;Maturity"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-md-dbtx-py;hasYield"/>
