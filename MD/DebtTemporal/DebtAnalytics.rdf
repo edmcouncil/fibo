@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE rdf:RDF [
 	<!ENTITY dct "http://purl.org/dc/terms/">
+	<!ENTITY fibo-fbc-fi-fi "https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/">
 	<!ENTITY fibo-fnd-accx-acc "https://spec.edmcouncil.org/fibo/ontology/FND/AccountingExt/AccountsMain/">
+	<!ENTITY fibo-fnd-dt-fd "https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/">
 	<!ENTITY fibo-fnd-inf-inf "https://spec.edmcouncil.org/fibo/ontology/FND/InformationExt/InfoCore/">
 	<!ENTITY fibo-fnd-inf-tem "https://spec.edmcouncil.org/fibo/ontology/FND/InformationExt/TemporalInfo/">
-	<!ENTITY fibo-fnd-tim-tim "https://spec.edmcouncil.org/fibo/ontology/FND/TimeExt/Time/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
 	<!ENTITY fibo-md-dbtx-aly "https://spec.edmcouncil.org/fibo/ontology/MD/DebtTemporal/DebtAnalytics/">
 	<!ENTITY fibo-md-dbtx-py "https://spec.edmcouncil.org/fibo/ontology/MD/DebtTemporal/DebtPricingYields/">
@@ -21,10 +22,11 @@
 ]>
 <rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/ontology/MD/DebtTemporal/DebtAnalytics/"
 	xmlns:dct="http://purl.org/dc/terms/"
+	xmlns:fibo-fbc-fi-fi="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"
 	xmlns:fibo-fnd-accx-acc="https://spec.edmcouncil.org/fibo/ontology/FND/AccountingExt/AccountsMain/"
+	xmlns:fibo-fnd-dt-fd="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"
 	xmlns:fibo-fnd-inf-inf="https://spec.edmcouncil.org/fibo/ontology/FND/InformationExt/InfoCore/"
 	xmlns:fibo-fnd-inf-tem="https://spec.edmcouncil.org/fibo/ontology/FND/InformationExt/TemporalInfo/"
-	xmlns:fibo-fnd-tim-tim="https://spec.edmcouncil.org/fibo/ontology/FND/TimeExt/Time/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
 	xmlns:fibo-md-dbtx-aly="https://spec.edmcouncil.org/fibo/ontology/MD/DebtTemporal/DebtAnalytics/"
 	xmlns:fibo-md-dbtx-py="https://spec.edmcouncil.org/fibo/ontology/MD/DebtTemporal/DebtPricingYields/"
@@ -42,11 +44,12 @@
 	<owl:Ontology rdf:about="https://spec.edmcouncil.org/fibo/ontology/MD/DebtTemporal/DebtAnalytics/">
 		<rdfs:label xml:lang="en">DebtAnalytics</rdfs:label>
 		<dct:abstract>This ontology covers an extensive range of analytical measures for debt instruments and pools of debt instruments. These cover the well-known concepts of convexity, duration and life, as well as weighted average loan ages and maturities, prepayments speeds etc. for debt pools. Most of the widely referenced variants of these are included, for example modified duration. Some yield related concepts (e.g. for equivalent yield) are also included.</dct:abstract>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/AccountingExt/AccountsMain/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/InformationExt/InfoCore/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/InformationExt/TemporalInfo/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/MathExt/Math/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/TimeExt/Time/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/MD/DebtTemporal/DebtPricingYields/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/MD/TemporalCore/InstrumentTemporalTerms/"/>
@@ -352,7 +355,12 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-md-dbtx-py;derivedFrom.1"/>
-				<owl:someValuesFrom rdf:resource="&fibo-md-dbtx-py;LoanMaturity"/>
+				<owl:someValuesFrom>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;hasTimeToMaturity"/>
+						<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;ExplicitDuration"/>
+					</owl:Restriction>
+				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">pool weighted average remaining maturity</rdfs:label>
@@ -408,14 +416,14 @@
 	<owl:ObjectProperty rdf:about="&fibo-md-dbtx-aly;averageLifeValue">
 		<rdfs:label xml:lang="en">average life value</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-md-dbtx-aly;AverageLife"/>
-		<rdfs:range rdf:resource="&fibo-md-temx-tem;TimedDurationSpecification"/>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Duration"/>
 		<skos:definition xml:lang="en">The value of the Average Life analytic at some time in the past or at the present. For MBS this would be expressed as a month eg 50 months.</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-md-dbtx-aly;averageLifeValue.1">
 		<rdfs:label xml:lang="en">average life value</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-md-dbtx-aly;AverageLifeAtIssue"/>
-		<rdfs:range rdf:resource="&fibo-fnd-tim-tim;DateSpecification"/>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Date"/>
 		<skos:definition xml:lang="en">The value of the Average Life analytic at the time the security was issued.</skos:definition>
 	</owl:ObjectProperty>
 	
@@ -457,7 +465,7 @@
 	<owl:ObjectProperty rdf:about="&fibo-md-dbtx-aly;equivalentLifeValue">
 		<rdfs:label xml:lang="en">equivalent life value</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-md-dbtx-aly;EquivalentLifeAnalytic"/>
-		<rdfs:range rdf:resource="&fibo-md-temx-tem;TimedDurationSpecification"/>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Duration"/>
 		<skos:definition xml:lang="en">The Equivalent Life in years at the stated date.</skos:definition>
 	</owl:ObjectProperty>
 	
@@ -515,7 +523,7 @@
 	<owl:ObjectProperty rdf:about="&fibo-md-dbtx-aly;modifiedDurationValue">
 		<rdfs:label xml:lang="en">modified duration value</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-md-dbtx-aly;ModifiedDurationAnalytic"/>
-		<rdfs:range rdf:resource="&fibo-md-temx-tem;TimedDurationSpecification"/>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Duration"/>
 		<skos:definition xml:lang="en">The Modified Duration in Years.</skos:definition>
 	</owl:ObjectProperty>
 	
@@ -568,14 +576,14 @@
 	<owl:ObjectProperty rdf:about="&fibo-md-dbtx-aly;wALAValue">
 		<rdfs:label xml:lang="en">w a l a value</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-md-dbtx-aly;InstrumentWeightedAverageLoanAge"/>
-		<rdfs:range rdf:resource="&fibo-md-temx-tem;TimedDurationSpecification"/>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Duration"/>
 		<skos:definition xml:lang="en">The weighted average loan age, at some point in the past or present.</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-md-dbtx-aly;wARMValue">
 		<rdfs:label xml:lang="en">w a r m value</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-md-dbtx-aly;MortgageInstrumentWeightedAverageRemainingMaturity"/>
-		<rdfs:range rdf:resource="&fibo-md-temx-tem;TimedDurationSpecification"/>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Duration"/>
 		<skos:definition xml:lang="en">The amount of the WARM in the past or present.</skos:definition>
 	</owl:ObjectProperty>
 	
