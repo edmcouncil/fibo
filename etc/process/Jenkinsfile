@@ -11,32 +11,7 @@ final def gitCredentialsId = '50cac519-d41c-4765-8563-c43b7f55c877'
 final def gitRepoUrlFIBO   = 'https://github.com/edmcouncil/fibo.git'
 final def gitRepoUrlLCC    = 'https://github.com/edmcouncil/LCC.git'
 
-//
-// Send notifications to the ontology-builder slack channel
-//
-def slackNotifier(String productName, String buildResult) {
-
-  def message="Product \"${productName} was built and had status ${buildResult}: <${env.BUILD_URL}|Open ${env.JOB_NAME} ${env.BUILD_NUMBER}>"
-
-  echo "slackNotifier: ${message}"
-
-  if (buildResult == "SUCCESS") {
-    echo "Product ${productName} was built successfully"
-    slackSend color: "good", message: message
-  }
-  else if (buildResult == "FAILURE") {
-    echo "ERROR: ${productName} Product Build failed"
-    slackSend color: "danger", message: message
-  }
-  else if (buildResult == "UNSTABLE") {
-    echo "WARNING: ${productName} Product Build is unstable"
-    slackSend color: "warning", message: message
-  }
-  else {
-    echo "ERROR: ${productName} Product Build failed with buildResult=${buildResult}"
-    slackSend color: "danger", message: message
-  }
-}
+def modules = [:]
 
 pipeline {
 
@@ -91,9 +66,9 @@ pipeline {
         }
       }
       steps {
+
         dir('input') {
           dir('fibo') {
-//          checkout scm
             checkout([
                     $class: 'GitSCM',
                     branches: scm.branches,
@@ -111,6 +86,19 @@ pipeline {
                             [credentialsId: gitCredentialsId, url: gitRepoUrlFIBO]
                     ]
             ])
+            //
+            // Load the various groovy scripts
+            //
+            dir('etc') {
+              dir('process') {
+                script {
+                  def rootDir = pwd()
+                  println("Current Directory: " + rootDir)
+                  modules.slack = load "${rootDir}/Jenkinsfile-slack-functions.groovy"
+                  modules.slack.init()
+                }
+              }
+            }
           }
           dir('LCC') { git url: gitRepoUrlLCC, credentialsId: gitCredentialsId }
         }
@@ -120,12 +108,10 @@ pipeline {
         sh "/publisher/publish.sh hygiene"
       }
       post {
-        success {
-          slackSend color: 'good', message: "${env.JOB_NAME} - #${env.BUILD_NUMBER} Hygiene Test was successful (<${env.BUILD_URL}|Open>)"
-        }
-        failure {
-          echo "ERROR: Hygiene Test failed for job ${env.BUILD_NUMBER}"
-          slackSend color: 'bad', message: "${env.JOB_NAME} - #${env.BUILD_NUMBER} Hygiene Test failed (<${env.BUILD_URL}|Open>)"
+        always {
+          script {
+            modules.slack.notifyStage(STAGE_NAME, currentBuild.currentResult)
+          }
         }
       }
     }
@@ -178,8 +164,7 @@ pipeline {
         always {
           archiveArtifacts artifacts: 'output/fibo/ontology/**/*.log', fingerprint: true
           script {
-            echo "Call slackNotifier"
-            slackNotifier(productName: 'Ontology', buildResult: currentBuild.currentResult)
+            modules.slack.notifyStage(STAGE_NAME, currentBuild.currentResult)
           }
         }
       }
@@ -233,7 +218,7 @@ pipeline {
             always {
               archiveArtifacts artifacts: 'output/fibo/widoco/**/*.log', fingerprint: true
               script {
-                slackNotifier(productName: 'Widoco', buildResult: currentBuild.currentResult)
+                modules.slack.notifyStage(STAGE_NAME, currentBuild.currentResult)
               }
             }
           }
@@ -283,7 +268,7 @@ pipeline {
             always {
               archiveArtifacts artifacts: 'output/fibo/fibopedia/**/*.log', fingerprint: true
               script {
-                slackNotifier(productName: 'FIBOpedia', buildResult: currentBuild.currentResult)
+                modules.slack.notifyStage(STAGE_NAME, currentBuild.currentResult)
               }
             }
           }
@@ -334,7 +319,7 @@ pipeline {
             always {
               archiveArtifacts artifacts: 'output/fibo/glossary/**/*.log', fingerprint: true
               script {
-                slackNotifier(productName: 'GLossary', buildResult: currentBuild.currentResult)
+                modules.slack.notifyStage(STAGE_NAME, currentBuild.currentResult)
               }
             }
           }
@@ -385,7 +370,7 @@ pipeline {
             always {
               archiveArtifacts artifacts: 'output/fibo/vocabulary/**/*.log', fingerprint: true
               script {
-                slackNotifier(productName: 'Vocabulary', buildResult: currentBuild.currentResult)
+                modules.slack.notifyStage(STAGE_NAME, currentBuild.currentResult)
               }
             }
           }
@@ -436,7 +421,7 @@ pipeline {
             always {
               archiveArtifacts artifacts: 'output/fibo/datadictionary/**/*.log', fingerprint: true
               script {
-                slackNotifier(productName: 'DataDictionary', buildResult: currentBuild.currentResult)
+                modules.slack.notifyStage(STAGE_NAME, currentBuild.currentResult)
               }
             }
           }
@@ -487,8 +472,7 @@ pipeline {
             always {
               archiveArtifacts artifacts: 'output/fibo/reference/**/*.log', fingerprint: true
               script {
-                echo "Call slackNotifier"
-                slackNotifier(productName: 'Reference', buildResult: currentBuild.currentResult)
+                modules.slack.notifyStage(STAGE_NAME, currentBuild.currentResult)
               }
             }
           }
@@ -557,6 +541,13 @@ pipeline {
           ])
         }
       }
+      post {
+        always {
+          script {
+            modules.slack.notifyStage(STAGE_NAME, currentBuild.currentResult)
+          }
+        }
+      }
     } // end of stage 'Build Final Content'
 
     //
@@ -613,6 +604,13 @@ pipeline {
         sh 'find . -name \'*.log\' -exec rm -f {} \\; || true'
 
         //setGitHubPullRequestStatus context: 'fibo-publish', message: '', state: 'SUCCESS'
+      }
+      post {
+        always {
+          script {
+            modules.slack.notifyStage(STAGE_NAME, currentBuild.currentResult)
+          }
+        }
       }
     } // end of stage "Publish"
   } // end of stages
