@@ -178,6 +178,7 @@ pipeline {
         always {
           archiveArtifacts artifacts: 'output/fibo/ontology/**/*.log', fingerprint: true
           script {
+            echo "Call slackNotifier"
             slackNotifier(productName: 'Ontology', buildResult: currentBuild.currentResult)
           }
         }
@@ -440,56 +441,58 @@ pipeline {
             }
           }
         }
-//        stage("Build Reference") {
-//          agent {
-//            docker {
-//              image env.ONTPUB_IMAGE
-//              label 'docker'
-//              alwaysPull true
-//              args  "\
-//                --network none \
-//                --name ontology-publisher-${env.BUILD_NUMBER}-reference \
-//              "
-//            }
-//          }
-//          steps {
-//            dir('input') {
-//              dir('fibo') {
-////          checkout scm
-//                checkout([
-//                        $class: 'GitSCM',
-//                        branches: scm.branches,
-//                        doGenerateSubmoduleConfigurations: false,
-//                        extensions: [
-//                                [$class: 'LocalBranch', localBranch: '**'],
-//                                [$class: 'CheckoutOption', timeout: 1],
-//                                [$class: 'CloneOption', depth: 2, noTags: false, reference: '/var/lib/git/fibo', shallow: true, timeout: 1],
-//                                [$class: 'AuthorInChangelog'],
-//                                [$class: 'PruneStaleBranch'],
-//                                [$class: 'IgnoreNotifyCommit']
-//                        ],
-//                        submoduleCfg: [],
-//                        userRemoteConfigs: [
-//                                [credentialsId: gitCredentialsId, url: gitRepoUrlFIBO]
-//                        ]
-//                ])
-//              }
-//              dir('LCC') { git url: gitRepoUrlLCC, credentialsId: gitCredentialsId }
-//            }
-//            unstash 'output-ontology'
-//            sh "/publisher/publish.sh reference"
-//          }
-//          post {
-//            success {
-//              stash name: 'output-reference', includes: 'output/fibo/reference/**'
-//              archiveArtifacts artifacts: 'output/fibo/reference/**/*.pdf', fingerprint: true
-//            }
-//            always {
-//              archiveArtifacts artifacts: 'output/fibo/reference/**/*.log', fingerprint: true
-//              slackNotifier productName: 'Reference', buildResult: currentBuild.currentResult
-//            }
-//          }
-//        }
+        stage("Build Reference") {
+          agent {
+            docker {
+              image env.ONTPUB_IMAGE
+              label 'docker'
+              alwaysPull true
+              args  "\
+                --network none \
+                --name ontology-publisher-${env.BUILD_NUMBER}-reference \
+              "
+            }
+          }
+          steps {
+            dir('input') {
+              dir('fibo') {
+                checkout([
+                        $class: 'GitSCM',
+                        branches: scm.branches,
+                        doGenerateSubmoduleConfigurations: false,
+                        extensions: [
+                                [$class: 'LocalBranch', localBranch: '**'],
+                                [$class: 'CheckoutOption', timeout: 1],
+                                [$class: 'CloneOption', depth: 2, noTags: false, reference: '/var/lib/git/fibo', shallow: true, timeout: 1],
+                                [$class: 'AuthorInChangelog'],
+                                [$class: 'PruneStaleBranch'],
+                                [$class: 'IgnoreNotifyCommit']
+                        ],
+                        submoduleCfg: [],
+                        userRemoteConfigs: [
+                                [credentialsId: gitCredentialsId, url: gitRepoUrlFIBO]
+                        ]
+                ])
+              }
+              dir('LCC') { git url: gitRepoUrlLCC, credentialsId: gitCredentialsId }
+            }
+            unstash 'output-ontology'
+            sh "/publisher/publish.sh reference"
+          }
+          post {
+            success {
+              stash name: 'output-reference', includes: 'output/fibo/reference/**'
+              archiveArtifacts artifacts: 'output/fibo/reference/**/*.pdf', fingerprint: true
+            }
+            always {
+              archiveArtifacts artifacts: 'output/fibo/reference/**/*.log', fingerprint: true
+              script {
+                echo "Call slackNotifier"
+                slackNotifier(productName: 'Reference', buildResult: currentBuild.currentResult)
+              }
+            }
+          }
+        }
       }
     } // end of stage 'Build Other Products'
 
@@ -508,7 +511,6 @@ pipeline {
       steps {
         dir('input') {
           dir('fibo') {
-//          checkout scm
             checkout([
                     $class: 'GitSCM',
                     branches: scm.branches,
@@ -537,7 +539,7 @@ pipeline {
 	      unstash 'output-fibopedia'
         unstash 'output-vocabulary'
         unstash 'output-datadictionary'
-//      unstash 'output-reference'
+        unstash 'output-reference'
         //
         // Now after all the above is done, make sure we run the final
         // publish step which zips it all up into the target directory
