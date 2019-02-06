@@ -1,3 +1,4 @@
+#!/usr/bin/env groovy
 //
 // The main Jenkinsfile for FIBO, defining the Build/Publish/Test/Deploy process that is
 // executed for each push into the repository.
@@ -6,6 +7,32 @@
 //
 // See https://jenkins.io/doc/book/pipeline/jenkinsfile/
 //
+
+//
+// Send notifications to the ontology-builder slack channel
+//
+def slackNotifier(String productName, String buildResult) {
+
+  def message="Product \"${productName} was built and had status ${buildResult}: <${env.BUILD_URL}|Open ${env.JOB_NAME} ${env.BUILD_NUMBER}>"
+
+  if (buildResult == "SUCCESS") {
+    echo "Product ${productName} was built successfully"
+    slackSend color: "good", message: message
+  }
+  else if (buildResult == "FAILURE") {
+    echo "ERROR: ${productName} Product Build failed"
+    slackSend color: "danger", message: message
+  }
+  else if (buildResult == "UNSTABLE") {
+    echo "WARNING: ${productName} Product Build is unstable"
+    slackSend color: "warning", message: message
+  }
+  else {
+    echo "ERROR: ${productName} Product Build failed with buildResult=${buildResult}"
+    slackSend color: "danger", message: message
+  }
+}
+
 pipeline {
 
   agent none
@@ -140,16 +167,11 @@ pipeline {
         sh "/publisher/publish.sh ontology"
       }
       post {
-        success {
-          stash name: 'output-ontology', includes: 'output/fibo/ontology/**'
-          slackSend color: 'good', message: 'Ontology Product has been built'
-        }
-        failure {
-          echo 'ERROR: Couldn\'t build product: ontology'
-          slackSend color: 'bad', message: 'Ontology Product Build failed'
-        }
         always {
           archiveArtifacts artifacts: 'output/fibo/ontology/**/*.log', fingerprint: true
+          script {
+            slackNotifier(productName: 'Ontology', buildResult: currentBuild.currentResult)
+          }
         }
       }
     } // end of stage 'Build Product Ontology'
@@ -199,11 +221,11 @@ pipeline {
             success {
               stash name: 'output-widoco', includes: 'output/fibo/widoco/**'
             }
-            failure {
-              echo 'ERROR: Couldn\'t build product: widoco'
-            }
             always {
               archiveArtifacts artifacts: 'output/fibo/widoco/**/*.log', fingerprint: true
+              script {
+                slackNotifier(productName: 'Widoco', buildResult: currentBuild.currentResult)
+              }
             }
           }
         }
@@ -249,11 +271,11 @@ pipeline {
             success {
               stash name: 'output-fibopedia', includes: 'output/fibo/fibopedia/**'
             }
-            failure {
-              echo 'ERROR: Couldn\'t build product: fibopedia'
-            }
             always {
               archiveArtifacts artifacts: 'output/fibo/fibopedia/**/*.log', fingerprint: true
+              script {
+                slackNotifier(productName: 'FIBOpedia', buildResult: currentBuild.currentResult)
+              }
             }
           }
         }
@@ -300,11 +322,11 @@ pipeline {
             success {
               stash name: 'output-glossary', includes: 'output/fibo/glossary/**'
             }
-            failure {
-              echo 'ERROR: Couldn\'t build product: glossary'
-            }
             always {
               archiveArtifacts artifacts: 'output/fibo/glossary/**/*.log', fingerprint: true
+              script {
+                slackNotifier(productName: 'GLossary', buildResult: currentBuild.currentResult)
+              }
             }
           }
         }
@@ -351,11 +373,11 @@ pipeline {
             success {
               stash name: 'output-vocabulary', includes: 'output/fibo/vocabulary/**'
             }
-            failure {
-              echo 'ERROR: Couldn\'t build product: vocabulary'
-            }
             always {
               archiveArtifacts artifacts: 'output/fibo/vocabulary/**/*.log', fingerprint: true
+              script {
+                slackNotifier(productName: 'Vocabulary', buildResult: currentBuild.currentResult)
+              }
             }
           }
         }
@@ -402,15 +424,15 @@ pipeline {
             success {
               stash name: 'output-datadictionary', includes: 'output/fibo/datadictionary/**'
             }
-            failure {
-              echo 'ERROR: Couldn\'t build product: ontology'
-            }
             always {
               archiveArtifacts artifacts: 'output/fibo/datadictionary/**/*.log', fingerprint: true
+              script {
+                slackNotifier(productName: 'DataDictionary', buildResult: currentBuild.currentResult)
+              }
             }
           }
         }
-//        stage("Build Book") {
+//        stage("Build Reference") {
 //          agent {
 //            docker {
 //              image env.ONTPUB_IMAGE
@@ -418,7 +440,7 @@ pipeline {
 //              alwaysPull true
 //              args  "\
 //                --network none \
-//                --name ontology-publisher-${env.BUILD_NUMBER}-book \
+//                --name ontology-publisher-${env.BUILD_NUMBER}-reference \
 //              "
 //            }
 //          }
@@ -447,18 +469,16 @@ pipeline {
 //              dir('LCC') { git url: 'https://github.com/edmcouncil/LCC.git', credentialsId: 'edmcjenkins' }
 //            }
 //            unstash 'output-ontology'
-//            sh "/publisher/publish.sh book"
+//            sh "/publisher/publish.sh reference"
 //          }
 //          post {
 //            success {
-//              stash name: 'output-book', includes: 'output/fibo/book/**'
-//              archiveArtifacts artifacts: 'output/fibo/book/**/*.pdf', fingerprint: true
-//            }
-//            failure {
-//              echo 'ERROR: Couldn\'t build product: book'
+//              stash name: 'output-reference', includes: 'output/fibo/reference/**'
+//              archiveArtifacts artifacts: 'output/fibo/reference/**/*.pdf', fingerprint: true
 //            }
 //            always {
-//              archiveArtifacts artifacts: 'output/fibo/book/**/*.log', fingerprint: true
+//              archiveArtifacts artifacts: 'output/fibo/reference/**/*.log', fingerprint: true
+//              slackNotifier productName: 'Reference', buildResult: currentBuild.currentResult
 //            }
 //          }
 //        }
@@ -507,7 +527,7 @@ pipeline {
 	      unstash 'output-fibopedia'
         unstash 'output-vocabulary'
         unstash 'output-datadictionary'
-        unstash 'output-book'
+        unstash 'output-reference'
         //
         // Now after all the above is done, make sure we run the final
         // publish step which zips it all up into the target directory
@@ -585,3 +605,4 @@ pipeline {
     } // end of stage "Publish"
   } // end of stages
 } // end of pipeline
+
