@@ -7,6 +7,9 @@
 //
 // See https://jenkins.io/doc/book/pipeline/jenkinsfile/
 //
+final def gitCredentialsId = '50cac519-d41c-4765-8563-c43b7f55c877'
+final def gitRepoUrlFIBO   = 'https://github.com/edmcouncil/fibo.git'
+final def gitRepoUrlLCC    = 'https://github.com/edmcouncil/LCC.git'
 
 //
 // Send notifications to the ontology-builder slack channel
@@ -14,6 +17,8 @@
 def slackNotifier(String productName, String buildResult) {
 
   def message="Product \"${productName} was built and had status ${buildResult}: <${env.BUILD_URL}|Open ${env.JOB_NAME} ${env.BUILD_NUMBER}>"
+
+  echo "slackNotifier: ${message}"
 
   if (buildResult == "SUCCESS") {
     echo "Product ${productName} was built successfully"
@@ -103,11 +108,11 @@ pipeline {
                     ],
                     submoduleCfg: [],
                     userRemoteConfigs: [
-                            [credentialsId: '50cac519-d41c-4765-8563-c43b7f55c877', url: 'https://github.com/edmcouncil/fibo.git']
+                            [credentialsId: gitCredentialsId, url: gitRepoUrlFIBO]
                     ]
             ])
           }
-          dir('LCC') { git url: 'https://github.com/edmcouncil/LCC.git', credentialsId: '50cac519-d41c-4765-8563-c43b7f55c877' }
+          dir('LCC') { git url: gitRepoUrlLCC, credentialsId: gitCredentialsId }
         }
         //
         // Execute the publish script
@@ -155,11 +160,11 @@ pipeline {
                     ],
                     submoduleCfg: [],
                     userRemoteConfigs: [
-                            [credentialsId: '50cac519-d41c-4765-8563-c43b7f55c877', url: 'https://github.com/edmcouncil/fibo.git']
+                            [credentialsId: gitCredentialsId, url: gitRepoUrlFIBO]
                     ]
             ])
           }
-          dir('LCC') { git url: 'https://github.com/edmcouncil/LCC.git', credentialsId: '50cac519-d41c-4765-8563-c43b7f55c877' }
+          dir('LCC') { git url: gitRepoUrlLCC, credentialsId: gitCredentialsId }
         }
         //
         // Execute the publish script
@@ -167,6 +172,9 @@ pipeline {
         sh "/publisher/publish.sh ontology"
       }
       post {
+        success {
+          stash name: 'output-ontology', includes: 'output/fibo/ontology/**'
+        }
         always {
           archiveArtifacts artifacts: 'output/fibo/ontology/**/*.log', fingerprint: true
           script {
@@ -208,11 +216,11 @@ pipeline {
                         ],
                         submoduleCfg: [],
                         userRemoteConfigs: [
-                                [credentialsId: '50cac519-d41c-4765-8563-c43b7f55c877', url: 'https://github.com/edmcouncil/fibo.git']
+                                [credentialsId: gitCredentialsId, url: gitRepoUrlFIBO]
                         ]
                 ])
               }
-              dir('LCC') { git url: 'https://github.com/edmcouncil/LCC.git', credentialsId: '50cac519-d41c-4765-8563-c43b7f55c877' }
+              dir('LCC') { git url: gitRepoUrlLCC, credentialsId: gitCredentialsId }
             }
             unstash 'output-ontology'
             sh "/publisher/publish.sh widoco"
@@ -259,11 +267,11 @@ pipeline {
                         ],
                         submoduleCfg: [],
                         userRemoteConfigs: [
-                                [credentialsId: '50cac519-d41c-4765-8563-c43b7f55c877', url: 'https://github.com/edmcouncil/fibo.git']
+                                [credentialsId: gitCredentialsId, url: gitRepoUrlFIBO]
                         ]
                 ])
               }
-              dir('LCC') { git url: 'https://github.com/edmcouncil/LCC.git', credentialsId: '50cac519-d41c-4765-8563-c43b7f55c877' }
+              dir('LCC') { git url: gitRepoUrlLCC, credentialsId: gitCredentialsId }
             }
             sh "/publisher/publish.sh fibopedia"
           }
@@ -309,11 +317,11 @@ pipeline {
                         ],
                         submoduleCfg: [],
                         userRemoteConfigs: [
-                                [credentialsId: '50cac519-d41c-4765-8563-c43b7f55c877', url: 'https://github.com/edmcouncil/fibo.git']
+                                [credentialsId: gitCredentialsId, url: gitRepoUrlFIBO]
                         ]
                 ])
               }
-              dir('LCC') { git url: 'https://github.com/edmcouncil/LCC.git', credentialsId: '50cac519-d41c-4765-8563-c43b7f55c877' }
+              dir('LCC') { git url: gitRepoUrlLCC, credentialsId: gitCredentialsId }
             }
             unstash 'output-ontology'
             sh "/publisher/publish.sh glossary"
@@ -360,11 +368,11 @@ pipeline {
                         ],
                         submoduleCfg: [],
                         userRemoteConfigs: [
-                                [credentialsId: '50cac519-d41c-4765-8563-c43b7f55c877', url: 'https://github.com/edmcouncil/fibo.git']
+                                [credentialsId: gitCredentialsId, url: gitRepoUrlFIBO]
                         ]
                 ])
               }
-              dir('LCC') { git url: 'https://github.com/edmcouncil/LCC.git', credentialsId: '50cac519-d41c-4765-8563-c43b7f55c877' }
+              dir('LCC') { git url: gitRepoUrlLCC, credentialsId: gitCredentialsId }
             }
             unstash 'output-ontology'
             sh "/publisher/publish.sh vocabulary"
@@ -411,11 +419,11 @@ pipeline {
                         ],
                         submoduleCfg: [],
                         userRemoteConfigs: [
-                                [credentialsId: '50cac519-d41c-4765-8563-c43b7f55c877', url: 'https://github.com/edmcouncil/fibo.git']
+                                [credentialsId: gitCredentialsId, url: gitRepoUrlFIBO]
                         ]
                 ])
               }
-              dir('LCC') { git url: 'https://github.com/edmcouncil/LCC.git', credentialsId: '50cac519-d41c-4765-8563-c43b7f55c877' }
+              dir('LCC') { git url: gitRepoUrlLCC, credentialsId: gitCredentialsId }
             }
             unstash 'output-ontology'
             sh "/publisher/publish.sh datadictionary"
@@ -462,11 +470,11 @@ pipeline {
 //                        ],
 //                        submoduleCfg: [],
 //                        userRemoteConfigs: [
-//                                [credentialsId: '50cac519-d41c-4765-8563-c43b7f55c877', url: 'https://github.com/edmcouncil/fibo.git']
+//                                [credentialsId: gitCredentialsId, url: gitRepoUrlFIBO]
 //                        ]
 //                ])
 //              }
-//              dir('LCC') { git url: 'https://github.com/edmcouncil/LCC.git', credentialsId: '50cac519-d41c-4765-8563-c43b7f55c877' }
+//              dir('LCC') { git url: gitRepoUrlLCC, credentialsId: gitCredentialsId }
 //            }
 //            unstash 'output-ontology'
 //            sh "/publisher/publish.sh reference"
@@ -515,11 +523,13 @@ pipeline {
                     ],
                     submoduleCfg: [],
                     userRemoteConfigs: [
-                            [credentialsId: '50cac519-d41c-4765-8563-c43b7f55c877', url: 'https://github.com/edmcouncil/fibo.git']
+                            [credentialsId: gitCredentialsId, url: gitRepoUrlFIBO]
                     ]
             ])
           }
-          dir('LCC') { git url: 'https://github.com/edmcouncil/LCC.git', credentialsId: '50cac519-d41c-4765-8563-c43b7f55c877' }
+          dir('LCC') {
+            git url: gitRepoUrlLCC, credentialsId: gitCredentialsId
+          }
         }
         unstash 'output-ontology'
         unstash 'output-widoco'
@@ -527,7 +537,7 @@ pipeline {
 	      unstash 'output-fibopedia'
         unstash 'output-vocabulary'
         unstash 'output-datadictionary'
-        unstash 'output-reference'
+//      unstash 'output-reference'
         //
         // Now after all the above is done, make sure we run the final
         // publish step which zips it all up into the target directory
