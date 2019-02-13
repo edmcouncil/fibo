@@ -32,8 +32,8 @@
 		<dct:abstract>This ontology provides definitions of date and schedule concepts for use in other FIBO ontologies.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
 		<sm:contentLanguage rdf:datatype="&xsd;anyURI">http://www.w3.org/standards/techs/owl#w3c_all</sm:contentLanguage>
-		<sm:copyright>Copyright (c) 2014-2018 EDM Council, Inc.</sm:copyright>
-		<sm:copyright>Copyright (c) 2014-2018 Object Management Group, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2014-2019 EDM Council, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2014-2019 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Arrangements/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/Places/Locations/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/</sm:dependsOn>
@@ -44,9 +44,10 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Places/Locations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20180801/DatesAndTimes/FinancialDates/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20190201/DatesAndTimes/FinancialDates/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20141101/DatesAndTimes/FinancialDates/ version of this ontology was revised by the FIBO FND 1.2 RTF in order to introduce the definition of a time interval, which is a location, to ground some of the concepts such as a date period, and duration as well as to support the definition of business recurrence intervals for use in parametric schedules for securities.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20170201/DatesAndTimes/FinancialDates/ version of this ontology was revised by the FIBO 2.0 RFC in order to introduce the definition of a time instant, to eliminate a reasoning issue with relative dates, and remove a circular dependency inadvertently incorporated in the ontology with a FIBO FND 1.2 modification.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20180801/DatesAndTimes/FinancialDates/ version of this ontology was revised to introduce a composite date datatype to allow for cases whereby the representation of a date for certain purposes, such as GLEIF LEI data, is inconsistent, and to facilitate mapping FIBO to multiple data sources in user environments.</skos:changeNote>
 		<skos:changeNote>This ontology was added to Foundations in advance of the December 2014 Long Beach meeting in support of the SEC specification.  It is also needed to provide temporal relationships for Ownership and Control.
 
 These three ontologies are designed for use together:
@@ -58,6 +59,10 @@ These three ontologies are designed for use together:
 They are modularized this way to minimize the ontological committments that are imposed upon ontologies that rely upon them.  Ontologies can import FinancialDates alone, or FinancialDates + BusinessDates, or FinancialDates + Occurrences, or all three together.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
+	
+	<owl:DatatypeProperty rdf:about="&fibo-fnd-arr-arr;hasObservedDateTime">
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;CombinedDateTime"/>
+	</owl:DatatypeProperty>
 	
 	<owl:Class rdf:about="&fibo-fnd-dt-fd;AdHocSchedule">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-fd;Schedule"/>
@@ -167,6 +172,25 @@ The nth day is an ordinal number, not a cardinal number. &apos;1&apos; means the
 		<sm:normativeReference>ISO 8601 clause 2.2.13</sm:normativeReference>
 		<skos:definition>cyclic time interval in a calendar which is required for one revolution of the Earth around the Sun and approximated to an integral number of calendar days; a year in the Gregorian calendar</skos:definition>
 	</owl:NamedIndividual>
+	
+	<rdfs:Datatype rdf:about="&fibo-fnd-dt-fd;CombinedDateTime">
+		<rdfs:label>combined date time</rdfs:label>
+		<owl:equivalentClass>
+			<rdfs:Datatype>
+				<owl:unionOf rdf:parseType="Collection">
+					<rdf:Description rdf:about="&xsd;string">
+					</rdf:Description>
+					<rdf:Description rdf:about="&xsd;dateTime">
+					</rdf:Description>
+					<rdf:Description rdf:about="&xsd;dateTimeStamp">
+					</rdf:Description>
+				</owl:unionOf>
+			</rdfs:Datatype>
+		</owl:equivalentClass>
+		<skos:definition>datatype that maps to several base types for dates and times, providing representation options where needed</skos:definition>
+		<skos:scopeNote>There are many cases where the representation of a date may or may not include a time, and where the underlying data representation varies.  This composite datatype should only be used in cases where a standard representation using one of the options in the union for date or date and time value specification does not work.</skos:scopeNote>
+		<fibo-fnd-utl-av:usageNote>Valid values must use the ISO 8601 representation for a date, or the corresponding XML Schema Datatypes representation for a date and time, or date and time including the time zone.</fibo-fnd-utl-av:usageNote>
+	</rdfs:Datatype>
 	
 	<owl:Class rdf:about="&fibo-fnd-dt-fd;Date">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-fd;TimeInstant"/>
