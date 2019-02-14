@@ -187,7 +187,6 @@ pipeline {
           steps {
             dir('input') {
               dir('fibo') {
-//          checkout scm
                 checkout([
                         $class: 'GitSCM',
                         branches: scm.branches,
@@ -238,7 +237,6 @@ pipeline {
           steps {
             dir('input') {
               dir('fibo') {
-//          checkout scm
                 checkout([
                         $class: 'GitSCM',
                         branches: scm.branches,
@@ -288,7 +286,6 @@ pipeline {
           steps {
             dir('input') {
               dir('fibo') {
-//          checkout scm
                 checkout([
                         $class: 'GitSCM',
                         branches: scm.branches,
@@ -339,7 +336,6 @@ pipeline {
           steps {
             dir('input') {
               dir('fibo') {
-//          checkout scm
                 checkout([
                         $class: 'GitSCM',
                         branches: scm.branches,
@@ -390,7 +386,6 @@ pipeline {
           steps {
             dir('input') {
               dir('fibo') {
-//          checkout scm
                 checkout([
                         $class: 'GitSCM',
                         branches: scm.branches,
@@ -426,57 +421,57 @@ pipeline {
             }
           }
         }
-        stage("Build Reference") {
-          agent {
-            docker {
-              image env.ONTPUB_IMAGE
-              label 'docker'
-              alwaysPull true
-              args  "\
-                --network none \
-                --name ontology-publisher-${env.BUILD_NUMBER}-reference \
-              "
-            }
-          }
-          steps {
-            dir('input') {
-              dir('fibo') {
-                checkout([
-                        $class: 'GitSCM',
-                        branches: scm.branches,
-                        doGenerateSubmoduleConfigurations: false,
-                        extensions: [
-                                [$class: 'LocalBranch', localBranch: '**'],
-                                [$class: 'CheckoutOption', timeout: 1],
-                                [$class: 'CloneOption', depth: 2, noTags: false, reference: '/var/lib/git/fibo', shallow: true, timeout: 1],
-                                [$class: 'AuthorInChangelog'],
-                                [$class: 'PruneStaleBranch'],
-                                [$class: 'IgnoreNotifyCommit']
-                        ],
-                        submoduleCfg: [],
-                        userRemoteConfigs: [
-                                [credentialsId: gitCredentialsId, url: gitRepoUrlFIBO]
-                        ]
-                ])
-              }
-              dir('LCC') { git url: gitRepoUrlLCC, credentialsId: gitCredentialsId }
-            }
-            unstash 'output-ontology'
-            sh "/publisher/publish.sh reference"
-          }
-          post {
-            success {
-              stash name: 'output-reference', includes: 'output/fibo/reference/**'
-              archiveArtifacts artifacts: 'output/fibo/reference/**/*.pdf', fingerprint: true
-            }
-            always {
-              archiveArtifacts artifacts: 'output/fibo/reference/**/*.log', fingerprint: true
-              script {
-                modules.slack.notifyStage(STAGE_NAME, currentBuild.currentResult)
-              }
-            }
-          }
-        }
+//        stage("Build Reference") {
+//          agent {
+//            docker {
+//              image env.ONTPUB_IMAGE
+//              label 'docker'
+//              alwaysPull true
+//              args  "\
+//                --network none \
+//                --name ontology-publisher-${env.BUILD_NUMBER}-reference \
+//              "
+//            }
+//          }
+//          steps {
+//            dir('input') {
+//              dir('fibo') {
+//                checkout([
+//                        $class: 'GitSCM',
+//                        branches: scm.branches,
+//                        doGenerateSubmoduleConfigurations: false,
+//                        extensions: [
+//                                [$class: 'LocalBranch', localBranch: '**'],
+//                                [$class: 'CheckoutOption', timeout: 1],
+//                                [$class: 'CloneOption', depth: 2, noTags: false, reference: '/var/lib/git/fibo', shallow: true, timeout: 1],
+//                                [$class: 'AuthorInChangelog'],
+//                                [$class: 'PruneStaleBranch'],
+//                                [$class: 'IgnoreNotifyCommit']
+//                        ],
+//                        submoduleCfg: [],
+//                        userRemoteConfigs: [
+//                                [credentialsId: gitCredentialsId, url: gitRepoUrlFIBO]
+//                        ]
+//                ])
+//              }
+//              dir('LCC') { git url: gitRepoUrlLCC, credentialsId: gitCredentialsId }
+//            }
+//            unstash 'output-ontology'
+//            sh "/publisher/publish.sh reference"
+//          }
+//          post {
+//            success {
+//              stash name: 'output-reference', includes: 'output/fibo/reference/**'
+//              archiveArtifacts artifacts: 'output/fibo/reference/**/*.pdf', fingerprint: true
+//            }
+//            always {
+//              archiveArtifacts artifacts: 'output/fibo/reference/**/*.log', fingerprint: true
+//              script {
+//                modules.slack.notifyStage(STAGE_NAME, currentBuild.currentResult)
+//              }
+//            }
+//          }
+//        }
       }
     } // end of stage 'Build Other Products'
 
