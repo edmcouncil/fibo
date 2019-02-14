@@ -38,8 +38,8 @@
 		<dct:abstract>This ontology extends definitions of date and schedule concepts from the FinancialDates ontology with concepts defining occurrences (i.e., event-related concepts) for use in other FIBO ontologies.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
 		<sm:contentLanguage rdf:datatype="&xsd;anyURI">http://www.w3.org/standards/techs/owl#w3c_all</sm:contentLanguage>
-		<sm:copyright>Copyright (c) 2014-2018 EDM Council, Inc.</sm:copyright>
-		<sm:copyright>Copyright (c) 2014-2018 Object Management Group, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2014-2019 EDM Council, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2014-2019 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">http://www.omg.org/spec/LCC/Countries/CountryRepresentation/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Arrangements/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/BusinessDates/</sm:dependsOn>
@@ -56,8 +56,9 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Places/Locations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20180801/DatesAndTimes/Occurrences/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20190201/DatesAndTimes/Occurrences/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20141101/DatesAndTimes/Occurrences/ version of this ontology was revised to address the issue resolutions in the FIBO 2.0 RFC, primarily to add properties that are relevant to the inputs and outputs from processes, events, systems and the like.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20180801/DatesAndTimes/Occurrences/ version of this ontology was revised to make use of the new composite date type added to Financial Dates.</skos:changeNote>
 		<skos:changeNote>This ontology was added to Foundations in advance of the December 2014 Long Beach meeting in support of the SEC specification.  It is also needed to provide temporal relationships for Ownership and Control.
 
 These three ontologies are designed for use together:
@@ -146,18 +147,12 @@ They are modularized this way to minimize the ontological committments that are 
 					</owl:Restriction>
 					<owl:Restriction>
 						<owl:onProperty rdf:resource="&fibo-fnd-dt-oc;hasEventDate"/>
-						<owl:onDataRange>
-							<rdfs:Datatype>
-								<owl:unionOf rdf:parseType="Collection">
-									<rdf:Description rdf:about="&xsd;string">
-									</rdf:Description>
-									<rdf:Description rdf:about="&xsd;dateTime">
-									</rdf:Description>
-									<rdf:Description rdf:about="&xsd;dateTimeStamp">
-									</rdf:Description>
-								</owl:unionOf>
-							</rdfs:Datatype>
-						</owl:onDataRange>
+						<owl:onClass rdf:resource="&fibo-fnd-dt-fd;Date"/>
+						<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+					</owl:Restriction>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&fibo-fnd-dt-oc;hasEventDateValue"/>
+						<owl:onDataRange rdf:resource="&fibo-fnd-dt-fd;CombinedDateTime"/>
 						<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 					</owl:Restriction>
 				</owl:unionOf>
@@ -226,21 +221,17 @@ They are modularized this way to minimize the ontological committments that are 
 		<skos:definition>a textual description of something</skos:definition>
 	</owl:DatatypeProperty>
 	
-	<owl:DatatypeProperty rdf:about="&fibo-fnd-dt-oc;hasEventDate">
+	<owl:ObjectProperty rdf:about="&fibo-fnd-dt-oc;hasEventDate">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDate"/>
 		<rdfs:label>has event date</rdfs:label>
-		<rdfs:range>
-			<rdfs:Datatype>
-				<owl:unionOf rdf:parseType="Collection">
-					<rdf:Description rdf:about="&xsd;string">
-					</rdf:Description>
-					<rdf:Description rdf:about="&xsd;dateTime">
-					</rdf:Description>
-					<rdf:Description rdf:about="&xsd;dateTimeStamp">
-					</rdf:Description>
-				</owl:unionOf>
-			</rdfs:Datatype>
-		</rdfs:range>
-		<skos:definition>the date or date and time associated with an event (occurrence)</skos:definition>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Date"/>
+		<skos:definition>identifies a date associated with an event (occurrence)</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:DatatypeProperty rdf:about="&fibo-fnd-dt-oc;hasEventDateValue">
+		<rdfs:label>has event date value</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;CombinedDateTime"/>
+		<skos:definition>identifies a date or date and time value associated with an event (occurrence)</skos:definition>
 	</owl:DatatypeProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-dt-oc;hasInput">
