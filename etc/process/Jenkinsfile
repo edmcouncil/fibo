@@ -44,56 +44,56 @@ properties([
 
 node {
   ansiColor('xterm') {
-    //
-    // First load the library of vars/*.groovy files from the /etc/process/vars directory in the fibo repo.
-    // Do this on the master itself, no need to run this in a docker container on a slave, it's a light weight
-    // process.
-    //
-    node('master') { // load library
-      try {
-        dir('input/fibo') {
-          checkout([
-                  $class: 'GitSCM',
-                  branches: scm.branches,
-                  doGenerateSubmoduleConfigurations: false,
-                  submoduleCfg: [],
-                  extensions: scm.extensions + [
-                          [$class: 'LocalBranch', localBranch: '**'],
-                          [$class: 'CheckoutOption', timeout: 1],
-                          [$class: 'IgnoreNotifyCommit'],
-                          [$class: 'WipeWorkspace'],
-                          [$class: 'SparseCheckoutPaths',  sparseCheckoutPaths: [
-                                  [$class:'SparseCheckoutPath', path:'etc/process/']
-                          ]]
-                  ],
-                  userRemoteConfigs: scm.userRemoteConfigs
-          ])
+    stage('Setup') {
+      //
+      // First load the library of vars/*.groovy files from the /etc/process/vars directory in the fibo repo.
+      // Do this on the master itself, no need to run this in a docker container on a slave, it's a light weight
+      // process.
+      //
+      node('master') { // load library
+        try {
+          dir('input/fibo') {
+            checkout([
+              $class                           : 'GitSCM',
+              branches                         : scm.branches,
+              doGenerateSubmoduleConfigurations: false,
+              submoduleCfg                     : [],
+              extensions                       : scm.extensions + [
+                [$class: 'LocalBranch', localBranch: '**'],
+                [$class: 'CheckoutOption', timeout: 1],
+                [$class: 'IgnoreNotifyCommit'],
+                [$class: 'WipeWorkspace'],
+                [$class: 'SparseCheckoutPaths', sparseCheckoutPaths: [
+                  [$class: 'SparseCheckoutPath', path: 'etc/process/']
+                ]]
+              ],
+              userRemoteConfigs                : scm.userRemoteConfigs
+            ])
+          }
+          def repoPath = 'input/fibo/etc/process'
+          // create new git repo inside jenkins subdirectory
+          dir(repoPath) {
+            sh returnStdout: false, script: '''
+              set +x
+              rm -rf .git >/dev/null 2>&1 || true
+              git init 
+              git add --all .
+              git config --local user.name "jenkins"
+              git config --local user.email jenkins@edmcouncil.org
+              git commit -m init || true
+              git ls-tree -r master --name-only || true
+            '''
+            library(identifier: 'local-lib@master', retriever: modernSCM([$class: 'GitSCMSource', remote: "${env.WORKSPACE}/${repoPath}"])) _
+          }
+          initScript.isLoaded()
+        } catch (e) {
+          echo "Some error occurred during init stage: ${e}"
+          throw e
         }
-        def repoPath = 'input/fibo/etc/process'
-        // create new git repo inside jenkins subdirectory
-        dir(repoPath) {
-          sh returnStdout: false, script: '''
-            set +x
-            rm -rf .git >/dev/null 2>&1 || true
-            git init 
-            git add --all .
-            git config --local user.name "jenkins"
-            git config --local user.email jenkins@edmcouncil.org
-            git commit -m init || true
-            git ls-tree -r master --name-only || true
-          '''
-          def repoPathFull = "${env.WORKSPACE}/${repoPath}"
-          echo "repoPathFull=${repoPathFull}"
-          library(identifier: 'local-lib@master', retriever: modernSCM([$class: 'GitSCMSource', remote: repoPathFull])) _
-        }
-        initScript.isLoaded()
-      } catch(e) {
-        echo "Some error occurred during init stage: ${e}"
-        throw e
+        echo "All good to go"
       }
-      echo "All good to go"
     }
-
+    
     publishScript.hygiene().call()
 
     publishScript.product('ontology').call()
@@ -158,5 +158,5 @@ node {
         }
       } // end of node('master')
     } // end of stage "Publish"
-  }
+  } // end of ansiColor('xterm')
 }
