@@ -9,7 +9,7 @@ def init() {
   mainSlackMessageObject = slackSend(
     color: "good",
     message: "Started build <${env.BUILD_URL}|Build #${env.BUILD_NUMBER}> on branch ${env.JOB_NAME}",
-    botUser: true,
+    botUser: false,
     baseUrl: null,
     teamDomain: 'fibo-edmc'
   )
@@ -34,9 +34,11 @@ def send(String color, String message) {
   slackSend color: color, message: message, channel: mainSlackMessageObject.threadId, botUser: true
 }
 
-def notifyStage(String stage, String buildResult) {
+def notifyStage() {
 
-  def message="Stage \"${stage}\" finished with status ${buildResult} in <${env.BUILD_URL}|Build #${env.BUILD_NUMBER}> on branch ${env.JOB_NAME}"
+  String buildResult = currentBuild.currentResult
+
+  def message="Stage \"${STAGE_NAME}\" finished with status ${buildResult} in <${env.BUILD_URL}|Build #${env.BUILD_NUMBER}> on branch ${env.JOB_NAME}"
 
   if (buildResult == "SUCCESS") {
     echo "${message}"
@@ -56,4 +58,4 @@ def notifyStage(String stage, String buildResult) {
   }
 }
 
-return this;
+return this

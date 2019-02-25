@@ -1,0 +1,35 @@
+prefix ex:    <http://www.example.org/time#>
+prefix sp:    <http://spinrdf.org/sp#>
+prefix sm:    <http://www.omg.org/techprocess/ab/SpecificationMetadata/>
+prefix afn:   <http://jena.apache.org/ARQ/function#>
+prefix dct:   <http://purl.org/dc/terms/>
+prefix owl:   <http://www.w3.org/2002/07/owl#>
+prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix xsd:   <http://www.w3.org/2001/XMLSchema#>
+prefix spin:  <http://spinrdf.org/spin#>
+prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+prefix fibo-ind-ir-ir: <http://spec.edmcouncil.org/fibo/IND/InterestRates/InterestRates/>
+prefix fibo-fnd-utl-av: <https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/>
+prefix fibo-fnd-pty-rl: <http://spec.edmcouncil.org/fibo/FND/Parties/Roles/>
+prefix fibo-fnd-aap-agt: <http://spec.edmcouncil.org/fibo/FND/AgentsAndPeople/Agents/>
+prefix fibo-fnd-rel-rel: <https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/>
+prefix fibo-der-drc-swp: <http://spec.edmcouncil.org/fibo/DER/DerivativesContracts/Swaps/>
+prefix fibo-test-lattice: <http://www.omg.org/spec/fibo/etc/testing/patterns/lattice#>
+prefix fibo-der-rtd-irswp: <http://spec.edmcouncil.org/fibo/DER/RateDerivatives/IRSwaps/>
+
+##
+# banner If we refer to something, it should have a type
+
+SELECT DISTINCT ?error
+WHERE {
+  ?s ?p ?o .
+  FILTER (ISIRI (?o))
+  FILTER (REGEX (xsd:string (?o), "edmcouncil"))
+  FILTER NOT EXISTS {?o a []}
+  FILTER (! (?p IN (owl:versionIRI, sm:dependsOn , owl:imports , sm:specificationVersionURL,
+                    rdfs:seeAlso, dct:isPartOf, fibo-fnd-rel-rel:isPartOf, fibo-fnd-rel-rel:hasPart, dct:hasPart))) 
+  BIND (
+    concat ("ERROR:", xsd:string (?o), " is referenced by ", afn:localname (?p), " but has no type.")
+	  AS ?error
+	)
+}

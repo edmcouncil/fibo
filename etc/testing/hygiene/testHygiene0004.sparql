@@ -1,4 +1,3 @@
-prefix fibo-fnd-rel-rel: <https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/> 
 prefix fibo-der-rtd-irswp: <http://spec.edmcouncil.org/fibo/DER/RateDerivatives/IRSwaps/> 
 prefix fibo-der-drc-swp: <http://spec.edmcouncil.org/fibo/DER/DerivativesContracts/Swaps/> 
 prefix fibo-ind-ir-ir: <http://spec.edmcouncil.org/fibo/IND/InterestRates/InterestRates/> 
@@ -13,21 +12,28 @@ prefix fibo-test-lattice: <http://www.omg.org/spec/fibo/etc/testing/patterns/lat
 prefix fibo-fnd-aap-agt: <http://spec.edmcouncil.org/fibo/FND/AgentsAndPeople/Agents/> 
 prefix fibo-fnd-pty-rl: <http://spec.edmcouncil.org/fibo/FND/Parties/Roles/>
 prefix afn: <http://jena.apache.org/ARQ/function#>
-prefix fibo-fnd-utl-av: <https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/>
 prefix sm: <http://www.omg.org/techprocess/ab/SpecificationMetadata/>
-prefix dct: <http://purl.org/dc/terms/> 
+prefix skos: <http://www.w3.org/2004/02/skos/core#>
+prefix dct: <http://purl.org/dc/terms/>
+prefix fibo-fnd-utl-av:  <https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/>
 
 ##
-# banner If we refer to something, it should have a type. 
+# banner Every Class and Property defined in FIBO must have a rdfs:label and skos:definition
 
 SELECT DISTINCT ?error
 WHERE {
-  ?s ?p ?o .
-  FILTER (ISIRI (?o))
-  FILTER (REGEX (xsd:string (?o), "edmcouncil"))
-  FILTER NOT EXISTS {?o a []}
-  FILTER (! (?p IN (owl:versionIRI, sm:dependsOn , owl:imports , sm:specificationVersionURL,
-                    rdfs:seeAlso, dct:isPartOf, fibo-fnd-rel-rel:isPartOf, fibo-fnd-rel-rel:hasPart, dct:hasPart))) 
-BIND (concat ("ERROR:", xsd:string (?o), " is referenced by ", afn:localname (?p), " but has no type.")
-	  AS ?error)
- } 
+  ?e a ?c .
+  FILTER (REGEX (xsd:string (?e), "edmcouncil"))
+  FILTER NOT EXISTS {
+    ?e owl:deprecated "true"^^xsd:boolean
+  }
+  FILTER (?c in (owl:Class,
+          owl:ObjectProperty,
+          owl:AnnotationProperty,
+          owl:DatatypeProperty))
+  FILTER NOT EXISTS {
+    ?e rdfs:label | fibo-fnd-utl-av:abbreviation ?l  ;
+          skos:definition ?def .
+  }
+  BIND (concat ("WARN: ", xsd:string(?e), " has to have label and definition.") AS ?error)
+}
