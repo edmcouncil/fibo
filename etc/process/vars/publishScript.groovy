@@ -38,7 +38,7 @@ def product(String product) {
 //
 // Return the stage object that runs the publish action
 //
-def publish() {
+def publish(String[] derivedProducts) {
 
   return dockerScript.runInOntologyPublisherContainer(
     shortStageName: 'publish',
