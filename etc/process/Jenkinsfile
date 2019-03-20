@@ -134,7 +134,7 @@ node {
 
             echo "Copy all generated content to ${NGINX_SPEC_ROOT}:"
             sh '''
-              cp -vr . ${NGINX_SPEC_ROOT}/ > published-files.log 2>&1 || true
+              cp -vr . ${NGINX_SPEC_ROOT}/ > ../published-files.log 2>&1 || true
               rc=$?
               if ((rc == 0)); then
                 echo "Successfully copied all files to destination, see published-files.log in the workspace"
@@ -145,7 +145,11 @@ node {
               fi
             '''
           }
-
+          //
+          // Archive all log files (including published-files.log) so that they can easily be viewed from the
+          // Jenkins job page
+          //
+          archiveArtifacts artifacts: '**/*.log', allowEmptyArchive: true
           //
         } catch (e) {
           currentBuild.result = "FAILURE"
