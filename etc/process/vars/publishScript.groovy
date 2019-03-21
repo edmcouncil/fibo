@@ -38,12 +38,12 @@ def product(String product) {
 //
 // Return the stage object that runs the publish action
 //
-def publish() {
+def publish(String[] derivedProducts) {
 
   return dockerScript.runInOntologyPublisherContainer(
     shortStageName: 'publish',
     longStageName: 'Build Final Content',
-    unstashOutputDirs: (derivedProducts << 'ontology')
+    unstashOutputDirs: (derivedProducts - 'ontology')
   ) {
     //
     // Now after all the above is done, make sure we run the final
@@ -55,10 +55,10 @@ def publish() {
     //
     dir('output') {
       stash([
-              name              : 'publishable-output',
-              includes          : '**',
-              excludes          : '**/.git, **/.gitignore, **/.log, **/temp*, **/node_modules, **/build',
-              useDefaultExcludes: true
+        name              : 'publishable-output',
+        includes          : '**',
+        excludes          : '**/.git, **/.gitignore, **/.log, **/temp*, **/node_modules, **/build',
+        useDefaultExcludes: true
       ])
     }
   }

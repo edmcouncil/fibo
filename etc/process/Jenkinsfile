@@ -105,7 +105,7 @@ node {
       parallel(parallelStages)
     }
 
-    publishScript.publish().call()
+    publishScript.publish(derivedProducts).call()
 
     //
     // Run the publish on the master jenkins agent by just copying all the generated artifacts right into the workspace
@@ -119,7 +119,7 @@ node {
         try {
 
           echo "Cleaning workspace:"
-          sh 'rm -rf .* * || true'
+          sh 'rm -rf ${WORKSPACE}/* || true'
           echo "Done cleaning"
 
           sh 'test -d ${NGINX_SPEC_ROOT}'
@@ -134,7 +134,7 @@ node {
 
             echo "Copy all generated content to ${NGINX_SPEC_ROOT}:"
             sh '''
-              cp -vr . ${NGINX_SPEC_ROOT}/ > published-files.log 2>&1 || true
+              cp -vr . ${NGINX_SPEC_ROOT}/ > ../published-files.log 2>&1 || true
               rc=$?
               if ((rc == 0)); then
                 echo "Successfully copied all files to destination, see published-files.log in the workspace"
@@ -145,16 +145,20 @@ node {
               fi
             '''
           }
-
+          //
+          // Archive all log files (including published-files.log) so that they can easily be viewed from the
+          // Jenkins job page
+          //
+          archiveArtifacts artifacts: '**/*.log', allowEmptyArchive: true
           //
         } catch (e) {
           currentBuild.result = "FAILURE"
           echo "Failed the \"${STAGE_NAME}\" stage: ${e}"
-          pullRequestStatus("Publish stage failed")
+          gitScript.pullRequestStatus("Publish stage failed")
           throw e
         } finally {
           slackScript.notifyStage()
-          pullRequestStatus("Publish stage was successful")
+          gitScript.pullRequestStatus("Publish stage was successful")
         }
       } // end of node('master')
     } // end of stage "Publish"
