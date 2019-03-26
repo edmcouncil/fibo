@@ -114,6 +114,34 @@
 	<owl:Class rdf:about="&fibo-be-le-lp;LegalEntity">
 		<rdfs:subClassOf>
 			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-fct-breg;hasEntityExpirationReason"/>
+				<owl:onClass rdf:resource="&fibo-fbc-fct-breg;EntityExpirationReason"/>
+				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-fct-breg;hasEntityStatus"/>
+				<owl:onClass rdf:resource="&fibo-fbc-fct-breg;EntityStatus"/>
+				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-fct-breg;hasEntityExpirationDate"/>
+				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+				<owl:onDataRange rdf:resource="&fibo-fnd-dt-fd;CombinedDateTime"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-pas-fpas;precedes"/>
+				<owl:onClass rdf:resource="&fibo-be-le-lp;LegalEntity"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isClassifiedBy"/>
 				<owl:onClass rdf:resource="&fibo-fbc-fct-breg;NorthAmericanIndustryClassificationSystemCode"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
@@ -780,7 +808,6 @@ NAICS was developed under the auspices of the Office of Management and Budget (O
 	<owl:DatatypeProperty rdf:about="&fibo-fbc-fct-breg;hasAddressLine1">
 		<rdfs:label>has address line 1</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fnd-plc-adr;PhysicalAddress"/>
-		<rdfs:range rdf:resource="&xsd;string"/>
 		<skos:definition>the first line of the street address</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
 	</owl:DatatypeProperty>
@@ -788,7 +815,6 @@ NAICS was developed under the auspices of the Office of Management and Budget (O
 	<owl:DatatypeProperty rdf:about="&fibo-fbc-fct-breg;hasAddressLine2">
 		<rdfs:label>has address line 2</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fnd-plc-adr;PhysicalAddress"/>
-		<rdfs:range rdf:resource="&xsd;string"/>
 		<skos:definition>the second line of the street address</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
 	</owl:DatatypeProperty>
@@ -796,7 +822,6 @@ NAICS was developed under the auspices of the Office of Management and Budget (O
 	<owl:DatatypeProperty rdf:about="&fibo-fbc-fct-breg;hasAddressLine3">
 		<rdfs:label>has address line 3</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fnd-plc-adr;PhysicalAddress"/>
-		<rdfs:range rdf:resource="&xsd;string"/>
 		<skos:definition>the third line of the street address</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:explanatoryNote>This element SHALL be omitted if address line 2 is omitted.</fibo-fnd-utl-av:explanatoryNote>
@@ -805,16 +830,28 @@ NAICS was developed under the auspices of the Office of Management and Budget (O
 	<owl:DatatypeProperty rdf:about="&fibo-fbc-fct-breg;hasAddressLine4">
 		<rdfs:label>has address line 4</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fnd-plc-adr;PhysicalAddress"/>
-		<rdfs:range rdf:resource="&xsd;string"/>
 		<skos:definition>the fourth line of the street address</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:explanatoryNote>This element SHALL be omitted if address line 3 is omitted.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:DatatypeProperty>
 	
+	<owl:DatatypeProperty rdf:about="&fibo-fbc-fct-breg;hasAddressNumber">
+		<rdfs:label>has address number</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fnd-plc-adr;PhysicalAddress"/>
+		<skos:definition>an optional, additional structured version of an external house number, or range of numbers, contained in one of the address line elements</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
+	</owl:DatatypeProperty>
+	
+	<owl:DatatypeProperty rdf:about="&fibo-fbc-fct-breg;hasAddressNumberWithinBuilding">
+		<rdfs:label>has address number within building</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fnd-plc-adr;PhysicalAddress"/>
+		<skos:definition>an optional, additional structured version of an internal location number, or range of numbers, contained in one of the address line elements</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
+	</owl:DatatypeProperty>
+	
 	<owl:DatatypeProperty rdf:about="&fibo-fbc-fct-breg;hasAlternativeLanguageLegalName">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;hasLegalName"/>
 		<rdfs:label>has alternative language legal name</rdfs:label>
-		<rdfs:range rdf:resource="&xsd;string"/>
 		<skos:definition>a registered legal name for the entity in an alternative language used in the legal jurisdiction in which the entity is registered</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
 	</owl:DatatypeProperty>
@@ -822,14 +859,12 @@ NAICS was developed under the auspices of the Office of Management and Budget (O
 	<owl:DatatypeProperty rdf:about="&fibo-fbc-fct-breg;hasAutomaticallyTransliteratedLegalName">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fbc-fct-breg;hasTransliteratedLegalName"/>
 		<rdfs:label>has automatically transliterated legal name</rdfs:label>
-		<rdfs:range rdf:resource="&xsd;string"/>
 		<skos:definition>an auto-generated ASCII-transliterated representation of the legal name for the entity</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
 	</owl:DatatypeProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-fbc-fct-breg;hasCity">
 		<rdfs:label>has city</rdfs:label>
-		<rdfs:range rdf:resource="&xsd;string"/>
 		<skos:definition>the name of the city</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:usageNote>This property should be used in cases where a formal individual for the business center or municipality is not available.  Note that Geonames could be used as a source in addition to FIBO, however, in cases where an individual is desired.</fibo-fnd-utl-av:usageNote>
@@ -881,6 +916,12 @@ NAICS was developed under the auspices of the Office of Management and Budget (O
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
 	</owl:DatatypeProperty>
 	
+	<owl:DatatypeProperty rdf:about="&fibo-fbc-fct-breg;hasMailRouting">
+		<rdfs:label>has mail routing</rdfs:label>
+		<skos:definition>an optional, free text address line to hold content from other address lines containing explicit routing information (this elements&apos;s presence indicates that this address is a routing / &apos;care of&apos; address)</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
+	</owl:DatatypeProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-fct-breg;hasMunicipality">
 		<rdfs:label>has municipality</rdfs:label>
 		<rdfs:range rdf:resource="&fibo-fnd-plc-cty;Municipality"/>
@@ -890,7 +931,6 @@ NAICS was developed under the auspices of the Office of Management and Budget (O
 	<owl:DatatypeProperty rdf:about="&fibo-fbc-fct-breg;hasPostalCode">
 		<rdfs:label>has postal code</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fnd-plc-adr;PhysicalAddress"/>
-		<rdfs:range rdf:resource="&xsd;string"/>
 		<skos:definition>the postal code of this address as specified by the local postal service</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
 	</owl:DatatypeProperty>
@@ -898,7 +938,6 @@ NAICS was developed under the auspices of the Office of Management and Budget (O
 	<owl:DatatypeProperty rdf:about="&fibo-fbc-fct-breg;hasPreferredTransliteratedLegalName">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fbc-fct-breg;hasTransliteratedLegalName"/>
 		<rdfs:label>has preferred transliterated legal name</rdfs:label>
-		<rdfs:range rdf:resource="&xsd;string"/>
 		<skos:definition>a preferred ASCII-transliterated representation of the legal name for the entity</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
 	</owl:DatatypeProperty>
@@ -907,7 +946,6 @@ NAICS was developed under the auspices of the Office of Management and Budget (O
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;hasLegalName"/>
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;wasFormerlyKnownAs"/>
 		<rdfs:label>has prior legal name</rdfs:label>
-		<rdfs:range rdf:resource="&xsd;string"/>
 		<skos:definition>a primary legal name that was used previously for the entity</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
 	</owl:DatatypeProperty>
@@ -931,7 +969,6 @@ NAICS was developed under the auspices of the Office of Management and Budget (O
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-aap-agt;hasName"/>
 		<rdfs:label>has registry name</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fbc-fct-ra;Registry"/>
-		<rdfs:range rdf:resource="&xsd;string"/>
 		<skos:definition>a name for the registry, for example, for a business registry in which a business registration identifier for the legal entity is registered</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
 	</owl:DatatypeProperty>
@@ -957,7 +994,6 @@ NAICS was developed under the auspices of the Office of Management and Budget (O
 	<owl:DatatypeProperty rdf:about="&fibo-fbc-fct-breg;hasTradingOrOperationalName">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-aap-agt;hasName"/>
 		<rdfs:label>has trading or operational name</rdfs:label>
-		<rdfs:range rdf:resource="&xsd;string"/>
 		<skos:definition>a &apos;trading as&apos;, &apos;brand name&apos;, &apos;doing business as&apos;, or &apos;operating under&apos; name currently used by the entity in addition to, but not replacing, the (primary) legal, official registered name</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
 	</owl:DatatypeProperty>
@@ -974,7 +1010,6 @@ NAICS was developed under the auspices of the Office of Management and Budget (O
 		<rdfs:subPropertyOf rdf:resource="&fibo-be-le-lei;hasTransliteratedName"/>
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;hasLegalName"/>
 		<rdfs:label>has transliterated legal name</rdfs:label>
-		<rdfs:range rdf:resource="&xsd;string"/>
 		<skos:definition>an optional ASCII-transliterated (i.e. Latin- or Romanized) representation of the legal name for the entity</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
 	</owl:DatatypeProperty>
