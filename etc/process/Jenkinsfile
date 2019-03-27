@@ -127,15 +127,14 @@ node {
           sh 'ls -al ${NGINX_SPEC_ROOT}/'
           sh 'pwd'
 
-          echo 'Unstashing the output of the publish stage'
-
           dir('output') {
+            echo 'Unstashing the output of the publish stage'
             unstash 'publishable-output'
             sh 'pwd && ls -al'
 
             echo "Copy all generated content to ${NGINX_SPEC_ROOT}:"
             sh '''
-              cp -vr . ${NGINX_SPEC_ROOT}/ > ../published-files.log 2>&1 || true
+              cp -vr . ${NGINX_SPEC_ROOT}/ > ${WORKSPACE}/published-files.log 2>&1 || true
               rc=$?
               if ((rc == 0)); then
                 echo "Successfully copied all files to destination, see published-files.log in the workspace"
