@@ -30,10 +30,14 @@ def runInOntologyPublisherContainer(Map config, Closure body) {
         try {
           def dockerImage = docker.image(env.ONTPUB_IMAGE)
           dockerImage.pull()
-          dockerImage.inside("\
-          --network none \
-          --name ${containerName} \
-        ") {
+          dockerImage.inside("""
+            --read-only
+            --network none
+            --name ${containerName}
+            --mount type=bind,source=${env.WORKSPACE}/input,target=/input,readonly,consistency=cached
+            --mount type=bind,source=${env.WORKSPACE}/output,target=/output,consistency=delegated
+            --mount type=bind,source=${env.WORKSPACE}/tmp,target=/var/tmp,consistency=delegated
+          """) {
             echo "Running in docker container ${containerName}"
             //
             // Now execute whatever you had in the closure
