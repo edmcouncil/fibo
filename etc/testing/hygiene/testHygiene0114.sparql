@@ -1,0 +1,37 @@
+prefix ex:    <http://www.example.org/time#>
+prefix sp:    <http://spinrdf.org/sp#>
+prefix sm:    <http://www.omg.org/techprocess/ab/SpecificationMetadata/>
+prefix afn:   <http://jena.apache.org/ARQ/function#>
+prefix dct:   <http://purl.org/dc/terms/>
+prefix owl:   <http://www.w3.org/2002/07/owl#>
+prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix xsd:   <http://www.w3.org/2001/XMLSchema#>
+prefix spin:  <http://spinrdf.org/spin#>
+prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+prefix fibo-ind-ir-ir: <https://spec.edmcouncil.org/fibo/IND/InterestRates/InterestRates/>
+prefix fibo-fnd-utl-av: <https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/>
+prefix fibo-fnd-pty-rl: <https://spec.edmcouncil.org/fibo/FND/Parties/Roles/>
+prefix fibo-fnd-aap-agt: <https://spec.edmcouncil.org/fibo/FND/AgentsAndPeople/Agents/>
+prefix fibo-der-drc-swp: <https://spec.edmcouncil.org/fibo/DER/DerivativesContracts/Swaps/>
+prefix fibo-fnd-rel-rel: <https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/>
+prefix fibo-test-lattice: <http://www.omg.org/spec/fibo/etc/testing/patterns/lattice#>
+prefix fibo-der-rtd-irswp: <https://spec.edmcouncil.org/fibo/DER/RateDerivatives/IRSwaps/>
+
+##
+# banner Text should not use special characters
+
+SELECT #?error
+# COUNT ( DISTINCT ?error)
+?s ?o ?error
+WHERE {
+  ?s ?p ?o
+  FILTER (DATATYPE(?o)=xsd:string)
+  FILTER (REGEX (xsd:string (?s), "edmcouncil")) 
+  BIND (afn:localname (?p) AS ?prop)
+  BIND ("[ÁáÇçÉéÍíÕõÖöäÄèÈμΜσΣa-zA-Z\\\\;'?@$%#&:/\"<*>,._+÷=)(\\[\\]{}0-9\n\t -]" AS ?reg)
+  BIND (REPLACE (xsd:string (?o), ?reg, "")  AS ?bads)
+#  FILTER (!REGEX (?o, (CONCAT ("^", ?reg, "*$"))))
+  FILTER (?bads != "")
+  BIND (concat ("PRODERROR:", xsd:string(?o), " has a bad character |", ?bads, "|")
+	  AS ?error)
+ } 

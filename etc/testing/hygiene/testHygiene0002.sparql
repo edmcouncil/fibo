@@ -1,0 +1,32 @@
+prefix ex:    <http://www.example.org/time#>
+prefix sp:    <http://spinrdf.org/sp#>
+prefix afn:   <http://jena.apache.org/ARQ/function#>
+prefix owl:   <http://www.w3.org/2002/07/owl#>
+prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix xsd:   <http://www.w3.org/2001/XMLSchema#>
+prefix spin:  <http://spinrdf.org/spin#>
+prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+prefix fibo-ind-ir-ir: <https://spec.edmcouncil.org/fibo/IND/InterestRates/InterestRates/>
+prefix fibo-fnd-utl-av: <https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/>
+prefix fibo-fnd-pty-rl: <https://spec.edmcouncil.org/fibo/FND/Parties/Roles/>
+prefix fibo-fnd-aap-agt: <https://spec.edmcouncil.org/fibo/FND/AgentsAndPeople/Agents/>
+prefix fibo-der-drc-swp: <https://spec.edmcouncil.org/fibo/DER/DerivativesContracts/Swaps/>
+prefix fibo-test-lattice: <http://www.omg.org/spec/fibo/etc/testing/patterns/lattice#>
+prefix fibo-der-rtd-irswp: <https://spec.edmcouncil.org/fibo/DER/RateDerivatives/IRSwaps/>
+
+##
+# banner Subproperties domains should not cross
+
+SELECT DISTINCT ?error
+WHERE {
+
+  ?p1 rdfs:domain ?D1 .
+  ?p1 rdfs:subPropertyOf ?p2 .
+  ?p2 rdfs:domain ?D2 .
+  ?D2 rdfs:subClassOf + ?D1 .
+
+  BIND (
+    concat ("PRODERROR: Crossed domains. ", afn:localname(?p1), " < ", afn:localname (?p2), " but the domain ", afn:localname (?D1), " is a superclass of ", afn:localname (?D2))
+    AS ?error
+  )
+}
