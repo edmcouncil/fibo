@@ -37,30 +37,4 @@ def checkOutGitRepos() {
   }
 }
 
-def pullRequestStatus(String message) {
-
-  try {
-    echo "CHANGE_ID=${env.CHANGE_ID}"
-
-    if (env.BRANCH_NAME.startsWith('PR')) {
-      setGitHubPullRequestStatus state: currentBuild.currentResult, context: env.JOB_NAME, message: message
-    }
-  } catch(e) {
-    echo "ERROR: some error occurred in gitScript.pullRequestStatus: ${e}"
-  }
-}
-
-def setBuildStatus(String message, String state, String context) {
-  step([
-    $class: "GitHubCommitStatusSetter",
-    reposSource: [$class: "ManuallyEnteredRepositorySource", url: "https://github.com/<yourRepoURL>"],
-    contextSource: [$class: "ManuallyEnteredCommitContextSource", context: context],
-    errorHandlers: [[$class: "ChangingBuildStatusErrorHandler", result: "UNSTABLE"]],
-    commitShaSource: [$class: "ManuallyEnteredShaSource", sha: env.GIT_COMMIT],
-    statusBackrefSource: [$class: "ManuallyEnteredBackrefSource", backref: "${BUILD_URL}flowGraphTable/"],
-    statusResultSource: [$class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: message, state: state]] ]
-  ]);
-}
-
-
 return this

@@ -51,15 +51,12 @@ def runInOntologyPublisherContainer(Map config, Closure body) {
         } catch (e) {
           currentBuild.result = "FAILURE"
           echo "Failed stage \"${config.longStageName}\": ${e}"
-          gitScript.pullRequestStatus(config.longStageName + " failed")
           throw e
         } finally {
           echo "Tasks in docker container ${containerName} executed successfully"
           if (config.archiveArtifacts == true) {
             archiveArtifacts artifacts: "output/fibo/${config.shortStageName}/**/*.log", fingerprint: true
           }
-          gitScript.pullRequestStatus(config.longStageName + " was successful")
-          gitScript.setBuildStatus("Complete","SUCCESS",config.longStageName)
           slackScript.notifyStage()
         }
       }
