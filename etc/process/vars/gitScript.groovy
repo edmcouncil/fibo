@@ -6,7 +6,7 @@ def gitCheckOut(String repoName, String url, String credentialsId, branches) {
           $class                           : 'GitSCM',
           branches                         : branches,
           doGenerateSubmoduleConfigurations: false,
-          extensions                       : [
+          extensions                       : scm.extensions + [
                   [$class: 'LocalBranch', localBranch: '**'],
                   [$class: 'CheckoutOption', timeout: 1],
                   [$class: 'CloneOption', depth: 2, noTags: false, reference: "/var/lib/git/${repoName}", shallow: true, timeout: 1],
@@ -15,7 +15,7 @@ def gitCheckOut(String repoName, String url, String credentialsId, branches) {
                   [$class: 'IgnoreNotifyCommit']
           ],
           submoduleCfg                     : [],
-          userRemoteConfigs                : [
+          userRemoteConfigs                : scm.userRemoteConfigs + [
                   [credentialsId: credentialsId, url: url]
           ]
   ])
