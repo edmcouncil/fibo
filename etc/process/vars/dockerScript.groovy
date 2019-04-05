@@ -59,6 +59,7 @@ def runInOntologyPublisherContainer(Map config, Closure body) {
             archiveArtifacts artifacts: "output/fibo/${config.shortStageName}/**/*.log", fingerprint: true
           }
           gitScript.pullRequestStatus(config.longStageName + " was successful")
+          gitScript.setBuildStatus("Complete","SUCCESS",config.longStageName,"${gitCommit}")
           slackScript.notifyStage()
         }
       }
