@@ -26,6 +26,10 @@ def runInOntologyPublisherContainer(Map config, Closure body) {
             unstash "output-${outputDir}"
           }
         }
+        //
+        // Make sure that the output and tmp directories are there
+        //
+        sh "mkdir output tmp || true"
         echo "Launching docker container ${containerName}:"
         try {
           def dockerImage = docker.image(env.ONTPUB_IMAGE)
