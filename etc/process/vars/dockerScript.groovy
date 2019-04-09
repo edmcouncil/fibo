@@ -26,6 +26,10 @@ def runInOntologyPublisherContainer(Map config, Closure body) {
             unstash "output-${outputDir}"
           }
         }
+        //
+        // Make sure that the output and tmp directories are there
+        //
+        sh "mkdir output tmp || true"
         echo "Launching docker container ${containerName}:"
         try {
           def dockerImage = docker.image(env.ONTPUB_IMAGE)
@@ -47,14 +51,12 @@ def runInOntologyPublisherContainer(Map config, Closure body) {
         } catch (e) {
           currentBuild.result = "FAILURE"
           echo "Failed stage \"${config.longStageName}\": ${e}"
-          gitScript.pullRequestStatus(config.longStageName + " failed")
           throw e
         } finally {
           echo "Tasks in docker container ${containerName} executed successfully"
           if (config.archiveArtifacts == true) {
             archiveArtifacts artifacts: "output/fibo/${config.shortStageName}/**/*.log", fingerprint: true
           }
-          gitScript.pullRequestStatus(config.longStageName + " was successful")
           slackScript.notifyStage()
         }
       }
