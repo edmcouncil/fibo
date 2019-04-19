@@ -40,11 +40,12 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20190201/Arrangements/Arrangements/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20190401/Arrangements/Arrangements/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20140801/Arrangements/Arrangements.rdf version of this ontology was introduced as a part of the issue resolutions identified in the FIBO FND 1.0 FTF report and in https://spec.edmcouncil.org/fibo/ontology/FND/1.0/AboutFND-1.0/.  It was further revised in the FTF in advance of the Long Beach meeting to promote Collection to the top level in the hierarchy, resulting in https://spec.edmcouncil.org/fibo/ontology/FND/20141101/Arrangements/Arrangements/.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20141101/Arrangements/Arrangements.rdf version of this ontology was revised as a part of the issue resolutions identified in the FIBO FND 1.2 RTF report to add a definition for a structured collection.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20170201/Arrangements/Arrangements.rdf version of this ontology was revised for the FIBO 2.0 RFC report to add a general definition for scheme, add dated collection, and add mappings to LCC.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20180801/Arrangements/Arrangements.rdf version of this ontology was revised to loosen the range on hasObservedDateTime such that it can be used more generally.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20190201/Arrangements/Arrangements.rdf version of this ontology was revised to loosen the restriction on hasObservedDateTime so that it can be used with the new CombinedDateTime datatype (in FinancialDates, which is not imported herein to avoid circular dependencies), with finer granularity than seconds as appropriate for trades, for example.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -78,10 +79,22 @@
 		<owl:equivalentClass>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-arr-arr;hasObservedDateTime"/>
-				<owl:someValuesFrom rdf:resource="&xsd;dateTime"/>
+				<owl:someValuesFrom>
+					<rdfs:Datatype>
+						<owl:unionOf rdf:parseType="Collection">
+							<rdf:Description rdf:about="&xsd;string">
+							</rdf:Description>
+							<rdf:Description rdf:about="&xsd;dateTime">
+							</rdf:Description>
+							<rdf:Description rdf:about="&xsd;dateTimeStamp">
+							</rdf:Description>
+						</owl:unionOf>
+					</rdfs:Datatype>
+				</owl:someValuesFrom>
 			</owl:Restriction>
 		</owl:equivalentClass>
 		<skos:definition>a constituent of a collection that is associated with a date and time</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Note that the use of several options for the representation of a date and time stamp enables extensions for milliseconds, nanoseconds using an xsd:string that has the format of an xsd:dateTime datatype but extending the level of granularity consistently.  An example of where this is required is to represent prices that change multiple times in a given day.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-arr-arr;DatedStructuredCollection">
