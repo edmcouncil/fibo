@@ -2,7 +2,7 @@
 <!DOCTYPE rdf:RDF [
 	<!ENTITY dct "http://purl.org/dc/terms/">
 	<!ENTITY fibo-be-fct-fct "https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/FunctionalEntities/">
-	<!ENTITY fibo-be-fctx-sta "https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntitiesExt/StateEntities/">
+	<!ENTITY fibo-be-le-lp "https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/">
 	<!ENTITY fibo-bp-iss-dbti "https://spec.edmcouncil.org/fibo/ontology/BP/SecuritiesIssuance/DebtIssuance/">
 	<!ENTITY fibo-bp-iss-trm "https://spec.edmcouncil.org/fibo/ontology/BP/SecuritiesIssuance/IssuanceProcessTerms/">
 	<!ENTITY fibo-fbc-dae-dbt "https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/">
@@ -34,7 +34,7 @@
 <rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/AssetBackedSecurities/MortgageBackedSecurities/"
 	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fibo-be-fct-fct="https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/FunctionalEntities/"
-	xmlns:fibo-be-fctx-sta="https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntitiesExt/StateEntities/"
+	xmlns:fibo-be-le-lp="https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/"
 	xmlns:fibo-bp-iss-dbti="https://spec.edmcouncil.org/fibo/ontology/BP/SecuritiesIssuance/DebtIssuance/"
 	xmlns:fibo-bp-iss-trm="https://spec.edmcouncil.org/fibo/ontology/BP/SecuritiesIssuance/IssuanceProcessTerms/"
 	xmlns:fibo-fbc-dae-dbt="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"
@@ -67,7 +67,6 @@
 		<rdfs:label xml:lang="en">MortgageBackedSecurities</rdfs:label>
 		<dct:abstract>Mortgage backed securities are like asset backed securities except that the underlying loan pool is a pool of mortgage loans.</dct:abstract>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/FunctionalEntities/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntitiesExt/StateEntities/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BP/SecuritiesIssuance/DebtIssuance/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BP/SecuritiesIssuance/IssuanceProcessTerms/"/>
@@ -103,7 +102,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-ab-mbs;AgencyMBSIssuer">
-		<rdfs:subClassOf rdf:resource="&fibo-be-fctx-sta;GovernmentMortgageAgency"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-ab-mbs;GovernmentMortgageAgency"/>
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-ab-mbs;MBSIssuer"/>
 		<rdfs:label xml:lang="en">agency m b s issuer</rdfs:label>
 		<skos:definition xml:lang="en">The issuer of the pass through MBS is an Agency issuer. This is identified as being some kind of agency that is set up specifically to issue these instruments.</skos:definition>
@@ -172,6 +171,20 @@
 		<rdfs:label xml:lang="en">GNMA-i pool</rdfs:label>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-sec-dbt-ab-mbs;GovernmentMortgageAgency">
+		<rdfs:subClassOf rdf:resource="&fibo-be-fct-fct;FunctionalEntity"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasIdentity"/>
+				<owl:someValuesFrom rdf:resource="&fibo-be-le-lp;LegalEntity"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">government mortgage agency</rdfs:label>
+		<skos:definition xml:lang="en">An agency set up by a government for the purpose of issuing mortgages.</skos:definition>
+		<skos:editorialNote xml:lang="en">Note on the original property &apos;takes form of&apos;  (replaced by a restriction): The form which the Government Mortgage Agency takes. This is a Legal Entity and not a Natural Person, that is, it is an Artificial Person.</skos:editorialNote>
+		<skos:scopeNote xml:lang="en">These exist in the USA and may also exist now or in future in other countries. There are three such agencies in thr USA: FNMA, GNMA and FHLMC (Fannie Mae, Ginnie Mae and Freddie Mac respectively).</skos:scopeNote>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-sec-dbt-ab-mbs;InverseFloaterTranche">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-ab-mbs;FloaterTranche"/>
 		<rdfs:label xml:lang="en">inverse floater tranche</rdfs:label>
@@ -238,7 +251,7 @@
 		<rdfs:subClassOf>
 			<owl:Class>
 				<owl:unionOf rdf:parseType="Collection">
-					<rdf:Description rdf:about="&fibo-be-fctx-sta;GovernmentMortgageAgency">
+					<rdf:Description rdf:about="&fibo-sec-dbt-ab-mbs;GovernmentMortgageAgency">
 					</rdf:Description>
 					<rdf:Description rdf:about="&fibo-fbc-fct-fse;Bank">
 					</rdf:Description>
