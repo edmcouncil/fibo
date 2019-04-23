@@ -22,7 +22,6 @@
 	<!ENTITY fibo-fnd-rel-rel "https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/">
 	<!ENTITY fibo-fnd-utl-alx "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Analytics/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
-	<!ENTITY fibo-fnd-utl-val "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Values/">
 	<!ENTITY fibo-ind-ei-ei "https://spec.edmcouncil.org/fibo/ontology/IND/EconomicIndicators/EconomicIndicators/">
 	<!ENTITY fibo-ind-ind-ind "https://spec.edmcouncil.org/fibo/ontology/IND/Indicators/Indicators/">
 	<!ENTITY fibo-ind-ir-ir "https://spec.edmcouncil.org/fibo/ontology/IND/InterestRates/InterestRates/">
@@ -63,7 +62,6 @@
 	xmlns:fibo-fnd-rel-rel="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"
 	xmlns:fibo-fnd-utl-alx="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Analytics/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
-	xmlns:fibo-fnd-utl-val="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Values/"
 	xmlns:fibo-ind-ei-ei="https://spec.edmcouncil.org/fibo/ontology/IND/EconomicIndicators/EconomicIndicators/"
 	xmlns:fibo-ind-ind-ind="https://spec.edmcouncil.org/fibo/ontology/IND/Indicators/Indicators/"
 	xmlns:fibo-ind-ir-ir="https://spec.edmcouncil.org/fibo/ontology/IND/InterestRates/InterestRates/"
@@ -123,7 +121,6 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Analytics/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Values/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/EconomicIndicators/EconomicIndicators/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/Indicators/Indicators/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/InterestRates/InterestRates/"/>
@@ -209,21 +206,6 @@
 		<skos:editorialNote>From April 21 Review: For cash CDOs: External e.g. Bond insurance that is bought from a 3rd party. NB Does not apply to synthetics. Also CDOs may have internal crefit enhancement instead. See main diagram note on this.</skos:editorialNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-dbt-bnd;BondMaturityRegistrar">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-ra;Registrar"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;LegalAgent"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractThirdParty"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-fct-ra;registers"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;Bond"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>bond maturity registrar</rdfs:label>
-		<skos:definition>person or entity responsible for maintaining records on behalf of the issuer that identify the owners of a registered bond issue</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote>The trustee under a bond contract often also acts as registrar.</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-sec-dbt-bnd;BondPrincipalRepaymentTerms">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;PrincipalRepaymentTerms"/>
 		<rdfs:subClassOf>
@@ -235,6 +217,20 @@
 		<rdfs:label>bond principal repayment terms</rdfs:label>
 		<owl:disjointWith rdf:resource="&fibo-sec-dbt-dbti;CallFeature"/>
 		<skos:definition>terms for the repayment of the principal on a bond security</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-dbt-bnd;BondRegistrar">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-ra;Registrar"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;LegalAgent"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-fct-ra;registers"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;Bond"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>bond registrar</rdfs:label>
+		<skos:definition>person or entity responsible for maintaining records on behalf of the issuer that identify the owners of a registered bond issue</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>The trustee under a bond contract often also acts as registrar.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-bnd;BondVariableCoupon">
@@ -1513,14 +1509,6 @@ Further Notes:Additional review with OTPP May 05 2010 indicates that this is par
 		<fibo-fnd-utl-av:synonym>has lookback</fibo-fnd-utl-av:synonym>
 	</owl:DatatypeProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bnd;hasBondMaturityRegistrar">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-agr-ctr;hasThirdParty"/>
-		<rdfs:label>has bond maturity registrar</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;Bond"/>
-		<rdfs:range rdf:resource="&fibo-sec-dbt-bnd;BondMaturityRegistrar"/>
-		<skos:definition>The person or entity responsible for maintaining records on behalf of the issuer that identify the owners of a registered bond issue.</skos:definition>
-	</owl:ObjectProperty>
-	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bnd;hasCallPrice">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasPrice"/>
 		<rdfs:label>has call price</rdfs:label>
@@ -1667,6 +1655,13 @@ Further Notes:Additional review with OTPP May 05 2010 indicates that this is par
 		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Date"/>
 	</owl:ObjectProperty>
 	
+	<owl:DatatypeProperty rdf:about="&fibo-sec-dbt-bnd;hasMakeWholeCallBasisPointSpread">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasRateValue"/>
+		<rdfs:label>has make whole call basis point spread</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;MakeWholeCall"/>
+		<rdfs:range rdf:resource="&xsd;decimal"/>
+	</owl:DatatypeProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bnd;hasMunicipalDebtObligor">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-agr-ctr;hasThirdParty"/>
 		<rdfs:label>has municipal debt obligor</rdfs:label>
@@ -1778,12 +1773,6 @@ Further Notes:Additional review with OTPP May 05 2010 indicates that this is par
 		<rdfs:domain rdf:resource="&fibo-sec-dbt-dbti;CallFeature"/>
 		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;DatePeriod"/>
 		<skos:definition>The lockout period refers to the amount of time for which a callable security cannot be called and only interest coupon payments are received by the security holder. For example, with a 10-year noncall 3-year (&quot;10nc3&quot;) debt security, the security cannot be called for the first three years.</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bnd;makeWholeCallBasisPointSpread">
-		<rdfs:label>make whole call basis point spread</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;MakeWholeCall"/>
-		<rdfs:range rdf:resource="&fibo-fnd-utl-val;PercentageValue"/>
 	</owl:ObjectProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-sec-dbt-bnd;makeWholeTreasuryItem">
