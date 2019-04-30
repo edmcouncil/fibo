@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE rdf:RDF [
 	<!ENTITY dct "http://purl.org/dc/terms/">
+	<!ENTITY fibo-fnd-dt-fd "https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/">
 	<!ENTITY fibo-fnd-gao-obj "https://spec.edmcouncil.org/fibo/ontology/FND/GoalsAndObjectives/Objectives/">
 	<!ENTITY fibo-fnd-rel-rel "https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
@@ -13,6 +14,7 @@
 ]>
 <rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/ontology/FND/GoalsAndObjectives/Objectives/"
 	xmlns:dct="http://purl.org/dc/terms/"
+	xmlns:fibo-fnd-dt-fd="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"
 	xmlns:fibo-fnd-gao-obj="https://spec.edmcouncil.org/fibo/ontology/FND/GoalsAndObjectives/Objectives/"
 	xmlns:fibo-fnd-rel-rel="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
@@ -33,6 +35,7 @@
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/</sm:dependsOn>
 		<sm:fileAbbreviation>fibo-fnd-gao-obj</sm:fileAbbreviation>
 		<sm:filename>Objectives.rdf</sm:filename>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20190401/GoalsAndObjectives/Objectives/"/>
@@ -44,15 +47,16 @@
    (5) to incorporate changes to the specification metadata to support documentation at the family, specification, module, and ontology level, similar to the abbreviations
    (6) to eliminate an unnecessary hasObjectives property and related imports dependencies.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20130801/GoalsAndObjectives/Objectives.rdf version of this ontology was modified per the issue resolutions identified in the FIBO FND 1.0 FTF report and in https://spec.edmcouncil.org/fibo/ontology/FND/1.0/AboutFND-1.0/.</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20180801/GoalsAndObjectives/Objectives.rdf version of this ontology was modified to integrate concepts such as investment objective, business objective, policy, strategy, and related properties.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20180801/GoalsAndObjectives/Objectives.rdf version of this ontology was modified to integrate concepts such as investment objective, business objective, strategy, and related properties.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
 	<owl:Class rdf:about="&fibo-fnd-gao-obj;BusinessObjective">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-gao-obj;Objective"/>
 		<rdfs:label>business objective</rdfs:label>
-		<skos:definition>objective that reflects the strategic goals and direction of a business</skos:definition>
+		<skos:definition>objective that reflects the strategic goals and direction of a business within a time frame and available resources</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote>Business objectives allow an organization to define its goals and direction. A company uses strategy and tactics at every level of its operation to achieve its objectives. These define the way a company allocates its resources and the strengths, weaknesses and opportunities it may have. Companies usually do not alter their objectives once they are implemented, unless changes in circumstances arise. Setting a clear course for the organization is key to its success.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:explanatoryNote>In general, objectives are more specific and easier to measure than goals. Objectives are basic tools that underlie all planning and strategic activities. They serve as the basis for creating policy and evaluating performance. Some examples of business objectives include minimizing expenses, expanding internationally, or making a profit.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-gao-obj;BusinessStrategy">
@@ -70,7 +74,7 @@
 	<owl:Class rdf:about="&fibo-fnd-gao-obj;FinancialObjective">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-gao-obj;Objective"/>
 		<rdfs:label>financial objective</rdfs:label>
-		<skos:definition>objective that reflects the strategic financial goals and direction of a person, organization or system</skos:definition>
+		<skos:definition>objective that reflects the strategic financial goals and direction of a person, organization or system within a time frame and available resources</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-gao-obj;InvestmentObjective">
@@ -82,26 +86,14 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-gao-obj;Objective">
-		<rdfs:label>objective</rdfs:label>
-		<skos:definition>short-term, quantitative, measurable result that a person, organization, or system seeks to attain in order to achieve its long-term goals</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-fnd-gao-obj;Policy">
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;governs"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-gao-obj;Strategy"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-dt-fd;hasDatePeriod"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;DatePeriod"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label>policy</rdfs:label>
-		<skos:definition>system of principles, rules and guidelines, adopted by an organization to guide decision making with respect to particular situations and implemented via procedures or protocols to achieve stated goals</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-fnd-gao-obj;ReportingPolicy">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-gao-obj;Policy"/>
-		<rdfs:label>reporting policy</rdfs:label>
-		<skos:definition>policy specifying principles, rules and/or guidelines regarding some aspect of reporting</skos:definition>
-		<skos:example>For example a policy for how frequently a given kind of report is produced.</skos:example>
+		<rdfs:label>objective</rdfs:label>
+		<skos:definition>short-term, quantitative, measurable result that a person, organization, or system seeks to attain in order to achieve its long-term goals</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-gao-obj;Strategy">
