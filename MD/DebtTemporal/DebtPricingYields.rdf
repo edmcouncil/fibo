@@ -16,6 +16,8 @@
 	<!ENTITY fibo-fnd-utl-alx "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Analytics/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
 	<!ENTITY fibo-fnd-utl-val "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Values/">
+	<!ENTITY fibo-ind-ei-ei "https://spec.edmcouncil.org/fibo/ontology/IND/EconomicIndicators/EconomicIndicators/">
+	<!ENTITY fibo-ind-ind-ind "https://spec.edmcouncil.org/fibo/ontology/IND/Indicators/Indicators/">
 	<!ENTITY fibo-loan-loan-loan "https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoanBasicTerms/">
 	<!ENTITY fibo-md-dbtx-aly "https://spec.edmcouncil.org/fibo/ontology/MD/DebtTemporal/DebtAnalytics/">
 	<!ENTITY fibo-md-dbtx-int "https://spec.edmcouncil.org/fibo/ontology/MD/DebtTemporal/DebtInterestAmounts/">
@@ -50,6 +52,8 @@
 	xmlns:fibo-fnd-utl-alx="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Analytics/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
 	xmlns:fibo-fnd-utl-val="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Values/"
+	xmlns:fibo-ind-ei-ei="https://spec.edmcouncil.org/fibo/ontology/IND/EconomicIndicators/EconomicIndicators/"
+	xmlns:fibo-ind-ind-ind="https://spec.edmcouncil.org/fibo/ontology/IND/Indicators/Indicators/"
 	xmlns:fibo-loan-loan-loan="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoanBasicTerms/"
 	xmlns:fibo-md-dbtx-aly="https://spec.edmcouncil.org/fibo/ontology/MD/DebtTemporal/DebtAnalytics/"
 	xmlns:fibo-md-dbtx-int="https://spec.edmcouncil.org/fibo/ontology/MD/DebtTemporal/DebtInterestAmounts/"
@@ -128,22 +132,28 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-md-dbtx-py;AlgoDebtCreditSpread">
+		<rdfs:subClassOf rdf:resource="&fibo-ind-ei-ei;Difference"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;hasTimeToMaturity"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;ExplicitDuration"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;refersTo"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-dae-crt;InvestmentCreditRating"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-md-dbtx-py;refersToCreditRating"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasArgument"/>
 				<owl:someValuesFrom rdf:resource="&fibo-md-dbtx-py;IssuerCreditRating"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-md-temx-ins;isBetween"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-dae-crt;InvestmentCreditRating"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasArgument"/>
+				<owl:someValuesFrom>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;hasTimeToMaturity"/>
+						<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;ExplicitDuration"/>
+					</owl:Restriction>
+				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">algo debt credit spread</rdfs:label>
@@ -368,7 +378,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-md-dbtx-py;DebtPriceSpread">
-		<rdfs:subClassOf rdf:resource="&fibo-md-temx-ins;PriceSpread"/>
+		<rdfs:subClassOf rdf:resource="&fibo-ind-ind-ind;MarketSpread"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-md-dbtx-py;usedToDetermine"/>
@@ -382,7 +392,6 @@
 	
 	<owl:Class rdf:about="&fibo-md-dbtx-py;DebtPublishedPointInTimePrice">
 		<rdfs:subClassOf rdf:resource="&fibo-md-dbtx-py;DebtSecurityPrice"/>
-		<rdfs:subClassOf rdf:resource="&fibo-md-temx-ins;TradedSecurityPublishedPrice"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-md-dbtx-py;usedToDetermine"/>
@@ -406,28 +415,36 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-md-dbtx-py;DebtSecurityBidPrice">
-		<rdfs:subClassOf rdf:resource="&fibo-md-dbtx-py;DebtSecurityQuotePrice"/>
+		<rdfs:subClassOf rdf:resource="&fibo-md-dbtx-py;DebtSecurityPrice"/>
 		<rdfs:label xml:lang="en">debt security bid price</rdfs:label>
 		<skos:definition xml:lang="en">A price quoted for purchase of a quantity of a debt security in the marketplace. This may be either the OTC market or a securities exchange or a composite market consisting of several exchanges or trading facilities.</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-md-dbtx-py;DebtSecurityOfferPrice">
-		<rdfs:subClassOf rdf:resource="&fibo-md-dbtx-py;DebtSecurityQuotePrice"/>
+		<rdfs:subClassOf rdf:resource="&fibo-md-dbtx-py;DebtSecurityPrice"/>
 		<rdfs:label xml:lang="en">debt security offer price</rdfs:label>
 		<skos:definition xml:lang="en">A price quoted for sale of a quantity of a debt security in the marketplace. This may be either the OTC market or a securities exchange or a composite market consisting of several exchanges or trading facilities.</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-md-dbtx-py;DebtSecurityPrice">
-		<rdfs:subClassOf rdf:resource="&fibo-md-temx-ins;SecurityPrice"/>
+		<rdfs:subClassOf rdf:resource="&fibo-ind-ind-ind;QuotedPrice"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
+				<owl:someValuesFrom>
+					<owl:Class>
+						<owl:unionOf rdf:parseType="Collection">
+							<rdf:Description rdf:about="&fibo-fbc-fi-fi;DebtInstrument">
+							</rdf:Description>
+							<rdf:Description rdf:about="&fibo-fbc-fi-fi;Security">
+							</rdf:Description>
+						</owl:unionOf>
+					</owl:Class>
+				</owl:someValuesFrom>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">debt security price</rdfs:label>
-		<skos:definition xml:lang="en">The price of a Debt Instrument at some point in time.</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-md-dbtx-py;DebtSecurityQuotePrice">
-		<rdfs:subClassOf rdf:resource="&fibo-md-dbtx-py;DebtSecurityPrice"/>
-		<rdfs:subClassOf rdf:resource="&fibo-md-temx-ins;TradedSecurityPublishedPrice"/>
-		<rdfs:label xml:lang="en">debt security quote price</rdfs:label>
-		<skos:definition xml:lang="en">A price quoted for purchase or sale of a quantity of a debt security in the marketplace. This may be either the OTC market or a securities exchange or a composite market consisting of several exchanges or trading facilities.</skos:definition>
+		<skos:definition xml:lang="en">price of a debt instrument at a specific point in time</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-md-dbtx-py;DebtYieldToAverageLife">
@@ -680,7 +697,6 @@
 	
 	<owl:Class rdf:about="&fibo-md-dbtx-py;OTCBondMarketPrice">
 		<rdfs:subClassOf rdf:resource="&fibo-md-dbtx-py;DebtSecurityPrice"/>
-		<rdfs:subClassOf rdf:resource="&fibo-md-dbtx-py;SecurityMarketPrice"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-md-dbtx-py;oTCBondMarketPriceHasPricingSource"/>
@@ -792,11 +808,6 @@
 	
 	<owl:Class rdf:about="&fibo-md-dbtx-py;SecuritiesTrading">
 		<rdfs:label xml:lang="en">securities trading</rdfs:label>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-md-dbtx-py;SecurityMarketPrice">
-		<rdfs:subClassOf rdf:resource="&fibo-md-temx-ins;TradedSecurityPublishedPrice"/>
-		<rdfs:label xml:lang="en">security market price</rdfs:label>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-md-dbtx-py;SimpleYieldCalculationMethod">
@@ -989,7 +1000,7 @@
 	<owl:ObjectProperty rdf:about="&fibo-md-dbtx-py;determinedRelativeTo">
 		<rdfs:subPropertyOf rdf:resource="&fibo-md-temx-tem;isBetween"/>
 		<rdfs:label xml:lang="en">determined relative to</rdfs:label>
-		<rdfs:range rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/Indicators/Indicators/MarketRate"/>
+		<rdfs:range rdf:resource="&fibo-ind-ind-ind;MarketRate"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-md-dbtx-py;determinedUsing">
@@ -1223,12 +1234,6 @@
 		<rdfs:range rdf:resource="&xsd;boolean"/>
 		<skos:definition xml:lang="en">Whether or not the price is quoted ex-dividend. When a bond is said to trade ex-dividend it means that there is a period of time prior to each coupon payment during which a bond purchaser does not receive custody of the next coupon. That payment is made to the previous bond holder and accrued interest is therefore negative during the ex-dividend period.</skos:definition>
 	</owl:DatatypeProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-md-dbtx-py;refersToCreditRating">
-		<rdfs:label xml:lang="en">refers to credit rating</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-md-dbtx-py;AlgoDebtCreditSpread"/>
-		<rdfs:range rdf:resource="&fibo-md-dbtx-py;IssuerCreditRating"/>
-	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-md-dbtx-py;relativeTo">
 		<rdfs:label xml:lang="en">relative to</rdfs:label>
