@@ -50,8 +50,8 @@
 		<dct:abstract>This ontology defines fundamental concepts for buyers, sellers, clients, customers, products, goods and services for use in other FIBO ontologies.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
 		<sm:contentLanguage rdf:datatype="&xsd;anyURI">http://www.w3.org/standards/techs/owl#w3c_all</sm:contentLanguage>
-		<sm:copyright>Copyright (c) 2013-2018 EDM Council, Inc.</sm:copyright>
-		<sm:copyright>Copyright (c) 2013-2018 Object Management Group, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2013-2019 EDM Council, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2013-2019 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/AgentsAndPeople/Agents/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/</sm:dependsOn>
@@ -80,10 +80,11 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Places/Locations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20181101/ProductsAndServices/ProductsAndServices/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20190501/ProductsAndServices/ProductsAndServices/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20150801/ProductsAndServices/ProductsAndServices.rdf version of this ontology was modified per the issue resolutions identified in the FIBO FND 1.1 RTF report to replace MoneyAmount with AmountOfMoney.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20160201/ProductsAndServices/ProductsAndServices.rdf version of this ontology was modified for the FIBO 2.0 RFC to add NegotiableCommodity and Consumer.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20180801/ProductsAndServices/ProductsAndServices.rdf version of this ontology was modified to include classes to support automated inclusion of all ISO 4217 codes published as of 2018-06-04.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20181101/ProductsAndServices/ProductsAndServices.rdf version of this ontology was modified to move (deprecate) the properties produces and isProducedBy to Relations for more general usability.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -276,7 +277,7 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-pty-pty;PartyInRole"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-pas-pas;produces"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;produces"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fnd-pas-pas;Product"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -298,7 +299,7 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-pas-pas;isProducedBy"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isProducedBy"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fnd-pas-pas;Producer"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -466,12 +467,11 @@
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-pas-pas;isProducedBy">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;isProvidedBy"/>
 		<rdfs:label>is produced by</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-pas-pas;Product"/>
-		<rdfs:range rdf:resource="&fibo-fnd-pas-pas;Producer"/>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentProperty rdf:resource="&fibo-fnd-rel-rel;isProducedBy"/>
 		<owl:inverseOf rdf:resource="&fibo-fnd-pas-pas;produces"/>
-		<skos:definition>identifies the producer that fabricates, manufactures or creates the product through some production process</skos:definition>
+		<skos:definition>identifies the producer that fabricates, manufactures or creates something through some production process</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-pas-pas;isProvisionedBy">
@@ -492,11 +492,10 @@
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-pas-pas;produces">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;provides"/>
 		<rdfs:label>produces</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-pas-pas;Producer"/>
-		<rdfs:range rdf:resource="&fibo-fnd-pas-pas;Product"/>
-		<skos:definition>identifies the product that is fabricated, manufactured or created via some production process</skos:definition>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentProperty rdf:resource="&fibo-fnd-rel-rel;produces"/>
+		<skos:definition>identifies something that is fabricated, manufactured or created via some production process</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-pas-pas;provisions">
