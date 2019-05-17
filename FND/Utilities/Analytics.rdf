@@ -142,8 +142,14 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;StatisticalMeasure"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasArgument"/>
-				<owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">2</owl:cardinality>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasMinuend"/>
+				<owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:cardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasSubtrahend"/>
+				<owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:cardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>difference</rdfs:label>
@@ -174,7 +180,9 @@
 		</rdfs:subClassOf>
 		<rdfs:label>dispersion</rdfs:label>
 		<skos:definition>degree of scatter or variability shown by observations</skos:definition>
+		<skos:example>Common examples of measures of statistical dispersion are the variance, standard deviation, and interquartile range.  The collection size argument, above, represents the number of elements in the set, if known. The collection of values under consideration is represented as a structured collection in FIBO, typically a sample set derived from a finite population.</skos:example>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://stats.oecd.org/glossary/detail.asp?ID=3637</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:explanatoryNote>A measure of statistical dispersion is a nonnegative real number that is zero if all the data are the same and increases as the data become more diverse.</fibo-fnd-utl-av:explanatoryNote>
 		<fibo-fnd-utl-av:explanatoryNote>It is usually measured as an average deviation about some central value (e.g. mean deviation, standard deviation) or by an order statistic (e.g. quartile deviation, range) but may also be a mean of deviations of values among themselves (e.g. Gini’s mean difference and also standard deviation).</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
@@ -406,7 +414,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>statistical area</rdfs:label>
-		<skos:definition>physical location that is defined per a nationally consistent program for designating geographic regions for the purposes of tabulating and presenting statistical data</skos:definition>
+		<skos:definition>physical location that is defined per some program for designating geographic regions for the purposes of tabulating and presenting statistical data</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom>U.S. Bureau of Labor Statistics and Statistics Canada reference definitions - https://wiki.edmcouncil.org/display/IND/Statistics+Canada+Census+Information</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:adaptedFrom>U.S. Bureau of Labor Statistics and Statistics Canada reference definitions - https://wiki.edmcouncil.org/pages/viewpage.action?pageId=6358041</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:adaptedFrom rdf:resource="http://www.census.gov/prod/cen2010/doc/gqsf.pdf"/>
@@ -625,6 +633,7 @@
 		<rdfs:label>for calendar year</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fnd-utl-alx;StatisticalMeasure"/>
 		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;ExplicitDatePeriod"/>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
 		<skos:definition>indicates the calendar year for which the statistical measure is applicable</skos:definition>
 	</owl:ObjectProperty>
 	
@@ -635,20 +644,6 @@
 		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;DatePeriod"/>
 		<skos:definition>indicates the date period for which the statistical measure is applicable</skos:definition>
 	</owl:ObjectProperty>
-	
-	<owl:DatatypeProperty rdf:about="&fibo-fnd-utl-alx;hasApplicablePeriodEnd">
-		<rdfs:label>has applicable period end</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-utl-alx;StatisticalMeasure"/>
-		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;CombinedDateTime"/>
-		<skos:definition>indicates the end of the period for which the statistical measure is applicable</skos:definition>
-	</owl:DatatypeProperty>
-	
-	<owl:DatatypeProperty rdf:about="&fibo-fnd-utl-alx;hasApplicablePeriodStart">
-		<rdfs:label>has applicable period start</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-utl-alx;StatisticalMeasure"/>
-		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;CombinedDateTime"/>
-		<skos:definition>indicates the start of the period for which the statistical measure is applicable</skos:definition>
-	</owl:DatatypeProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-utl-alx;hasArgument">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;has"/>
@@ -695,10 +690,17 @@
 		<skos:definition>indicates the coverage period for which the measure is applicable expressed in months</skos:definition>
 	</owl:DatatypeProperty>
 	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-utl-alx;hasMinuend">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-utl-alx;hasArgument"/>
+		<rdfs:label>has minuend</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fnd-utl-alx;Difference"/>
+		<skos:definition>specifies the quantity value from which something is subtracted; the value that is diminished</skos:definition>
+	</owl:ObjectProperty>
+	
 	<owl:DatatypeProperty rdf:about="&fibo-fnd-utl-alx;hasNumberOfEntries">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasCount"/>
 		<rdfs:label>has number of entries</rdfs:label>
-		<rdfs:range rdf:resource="&xsd;positiveInteger"/>
+		<rdfs:range rdf:resource="&xsd;nonNegativeInteger"/>
 		<skos:definition>indicates the number of elements in some document, table, or other resource (e.g., in a report, table)</skos:definition>
 	</owl:DatatypeProperty>
 	
@@ -752,12 +754,11 @@
 		<skos:definition>specifies a release date and possibly a time for a given indicator or report</skos:definition>
 	</owl:DatatypeProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-fnd-utl-alx;hasReportingPeriod">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDatePeriod"/>
-		<rdfs:label>has reporting period</rdfs:label>
-		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;ExplicitDatePeriod"/>
-		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-		<skos:definition>specifies the reporting period for which a given economic indicator applies</skos:definition>
+	<owl:ObjectProperty rdf:about="&fibo-fnd-utl-alx;hasSubtrahend">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-utl-alx;hasArgument"/>
+		<rdfs:label>has subtrahend</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fnd-utl-alx;Difference"/>
+		<skos:definition>specifies the quantity value that is subtracted from something</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-fnd-utl-alx;hasUniverseSize">
