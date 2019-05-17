@@ -119,75 +119,41 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/Indicators/Indicators/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Countries/CountryRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/20190101/EconomicIndicators/EconomicIndicators/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/20190501/EconomicIndicators/EconomicIndicators/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20140601/EconomicIndicators/EconomicIndicators.rdf version of this ontology was modified per the issue resolutions identified in the FIBO IND 1.0 FTF 1 report.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20150501/EconomicIndicators/EconomicIndicators.rdf version of this ontology was modified per the issue resolutions identified in the FIBO IND 1.0 FTF 3 report.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20160801/EconomicIndicators/EconomicIndicators.rdf version of this ontology was modified per the FIBO 2.0 RFC. Primary changes include the addition of a number of statistical measures (mean, total, etc.) and their use in existing and new indicators, and the addition of several more economic indicators.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20180801/EconomicIndicators/EconomicIndicators.rdf version of this ontology was modified to use natural person rather than legally capable person.</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20181101/EconomicIndicators/EconomicIndicators.rdf version of this ontology was modified to use hasCoverageArea rather than appliesTo in the restriction on an economic indicator relating it to a statistical area and to reflect use of actualExpression as an annotation rather than datatype property.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20181101/EconomicIndicators/EconomicIndicators.rdf version of this ontology was modified to use hasCoverageArea rather than appliesTo in the restriction on an economic indicator relating it to a statistical area, to reflect use of actualExpression as an annotation rather than datatype property, and to migrate the general statistics concepts to FND (deprecated herein).</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
-	<owl:Class rdf:about="&fibo-fnd-utl-alx;StatisticalMeasure">
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-ind-ei-ei;isCalculatedViaMethodology"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
-				<owl:onDataRange rdf:resource="&xsd;string"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-ind-ei-ei;AnnualizedStandardDeviation">
-		<rdfs:subClassOf rdf:resource="&fibo-ind-ei-ei;StandardDeviation"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-ind-ei-ei;hasReferencePeriod"/>
-				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;ExplicitRecurrenceInterval"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label>annualized standard deviation</rdfs:label>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&fibo-fnd-utl-alx;AnnualizedStandardDeviation"/>
 		<skos:definition>the standard deviation for some measure over a specific reference period</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote>Standard deviation applied to the annual rate of return of an investment provides insights on the historical volatility of that investment. The greater the standard deviation of the price of a security, the greater the volatility.  Multiplying monthly standard deviation by the square root of twelve (12) is an industry standard method of approximating annualized standard deviations of monthly returns.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ind-ei-ei;ArithmeticMean">
-		<rdfs:subClassOf rdf:resource="&fibo-ind-ei-ei;Mean"/>
 		<rdfs:label>arithmetic mean</rdfs:label>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&fibo-fnd-utl-alx;ArithmeticMean"/>
 		<skos:definition>the sum of a collection of numbers divided by the number of numbers in the collection</skos:definition>
-		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://en.wikipedia.org/wiki/Arithmetic_mean</fibo-fnd-utl-av:adaptedFrom>
-		<fibo-fnd-utl-av:explanatoryNote>While the arithmetic mean is often used to report central tendencies, it is not a robust statistic, meaning that it is greatly influenced by outliers (values that are very much larger or smaller than most of the values). Notably, for skewed distributions, such as the distribution of income for which a few people&apos;s incomes are substantially greater than most people&apos;s, the arithmetic mean may not accord with one&apos;s notion of &apos;middle&apos;, and robust statistics, such as the median, may be a better description of central tendency.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ind-ei-ei;AverageAbsoluteDeviation">
-		<rdfs:subClassOf rdf:resource="&fibo-ind-ei-ei;Dispersion"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasArgument"/>
-				<owl:someValuesFrom>
-					<owl:Class>
-						<owl:unionOf rdf:parseType="Collection">
-							<rdf:Description rdf:about="&fibo-ind-ei-ei;Mean">
-							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-ind-ei-ei;Median">
-							</rdf:Description>
-						</owl:unionOf>
-					</owl:Class>
-				</owl:someValuesFrom>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label>average absolute deviation</rdfs:label>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&fibo-fnd-utl-alx;AverageAbsoluteDeviation"/>
 		<skos:definition>the average of the absolute deviations from a central point</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote>The central point can be the mean, median, mode, or the result of another measure of central tendency.</fibo-fnd-utl-av:explanatoryNote>
-		<fibo-fnd-utl-av:synonym>mean absolute deviation</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ind-ei-ei;AverageDailyEarnings">
 		<rdfs:subClassOf rdf:resource="&fibo-ind-ei-ei;AverageEarnings"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-ind-ei-ei;hasReferencePeriod"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasReferencePeriod"/>
 				<owl:hasValue rdf:resource="&fibo-ind-ei-ei;Daily"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -197,7 +163,7 @@
 				<owl:someValuesFrom>
 					<owl:Class>
 						<owl:unionOf rdf:parseType="Collection">
-							<rdf:Description rdf:about="&fibo-ind-ei-ei;ArithmeticMean">
+							<rdf:Description rdf:about="&fibo-fnd-utl-alx;ArithmeticMean">
 							</rdf:Description>
 							<rdf:Description rdf:about="&fibo-fnd-acc-cur;MonetaryAmount">
 							</rdf:Description>
@@ -216,7 +182,7 @@
 		<rdfs:subClassOf rdf:resource="&fibo-ind-ei-ei;EconomicIndicator"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-ind-ei-ei;hasReferencePeriod"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasReferencePeriod"/>
 				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;ExplicitRecurrenceInterval"/>
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
@@ -231,7 +197,7 @@
 		<rdfs:subClassOf rdf:resource="&fibo-ind-ei-ei;AverageEarnings"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-ind-ei-ei;hasReferencePeriod"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasReferencePeriod"/>
 				<owl:hasValue rdf:resource="&fibo-ind-ei-ei;Hourly"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -241,7 +207,7 @@
 				<owl:someValuesFrom>
 					<owl:Class>
 						<owl:unionOf rdf:parseType="Collection">
-							<rdf:Description rdf:about="&fibo-ind-ei-ei;ArithmeticMean">
+							<rdf:Description rdf:about="&fibo-fnd-utl-alx;ArithmeticMean">
 							</rdf:Description>
 							<rdf:Description rdf:about="&fibo-fnd-acc-cur;MonetaryAmount">
 							</rdf:Description>
@@ -259,7 +225,7 @@
 		<rdfs:subClassOf rdf:resource="&fibo-ind-ei-ei;AverageEarnings"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-ind-ei-ei;hasReferencePeriod"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasReferencePeriod"/>
 				<owl:hasValue rdf:resource="&fibo-ind-ei-ei;Monthly"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -269,7 +235,7 @@
 				<owl:someValuesFrom>
 					<owl:Class>
 						<owl:unionOf rdf:parseType="Collection">
-							<rdf:Description rdf:about="&fibo-ind-ei-ei;ArithmeticMean">
+							<rdf:Description rdf:about="&fibo-fnd-utl-alx;ArithmeticMean">
 							</rdf:Description>
 							<rdf:Description rdf:about="&fibo-fnd-acc-cur;MonetaryAmount">
 							</rdf:Description>
@@ -287,7 +253,7 @@
 		<rdfs:subClassOf rdf:resource="&fibo-ind-ei-ei;AverageEarnings"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-ind-ei-ei;hasReferencePeriod"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasReferencePeriod"/>
 				<owl:hasValue rdf:resource="&fibo-ind-ei-ei;Weekly"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -297,7 +263,7 @@
 				<owl:someValuesFrom>
 					<owl:Class>
 						<owl:unionOf rdf:parseType="Collection">
-							<rdf:Description rdf:about="&fibo-ind-ei-ei;ArithmeticMean">
+							<rdf:Description rdf:about="&fibo-fnd-utl-alx;ArithmeticMean">
 							</rdf:Description>
 							<rdf:Description rdf:about="&fibo-fnd-acc-cur;MonetaryAmount">
 							</rdf:Description>
@@ -358,6 +324,13 @@
 		<rdfs:subClassOf rdf:resource="&fibo-ind-ei-ei;EconomicIndicator"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-ind-ei-ei;hasIndicatorValue"/>
+				<owl:onClass rdf:resource="&fibo-fnd-utl-alx;RatioValue"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasArgument"/>
 				<owl:onClass rdf:resource="&fibo-ind-ei-ei;CivilianLaborForce"/>
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
@@ -367,13 +340,6 @@
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasArgument"/>
 				<owl:onClass rdf:resource="&fibo-ind-ei-ei;CivilianNonInstitutionalPopulation"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-ind-ei-ei;hasIndicatorValue"/>
-				<owl:onClass rdf:resource="&fibo-ind-ei-ei;RatioValue"/>
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -391,7 +357,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ind-ei-ei;CivilianNonInstitutionalPopulation">
-		<rdfs:subClassOf rdf:resource="&fibo-ind-ei-ei;StatisticalUniverse"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;StatisticalUniverse"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasMember"/>
@@ -421,11 +387,11 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ind-ei-ei;CombinedStatisticalArea">
-		<rdfs:subClassOf rdf:resource="&fibo-ind-ei-ei;StatisticalArea"/>
+		<rdfs:subClassOf rdf:resource="&fibo-ind-ei-ei;GovernmentSpecifiedStatisticalArea"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;comprises"/>
-				<owl:onClass rdf:resource="&fibo-ind-ei-ei;StatisticalArea"/>
+				<owl:onClass rdf:resource="&fibo-ind-ei-ei;GovernmentSpecifiedStatisticalArea"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">2</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -453,15 +419,15 @@
 		<rdfs:subClassOf rdf:resource="&fibo-ind-ei-ei;EconomicIndicator"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasArgument"/>
-				<owl:onClass rdf:resource="&fibo-ind-ei-ei;CivilianNonInstitutionalPopulation"/>
+				<owl:onProperty rdf:resource="&fibo-ind-ei-ei;hasIndicatorValue"/>
+				<owl:onClass rdf:resource="&fibo-fnd-utl-alx;NumericIndex"/>
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-ind-ei-ei;hasIndicatorValue"/>
-				<owl:onClass rdf:resource="&fibo-ind-ei-ei;NumericIndex"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasArgument"/>
+				<owl:onClass rdf:resource="&fibo-ind-ei-ei;CivilianNonInstitutionalPopulation"/>
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -497,46 +463,17 @@
 	</owl:NamedIndividual>
 	
 	<owl:Class rdf:about="&fibo-ind-ei-ei;Difference">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-qt-qtu;QuantityValue"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;Expression"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;StatisticalMeasure"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasArgument"/>
-				<owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">2</owl:cardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label>difference</rdfs:label>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&fibo-fnd-utl-alx;Difference"/>
 		<skos:definition>a quantity by which amounts differ; the remainder left after subtraction of one value from another</skos:definition>
-		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://en.oxforddictionaries.com/definition/difference</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ind-ei-ei;Dispersion">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-qt-qtu;QuantityValue"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;Expression"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;StatisticalMeasure"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-arr-arr;hasCollectionSize"/>
-				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-				<owl:onDataRange rdf:resource="&xsd;nonNegativeInteger"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
-				<owl:someValuesFrom rdf:resource="&fibo-ind-ei-ei;FinitePopulation"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-ind-ei-ei;hasObservedValue"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-arr-arr;StructuredCollection"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label>dispersion</rdfs:label>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&fibo-fnd-utl-alx;Dispersion"/>
 		<skos:definition>a measure of difference between the observed value of a variable and some other value</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote>The sign of the deviation (positive or negative), indicates the direction of that difference (the deviation is positive when the observed value exceeds the reference value). The magnitude of the value indicates the size of the difference.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ind-ei-ei;EconomicIndicator">
@@ -555,13 +492,14 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-ind-ei-ei;hasPeriodicity"/>
-				<owl:allValuesFrom rdf:resource="&fibo-fnd-dt-fd;RecurrenceInterval"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasReleaseDate"/>
+				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;Date"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-ind-ei-ei;hasReleaseDateTime"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasReleaseDateTime"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 				<owl:onDataRange rdf:resource="&fibo-fnd-dt-fd;CombinedDateTime"/>
 			</owl:Restriction>
@@ -583,7 +521,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-plc-cty;hasCoverageArea"/>
-				<owl:someValuesFrom rdf:resource="&fibo-ind-ei-ei;StatisticalArea"/>
+				<owl:someValuesFrom rdf:resource="&fibo-ind-ei-ei;GovernmentSpecifiedStatisticalArea"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>economic indicator</rdfs:label>
@@ -606,6 +544,13 @@
 		<rdfs:subClassOf rdf:resource="&fibo-ind-ei-ei;EconomicIndicator"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-ind-ei-ei;hasIndicatorValue"/>
+				<owl:onClass rdf:resource="&fibo-fnd-utl-alx;RatioValue"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasArgument"/>
 				<owl:onClass rdf:resource="&fibo-ind-ei-ei;CivilianNonInstitutionalPopulation"/>
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
@@ -615,13 +560,6 @@
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasArgument"/>
 				<owl:onClass rdf:resource="&fibo-ind-ei-ei;EmployedPopulation"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-ind-ei-ei;hasIndicatorValue"/>
-				<owl:onClass rdf:resource="&fibo-ind-ei-ei;RatioValue"/>
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -691,7 +629,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ind-ei-ei;EnterprisePopulation">
-		<rdfs:subClassOf rdf:resource="&fibo-ind-ei-ei;StatisticalUniverse"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;StatisticalUniverse"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasMember"/>
@@ -733,7 +671,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-ind-ei-ei;hasIndicatorValue"/>
-				<owl:onClass rdf:resource="&fibo-ind-ei-ei;Total"/>
+				<owl:onClass rdf:resource="&fibo-fnd-utl-alx;Total"/>
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -773,6 +711,7 @@ Excluded are directors of incorporated enterprises and members of shareholders c
 	<owl:Class rdf:about="&fibo-ind-ei-ei;FinitePopulation">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-arr;Collection"/>
 		<rdfs:label>finite population</rdfs:label>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
 		<skos:definition>a population for which it is possible to count its units</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote>A population is the complete group of units to which survey results are to apply. (These units may be persons, animals, objects, businesses, trips, etc.). See http://www.statcan.gc.ca/edu/power-pouvoir/glossary-glossaire/5214842-eng.htm#p.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
@@ -829,15 +768,14 @@ Excluded are directors of incorporated enterprises and members of shareholders c
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ind-ei-ei;GeometricMean">
-		<rdfs:subClassOf rdf:resource="&fibo-ind-ei-ei;Mean"/>
 		<rdfs:label>geometric mean</rdfs:label>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&fibo-fnd-utl-alx;Mean"/>
 		<skos:definition>a mean that indicates the central tendency or typical value of a set of numbers by using the product of their values (as opposed to the arithmetic mean which uses their sum)</skos:definition>
-		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://en.wikipedia.org/wiki/Geometric_mean</fibo-fnd-utl-av:adaptedFrom>
-		<fibo-fnd-utl-av:explanatoryNote>The geometric mean is defined as the nth root of the product of n numbers. A geometric mean is often used when comparing different items - finding a single &apos;figure of merit&apos; for these items - when each item has multiple properties that have different numeric ranges. For example, the geometric mean can give a meaningful &apos;average&apos; to compare two companies which are each rated at 0 to 5 for their environmental sustainability, and are rated at 0 to 100 for their financial viability. If an arithmetic mean were used instead of a geometric mean, the financial viability is given more weight because its numeric range is larger - so a small percentage change in the financial rating (e.g. going from 80 to 90) makes a much larger difference in the arithmetic mean than a large percentage change in environmental sustainability (e.g. going from 2 to 5).</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ind-ei-ei;GoodsOrServicesPopulation">
-		<rdfs:subClassOf rdf:resource="&fibo-ind-ei-ei;StatisticalUniverse"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;StatisticalUniverse"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-arr-arr;hasConstituent"/>
@@ -856,6 +794,18 @@ Excluded are directors of incorporated enterprises and members of shareholders c
 		<rdfs:label>goods or services population</rdfs:label>
 		<skos:definition>a statistical universe consisting of specific goods and/or services designed for the purposes of supporting surveys such as those used as the basis for price indices</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.imf.org/external/pubs/ft/ppi/2010/manual/ppi.pdf</fibo-fnd-utl-av:adaptedFrom>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-ind-ei-ei;GovernmentSpecifiedStatisticalArea">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;StatisticalArea"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isGovernedBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-be-ge-ge;GovernmentBody"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>government-specified statistical area</rdfs:label>
+		<skos:definition>statistical area defined by a government agency</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ind-ei-ei;GrossDomesticProduct">
@@ -924,14 +874,14 @@ A household may be located in a housing unit or in a set of collective living qu
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-ind-ei-ei;hasIndicatorValue"/>
-				<owl:onClass rdf:resource="&fibo-ind-ei-ei;RatioValue"/>
+				<owl:onClass rdf:resource="&fibo-fnd-utl-alx;RatioValue"/>
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
-				<owl:onClass rdf:resource="&fibo-ind-ei-ei;StatisticalArea"/>
+				<owl:onClass rdf:resource="&fibo-ind-ei-ei;GovernmentSpecifiedStatisticalArea"/>
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -986,54 +936,28 @@ A household may be located in a housing unit or in a set of collective living qu
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ind-ei-ei;Mean">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-qt-qtu;QuantityValue"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;Expression"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;StatisticalMeasure"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-ind-ei-ei;hasObservedValue"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-arr-arr;StructuredCollection"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label>mean</rdfs:label>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&fibo-fnd-utl-alx;Mean"/>
 		<skos:definition>the most common measure of central tendency, the average of a set of numbers</skos:definition>
-		<fibo-fnd-utl-av:abbreviation>μ</fibo-fnd-utl-av:abbreviation>
-		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.statcan.gc.ca/edu/power-pouvoir/glossary-glossaire/5214842-eng.htm#m</fibo-fnd-utl-av:adaptedFrom>
-		<fibo-fnd-utl-av:explanatoryNote>A moment is a specific quantitative measure, used in both mechanics and statistics, of the shape of a set of points. Given that the points represent probability density from a statistical viewpoint, the zeroth moment is the total probability (i.e. one), the first moment is the mean, the second central moment is the variance, the third central moment is the skewness, and the fourth central moment (with normalization and shift) is the kurtosis.</fibo-fnd-utl-av:explanatoryNote>
-		<fibo-fnd-utl-av:synonym>expected value</fibo-fnd-utl-av:synonym>
-		<fibo-fnd-utl-av:synonym>first (raw) moment</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ind-ei-ei;Median">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-qt-qtu;QuantityValue"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;Expression"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;StatisticalMeasure"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-ind-ei-ei;hasObservedValue"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-arr-arr;StructuredCollection"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label>median</rdfs:label>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&fibo-fnd-utl-alx;Median"/>
 		<skos:definition>the value separating the higher half of a data sample, a population, or a probability distribution, from the lower half</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote>The basic advantage of the median in describing data compared to the mean is that it is not skewed by extremely large or small values, and may provide a better idea of a &apos;typical&apos; value.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ind-ei-ei;MedianAbsoluteDeviation">
-		<rdfs:subClassOf rdf:resource="&fibo-ind-ei-ei;Dispersion"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasArgument"/>
-				<owl:someValuesFrom rdf:resource="&fibo-ind-ei-ei;Median"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label>median absolute deviation</rdfs:label>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&fibo-fnd-utl-alx;MedianAbsoluteDeviation"/>
 		<skos:definition>the median of the absolute deviations from the data&apos;s median</skos:definition>
-		<fibo-fnd-utl-av:abbreviation>median absolute deviation</fibo-fnd-utl-av:abbreviation>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ind-ei-ei;MetropolitanStatisticalArea">
-		<rdfs:subClassOf rdf:resource="&fibo-ind-ei-ei;StatisticalArea"/>
+		<rdfs:subClassOf rdf:resource="&fibo-ind-ei-ei;GovernmentSpecifiedStatisticalArea"/>
 		<rdfs:label>metropolitan statistical area</rdfs:label>
 		<skos:definition>one or more adjacent counties or county equivalents that have at least one urban core area of at least 50,000 population, plus adjacent territory that has a high degree of social and economic integration with the core as measured by commuting ties</skos:definition>
 		<fibo-fnd-utl-av:abbreviation>MSA</fibo-fnd-utl-av:abbreviation>
@@ -1043,7 +967,7 @@ A household may be located in a housing unit or in a set of collective living qu
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ind-ei-ei;MicropolitanStatisticalArea">
-		<rdfs:subClassOf rdf:resource="&fibo-ind-ei-ei;StatisticalArea"/>
+		<rdfs:subClassOf rdf:resource="&fibo-ind-ei-ei;GovernmentSpecifiedStatisticalArea"/>
 		<rdfs:label>micropolitan statistical area</rdfs:label>
 		<skos:definition>one or more adjacent counties or county equivalents that have at least one urban core area of at least 10,000 population but less than 50,000, plus adjacent territory that has a high degree of social and economic integration with the core as measured by commuting ties</skos:definition>
 		<fibo-fnd-utl-av:abbreviation>μSA</fibo-fnd-utl-av:abbreviation>
@@ -1068,28 +992,10 @@ A household may be located in a housing unit or in a set of collective living qu
 	</owl:NamedIndividual>
 	
 	<owl:Class rdf:about="&fibo-ind-ei-ei;NumericIndex">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-qt-qtu;QuantityValue"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;Expression"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;StatisticalMeasure"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-arr-doc;hasReportingPeriod"/>
-				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;ExplicitDatePeriod"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-ind-ei-ei;hasBasePeriod"/>
-				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;ExplicitDatePeriod"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label>numeric index</rdfs:label>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&fibo-fnd-utl-alx;NumericIndex"/>
 		<skos:definition>the change in some aggregate relative to the value of the aggregate at a reference period</skos:definition>
-		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.statcan.gc.ca/edu/power-pouvoir/glossary-glossaire/5214842-eng.htm#i</fibo-fnd-utl-av:adaptedFrom>
-		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://wiki.edmcouncil.org/display/IND/Specifying+Statistical+Quantities</fibo-fnd-utl-av:adaptedFrom>
-		<fibo-fnd-utl-av:explanatoryNote>a mathematical device or number which is used to express the observation (e.g., price level, volume of trade, relative amount etc.) of a given period, in comparison with that of a base period</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ind-ei-ei;OutputProducerPriceIndex">
@@ -1124,7 +1030,7 @@ A household may be located in a housing unit or in a set of collective living qu
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-ind-ei-ei;hasIndicatorValue"/>
-				<owl:onClass rdf:resource="&fibo-ind-ei-ei;NumericIndex"/>
+				<owl:onClass rdf:resource="&fibo-fnd-utl-alx;NumericIndex"/>
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -1184,7 +1090,7 @@ A household may be located in a housing unit or in a set of collective living qu
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-ind-ei-ei;hasIndicatorValue"/>
-				<owl:onClass rdf:resource="&fibo-ind-ei-ei;RatioValue"/>
+				<owl:onClass rdf:resource="&fibo-fnd-utl-alx;RatioValue"/>
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -1196,215 +1102,80 @@ A household may be located in a housing unit or in a set of collective living qu
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ind-ei-ei;Ratio">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;Expression"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;StatisticalMeasure"/>
 		<rdfs:label>ratio</rdfs:label>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&fibo-fnd-utl-alx;Ratio"/>
 		<skos:definition>a proportional relationship between two different numbers or quantities, or in mathematics a quotient of two numbers or expressions, arrived at by dividing one by the other</skos:definition>
-		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.statcan.gc.ca/edu/power-pouvoir/glossary-glossaire/5214842-eng.htm#p.</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ind-ei-ei;RatioExpression">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-qt-qtu;Quantity"/>
-		<rdfs:subClassOf rdf:resource="&fibo-ind-ei-ei;Ratio"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasArgument"/>
-				<owl:onClass rdf:resource="&fibo-fnd-utl-alx;Expression"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">2</owl:qualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-ind-ei-ei;evaluates"/>
-				<owl:someValuesFrom rdf:resource="&fibo-ind-ei-ei;RatioValue"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label>ratio expression</rdfs:label>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&fibo-fnd-utl-alx;RatioExpression"/>
 		<skos:definition>a proportional relationship specifically between two different quantities or expressions, arrived at by dividing one by the other</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ind-ei-ei;RatioValue">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-qt-qtu;QuantityValue"/>
-		<rdfs:subClassOf rdf:resource="&fibo-ind-ei-ei;Ratio"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasArgument"/>
-				<owl:onClass rdf:resource="&fibo-fnd-qt-qtu;QuantityValue"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">2</owl:qualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-ind-ei-ei;isEvaluatedBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-ind-ei-ei;RatioExpression"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label>ratio value</rdfs:label>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&fibo-fnd-utl-alx;RatioValue"/>
 		<skos:definition>a proportional relationship specifically between two different quantity values that gives rise to a datum of a specific quantity type</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ind-ei-ei;SamplingVariance">
-		<rdfs:subClassOf rdf:resource="&fibo-ind-ei-ei;Variance"/>
 		<rdfs:label>sampling variance</rdfs:label>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&fibo-fnd-utl-alx;SamplingVariance"/>
 		<skos:definition>a measure of the extent to which the estimate of a characteristic from different possible samples of the same size and the same design differ from one another</skos:definition>
-		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.statcan.gc.ca/pub/12-587-x/12-587-x2003001-eng.pdf</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ind-ei-ei;StandardDeviation">
-		<rdfs:subClassOf rdf:resource="&fibo-ind-ei-ei;Dispersion"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasArgument"/>
-				<owl:someValuesFrom>
-					<owl:Class>
-						<owl:unionOf rdf:parseType="Collection">
-							<rdf:Description rdf:about="&fibo-ind-ei-ei;Mean">
-							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-ind-ei-ei;Variance">
-							</rdf:Description>
-						</owl:unionOf>
-					</owl:Class>
-				</owl:someValuesFrom>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label>standard deviation</rdfs:label>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&fibo-fnd-utl-alx;StandardDeviation"/>
 		<skos:definition>the square root of variance, standard deviation, measures the spread or dispersion around the mean of a data set</skos:definition>
-		<fibo-fnd-utl-av:abbreviation>SD</fibo-fnd-utl-av:abbreviation>
-		<fibo-fnd-utl-av:abbreviation>σ</fibo-fnd-utl-av:abbreviation>
-		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.statcan.gc.ca/edu/power-pouvoir/glossary-glossaire/5214842-eng.htm#s</fibo-fnd-utl-av:adaptedFrom>
-		<fibo-fnd-utl-av:explanatoryNote>Standard deviation is the most widely-used measure of spread, using squared deviations, but may not be robust.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ind-ei-ei;StatisticalArea">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-plc-loc;PhysicalLocation"/>
-		<rdfs:subClassOf rdf:resource="&lcc-cr;GeographicRegion"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-aap-agt;isIdentifiedBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-ind-ei-ei;StatisticalAreaIdentifier"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isGovernedBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-be-ge-ge;GovernmentBody"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label>statistical area</rdfs:label>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&fibo-fnd-utl-alx;StatisticalArea"/>
 		<skos:definition>a physical location that is defined per a nationally consistent program for designating geographic regions for the purposes of tabulating and presenting statistical data</skos:definition>
-		<fibo-fnd-utl-av:adaptedFrom>U.S. Bureau of Labor Statistics and Statistics Canada reference definitions - https://wiki.edmcouncil.org/display/IND/Statistics+Canada+Census+Information</fibo-fnd-utl-av:adaptedFrom>
-		<fibo-fnd-utl-av:adaptedFrom>U.S. Bureau of Labor Statistics and Statistics Canada reference definitions - https://wiki.edmcouncil.org/pages/viewpage.action?pageId=6358041</fibo-fnd-utl-av:adaptedFrom>
-		<fibo-fnd-utl-av:adaptedFrom rdf:resource="http://www.census.gov/prod/cen2010/doc/gqsf.pdf"/>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ind-ei-ei;StatisticalAreaIdentifier">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-id;Identifier"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-aap-agt;identifies"/>
-				<owl:onClass rdf:resource="&fibo-ind-ei-ei;StatisticalArea"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label>statistical area identifier</rdfs:label>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&fibo-fnd-utl-alx;StatisticalAreaIdentifier"/>
 		<skos:definition>an identifier for a physical location that is defined per a nationally consistent program for designating geographic regions for the purposes of tabulating and presenting statistical data</skos:definition>
-		<fibo-fnd-utl-av:adaptedFrom>U.S. Bureau of Labor Statistics and Statistics Canada reference definitions - https://wiki.edmcouncil.org/display/IND/Statistics+Canada+Census+Information</fibo-fnd-utl-av:adaptedFrom>
-		<fibo-fnd-utl-av:adaptedFrom>U.S. Bureau of Labor Statistics and Statistics Canada reference definitions - https://wiki.edmcouncil.org/pages/viewpage.action?pageId=6358041</fibo-fnd-utl-av:adaptedFrom>
-		<fibo-fnd-utl-av:adaptedFrom rdf:resource="http://www.census.gov/prod/cen2010/doc/gqsf.pdf"/>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ind-ei-ei;StatisticalPopulation">
-		<rdfs:subClassOf rdf:resource="&fibo-ind-ei-ei;FinitePopulation"/>
-		<rdfs:subClassOf rdf:resource="&fibo-ind-ei-ei;StatisticalUniverse"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-ind-ei-ei;hasPopulationSize"/>
-				<owl:allValuesFrom rdf:resource="&xsd;decimal"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isCharacterizedBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;ExplicitDatePeriod"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isCharacterizedBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-ind-ei-ei;StatisticalArea"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label>statistical population</rdfs:label>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&fibo-fnd-utl-alx;StatisticalPopulation"/>
 		<skos:definition>a statistical universe filtered by time and region</skos:definition>
-		<fibo-fnd-utl-av:adaptedFrom rdf:resource="http://stats.oecd.org/glossary/detail.asp?ID=2079"/>
-		<fibo-fnd-utl-av:explanatoryNote>A common aim of statistical analysis is to produce information about some chosen population. In statistical inference, a subset of the population (a statistical sample) is chosen to represent the population in a statistical analysis. If a sample is chosen properly, characteristics of the entire population that the sample is drawn from can be estimated from corresponding characteristics of the sample.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ind-ei-ei;StatisticalProgram">
-		<rdfs:subClassOf rdf:resource="&fibo-be-fct-pub;Publication"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-ind-ei-ei;hasReferencePeriod"/>
-				<owl:allValuesFrom rdf:resource="&fibo-fnd-dt-bd;BusinessRecurrenceInterval"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-arr-doc;hasReportingPeriod"/>
-				<owl:allValuesFrom rdf:resource="&fibo-fnd-dt-fd;ExplicitDatePeriod"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-ind-ei-ei;hasReleaseDateTime"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
-				<owl:onDataRange rdf:resource="&fibo-fnd-dt-fd;CombinedDateTime"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-fct-ra;specifies"/>
-				<owl:someValuesFrom rdf:resource="&fibo-ind-ei-ei;StatisticalUniverse"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-plc-cty;hasCoverageArea"/>
-				<owl:someValuesFrom rdf:resource="&fibo-ind-ei-ei;StatisticalArea"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label>statistical program</rdfs:label>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&fibo-fnd-utl-alx;StatisticalProgram"/>
 		<skos:definition>a publication program that presents a detailed investigation and analysis of a subject or situation involving one or more studies or surveys</skos:definition>
-		<fibo-fnd-utl-av:adaptedFrom rdf:resource="http://www.oxforddictionaries.com/definition/english/study"/>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ind-ei-ei;StatisticalUniverse">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-arr;Collection"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-ind-ei-ei;hasUniverseSize"/>
-				<owl:allValuesFrom rdf:resource="&xsd;decimal"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasContext"/>
-				<owl:someValuesFrom rdf:resource="&fibo-ind-ei-ei;StatisticalProgram"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label>statistical universe</rdfs:label>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&fibo-fnd-utl-alx;StatisticalUniverse"/>
 		<skos:definition>a collection representing the total membership, or &apos;universe&apos;, of people, resources, products, services, events, or entities of interest for some question, experiment, survey or statistical program</skos:definition>
-		<skos:example>A statistical universe can be a group of actually existing objects (e.g. the set of all stars within the Milky Way galaxy) or a hypothetical and potentially infinite group of objects conceived as a generalization from experience (e.g. the set of all possible hands in a game of poker).</skos:example>
-		<fibo-fnd-utl-av:adaptedFrom rdf:resource="http://stats.oecd.org/glossary/detail.asp?ID=2087"/>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ind-ei-ei;Total">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-qt-qtu;QuantityValue"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;Expression"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;StatisticalMeasure"/>
 		<rdfs:label>total</rdfs:label>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&fibo-fnd-utl-alx;Total"/>
 		<skos:definition>a sum of the values for some characteristic of all units</skos:definition>
-		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://wiki.edmcouncil.org/display/IND/Specifying+Statistical+Quantities</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ind-ei-ei;UltimateConsumer">
@@ -1437,15 +1208,15 @@ A household may be located in a housing unit or in a set of collective living qu
 		<rdfs:subClassOf rdf:resource="&fibo-ind-ei-ei;EconomicIndicator"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasArgument"/>
-				<owl:onClass rdf:resource="&fibo-ind-ei-ei;CivilianLaborForce"/>
+				<owl:onProperty rdf:resource="&fibo-ind-ei-ei;hasIndicatorValue"/>
+				<owl:onClass rdf:resource="&fibo-fnd-utl-alx;RatioValue"/>
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-ind-ei-ei;hasIndicatorValue"/>
-				<owl:onClass rdf:resource="&fibo-ind-ei-ei;RatioValue"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasArgument"/>
+				<owl:onClass rdf:resource="&fibo-ind-ei-ei;CivilianLaborForce"/>
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -1491,19 +1262,10 @@ A household may be located in a housing unit or in a set of collective living qu
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ind-ei-ei;Variance">
-		<rdfs:subClassOf rdf:resource="&fibo-ind-ei-ei;Dispersion"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasArgument"/>
-				<owl:someValuesFrom rdf:resource="&fibo-ind-ei-ei;Mean"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label>variance</rdfs:label>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&fibo-fnd-utl-alx;Variance"/>
 		<skos:definition>a measure of spread, calculated as the average squared deviation of each number from the mean of a data set</skos:definition>
-		<fibo-fnd-utl-av:abbreviation>μ2</fibo-fnd-utl-av:abbreviation>
-		<fibo-fnd-utl-av:abbreviation>σ2</fibo-fnd-utl-av:abbreviation>
-		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.statcan.gc.ca/edu/power-pouvoir/glossary-glossaire/5214842-eng.htm#v</fibo-fnd-utl-av:adaptedFrom>
-		<fibo-fnd-utl-av:synonym>second moment</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
 	<owl:NamedIndividual rdf:about="&fibo-ind-ei-ei;Weekly">
@@ -1515,16 +1277,15 @@ A household may be located in a housing unit or in a set of collective living qu
 	
 	<owl:AnnotationProperty rdf:about="&fibo-ind-ei-ei;actualExpression">
 		<rdfs:label>actual expression</rdfs:label>
-		<rdfs:range rdf:resource="&xsd;string"/>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentProperty rdf:resource="&fibo-fnd-utl-alx;actualExpression"/>
 		<skos:definition>the calculation or expression used to determine the value of something</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote>In cases where some expression can only be calculated in SPARQL or via rules, this property is useful for stating what that calculation should be using the input arguments to the expression.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:AnnotationProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-ind-ei-ei;evaluates">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;represents"/>
 		<rdfs:label>evaluates</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-utl-alx;Expression"/>
-		<rdfs:range rdf:resource="&fibo-fnd-qt-qtu;QuantityValue"/>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentProperty rdf:resource="&fibo-fnd-utl-alx;evaluates"/>
 		<skos:definition>calculates a quantity value based on some mathematical formula</skos:definition>
 	</owl:ObjectProperty>
 	
@@ -1536,9 +1297,9 @@ A household may be located in a housing unit or in a set of collective living qu
 	</owl:DatatypeProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-ind-ei-ei;hasBasePeriod">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDatePeriod"/>
 		<rdfs:label>has base period</rdfs:label>
-		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;ExplicitDatePeriod"/>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentProperty rdf:resource="&fibo-fnd-utl-alx;hasBasePeriod"/>
 		<skos:definition>specifies the base period (typically a prior period) against which a numberic index for a more recent reporting period is compared</skos:definition>
 	</owl:ObjectProperty>
 	
@@ -1558,61 +1319,59 @@ A household may be located in a housing unit or in a set of collective living qu
 	</owl:DatatypeProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-ind-ei-ei;hasObservedValue">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-utl-alx;hasArgument"/>
 		<rdfs:label>has observed value</rdfs:label>
-		<rdfs:range rdf:resource="&fibo-fnd-arr-arr;StructuredCollection"/>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentProperty rdf:resource="&fibo-fnd-utl-alx;hasObservedValue"/>
 		<skos:definition>specifies a collection of values over which some analysis is performed</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote>For certain calculations, such as certain measures of dispersion, date value pairs are expected as input, in other words, a dated structured collection.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-ind-ei-ei;hasPeriodicity">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasRecurrenceInterval"/>
 		<rdfs:label>has periodicity</rdfs:label>
-		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;RecurrenceInterval"/>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentProperty rdf:resource="&fibo-fnd-utl-alx;hasPeriodicity"/>
 		<skos:definition>specifies a recurrence interval (monthly, quarterly, annual) that an indicator reflects</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-ind-ei-ei;hasPopulationSize">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasAmount"/>
 		<rdfs:label>has population size</rdfs:label>
-		<rdfs:range rdf:resource="&xsd;decimal"/>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentProperty rdf:resource="&fibo-fnd-utl-alx;hasPopulationSize"/>
 		<skos:definition>a predicate indicating the number of elements in a given population</skos:definition>
 	</owl:DatatypeProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-ind-ei-ei;hasReferencePeriod">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasRecurrenceInterval"/>
 		<rdfs:label>has reference period</rdfs:label>
-		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;RecurrenceInterval"/>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentProperty rdf:resource="&fibo-fnd-utl-alx;hasReferencePeriod"/>
 		<skos:definition>specifies a reference (baseline) recurrence interval for which a given economic indicator applies</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-ind-ei-ei;hasRegionalContext">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;hasContext"/>
 		<rdfs:label>has regional context</rdfs:label>
-		<rdfs:range rdf:resource="&fibo-ind-ei-ei;StatisticalArea"/>
+		<rdfs:range rdf:resource="&fibo-fnd-utl-alx;StatisticalArea"/>
 		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
 		<skos:definition>specifies the regional (geopolitical) context for a given measurement, population, or economic indicator</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-ind-ei-ei;hasReleaseDate">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDate"/>
 		<rdfs:label>has release date</rdfs:label>
-		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Date"/>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentProperty rdf:resource="&fibo-fnd-utl-alx;hasReleaseDate"/>
 		<skos:definition>specifies the release date for a given economic indicator</skos:definition>
-		<fibo-fnd-utl-av:usageNote>Note that this property requires a reified date value, if used.</fibo-fnd-utl-av:usageNote>
 	</owl:ObjectProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-ind-ei-ei;hasReleaseDateTime">
 		<rdfs:label>has release date and time</rdfs:label>
-		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;CombinedDateTime"/>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentProperty rdf:resource="&fibo-fnd-utl-alx;hasReleaseDateTime"/>
 		<skos:definition>indicates a release date and possibly a time for a given indicator or report</skos:definition>
 	</owl:DatatypeProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-ind-ei-ei;hasReportingPeriod">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDatePeriod"/>
 		<rdfs:label>has reporting period</rdfs:label>
-		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;ExplicitDatePeriod"/>
 		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentProperty rdf:resource="&fibo-fnd-arr-doc;hasReportingPeriod"/>
 		<skos:definition>specifies the reporting period for which a given economic indicator applies</skos:definition>
 	</owl:ObjectProperty>
 	
@@ -1633,24 +1392,23 @@ A household may be located in a housing unit or in a set of collective living qu
 	</owl:ObjectProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-ind-ei-ei;hasUniverseSize">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasAmount"/>
 		<rdfs:label>has universe size</rdfs:label>
-		<rdfs:range rdf:resource="&xsd;decimal"/>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentProperty rdf:resource="&fibo-fnd-utl-alx;hasUniverseSize"/>
 		<skos:definition>a predicate indicating the number of elements in a given universe</skos:definition>
 	</owl:DatatypeProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-ind-ei-ei;isCalculatedViaMethodology">
 		<rdfs:label>is calculated via methodology</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-utl-alx;StatisticalMeasure"/>
-		<rdfs:range rdf:resource="&xsd;string"/>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentProperty rdf:resource="&fibo-fnd-utl-alx;isCalculatedViaMethodology"/>
 		<skos:definition>a high-level description of the approach taken to obtain the result</skos:definition>
 	</owl:DatatypeProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-ind-ei-ei;isEvaluatedBy">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;hasRepresentation"/>
 		<rdfs:label>is evaluated by</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-qt-qtu;QuantityValue"/>
-		<rdfs:range rdf:resource="&fibo-fnd-utl-alx;Expression"/>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentProperty rdf:resource="&fibo-fnd-utl-alx;isEvaluatedBy"/>
 		<skos:definition>links a quantity value to the expression that generated it</skos:definition>
 	</owl:ObjectProperty>
 	
@@ -1660,19 +1418,5 @@ A household may be located in a housing unit or in a set of collective living qu
 		<skos:definition>a predicate indicating whether some published formal method is applied that compensates for seasonal variations in the population or index value</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote>Example explanation from the US Bureau of Labor Statistics: Because price data are used for different purposes by different groups, the Bureau of Labor Statistics publishes seasonally adjusted as well as unadjusted changes each month. ...  Seasonal factors used in computing the seasonally adjusted indexes are derived by the X-13ARIMA-SEATS Seasonal Adjustment Method.  Seasonally adjusted indexes and seasonal factors are computed annually.  Each year, the last five years of seasonally adjusted data are revised.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:DatatypeProperty>
-	
-	<owl:Class rdf:about="&fibo-ind-ind-ind;Volatility">
-		<rdfs:subClassOf rdf:resource="&fibo-ind-ei-ei;Dispersion"/>
-		<rdfs:subClassOf>
-			<owl:Class>
-				<owl:unionOf rdf:parseType="Collection">
-					<rdf:Description rdf:about="&fibo-ind-ei-ei;Variance">
-					</rdf:Description>
-					<rdf:Description rdf:about="&fibo-ind-ei-ei;StandardDeviation">
-					</rdf:Description>
-				</owl:unionOf>
-			</owl:Class>
-		</rdfs:subClassOf>
-	</owl:Class>
 
 </rdf:RDF>
