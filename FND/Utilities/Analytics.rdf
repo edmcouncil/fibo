@@ -304,7 +304,7 @@
 	
 	<owl:Class rdf:about="&fibo-fnd-utl-alx;NumericIndex">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;Expression"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;StatisticalMeasure"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;ScopedMeasure"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-arr-doc;hasReportingPeriod"/>
@@ -334,9 +334,25 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-utl-alx;QualifiedMeasure">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;Measure"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;StatisticalMeasure"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;isCalculatedViaMethodology"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+				<owl:onDataRange>
+					<owl:Class>
+						<owl:unionOf rdf:parseType="Collection">
+							<rdf:Description rdf:about="&xsd;string">
+							</rdf:Description>
+							<rdf:Description rdf:about="&xsd;anyURI">
+							</rdf:Description>
+						</owl:unionOf>
+					</owl:Class>
+				</owl:onDataRange>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label>qualified measure</rdfs:label>
-		<skos:definition>measure that is constrained by features, quantity kinds or units that refine how it is calculated</skos:definition>
+		<skos:definition>statistical measure that is constrained by features, quantity kinds or units that refine how it is calculated</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-utl-alx;Ratio">
@@ -392,6 +408,26 @@
 	
 	<owl:Class rdf:about="&fibo-fnd-utl-alx;ScopedMeasure">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;QualifiedMeasure"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasPeriodicity"/>
+				<owl:allValuesFrom rdf:resource="&fibo-fnd-dt-fd;RecurrenceInterval"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
+				<owl:onClass rdf:resource="&fibo-fnd-utl-alx;FinitePopulation"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-plc-cty;hasCoverageArea"/>
+				<owl:onClass rdf:resource="&fibo-fnd-utl-alx;StatisticalArea"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label>scoped measure</rdfs:label>
 		<skos:definition>qualified measure that is constrained by filters on the statistical population to which it applies</skos:definition>
 	</owl:Class>
@@ -459,45 +495,9 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;Measure"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasPeriodicity"/>
-				<owl:allValuesFrom rdf:resource="&fibo-fnd-dt-fd;RecurrenceInterval"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isCharacterizedBy"/>
 				<owl:onClass rdf:resource="&fibo-fnd-utl-alx;Aspect"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
-				<owl:onClass rdf:resource="&fibo-fnd-utl-alx;FinitePopulation"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-plc-cty;hasCoverageArea"/>
-				<owl:onClass rdf:resource="&fibo-fnd-utl-alx;StatisticalArea"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;isCalculatedViaMethodology"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
-				<owl:onDataRange>
-					<owl:Class>
-						<owl:unionOf rdf:parseType="Collection">
-							<rdf:Description rdf:about="&xsd;string">
-							</rdf:Description>
-							<rdf:Description rdf:about="&xsd;anyURI">
-							</rdf:Description>
-						</owl:unionOf>
-					</owl:Class>
-				</owl:onDataRange>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
