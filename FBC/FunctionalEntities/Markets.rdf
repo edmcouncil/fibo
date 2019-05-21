@@ -60,8 +60,8 @@
 		<dct:abstract>This ontology defines the fundamental concepts for markets, exchanges, regulated markets, and multilateral trading facilities for use in the development of downstream FIBO domain ontologies that require them.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
 		<sm:contentLanguage rdf:datatype="&xsd;anyURI">http://www.w3.org/standards/techs/owl#w3c_all</sm:contentLanguage>
-		<sm:copyright>Copyright (c) 2015-2018 EDM Council, Inc.</sm:copyright>
-		<sm:copyright>Copyright (c) 2015-2018 Object Management Group, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2015-2019 EDM Council, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2015-2019 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/"/>
 		<sm:dependsOn rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/BusinessRegistries/"/>
 		<sm:dependsOn rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/RegistrationAuthorities/"/>
@@ -89,10 +89,10 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Countries/CountryRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/20190101/FunctionalEntities/Markets/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/20190501/FunctionalEntities/Markets/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20150801/FunctionalEntities/Markets/ version of this ontology was modified to reflect issue resolutions detailed in the FIBO FBC 1.0 RTF report.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20170201/FunctionalEntities/Markets/ version of this ontology was modified per the FIBO 2.0 RFC.</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20180801/FunctionalEntities/Markets/ version of this ontology was modified to generalize certain unions where they were no longer required.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20180801/FunctionalEntities/Markets/ version of this ontology was modified to generalize certain unions where they were no longer required and to move international registration authorities individuals to a separate ontology for better modularity.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -167,20 +167,6 @@
 		<fibo-fnd-utl-av:synonym>market</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
-	<owl:NamedIndividual rdf:about="&fibo-fbc-fct-mkt;MICRegistrationAuthority">
-		<rdf:type rdf:resource="&fibo-fbc-fct-ra;RegistrationAuthority"/>
-		<rdf:type rdf:resource="&fibo-fbc-pas-fpas;FinancialServiceProvider"/>
-		<rdfs:label>Market Identifier Code Registration Authority</rdfs:label>
-		<skos:definition>a registration authority and financial service provider, appointed by the International Standards Organization (ISO), that is the official registration authority (RA) for ISO 10383, Codes for exchanges and market identification (MIC)</skos:definition>
-		<fibo-fnd-rel-rel:hasIdentity rdf:resource="&fibo-fbc-fct-breg;SocietyForWorldwideInterbankFinancialTelecommunication"/>
-		<fibo-fnd-rel-rel:manages rdf:resource="&fibo-fbc-fct-mkt;MarketIdentifierCodeRegistry"/>
-		<fibo-fnd-utl-av:abbreviation>MIC RA</fibo-fnd-utl-av:abbreviation>
-		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.anna-web.org/standards/mic-iso-10383/</fibo-fnd-utl-av:adaptedFrom>
-		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.iso20022.org/10383/iso-10383-market-identifier-codes</fibo-fnd-utl-av:adaptedFrom>
-		<fibo-fnd-utl-av:synonym>ISO 10383 Registration Authority</fibo-fnd-utl-av:synonym>
-		<fibo-fnd-utl-av:synonym>MIC Registration Authority</fibo-fnd-utl-av:synonym>
-	</owl:NamedIndividual>
-	
 	<owl:Class rdf:about="&fibo-fbc-fct-mkt;Market">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-plc-fac;Venue"/>
 		<rdfs:label>market</rdfs:label>
@@ -190,12 +176,6 @@
 	
 	<owl:Class rdf:about="&fibo-fbc-fct-mkt;MarketIdentifier">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-id;Identifier"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-fct-ra;isRegisteredBy"/>
-				<owl:hasValue rdf:resource="&fibo-fbc-fct-mkt;MICRegistrationAuthority"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-aap-agt;identifies"/>
@@ -221,50 +201,6 @@
 - where a related trade is executed (place of trade), and
 - where trade details are reported (trade reporting facility).</fibo-fnd-utl-av:explanatoryNote>
 		<fibo-fnd-utl-av:synonym>Market Identifier Code</fibo-fnd-utl-av:synonym>
-	</owl:Class>
-	
-	<owl:NamedIndividual rdf:about="&fibo-fbc-fct-mkt;MarketIdentifierCodeRegistry">
-		<rdf:type rdf:resource="&fibo-fbc-fct-breg;BusinessRegistry"/>
-		<rdfs:label>market identifier code registry</rdfs:label>
-		<skos:definition>a registry for registering and maintaining information for market identifier codes that conform to ISO 10383</skos:definition>
-		<fibo-fnd-rel-rel:isManagedBy rdf:resource="&fibo-fbc-fct-mkt;MICRegistrationAuthority"/>
-		<fibo-fnd-utl-av:abbreviation>MIC registry</fibo-fnd-utl-av:abbreviation>
-		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.iso20022.org/10383/iso-10383-market-identifier-codes</fibo-fnd-utl-av:adaptedFrom>
-	</owl:NamedIndividual>
-	
-	<owl:Class rdf:about="&fibo-fbc-fct-mkt;MarketIdentifierCodeRegistryEntry">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-ra;RegistryEntry"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-fct-breg;hasRegistrationStatusRevisionDate"/>
-				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-				<owl:onDataRange rdf:resource="&xsd;string"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-fct-mkt;hasMarketIdentifierCodeStatus"/>
-				<owl:onClass rdf:resource="&fibo-fbc-fct-mkt;MarketIdentifierCodeStatus"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-fct-breg;hasInitialRegistrationDate"/>
-				<owl:onDataRange rdf:resource="&xsd;string"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;comprises"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-fct-mkt;MarketIdentifier"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>market identifier code registry entry</rdfs:label>
-		<skos:definition>an entry in a market identifier code registry that conforms to ISO 10383</skos:definition>
-		<fibo-fnd-utl-av:abbreviation>MIC registry entry</fibo-fnd-utl-av:abbreviation>
-		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.iso20022.org/10383/iso-10383-market-identifier-codes</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-fct-mkt;MarketIdentifierCodeStatus">
