@@ -46,8 +46,8 @@
 The definition of currency provided herein is compliant with the definitions given in ISO 4217.  ISO 4217 provides universally applicable coded representations of names of currencies and funds, used internationally for financial transaction support.  The ontology has been partitioned into 2 parts: (1) the essential concept system describing the standard (this module), and (2) ISO4217-1-CurrencyCodes, which contains all of the individuals specified in ISO 4217.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
 		<sm:contentLanguage rdf:datatype="&xsd;anyURI">http://www.w3.org/standards/techs/owl#w3c_all</sm:contentLanguage>
-		<sm:copyright>Copyright (c) 2013-2018 EDM Council, Inc.</sm:copyright>
-		<sm:copyright>Copyright (c) 2013-2018 Object Management Group, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2013-2019 EDM Council, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2013-2019 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/AgentsAndPeople/Agents/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Arrangements/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Codes/</sm:dependsOn>
@@ -72,10 +72,11 @@ The definition of currency provided herein is compliant with the definitions giv
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Analytics/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Countries/CountryRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20181101/Accounting/CurrencyAmount/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20190501/Accounting/CurrencyAmount/"/>
 		<skos:changeNote>The FIBO FND 1.0 (https://spec.edmcouncil.org/fibo/ontology/FND/20141101/Accounting/CurrencyAmount.rdf) version of this ontology was modified per the additions introduced in the FIBO FBC RFC and related issue resolutions identified in the FIBO FND 1.1 RTF report and https://spec.edmcouncil.org/fibo/ontology/FND/1.0/AboutFND-1.1/, including adding support for ISO 4217 currency codes.</skos:changeNote>
 		<skos:changeNote>The FIBO FND 1.1 (https://spec.edmcouncil.org/fibo/ontology/FND/20160201/Accounting/CurrencyAmount.rdf) version of this ontology was modified per FIBO 2.0 RFC, including the addition of a new hasMonetaryAmount property as a superproperty of others required by various FIBO domain teams and integration with LCC.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20180801/Accounting/CurrencyAmount.rdf version of this ontology was modified to include several classes to support automated inclusion of all ISO 4217 codes published as of 2018-06-04, and to revise definitions per the eighth edition of the specification.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20181101/Accounting/CurrencyAmount/ version of this ontology was modified to use the generic statistical measures and measurements now in FND.</skos:changeNote>
 		<skos:editorialNote>(1) The present version of the ontology covers the English sections of the ISO 4217 standard only, and (2) UTF-8 character encodings are employed in names in the currency codes ontology to support the broadest number of tools.</skos:editorialNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
@@ -186,14 +187,7 @@ Where the currency is not associated with a single geographical entity as descri
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-acc-cur;ExchangeRate">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-acc-cur;MonetaryMeasure"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-qt-qtu;Rate"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-acc-cur;hasRateValue"/>
-				<owl:allValuesFrom rdf:resource="&xsd;decimal"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;RatioValue"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-qt-qtu;hasQuantityKind"/>
@@ -211,6 +205,13 @@ Where the currency is not associated with a single geographical entity as descri
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-acc-cur;hasDealtCurrency"/>
 				<owl:onClass rdf:resource="&fibo-fnd-acc-cur;Currency"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-acc-cur;hasRateValue"/>
+				<owl:onDataRange rdf:resource="&xsd;decimal"/>
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -261,18 +262,18 @@ Where the currency is not associated with a single geographical entity as descri
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-acc-cur;InterestRate">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-acc-cur;MonetaryMeasure"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-qt-qtu;Rate"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-acc-cur;hasRateValue"/>
-				<owl:allValuesFrom rdf:resource="&xsd;decimal"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;Percentage"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-qt-qtu;hasQuantityKind"/>
 				<owl:allValuesFrom rdf:resource="&fibo-fnd-acc-cur;MonetaryMeasure"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-acc-cur;hasRateValue"/>
+				<owl:onDataRange rdf:resource="&xsd;decimal"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>interest rate</rdfs:label>
@@ -282,7 +283,7 @@ Where the currency is not associated with a single geographical entity as descri
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-acc-cur;MonetaryAmount">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-acc-cur;MonetaryMeasure"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-qt-qtu;QuantityValue"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-acc-cur;hasCurrency"/>
@@ -325,12 +326,11 @@ Where the currency is not associated with a single geographical entity as descri
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-acc-cur;PercentageMonetaryAmount">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-acc-cur;MonetaryMeasure"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-qt-qtu;Rate"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;Percentage"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-acc-cur;hasRateValue"/>
-				<owl:allValuesFrom rdf:resource="&xsd;decimal"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-qt-qtu;hasQuantityKind"/>
+				<owl:allValuesFrom rdf:resource="&fibo-fnd-acc-cur;MonetaryMeasure"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>percentage monetary amount</rdfs:label>
@@ -340,6 +340,12 @@ Where the currency is not associated with a single geographical entity as descri
 	
 	<owl:Class rdf:about="&fibo-fnd-acc-cur;Price">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-qt-qtu;QuantityValue"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-qt-qtu;hasQuantityKind"/>
+				<owl:allValuesFrom rdf:resource="&fibo-fnd-acc-cur;MonetaryMeasure"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label>price</rdfs:label>
 		<skos:definition>an amount of money, goods, or services requested, expected, required, or given in exchange for something else</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.businessdictionary.com/definition/price.html</fibo-fnd-utl-av:adaptedFrom>
@@ -503,6 +509,7 @@ Where the currency is not associated with a single geographical entity as descri
 	</owl:ObjectProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-fnd-acc-cur;hasRateValue">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-qt-qtu;hasNumericValue"/>
 		<rdfs:label>has rate value</rdfs:label>
 		<rdfs:range rdf:resource="&xsd;decimal"/>
 		<skos:definition>has a value for a rate expressed as a number (may be a percentage or raw number)</skos:definition>
