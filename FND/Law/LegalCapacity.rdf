@@ -86,7 +86,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Roles/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20190401/Law/LegalCapacity/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20190501/Law/LegalCapacity/"/>
 		<skos:changeNote>The http://www.omg.org/spec/FIBO/Foundations/20130601/Law/LegalCapacity.owl version of the ontology was revised in advance of the September 2013 New Brunswick, NJ meeting, as follows:
    (1) to use slash style URI/IRIss (also called 303 URIs, vs. hash style) as required to support server side processing 
    (2) to use version-independent IRIs for all definitions internally as opposed to version-specific IRIs
@@ -97,7 +97,7 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20141101/Law/LegalCapacity.rdf version of the ontology was modified per the FIBO FBC RFC, namely to add concepts to support license, licensee, and licensor to the ontology.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20150801/Law/LegalCapacity.rdf version of the ontology was modified per the FIBO 1.1 RTF to add the concept of litigation capacity to the ontology.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20160201/Law/LegalCapacity.rdf version of the ontology was modified per the FIBO 2.0 RFC integrate contingent rights and obligations.</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20180901/Law/LegalCapacity.rdf version of the ontology was modified to add concepts related to policies.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20180901/Law/LegalCapacity.rdf version of the ontology was modified to add concepts related to policies, and adjust the hierarchy to better support regulatory requirements.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -153,7 +153,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-law-lcap;ContractualObligation">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-law-lcap;ContingentObligation"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-law-lcap;LegalObligation"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-law-lcap;isImpliedBy"/>
@@ -167,7 +167,6 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>contractual obligation</rdfs:label>
-		<owl:disjointWith rdf:resource="&fibo-fnd-law-lcap;LegalObligation"/>
 		<skos:definition>an obligation or duty that is specified in and imposed by a contract</skos:definition>
 	</owl:Class>
 	
@@ -220,7 +219,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isConferredOn"/>
-				<owl:onClass rdf:resource="&fibo-fnd-aap-agt;AutonomousAgent"/>
+				<owl:onClass rdf:resource="&fibo-fnd-pty-pty;IndependentParty"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -248,11 +247,45 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-law-lcap;LegalObligation">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-law-lcap;ContingentObligation"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-law-lcap;Duty"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-law-jur;appliesIn"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-law-jur;Jurisdiction"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isConferredBy"/>
+				<owl:someValuesFrom>
+					<owl:Class>
+						<owl:unionOf rdf:parseType="Collection">
+							<rdf:Description rdf:about="&fibo-fnd-agr-ctr;Contract">
+							</rdf:Description>
+							<rdf:Description rdf:about="&fibo-fnd-law-jur;StatuteLaw">
+							</rdf:Description>
+							<rdf:Description rdf:about="&fibo-fnd-law-lcap;Regulation">
+							</rdf:Description>
+						</owl:unionOf>
+					</owl:Class>
+				</owl:someValuesFrom>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isMandatedBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-law-jur;StatuteLaw"/>
+				<owl:someValuesFrom>
+					<owl:Class>
+						<owl:unionOf rdf:parseType="Collection">
+							<rdf:Description rdf:about="&fibo-fnd-agr-ctr;Contract">
+							</rdf:Description>
+							<rdf:Description rdf:about="&fibo-fnd-law-jur;StatuteLaw">
+							</rdf:Description>
+							<rdf:Description rdf:about="&fibo-fnd-law-lcap;Regulation">
+							</rdf:Description>
+						</owl:unionOf>
+					</owl:Class>
+				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>legal obligation</rdfs:label>
@@ -407,6 +440,25 @@
 		<skos:definition>system of principles, rules and guidelines, adopted by an organization to guide decision making with respect to particular situations and implemented via procedures or protocols to achieve stated goals</skos:definition>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-fnd-law-lcap;Regulation">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-law-lcap;LegalConstruct"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-law-jur;appliesIn"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-law-jur;Jurisdiction"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isConferredBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-law-cor;Law"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>regulation</rdfs:label>
+		<skos:definition>a rule used to carry out a law</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Many government agencies issue regulations to administer laws.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-fnd-law-lcap;ReportingPolicy">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-law-lcap;Policy"/>
 		<rdfs:label>reporting policy</rdfs:label>
@@ -421,14 +473,9 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-law-lcap;StatutoryResponsibility">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-law-lcap;Duty"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isMandatedBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-law-jur;StatuteLaw"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label>statutory responsibility</rdfs:label>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&fibo-fnd-law-lcap;LegalObligation"/>
 		<skos:definition>an obligation which is defined under some body of law (statute)</skos:definition>
 	</owl:Class>
 	
