@@ -9,7 +9,6 @@
 	<!ENTITY fibo-fnd-acc-cur "https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/">
 	<!ENTITY fibo-fnd-arr-arr "https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Arrangements/">
 	<!ENTITY fibo-fnd-oac-own "https://spec.edmcouncil.org/fibo/ontology/FND/OwnershipAndControl/Ownership/">
-	<!ENTITY fibo-fnd-pty-rl "https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Roles/">
 	<!ENTITY fibo-fnd-rel-rel "https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
 	<!ENTITY fibo-sec-sec-pls "https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/Pools/">
@@ -30,7 +29,6 @@
 	xmlns:fibo-fnd-acc-cur="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"
 	xmlns:fibo-fnd-arr-arr="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Arrangements/"
 	xmlns:fibo-fnd-oac-own="https://spec.edmcouncil.org/fibo/ontology/FND/OwnershipAndControl/Ownership/"
-	xmlns:fibo-fnd-pty-rl="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Roles/"
 	xmlns:fibo-fnd-rel-rel="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
 	xmlns:fibo-sec-sec-pls="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/Pools/"
@@ -46,8 +44,8 @@
 		<dct:abstract>This ontology defines concepts related to high-level securities pools.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
 		<sm:contentLanguage rdf:datatype="&xsd;anyURI">http://www.w3.org/standards/techs/owl#w3c_all</sm:contentLanguage>
-		<sm:copyright>Copyright (c) 2016-2018 EDM Council, Inc.</sm:copyright>
-		<sm:copyright>Copyright (c) 2018 Object Management Group, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2016-2019 EDM Council, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2018-2019 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/BE/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FBC/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/</sm:dependsOn>
@@ -61,10 +59,10 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Arrangements/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/OwnershipAndControl/Ownership/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Roles/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20180801/Securities/Pools/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20190601/Securities/Pools/"/>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20180801/Securities/Pools/ version of this ontology was modified to correct a logical inconsistency with respect to the representation of baskets.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -144,20 +142,15 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-pls;PoolConstituent">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-pty-rl;ThingInRole"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-arr;CollectionConstituent"/>
 		<rdfs:label>pool constituent</rdfs:label>
 		<owl:equivalentClass>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
-				<owl:someValuesFrom>
-					<owl:Restriction>
-						<owl:onProperty rdf:resource="&fibo-fnd-arr-arr;isConstituentOf"/>
-						<owl:someValuesFrom rdf:resource="&fibo-sec-sec-pls;Pool"/>
-					</owl:Restriction>
-				</owl:someValuesFrom>
+				<owl:onProperty rdf:resource="&fibo-fnd-arr-arr;isConstituentOf"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-pls;Pool"/>
 			</owl:Restriction>
 		</owl:equivalentClass>
-		<skos:definition>something that is a component of a pool</skos:definition>
+		<skos:definition>component of a pool</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote>The pool may be a pool of almost anything, brought together for some purpose. It differs from a less formal collection in that there are facts defined about the constituents and the proportions of these in the pool. Modeling note: A constituent of a pool may have facts which vary over time (such as balances) but the basic nature of the thing as a member of the pool remains the same, along with some facts which vary over time but which have a value as of the time they become members of the pool.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
@@ -204,16 +197,11 @@
 		<rdfs:label>securities pool constituent</rdfs:label>
 		<owl:equivalentClass>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
-				<owl:someValuesFrom>
-					<owl:Restriction>
-						<owl:onProperty rdf:resource="&fibo-fnd-arr-arr;isConstituentOf"/>
-						<owl:someValuesFrom rdf:resource="&fibo-sec-sec-pls;SecuritiesPool"/>
-					</owl:Restriction>
-				</owl:someValuesFrom>
+				<owl:onProperty rdf:resource="&fibo-fnd-arr-arr;isConstituentOf"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-pls;SecuritiesPool"/>
 			</owl:Restriction>
 		</owl:equivalentClass>
-		<skos:definition>a security that is included in a securities pool</skos:definition>
+		<skos:definition>security that is included in a securities pool</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote>This is a pool of any kind of security, and not therefore necessarily a pool of debt, though usually it is debt securities which are pooled.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 
