@@ -71,9 +71,10 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesListings/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Countries/CountryRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20190601/Securities/SecuritiesIdentification/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20190701/Securities/SecuritiesIdentification/"/>
 		<skos:changeNote>The http://www.omg.org/spec/EDMC-FIBO/FND/20180801/Securities/SecuritiesIdentification.rdf version of this ontology was modified to use the hasCoverageArea property rather than hasJurisdiction for coverage of national numbering agencies.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20181101/Securities/SecuritiesIdentification/ version of this ontology was modified to correct several logic issues.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20190601/Securities/SecuritiesIdentification/ version of this ontology was modified to add the concept of a ticker symbol.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -389,6 +390,30 @@
 		</rdfs:subClassOf>
 		<rdfs:label>security identifier</rdfs:label>
 		<skos:definition>any publicly available identifier that is used to identify a security</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-sec-id;TickerSymbol">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-id;ListedSecurityIdentifier"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-aap-agt;identifies"/>
+				<owl:onClass rdf:resource="&fibo-sec-sec-lst;ExchangeTradedSecurity"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>security identifier</rdfs:label>
+		<rdfs:seeAlso rdf:resource="https://www.investopedia.com/terms/t/tickersymbol.asp"/>
+		<skos:definition>exchange-specific identifier for a particular security</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Every listed security has a unique ticker symbol, facilitating the vast array of trade orders that flow through the financial markets every day.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-sec-lst;ExchangeTradedSecurity">
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-aap-agt;isIdentifiedBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-id;TickerSymbol"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 	</owl:Class>
 
 </rdf:RDF>
