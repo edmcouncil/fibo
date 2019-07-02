@@ -88,8 +88,9 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/Indicators/Indicators/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesIdentification/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesListings/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20190601/Securities/SecuritiesIdentificationIndividuals/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20190701/Securities/SecuritiesIdentificationIndividuals/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20180801/Securities/SecuritiesIdentification/ version of this ontology was modified to correct several logic issues.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20190601/Securities/SecuritiesIdentification/ version of this ontology was updated to represent identifiers as classes rather than individuals.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -153,46 +154,87 @@
 		<fibo-fnd-rel-rel:issues rdf:resource="&fibo-sec-sec-idind;CommitteeOnUniformSecuritiesIdentificationProceduresNumber"/>
 	</owl:NamedIndividual>
 	
-	<owl:NamedIndividual rdf:about="&fibo-sec-sec-idind;CUSIPInternationalNumberingSystemNumber">
-		<rdf:type rdf:resource="&fibo-fbc-fct-ra;RegistryIdentifier"/>
-		<rdf:type rdf:resource="&fibo-sec-sec-id;ProprietarySecurityIdentifier"/>
+	<owl:Class rdf:about="&fibo-sec-sec-idind;CUSIPInternationalNumberingSystemNumber">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-ra;RegistryIdentifier"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-id;ProprietarySecurityIdentifier"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-fct-ra;isRegisteredIn"/>
+				<owl:hasValue rdf:resource="&fibo-sec-sec-idind;CGSCUSIPAccessRepository"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-fct-ra;isRegisteredBy"/>
+				<owl:hasValue rdf:resource="&fibo-sec-sec-idind;CUSIPGlobalServices"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasDefinition"/>
+				<owl:hasValue rdf:resource="&fibo-sec-sec-idind;CUSIPInternationalNumberingSystemScheme"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-aap-agt;identifies"/>
+				<owl:onClass rdf:resource="&fibo-fbc-fi-fi;Security"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label>CUSIP International Numbering System (CINS) number</rdfs:label>
 		<rdfs:seeAlso rdf:resource="http://isin.net/cins/"/>
 		<skos:definition>9-character alphanumeric identifier that employs the same 9 characters as CUSIP, but also contains a letter of the alphabet in the first position signifying the issuer&apos;s country or geographic region, issued by CUSIP Global Services</skos:definition>
-		<fibo-fbc-fct-ra:isRegisteredBy rdf:resource="&fibo-sec-sec-idind;CUSIPGlobalServices"/>
-		<fibo-fbc-fct-ra:isRegisteredIn rdf:resource="&fibo-sec-sec-idind;CGSCUSIPAccessRepository"/>
-		<fibo-fnd-aap-agt:identifies rdf:resource="&fibo-fbc-fi-fi;Security"/>
-		<fibo-fnd-rel-rel:hasDefinition rdf:resource="&fibo-sec-sec-idind;CUSIPInternationalNumberingSystemScheme"/>
 		<fibo-fnd-utl-av:abbreviation>CINS</fibo-fnd-utl-av:abbreviation>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.investopedia.com/terms/c/cins.asp</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.cusip.com/cusip/about-cgs-identifiers.htm</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:synonym>CINS number</fibo-fnd-utl-av:synonym>
-	</owl:NamedIndividual>
+	</owl:Class>
 	
 	<owl:NamedIndividual rdf:about="&fibo-sec-sec-idind;CUSIPInternationalNumberingSystemScheme">
 		<rdf:type rdf:resource="&fibo-sec-sec-id;ProprietarySecurityIdentificationScheme"/>
 		<rdfs:label>CUSIP International Numbering System (CINS) scheme</rdfs:label>
 		<skos:definition>security identification scheme that extends the CUSIP scheme, used to identify securities outside of the United States and Canada for the purposes of facilitating clearing and settlement of trades</skos:definition>
-		<fibo-fnd-rel-rel:defines rdf:resource="&fibo-sec-sec-idind;CUSIPInternationalNumberingSystemNumber"/>
 		<fibo-fnd-utl-av:abbreviation>CINS scheme</fibo-fnd-utl-av:abbreviation>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.cusip.com/cusip/about-cgs-identifiers.htm</fibo-fnd-utl-av:adaptedFrom>
 	</owl:NamedIndividual>
 	
-	<owl:NamedIndividual rdf:about="&fibo-sec-sec-idind;CommitteeOnUniformSecuritiesIdentificationProceduresNumber">
-		<rdf:type rdf:resource="&fibo-fbc-fct-ra;RegistryIdentifier"/>
-		<rdf:type rdf:resource="&fibo-sec-sec-id;NationalSecuritiesIdentifyingNumber"/>
-		<rdf:type rdf:resource="&fibo-sec-sec-id;ProprietarySecurityIdentifier"/>
+	<owl:Class rdf:about="&fibo-sec-sec-idind;CommitteeOnUniformSecuritiesIdentificationProceduresNumber">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-ra;RegistryIdentifier"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-id;NationalSecuritiesIdentifyingNumber"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-id;ProprietarySecurityIdentifier"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-fct-ra;isRegisteredIn"/>
+				<owl:hasValue rdf:resource="&fibo-sec-sec-idind;CGSCUSIPAccessRepository"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-fct-ra;isRegisteredBy"/>
+				<owl:hasValue rdf:resource="&fibo-sec-sec-idind;CUSIPGlobalServices"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasDefinition"/>
+				<owl:hasValue rdf:resource="&fibo-sec-sec-idind;CommitteeOnUniformSecuritiesIdentificationProceduresScheme"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-aap-agt;identifies"/>
+				<owl:onClass rdf:resource="&fibo-fbc-fi-fi;Security"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label>Committee on Uniform Securities Identification Procedures (CUSIP) number</rdfs:label>
 		<rdfs:seeAlso rdf:resource="https://www.cusip.com/cusip/about-cgs-identifiers.htm"/>
 		<skos:definition>nine-character alphanumeric number that identifies all North American stocks and registered bonds for the purposes of facilitating clearing and settlement of trades, issued by CUSIP Global Services on behalf of the American Bankers&apos; Association, which is a part of Standard and Poor&apos;s Capital IQ, that is the National Numbering Agency Identifier for securities issued in North America, which is also part of the ISIN for the security it identifies</skos:definition>
-		<fibo-fbc-fct-ra:isRegisteredBy rdf:resource="&fibo-sec-sec-idind;CUSIPGlobalServices"/>
-		<fibo-fbc-fct-ra:isRegisteredIn rdf:resource="&fibo-sec-sec-idind;CGSCUSIPAccessRepository"/>
-		<fibo-fnd-aap-agt:identifies rdf:resource="&fibo-fbc-fi-fi;Security"/>
-		<fibo-fnd-rel-rel:hasDefinition rdf:resource="&fibo-sec-sec-idind;CommitteeOnUniformSecuritiesIdentificationProceduresScheme"/>
 		<fibo-fnd-utl-av:abbreviation>CUSIP</fibo-fnd-utl-av:abbreviation>
 		<fibo-fnd-utl-av:adaptedFrom>Barron&apos;s Dictionary of Finance and Investment Terms, Ninth Edition, 2014</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:synonym>CUSIP number</fibo-fnd-utl-av:synonym>
-	</owl:NamedIndividual>
+	</owl:Class>
 	
 	<owl:NamedIndividual rdf:about="&fibo-sec-sec-idind;CommitteeOnUniformSecuritiesIdentificationProceduresScheme">
 		<rdf:type rdf:resource="&fibo-sec-sec-id;NationalSecurityIdentificationScheme"/>
@@ -200,7 +242,6 @@
 		<rdfs:label>Committee on Uniform Securities Identification Procedures (CUSIP) scheme</rdfs:label>
 		<rdfs:seeAlso rdf:resource="https://www.cusip.com/cusip/about-cgs-identifiers.htm"/>
 		<skos:definition>national security identification scheme used to identify all North American stocks and registered bonds for the purposes of facilitating clearing and settlement of trades</skos:definition>
-		<fibo-fnd-rel-rel:defines rdf:resource="&fibo-sec-sec-idind;CommitteeOnUniformSecuritiesIdentificationProceduresNumber"/>
 		<fibo-fnd-utl-av:abbreviation>CUSIP scheme</fibo-fnd-utl-av:abbreviation>
 		<fibo-fnd-utl-av:adaptedFrom>Barron&apos;s Dictionary of Finance and Investment Terms, Ninth Edition, 2014</fibo-fnd-utl-av:adaptedFrom>
 	</owl:NamedIndividual>
@@ -238,37 +279,67 @@
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.isin.net/common-code-isin/</fibo-fnd-utl-av:adaptedFrom>
 	</owl:NamedIndividual>
 	
-	<owl:NamedIndividual rdf:about="&fibo-sec-sec-idind;EuroclearClearstreamCommonCode">
-		<rdf:type rdf:resource="&fibo-fbc-fct-ra;RegistryIdentifier"/>
-		<rdf:type rdf:resource="&fibo-sec-sec-id;ProprietarySecurityIdentifier"/>
+	<owl:Class rdf:about="&fibo-sec-sec-idind;EuroclearClearstreamCommonCode">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-ra;RegistryIdentifier"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-id;ProprietarySecurityIdentifier"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-fct-ra;isRegisteredIn"/>
+				<owl:hasValue rdf:resource="&fibo-sec-sec-idind;CommonCodeRepository"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasDefinition"/>
+				<owl:hasValue rdf:resource="&fibo-sec-sec-idind;EuroclearClearstreamCommonCodeScheme"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-aap-agt;identifies"/>
+				<owl:onClass rdf:resource="&fibo-fbc-fi-fi;Security"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label>Euroclear Clearstream common code</rdfs:label>
 		<skos:definition>nine-character alphanumeric securities identifier, issued in Luxembourg, jointly by Euroclear and Clearstream</skos:definition>
-		<fibo-fbc-fct-ra:isRegisteredIn rdf:resource="&fibo-sec-sec-idind;CommonCodeRepository"/>
-		<fibo-fnd-aap-agt:identifies rdf:resource="&fibo-fbc-fi-fi;Security"/>
-		<fibo-fnd-rel-rel:hasDefinition rdf:resource="&fibo-sec-sec-idind;EuroclearClearstreamCommonCodeScheme"/>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.isin.net/common-code-isin/</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:synonym>common code</fibo-fnd-utl-av:synonym>
-	</owl:NamedIndividual>
+	</owl:Class>
 	
 	<owl:NamedIndividual rdf:about="&fibo-sec-sec-idind;EuroclearClearstreamCommonCodeScheme">
 		<rdf:type rdf:resource="&fibo-sec-sec-id;ProprietarySecurityIdentificationScheme"/>
 		<rdfs:label>Euroclear Clearstream common code  scheme</rdfs:label>
 		<skos:definition>nine-digit security identification scheme, defined originally by Euroclear and CEDEL (now Clearstream) that is used to identify securities in Europe for the purposes of facilitating clearing and settlement of trades</skos:definition>
 		<fibo-fnd-rel-rel:characterizes rdf:resource="&fibo-sec-sec-idind;CommonCodeRepository"/>
-		<fibo-fnd-rel-rel:defines rdf:resource="&fibo-sec-sec-idind;EuroclearClearstreamCommonCode"/>
 		<fibo-fnd-utl-av:synonym>common code scheme</fibo-fnd-utl-av:synonym>
 	</owl:NamedIndividual>
 	
-	<owl:NamedIndividual rdf:about="&fibo-sec-sec-idind;FinancialInstrumentGlobalIdentifier">
-		<rdf:type rdf:resource="&fibo-fbc-fi-fi;FinancialInstrumentIdentifier"/>
-		<rdf:type rdf:resource="&fibo-fbc-fct-ra;RegistryIdentifier"/>
+	<owl:Class rdf:about="&fibo-sec-sec-idind;FinancialInstrumentGlobalIdentifier">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;FinancialInstrumentIdentifier"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-ra;RegistryIdentifier"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-fct-ra;isRegisteredBy"/>
+				<owl:hasValue rdf:resource="&fibo-fbc-fct-usfsind;BloombergLP"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-fct-ra;isRegisteredIn"/>
+				<owl:hasValue rdf:resource="&fibo-sec-sec-idind;FinancialInstrumentGlobalIdentifierRegistry"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasDefinition"/>
+				<owl:hasValue rdf:resource="&fibo-sec-sec-idind;FinancialInstrumentGlobalIdentifierScheme"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label>financial instrument global identifier</rdfs:label>
 		<skos:definition>financial instrument identifier that is defined as specified in the Object Management Group (OMG) Financial Instrument Global Identifier (FIGI) Specification</skos:definition>
-		<fibo-fbc-fct-ra:isRegisteredBy rdf:resource="&fibo-fbc-fct-usfsind;BloombergLP"/>
-		<fibo-fbc-fct-ra:isRegisteredIn rdf:resource="&fibo-sec-sec-idind;FinancialInstrumentGlobalIdentifierRegistry"/>
-		<fibo-fnd-rel-rel:hasDefinition rdf:resource="&fibo-sec-sec-idind;FinancialInstrumentGlobalIdentifierScheme"/>
 		<fibo-fnd-utl-av:abbreviation>FIGI</fibo-fnd-utl-av:abbreviation>
-	</owl:NamedIndividual>
+	</owl:Class>
 	
 	<owl:NamedIndividual rdf:about="&fibo-sec-sec-idind;FinancialInstrumentGlobalIdentifierRegistry">
 		<rdf:type rdf:resource="&fibo-fbc-fct-ra;Registry"/>
@@ -310,7 +381,6 @@
 		<rdfs:label>financial instrument global identifier scheme</rdfs:label>
 		<skos:definition>standard identification scheme for financial instrument identifiers (not limited to securities) published by the Object Management Group (OMG)</skos:definition>
 		<fibo-fnd-rel-rel:characterizes rdf:resource="&fibo-sec-sec-idind;FinancialInstrumentGlobalIdentifierRegistry"/>
-		<fibo-fnd-rel-rel:defines rdf:resource="&fibo-sec-sec-idind;FinancialInstrumentGlobalIdentifier"/>
 		<fibo-fnd-utl-av:abbreviation>FIGI scheme</fibo-fnd-utl-av:abbreviation>
 	</owl:NamedIndividual>
 	
@@ -321,21 +391,35 @@
 		<fibo-fnd-utl-av:abbreviation>FTID scheme</fibo-fnd-utl-av:abbreviation>
 	</owl:NamedIndividual>
 	
-	<owl:NamedIndividual rdf:about="&fibo-sec-sec-idind;ReutersInstrumentCode">
-		<rdf:type rdf:resource="&fibo-sec-sec-id;ProprietarySecurityIdentifier"/>
+	<owl:Class rdf:about="&fibo-sec-sec-idind;ReutersInstrumentCode">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-id;ProprietarySecurityIdentifier"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-fct-ra;isRegisteredBy"/>
+				<owl:hasValue rdf:resource="&fibo-fbc-fct-usfsind;ThomsonReuters"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isIssuedBy"/>
+				<owl:hasValue rdf:resource="&fibo-fbc-fct-usfsind;ThomsonReuters"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasDefinition"/>
+				<owl:hasValue rdf:resource="&fibo-sec-sec-idind;ReutersInstrumentCodeScheme"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label>Reuters instrument code</rdfs:label>
 		<skos:definition>ticker-like identifier to identify financial instruments and indices owned, managed, and distributed by Thomson Reuters</skos:definition>
-		<fibo-fbc-fct-ra:isRegisteredBy rdf:resource="&fibo-fbc-fct-usfsind;ThomsonReuters"/>
-		<fibo-fnd-rel-rel:hasDefinition rdf:resource="&fibo-sec-sec-idind;ReutersInstrumentCodeScheme"/>
-		<fibo-fnd-rel-rel:isIssuedBy rdf:resource="&fibo-fbc-fct-usfsind;ThomsonReuters"/>
 		<fibo-fnd-utl-av:abbreviation>RIC</fibo-fnd-utl-av:abbreviation>
-	</owl:NamedIndividual>
+	</owl:Class>
 	
 	<owl:NamedIndividual rdf:about="&fibo-sec-sec-idind;ReutersInstrumentCodeScheme">
 		<rdf:type rdf:resource="&fibo-sec-sec-id;ProprietarySecurityIdentificationScheme"/>
 		<rdfs:label>Reuters instrument code scheme</rdfs:label>
 		<skos:definition>proprietary identification scheme for securities identifiers managed by Thomson Reuters</skos:definition>
-		<fibo-fnd-rel-rel:defines rdf:resource="&fibo-sec-sec-idind;ReutersInstrumentCode"/>
 		<fibo-fnd-utl-av:abbreviation>RIC scheme</fibo-fnd-utl-av:abbreviation>
 	</owl:NamedIndividual>
 	
@@ -348,21 +432,41 @@
 		<fibo-fnd-rel-rel:isManagedBy rdf:resource="&fibo-fbc-fct-eufseind;LondonStockExchange"/>
 	</owl:NamedIndividual>
 	
-	<owl:NamedIndividual rdf:about="&fibo-sec-sec-idind;StockExchangeDailyOfficialListCode">
-		<rdf:type rdf:resource="&fibo-sec-sec-id;ListedSecurityIdentifier"/>
-		<rdf:type rdf:resource="&fibo-sec-sec-id;NationalSecuritiesIdentifyingNumber"/>
-		<rdf:type rdf:resource="&fibo-sec-sec-id;ProprietarySecurityIdentifier"/>
+	<owl:Class rdf:about="&fibo-sec-sec-idind;StockExchangeDailyOfficialListCode">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-id;ListedSecurityIdentifier"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-id;NationalSecuritiesIdentifyingNumber"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-id;ProprietarySecurityIdentifier"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-fct-ra;isRegisteredBy"/>
+				<owl:hasValue rdf:resource="&fibo-fbc-fct-eufseind;LondonStockExchange"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isIssuedBy"/>
+				<owl:hasValue rdf:resource="&fibo-fbc-fct-eufseind;LondonStockExchange"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-fct-ra;isRegisteredIn"/>
+				<owl:hasValue rdf:resource="&fibo-sec-sec-idind;SEDOLMasterFile"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasDefinition"/>
+				<owl:hasValue rdf:resource="&fibo-sec-sec-idind;StockExchangeDailyOfficialListScheme"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label>Stock Exchange Daily Official List (SEDOL) code</rdfs:label>
 		<rdfs:seeAlso rdf:resource="http://www.londonstockexchange.com/products-and-services/reference-data/sedol-master-file/sedol-master-file.htm"/>
 		<rdfs:seeAlso rdf:resource="http://www.londonstockexchange.com/products-and-services/reference-data/sedol-master-file/sedolallocation.htm"/>
 		<skos:definition>seven-character security identifier, issued by the London Stock Exchange, that is the National Securities Identifying Number (NSIN) for securities issued in the United Kingdom, which is also part of the ISIN for the security it identifies</skos:definition>
-		<fibo-fbc-fct-ra:isRegisteredBy rdf:resource="&fibo-fbc-fct-eufseind;LondonStockExchange"/>
-		<fibo-fbc-fct-ra:isRegisteredIn rdf:resource="&fibo-sec-sec-idind;SEDOLMasterFile"/>
-		<fibo-fnd-rel-rel:hasDefinition rdf:resource="&fibo-sec-sec-idind;StockExchangeDailyOfficialListScheme"/>
-		<fibo-fnd-rel-rel:isIssuedBy rdf:resource="&fibo-fbc-fct-eufseind;LondonStockExchange"/>
 		<fibo-fnd-utl-av:abbreviation>SEDOL code</fibo-fnd-utl-av:abbreviation>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://isin.net/?s=SEDOL</fibo-fnd-utl-av:adaptedFrom>
-	</owl:NamedIndividual>
+	</owl:Class>
 	
 	<owl:NamedIndividual rdf:about="&fibo-sec-sec-idind;StockExchangeDailyOfficialListScheme">
 		<rdf:type rdf:resource="&fibo-sec-sec-id;ExchangeSpecificSecurityIdentificationScheme"/>
@@ -372,7 +476,6 @@
 		<rdfs:seeAlso rdf:resource="http://www.londonstockexchange.com/products-and-services/reference-data/sedol-master-file/sedolallocation.htm"/>
 		<skos:definition>national security identification scheme used to identify all stocks and registered bonds in the United Kingdom for the purposes of facilitating clearing and settlement of trades</skos:definition>
 		<fibo-fnd-rel-rel:characterizes rdf:resource="&fibo-sec-sec-idind;SEDOLMasterFile"/>
-		<fibo-fnd-rel-rel:defines rdf:resource="&fibo-sec-sec-idind;StockExchangeDailyOfficialListCode"/>
 		<fibo-fnd-utl-av:abbreviation>SEDOL scheme</fibo-fnd-utl-av:abbreviation>
 	</owl:NamedIndividual>
 	
