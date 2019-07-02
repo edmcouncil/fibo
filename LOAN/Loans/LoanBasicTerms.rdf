@@ -12,7 +12,6 @@
 	<!ENTITY fibo-fnd-dt-fd "https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/">
 	<!ENTITY fibo-fnd-inf-inf "https://spec.edmcouncil.org/fibo/ontology/FND/InformationExt/InfoCore/">
 	<!ENTITY fibo-fnd-pty-pty "https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Parties/">
-	<!ENTITY fibo-fnd-ptyx-ptyx "https://spec.edmcouncil.org/fibo/ontology/FND/PartiesExt/PartyExtensions/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
 	<!ENTITY fibo-fnd-utl-val "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Values/">
 	<!ENTITY fibo-loan-ln-ln "https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanCore/">
@@ -40,7 +39,6 @@
 	xmlns:fibo-fnd-dt-fd="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"
 	xmlns:fibo-fnd-inf-inf="https://spec.edmcouncil.org/fibo/ontology/FND/InformationExt/InfoCore/"
 	xmlns:fibo-fnd-pty-pty="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Parties/"
-	xmlns:fibo-fnd-ptyx-ptyx="https://spec.edmcouncil.org/fibo/ontology/FND/PartiesExt/PartyExtensions/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
 	xmlns:fibo-fnd-utl-val="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Values/"
 	xmlns:fibo-loan-ln-ln="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanCore/"
@@ -70,8 +68,6 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/InformationExt/InfoCore/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Parties/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/PartiesExt/PartyExtensions/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/PartiesExt/PartyRoleContext/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Values/"/>
@@ -399,20 +395,14 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-loan-loan;LoanOriginator">
-		<rdfs:subClassOf rdf:resource="&fibo-loan-loan-pty;LoanThirdParty"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-loan-loan-loan;mayBecome"/>
-				<owl:allValuesFrom rdf:resource="&fibo-loan-loan-pty;LoanLender"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-pty-pty;PartyInRole"/>
 		<rdfs:label xml:lang="en">loan originator</rdfs:label>
 		<skos:definition xml:lang="en">The party which finds the lender for the loan, for the borrower.</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Similar to mortgages: the originator may be a bank but the person able to lend the money may be some other party. In other instances the originator will become the lender.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-loan-loan;LoanParty">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-pty-pty;PartyInRole"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractParty"/>
 		<rdfs:label xml:lang="en">loan party</rdfs:label>
 		<skos:definition xml:lang="en">A Party to the Loan.</skos:definition>
 		<skos:editorialNote xml:lang="en">This covers the principals to the Loan contract (Loan Borrower and Loan Lender) as well as third parties, including Loan Originator. Transformation notes: In the PoC SDM the sub-classes of Loan Third Party will not be articulated as separate parties but defined via a selection list under &quot;Loan Party&quot; or &quot;Loan Third Party&quot;.</skos:editorialNote>
@@ -867,13 +857,6 @@
 		<rdfs:domain rdf:resource="&fibo-loan-loan-loan;LoanDrawdown"/>
 		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
 		<skos:definition xml:lang="en">Loan Subsidy Received - Amount of subsidy received from government by borrower.</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-loan-loan-loan;mayBecome">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-ptyx-ptyx;becomesParty"/>
-		<rdfs:label xml:lang="en">may become</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-loan-loan;LoanOriginator"/>
-		<rdfs:range rdf:resource="&fibo-loan-loan-pty;LoanLender"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-loan-loan-loan;mayHave">
