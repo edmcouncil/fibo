@@ -2,7 +2,6 @@
 <!DOCTYPE rdf:RDF [
 	<!ENTITY dct "http://purl.org/dc/terms/">
 	<!ENTITY fibo-der-com-ctr "https://spec.edmcouncil.org/fibo/ontology/DER/CommoditiesDerivatives/CommoditiesContracts/">
-	<!ENTITY fibo-der-com-del "https://spec.edmcouncil.org/fibo/ontology/DER/CommoditiesDerivatives/CommoditiesDelivery/">
 	<!ENTITY fibo-der-com-fwd "https://spec.edmcouncil.org/fibo/ontology/DER/CommoditiesDerivatives/CommodityForwards/">
 	<!ENTITY fibo-der-der-fwd "https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Forwards/">
 	<!ENTITY fibo-fnd-acc-cur "https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/">
@@ -16,7 +15,6 @@
 <rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/ontology/DER/CommoditiesDerivatives/CommodityForwards/"
 	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fibo-der-com-ctr="https://spec.edmcouncil.org/fibo/ontology/DER/CommoditiesDerivatives/CommoditiesContracts/"
-	xmlns:fibo-der-com-del="https://spec.edmcouncil.org/fibo/ontology/DER/CommoditiesDerivatives/CommoditiesDelivery/"
 	xmlns:fibo-der-com-fwd="https://spec.edmcouncil.org/fibo/ontology/DER/CommoditiesDerivatives/CommodityForwards/"
 	xmlns:fibo-der-der-fwd="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Forwards/"
 	xmlns:fibo-fnd-acc-cur="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"
@@ -31,7 +29,6 @@
 		<rdfs:label xml:lang="en">CommodityForwards</rdfs:label>
 		<dct:abstract>Forward contracts with a commodity underlier, along with the corresponding transactions, including cash settled contracts.</dct:abstract>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/CommoditiesDerivatives/CommoditiesContracts/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/CommoditiesDerivatives/CommoditiesDelivery/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Forwards/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
@@ -50,6 +47,18 @@
 		<rdfs:label xml:lang="en">cash settled forward contract</rdfs:label>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-der-com-fwd;CommodityContractCashCloseout">
+		<rdfs:subClassOf rdf:resource="&fibo-der-com-fwd;CommodityForwardDelivery"/>
+		<rdfs:subClassOf rdf:resource="&fibo-der-der-fwd;CashCloseout"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-der-fwd;closedOutBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-com-fwd;CommodityForwardContract"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">commodity contract cash closeout</rdfs:label>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-der-com-fwd;CommodityForwardCalculationAgent">
 		<rdfs:label xml:lang="en">commodity forward calculation agent</rdfs:label>
 	</owl:Class>
@@ -60,6 +69,12 @@
 		<rdfs:label xml:lang="en">commodity forward contract</rdfs:label>
 		<skos:definition xml:lang="en">Definition needed.</skos:definition>
 		<skos:editorialNote xml:lang="en">FpML Definition (unusable): Defines a commodity forward product.</skos:editorialNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-com-fwd;CommodityForwardDelivery">
+		<rdfs:subClassOf rdf:resource="&fibo-der-der-fwd;ForwardDeliveryTermsSet"/>
+		<rdfs:label xml:lang="en">commodity forward delivery</rdfs:label>
+		<skos:definition xml:lang="en">The agreed forward delivery of a commodity or cash equivalent.</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-com-fwd;CommodityForwardTransaction">
@@ -73,10 +88,18 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-der-fwd;side.1"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-com-del;CommodityForwardDelivery"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-com-fwd;CommodityForwardDelivery"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">commodity forward transaction</rdfs:label>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-com-fwd;CommodityPhysicalDelivery">
+		<rdfs:subClassOf rdf:resource="&fibo-der-com-fwd;CommodityForwardDelivery"/>
+		<rdfs:label xml:lang="en">commodity physical delivery</rdfs:label>
+		<owl:disjointWith rdf:resource="&fibo-der-com-fwd;CommodityContractCashCloseout"/>
+		<skos:definition xml:lang="en">The physical delivery of some commodity at some agreed point in the future.</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Would be entered into by bullion houses and the like - people who specialze in commodities. They would have facilities for physical delivery of their primary commodities. THere are very different terms for delivery of these different kinds of commodity.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-der-com-fwd;cashSettled">
