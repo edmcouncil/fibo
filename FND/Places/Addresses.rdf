@@ -48,11 +48,11 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Countries/CountryRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20190701/Places/Addresses/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20190801/Places/Addresses/"/>
 		<skos:changeNote>The http://www.omg.org/spec/EDMC-FIBO/FND/20141101/Places/Addresses.rdf version of this ontology was modified per the issue resolutions identified in the FIBO FND 1.1 RTF report. Differences from the 1.0 version include the addition of a hasAddress property and PhysicalAddress class as a parent of PostalAddress.</skos:changeNote>
 		<skos:changeNote>The http://www.omg.org/spec/EDMC-FIBO/FND/20160201/Places/Addresses.rdf version of this ontology was modified for the FIBO 2.0 RFC to integrate LCC.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20130801/Places/Addresses.rdf version of this ontology was modified per the issue resolutions identified in the FIBO FND 1.0 FTF report and in https://spec.edmcouncil.org/fibo/ontology/FND/1.0/AboutFND-1.0/. Primary differences include elimination of data properties in favor of a simple class model,the addition of virtual address, and the addition of addressing scheme.</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20180801/Places/Addresses.rdf version of this ontology was modified replace hasDefinition with isDefinedIn to clarify intent.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20180801/Places/Addresses.rdf version of this ontology was modified replace hasDefinition with isDefinedIn to clarify intent, and the address hierarchy was simplified to enable extensions for international and national delivery address specification.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/Foundations/20130601/Organizations/Addresses.owl version of the ontology was revised in advance of the September 2013 New Brunswick, NJ meeting, as follows:
    (1) to use slash style URI/IRIss (also called 303 URIs, vs. hash style) as required to support server side processing 
    (2) to use version-independent IRIs for all definitions internally as opposed to version-specific IRIs
@@ -80,8 +80,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">address</rdfs:label>
-		<skos:definition>an index to a location to which communications may be delivered</skos:definition>
-		<skos:editorialNote>This came from FDTF Address Reviews Aug/Sept 2011. It represents a place holder for mapping to other standards, such as those for email, network, and other electronic addresses as well as physical and mailing addresses.</skos:editorialNote>
+		<skos:definition>index to a location to which communications may be delivered</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-plc-adr;AddressingScheme">
@@ -93,7 +92,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>addressing scheme</rdfs:label>
-		<skos:definition>a system for allocating addresses to objects</skos:definition>
+		<skos:definition>system for allocating addresses to objects</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-plc-adr;PhysicalAddress">
@@ -106,35 +105,36 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">physical address</rdfs:label>
-		<skos:definition>a physical address where communications can be addressed, papers served or representatives located for any kind of organization or person</skos:definition>
-		<skos:editorialNote>There are existing international and regional standards for defining postal addresses.  This is a place holder for mapping to regional standards for postal address representation</skos:editorialNote>
-		<skos:scopeNote>An address is a collection of information, presented in a mostly fixed format, used for describing the location of a building, apartment, or other structure or a plot of land, generally using political boundaries and street names as references, along with other identifiers such as house or apartment numbers.  Some addresses also contain special codes to aid routing of mail and packages, such as a ZIP code or post code. (Wikipedia)</skos:scopeNote>
+		<skos:definition>physical address where communications can be addressed, papers served or representatives located for any kind of organization or person</skos:definition>
+		<skos:editorialNote>There are existing international and regional standards for defining postal addresses.  This is a place holder for mapping to regional standards for postal address representation.</skos:editorialNote>
+		<skos:scopeNote>An address may be used as an index to the location of a building, apartment, or other structure or parcel of land, often using political boundaries and street names as references, along with other information such as house or building numbers or names.  Some addresses also contain secondary elements such as apartment or building numbers, or special codes to aid routing of mail and packages.</skos:scopeNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-plc-adr;PostCodeArea">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-plc-loc;PhysicalLocation"/>
 		<rdfs:label xml:lang="en">post code area</rdfs:label>
-		<skos:definition>a physical area uniquely identified by some postal code</skos:definition>
+		<skos:definition>physical area uniquely identified by some postal code</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-plc-adr;PostalAddress">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-plc-adr;PhysicalAddress"/>
 		<rdfs:label>postal address</rdfs:label>
-		<skos:definition>a physical address where postal communications can be addressed, for any kind of organization or person</skos:definition>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<skos:definition>physical address where postal communications can be addressed, for any kind of organization or person</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-plc-adr;VirtualAddress">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-plc-adr;Address"/>
 		<rdfs:label>virtual address</rdfs:label>
 		<owl:disjointWith rdf:resource="&fibo-fnd-plc-adr;PhysicalAddress"/>
-		<skos:definition>an address identifying a virtual, i.e. non-physical location</skos:definition>
+		<skos:definition>address identifying a virtual, i.e. non-physical, location</skos:definition>
 	</owl:Class>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-plc-adr;hasAddress">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;has"/>
 		<rdfs:label>has address</rdfs:label>
 		<rdfs:range rdf:resource="&fibo-fnd-plc-adr;Address"/>
-		<skos:definition>has a means by which the entity may be located or contacted or may receive correspondence</skos:definition>
+		<skos:definition>indicates a means by which something (in the case of a network address) or some entity may be located or contacted or may receive correspondence</skos:definition>
 	</owl:ObjectProperty>
 
 </rdf:RDF>
