@@ -26,5 +26,5 @@ Directory                | Purpose | FIBO Content Team Wiki |
 
 ## Links
 
-- [FIBO Home page of the EDM Council](http://www.edmcouncil.org/financialbusiness)
-- [OMG FIBO Specifications](https://spec.edmcouncil.org/fibo/)
+- [FIBO Home page of the EDM Council](https://spec.edmcouncil.org/fibo/)
+- [OMG FIBO Specifications](https://www.omg.org/spec/EDMC-FIBO/)
