@@ -71,6 +71,7 @@
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20190701/Securities/SecuritiesListings/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20180801/Securities/SecuritiesListings.rdf version of this ontology was revised to reuse the composite date value datatype and add disjointness between registered security and exempt security.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20190401/Securities/SecuritiesListings.rdf version of this ontology was revised to eliminate an extraneous subclass axiom.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20190801/Securities/SecuritiesListings.rdf version of this ontology was revised to rename isIssuedIn to isIssuedOn, which is more natural to most securities SMEs, and generalized certain references to securities exchanges to include exchanges more generally.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -79,14 +80,14 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-pas-pas;isProvisionedBy"/>
-				<owl:onClass rdf:resource="&fibo-sec-sec-lst;SecuritiesExchange"/>
+				<owl:onClass rdf:resource="&fibo-fbc-fct-mkt;Exchange"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isProvidedBy"/>
-				<owl:onClass rdf:resource="&fibo-sec-sec-lst;SecuritiesExchange"/>
+				<owl:onClass rdf:resource="&fibo-fbc-fct-mkt;Exchange"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -112,18 +113,18 @@
 		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-lst;ListedSecurity"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-sec-lst;isIssuedIn"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-lst;SecuritiesExchange"/>
+				<owl:onProperty rdf:resource="&fibo-sec-sec-lst;isIssuedOn"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-fct-mkt;Exchange"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-sec-lst;isTradedOn"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-lst;SecuritiesExchange"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-fct-mkt;Exchange"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">exchange traded security</rdfs:label>
-		<skos:definition>a listed security that may be traded on a particular exchange</skos:definition>
+		<skos:definition>listed security that may be traded on a particular exchange</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-lst;ListedSecurity">
@@ -260,10 +261,17 @@ The securities traded on a stock exchange include: shares issued by companies, u
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-sec-lst;isIssuedIn">
-		<rdfs:subPropertyOf rdf:resource="&fibo-sec-sec-lst;isTradedOn"/>
 		<rdfs:label>is issued in</rdfs:label>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentProperty rdf:resource="&fibo-sec-sec-lst;isIssuedOn"/>
+		<skos:definition>identifies the exchange in which a security is issued</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-sec-sec-lst;isIssuedOn">
+		<rdfs:subPropertyOf rdf:resource="&fibo-sec-sec-lst;isTradedOn"/>
+		<rdfs:label>is issued on</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-sec-lst;ExchangeTradedSecurity"/>
-		<rdfs:range rdf:resource="&fibo-sec-sec-lst;SecuritiesExchange"/>
+		<rdfs:range rdf:resource="&fibo-fbc-fct-mkt;Exchange"/>
 		<skos:definition>identifies the exchange in which a security is issued</skos:definition>
 	</owl:ObjectProperty>
 	
@@ -278,7 +286,7 @@ The securities traded on a stock exchange include: shares issued by companies, u
 	<owl:ObjectProperty rdf:about="&fibo-sec-sec-lst;isTradedOn">
 		<rdfs:label>is traded on</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-sec-lst;ListedSecurity"/>
-		<rdfs:range rdf:resource="&fibo-sec-sec-lst;SecuritiesExchange"/>
+		<rdfs:range rdf:resource="&fibo-fbc-fct-mkt;Exchange"/>
 		<skos:definition>identifies the trading facility on which the security is traded</skos:definition>
 	</owl:ObjectProperty>
 	
