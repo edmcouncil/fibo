@@ -48,7 +48,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <router-link class="nav-link" to="/">About FIBO</router-link>
+            <router-link class="nav-link" replace :to="{ path: router() }">About FIBO</router-link>
           </li>
           <li class="nav-item dropdown">
             <a
@@ -61,8 +61,8 @@
               aria-expanded="false"
             >Development</a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <router-link class="dropdown-item" to="development">FIBO Development Process</router-link>
-              <router-link class="dropdown-item" to="working-group">FIBO Working Groups</router-link>
+              <router-link class="dropdown-item" replace :to="{ path: router('development') }">FIBO Development Process</router-link>
+              <router-link class="dropdown-item" replace :to="{ path: router('working-group') }">FIBO Working Groups</router-link>
             </div>
           </li>
           <li class="nav-item dropdown">
@@ -76,12 +76,9 @@
               aria-expanded="false"
             >Documentation</a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <router-link class="dropdown-item" to="ontology-tools">Dedicated ontology tools</router-link>
-              <router-link
-                class="dropdown-item"
-                to="SMIF-UML"
-              >SMIF/UML Diagrams for FIBO</router-link>
-              <router-link class="dropdown-item" to="linked-data-fragments">linked data fragments</router-link>
+              <router-link class="dropdown-item" replace :to="{ path: router('ontology-tools') }">Dedicated ontology tools</router-link>
+              <router-link class="dropdown-item" replace :to="{ path: router('SMIF-UML') }" >SMIF/UML Diagrams for FIBO</router-link>
+              <router-link class="dropdown-item" replace :to="{ path: router('linked-data-fragments') }">linked data fragments</router-link>
             </div>
           </li>
           <li class="nav-item dropdown">
@@ -95,15 +92,15 @@
               aria-expanded="false"
             >Downloads</a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <router-link class="dropdown-item" to="products">All FIBO Products</router-link>
-              <router-link class="dropdown-item" to="OWL">FIBO OWL</router-link>
-              <router-link class="dropdown-item" to="Glossary">FIBO glossary</router-link>
-              <router-link class="dropdown-item" to="vocabulary">FIBO vocabulary (SKOS)</router-link>
-              <router-link class="dropdown-item" to="schema">FIBO extension to schema.org</router-link>
+              <router-link class="dropdown-item" replace :to="{ path: router('products') }">All FIBO Products</router-link>
+              <router-link class="dropdown-item" replace :to="{ path: router('OWL') }">FIBO OWL</router-link>
+              <router-link class="dropdown-item" replace :to="{ path: router('glossary') }">FIBO glossary</router-link>
+              <router-link class="dropdown-item" replace :to="{ path: router('vocabulary') }">FIBO vocabulary (SKOS)</router-link>
+              <router-link class="dropdown-item" replace :to="{ path: router('schema') }">FIBO extension to schema.org</router-link>
             </div>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" to="contact">Contact</router-link>
+            <router-link class="nav-link" replace :to="{ path: router('contact') }">Contact</router-link>
           </li>
         </ul>
       </div>
@@ -112,7 +109,10 @@
 </template>
 
 <script>
+import helpers from "../store/helpers.js";
+
 export default {
+  extends: helpers,
   name: 'header',
 };
 </script>

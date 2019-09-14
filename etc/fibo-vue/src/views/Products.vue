@@ -7,20 +7,20 @@
         <h2>
           <strong>FIBO</strong> is intended for a range of uses, including in its simplest form as an English language
           glossary or a bank or regulator's data dictionary. In its most complex form,
-          <router-link to="OWL">FIBO in its native Web Ontology Language (OWL)</router-link>, could be used as a bank's operational ontology. There are also external uses of FIBO such as FIBO.schema.org which use FIBO as a reference for search indexing of specific information on the Internet.
+          <router-link replace :to="{ path: router('OWL') }">FIBO in its native Web Ontology Language (OWL)</router-link>, could be used as a bank's operational ontology. There are also external uses of FIBO such as FIBO.schema.org which use FIBO as a reference for search indexing of specific information on the Internet.
         </h2>
 
         <h3>FIBO OWL</h3>
         <p>
           Although, FIBO can be seen as a "product family", it is primally an OWL ontology. FIBO OWL, both in its Production and Development versions, are avaliable
-          <router-link to="OWL">here</router-link>. The FIBO OWL is best viewed using a
-          <router-link to="ontology-tools">dedicated ontology tools</router-link>.
+          <router-link replace :to="{ path: router('OWL') }">here</router-link>. The FIBO OWL is best viewed using a
+          <router-link replace :to="{ path: router('ontology-tools') }">dedicated ontology tools</router-link>.
         </p>
 
         <h3>FIBO derived products</h3>
         <p>
           FIBO is also available as the derived products. All FIBO products are generated or derived with an automated process from the
-          <router-link to="OWL">FIBO OWL</router-link>. Thus all changes in in the FIBO OWL will be reflected in all other products. We are making all of FIBO available now because we have already seen amazing work done with FIBO and we welcome, almost demand, your feedback:
+          <router-link replace :to="{ path: router('OWL') }">FIBO OWL</router-link>. Thus all changes in in the FIBO OWL will be reflected in all other products. We are making all of FIBO available now because we have already seen amazing work done with FIBO and we welcome, almost demand, your feedback:
           <a
             href="mailto:rtrypuz@edmcouncil.org"
           >rtrypuz@edmcouncil.org</a>
@@ -29,7 +29,7 @@
           <table class="table table-style-grey">
             <tr>
               <td>
-                <router-link to="glossary">FIBO glossary</router-link>
+                <router-link replace :to="{ path: router('glossary') }">FIBO glossary</router-link>
               </td>
               <td>Web searchable, downloadable in CSV and/or Excel</td>
               <td>
@@ -83,7 +83,10 @@
 
 
 <script>
+import helpers from "../store/helpers.js";
+
 export default {
+  extends: helpers,
   name: 'products',
   components: {},
 };

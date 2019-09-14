@@ -5,24 +5,24 @@ export default {
         name: 'FIBO (Production) (zip)',
         xml: [{
           name: 'prod.rdf.zip',
-          url: 'https://spec.edmcouncil.org/fibo/ontology/master/${timestamp}/prod.rdf.zip',
+          url: '/fibo/ontology/master/${timestamp}/prod.rdf.zip',
         }],
         ttl: [{
           name: 'prod.ttl.zip',
-          url: 'https://spec.edmcouncil.org/fibo/ontology/master/${timestamp}/prod.ttl.zip',
+          url: '/fibo/ontology/master/${timestamp}/prod.ttl.zip',
         }],
         json: [{
           name: 'prod.jsonld.zip',
-          url: 'https://spec.edmcouncil.org/fibo/ontology/master/${timestamp}/prod.jsonld.zip',
+          url: '/fibo/ontology/master/${timestamp}/prod.jsonld.zip',
         }],
         nq: [
           {
             name: 'prod.fibo.nq',
-            url: 'https://spec.edmcouncil.org/fibo/ontology/master/${timestamp}/prod.fibo.nq',
+            url: '/fibo/ontology/master/${timestamp}/prod.fibo.nq',
           },
           {
             name: 'prod.fibo.nq.zip',
-            url: 'https://spec.edmcouncil.org/fibo/ontology/master/${timestamp}/prod.fibo.nq.zip',
+            url: '/fibo/ontology/master/${timestamp}/prod.fibo.nq.zip',
           },
         ],
       },
@@ -30,24 +30,24 @@ export default {
         name: 'FIBO (Development) (zip)',
         xml: [{
           name: 'dev.rdf.zip',
-          url: 'https://spec.edmcouncil.org/fibo/ontology/master/latest/dev.rdf.zip',
+          url: '/fibo/ontology/master/latest/dev.rdf.zip',
         }],
         ttl: [{
           name: 'dev.ttl.zip',
-          url: 'https://spec.edmcouncil.org/fibo/ontology/master/latest/dev.ttl.zip',
+          url: '/fibo/ontology/master/latest/dev.ttl.zip',
         }],
         json: [{
           name: 'dev.jsonld.zip',
-          url: 'https://spec.edmcouncil.org/fibo/ontology/master/latest/dev.jsonld.zip',
+          url: '/fibo/ontology/master/latest/dev.jsonld.zip',
         }],
         nq: [
           {
             name: 'dev.fibo.nq',
-            url: 'https://spec.edmcouncil.org/fibo/ontology/master/latest/dev.fibo.nq',
+            url: '/fibo/ontology/master/latest/dev.fibo.nq',
           },
           {
             name: 'dev.fibo.nq.zip',
-            url: 'https://spec.edmcouncil.org/fibo/ontology/master/latest/dev.fibo.nq.zip',
+            url: '/fibo/ontology/master/latest/dev.fibo.nq.zip',
           },
         ],
       },
@@ -59,15 +59,15 @@ export default {
         },
         xml: [{
           name: 'AboutFIBOProd.rdf',
-          url: 'https://spec.edmcouncil.org/fibo/ontology/master/${timestamp}/AboutFIBOProd.rdf',
+          url: '/fibo/ontology/master/${timestamp}/AboutFIBOProd.rdf',
         }],
         ttl: [{
           name: 'AboutFIBOProd.ttl',
-          url: 'https://spec.edmcouncil.org/fibo/ontology/master/${timestamp}/AboutFIBOProd.ttl',
+          url: '/fibo/ontology/master/${timestamp}/AboutFIBOProd.ttl',
         }],
         json: [{
           name: 'AboutFIBOProd.jsonld',
-          url: 'https://spec.edmcouncil.org/fibo/ontology/master/${timestamp}/AboutFIBOProd.jsonld',
+          url: '/fibo/ontology/master/${timestamp}/AboutFIBOProd.jsonld',
         }],
         nq: [
         ],
@@ -80,15 +80,15 @@ export default {
         },
         xml: [{
           name: 'AboutFIBODev.rdf',
-          url: 'https://spec.edmcouncil.org/fibo/ontology/master/latest/AboutFIBODev.rdf',
+          url: '/fibo/ontology/master/latest/AboutFIBODev.rdf',
         }],
         ttl: [{
           name: 'AboutFIBODev.ttl',
-          url: 'https://spec.edmcouncil.org/fibo/ontology/master/latest/AboutFIBODev.ttl',
+          url: '/fibo/ontology/master/latest/AboutFIBODev.ttl',
         }],
         json: [{
           name: 'AboutFIBODev.jsonld',
-          url: 'https://spec.edmcouncil.org/fibo/ontology/master/latest/AboutFIBODev.jsonld',
+          url: '/fibo/ontology/master/latest/AboutFIBODev.jsonld',
         }],
         nq: [
         ],
@@ -97,16 +97,16 @@ export default {
         name: 'FIBO (Production) (Quickstart)',
         ttl: [{
           name: 'prod.fibo-quickstart.ttl',
-          url: 'https://spec.edmcouncil.org/fibo/ontology/master/${timestamp}/prod.fibo-quickstart.ttl',
+          url: '/fibo/ontology/master/${timestamp}/prod.fibo-quickstart.ttl',
         }],
         nq: [
           {
             name: 'prod.fibo-quickstart.nt',
-            url: 'https://spec.edmcouncil.org/fibo/ontology/master/${timestamp}/prod.fibo-quickstart.nt',
+            url: '/fibo/ontology/master/${timestamp}/prod.fibo-quickstart.nt',
           },
           {
             name: 'prod.fibo-quickstart.nt.zip',
-            url: 'https://spec.edmcouncil.org/fibo/ontology/master/${timestamp}/prod.fibo-quickstart.nt.zip',
+            url: '/fibo/ontology/master/${timestamp}/prod.fibo-quickstart.nt.zip',
           },
         ],
       },
@@ -114,16 +114,16 @@ export default {
         name: 'FIBO (Development) (Quickstart)',
         ttl: [{
           name: 'dev.fibo-quickstart.ttl',
-          url: 'https://spec.edmcouncil.org/fibo/ontology/master/latest/dev.fibo-quickstart.ttl',
+          url: '/fibo/ontology/master/latest/dev.fibo-quickstart.ttl',
         }],
         nq: [
           {
             name: 'dev.fibo-quickstart.n',
-            url: 'https://spec.edmcouncil.org/fibo/ontology/master/latest/dev.fibo-quickstart.n',
+            url: '/fibo/ontology/master/latest/dev.fibo-quickstart.n',
           },
           {
             name: 'dev.fibo-quickstart.nt.zip',
-            url: 'https://spec.edmcouncil.org/fibo/ontology/master/latest/dev.fibo-quickstart.nt.zip',
+            url: '/fibo/ontology/master/latest/dev.fibo-quickstart.nt.zip',
           },
         ],
       },

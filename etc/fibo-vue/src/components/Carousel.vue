@@ -12,7 +12,7 @@
           <div class="carousel-caption d-none d-md-block">
             <h2>What is an ontology?</h2>
             <p>An ontology is a formal, explicit specification of a shared conceptualization</p>
-            <router-link to="products" class="btn-sl">DOWNLOAD FIBO PRODUCTS</router-link>
+            <router-link replace :to="{ path: router('products') }" class="btn-sl">DOWNLOAD FIBO PRODUCTS</router-link>
           </div>
         </div>
         <div class="carousel-item">
@@ -20,7 +20,7 @@
           <div class="carousel-caption d-none d-md-block">
             <h2>What is FIBO?</h2>
             <p>FIBO gives meaning to any data that describe the business of finance</p>
-            <router-link to="products" class="btn-sl">DOWNLOAD FIBO PRODUCTS</router-link>
+            <router-link replace :to="{ path: router('products') }" class="btn-sl">DOWNLOAD FIBO PRODUCTS</router-link>
           </div>
         </div>
         <div class="carousel-item">
@@ -28,7 +28,7 @@
           <div class="carousel-caption d-none d-md-block">
             <h2>FIBO Structure</h2>
             <p>FIBO covers Derivatives, Loans, Indices and Indicators, Securities, Business Entities, Financial Business and Commerce and Foundations</p>
-            <router-link to="products" class="btn-sl">DOWNLOAD FIBO PRODUCTS</router-link>
+            <router-link replace :to="{ path: router('products') }" class="btn-sl">DOWNLOAD FIBO PRODUCTS</router-link>
           </div>
         </div>
       </div>
@@ -56,7 +56,10 @@
 </template>
 
 <script>
+import helpers from "../store/helpers.js";
+
 export default {
+  extends: helpers,
   name: 'Carousel',
 };
 </script>

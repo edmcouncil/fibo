@@ -29,56 +29,26 @@
             <tr>
               <td>FIBO-V (Development)</td>
               <td>
-                <a
-                  href="http://spec.edmcouncil.org/fibo/vocabulary/master/latest/fibo-vD.rdf"
-                >fibo-vD.rdf</a> (
-                <a
-                  href="http://spec.edmcouncil.org/fibo/vocabulary/master/latest/fibo-vD.rdf.zip"
-                >zip</a>)
+                <a v-bind:href="hrefD('fibo-vD.rdf')">fibo-vD.rdf</a> (<a v-bind:href="hrefD('fibo-vD.rdf.zip')">zip</a>)
               </td>
               <td>
-                <a
-                  href="http://spec.edmcouncil.org/fibo/vocabulary/master/latest/fibo-vD.ttl"
-                >fibo-vD.ttl</a> (
-                <a
-                  href="http://spec.edmcouncil.org/fibo/vocabulary/master/latest/fibo-vD.ttl.zip"
-                >zip</a>)
+                <a v-bind:href="hrefD('fibo-vD.ttl')">fibo-vD.ttl</a> (<a v-bind:href="hrefD('fibo-vD.ttl.zip')">zip</a>)
               </td>
               <td>
-                <a
-                  href="http://spec.edmcouncil.org/fibo/vocabulary/master/latest/fibo-vD.jsonld"
-                >fibo-vD.jsonld</a> (
-                <a
-                  href="http://spec.edmcouncil.org/fibo/vocabulary/master/latest/fibo-vD.jsonld.zip"
-                >zip</a>)
+                <a v-bind:href="hrefD('fibo-vD.jsonld')">fibo-vD.jsonld</a> (<a v-bind:href="hrefD('fibo-vD.jsonld.zip')">jsonld</a>)
               </td>
             </tr>
 
             <tr>
               <td>FIBO-V (Production)</td>
               <td>
-                <a
-                  href="http://spec.edmcouncil.org/fibo/vocabulary/master/2019Q2/fibo-vP.rdf"
-                >fibo-vP.rdf</a>
-                <a
-                  href="http://spec.edmcouncil.org/fibo/vocabulary/master/2019Q2/fibo-vP.rdf.zip"
-                >(zip)</a>
+                <a v-bind:href="hrefP('fibo-vP.rdf')">fibo-vP.rdf</a> (<a v-bind:href="hrefP('fibo-vP.rdf.zip')">zip</a>)
               </td>
               <td>
-                <a
-                  href="http://spec.edmcouncil.org/fibo/vocabulary/master/2019Q2/fibo-vP.ttl"
-                >fibo-vP.ttl</a>
-                <a
-                  href="http://spec.edmcouncil.org/fibo/vocabulary/master/2019Q2/fibo-vP.ttl.zip"
-                >(zip)</a>
+                <a v-bind:href="hrefP('fibo-vP.ttl')">fibo-vP.ttl</a> (<a v-bind:href="hrefP('fibo-vP.ttl.zip')">zip</a>)
               </td>
               <td>
-                <a
-                  href="http://spec.edmcouncil.org/fibo/vocabulary/master/2019Q2/fibo-vP.jsonld"
-                >fibo-vP.jsonld</a>
-                <a
-                  href="http://spec.edmcouncil.org/fibo/vocabulary/master/2019Q2/fibo-vP.jsonld.zip"
-                >(zip)</a>
+                <a v-bind:href="hrefP('fibo-vP.jsonld')">fibo-vP.jsonld</a> (<a v-bind:href="hrefP('fibo-vP.jsonld.zip')">zip</a>)
               </td>
             </tr>
           </table>
@@ -142,7 +112,10 @@
 
 
 <script>
+import helpers from "../store/helpers.js";
+
 export default {
+  extends: helpers,
   name: 'vocabulary',
   components: {},
 };

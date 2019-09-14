@@ -8,41 +8,41 @@
             <div class="col-md-6">
               <ul>
                 <li>
-                  <router-link to="/">About</router-link>
+                  <router-link replace :to="{ path: router() }">About</router-link>
                 </li>
                 <li>
-                  <router-link to="development">Development</router-link>
+                  <router-link replace :to="{ path: router('development') }">Development</router-link>
                 </li>
                 <li>
-                  <router-link to="working-group">FIBO Working Groups</router-link>
+                  <router-link replace :to="{ path: router('working-group') }">FIBO Working Groups</router-link>
                 </li>
                 <li>
-                  <router-link to="ontology-tools">Ontology Tools</router-link>
+                  <router-link replace :to="{ path: router('ontology-tools') }">Ontology Tools</router-link>
                 </li>
                 <li>
-                  <router-link to="SMIF-UML">SMIF / UML Diagrams</router-link>
+                  <router-link replace :to="{ path: router('SMIF-UML') }">SMIF / UML Diagrams</router-link>
                 </li>
                 <li>
-                  <router-link to="linked-data-fragments">FIBO Linked Data Fragments</router-link>
+                  <router-link replace :to="{ path: router('linked-data-fragments') }">FIBO Linked Data Fragments</router-link>
                 </li>
               </ul>
             </div>
             <div class="col-md-6">
               <ul>
                 <li>
-                  <router-link to="products">All Products</router-link>
+                  <router-link replace :to="{ path: router('products') }">All Products</router-link>
                 </li>
                 <li>
-                  <router-link to="OWL">FIBO OWL</router-link>
+                  <router-link replace :to="{ path: router('OWL') }">FIBO OWL</router-link>
                 </li>
                 <li>
-                  <router-link to="glossary">FIBO Glossary</router-link>
+                  <router-link replace :to="{ path: router('glossary') }">FIBO Glossary</router-link>
                 </li>
                 <li>
-                  <router-link to="vocabulary">FIBO Vocabulary</router-link>
+                  <router-link replace :to="{ path: router('vocabulary') }">FIBO Vocabulary</router-link>
                 </li>
                 <li>
-                  <router-link to="schema">FIBO Extension To Schema.org</router-link>
+                  <router-link replace :to="{ path: router('schema') }">FIBO Extension To Schema.org</router-link>
                 </li>
               </ul>
             </div>
@@ -117,7 +117,10 @@
 </template>
 
 <script>
+import helpers from "../store/helpers.js";
+
 export default {
+  extends: helpers,
   name: 'Footer',
 };
 </script>

@@ -93,7 +93,7 @@
           <a
             href="fibo_owl.html"
           >OWL formats</a>,
-          <router-link to="vocabulary">SKOS</router-link>,
+          <router-link replace :to="{ path: router('vocabulary') }">SKOS</router-link>,
           <a href>a Data Dictionary</a>,
           <a href>
             a Natural Language
@@ -138,7 +138,10 @@
 
 
 <script>
+import helpers from "../store/helpers.js";
+
 export default {
+  extends: helpers,
   name: 'development',
   components: {},
 };

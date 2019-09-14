@@ -199,11 +199,11 @@
               which
               maturity level of FIBO you want; the
               <a
-                :href="links.rdf.development"
+                :href="hrefD('dev.rdf.zip','ontology')"
               >Development</a> version or
               the
               <a
-                :href="timestamped(links.rdf.production, timestamped)"
+                :href="hrefP('prod.rdf.zip','ontology')"
               >Production</a>
               version.
             </li>
@@ -284,12 +284,12 @@
             Download a zipped file of FIBO in RDF/XML format from spec.edmcouncil.org. You'll need to specify
             which maturity level of FIBO you want; the
             <a
-              :href="links.rdf.development"
+              :href="hrefD('dev.rdf.zip','ontology')"
             >Development</a> version
             or
             the
             <a
-              :href="timestamped(links.rdf.development, timestamp)"
+              :href="hrefP('prod.rdf.zip','ontology')"
             >Production</a>
             version.
           </li>
@@ -404,16 +404,16 @@ It should make replacements in approx. 320 files.
         the resources in FIBO. These are currently incomplete, but will be completed shortly.
         <p>
           As an assist for developers using FIBO, we provide the namespace prefixes in many formats,
-          <a href="https://spec.edmcouncil.org/fibo/ontology/master/latest/prefixes.fibo.ttl">
+          <a href="/fibo/ontology/master/latest/prefixes.fibo.ttl">
             prefixes.ttl
             (Turtle)
           </a>,
           <a
-            href="https://spec.edmcouncil.org/fibo/ontology/master/latest/prefixes.fibo.sq"
+            href="/fibo/ontology/master/latest/prefixes.fibo.sq"
           >prefixes.sq (SPARLQ)</a>,
           and
           <a
-            href="https://spec.edmcouncil.org/fibo/ontology/master/latest/prefixes.fibo.csv"
+            href="/fibo/ontology/master/latest/prefixes.fibo.csv"
           >prefixes.csv</a>.
         </p>
       </article>
@@ -423,9 +423,11 @@ It should make replacements in approx. 320 files.
 
 
 <script>
+import helpers from "../store/helpers.js";
 import { mapState } from 'vuex';
 
 export default {
+  extends: helpers,
   name: 'woring-groups',
   components: {},
   computed: {
@@ -435,6 +437,7 @@ export default {
     ...mapState('helpers', {
       timestamp: state => state.timestamp,
     }),
+    // timestamp: this.timestamp
   },
   methods: {
     timestamped(link, timestamp) {

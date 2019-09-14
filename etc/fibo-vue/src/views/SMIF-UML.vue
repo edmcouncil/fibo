@@ -37,13 +37,13 @@
                     <div class="ontology">
                       Corporations
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/BE/Corporations/Corporations.rdf"
+                        href="/fibo/ontology/master/2019Q2/BE/Corporations/Corporations.rdf"
                       >rdf</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/BE/Corporations/Corporations.ttl"
+                        href="/fibo/ontology/master/2019Q2/BE/Corporations/Corporations.ttl"
                       >turtle</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/BE/Corporations/Corporations.jsonld"
+                        href="/fibo/ontology/master/2019Q2/BE/Corporations/Corporations.jsonld"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -68,13 +68,13 @@
                     <div class="ontology">
                       FunctionalEntities
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/BE/FunctionalEntities/FunctionalEntities.rdf"
+                        href="/fibo/ontology/master/2019Q2/BE/FunctionalEntities/FunctionalEntities.rdf"
                       >rdf</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/BE/FunctionalEntities/FunctionalEntities.ttl"
+                        href="/fibo/ontology/master/2019Q2/BE/FunctionalEntities/FunctionalEntities.ttl"
                       >turtle</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/BE/FunctionalEntities/FunctionalEntities.jsonld"
+                        href="/fibo/ontology/master/2019Q2/BE/FunctionalEntities/FunctionalEntities.jsonld"
                       >json-ld</a>
                     </div>
                   </li>
@@ -82,13 +82,13 @@
                     <div class="ontology">
                       Publishers
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/BE/FunctionalEntities/Publishers.rdf"
+                        href="/fibo/ontology/master/2019Q2/BE/FunctionalEntities/Publishers.rdf"
                       >rdf</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/BE/FunctionalEntities/Publishers.ttl"
+                        href="/fibo/ontology/master/2019Q2/BE/FunctionalEntities/Publishers.ttl"
                       >turtle</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/BE/FunctionalEntities/Publishers.jsonld"
+                        href="/fibo/ontology/master/2019Q2/BE/FunctionalEntities/Publishers.jsonld"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -114,13 +114,13 @@
                     <div class="ontology">
                       CorporateBodies
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/BE/LegalEntities/CorporateBodies.rdf"
+                        href="/fibo/ontology/master/2019Q2/BE/LegalEntities/CorporateBodies.rdf"
                       >rdf</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/BE/LegalEntities/CorporateBodies.ttl"
+                        href="/fibo/ontology/master/2019Q2/BE/LegalEntities/CorporateBodies.ttl"
                       >turtle</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/BE/LegalEntities/CorporateBodies.jsonld"
+                        href="/fibo/ontology/master/2019Q2/BE/LegalEntities/CorporateBodies.jsonld"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -180,13 +180,13 @@
                     <div class="ontology">
                       FormalBusinessOrganizations
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/BE/LegalEntities/FormalBusinessOrganizations.rdf"
+                        href="/fibo/ontology/master/2019Q2/BE/LegalEntities/FormalBusinessOrganizations.rdf"
                       >rdf</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/BE/LegalEntities/FormalBusinessOrganizations.ttl"
+                        href="/fibo/ontology/master/2019Q2/BE/LegalEntities/FormalBusinessOrganizations.ttl"
                       >turtle</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/BE/LegalEntities/FormalBusinessOrganizations.jsonld"
+                        href="/fibo/ontology/master/2019Q2/BE/LegalEntities/FormalBusinessOrganizations.jsonld"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -206,13 +206,13 @@
                     <div class="ontology">
                       LegalPersons
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/BE/LegalEntities/LegalPersons.rdf"
+                        href="/fibo/ontology/master/2019Q2/BE/LegalEntities/LegalPersons.rdf"
                       >rdf</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/BE/LegalEntities/LegalPersons.ttl"
+                        href="/fibo/ontology/master/2019Q2/BE/LegalEntities/LegalPersons.ttl"
                       >turtle</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/BE/LegalEntities/LegalPersons.jsonld"
+                        href="/fibo/ontology/master/2019Q2/BE/LegalEntities/LegalPersons.jsonld"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -229,13 +229,13 @@
                     <div class="ontology">
                       LEIEntities
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/BE/LegalEntities/LEIEntities.rdf"
+                        href="/fibo/ontology/master/2019Q2/BE/LegalEntities/LEIEntities.rdf"
                       >rdf</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/BE/LegalEntities/LEIEntities.ttl"
+                        href="/fibo/ontology/master/2019Q2/BE/LegalEntities/LEIEntities.ttl"
                       >turtle</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/BE/LegalEntities/LEIEntities.jsonld"
+                        href="/fibo/ontology/master/2019Q2/BE/LegalEntities/LEIEntities.jsonld"
                       >json-ld</a>
                     </div>
                   </li>
@@ -248,13 +248,13 @@
                     <div class="ontology">
                       ControlParties
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/BE/OwnershipAndControl/ControlParties.rdf"
+                        href="/fibo/ontology/master/2019Q2/BE/OwnershipAndControl/ControlParties.rdf"
                       >rdf</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/BE/OwnershipAndControl/ControlParties.ttl"
+                        href="/fibo/ontology/master/2019Q2/BE/OwnershipAndControl/ControlParties.ttl"
                       >turtle</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/BE/OwnershipAndControl/ControlParties.jsonld"
+                        href="/fibo/ontology/master/2019Q2/BE/OwnershipAndControl/ControlParties.jsonld"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -314,13 +314,13 @@
                     <div class="ontology">
                       CorporateControl
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/BE/OwnershipAndControl/CorporateControl.rdf"
+                        href="/fibo/ontology/master/2019Q2/BE/OwnershipAndControl/CorporateControl.rdf"
                       >rdf</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/BE/OwnershipAndControl/CorporateControl.ttl"
+                        href="/fibo/ontology/master/2019Q2/BE/OwnershipAndControl/CorporateControl.ttl"
                       >turtle</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/BE/OwnershipAndControl/CorporateControl.jsonld"
+                        href="/fibo/ontology/master/2019Q2/BE/OwnershipAndControl/CorporateControl.jsonld"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -394,13 +394,13 @@
                     <div class="ontology">
                       CorporateOwnership
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/BE/OwnershipAndControl/CorporateOwnership.rdf"
+                        href="/fibo/ontology/master/2019Q2/BE/OwnershipAndControl/CorporateOwnership.rdf"
                       >rdf</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/BE/OwnershipAndControl/CorporateOwnership.ttl"
+                        href="/fibo/ontology/master/2019Q2/BE/OwnershipAndControl/CorporateOwnership.ttl"
                       >turtle</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/BE/OwnershipAndControl/CorporateOwnership.jsonld"
+                        href="/fibo/ontology/master/2019Q2/BE/OwnershipAndControl/CorporateOwnership.jsonld"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -420,13 +420,13 @@
                     <div class="ontology">
                       Executives
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/BE/OwnershipAndControl/Executives.rdf"
+                        href="/fibo/ontology/master/2019Q2/BE/OwnershipAndControl/Executives.rdf"
                       >rdf</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/BE/OwnershipAndControl/Executives.ttl"
+                        href="/fibo/ontology/master/2019Q2/BE/OwnershipAndControl/Executives.ttl"
                       >turtle</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/BE/OwnershipAndControl/Executives.jsonld"
+                        href="/fibo/ontology/master/2019Q2/BE/OwnershipAndControl/Executives.jsonld"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -496,13 +496,13 @@
                     <div class="ontology">
                       OwnershipParties
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/BE/OwnershipAndControl/OwnershipParties.rdf"
+                        href="/fibo/ontology/master/2019Q2/BE/OwnershipAndControl/OwnershipParties.rdf"
                       >rdf</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/BE/OwnershipAndControl/OwnershipParties.ttl"
+                        href="/fibo/ontology/master/2019Q2/BE/OwnershipAndControl/OwnershipParties.ttl"
                       >turtle</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/BE/OwnershipAndControl/OwnershipParties.jsonld"
+                        href="/fibo/ontology/master/2019Q2/BE/OwnershipAndControl/OwnershipParties.jsonld"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -537,13 +537,13 @@
                     <div class="ontology">
                       Partnerships
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/BE/Partnerships/Partnerships.rdf"
+                        href="/fibo/ontology/master/2019Q2/BE/Partnerships/Partnerships.rdf"
                       >rdf</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/BE/Partnerships/Partnerships.ttl"
+                        href="/fibo/ontology/master/2019Q2/BE/Partnerships/Partnerships.ttl"
                       >turtle</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/BE/Partnerships/Partnerships.jsonld"
+                        href="/fibo/ontology/master/2019Q2/BE/Partnerships/Partnerships.jsonld"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -588,13 +588,13 @@
                     <div class="ontology">
                       PrivateLimitedCompanies
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/BE/PrivateLimitedCompanies/PrivateLimitedCompanies.rdf"
+                        href="/fibo/ontology/master/2019Q2/BE/PrivateLimitedCompanies/PrivateLimitedCompanies.rdf"
                       >rdf</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/BE/PrivateLimitedCompanies/PrivateLimitedCompanies.ttl"
+                        href="/fibo/ontology/master/2019Q2/BE/PrivateLimitedCompanies/PrivateLimitedCompanies.ttl"
                       >turtle</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/BE/PrivateLimitedCompanies/PrivateLimitedCompanies.jsonld"
+                        href="/fibo/ontology/master/2019Q2/BE/PrivateLimitedCompanies/PrivateLimitedCompanies.jsonld"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -619,13 +619,13 @@
                     <div class="ontology">
                       Sole Proprietorships
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/BE/SoleProprietorships//SoleProprietorships.rdf"
+                        href="/fibo/ontology/master/2019Q2/BE/SoleProprietorships//SoleProprietorships.rdf"
                       >rdf</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/BE/SoleProprietorships//SoleProprietorships.ttl"
+                        href="/fibo/ontology/master/2019Q2/BE/SoleProprietorships//SoleProprietorships.ttl"
                       >turtle</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/BE/SoleProprietorships//SoleProprietorships.jsonld"
+                        href="/fibo/ontology/master/2019Q2/BE/SoleProprietorships//SoleProprietorships.jsonld"
                       >json-ld</a>
                     </div>
                   </li>
@@ -638,13 +638,13 @@
                     <div class="ontology">
                       Trusts
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/BE/Trusts/Trusts.rdf"
+                        href="/fibo/ontology/master/2019Q2/BE/Trusts/Trusts.rdf"
                       >rdf</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/BE/Trusts/Trusts.ttl"
+                        href="/fibo/ontology/master/2019Q2/BE/Trusts/Trusts.ttl"
                       >turtle</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/BE/Trusts/Trusts.jsonld"
+                        href="/fibo/ontology/master/2019Q2/BE/Trusts/Trusts.jsonld"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -691,13 +691,13 @@
                     <div class="ontology">
                       AccountingEquity
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Accounting/AccountingEquity.rdf"
+                        href="/fibo/ontology/master/2019Q2/FND/Accounting/AccountingEquity.rdf"
                       >rdf</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Accounting/AccountingEquity.ttl"
+                        href="/fibo/ontology/master/2019Q2/FND/Accounting/AccountingEquity.ttl"
                       >turtle</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Accounting/AccountingEquity.jsonld"
+                        href="/fibo/ontology/master/2019Q2/FND/Accounting/AccountingEquity.jsonld"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -727,13 +727,13 @@
                     <div class="ontology">
                       CurrencyAmount
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Accounting/CurrencyAmount.rdf"
+                        href="/fibo/ontology/master/2019Q2/FND/Accounting/CurrencyAmount.rdf"
                       >rdf</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Accounting/CurrencyAmount.ttl"
+                        href="/fibo/ontology/master/2019Q2/FND/Accounting/CurrencyAmount.ttl"
                       >turtle</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Accounting/CurrencyAmount.jsonld"
+                        href="/fibo/ontology/master/2019Q2/FND/Accounting/CurrencyAmount.jsonld"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -778,13 +778,13 @@
                     <div class="ontology">
                       Agents
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/AgentsAndPeople/Agents.rdf"
+                        href="/fibo/ontology/master/2019Q2/FND/AgentsAndPeople/Agents.rdf"
                       >rdf</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/AgentsAndPeople/Agents.ttl"
+                        href="/fibo/ontology/master/2019Q2/FND/AgentsAndPeople/Agents.ttl"
                       >turtle</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/AgentsAndPeople/Agents.jsonld"
+                        href="/fibo/ontology/master/2019Q2/FND/AgentsAndPeople/Agents.jsonld"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -804,13 +804,13 @@
                     <div class="ontology">
                       People
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/AgentsAndPeople/People.rdf"
+                        href="/fibo/ontology/master/2019Q2/FND/AgentsAndPeople/People.rdf"
                       >rdf</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/AgentsAndPeople/People.ttl"
+                        href="/fibo/ontology/master/2019Q2/FND/AgentsAndPeople/People.ttl"
                       >turtle</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/AgentsAndPeople/People.jsonld"
+                        href="/fibo/ontology/master/2019Q2/FND/AgentsAndPeople/People.jsonld"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -875,13 +875,13 @@
                     <div class="ontology">
                       Agreements
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Agreements/Agreements.rdf"
+                        href="/fibo/ontology/master/2019Q2/FND/Agreements/Agreements.rdf"
                       >rdf</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Agreements/Agreements.ttl"
+                        href="/fibo/ontology/master/2019Q2/FND/Agreements/Agreements.ttl"
                       >turtle</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Agreements/Agreements.jsonld"
+                        href="/fibo/ontology/master/2019Q2/FND/Agreements/Agreements.jsonld"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -901,13 +901,13 @@
                     <div class="ontology">
                       Contracts
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Agreements/Contracts.rdf"
+                        href="/fibo/ontology/master/2019Q2/FND/Agreements/Contracts.rdf"
                       >rdf</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Agreements/Contracts.ttl"
+                        href="/fibo/ontology/master/2019Q2/FND/Agreements/Contracts.ttl"
                       >turtle</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Agreements/Contracts.jsonld"
+                        href="/fibo/ontology/master/2019Q2/FND/Agreements/Contracts.jsonld"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -972,13 +972,13 @@
                     <div class="ontology">
                       Arrangements
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Arrangements/Arrangements.rdf"
+                        href="/fibo/ontology/master/2019Q2/FND/Arrangements/Arrangements.rdf"
                       >rdf</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Arrangements/Arrangements.ttl"
+                        href="/fibo/ontology/master/2019Q2/FND/Arrangements/Arrangements.ttl"
                       >turtle</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Arrangements/Arrangements.jsonld"
+                        href="/fibo/ontology/master/2019Q2/FND/Arrangements/Arrangements.jsonld"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -998,13 +998,13 @@
                     <div class="ontology">
                       ClassificationSchemes
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Arrangements/ClassificationSchemes.rdf"
+                        href="/fibo/ontology/master/2019Q2/FND/Arrangements/ClassificationSchemes.rdf"
                       >rdf</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Arrangements/ClassificationSchemes.ttl"
+                        href="/fibo/ontology/master/2019Q2/FND/Arrangements/ClassificationSchemes.ttl"
                       >turtle</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Arrangements/ClassificationSchemes.jsonld"
+                        href="/fibo/ontology/master/2019Q2/FND/Arrangements/ClassificationSchemes.jsonld"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -1031,13 +1031,13 @@
                     <div class="ontology">
                       Codes
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Arrangements/Codes.rdf"
+                        href="/fibo/ontology/master/2019Q2/FND/Arrangements/Codes.rdf"
                       >rdf</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Arrangements/Codes.ttl"
+                        href="/fibo/ontology/master/2019Q2/FND/Arrangements/Codes.ttl"
                       >turtle</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Arrangements/Codes.jsonld"
+                        href="/fibo/ontology/master/2019Q2/FND/Arrangements/Codes.jsonld"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -1057,13 +1057,13 @@
                     <div class="ontology">
                       Documents
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Arrangements/Documents.rdf"
+                        href="/fibo/ontology/master/2019Q2/FND/Arrangements/Documents.rdf"
                       >rdf</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Arrangements/Documents.ttl"
+                        href="/fibo/ontology/master/2019Q2/FND/Arrangements/Documents.ttl"
                       >turtle</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Arrangements/Documents.jsonld"
+                        href="/fibo/ontology/master/2019Q2/FND/Arrangements/Documents.jsonld"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -1083,13 +1083,13 @@
                     <div class="ontology">
                       IdentifiersAndIndices
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Arrangements/IdentifiersAndIndices.rdf"
+                        href="/fibo/ontology/master/2019Q2/FND/Arrangements/IdentifiersAndIndices.rdf"
                       >rdf</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Arrangements/IdentifiersAndIndices.ttl"
+                        href="/fibo/ontology/master/2019Q2/FND/Arrangements/IdentifiersAndIndices.ttl"
                       >turtle</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Arrangements/IdentifiersAndIndices.jsonld"
+                        href="/fibo/ontology/master/2019Q2/FND/Arrangements/IdentifiersAndIndices.jsonld"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -1124,13 +1124,13 @@
                     <div class="ontology">
                       BusinessDates
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/DatesAndTimes/BusinessDates.rdf"
+                        href="/fibo/ontology/master/2019Q2/FND/DatesAndTimes/BusinessDates.rdf"
                       >rdf</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/DatesAndTimes/BusinessDates.ttl"
+                        href="/fibo/ontology/master/2019Q2/FND/DatesAndTimes/BusinessDates.ttl"
                       >turtle</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/DatesAndTimes/BusinessDates.jsonld"
+                        href="/fibo/ontology/master/2019Q2/FND/DatesAndTimes/BusinessDates.jsonld"
                       >json-ld</a>
                     </div>
                   </li>
@@ -1138,13 +1138,13 @@
                     <div class="ontology">
                       FinancialDates
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/DatesAndTimes/FinancialDates.rdf"
+                        href="/fibo/ontology/master/2019Q2/FND/DatesAndTimes/FinancialDates.rdf"
                       >rdf</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/DatesAndTimes/FinancialDates.ttl"
+                        href="/fibo/ontology/master/2019Q2/FND/DatesAndTimes/FinancialDates.ttl"
                       >turtle</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/DatesAndTimes/FinancialDates.jsonld"
+                        href="/fibo/ontology/master/2019Q2/FND/DatesAndTimes/FinancialDates.jsonld"
                       >json-ld</a>
                     </div>
                   </li>
@@ -1152,13 +1152,13 @@
                     <div class="ontology">
                       Occurrences
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/DatesAndTimes/Occurrences.rdf"
+                        href="/fibo/ontology/master/2019Q2/FND/DatesAndTimes/Occurrences.rdf"
                       >rdf</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/DatesAndTimes/Occurrences.ttl"
+                        href="/fibo/ontology/master/2019Q2/FND/DatesAndTimes/Occurrences.ttl"
                       >turtle</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/DatesAndTimes/Occurrences.jsonld"
+                        href="/fibo/ontology/master/2019Q2/FND/DatesAndTimes/Occurrences.jsonld"
                       >json-ld</a>
                     </div>
                   </li>
@@ -1172,13 +1172,13 @@
                     <div class="ontology">
                       Jurisdiction
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Law/Jurisdiction.rdf"
+                        href="/fibo/ontology/master/2019Q2/FND/Law/Jurisdiction.rdf"
                       >rdf</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Law/Jurisdiction.ttl"
+                        href="/fibo/ontology/master/2019Q2/FND/Law/Jurisdiction.ttl"
                       >turtle</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Law/Jurisdiction.jsonld"
+                        href="/fibo/ontology/master/2019Q2/FND/Law/Jurisdiction.jsonld"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -1228,13 +1228,13 @@
                     <div class="ontology">
                       LegalCapacity
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Law/LegalCapacity.rdf"
+                        href="/fibo/ontology/master/2019Q2/FND/Law/LegalCapacity.rdf"
                       >rdf</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Law/LegalCapacity.ttl"
+                        href="/fibo/ontology/master/2019Q2/FND/Law/LegalCapacity.ttl"
                       >turtle</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Law/LegalCapacity.jsonld"
+                        href="/fibo/ontology/master/2019Q2/FND/Law/LegalCapacity.jsonld"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -1284,13 +1284,13 @@
                     <div class="ontology">
                       LegalCore
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Law/LegalCore.rdf"
+                        href="/fibo/ontology/master/2019Q2/FND/Law/LegalCore.rdf"
                       >rdf</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Law/LegalCore.ttl"
+                        href="/fibo/ontology/master/2019Q2/FND/Law/LegalCore.ttl"
                       >turtle</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Law/LegalCore.jsonld"
+                        href="/fibo/ontology/master/2019Q2/FND/Law/LegalCore.jsonld"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -1315,13 +1315,13 @@
                     <div class="ontology">
                       FormalOrganizations
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Organizations/FormalOrganizations.rdf"
+                        href="/fibo/ontology/master/2019Q2/FND/Organizations/FormalOrganizations.rdf"
                       >rdf</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Organizations/FormalOrganizations.ttl"
+                        href="/fibo/ontology/master/2019Q2/FND/Organizations/FormalOrganizations.ttl"
                       >turtle</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Organizations/FormalOrganizations.jsonld"
+                        href="/fibo/ontology/master/2019Q2/FND/Organizations/FormalOrganizations.jsonld"
                       >json-ld</a>
                     </div>
                   </li>
@@ -1329,13 +1329,13 @@
                     <div class="ontology">
                       LegitimateOrganizations
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Organizations/FormalOrganizations.rdf"
+                        href="/fibo/ontology/master/2019Q2/FND/Organizations/FormalOrganizations.rdf"
                       >rdf</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Organizations/FormalOrganizations.ttl"
+                        href="/fibo/ontology/master/2019Q2/FND/Organizations/FormalOrganizations.ttl"
                       >turtle</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Organizations/FormalOrganizations.jsonld"
+                        href="/fibo/ontology/master/2019Q2/FND/Organizations/FormalOrganizations.jsonld"
                       >json-ld</a>
                     </div>
                   </li>
@@ -1343,13 +1343,13 @@
                     <div class="ontology">
                       Organizations
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Organizations/LegitimateOrganizations.rdf"
+                        href="/fibo/ontology/master/2019Q2/FND/Organizations/LegitimateOrganizations.rdf"
                       >rdf</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Organizations/LegitimateOrganizations.ttl"
+                        href="/fibo/ontology/master/2019Q2/FND/Organizations/LegitimateOrganizations.ttl"
                       >turtle</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Organizations/LegitimateOrganizations.jsonld"
+                        href="/fibo/ontology/master/2019Q2/FND/Organizations/LegitimateOrganizations.jsonld"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -1374,13 +1374,13 @@
                     <div class="ontology">
                       Control
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/OwnershipAndControl/Control.rdf"
+                        href="/fibo/ontology/master/2019Q2/FND/OwnershipAndControl/Control.rdf"
                       >rdf</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/OwnershipAndControl/Control.ttl"
+                        href="/fibo/ontology/master/2019Q2/FND/OwnershipAndControl/Control.ttl"
                       >turtle</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/OwnershipAndControl/Control.jsonld"
+                        href="/fibo/ontology/master/2019Q2/FND/OwnershipAndControl/Control.jsonld"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -1410,13 +1410,13 @@
                     <div class="ontology">
                       Ownership
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/OwnershipAndControl/Ownership.rdf"
+                        href="/fibo/ontology/master/2019Q2/FND/OwnershipAndControl/Ownership.rdf"
                       >rdf</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/OwnershipAndControl/Ownership.ttl"
+                        href="/fibo/ontology/master/2019Q2/FND/OwnershipAndControl/Ownership.ttl"
                       >turtle</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/OwnershipAndControl/Ownership.jsonld"
+                        href="/fibo/ontology/master/2019Q2/FND/OwnershipAndControl/Ownership.jsonld"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -1446,13 +1446,13 @@
                     <div class="ontology">
                       OwnershipAndControl
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/OwnershipAndControl/OwnershipAndControl.rdf"
+                        href="/fibo/ontology/master/2019Q2/FND/OwnershipAndControl/OwnershipAndControl.rdf"
                       >rdf</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/OwnershipAndControl/OwnershipAndControl.ttl"
+                        href="/fibo/ontology/master/2019Q2/FND/OwnershipAndControl/OwnershipAndControl.ttl"
                       >turtle</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/OwnershipAndControl/OwnershipAndControl.jsonld"
+                        href="/fibo/ontology/master/2019Q2/FND/OwnershipAndControl/OwnershipAndControl.jsonld"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -1477,13 +1477,13 @@
                     <div class="ontology">
                       Parties
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Parties/Parties.rdf"
+                        href="/fibo/ontology/master/2019Q2/FND/Parties/Parties.rdf"
                       >rdf</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Parties/Parties.ttl"
+                        href="/fibo/ontology/master/2019Q2/FND/Parties/Parties.ttl"
                       >turtle</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Parties/Parties.jsonld"
+                        href="/fibo/ontology/master/2019Q2/FND/Parties/Parties.jsonld"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -1523,13 +1523,13 @@
                     <div class="ontology">
                       Roles
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Parties/Roles.rdf"
+                        href="/fibo/ontology/master/2019Q2/FND/Parties/Roles.rdf"
                       >rdf</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Parties/Roles.ttl"
+                        href="/fibo/ontology/master/2019Q2/FND/Parties/Roles.ttl"
                       >turtle</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Parties/Roles.jsonld"
+                        href="/fibo/ontology/master/2019Q2/FND/Parties/Roles.jsonld"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -1561,13 +1561,13 @@
                     <div class="ontology">
                       Addresses
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Places/Addresses.rdf"
+                        href="/fibo/ontology/master/2019Q2/FND/Places/Addresses.rdf"
                       >rdf</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Places/Addresses.ttl"
+                        href="/fibo/ontology/master/2019Q2/FND/Places/Addresses.ttl"
                       >turtle</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Places/Addresses.jsonld"
+                        href="/fibo/ontology/master/2019Q2/FND/Places/Addresses.jsonld"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -1587,13 +1587,13 @@
                     <div class="ontology">
                       Countries
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Places/Countries.rdf"
+                        href="/fibo/ontology/master/2019Q2/FND/Places/Countries.rdf"
                       >rdf</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Places/Countries.ttl"
+                        href="/fibo/ontology/master/2019Q2/FND/Places/Countries.ttl"
                       >turtle</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Places/Countries.jsonld"
+                        href="/fibo/ontology/master/2019Q2/FND/Places/Countries.jsonld"
                       >json-ld</a>
                     </div>
                   </li>
@@ -1602,13 +1602,13 @@
                     <div class="ontology">
                       Facilities
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Places/Facilities.rdf"
+                        href="/fibo/ontology/master/2019Q2/FND/Places/Facilities.rdf"
                       >rdf</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Places/Facilities.ttl"
+                        href="/fibo/ontology/master/2019Q2/FND/Places/Facilities.ttl"
                       >turtle</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Places/Facilities.jsonld"
+                        href="/fibo/ontology/master/2019Q2/FND/Places/Facilities.jsonld"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -1651,13 +1651,13 @@
                     <div class="ontology">
                       Locations
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Places/Locations.rdf"
+                        href="/fibo/ontology/master/2019Q2/FND/Places/Locations.rdf"
                       >rdf</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Places/Locations.ttl"
+                        href="/fibo/ontology/master/2019Q2/FND/Places/Locations.ttl"
                       >turtle</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Places/Locations.jsonld"
+                        href="/fibo/ontology/master/2019Q2/FND/Places/Locations.jsonld"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -1677,13 +1677,13 @@
                     <div class="ontology">
                       VirtualPlaces
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Places/VirtualPlaces.rdf"
+                        href="/fibo/ontology/master/2019Q2/FND/Places/VirtualPlaces.rdf"
                       >rdf</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Places/VirtualPlaces.ttl"
+                        href="/fibo/ontology/master/2019Q2/FND/Places/VirtualPlaces.ttl"
                       >turtle</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Places/VirtualPlaces.jsonld"
+                        href="/fibo/ontology/master/2019Q2/FND/Places/VirtualPlaces.jsonld"
                       >json-ld</a>
                     </div>
                   </li>
@@ -1699,13 +1699,13 @@
                     <div class="ontology">
                       Analytics
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Utilities/Analytics.rdf"
+                        href="/fibo/ontology/master/2019Q2/FND/Utilities/Analytics.rdf"
                       >rdf</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Utilities/Analytics.ttl"
+                        href="/fibo/ontology/master/2019Q2/FND/Utilities/Analytics.ttl"
                       >turtle</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Utilities/Analytics.jsonld"
+                        href="/fibo/ontology/master/2019Q2/FND/Utilities/Analytics.jsonld"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -1725,13 +1725,13 @@
                     <div class="ontology">
                       AnnotationVocabulary
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Utilities/AnnotationVocabulary.rdf"
+                        href="/fibo/ontology/master/2019Q2/FND/Utilities/AnnotationVocabulary.rdf"
                       >rdf</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Utilities/AnnotationVocabulary.ttl"
+                        href="/fibo/ontology/master/2019Q2/FND/Utilities/AnnotationVocabulary.ttl"
                       >turtle</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Utilities/AnnotationVocabulary.jsonld"
+                        href="/fibo/ontology/master/2019Q2/FND/Utilities/AnnotationVocabulary.jsonld"
                       >json-ld</a>
                     </div>
                   </li>
@@ -1739,13 +1739,13 @@
                     <div class="ontology">
                       BusinessFacingTypes
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Utilities/BusinessFacingTypes.rdf"
+                        href="/fibo/ontology/master/2019Q2/FND/Utilities/BusinessFacingTypes.rdf"
                       >rdf</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Utilities/BusinessFacingTypes.ttl"
+                        href="/fibo/ontology/master/2019Q2/FND/Utilities/BusinessFacingTypes.ttl"
                       >turtle</a>,
                       <a
-                        href="https://spec.edmcouncil.org/fibo/ontology/master/2019Q2/FND/Utilities/BusinessFacingTypes.jsonld"
+                        href="/fibo/ontology/master/2019Q2/FND/Utilities/BusinessFacingTypes.jsonld"
                       >json-ld</a>
                     </div>
                     <ul>
