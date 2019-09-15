@@ -404,16 +404,16 @@ It should make replacements in approx. 320 files.
         the resources in FIBO. These are currently incomplete, but will be completed shortly.
         <p>
           As an assist for developers using FIBO, we provide the namespace prefixes in many formats,
-          <a href="/fibo/ontology/master/latest/prefixes.fibo.ttl">
+          <a :href="hrefD('prefixes.fibo.ttl','ontology')">
             prefixes.ttl
             (Turtle)
           </a>,
           <a
-            href="/fibo/ontology/master/latest/prefixes.fibo.sq"
+            :href="hrefD('prefixes.fibo.sq','ontology')"
           >prefixes.sq (SPARLQ)</a>,
           and
           <a
-            href="/fibo/ontology/master/latest/prefixes.fibo.csv"
+            :href="hrefD('prefixes.fibo.csv','ontology')"
           >prefixes.csv</a>.
         </p>
       </article>

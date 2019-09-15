@@ -129,7 +129,7 @@
 
         <h6>
           See FIBO
-          <a href="release.html">Release Notes</a>.
+          <a href="/fibo/release.html">Release Notes</a>.
         </h6>
       </article>
     </main>

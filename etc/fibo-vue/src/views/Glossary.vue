@@ -37,10 +37,10 @@
         </h3>
         <ul>
           <li>
-            <a href="glossary_production.html">Production</a>
+            <a href="/fibo/glossary_production.html">Production</a>
           </li>
           <li>
-            <a href="glossary_development.html">Development</a>
+            <a href="/fibo/glossary_development.html">Development</a>
           </li>
         </ul>A user-friendly web page that includes label, curated definition, synonyms (where available) and
         model-generated definitions for all classes and properties in FIBO.
@@ -53,10 +53,10 @@
         model-generated defintion. For use in spreadsheets, including Excel.
         <ul>
           <li>
-            <a href="../../fibo/glossary/master/2019Q2/glossary-prod.csv">Production</a>
+            <a :href="hrefP('glossary-prod.csv','glossary')">Production</a>
           </li>
           <li>
-            <a href="../../fibo/glossary/master/latest/glossary-dev.csv">Development</a>
+            <a :href="hrefD('glossary-dev.csv','glossary')">Development</a>
           </li>
         </ul>
 
@@ -67,10 +67,10 @@
         this file includes formatting to make the spreadsheet easier to read.
         <ul>
           <li>
-            <a href="../../fibo/glossary/master/2019Q2/glossary-prod.xlsx">Production</a>
+            <a :href="hrefP('glossary-prod.xlsx','glossary')">Production</a>
           </li>
           <li>
-            <a href="../../fibo/glossary/master/latest/glossary-dev.xlsx">Development</a>
+            <a :href="hrefD('glossary-dev.xlsx','glossary')">Development</a>
           </li>
         </ul>
         <p>Example:</p>
@@ -82,9 +82,9 @@
         </h3>For application developer who want to be able to query for the human-readable versions of the FIBO logic,
         that is avaiable in
         <a
-          href="../../fibo/glossary/master/latest/LogicalAnnotations.ttl"
+          :href="hrefD('LogicalAnnotations.ttl','glossary')"
         >ttl</a> and
-        <a href="../../fibo/glossary/master/latest/LogicalAnnotations.rdf">RDF/XML</a> formats.
+        <a :href="hrefD('LogicalAnnotations.rdf','glossary')">RDF/XML</a> formats.
         Release Notes:
         <ul>
           <li>
@@ -125,7 +125,10 @@
 
 
 <script>
+import helpers from "../store/helpers.js";
+
 export default {
+  extends: helpers,
   name: 'glossary',
   components: {},
 };

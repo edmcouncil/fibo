@@ -39,7 +39,7 @@
             </tr>
             <tr>
               <td>
-                <a href="../../fibo/datadictionary/master/2019Q2/">FIBO data dictionary</a>
+                <a :href="hrefP('/','datadictionary')">FIBO data dictionary</a>
               </td>
               <td>
                 data dictionary searchable from
@@ -53,7 +53,7 @@
 
             <tr>
               <td>
-                <a href="vocabulary.html">FIBO vocabulary (SKOS)</a>
+                <a href="/fibo/vocabulary.html">FIBO vocabulary (SKOS)</a>
               </td>
               <td>The FIBO Vocabulary in SKOS</td>
               <td>
@@ -65,7 +65,7 @@
 
             <tr>
               <td>
-                <a href="fibo_schema_org.html">FIBO extension to schema.org</a>
+                <a href="/fibo/fibo_schema_org.html">FIBO extension to schema.org</a>
               </td>
               <td>The FIBO schema.org files</td>
               <td>
