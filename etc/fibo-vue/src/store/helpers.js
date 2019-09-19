@@ -1,6 +1,6 @@
 export default {
   data: () => ({
-    timestamp: '2019Q2',
+    timestamp: '2019Q3',
   }),
   mutations: {
 
