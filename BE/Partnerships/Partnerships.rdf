@@ -52,8 +52,8 @@
 		<dct:abstract>This ontology defines partnerships and related concepts. The concepts distinguish general from limited partners, as well as the types of equity that they hold. Included are abstract definitions of partnership types based on whether they have general, limited or both kinds of partners. Both legally incorporated and non incorporated forms of partnerships are covered.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
 		<sm:contentLanguage rdf:datatype="&xsd;anyURI">http://www.w3.org/standards/techs/owl#w3c_all</sm:contentLanguage>
-		<sm:copyright>Copyright (c) 2013-2018 EDM Council, Inc.</sm:copyright>
-		<sm:copyright>Copyright (c) 2013-2018 Object Management Group, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2013-2019 EDM Council, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2013-2019 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/CorporateBodies/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/FormalBusinessOrganizations/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/</sm:dependsOn>
@@ -76,11 +76,12 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Roles/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/20190401/Partnerships/Partnerships/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/20190901/Partnerships/Partnerships/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20131101/Partnerships/Partnerships.rdf version of this ontology was modified per the issue resolutions identified in the FIBO BE 1.0 FTF report.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20160201/Partnerships/Partnerships.rdf version of this ontology was modified per the FIBO 2.0 RFC to reference shareholders&apos; equity vs. stockholders&apos; equity and correct a number of restrictions.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20180801/Partnerships/Partnerships.rdf version of this ontology was modified to simplify / merge the legal person and formal organization class hierarchies.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20181101/Partnerships/Partnerships.rdf version of this ontology was modified to reflect the move of hasObjective to FND to enable higher level reuse.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20190401/Partnerships/Partnerships.rdf version of this ontology was modified to eliminate deprecated elements.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -146,33 +147,6 @@
 		<rdfs:label>general partner equity</rdfs:label>
 		<skos:definition>Equity in a partnership held by general partners; this is typically accompanied by full liability capability on the part of the holders of the equity.</skos:definition>
 		<skos:editorialNote>For a typical, non incorporated partnership, this is the only equity in the entity. Other typically incorporated partnerships may have additional limited equity in addition to or instead of this.</skos:editorialNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-be-ptr-ptr;LegallyIncorporatedPartnership">
-		<rdfs:subClassOf rdf:resource="&fibo-be-ptr-ptr;Partnership"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasMember"/>
-				<owl:onClass>
-					<owl:Restriction>
-						<owl:onProperty rdf:resource="&fibo-fnd-pty-rl;playsRole"/>
-						<owl:someValuesFrom rdf:resource="&fibo-be-ptr-ptr;LegallyIncorporatedPartnershipMember"/>
-					</owl:Restriction>
-				</owl:onClass>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">2</owl:minQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>legally incorporated partnership</rdfs:label>
-		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-		<skos:definition>Any partnership which is defined as a legal person within a given jurisdiction, for example a limited liability partnership (if that is a legal person).</skos:definition>
-		<skos:editorialNote>The precise details and definition of these may vary from one jurisdiction to another. This type of entity is defined by being a legal person in its own right, as distinct from the usual type of partnership where the partners remain jointly and severally liable for debts.</skos:editorialNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-be-ptr-ptr;LegallyIncorporatedPartnershipMember">
-		<rdfs:subClassOf rdf:resource="&fibo-be-ptr-ptr;Partner"/>
-		<rdfs:label>legally incorporated partnership member</rdfs:label>
-		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-		<skos:definition>a party that is a member or partner in a legally incorporated partnership such as an LLC or LLP</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-ptr-ptr;LiabilityApportionmentTermsSet">
@@ -445,31 +419,5 @@
 		<rdfs:range rdf:resource="&xsd;dateTime"/>
 		<skos:definition>date on which the partnership started trading</skos:definition>
 	</owl:DatatypeProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-be-ptr-ptr;holdsPartnershipEquityIn">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-oac-own;owns"/>
-		<rdfs:label>holds partnership equity in</rdfs:label>
-		<rdfs:range rdf:resource="&fibo-be-ptr-ptr;PartnershipEquity"/>
-		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-		<skos:definition>relates a partner to the equity that partner holds in the partnership</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-be-ptr-ptr;setsOutEquityTermsIn">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-agr-ctr;hasTerms"/>
-		<rdfs:label>sets out equity terms in</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-be-le-fbo;OrganizationCoveringAgreement"/>
-		<rdfs:range rdf:resource="&fibo-be-ptr-ptr;EquityApportionmentTermsSet"/>
-		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-		<skos:definition>has terms setting out the apportionment of equity in some formal business organization</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-be-ptr-ptr;setsOutLiabilityTermsIn">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-agr-ctr;hasTerms"/>
-		<rdfs:label>sets out liability terms in</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-be-le-fbo;OrganizationCoveringAgreement"/>
-		<rdfs:range rdf:resource="&fibo-be-ptr-ptr;LiabilityApportionmentTermsSet"/>
-		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-		<skos:definition>has terms setting out the apportionment of liabilities for debts or other liabilities accrued by some formal business organization</skos:definition>
-	</owl:ObjectProperty>
 
 </rdf:RDF>
