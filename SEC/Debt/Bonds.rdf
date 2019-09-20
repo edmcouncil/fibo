@@ -136,8 +136,9 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Equities/EquityInstruments/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesIssuance/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesListings/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20190901/Debt/Bonds/"/>
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/Bonds/"/>
-		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Provisional"/>
+		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-bnd;AmortizingBond">
@@ -154,7 +155,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-bnd;Bond">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbti;TradableDebtInstrument"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbti;FixedIncomeSecurity"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbti;hasInterestPaymentTerms"/>
@@ -450,7 +451,7 @@
 		</rdfs:subClassOf>
 		<rdfs:label>fixed coupon bond</rdfs:label>
 		<owl:disjointWith rdf:resource="&fibo-sec-dbt-bnd;VariableCouponBond"/>
-		<skos:definition>bond that pays a fixed rate of interest at regular intervals</skos:definition>
+		<skos:definition>bond whose coupon rate and principal amount are fixed at the time of origination or sale and remain constant while the security is outstanding</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-bnd;FixedCouponTerms">
@@ -464,13 +465,6 @@
 		<rdfs:label>fixed coupon terms</rdfs:label>
 		<owl:disjointWith rdf:resource="&fibo-sec-dbt-bnd;VariableCouponTerms"/>
 		<skos:definition>terms for payment of interest on a bond with a fixed interest rate</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-sec-dbt-bnd;FixedIncomeBond">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;Bond"/>
-		<rdfs:label>fixed income bond</rdfs:label>
-		<owl:disjointWith rdf:resource="&fibo-sec-dbt-bnd;VariableIncomeBond"/>
-		<skos:definition>bond whose coupon rate and principal amount are fixed at the time of origination or sale and remain constant while the security is outstanding</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-bnd;FloatingRateNote">
@@ -512,7 +506,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-bnd;GovernmentIssuedDebtSecurity">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbti;TradableDebtInstrument"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbti;FixedIncomeSecurity"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isIssuedBy"/>
@@ -1295,6 +1289,7 @@
 		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;CouponPaymentTerms"/>
 		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
 		<skos:definition>specifies the first date on which the issuer or its agent expects or commits to make a coupon payment</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">The first coupon date sometimes occurs at an irregular time; that is, if the bond pays coupons every six months, the first coupon period may be longer or shorter than six months.</fibo-fnd-utl-av:explanatoryNote>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">The first coupon payment period can be long or short when this date doesn&apos;t coincide with the start of a normal coupon payment period.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:ObjectProperty>
 	
@@ -1356,6 +1351,16 @@
 		<rdfs:range rdf:resource="&xsd;decimal"/>
 	</owl:DatatypeProperty>
 	
+	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bnd;hasLastCouponPaymentDate">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasEndDate"/>
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasExplicitDate"/>
+		<rdfs:label>has last coupon payment date</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;CouponPaymentTerms"/>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
+		<skos:definition>specifies the final date on which the issuer or its agent expects or commits to make a coupon payment</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">The last coupon date sometimes occurs at an irregular time; that is, if the bond pays coupons every six months, the last coupon period may be longer or shorter than six months.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:ObjectProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bnd;hasLockoutPeriod">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDatePeriod"/>
 		<rdfs:label>has lockout period</rdfs:label>
@@ -1393,6 +1398,15 @@
 		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;PartialCallFeature"/>
 		<rdfs:range rdf:resource="&fibo-sec-dbt-bnd;PartialRedemptionAllocationConvention"/>
 		<skos:definition>indicates the convention used to determine how the redemption is allocated over the set of bond holders</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bnd;hasPenultimateCouponPaymentDate">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasExplicitDate"/>
+		<rdfs:label>has penultimate coupon payment date</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;CouponPaymentTerms"/>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
+		<skos:definition>specifies the last coupon payment prior to maturity</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">This is important since the securities processing area needs to start its procedures in anticipation of maturity. For zero coupon bonds, it is the last compounding date prior to maturity.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bnd;hasPremiumAmount">
