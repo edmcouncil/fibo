@@ -82,6 +82,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesIssuance/"/>
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20190901/Debt/DebtInstruments/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20180801/Debt/DebtInstruments.rdf version of this ontology was modified to reflect use of actualExpression as an annotation rather than datatype property, to deprecate maturity-related properties which have been moved to financial instruments more generally, and to simplify restrictions on tradable debt instrument.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20190501/Debt/DebtInstruments.rdf version of this ontology was modified to support integration of the bonds ontology.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20190501/Debt/DebtInstruments.rdf version of this ontology was modified to eliminate deprecated elements.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
@@ -90,13 +91,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbti;hasCallFeature"/>
-				<owl:allValuesFrom rdf:resource="&fibo-sec-dbt-dbti;CallFeature"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbti;hasRedemptionProvision"/>
-				<owl:onClass rdf:resource="&fibo-fbc-dae-dbt;RedemptionProvision"/>
+				<owl:onClass rdf:resource="&fibo-sec-dbt-dbti;CallFeature"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -104,6 +99,13 @@
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-pas-fpas;hasOffering"/>
 				<owl:onClass rdf:resource="&fibo-sec-dbt-dbti;DebtOffering"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbti;hasPutFeature"/>
+				<owl:onClass rdf:resource="&fibo-sec-dbt-dbti;PutFeature"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -117,6 +119,12 @@
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbti;hasInterestPaymentTerms"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fbc-dae-dbt;InterestPaymentTerms"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbti;hasRedemptionProvision"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-dae-dbt;RedemptionProvision"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -246,6 +254,13 @@
 		</rdfs:subClassOf>
 		<rdfs:label>debt offering</rdfs:label>
 		<skos:definition>an offering of one or more debt instruments for sale</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-dbt-dbti;FixedIncomeSecurity">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbti;TradableDebtInstrument"/>
+		<rdfs:label>fixed income security</rdfs:label>
+		<skos:definition>a tradeable debt instrument that provides a return in the form of fixed periodic interest payments and the eventual return of principal at maturity</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Unlike variable-income securities, where payments change based on some underlying measure, such as short-term interest rates, the payments of a fixed-income security are known in advance.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-dbti;FullyIndexedInterestRate">
@@ -502,7 +517,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-dbti;Strip">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbti;TradableDebtInstrument"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbti;FixedIncomeSecurity"/>
 		<rdfs:label xml:lang="en">strip</rdfs:label>
 		<skos:definition xml:lang="en">a tradeable debt instrument created either through the process of removing coupons from a bond and then selling the separate parts as a zero coupon bond and an interest paying coupon bond or through taking the opposite position from some variant in the options market</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">STRIPS is an acronym for Separate Trading of Registered Interest and Principal of Securities, which has come to be used as a term in its own right.</fibo-fnd-utl-av:explanatoryNote>
@@ -538,6 +553,13 @@
 		<fibo-fnd-utl-av:explanatoryNote>Debt represented by a tradable debt security may be paid as a one off payment at maturity, by paying down principal amounts periodically, or by a call of the issue by the issuer. Debt that is defined by a convertible bond are redeemed by conversion into an equity security issued by the same company. More notes from the EDMC SME Review: Distinction between call and amortizing is whether you pay off everybody at the same time or via a lottery. SF can be either. either amortize the payment of a SF or pay it off by a lottery. The terms of the instrument determine that. Mandatory - all in the schedule. Mandatory to the bond issuer. Issuer has to pay off a certain amount at a certain time - this is in the Schedule. Callable - nothing mandatory.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-sec-dbt-dbti;VariableIncomeSecurity">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbti;TradableDebtInstrument"/>
+		<rdfs:label>variable income security</rdfs:label>
+		<skos:definition>tradeable debt instrument that provide their owners with a rate of return that is dynamic and determined by market forces</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Variable-income securities provide investors with both greater risks as well as rewards.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
 	<owl:DatatypeProperty rdf:about="&fibo-sec-dbt-dbti;allowsAutoReinvestment">
 		<rdfs:label>allows auto-reinvestment</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fbc-dae-dbt;InterestPaymentTerms"/>
@@ -554,10 +576,28 @@
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-dbti;hasCallFeature">
 		<rdfs:subPropertyOf rdf:resource="&fibo-sec-dbt-dbti;hasRepaymentTerms"/>
-		<rdfs:label>has call terms</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-dbti;DebtOffering"/>
+		<rdfs:label>has call feature</rdfs:label>
+		<rdfs:domain>
+			<owl:Class>
+				<owl:unionOf rdf:parseType="Collection">
+					<rdf:Description rdf:about="&fibo-sec-dbt-dbti;DebtOffering">
+					</rdf:Description>
+					<rdf:Description rdf:about="&fibo-fbc-fi-fi;DebtInstrument">
+					</rdf:Description>
+				</owl:unionOf>
+			</owl:Class>
+		</rdfs:domain>
 		<rdfs:range rdf:resource="&fibo-sec-dbt-dbti;CallFeature"/>
-		<skos:definition>indicates the specific terms related to any inherent call feature as specified in the offering</skos:definition>
+		<skos:definition>indicates the specific terms related to any inherent call feature as specified in the offering/instrument</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-dbti;hasDatedDate">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasExplicitDate"/>
+		<rdfs:label>has dated date</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fbc-dae-dbt;InterestPaymentTerms"/>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
+		<skos:definition>specifies the date on which interest begins to accrue on a fixed-income security</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Investors who purchase a fixed-income security between interest payment dates must also pay the seller or issuer any interest that has accrued from the dated date to the purchase date, or settlement date, in addition to the face value.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:ObjectProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-sec-dbt-dbti;hasDefaultLotSize">
@@ -578,6 +618,7 @@
 		<fibo-fnd-utl-av:explanatoryNote>This is the minimum denomination required for transfer or change of ownership of a tradable debt security.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:DatatypeProperty>
 	
+
 	<owl:DatatypeProperty rdf:about="&fibo-sec-dbt-dbti;hasEstateOrDeathPutFeature">
 		<rdfs:subPropertyOf rdf:resource="&fibo-sec-dbt-dbti;hasRedemptionProvision"/>
 		<rdfs:label>has estate or death put feature</rdfs:label>
@@ -591,6 +632,23 @@
 		<rdfs:label>has interest payment terms</rdfs:label>
 		<rdfs:range rdf:resource="&fibo-fbc-dae-dbt;InterestPaymentTerms"/>
 		<skos:definition>indicates the specific terms related to interest payments on the principal as specified in the instrument or a related contract document</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-dbti;hasMaturityDate">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasEndDate"/>
+		<rdfs:label>has maturity date</rdfs:label>
+		<rdfs:domain>
+			<owl:Class>
+				<owl:unionOf rdf:parseType="Collection">
+					<rdf:Description rdf:about="&fibo-sec-dbt-dbti;DebtOffering">
+					</rdf:Description>
+					<rdf:Description rdf:about="&fibo-fbc-fi-fi;DebtInstrument">
+					</rdf:Description>
+				</owl:unionOf>
+			</owl:Class>
+		</rdfs:domain>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
+		<skos:definition>indicates the date on which the principal amount of a note, draft, acceptance bond or other debt instrument is due to be repaid to the investor and interest payments stop</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-dbti;hasNotificationProvision">
@@ -614,6 +672,23 @@
 		<rdfs:label>has price and yield day count convention</rdfs:label>
 		<rdfs:range rdf:resource="&fibo-fbc-dae-dbt;DayCountConvention"/>
 		<skos:definition>indicates the convention used to determine the number of days in a month and days in a year that are counted when performing calculations for yield and price figures</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-dbti;hasPutFeature">
+		<rdfs:subPropertyOf rdf:resource="&fibo-sec-dbt-dbti;hasRepaymentTerms"/>
+		<rdfs:label>has put feature</rdfs:label>
+		<rdfs:domain>
+			<owl:Class>
+				<owl:unionOf rdf:parseType="Collection">
+					<rdf:Description rdf:about="&fibo-sec-dbt-dbti;DebtOffering">
+					</rdf:Description>
+					<rdf:Description rdf:about="&fibo-fbc-fi-fi;DebtInstrument">
+					</rdf:Description>
+				</owl:unionOf>
+			</owl:Class>
+		</rdfs:domain>
+		<rdfs:range rdf:resource="&fibo-sec-dbt-dbti;PutFeature"/>
+		<skos:definition>indicates the specific terms related to any inherent put feature as specified in the offering/instrument</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-dbti;hasRedemptionProvision">
