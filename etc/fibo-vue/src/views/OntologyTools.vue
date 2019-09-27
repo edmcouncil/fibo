@@ -97,11 +97,11 @@
           <li>
             Download either the
             <a
-              :href="links.quickStart.development"
+              :href="hrefD('dev.fibo-quickstart.ttl','ontology')"
             >Development</a>
             or
             <a
-              :href="timestamped(links.quickStart.production, timestamp)"
+              :href="hrefP('prod.fibo-quickstart.ttl','ontology')"
             >Production</a>
             version of Quickstart.
           </li>
@@ -112,11 +112,11 @@
           <li>
             Download either the
             <a
-              :href="links.quickStart.development"
+              :href="hrefD('dev.fibo-quickstart.ttl','ontology')"
             >Development</a>
             or
             <a
-              :href="timestamped(links.quickStart.production, timestamp)"
+              :href="hrefP('prod.fibo-quickstart.ttl','ontology')"
             >Production</a>
             version of Quickstart.
           </li>
@@ -164,8 +164,8 @@
             <li>In Prot&eacute;g&eacute;, select File>Open from URL</li>
             <li>
               Copy and Paste the URL for the LoadFIBO.rdf file from the version you desire;
-              {{links.LoadFIBO.development}} for the development version or
-              {{ timestamped(links.LoadFIBO.production, timestamp) }} for the production version
+              {{hrefD('LoadFIBODev.rdf','ontology')}} for the development version or
+              {{hrefP('LoadFIBOProd.rdf','ontology')}} for the production version
             </li>
           </ol>
           <p>
@@ -216,7 +216,7 @@
             <li>Open Prot&eacute;g&eacute;.</li>
             <li>
               Select File>Open, and navigate to the folder where you unzipped FIBO.
-              Navigate (three levels down; typically ontology/master/latest or ontology/master/{{timestamp}}) to
+              Navigate (three levels down; typically {{hrefD('','ontology').replace(/^.*\/([^\/]*)\/([^\/]*)\/([^\/]*)$/g, "$1/$2/$3")}} or {{hrefP('','ontology').replace(/^.*\/([^\/]*)\/([^\/]*)\/([^\/]*)$/g, "$1/$2/$3")}}) to
               LoadFIBODev.rdf or LoadFiboProd.rdf (development and production, respectively), and select it.
             </li>
             <li>Protege will open all relevant FIBO files.</li>
@@ -238,11 +238,11 @@
             maturity
             level of FIBO you want; the
             <a
-              :href="links.ttl.development"
+              :href="hrefD('dev.ttl.zip','ontology')"
             >Development</a>
             version or the
             <a
-              :href="timestamped(links.ttl.production, timestamp)"
+              :href="hrefP('prod.ttl.zip','ontology')"
             >Production</a> version.
           </li>
           <li>
@@ -262,8 +262,8 @@
           </li>
           <li>
             Navigate through the fibo directory in the Navigator pane to
-            fibo/ontology/master/latest/LoadFIBODev.ttl
-            or fibo/ontology/master/{{timestamp}}/LoadFIBOProd.ttl (development and production, respectively) Double-click
+            {{hrefD('LoadFIBODev.ttl','ontology').substring(1)}}
+            or {{hrefD('LoadFIBOProd.ttl','ontology').substring(1)}} (development and production, respectively) Double-click
             on
             LoadFIBO.ttl to open all FIBO files.
           </li>
@@ -344,17 +344,17 @@
           <li>
             Download the RDF/XML zip of the
             <a
-              :href="links.rdf.development"
+              :href="hrefD('dev.rdf.zip','ontology')"
             >Development</a> version or
             the
             <a
-              :href="timestamped(links.rdf.production, timestamp)"
+              :href="hrefP('prod.rdf.zip','ontology')"
             >Production</a>
             version
             of FIBO.
           </li>
           <li>
-            Open the zip and extract the directory fibo/ontology/master/latest which will be the subject of the
+            Open the zip and extract the directory {{hrefD('','ontology').substring(1)}} which will be the subject of the
             remaining instructions
           </li>
           <li>Delete the files matching About*.rdf. You'll delete about 70 files</li>
@@ -365,7 +365,7 @@
           </li>
           <pre>
 File names matching: *.rdf
-Search string: fibo/ontology/master/latest/
+Search string: {{hrefD('','ontology').substring(1)}}/
 Replace string: fibo/ontology/
 </pre>
 It should make replacements in approx. 320 files.
@@ -424,26 +424,13 @@ It should make replacements in approx. 320 files.
 
 <script>
 import helpers from "../store/helpers.js";
-import { mapState } from 'vuex';
 
 export default {
   extends: helpers,
-  name: 'woring-groups',
+  name: 'ontology-tools',
   components: {},
-  computed: {
-    ...mapState('ontologyTools', {
-      links: state => state.links,
-    }),
-    ...mapState('helpers', {
-      timestamp: state => state.timestamp,
-    }),
-    // timestamp: this.timestamp
-  },
-  methods: {
-    timestamped(link, timestamp) {
-      return eval(`\`${link}\``);
-    },
-  },
+  computed: {},
+  methods: {},
 };
 </script>
 

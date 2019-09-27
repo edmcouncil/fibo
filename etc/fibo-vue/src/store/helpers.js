@@ -29,7 +29,7 @@ export default {
       return require('path').join(process.env.BASE_URL,
 		(typeof product	=== 'string'?product:this.$options.name),
 		(typeof this.$route.params.branch === 'string'?this.$route.params.branch:'master'),
-		(typeof this.$route.params.tag    === 'string'?this.$route.params.tag   :this.timestamp),
+		this.timestamp,
 		(typeof path	=== 'string'?path:'')
         );
     }

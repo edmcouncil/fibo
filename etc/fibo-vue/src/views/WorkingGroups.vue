@@ -168,7 +168,7 @@
 
 <script>
 export default {
-  name: 'woring-groups',
+  name: 'working-groups',
   components: {},
 };
 </script>

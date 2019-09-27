@@ -37,13 +37,13 @@
                     <div class="ontology">
                       Corporations
                       <a
-                        href="/fibo/ontology/master/2019Q2/BE/Corporations/Corporations.rdf"
+                        v-bind:href="hrefP('BE/Corporations/Corporations.rdf','ontology')"
                       >rdf</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/BE/Corporations/Corporations.ttl"
+                        v-bind:href="hrefP('BE/Corporations/Corporations.ttl','ontology')"
                       >turtle</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/BE/Corporations/Corporations.jsonld"
+                        v-bind:href="hrefP('BE/Corporations/Corporations.jsonld','ontology')"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -68,13 +68,13 @@
                     <div class="ontology">
                       FunctionalEntities
                       <a
-                        href="/fibo/ontology/master/2019Q2/BE/FunctionalEntities/FunctionalEntities.rdf"
+                        v-bind:href="hrefP('BE/FunctionalEntities/FunctionalEntities.rdf','ontology')"
                       >rdf</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/BE/FunctionalEntities/FunctionalEntities.ttl"
+                        v-bind:href="hrefP('BE/FunctionalEntities/FunctionalEntities.rdf','ontology')"
                       >turtle</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/BE/FunctionalEntities/FunctionalEntities.jsonld"
+                        v-bind:href="hrefP('BE/FunctionalEntities/FunctionalEntities.jsonld','ontology')"
                       >json-ld</a>
                     </div>
                   </li>
@@ -82,13 +82,13 @@
                     <div class="ontology">
                       Publishers
                       <a
-                        href="/fibo/ontology/master/2019Q2/BE/FunctionalEntities/Publishers.rdf"
+                        v-bind:href="hrefP('BE/FunctionalEntities/Publishers.rdf','ontology')"
                       >rdf</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/BE/FunctionalEntities/Publishers.ttl"
+                        v-bind:href="hrefP('BE/FunctionalEntities/Publishers.ttl','ontology')"
                       >turtle</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/BE/FunctionalEntities/Publishers.jsonld"
+                        v-bind:href="hrefP('BE/FunctionalEntities/Publishers.jsonld','ontology')"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -114,13 +114,13 @@
                     <div class="ontology">
                       CorporateBodies
                       <a
-                        href="/fibo/ontology/master/2019Q2/BE/LegalEntities/CorporateBodies.rdf"
+                        v-bind:href="hrefP('BE/LegalEntities/CorporateBodies.rdf','ontology')"
                       >rdf</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/BE/LegalEntities/CorporateBodies.ttl"
+                        v-bind:href="hrefP('BE/LegalEntities/CorporateBodies.ttl','ontology')"
                       >turtle</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/BE/LegalEntities/CorporateBodies.jsonld"
+                        v-bind:href="hrefP('BE/LegalEntities/CorporateBodies.jsonld','ontology')"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -180,13 +180,13 @@
                     <div class="ontology">
                       FormalBusinessOrganizations
                       <a
-                        href="/fibo/ontology/master/2019Q2/BE/LegalEntities/FormalBusinessOrganizations.rdf"
+                        v-bind:href="hrefP('BE/LegalEntities/FormalBusinessOrganizations.rdf','ontology')"
                       >rdf</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/BE/LegalEntities/FormalBusinessOrganizations.ttl"
+                        v-bind:href="hrefP('BE/LegalEntities/FormalBusinessOrganizations.ttl','ontology')"
                       >turtle</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/BE/LegalEntities/FormalBusinessOrganizations.jsonld"
+                        v-bind:href="hrefP('BE/LegalEntities/FormalBusinessOrganizations.jsonld','ontology')"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -206,13 +206,13 @@
                     <div class="ontology">
                       LegalPersons
                       <a
-                        href="/fibo/ontology/master/2019Q2/BE/LegalEntities/LegalPersons.rdf"
+                        v-bind:href="hrefP('BE/LegalEntities/LegalPersons.rdf','ontology')"
                       >rdf</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/BE/LegalEntities/LegalPersons.ttl"
+                        v-bind:href="hrefP('BE/LegalEntities/LegalPersons.ttl','ontology')"
                       >turtle</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/BE/LegalEntities/LegalPersons.jsonld"
+                        v-bind:href="hrefP('BE/LegalEntities/LegalPersons.jsonld','ontology')"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -229,13 +229,13 @@
                     <div class="ontology">
                       LEIEntities
                       <a
-                        href="/fibo/ontology/master/2019Q2/BE/LegalEntities/LEIEntities.rdf"
+                        v-bind:href="hrefP('BE/LegalEntities/LEIEntities.rdf','ontology')"
                       >rdf</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/BE/LegalEntities/LEIEntities.ttl"
+                        v-bind:href="hrefP('BE/LegalEntities/LEIEntities.ttl','ontology')"
                       >turtle</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/BE/LegalEntities/LEIEntities.jsonld"
+                        v-bind:href="hrefP('BE/LegalEntities/LEIEntities.jsonld','ontology')"
                       >json-ld</a>
                     </div>
                   </li>
@@ -248,13 +248,13 @@
                     <div class="ontology">
                       ControlParties
                       <a
-                        href="/fibo/ontology/master/2019Q2/BE/OwnershipAndControl/ControlParties.rdf"
+                        v-bind:href="hrefP('BE/OwnershipAndControl/ControlParties.rdf','ontology')"
                       >rdf</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/BE/OwnershipAndControl/ControlParties.ttl"
+                        v-bind:href="hrefP('BE/OwnershipAndControl/ControlParties.ttl','ontology')"
                       >turtle</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/BE/OwnershipAndControl/ControlParties.jsonld"
+                        v-bind:href="hrefP('BE/OwnershipAndControl/ControlParties.jsonld','ontology')"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -314,13 +314,13 @@
                     <div class="ontology">
                       CorporateControl
                       <a
-                        href="/fibo/ontology/master/2019Q2/BE/OwnershipAndControl/CorporateControl.rdf"
+                        v-bind:href="hrefP('BE/OwnershipAndControl/CorporateControl.rdf','ontology')"
                       >rdf</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/BE/OwnershipAndControl/CorporateControl.ttl"
+                        v-bind:href="hrefP('BE/OwnershipAndControl/CorporateControl.ttl','ontology')"
                       >turtle</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/BE/OwnershipAndControl/CorporateControl.jsonld"
+                        v-bind:href="hrefP('BE/OwnershipAndControl/CorporateControl.jsonld','ontology')"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -394,13 +394,13 @@
                     <div class="ontology">
                       CorporateOwnership
                       <a
-                        href="/fibo/ontology/master/2019Q2/BE/OwnershipAndControl/CorporateOwnership.rdf"
+                        v-bind:href="hrefP('BE/OwnershipAndControl/CorporateOwnership.rdf','ontology')"
                       >rdf</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/BE/OwnershipAndControl/CorporateOwnership.ttl"
+                        v-bind:href="hrefP('BE/OwnershipAndControl/CorporateOwnership.ttl','ontology')"
                       >turtle</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/BE/OwnershipAndControl/CorporateOwnership.jsonld"
+                        v-bind:href="hrefP('BE/OwnershipAndControl/CorporateOwnership.jsonld','ontology')"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -420,13 +420,13 @@
                     <div class="ontology">
                       Executives
                       <a
-                        href="/fibo/ontology/master/2019Q2/BE/OwnershipAndControl/Executives.rdf"
+                        v-bind:href="hrefP('BE/OwnershipAndControl/Executives.rdf','ontology')"
                       >rdf</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/BE/OwnershipAndControl/Executives.ttl"
+                        v-bind:href="hrefP('BE/OwnershipAndControl/Executives.ttl','ontology')"
                       >turtle</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/BE/OwnershipAndControl/Executives.jsonld"
+                        v-bind:href="hrefP('BE/OwnershipAndControl/Executives.jsonld','ontology')"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -496,13 +496,13 @@
                     <div class="ontology">
                       OwnershipParties
                       <a
-                        href="/fibo/ontology/master/2019Q2/BE/OwnershipAndControl/OwnershipParties.rdf"
+                        v-bind:href="hrefP('BE/OwnershipAndControl/OwnershipParties.rdf','ontology')"
                       >rdf</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/BE/OwnershipAndControl/OwnershipParties.ttl"
+                        v-bind:href="hrefP('BE/OwnershipAndControl/OwnershipParties.ttl','ontology')"
                       >turtle</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/BE/OwnershipAndControl/OwnershipParties.jsonld"
+                        v-bind:href="hrefP('BE/OwnershipAndControl/OwnershipParties.jsonld','ontology')"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -537,13 +537,13 @@
                     <div class="ontology">
                       Partnerships
                       <a
-                        href="/fibo/ontology/master/2019Q2/BE/Partnerships/Partnerships.rdf"
+                        v-bind:href="hrefP('BE/Partnerships/Partnerships.rdf','ontology')"
                       >rdf</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/BE/Partnerships/Partnerships.ttl"
+                        v-bind:href="hrefP('BE/Partnerships/Partnerships.ttl','ontology')"
                       >turtle</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/BE/Partnerships/Partnerships.jsonld"
+                        v-bind:href="hrefP('BE/Partnerships/Partnerships.jsonld','ontology')"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -588,13 +588,13 @@
                     <div class="ontology">
                       PrivateLimitedCompanies
                       <a
-                        href="/fibo/ontology/master/2019Q2/BE/PrivateLimitedCompanies/PrivateLimitedCompanies.rdf"
+                        v-bind:href="hrefP('BE/PrivateLimitedCompanies/PrivateLimitedCompanies.rdf','ontology')"
                       >rdf</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/BE/PrivateLimitedCompanies/PrivateLimitedCompanies.ttl"
+                        v-bind:href="hrefP('BE/PrivateLimitedCompanies/PrivateLimitedCompanies.ttl','ontology')"
                       >turtle</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/BE/PrivateLimitedCompanies/PrivateLimitedCompanies.jsonld"
+                        v-bind:href="hrefP('BE/PrivateLimitedCompanies/PrivateLimitedCompanies.jsonld','ontology')"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -619,13 +619,13 @@
                     <div class="ontology">
                       Sole Proprietorships
                       <a
-                        href="/fibo/ontology/master/2019Q2/BE/SoleProprietorships//SoleProprietorships.rdf"
+                        v-bind:href="hrefP('BE/SoleProprietorships//SoleProprietorships.rdf','ontology')"
                       >rdf</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/BE/SoleProprietorships//SoleProprietorships.ttl"
+                        v-bind:href="hrefP('BE/SoleProprietorships//SoleProprietorships.ttl','ontology')"
                       >turtle</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/BE/SoleProprietorships//SoleProprietorships.jsonld"
+                        v-bind:href="hrefP('BE/SoleProprietorships//SoleProprietorships.jsonld','ontology')"
                       >json-ld</a>
                     </div>
                   </li>
@@ -638,13 +638,13 @@
                     <div class="ontology">
                       Trusts
                       <a
-                        href="/fibo/ontology/master/2019Q2/BE/Trusts/Trusts.rdf"
+                        v-bind:href="hrefP('BE/Trusts/Trusts.rdf','ontology')"
                       >rdf</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/BE/Trusts/Trusts.ttl"
+                        v-bind:href="hrefP('BE/Trusts/Trusts.ttl','ontology')"
                       >turtle</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/BE/Trusts/Trusts.jsonld"
+                        v-bind:href="hrefP('BE/Trusts/Trusts.jsonld','ontology')"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -691,13 +691,13 @@
                     <div class="ontology">
                       AccountingEquity
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Accounting/AccountingEquity.rdf"
+                        v-bind:href="hrefP('FND/Accounting/AccountingEquity.rdf','ontology')"
                       >rdf</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Accounting/AccountingEquity.ttl"
+                        v-bind:href="hrefP('FND/Accounting/AccountingEquity.ttl','ontology')"
                       >turtle</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Accounting/AccountingEquity.jsonld"
+                        v-bind:href="hrefP('FND/Accounting/AccountingEquity.jsonld','ontology')"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -727,13 +727,13 @@
                     <div class="ontology">
                       CurrencyAmount
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Accounting/CurrencyAmount.rdf"
+                        v-bind:href="hrefP('FND/Accounting/CurrencyAmount.rdf','ontology')"
                       >rdf</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Accounting/CurrencyAmount.ttl"
+                        v-bind:href="hrefP('FND/Accounting/CurrencyAmount.ttl','ontology')"
                       >turtle</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Accounting/CurrencyAmount.jsonld"
+                        v-bind:href="hrefP('FND/Accounting/CurrencyAmount.jsonld','ontology')"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -778,13 +778,13 @@
                     <div class="ontology">
                       Agents
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/AgentsAndPeople/Agents.rdf"
+                        v-bind:href="hrefP('FND/AgentsAndPeople/Agents.rdf','ontology')"
                       >rdf</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/AgentsAndPeople/Agents.ttl"
+                        v-bind:href="hrefP('FND/AgentsAndPeople/Agents.ttl','ontology')"
                       >turtle</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/AgentsAndPeople/Agents.jsonld"
+                        v-bind:href="hrefP('FND/AgentsAndPeople/Agents.jsonld','ontology')"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -804,13 +804,13 @@
                     <div class="ontology">
                       People
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/AgentsAndPeople/People.rdf"
+                        v-bind:href="hrefP('FND/AgentsAndPeople/People.rdf','ontology')"
                       >rdf</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/AgentsAndPeople/People.ttl"
+                        v-bind:href="hrefP('FND/AgentsAndPeople/People.ttl','ontology')"
                       >turtle</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/AgentsAndPeople/People.jsonld"
+                        v-bind:href="hrefP('FND/AgentsAndPeople/People.jsonld','ontology')"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -875,13 +875,13 @@
                     <div class="ontology">
                       Agreements
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Agreements/Agreements.rdf"
+                        v-bind:href="hrefP('FND/Agreements/Agreements.rdf','ontology')"
                       >rdf</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Agreements/Agreements.ttl"
+                        v-bind:href="hrefP('FND/Agreements/Agreements.ttl','ontology')"
                       >turtle</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Agreements/Agreements.jsonld"
+                        v-bind:href="hrefP('FND/Agreements/Agreements.jsonld','ontology')"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -901,13 +901,13 @@
                     <div class="ontology">
                       Contracts
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Agreements/Contracts.rdf"
+                        v-bind:href="hrefP('FND/Agreements/Contracts.rdf','ontology')"
                       >rdf</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Agreements/Contracts.ttl"
+                        v-bind:href="hrefP('FND/Agreements/Contracts.ttl','ontology')"
                       >turtle</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Agreements/Contracts.jsonld"
+                        v-bind:href="hrefP('FND/Agreements/Contracts.jsonld','ontology')"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -972,13 +972,13 @@
                     <div class="ontology">
                       Arrangements
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Arrangements/Arrangements.rdf"
+                        v-bind:href="hrefP('FND/Arrangements/Arrangements.rdf','ontology')"
                       >rdf</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Arrangements/Arrangements.ttl"
+                        v-bind:href="hrefP('FND/Arrangements/Arrangements.ttl','ontology')"
                       >turtle</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Arrangements/Arrangements.jsonld"
+                        v-bind:href="hrefP('FND/Arrangements/Arrangements.jsonld','ontology')"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -998,13 +998,13 @@
                     <div class="ontology">
                       ClassificationSchemes
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Arrangements/ClassificationSchemes.rdf"
+                        v-bind:href="hrefP('FND/Arrangements/ClassificationSchemes.rdf','ontology')"
                       >rdf</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Arrangements/ClassificationSchemes.ttl"
+                        v-bind:href="hrefP('FND/Arrangements/ClassificationSchemes.ttl','ontology')"
                       >turtle</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Arrangements/ClassificationSchemes.jsonld"
+                        v-bind:href="hrefP('FND/Arrangements/ClassificationSchemes.jsonld','ontology')"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -1031,13 +1031,13 @@
                     <div class="ontology">
                       Codes
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Arrangements/Codes.rdf"
+                        v-bind:href="hrefP('FND/Arrangements/Codes.rdf','ontology')"
                       >rdf</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Arrangements/Codes.ttl"
+                        v-bind:href="hrefP('FND/Arrangements/Codes.ttl','ontology')"
                       >turtle</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Arrangements/Codes.jsonld"
+                        v-bind:href="hrefP('FND/Arrangements/Codes.jsonld','ontology')"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -1057,13 +1057,13 @@
                     <div class="ontology">
                       Documents
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Arrangements/Documents.rdf"
+                        v-bind:href="hrefP('FND/Arrangements/Documents.rdf','ontology')"
                       >rdf</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Arrangements/Documents.ttl"
+                        v-bind:href="hrefP('FND/Arrangements/Documents.ttl','ontology')"
                       >turtle</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Arrangements/Documents.jsonld"
+                        v-bind:href="hrefP('FND/Arrangements/Documents.jsonld','ontology')"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -1083,13 +1083,13 @@
                     <div class="ontology">
                       IdentifiersAndIndices
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Arrangements/IdentifiersAndIndices.rdf"
+                        v-bind:href="hrefP('FND/Arrangements/IdentifiersAndIndices.rdf','ontology')"
                       >rdf</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Arrangements/IdentifiersAndIndices.ttl"
+                        v-bind:href="hrefP('FND/Arrangements/IdentifiersAndIndices.ttl','ontology')"
                       >turtle</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Arrangements/IdentifiersAndIndices.jsonld"
+                        v-bind:href="hrefP('FND/Arrangements/IdentifiersAndIndices.jsonld','ontology')"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -1124,13 +1124,13 @@
                     <div class="ontology">
                       BusinessDates
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/DatesAndTimes/BusinessDates.rdf"
+                        v-bind:href="hrefP('FND/DatesAndTimes/BusinessDates.rdf','ontology')"
                       >rdf</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/DatesAndTimes/BusinessDates.ttl"
+                        v-bind:href="hrefP('FND/DatesAndTimes/BusinessDates.ttl','ontology')"
                       >turtle</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/DatesAndTimes/BusinessDates.jsonld"
+                        v-bind:href="hrefP('FND/DatesAndTimes/BusinessDates.jsonld','ontology')"
                       >json-ld</a>
                     </div>
                   </li>
@@ -1138,13 +1138,13 @@
                     <div class="ontology">
                       FinancialDates
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/DatesAndTimes/FinancialDates.rdf"
+                        v-bind:href="hrefP('FND/DatesAndTimes/FinancialDates.rdf','ontology')"
                       >rdf</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/DatesAndTimes/FinancialDates.ttl"
+                        v-bind:href="hrefP('FND/DatesAndTimes/FinancialDates.ttl','ontology')"
                       >turtle</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/DatesAndTimes/FinancialDates.jsonld"
+                        v-bind:href="hrefP('FND/DatesAndTimes/FinancialDates.jsonld','ontology')"
                       >json-ld</a>
                     </div>
                   </li>
@@ -1152,13 +1152,13 @@
                     <div class="ontology">
                       Occurrences
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/DatesAndTimes/Occurrences.rdf"
+                        v-bind:href="hrefP('FND/DatesAndTimes/Occurrences.rdf','ontology')"
                       >rdf</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/DatesAndTimes/Occurrences.ttl"
+                        v-bind:href="hrefP('FND/DatesAndTimes/Occurrences.ttl','ontology')"
                       >turtle</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/DatesAndTimes/Occurrences.jsonld"
+                        v-bind:href="hrefP('FND/DatesAndTimes/Occurrences.jsonld','ontology')"
                       >json-ld</a>
                     </div>
                   </li>
@@ -1172,13 +1172,13 @@
                     <div class="ontology">
                       Jurisdiction
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Law/Jurisdiction.rdf"
+                        v-bind:href="hrefP('FND/Law/Jurisdiction.rdf','ontology')"
                       >rdf</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Law/Jurisdiction.ttl"
+                        v-bind:href="hrefP('FND/Law/Jurisdiction.ttl','ontology')"
                       >turtle</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Law/Jurisdiction.jsonld"
+                        v-bind:href="hrefP('FND/Law/Jurisdiction.jsonld','ontology')"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -1228,13 +1228,13 @@
                     <div class="ontology">
                       LegalCapacity
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Law/LegalCapacity.rdf"
+                        v-bind:href="hrefP('FND/Law/LegalCapacity.rdf','ontology')"
                       >rdf</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Law/LegalCapacity.ttl"
+                        v-bind:href="hrefP('FND/Law/LegalCapacity.ttl','ontology')"
                       >turtle</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Law/LegalCapacity.jsonld"
+                        v-bind:href="hrefP('FND/Law/LegalCapacity.jsonld','ontology')"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -1284,13 +1284,13 @@
                     <div class="ontology">
                       LegalCore
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Law/LegalCore.rdf"
+                        v-bind:href="hrefP('FND/Law/LegalCore.rdf','ontology')"
                       >rdf</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Law/LegalCore.ttl"
+                        v-bind:href="hrefP('FND/Law/LegalCore.ttl','ontology')"
                       >turtle</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Law/LegalCore.jsonld"
+                        v-bind:href="hrefP('FND/Law/LegalCore.jsonld','ontology')"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -1315,13 +1315,13 @@
                     <div class="ontology">
                       FormalOrganizations
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Organizations/FormalOrganizations.rdf"
+                        v-bind:href="hrefP('FND/Organizations/FormalOrganizations.rdf','ontology')"
                       >rdf</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Organizations/FormalOrganizations.ttl"
+                        v-bind:href="hrefP('FND/Organizations/FormalOrganizations.ttl','ontology')"
                       >turtle</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Organizations/FormalOrganizations.jsonld"
+                        v-bind:href="hrefP('FND/Organizations/FormalOrganizations.jsonld','ontology')"
                       >json-ld</a>
                     </div>
                   </li>
@@ -1329,13 +1329,13 @@
                     <div class="ontology">
                       LegitimateOrganizations
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Organizations/FormalOrganizations.rdf"
+                        v-bind:href="hrefP('FND/Organizations/FormalOrganizations.rdf','ontology')"
                       >rdf</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Organizations/FormalOrganizations.ttl"
+                        v-bind:href="hrefP('FND/Organizations/FormalOrganizations.ttl','ontology')"
                       >turtle</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Organizations/FormalOrganizations.jsonld"
+                        v-bind:href="hrefP('FND/Organizations/FormalOrganizations.jsonld','ontology')"
                       >json-ld</a>
                     </div>
                   </li>
@@ -1343,13 +1343,13 @@
                     <div class="ontology">
                       Organizations
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Organizations/LegitimateOrganizations.rdf"
+                        v-bind:href="hrefP('FND/Organizations/LegitimateOrganizations.rdf','ontology')"
                       >rdf</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Organizations/LegitimateOrganizations.ttl"
+                        v-bind:href="hrefP('FND/Organizations/LegitimateOrganizations.ttl','ontology')"
                       >turtle</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Organizations/LegitimateOrganizations.jsonld"
+                        v-bind:href="hrefP('FND/Organizations/LegitimateOrganizations.jsonld','ontology')"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -1374,13 +1374,13 @@
                     <div class="ontology">
                       Control
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/OwnershipAndControl/Control.rdf"
+                        v-bind:href="hrefP('FND/OwnershipAndControl/Control.rdf','ontology')"
                       >rdf</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/OwnershipAndControl/Control.ttl"
+                        v-bind:href="hrefP('FND/OwnershipAndControl/Control.ttl','ontology')"
                       >turtle</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/OwnershipAndControl/Control.jsonld"
+                        v-bind:href="hrefP('FND/OwnershipAndControl/Control.jsonld','ontology')"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -1410,13 +1410,13 @@
                     <div class="ontology">
                       Ownership
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/OwnershipAndControl/Ownership.rdf"
+                        v-bind:href="hrefP('FND/OwnershipAndControl/Ownership.rdf','ontology')"
                       >rdf</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/OwnershipAndControl/Ownership.ttl"
+                        v-bind:href="hrefP('FND/OwnershipAndControl/Ownership.ttl','ontology')"
                       >turtle</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/OwnershipAndControl/Ownership.jsonld"
+                        v-bind:href="hrefP('FND/OwnershipAndControl/Ownership.jsonld','ontology')"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -1446,13 +1446,13 @@
                     <div class="ontology">
                       OwnershipAndControl
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/OwnershipAndControl/OwnershipAndControl.rdf"
+                        v-bind:href="hrefP('FND/OwnershipAndControl/OwnershipAndControl.rdf','ontology')"
                       >rdf</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/OwnershipAndControl/OwnershipAndControl.ttl"
+                        v-bind:href="hrefP('FND/OwnershipAndControl/OwnershipAndControl.ttl','ontology')"
                       >turtle</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/OwnershipAndControl/OwnershipAndControl.jsonld"
+                        v-bind:href="hrefP('FND/OwnershipAndControl/OwnershipAndControl.jsonld','ontology')"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -1477,13 +1477,13 @@
                     <div class="ontology">
                       Parties
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Parties/Parties.rdf"
+                        v-bind:href="hrefP('FND/Parties/Parties.rdf','ontology')"
                       >rdf</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Parties/Parties.ttl"
+                        v-bind:href="hrefP('FND/Parties/Parties.ttl','ontology')"
                       >turtle</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Parties/Parties.jsonld"
+                        v-bind:href="hrefP('FND/Parties/Parties.jsonld','ontology')"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -1523,13 +1523,13 @@
                     <div class="ontology">
                       Roles
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Parties/Roles.rdf"
+                        v-bind:href="hrefP('FND/Parties/Roles.rdf','ontology')"
                       >rdf</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Parties/Roles.ttl"
+                        v-bind:href="hrefP('FND/Parties/Roles.ttl','ontology')"
                       >turtle</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Parties/Roles.jsonld"
+                        v-bind:href="hrefP('FND/Parties/Roles.jsonld','ontology')"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -1561,13 +1561,13 @@
                     <div class="ontology">
                       Addresses
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Places/Addresses.rdf"
+                        v-bind:href="hrefP('FND/Places/Addresses.rdf','ontology')"
                       >rdf</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Places/Addresses.ttl"
+                        v-bind:href="hrefP('FND/Places/Addresses.ttl','ontology')"
                       >turtle</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Places/Addresses.jsonld"
+                        v-bind:href="hrefP('FND/Places/Addresses.jsonld','ontology')"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -1587,13 +1587,13 @@
                     <div class="ontology">
                       Countries
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Places/Countries.rdf"
+                        v-bind:href="hrefP('FND/Places/Countries.rdf','ontology')"
                       >rdf</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Places/Countries.ttl"
+                        v-bind:href="hrefP('FND/Places/Countries.ttl','ontology')"
                       >turtle</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Places/Countries.jsonld"
+                        v-bind:href="hrefP('FND/Places/Countries.jsonld','ontology')"
                       >json-ld</a>
                     </div>
                   </li>
@@ -1602,13 +1602,13 @@
                     <div class="ontology">
                       Facilities
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Places/Facilities.rdf"
+                        v-bind:href="hrefP('FND/Places/Facilities.rdf','ontology')"
                       >rdf</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Places/Facilities.ttl"
+                        v-bind:href="hrefP('FND/Places/Facilities.ttl','ontology')"
                       >turtle</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Places/Facilities.jsonld"
+                        v-bind:href="hrefP('FND/Places/Facilities.jsonld','ontology')"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -1651,13 +1651,13 @@
                     <div class="ontology">
                       Locations
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Places/Locations.rdf"
+                        v-bind:href="hrefP('FND/Places/Locations.rdf','ontology')"
                       >rdf</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Places/Locations.ttl"
+                        v-bind:href="hrefP('FND/Places/Locations.ttl','ontology')"
                       >turtle</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Places/Locations.jsonld"
+                        v-bind:href="hrefP('FND/Places/Locations.jsonld','ontology')"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -1677,13 +1677,13 @@
                     <div class="ontology">
                       VirtualPlaces
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Places/VirtualPlaces.rdf"
+                        v-bind:href="hrefP('FND/Places/VirtualPlaces.rdf','ontology')"
                       >rdf</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Places/VirtualPlaces.ttl"
+                        v-bind:href="hrefP('FND/Places/VirtualPlaces.ttl','ontology')"
                       >turtle</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Places/VirtualPlaces.jsonld"
+                        v-bind:href="hrefP('FND/Places/VirtualPlaces.jsonld','ontology')"
                       >json-ld</a>
                     </div>
                   </li>
@@ -1699,13 +1699,13 @@
                     <div class="ontology">
                       Analytics
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Utilities/Analytics.rdf"
+                        v-bind:href="hrefP('FND/Utilities/Analytics.rdf','ontology')"
                       >rdf</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Utilities/Analytics.ttl"
+                        v-bind:href="hrefP('FND/Utilities/Analytics.ttl','ontology')"
                       >turtle</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Utilities/Analytics.jsonld"
+                        v-bind:href="hrefP('FND/Utilities/Analytics.jsonld','ontology')"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -1725,13 +1725,13 @@
                     <div class="ontology">
                       AnnotationVocabulary
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Utilities/AnnotationVocabulary.rdf"
+                        v-bind:href="hrefP('FND/Utilities/AnnotationVocabulary.rdf','ontology')"
                       >rdf</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Utilities/AnnotationVocabulary.ttl"
+                        v-bind:href="hrefP('FND/Utilities/AnnotationVocabulary.ttl','ontology')"
                       >turtle</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Utilities/AnnotationVocabulary.jsonld"
+                        v-bind:href="hrefP('FND/Utilities/AnnotationVocabulary.jsonld','ontology')"
                       >json-ld</a>
                     </div>
                   </li>
@@ -1739,13 +1739,13 @@
                     <div class="ontology">
                       BusinessFacingTypes
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Utilities/BusinessFacingTypes.rdf"
+                        v-bind:href="hrefP('FND/Utilities/BusinessFacingTypes.rdf','ontology')"
                       >rdf</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Utilities/BusinessFacingTypes.ttl"
+                        v-bind:href="hrefP('FND/Utilities/BusinessFacingTypes.ttl','ontology')"
                       >turtle</a>,
                       <a
-                        href="/fibo/ontology/master/2019Q2/FND/Utilities/BusinessFacingTypes.jsonld"
+                        v-bind:href="hrefP('FND/Utilities/BusinessFacingTypes.jsonld','ontology')"
                       >json-ld</a>
                     </div>
                     <ul>
@@ -1773,7 +1773,10 @@
 
 
 <script>
+import helpers from "../store/helpers.js";
+
 export default {
+  extends: helpers,
   name: 'SMIF-UML',
   components: {},
 };

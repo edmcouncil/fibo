@@ -40,14 +40,14 @@
                 {{element.name}}
                 <span v-if="element.link && element.link.name">
                   (
-                  <a :href="timestamped(element.link.url, timestamp)">{{element.link.name}}</a>)
+                  <a :href="timestamped(element.link, timestamp)">{{element.link.name}}</a>)
                 </span>
               </td>
               <td>
                 <a
                   v-for="xmlLink in element.xml"
                   :key="xmlLink.name"
-                  :href="timestamped(xmlLink.url, timestamp)"
+                  :href="timestamped(xmlLink, timestamp)"
                   class="inline"
                 >{{xmlLink.name}}</a>
                 <span v-if="!element.xml || element.xml.length === 0">N/A</span>
@@ -56,7 +56,7 @@
                 <a
                   v-for="xmlLink in element.ttl"
                   :key="xmlLink.name"
-                  :href="timestamped(xmlLink.url, timestamp)"
+                  :href="timestamped(xmlLink, timestamp)"
                   class="inline"
                 >{{xmlLink.name}}</a>
                 <span v-if="!element.ttl || element.ttl.length === 0">N/A</span>
@@ -65,7 +65,7 @@
                 <a
                   v-for="xmlLink in element.json"
                   :key="xmlLink.name"
-                  :href="timestamped(xmlLink.url, timestamp)"
+                  :href="timestamped(xmlLink, timestamp)"
                   class="inline"
                 >{{xmlLink.name}}</a>
                 <span v-if="!element.json || element.json.length === 0">N/A</span>
@@ -74,7 +74,7 @@
                 <a
                   v-for="xmlLink in element.nq"
                   :key="xmlLink.name"
-                  :href="timestamped(xmlLink.url, timestamp)"
+                  :href="timestamped(xmlLink, timestamp)"
                   class="inline"
                 >{{xmlLink.name}}</a>
                 <span v-if="!element.nq || element.nq.length === 0">N/A</span>
@@ -90,8 +90,10 @@
 
 <script>
 import { mapState } from 'vuex';
+import helpers from "../store/helpers.js";
 
 export default {
+  extends: helpers,
   name: 'OWL',
   components: {},
   computed: {
@@ -104,7 +106,7 @@ export default {
   },
   methods: {
     timestamped(link, timestamp) {
-      return eval(`\`${link}\``);
+     return (typeof link.PRODUCT === 'string' ? this.hrefP(link.name, link.PRODUCT) : (typeof link.product === 'string' ? this.hrefD(link.name, link.product) : eval(`\`${link.url}\``)));
     },
   },
 };

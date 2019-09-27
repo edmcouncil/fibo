@@ -5,24 +5,24 @@ export default {
         name: 'FIBO (Production) (zip)',
         xml: [{
           name: 'prod.rdf.zip',
-          url: '/fibo/ontology/master/${timestamp}/prod.rdf.zip',
+          PRODUCT: 'ontology',
         }],
         ttl: [{
           name: 'prod.ttl.zip',
-          url: '/fibo/ontology/master/${timestamp}/prod.ttl.zip',
+          PRODUCT: 'ontology',
         }],
         json: [{
           name: 'prod.jsonld.zip',
-          url: '/fibo/ontology/master/${timestamp}/prod.jsonld.zip',
+          PRODUCT: 'ontology',
         }],
         nq: [
           {
             name: 'prod.fibo.nq',
-            url: '/fibo/ontology/master/${timestamp}/prod.fibo.nq',
+            PRODUCT: 'ontology',
           },
           {
             name: 'prod.fibo.nq.zip',
-            url: '/fibo/ontology/master/${timestamp}/prod.fibo.nq.zip',
+            PRODUCT: 'ontology',
           },
         ],
       },
@@ -30,24 +30,24 @@ export default {
         name: 'FIBO (Development) (zip)',
         xml: [{
           name: 'dev.rdf.zip',
-          url: '/fibo/ontology/master/latest/dev.rdf.zip',
+          product: 'ontology',
         }],
         ttl: [{
           name: 'dev.ttl.zip',
-          url: '/fibo/ontology/master/latest/dev.ttl.zip',
+          product: 'ontology',
         }],
         json: [{
           name: 'dev.jsonld.zip',
-          url: '/fibo/ontology/master/latest/dev.jsonld.zip',
+          product: 'ontology',
         }],
         nq: [
           {
             name: 'dev.fibo.nq',
-            url: '/fibo/ontology/master/latest/dev.fibo.nq',
+            product: 'ontology',
           },
           {
             name: 'dev.fibo.nq.zip',
-            url: '/fibo/ontology/master/latest/dev.fibo.nq.zip',
+            product: 'ontology',
           },
         ],
       },
@@ -59,15 +59,15 @@ export default {
         },
         xml: [{
           name: 'AboutFIBOProd.rdf',
-          url: '/fibo/ontology/master/${timestamp}/AboutFIBOProd.rdf',
+          PRODUCT: 'ontology',
         }],
         ttl: [{
           name: 'AboutFIBOProd.ttl',
-          url: '/fibo/ontology/master/${timestamp}/AboutFIBOProd.ttl',
+          PRODUCT: 'ontology',
         }],
         json: [{
           name: 'AboutFIBOProd.jsonld',
-          url: '/fibo/ontology/master/${timestamp}/AboutFIBOProd.jsonld',
+          PRODUCT: 'ontology',
         }],
         nq: [
         ],
@@ -80,15 +80,15 @@ export default {
         },
         xml: [{
           name: 'AboutFIBODev.rdf',
-          url: '/fibo/ontology/master/latest/AboutFIBODev.rdf',
+          product: 'ontology',
         }],
         ttl: [{
           name: 'AboutFIBODev.ttl',
-          url: '/fibo/ontology/master/latest/AboutFIBODev.ttl',
+          product: 'ontology',
         }],
         json: [{
           name: 'AboutFIBODev.jsonld',
-          url: '/fibo/ontology/master/latest/AboutFIBODev.jsonld',
+          product: 'ontology',
         }],
         nq: [
         ],
@@ -97,16 +97,16 @@ export default {
         name: 'FIBO (Production) (Quickstart)',
         ttl: [{
           name: 'prod.fibo-quickstart.ttl',
-          url: '/fibo/ontology/master/${timestamp}/prod.fibo-quickstart.ttl',
+          PRODUCT: 'ontology',
         }],
         nq: [
           {
             name: 'prod.fibo-quickstart.nt',
-            url: '/fibo/ontology/master/${timestamp}/prod.fibo-quickstart.nt',
+            PRODUCT: 'ontology',
           },
           {
             name: 'prod.fibo-quickstart.nt.zip',
-            url: '/fibo/ontology/master/${timestamp}/prod.fibo-quickstart.nt.zip',
+            PRODUCT: 'ontology',
           },
         ],
       },
@@ -114,16 +114,16 @@ export default {
         name: 'FIBO (Development) (Quickstart)',
         ttl: [{
           name: 'dev.fibo-quickstart.ttl',
-          url: '/fibo/ontology/master/latest/dev.fibo-quickstart.ttl',
+          product: 'ontology',
         }],
         nq: [
           {
-            name: 'dev.fibo-quickstart.n',
-            url: '/fibo/ontology/master/latest/dev.fibo-quickstart.n',
+            name: 'dev.fibo-quickstart.nt',
+            product: 'ontology',
           },
           {
             name: 'dev.fibo-quickstart.nt.zip',
-            url: '/fibo/ontology/master/latest/dev.fibo-quickstart.nt.zip',
+            product: 'ontology',
           },
         ],
       },
