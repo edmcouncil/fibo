@@ -27,11 +27,8 @@
           </li>
         </ol>The glossary incudes human-readable versions of the logical relationships in FIBO that are represented in
         OWL. These definitions are available on their own as annotations on the FIBO classes in
-        <a
-          href="../../derived_products/glossary/master/latest/LogicalAnnotations.rdf"
-        >rdf-xml</a> and
-        <a href="../../derived_products/glossary/master/latest/LogicalAnnotations.ttl">ttl</a>
-        formats.
+        <a :href="hrefD('glossary-dev.ttl','glossary')">ttl</a>
+        format.
         <h3>
           <a name="WS">Web Searchable</a>
         </h3>
@@ -79,12 +76,11 @@
 
         <h3>
           <a name="NOTE">Downloadable RDF Annotations</a>
-        </h3>For application developer who want to be able to query for the human-readable versions of the FIBO logic,
+        </h3>For application developers who want to be able to query for the human-readable versions of the FIBO logic,
         that is avaiable in
         <a
-          :href="hrefD('LogicalAnnotations.ttl','glossary')"
-        >ttl</a> and
-        <a :href="hrefD('LogicalAnnotations.rdf','glossary')">RDF/XML</a> formats.
+          :href="hrefD('glossary-dev.ttl','glossary')"
+        >ttl</a> format.
         Release Notes:
         <ul>
           <li>
