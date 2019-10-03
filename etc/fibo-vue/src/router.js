@@ -74,6 +74,14 @@ export default new Router({
       component: () => import(/* webpackChunkName: "Schema" */ './views/Schema.vue'),
     },
     {
+      path: '/ontology/:domain?/:module?/:ontology?/:concept?',
+      name: 'Ontology',
+      component: () => import(/* webpackChunkName: "Schema" */ './views/Ontology.vue'),
+      meta: {
+        plainLayout: true,
+      },
+    },
+    {
       path: '*',
       redirect: '/',
     },
