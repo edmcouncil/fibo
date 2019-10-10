@@ -36,7 +36,6 @@ def runInOntologyPublisherContainer(Map config, Closure body) {
           dockerImage.pull()
           dockerImage.inside("""
             --read-only
-            --network none
             --name ${containerName}
             --mount type=bind,source=${env.WORKSPACE}/input,target=/input,readonly,consistency=cached
             --mount type=bind,source=${env.WORKSPACE}/output,target=/output,consistency=delegated
