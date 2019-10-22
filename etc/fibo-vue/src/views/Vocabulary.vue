@@ -29,26 +29,38 @@
             <tr>
               <td>FIBO-V (Development)</td>
               <td>
-                <a v-bind:href="hrefD('fibo-vD.rdf')">fibo-vD.rdf</a> (<a v-bind:href="hrefD('fibo-vD.rdf.zip')">zip</a>)
+                <a v-bind:href="hrefD('fibo-vD.rdf')"
+                  v-on:click="outboundClick('fibo-vD.rdf')">fibo-vD.rdf</a> (<a v-bind:href="hrefD('fibo-vD.rdf.zip')"
+                  v-on:click="outboundClick('fibo-vD.rdf.zip')">zip</a>)
               </td>
               <td>
-                <a v-bind:href="hrefD('fibo-vD.ttl')">fibo-vD.ttl</a> (<a v-bind:href="hrefD('fibo-vD.ttl.zip')">zip</a>)
+                <a v-bind:href="hrefD('fibo-vD.ttl')"
+                  v-on:click="outboundClick('fibo-vD.ttl')">fibo-vD.ttl</a> (<a v-bind:href="hrefD('fibo-vD.ttl.zip')"
+                  v-on:click="outboundClick('fibo-vD.ttl.zip')">zip</a>)
               </td>
               <td>
-                <a v-bind:href="hrefD('fibo-vD.jsonld')">fibo-vD.jsonld</a> (<a v-bind:href="hrefD('fibo-vD.jsonld.zip')">jsonld</a>)
+                <a v-bind:href="hrefD('fibo-vD.jsonld')"
+                  v-on:click="outboundClick('fibo-vD.jsonld')">fibo-vD.jsonld</a> (<a v-bind:href="hrefD('fibo-vD.jsonld.zip')"
+                  v-on:click="outboundClick('fibo-vD.jsonld.zip')">jsonld</a>)
               </td>
             </tr>
 
             <tr>
               <td>FIBO-V (Production)</td>
               <td>
-                <a v-bind:href="hrefP('fibo-vP.rdf')">fibo-vP.rdf</a> (<a v-bind:href="hrefP('fibo-vP.rdf.zip')">zip</a>)
+                <a v-bind:href="hrefP('fibo-vP.rdf')"
+                  v-on:click="outboundClick('fibo-vP.rdf')">fibo-vP.rdf</a> (<a v-bind:href="hrefP('fibo-vP.rdf.zip')"
+                  v-on:click="outboundClick('fibo-vP.rdf.zip')">zip</a>)
               </td>
               <td>
-                <a v-bind:href="hrefP('fibo-vP.ttl')">fibo-vP.ttl</a> (<a v-bind:href="hrefP('fibo-vP.ttl.zip')">zip</a>)
+                <a v-bind:href="hrefP('fibo-vP.ttl')"
+                  v-on:click="outboundClick('fibo-vP.ttl')">fibo-vP.ttl</a> (<a v-bind:href="hrefP('fibo-vP.ttl.zip')"
+                  v-on:click="outboundClick('fibo-vP.ttl.zip')">zip</a>)
               </td>
               <td>
-                <a v-bind:href="hrefP('fibo-vP.jsonld')">fibo-vP.jsonld</a> (<a v-bind:href="hrefP('fibo-vP.jsonld.zip')">zip</a>)
+                <a v-bind:href="hrefP('fibo-vP.jsonld')"
+                  v-on:click="outboundClick('fibo-vP.jsonld')">fibo-vP.jsonld</a> (<a v-bind:href="hrefP('fibo-vP.jsonld.zip')"
+                  v-on:click="outboundClick('fibo-vP.jsonld.zip')">zip</a>)
               </td>
             </tr>
           </table>
@@ -112,12 +124,16 @@
 
 
 <script>
-import helpers from "../store/helpers.js";
+import helpers from '../store/helpers.js';
+import { outboundClick } from '../helpers/ga';
 
 export default {
   extends: helpers,
   name: 'vocabulary',
   components: {},
+  methods: {
+    outboundClick,
+  },
 };
 </script>
 

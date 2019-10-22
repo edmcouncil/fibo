@@ -18,7 +18,7 @@
 
         <h3>What is FIBO?</h3>
         <p>
-          <img src="../assets/img/FIBO_logo.jpg" class="fibo-logo img-fluid">
+          <img src="../assets/img/FIBO_logo.jpg" class="fibo-logo img-fluid" />
           <strong>The Financial Industry Business Ontology (FIBO)</strong> is the industry standard resource for the
           definitions of business concepts in the financial services industry. It is developed and hosted by the
           Enterprise Data Management Council (EDMC) and is published in a number for formats for operating use and for
@@ -48,13 +48,14 @@
           class="pt-5 pb-5"
         >The figure below shows FIBO Domains: Derivatives, Loans, Indices and Indicators, Securities, Business Entities, Financial Business and Commerce and Foundations.</p>
         <center>
-          <img src="../assets/img/fiibo_modules.png" width="500" height="400" class="img-fluid">
+          <img src="../assets/img/fiibo_modules.png" width="500" height="400" class="img-fluid" />
         </center>
 
         <p>
           The
           <a
             href="https://edmcouncil.org/resource/collection/16D6DC67-430E-4F75-9E07-08B1EC228091/FIBO_Primer_v0.2.pdf"
+            v-on:click="outboundClick('FIBO_Primer_v0.2.pdf')"
           >
             FIBO
             Primer
@@ -67,11 +68,14 @@
 </template>
 
 <script>
-// @ is an alias to /src
+import { outboundClick } from '../helpers/ga';
 
 export default {
   name: 'home',
   components: {},
+  methods: {
+    outboundClick,
+  },
 };
 </script>
 
