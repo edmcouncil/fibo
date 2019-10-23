@@ -8,7 +8,9 @@
         <h2>
           The FIBO ontology is best viewed using a dedicated ontology tool. We include instructions here for three
           popular tools,
-          <a href="http://protege.stanford.edu/">Prot&eacute;g&eacute;</a>,
+          <a
+            href="http://protege.stanford.edu/"
+          >Prot&eacute;g&eacute;</a>,
           <a
             href="http://www.topquadrant.com/tools/IDE-topbraid-composer-maestro-edition/"
           >TopBraid Composer</a> and
@@ -90,7 +92,9 @@
         <h3>Using quickstart in Prot&eacute;g&eacute;</h3>
         <p>
           Quickstart is currently only avaiable in
-          <a href="https://www.w3.org/TR/turtle/">RDF Turtle(.ttl)</a> and
+          <a
+            href="https://www.w3.org/TR/turtle/"
+          >RDF Turtle(.ttl)</a> and
           <a href="https://www.w3.org/TR/n-triples/">N-Triples(.nt)</a>. More formats coming soon.
         </p>
         <ul>
@@ -98,10 +102,12 @@
             Download either the
             <a
               :href="hrefD('dev.fibo-quickstart.ttl','ontology')"
+              v-on:click="outboundClick('dev.fibo-quickstart.ttl')"
             >Development</a>
             or
             <a
               :href="hrefP('prod.fibo-quickstart.ttl','ontology')"
+              v-on:click="outboundClick('prod.fibo-quickstart.ttl')"
             >Production</a>
             version of Quickstart.
           </li>
@@ -113,10 +119,12 @@
             Download either the
             <a
               :href="hrefD('dev.fibo-quickstart.ttl','ontology')"
+              v-on:click="outboundClick('dev.fibo-quickstart.ttl')"
             >Development</a>
             or
             <a
               :href="hrefP('prod.fibo-quickstart.ttl','ontology')"
+              v-on:click="outboundClick('prod.fibo-quickstart.ttl')"
             >Production</a>
             version of Quickstart.
           </li>
@@ -131,7 +139,9 @@
         <h3>Using FIBO online</h3>
         <p>
           FIBO is published using the Web Ontology Language (
-          <a href="https://www.w3.org/TR/owl-primer/">OWL</a>).
+          <a
+            href="https://www.w3.org/TR/owl-primer/"
+          >OWL</a>).
           There are a number of tools available, both commercial and open source, that can read and edit FIBO.
           We provide instructions for the most common ones.
         </p>
@@ -180,16 +190,16 @@
         <h3>Using FIBO offline</h3>Many semantic tools can read OWL files that have been downloaded to local storage. Here are the instructions
         for
         doing that with the most common tools.
-        <p/>
+        <p />
         <b>NOTE:</b> FIBO imports resources from outside of FIBO, including SKOS, LCC and others. These are not
         included
         in the FIBO download, and must be loaded dynamically from the web. Therefore, even when loading FIBO in
         "offline" mode, you must have an active internet connection.
-        <p/>
+        <p />
         <h3>Prot&eacute;g&eacute;</h3>
         <div>
           Please use Prot&eacute;g&eacute; version 5.2 or higher.
-          <p/>
+          <p />
           <a href="http://protege.stanford.edu/">Prot&eacute;g&eacute;</a> prefers to manage files in
           <a href="https://www.w3.org/TR/rdf-syntax-grammar/">RDF/XML</a> format.
           Follow these instructions to download a zip file of FIBO in RDF/XML and load it into Prot&eacute;g&eacute;.
@@ -200,10 +210,12 @@
               maturity level of FIBO you want; the
               <a
                 :href="hrefD('dev.rdf.zip','ontology')"
+                v-on:click="outboundClick('dev.rdf.zip')"
               >Development</a> version or
               the
               <a
                 :href="hrefP('prod.rdf.zip','ontology')"
+                v-on:click="outboundClick('prod.rdf.zip')"
               >Production</a>
               version.
             </li>
@@ -229,7 +241,9 @@
         </h3>
         <p>
           TopBraid Composer prefers to manage files in
-          <a href="https://www.w3.org/TR/turtle/">RDF Turtle</a> format.
+          <a
+            href="https://www.w3.org/TR/turtle/"
+          >RDF Turtle</a> format.
           Follow these instructions to download a zip file of FIBO in Turtle and load it into TopBraid:
         </p>
         <ol>
@@ -239,10 +253,12 @@
             level of FIBO you want; the
             <a
               :href="hrefD('dev.ttl.zip','ontology')"
+              v-on:click="outboundClick('dev.ttl.zip')"
             >Development</a>
             version or the
             <a
               :href="hrefP('prod.ttl.zip','ontology')"
+              v-on:click="outboundClick('prod.ttl.zip')"
             >Production</a> version.
           </li>
           <li>
@@ -285,11 +301,13 @@
             which maturity level of FIBO you want; the
             <a
               :href="hrefD('dev.rdf.zip','ontology')"
+              v-on:click="outboundClick('dev.rdf.zip')"
             >Development</a> version
             or
             the
             <a
               :href="hrefP('prod.rdf.zip','ontology')"
+              v-on:click="outboundClick('prod.rdf.zip')"
             >Production</a>
             version.
           </li>
@@ -345,10 +363,12 @@
             Download the RDF/XML zip of the
             <a
               :href="hrefD('dev.rdf.zip','ontology')"
+              v-on:click="outboundClick('dev.rdf.zip')"
             >Development</a> version or
             the
             <a
               :href="hrefP('prod.rdf.zip','ontology')"
+              v-on:click="outboundClick('prod.rdf.zip')"
             >Production</a>
             version
             of FIBO.
@@ -367,8 +387,7 @@
 File names matching: *.rdf
 Search string: {{hrefD('','ontology').substring(1)}}/
 Replace string: fibo/ontology/
-</pre>
-It should make replacements in approx. 320 files.
+</pre>It should make replacements in approx. 320 files.
           <li>Zip up the directory e.g. as FIBO.zip.</li>
           <li>
             Use the following command line for database dbX (you would normally need to add username and passwd
@@ -398,22 +417,27 @@ It should make replacements in approx. 320 files.
         </ol>
 
         <h3>
-          <a name="namespace"/>Namespace prefixes in FIBO
+          <a name="namespace" />Namespace prefixes in FIBO
         </h3>XML, RDF and SPARQL all have mechanisms for recording shorthand versions of the long IRI names. FIBO has a
         standard set of prefixes for
         the resources in FIBO. These are currently incomplete, but will be completed shortly.
         <p>
           As an assist for developers using FIBO, we provide the namespace prefixes in many formats,
-          <a :href="hrefD('prefixes.fibo.ttl','ontology')">
+          <a
+            :href="hrefD('prefixes.fibo.ttl','ontology')"
+            v-on:click="outboundClick('prefixes.fibo.ttl')"
+          >
             prefixes.ttl
             (Turtle)
           </a>,
           <a
             :href="hrefD('prefixes.fibo.sq','ontology')"
+            v-on:click="outboundClick('prefixes.fibo.sq')"
           >prefixes.sq (SPARLQ)</a>,
           and
           <a
             :href="hrefD('prefixes.fibo.csv','ontology')"
+            v-on:click="outboundClick('prefixes.fibo.csv')"
           >prefixes.csv</a>.
         </p>
       </article>
@@ -423,14 +447,17 @@ It should make replacements in approx. 320 files.
 
 
 <script>
-import helpers from "../store/helpers.js";
+import helpers from '../store/helpers.js';
+import { outboundClick } from '../helpers/ga';
 
 export default {
   extends: helpers,
   name: 'ontology-tools',
   components: {},
   computed: {},
-  methods: {},
+  methods: {
+    outboundClick,
+  },
 };
 </script>
 
