@@ -11,8 +11,7 @@
 
         <h3>FIBO OWL</h3>
         <p>
-          Although FIBO can be seen as a "product family", it is primarly an OWL ontology. FIBO OWL, both in its Production and Development versions, are available
-          <router-link replace :to="{ path: router('OWL') }">here</router-link>. The FIBO OWL is best viewed using
+          Although FIBO can be seen as a "product family", it is primarily an OWL ontology. FIBO OWL, both in its Production and Development versions, is available <router-link replace :to="{ path: router('OWL') }">here</router-link>. The FIBO OWL is best viewed using
           <router-link replace :to="{ path: router('ontology-tools') }">dedicated ontology tools</router-link>.
         </p>
 
