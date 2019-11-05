@@ -6,8 +6,7 @@
           <span>FIBO OWL</span>
         </h1>
         <h2>
-          FIBO is available in a number of RDF formats. These are available for offline use (i.e., download
-          all of FIBO as a zip), or online use. Each FIBO ontology file is available for follow your nose treatment, a
+          FIBO is available in a number of RDF formats. These are available for offline use (i.e., download all of FIBO as a zip), or online use. Each FIBO ontology file is available for "follow your nose" treatment, a
           general description of which is available here.
         </h2>
 

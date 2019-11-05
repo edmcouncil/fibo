@@ -5,9 +5,8 @@
       <h1><span>FIBO Products</span></h1>
 
         <h2>
-          <strong>FIBO</strong> is intended for a range of uses, including in its simplest form as an English language
-          glossary or a bank or regulator's data dictionary. In its most complex form,
-          <router-link replace :to="{ path: router('OWL') }">FIBO in its native Web Ontology Language (OWL)</router-link>, could be used as a bank's operational ontology. There are also external uses of FIBO such as FIBO.schema.org which use FIBO as a reference for search indexing of specific information on the Internet.
+          <strong>FIBO</strong> is intended for a range of uses, including in its simplest form as an English language glossary or a bank or regulator's data dictionary. In its most complex form,
+          <router-link replace :to="{ path: router('OWL') }">FIBO in its native Web Ontology Language (OWL)</router-link>, could be used as a bank's operational ontology. There are also external uses of FIBO, such as FIBO.schema.org, which use FIBO as a reference for search indexing of specific information on the Internet.
         </h2>
 
         <h3>FIBO OWL</h3>
@@ -19,8 +18,8 @@
 
         <h3>FIBO derived products</h3>
         <p>
-          FIBO is also available as the derived products. All FIBO products are generated or derived with an automated process from the
-          <router-link replace :to="{ path: router('OWL') }">FIBO OWL</router-link>. Thus all changes in in the FIBO OWL will be reflected in all other products. We are making all of FIBO available now because we have already seen amazing work done with FIBO and we welcome, almost demand, your feedback:
+          FIBO is also available as derived products. All FIBO products are generated or derived with an automated process from the
+          <router-link replace :to="{ path: router('OWL') }">FIBO OWL</router-link>. Thus all changes in the FIBO OWL will be reflected in all other products. We are making all of FIBO available now because we have already seen amazing work done with FIBO and we welcome, almost demand, your feedback:
           <a
             href="mailto:rtrypuz@edmcouncil.org"
           >rtrypuz@edmcouncil.org</a>
@@ -46,8 +45,7 @@
                 the Web and down loadable in csv or .xls
               </td>
               <td>
-                A summary of each operational class in FIBO, with its properties, presented in the form of tables and
-                fields for viewers familiar with relational data dictionaries.
+                A summary of each operational class in FIBO, with its properties, presented in the form of tables and fields for viewers familiar with relational data dictionaries.
               </td>
             </tr>
 
