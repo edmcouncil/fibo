@@ -11,8 +11,8 @@
 
         <h3>FIBO OWL</h3>
         <p>
-          Although, FIBO can be seen as a "product family", it is primally an OWL ontology. FIBO OWL, both in its Production and Development versions, are avaliable
-          <router-link replace :to="{ path: router('OWL') }">here</router-link>. The FIBO OWL is best viewed using a
+          Although FIBO can be seen as a "product family", it is primarly an OWL ontology. FIBO OWL, both in its Production and Development versions, are available
+          <router-link replace :to="{ path: router('OWL') }">here</router-link>. The FIBO OWL is best viewed using
           <router-link replace :to="{ path: router('ontology-tools') }">dedicated ontology tools</router-link>.
         </p>
 
@@ -30,7 +30,7 @@
               <td>
                 <router-link replace :to="{ path: router('glossary') }">FIBO glossary</router-link>
               </td>
-              <td>Web searchable, downloadable in CSV and/or Excel</td>
+              <td>Web searchable, downloadable in .csv and .xlsx</td>
               <td>
                 Includes web-searchable people and machine generated definitions, and as a spreadsheet that may be
                 downloaded and worked with offline
@@ -41,8 +41,7 @@
                 <a :href="hrefP('/','datadictionary')">FIBO data dictionary</a>
               </td>
               <td>
-                data dictionary searchable from
-                the Web and down loadable in csv or .xls
+                data dictionary downloadable in .csv and .xlsx
               </td>
               <td>
                 A summary of each operational class in FIBO, with its properties, presented in the form of tables and fields for viewers familiar with relational data dictionaries.
