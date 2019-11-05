@@ -9,7 +9,6 @@
             placeholder="Ontology"
             aria-describedby="basic-addon2"
             v-model="query"
-            v-bind:value=$route.query.query
           />
           <div class="input-group-append">
             <button
@@ -34,10 +33,7 @@
           <div class="col-12">
             <b>{{sectionName}}</b>
             <br />
-            <div
-              v-for="( property, name ) in data.properties[sectionName]"
-              :key="name"
-            >
+            <div v-for="( property, name ) in data.properties[sectionName]" :key="name">
               {{name}}
               <component
                 v-for="field in property"
@@ -56,14 +52,15 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import { getOntology } from "../api/ontology";
 import { parsers } from "../helpers/ontology";
 import AXIOM from "../helpers/AXIOM";
 import STRING from "../helpers/STRING";
-import DIRECT_SUBCLASSES from "../helpers/DIRECT_SUBCLASSES"
-import MODULES from "../helpers/MODULES"
-import IRI from "../helpers/IRI"
-import INSTANCES from "../helpers/INSTANCES"
+import DIRECT_SUBCLASSES from "../helpers/DIRECT_SUBCLASSES";
+import MODULES from "../helpers/MODULES";
+import IRI from "../helpers/IRI";
+import INSTANCES from "../helpers/INSTANCES";
 
 export default {
   components: {
@@ -72,34 +69,51 @@ export default {
     DIRECT_SUBCLASSES,
     MODULES,
     IRI,
-    INSTANCES,
+    INSTANCES
   },
   data() {
     return {
       loader: false,
       data: null,
-      query: null,
+      query: "",
+      ontologyServer: null
     };
   },
   mounted: function() {
-    this.query = window.location.href.replace(/^.*\/fibo\/ontology/, "https://spec.edmcouncil.org/fibo/ontology");
+    //this.query = window.location.href.replace(/^.*\/fibo\/ontology/, "https://spec.edmcouncil.org/fibo/ontology");
+
+    let queryParam = "";
+    if (this.$route.query && this.$route.query.query) {
+      queryParam = this.$route.query.query || "";
+    }
+
+    if (this.$route.query && this.$route.query.domain) {
+      this.ontologyServer = this.$route.query.domain;
+    } else {
+      this.ontologyServer = this.ontologyDefaultDomain;
+    }
+
+    this.query = queryParam;
     this.$nextTick(async function() {
       this.fetchData(this.query);
     });
+
+    console.log(this.$route);
   },
   methods: {
     queryForOntology: function() {
       let query = this.query;
-      this.$router.push({ path: query.replace(/^.*\/fibo\/ontology/, "/ontology") });
+      this.$router.push({ path: this.$route.path, query: { query} });
+      this.fetchData(this.query);
     },
     fetchData: async function(query) {
       if (query) {
         this.loader = true;
         this.data = null;
-        console.log('fetchData: query="'+query+'"');
-        let result = await getOntology(query);
+        console.log('fetchData: query="' + query + '"');
+        let result = await getOntology(query, this.ontologyServer);
         var body = await result.json();
-        console.log('fetchData: body="'+JSON.stringify(body)+'"');
+        console.log('fetchData: body="' + JSON.stringify(body) + '"');
         this.loader = false;
         this.data = body;
       }
@@ -116,9 +130,13 @@ export default {
       return parsers[dataChunk.type](dataChunk);
     }
   },
+  computed: {
+    ...mapState({
+      ontologyDefaultDomain: state => state.ontologyDefaultDomain
+    })
+  },
   beforeRouteUpdate(to, from, next) {
-    this.query = "https://spec.edmcouncil.org/fibo" + to.path;
-    this.fetchData(this.query);
+    next();
   }
 };
 </script>
