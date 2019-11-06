@@ -58,15 +58,15 @@ export default {
           url: 'http://patterns.dataincubator.org/book/follow-your-nose.html',
         },
         xml: [{
-          name: 'AboutFIBOProd.rdf',
+          name: 'LoadFIBOProd.rdf',
           PRODUCT: 'ontology',
         }],
         ttl: [{
-          name: 'AboutFIBOProd.ttl',
+          name: 'LoadFIBOProd.ttl',
           PRODUCT: 'ontology',
         }],
         json: [{
-          name: 'AboutFIBOProd.jsonld',
+          name: 'LoadFIBOProd.jsonld',
           PRODUCT: 'ontology',
         }],
         nq: [
@@ -79,15 +79,15 @@ export default {
           url: 'http://patterns.dataincubator.org/book/follow-your-nose.html',
         },
         xml: [{
-          name: 'AboutFIBODev.rdf',
+          name: 'LoadFIBODev.rdf',
           product: 'ontology',
         }],
         ttl: [{
-          name: 'AboutFIBODev.ttl',
+          name: 'LoadFIBODev.ttl',
           product: 'ontology',
         }],
         json: [{
-          name: 'AboutFIBODev.jsonld',
+          name: 'LoadFIBODev.jsonld',
           product: 'ontology',
         }],
         nq: [
