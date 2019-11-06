@@ -14,7 +14,7 @@
           class="bttn"
           id="email_1524650877557"
           href="mailto:rtrypuz@edmcouncil.org?subject=Request%20to%20Join%20FIBO%20Contect"
-        >Please let us know who you are and what you would like to do with fibo.</a>
+        >Please let us know who you are and what you would like to do with FIBO.</a>
       </p>
     </article>
   </div>

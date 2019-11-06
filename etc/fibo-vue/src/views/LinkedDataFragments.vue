@@ -19,16 +19,9 @@
           <a href="http://linkeddatafragments.org/">here</a>.
         </p>
         <p>
-          The purpose of this server is to make FIBO available to intelligent clients that
-          can process triples in client-side SPARQL. A triple pattern
-          specification is very lightweight, and still allows SPARQL
-          endpoint-like access to data. One can look at this protocol
-          method as sitting between a full RDF dump file and a SPARQL
-          endpoint. We
-          plann to offer client implementation from this server after
-          some further testing and finding some handy queries to
-          prepopulate. Other fragments servers in production can be
-          found
+          The purpose of this server is to make FIBO available to intelligent clients that can process triples in client-side SPARQL. A triple pattern specification is very lightweight, and still allows SPARQL
+          endpoint-like access to data. One can look at this protocol method as sitting between a full RDF dump file and a SPARQL
+          endpoint. We plan to offer client implementation from this server after some further testing and finding some handy queries to prepopulate. Other fragments servers in production can be found
           <a href="http://data.linkeddatafragments.org/">here</a>.
         </p>
 

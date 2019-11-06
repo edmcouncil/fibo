@@ -6,11 +6,8 @@
           <span>EDM Council FIBO Glossary</span>
         </h1>
         <h2>
-          Generated from the OWL, the FIBO glossary is a list of classes and properties defined in FIBO, including
-          their logical definition, curated natural language definition and synonyms where available. As with all of
-          FIBO, there is a Production version of the Glossary, which includes definitions of terms that have been
-          vetted by the FIBO content teams, as well as a Development version, which includes terms that are currently
-          being developed.
+          Generated from the OWL, the FIBO glossary is a list of classes and properties defined in FIBO, including their logical definition, curated natural language definition and synonyms where available. As with all of
+          FIBO, there is a Production version of the Glossary, which includes definitions of terms that have been vetted by the FIBO content teams, as well as a Development version, which includes terms that are currently being developed.
         </h2>There are four ways to work with the FIBO Glossary.
         <ol>
           <li>
@@ -67,8 +64,8 @@
 
         <h3>
           <a name="XLS">Excel format</a>
-        </h3>A file that can be read with Microsoft Excel, containing label, curated definition, synonyms,
-        model-generated definition, examples and explanatory notes (when available). Exclusively for use with Excel,
+        </h3>A file that can be read with Microsoft Excel, containing a label, curated definition, synonyms,
+        model-generated definition, examples, and explanatory notes (when available). Exclusively for use with Excel,
         this file includes formatting to make the spreadsheet easier to read.
         <ul>
           <li>

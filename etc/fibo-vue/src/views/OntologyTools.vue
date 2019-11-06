@@ -35,8 +35,7 @@
           </a> pattern.
           This means that tools that use this pattern can read FIBO directly from the web.
           This ensures that you are always viewing the latest version of FIBO.
-          Keep in mind, that when viewing FIBO in this way, that any edits you make to FIBO will only be reflected in
-          your own copy, and won't be saved for others to see.
+          Keep in mind, that when viewing FIBO in this way, that any edits you make to FIBO will only be reflected in your copy, and won't be saved for others to see.
         </p>
         <p>
           FIBO is also available for offline use by downloading a .zip of the current state.
@@ -57,8 +56,7 @@
         </ul>
         <h3>Collaborations</h3>
         <p>
-          The EDM Council is working in collaboration with many companies to offer open, easy access to FIBO content
-          for discovery and analysis. Available now are:
+          The EDM Council is working in collaboration with many companies to offer open, easy access to FIBO content for discovery and analysis. Available now are:
         </p>
         <ul>
           <li>
@@ -91,7 +89,7 @@
         </p>
         <h3>Using quickstart in Prot&eacute;g&eacute;</h3>
         <p>
-          Quickstart is currently only avaiable in
+          Quickstart is currently only available in
           <a
             href="https://www.w3.org/TR/turtle/"
           >RDF Turtle(.ttl)</a> and
@@ -142,7 +140,7 @@
           <a
             href="https://www.w3.org/TR/owl-primer/"
           >OWL</a>).
-          There are a number of tools available, both commercial and open source, that can read and edit FIBO.
+          There are several tools available, both commercial and open-source, that can read and edit FIBO.
           We provide instructions for the most common ones.
         </p>
         <h3>Prot&eacute;g&eacute;</h3>
@@ -207,7 +205,7 @@
             <li>
               Download a zipped file of FIBO in RDF/XML format from spec.edmcouncil.org. You'll need to specify
               which
-              maturity level of FIBO you want; the
+              the maturity level of FIBO you want; the
               <a
                 :href="hrefD('dev.rdf.zip','ontology')"
                 v-on:click="outboundClick('dev.rdf.zip')"
@@ -317,9 +315,7 @@
           </li>
           <li>Open MagicDraw with the CCM plugin installed.</li>
           <li>
-            In MagicDraw, create a new project: File/New Project. Select "Concept Modeling Project" as the
-            project
-            type. Select a name for the project and click "OK"
+            In MagicDraw, create a new project: File/New Project. Select "Concept Modeling Project" as the project type. Select a name for the project and click "OK".
           </li>
           <li>
             Set the catalog file; from the
@@ -336,9 +332,7 @@
             click the drop down menu at the right and select "303 URI".
           </li>
           <li>
-            Import the FIBO Master: File/Import From/OWL Ontology File, and navigate to the folder where you
-            unzipped FIBO. Navigate to LoadFIBODev.rdf, or LoadFIBOProd.ttl, depending on your preference, and
-            import it.
+            Import the FIBO Master: File/Import From/OWL Ontology File, and navigate to the folder where you unzipped FIBO. Navigate to LoadFIBODev.rdf, or LoadFIBOProd.ttl, depending on your preference, and import it.
           </li>MagicDraw will import all of FIBO ontologies contained in the LoadFIBO file.
         </ol>
         <p>
@@ -349,14 +343,11 @@
           </a>
           from the OMG, which includes information about these things from other standards bodies.
           When you load FIBO, all these tools will find these files via follow-your-nose.
-          If you cannot reach these files on the omg.org web servers for any reason, you will see load errors for
-          the
-          files it
-          couldn't find. These can be safely ignored, but you will not have details of the Languages, Countries and
+          If you cannot reach these files on the omg.org web servers for any reason, you will see load errors for the files it couldn't find. These can be safely ignored, but you will not have details of the Languages, Countries and
           Codes available in your model.
         </p>
         <h3>Stardog</h3>
-        <a href="http://www.stardog.com/">Stardog</a> is a semantic data system that accomodates both RDF and OWL.
+        <a href="http://www.stardog.com/">Stardog</a> is a semantic data system that accommodates both RDF and OWL.
         Follow these steps to load FIBO into Stardog:
         <ol>
           <li>
@@ -406,21 +397,17 @@ Replace string: fibo/ontology/
             zip
           </li>
           <li>
-            In the Adaptive web interface select OWL Zip File Import from the Integrator page; select the file
-            FIBO.zip, check the last item on the page Ignore Unresolved Hrefs, and Execute the import
+            In the Adaptive web interface select OWL Zip File Import from the Integrator page; select the file FIBO.zip, check the last item on the page Ignore Unresolved Hrefs, and Execute the import
           </li>
           <li>
-            Repeat the previous step to re-import the file and resolve the references (there will still be some
-            unresolved external references unless the Languages Countries and Codes ontology has been previously
-            loaded. This is provided as LCC.zip in the Adaptive installation and is loaded in the same way)
+            Repeat the previous step to re-import the file and resolve the references (there will still be some unresolved external references unless the Languages Countries and Codes ontology has been previously loaded. This is provided as LCC.zip in the Adaptive installation and is loaded in the same way)
           </li>
         </ol>
 
         <h3>
           <a name="namespace" />Namespace prefixes in FIBO
-        </h3>XML, RDF and SPARQL all have mechanisms for recording shorthand versions of the long IRI names. FIBO has a
-        standard set of prefixes for
-        the resources in FIBO. These are currently incomplete, but will be completed shortly.
+        </h3>XML, RDF, and SPARQL all have mechanisms for recording shorthand versions of the long IRI names. FIBO has a
+        standard set of prefixes for the resources in FIBO. These are currently incomplete but will be completed shortly.
         <p>
           As an assist for developers using FIBO, we provide the namespace prefixes in many formats,
           <a
