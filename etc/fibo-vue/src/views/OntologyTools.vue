@@ -136,10 +136,7 @@
 
         <h3>Using FIBO online</h3>
         <p>
-          FIBO is published using the Web Ontology Language (
-          <a
-            href="https://www.w3.org/TR/owl-primer/"
-          >OWL</a>).
+          FIBO is published using the Web Ontology Language (<a href="https://www.w3.org/TR/owl-primer/">OWL</a>).
           There are several tools available, both commercial and open-source, that can read and edit FIBO.
           We provide instructions for the most common ones.
         </p>
@@ -172,8 +169,12 @@
             <li>In Prot&eacute;g&eacute;, select File>Open from URL</li>
             <li>
               Copy and Paste the URL for the LoadFIBO.rdf file from the version you desire;
-              {{hrefD('LoadFIBODev.rdf','ontology')}} for the development version or
-              {{hrefP('LoadFIBOProd.rdf','ontology')}} for the production version
+              <ol>
+                <li><a :href="hrefD('LoadFIBODev.rdf','ontology')" v-on:click="outboundClick('LoadFIBODev.rdf')">LoadFIBODev.rdf</a> for the development version or</li>
+                <li><a :href="hrefP('LoadFIBOProd.rdf','ontology')" v-on:click="outboundClick('LoadFIBOProd.rdf')">LoadFIBOProd.rdf</a> for the production version</li>
+              </ol>
+              
+              
             </li>
           </ol>
           <p>
