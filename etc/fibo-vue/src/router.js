@@ -70,11 +70,8 @@ export default new Router({
     },
     {
       path: '/ontology-test',
-      name: 'Ontology',
+      name: 'ontology',
       component: () => import(/* webpackChunkName: "Schema" */ './views/Ontology.vue'),
-      meta: {
-        plainLayout: true,
-      },
     },
     {
       path: '*',

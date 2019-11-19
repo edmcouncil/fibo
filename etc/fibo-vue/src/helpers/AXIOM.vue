@@ -20,7 +20,7 @@ export default {
           let value = this.entityMaping[name];
           html = html.replace(
             name,
-            `<customLink name="${name}" query="${value}"></customLink>`
+            `<customLink name="${value.label}" query="${value.iri}"></customLink>`
           );
         });
       }
