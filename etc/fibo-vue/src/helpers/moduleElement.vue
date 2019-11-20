@@ -3,7 +3,7 @@
     <div class="arrow-container" :class="{hidden: !isFolder}" @click="toggle">
       <i :class="{down: isOpen}" />
     </div>
-    <div class="label" :class="{ selectedd: isOpen}">
+    <div class="label" :class="{ selected: isSelected}">
       <customLink class="custom-link" :name="item.label" :query="item.iri"></customLink>
     </div>
     <ul v-show="isOpen" v-if="isFolder" class="list-unstyled">
@@ -30,7 +30,8 @@ export default {
   },
   data: function() {
     return {
-      isOpen: false
+      isOpen: false,
+      isSelected: false,
     };
   },
   methods: {
@@ -47,9 +48,10 @@ export default {
     location: {
       handler: function(val, oldVal) {
         if (val && val.locationInModules) {
-          this.isOpen = val.locationInModules.some(
+          this.isSelected = val.locationInModules.some(
             location => location == this.item.iri
           );
+          this.isOpen = this.isOpen || this.isSelected;
         }
       },
       deep: true

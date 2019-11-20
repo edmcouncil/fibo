@@ -34,7 +34,6 @@ export default {
   props: ["data"],
   mounted: function() {
     if (this.data) {
-        console.log(vis)
       let nodes = new vis.DataSet(JSON.parse(this.data.nodes));
       let edges = new vis.DataSet(JSON.parse(this.data.edges));
 
@@ -103,14 +102,14 @@ export default {
           var sNode = selectedNodes[0];
           nodes.forEach(function(entry) {
             if (entry.id === sNode) {
-              window.location.href = "/fibo/ontology-test?query=" + entry.iri;
+              window.location.href = "/fibo/ontology?query=" + entry.iri;
             }
           });
         } else if (selectedEdges[0] !== undefined) {
           var sEgde = selectedEdges[0];
           edgesView.forEach(function(entry) {
             if (entry.id === sEgde) {
-              window.location.href = "/fibo/ontology-test?query=" + entry.iri;
+              window.location.href = "/fibo/ontology?query=" + entry.iri;
             }
           });
         }

@@ -96,6 +96,7 @@ export default {
       import(/* webpackChunkName: "ANY_URI" */ "../helpers/ANY_URI"),
     graph: () => import(/* webpackChunkName: "ANY_URI" */ "../helpers/graph")
   },
+  props: ["ontology"],
   data() {
     return {
       loader: false,
@@ -130,8 +131,19 @@ export default {
   },
   mounted: function() {
     let queryParam = "";
-    if (this.$route.query && this.$route.query.query) {
-      queryParam = this.$route.query.query || "";
+    
+    if (this.$route.params && this.$route.params[1]) {
+      var ontologyQuery = Object.values(this.$route.params)
+        .filter(function(el) {
+          return el != null;
+        })
+        .join("/");
+      queryParam = `https://spec.edmcouncil.org/fibo/ontology/${ontologyQuery}`;
+      console.log(queryParam);
+    } else {
+      if (this.$route.query && this.$route.query.query) {
+        queryParam = this.$route.query.query || "";
+      }
     }
 
     if (this.$route.query && this.$route.query.domain) {
