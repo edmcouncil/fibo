@@ -21,8 +21,14 @@
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">{{data.label.toUpperCase()}}</h5>
-            <h6 class="card-subtitle mb-2 text-muted">{{data.iri}}</h6>
-            <h6 class="card-subtitle mb-2 text-muted">{{data.qName}}</h6>
+            <h6 class="card-subtitle mb-2 text-muted">
+              {{data.iri}}
+              <button v-clipboard="data.iri">Copy</button>
+            </h6>
+            <h6 class="card-subtitle mb-2 text-muted">
+              {{data.qName}}
+              <button v-clipboard="data.qName.replace('QName: ', '')">Copy</button>
+            </h6>
             <span v-if="data.taxonomy && data.taxonomy.value">
               <p v-for="taxonomy in data.taxonomy.value" :key="taxonomy" class="taxonomy">
                 <span v-for="(element,index) in taxonomy" :key="element">
