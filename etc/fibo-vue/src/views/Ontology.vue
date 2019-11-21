@@ -1,6 +1,21 @@
 <template>
   <div class="container">
-    <div class="row" v-if="loader">Loading data.</div>
+    <div class="row" v-if="loader">
+      <div class="col-12">
+        <div class="text-center">
+          <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" v-if="error">
+      <div class="col-12">
+        <div class="alert alert-danger" role="alert">
+          <strong>Error!</strong> Cannot fetch data, please try leater.
+        </div>
+      </div>
+    </div>
     <div class="row" v-if="data">
       <div class="col-12">
         <div class="card">
@@ -28,6 +43,11 @@
         <ul class="modules-list list-unstyled">
           <module-tree :item="item" v-for="item in modulesList" :location="data" :key="item.label" />
         </ul>
+        <div class="text-center" v-if="!modulesList">
+          <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
       </div>
       <div class="col-md-12 col-lg-8" v-if="data">
         <div class="row">
@@ -105,33 +125,12 @@ export default {
       ontologyServer: null,
       modulesServer: null,
       modulesList: null,
-      treeData: {
-        name: "My Tree",
-        children: [
-          { name: "hello" },
-          { name: "wat" },
-          {
-            name: "child folder",
-            children: [
-              {
-                name: "child folder",
-                children: [{ name: "hello" }, { name: "wat" }]
-              },
-              { name: "hello" },
-              { name: "wat" },
-              {
-                name: "child folder",
-                children: [{ name: "hello" }, { name: "wat" }]
-              }
-            ]
-          }
-        ]
-      }
+      error: false
     };
   },
   mounted: function() {
     let queryParam = "";
-    
+
     if (this.$route.params && this.$route.params[1]) {
       var ontologyQuery = Object.values(this.$route.params)
         .filter(function(el) {
@@ -174,15 +173,26 @@ export default {
       if (query) {
         this.loader = true;
         this.data = null;
-        let result = await getOntology(query, this.ontologyServer);
-        var body = await result.json();
+        try {
+          let result = await getOntology(query, this.ontologyServer);
+          var body = await result.json();
+          this.data = body;
+        } catch (err) {
+          console.error(err);
+          this.error = true;
+        }
+
         this.loader = false;
-        this.data = body;
       }
     },
     fetchModules: async function() {
-      let result = await getModules(this.modulesServer);
-      this.modulesList = await result.json();
+      try {
+        let result = await getModules(this.modulesServer);
+        this.modulesList = await result.json();
+      } catch (err) {
+        console.error(err);
+        this.error = true;
+      }
     }
   },
   computed: {
