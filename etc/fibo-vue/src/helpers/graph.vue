@@ -3,24 +3,50 @@
     <b class="mr-1 ml-4">Connections:</b>
     <br />
     <div class="ml-4">
-      <label>
-        <input type="checkbox" name="edgesFilter" value="internal" checked="true" />
-        class specyfic
-      </label>
-      <label>
-        <input type="checkbox" name="edgesFilter" value="external" checked="true" />
-        inherited
-      </label>
-    </div>
-    <div class="ml-4">
-      <label>
-        <input type="checkbox" name="edgesFilter" value="optional" checked="true" />
-        optional
-      </label>
-      <label>
-        <input type="checkbox" name="edgesFilter" value="non_optional" checked="true" />
-        required
-      </label>
+      <div class="form-check form-check-inline">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          name="edgesFilter"
+          id="internal"
+          value="internal"
+          checked="true"
+        />
+        <label class="form-check-label" for="internal">class specyfic</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          name="edgesFilter"
+          id="external"
+          value="external"
+          checked="true"
+        />
+        <label class="form-check-label" for="external">inherited</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          name="edgesFilter"
+          id="optional"
+          value="optional"
+          checked="true"
+        />
+        <label class="form-check-label" for="optional">optional</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          name="edgesFilter"
+          id="non_optional"
+          value="non_optional"
+          checked="true"
+        />
+        <label class="form-check-label" for="non_optional">required</label>
+      </div>
     </div>
 
     <div id="ontograph"></div>

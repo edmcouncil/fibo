@@ -30,7 +30,7 @@
                   <span
                     class="card-subtitle mb-2 text-muted"
                     v-if="index != Object.keys(taxonomy).length - 1"
-                  >></span>
+                  >&nbsp;>&nbsp;</span>
                 </span>
               </p>
             </span>
