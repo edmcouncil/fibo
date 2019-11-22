@@ -18,45 +18,46 @@
 </template>
 
 <script>
-import Vue from "vue";
-import customLink from "./link";
-Vue.component("customLink", customLink);
+import Vue from 'vue';
+import customLink from './link';
+
+Vue.component('customLink', customLink);
 
 export default {
-  name: "module-tree",
+  name: 'module-tree',
   props: {
     item: Object,
-    location: Object
+    location: Object,
   },
-  data: function() {
+  data() {
     return {
       isOpen: false,
       isSelected: false,
     };
   },
   methods: {
-    toggle: function() {
+    toggle() {
       this.isOpen = !this.isOpen;
-    }
+    },
   },
   computed: {
-    isFolder: function() {
+    isFolder() {
       return this.item.subModule && this.item.subModule.length;
-    }
+    },
   },
   watch: {
     location: {
-      handler: function(val, oldVal) {
+      handler(val, oldVal) {
         if (val && val.locationInModules) {
           this.isSelected = val.locationInModules.some(
-            location => location == this.item.iri
+            location => location == this.item.iri,
           );
           this.isOpen = this.isOpen || this.isSelected;
         }
       },
-      deep: true
-    }
-  }
+      deep: true,
+    },
+  },
 };
 </script>
 

@@ -102,54 +102,48 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import { getOntology, getModules } from "../api/ontology";
+import { mapState } from 'vuex';
+import { getOntology, getModules } from '../api/ontology';
 
 export default {
   components: {
-    AXIOM: () => import(/* webpackChunkName: "AXIOM" */ "../helpers/AXIOM"),
-    STRING: () => import(/* webpackChunkName: "STRING" */ "../helpers/STRING"),
-    DIRECT_SUBCLASSES: () =>
-      import(
-        /* webpackChunkName: "DIRECT_SUBCLASSES" */ "../helpers/DIRECT_SUBCLASSES"
-      ),
-    MODULES: () =>
-      import(/* webpackChunkName: "MODULES" */ "../helpers/MODULES"),
-    IRI: () => import(/* webpackChunkName: "IRI" */ "../helpers/IRI"),
-    INSTANCES: () =>
-      import(/* webpackChunkName: "INSTANCES" */ "../helpers/INSTANCES"),
-    ANY_URI: () =>
-      import(/* webpackChunkName: "ANY_URI" */ "../helpers/ANY_URI"),
-    graph: () => import(/* webpackChunkName: "ANY_URI" */ "../helpers/graph")
+    AXIOM: () => import(/* webpackChunkName: "AXIOM" */ '../helpers/AXIOM'),
+    STRING: () => import(/* webpackChunkName: "STRING" */ '../helpers/STRING'),
+    DIRECT_SUBCLASSES: () => import(
+      /* webpackChunkName: "DIRECT_SUBCLASSES" */ '../helpers/DIRECT_SUBCLASSES'
+    ),
+    MODULES: () => import(/* webpackChunkName: "MODULES" */ '../helpers/MODULES'),
+    IRI: () => import(/* webpackChunkName: "IRI" */ '../helpers/IRI'),
+    INSTANCES: () => import(/* webpackChunkName: "INSTANCES" */ '../helpers/INSTANCES'),
+    ANY_URI: () => import(/* webpackChunkName: "ANY_URI" */ '../helpers/ANY_URI'),
+    graph: () => import(/* webpackChunkName: "ANY_URI" */ '../helpers/graph'),
   },
-  props: ["ontology"],
+  props: ['ontology'],
   data() {
     return {
       loader: false,
       data: null,
-      query: "",
+      query: '',
       ontologyServer: null,
       modulesServer: null,
       modulesList: null,
-      error: false
+      error: false,
     };
   },
-  mounted: function() {
-    let queryParam = "";
+  mounted() {
+    let queryParam = '';
 
     if (this.$route.params && this.$route.params[1]) {
-      var ontologyQuery = Object.values(this.$route.params)
-        .filter(function(el) {
+      let ontologyQuery = Object.values(this.$route.params)
+        .filter((el) => {
           return el != null;
         })
-        .join("/");
+        .join('/');
       queryParam = `https://spec.edmcouncil.org/fibo/ontology/${ontologyQuery}`;
       console.log(queryParam);
-    } else {
-      if (this.$route.query && this.$route.query.query) {
+    } else if (this.$route.query && this.$route.query.query) {
         queryParam = this.$route.query.query || "";
       }
-    }
 
     if (this.$route.query && this.$route.query.domain) {
       this.ontologyServer = this.$route.query.domain;
@@ -164,24 +158,24 @@ export default {
     }
 
     this.query = queryParam;
-    this.$nextTick(async function() {
+    this.$nextTick(async function () {
       this.fetchData(this.query);
     });
     this.fetchModules();
   },
   methods: {
-    queryForOntology: function() {
-      let query = this.query;
+    queryForOntology() {
+      const {query} = this;
       this.$router.push({ path: this.$route.path, query: { query } });
       this.fetchData(this.query);
     },
-    fetchData: async function(query) {
+    async fetchData(query) {
       if (query) {
         this.loader = true;
         this.data = null;
         try {
-          let result = await getOntology(query, this.ontologyServer);
-          var body = await result.json();
+          const result = await getOntology(query, this.ontologyServer);
+          let body = await result.json();
           this.data = body;
         } catch (err) {
           console.error(err);
@@ -191,30 +185,30 @@ export default {
         this.loader = false;
       }
     },
-    fetchModules: async function() {
+    async fetchModules() {
       try {
-        let result = await getModules(this.modulesServer);
+        const result = await getModules(this.modulesServer);
         this.modulesList = await result.json();
       } catch (err) {
         console.error(err);
         this.error = true;
       }
-    }
+    },
   },
   computed: {
     ...mapState({
       ontologyDefaultDomain: state => state.ontologyDefaultDomain,
-      modulesDefaultDomain: state => state.modulesDefaultDomain
-    })
+      modulesDefaultDomain: state => state.modulesDefaultDomain,
+    }),
   },
   watch: {
-    "$route.query.query"(query) {
+    '$route.query.query': function(query) {
       this.fetchData(query);
-    }
+    },
   },
   beforeRouteUpdate(to, from, next) {
     next();
-  }
+  },
 };
 </script>
 

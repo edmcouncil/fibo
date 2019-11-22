@@ -3,13 +3,13 @@
 </template>
 <script>
 export default {
-  name: "STRING",
-  props: ["value"],
+  name: 'STRING',
+  props: ['value'],
 
   methods: {
-    dataWithLineBreaks: function(data) {
-      return data.replace(/(?:\r\n|\r|\n)/g, "<br />");
-    }
-  }
+    dataWithLineBreaks(data) {
+      return data.replace(/(?:\r\n|\r|\n)/g, '<br />');
+    },
+  },
 };
 </script>

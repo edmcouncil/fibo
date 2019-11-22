@@ -90,7 +90,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import helpers from "../store/helpers.js";
+import helpers from '../store/helpers.js';
 
 export default {
   extends: helpers,
@@ -106,7 +106,7 @@ export default {
   },
   methods: {
     timestamped(link, timestamp) {
-     return (typeof link.PRODUCT === 'string' ? this.hrefP(link.name, link.PRODUCT) : (typeof link.product === 'string' ? this.hrefD(link.name, link.product) : eval(`\`${link.url}\``)));
+      return (typeof link.PRODUCT === 'string' ? this.hrefP(link.name, link.PRODUCT) : (typeof link.product === 'string' ? this.hrefD(link.name, link.product) : eval(`\`${link.url}\``)));
     },
   },
 };

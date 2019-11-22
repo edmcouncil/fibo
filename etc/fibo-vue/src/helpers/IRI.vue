@@ -2,23 +2,24 @@
   <component v-bind:is="processedHtml"></component>
 </template>
 <script>
-import customLink from "./link";
-import Vue from "vue";
-Vue.component("customLink", customLink);
+import Vue from 'vue';
+import customLink from './link';
+
+Vue.component('customLink', customLink);
 
 export default {
-  name: "IRI",
+  name: 'IRI',
   components: {
-    customLink
+    customLink,
   },
-  props: ["value", "entityMaping"],
+  props: ['value', 'entityMaping'],
   computed: {
     processedHtml() {
-      let html = `<customLink name="${this.value.label}" query="${this.value.iri}"></customLink>`;
+      const html = `<customLink name="${this.value.label}" query="${this.value.iri}"></customLink>`;
       return {
-        template: "<div>" + html + "</div>"
+        template: `<div>${html}</div>`,
       };
-    }
-  }
+    },
+  },
 };
 </script>

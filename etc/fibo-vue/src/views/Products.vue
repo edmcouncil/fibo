@@ -83,7 +83,7 @@
 
 
 <script>
-import helpers from "../store/helpers.js";
+import helpers from '../store/helpers.js';
 
 export default {
   extends: helpers,

@@ -1,8 +1,8 @@
 export default {
   data: () => ({
     timestamp:	process.env.VUE_APP_TIMESTAMP,
-    branch:     process.env.VUE_APP_BRANCH,
-    tag:        process.env.VUE_APP_TAG,
+    branch: process.env.VUE_APP_BRANCH,
+    tag: process.env.VUE_APP_TAG,
   }),
   mutations: {
 
@@ -13,25 +13,23 @@ export default {
   namespaced: true,
   methods: {
     router(product) {
-      var s = [];
+      const s = [];
       if (typeof product === 'string') s.push(product);
-      return '/'+s.join('/')+(typeof this.$route.query.tag === 'string'?'?tag='+this.$route.query.tag:'');
+      return `/${s.join('/')}${typeof this.$route.query.tag === 'string' ? `?tag=${this.$route.query.tag}` : ''}`;
     },
-    hrefD(path,product) {
+    hrefD(path, product) {
       return require('path').join(process.env.BASE_URL,
-		(typeof product	=== 'string'?product:this.$options.name),
-		this.branch,
-		(typeof this.$route.query.tag === 'string'?this.$route.query.tag:this.tag),
-		(typeof path	=== 'string'?path:'')
-        );
+        (typeof product	=== 'string' ? product : this.$options.name),
+        this.branch,
+        (typeof this.$route.query.tag === 'string' ? this.$route.query.tag : this.tag),
+        (typeof path	=== 'string' ? path : ''));
     },
-    hrefP(path,product) {
+    hrefP(path, product) {
       return require('path').join(process.env.BASE_URL,
-		(typeof product	=== 'string'?product:this.$options.name),
-		this.branch,
-		this.timestamp,
-		(typeof path	=== 'string'?path:'')
-        );
-    }
-  }
+        (typeof product	=== 'string' ? product : this.$options.name),
+        this.branch,
+        this.timestamp,
+        (typeof path	=== 'string' ? path : ''));
+    },
+  },
 };

@@ -423,7 +423,7 @@ It should make replacements in approx. 320 files.
 
 
 <script>
-import helpers from "../store/helpers.js";
+import helpers from '../store/helpers.js';
 
 export default {
   extends: helpers,
