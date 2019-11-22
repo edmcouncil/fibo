@@ -134,16 +134,14 @@ export default {
     let queryParam = '';
 
     if (this.$route.params && this.$route.params[1]) {
-      let ontologyQuery = Object.values(this.$route.params)
-        .filter((el) => {
-          return el != null;
-        })
+      const ontologyQuery = Object.values(this.$route.params)
+        .filter((el) => el != null)
         .join('/');
       queryParam = `https://spec.edmcouncil.org/fibo/ontology/${ontologyQuery}`;
       console.log(queryParam);
     } else if (this.$route.query && this.$route.query.query) {
-        queryParam = this.$route.query.query || "";
-      }
+      queryParam = this.$route.query.query || '';
+    }
 
     if (this.$route.query && this.$route.query.domain) {
       this.ontologyServer = this.$route.query.domain;
@@ -165,7 +163,7 @@ export default {
   },
   methods: {
     queryForOntology() {
-      const {query} = this;
+      const { query } = this;
       this.$router.push({ path: this.$route.path, query: { query } });
       this.fetchData(this.query);
     },
@@ -175,7 +173,7 @@ export default {
         this.data = null;
         try {
           const result = await getOntology(query, this.ontologyServer);
-          let body = await result.json();
+          const body = await result.json();
           this.data = body;
         } catch (err) {
           console.error(err);
@@ -202,7 +200,7 @@ export default {
     }),
   },
   watch: {
-    '$route.query.query': function(query) {
+    '$route.query.query': function (query) {
       this.fetchData(query);
     },
   },
