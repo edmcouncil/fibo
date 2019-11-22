@@ -12,7 +12,7 @@
     <div class="row" v-if="error">
       <div class="col-12">
         <div class="alert alert-danger" role="alert">
-          <strong>Error!</strong> Cannot fetch data, please try leater.
+          <strong>Error!</strong> Cannot fetch data, please try later.
         </div>
       </div>
     </div>
@@ -21,13 +21,13 @@
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">{{data.label.toUpperCase()}}</h5>
-            <h6 class="card-subtitle mb-2 text-muted">
+            <h6 class="card-subtitle mb-2 text-muted" v-if="data.iri">
               {{data.iri}}
-              <button v-clipboard="data.iri">Copy</button>
+              <button v-clipboard="data.iri" type="button" class="btn btn-sm btn-outline-primary">Copy</button>
             </h6>
-            <h6 class="card-subtitle mb-2 text-muted">
+            <h6 class="card-subtitle mb-2 text-muted" v-if="data.qName">
               {{data.qName}}
-              <button v-clipboard="data.qName.replace('QName: ', '')">Copy</button>
+              <button v-clipboard="data.qName.replace('QName: ', '')" type="button" class="btn btn-sm btn-outline-primary">Copy</button>
             </h6>
             <span v-if="data.taxonomy && data.taxonomy.value">
               <p v-for="taxonomy in data.taxonomy.value" :key="taxonomy" class="taxonomy">
