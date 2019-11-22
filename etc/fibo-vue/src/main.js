@@ -1,6 +1,7 @@
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Vue from 'vue';
+import VueAnalytics from 'vue-analytics';
 import Clipboard from 'v-clipboard';
 import App from './App.vue';
 import router from './router';
@@ -10,6 +11,13 @@ import moduleTree from './helpers/moduleElement.vue';
 Vue.config.productionTip = false;
 Vue.component('module-tree', moduleTree);
 Vue.use(Clipboard);
+
+Vue.config.productionTip = false;
+
+Vue.use(VueAnalytics, {
+  id: 'UA-124531442-2',
+  router,
+});
 
 new Vue({
   router,

@@ -1,9 +1,9 @@
 <template>
   <div id="app">
-    <Header v-if="!$route.meta.plainLayout"></Header>
+    <Header></Header>
     <Carousel v-if="!$route.meta.plainLayout"></Carousel>
     <router-view/>
-    <Footer v-if="!$route.meta.plainLayout"></Footer>
+    <Footer></Footer>
   </div>
 </template>
 <script>

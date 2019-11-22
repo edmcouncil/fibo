@@ -7,9 +7,7 @@
         </h1>
 
         <h2>
-          One of the wonderful features of Ontologies, as developed by EDMC for FIBO, is that an ontology will be both
-          machine readable (OWL) and people readable (UML). For this to be truly practical, it is necessary to be able
-          to round trip between the two representations of the same reality. The Semantic Modelling for Information
+          One of the wonderful features of Ontologies, as developed by EDMC for FIBO, is that an ontology will be both machine readable (OWL) and people readable (UML). For this to be truly practical, it is necessary to be able to round trip between the two representations of the same reality. The Semantic Modelling for Information
           Federation (
           <a
             href="https://github.com/ModelDriven/SIMF/blob/master/NextSubmission/SMIFSubmissionMasterDocument.pdf"
@@ -17,7 +15,7 @@
           specification being developed by the OMG provides the design to do this. It is currently being implemented by
           No Magic in their product Cameo Concept Modeler (CCM). As this is a work in progress, this section of
           spec.edmcouncil.org/fibo has a sample from FIBO Production. Defining diagrams for FIBO Foundations (FND) and
-          FIBO Business Entities has been chosen as preview of this capability.
+          FIBO Business Entities has been chosen as a preview of this capability.
         </h2>
         <p>
           Ontologies are shown in
