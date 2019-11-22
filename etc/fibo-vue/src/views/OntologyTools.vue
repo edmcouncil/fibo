@@ -173,8 +173,8 @@
                 <li><a :href="hrefD('LoadFIBODev.rdf','ontology')" v-on:click="outboundClick('LoadFIBODev.rdf')">LoadFIBODev.rdf</a> for the development version or</li>
                 <li><a :href="hrefP('LoadFIBOProd.rdf','ontology')" v-on:click="outboundClick('LoadFIBOProd.rdf')">LoadFIBOProd.rdf</a> for the production version</li>
               </ol>
-              
-              
+
+
             </li>
           </ol>
           <p>
