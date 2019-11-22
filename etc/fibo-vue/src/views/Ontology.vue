@@ -49,7 +49,7 @@
         <ul class="modules-list list-unstyled">
           <module-tree :item="item" v-for="item in modulesList" :location="data" :key="item.label" />
         </ul>
-        <div class="text-center" v-if="!modulesList">
+        <div class="text-center" v-if="!modulesList && !error">
           <div class="spinner-border" role="status">
             <span class="sr-only">Loading...</span>
           </div>
