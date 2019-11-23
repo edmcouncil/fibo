@@ -1,6 +1,8 @@
 export default {
   data: () => ({
-    timestamp: '2019Q3.1',
+    timestamp:  process.env.VUE_APP_TIMESTAMP,
+    branch:     process.env.VUE_APP_BRANCH,
+    tag:        process.env.VUE_APP_TAG,
   }),
   mutations: {
 
