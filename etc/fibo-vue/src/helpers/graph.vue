@@ -12,7 +12,7 @@
           value="internal"
           checked="true"
         />
-        <label class="form-check-label" for="internal">class specyfic</label>
+        <label class="form-check-label" for="internal">class specific</label>
       </div>
       <div class="form-check form-check-inline">
         <input
