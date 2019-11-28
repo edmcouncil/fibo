@@ -56,7 +56,7 @@
 import vis from 'vis-network';
 
 export default {
-  name: 'graph',
+  name: 'vis-network',
   props: ['data'],
   mounted() {
     if (this.data) {

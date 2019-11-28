@@ -91,7 +91,7 @@
             <div class="card">
               <div class="card-body">
                 <h5 class="card-title">Data model for {{data.label}}</h5>
-                <graph :data="data.graph" />
+                <vis-network :data="data.graph" />
               </div>
             </div>
           </div>
@@ -107,16 +107,16 @@ import { getOntology, getModules } from '../api/ontology';
 
 export default {
   components: {
-    AXIOM: () => import(/* webpackChunkName: "AXIOM" */ '../helpers/AXIOM'),
-    STRING: () => import(/* webpackChunkName: "STRING" */ '../helpers/STRING'),
+    AXIOM: () => import(/* webpackChunkName: "AXIOM" */ '../components/chunks/AXIOM'),
+    STRING: () => import(/* webpackChunkName: "STRING" */ '../components/chunks/STRING'),
     DIRECT_SUBCLASSES: () => import(
-      /* webpackChunkName: "DIRECT_SUBCLASSES" */ '../helpers/DIRECT_SUBCLASSES'
+      /* webpackChunkName: "DIRECT_SUBCLASSES" */ '../components/chunks/DIRECT_SUBCLASSES'
     ),
-    MODULES: () => import(/* webpackChunkName: "MODULES" */ '../helpers/MODULES'),
-    IRI: () => import(/* webpackChunkName: "IRI" */ '../helpers/IRI'),
-    INSTANCES: () => import(/* webpackChunkName: "INSTANCES" */ '../helpers/INSTANCES'),
-    ANY_URI: () => import(/* webpackChunkName: "ANY_URI" */ '../helpers/ANY_URI'),
-    graph: () => import(/* webpackChunkName: "ANY_URI" */ '../helpers/graph'),
+    MODULES: () => import(/* webpackChunkName: "MODULES" */ '../components/chunks/MODULES'),
+    IRI: () => import(/* webpackChunkName: "IRI" */ '../components/chunks/IRI'),
+    INSTANCES: () => import(/* webpackChunkName: "INSTANCES" */ '../components/chunks/INSTANCES'),
+    ANY_URI: () => import(/* webpackChunkName: "ANY_URI" */ '../components/chunks/ANY_URI'),
+    VisNetwork: () => import(/* webpackChunkName: "ANY_URI" */ '../components/VisNetwork'),
   },
   props: ['ontology'],
   data() {

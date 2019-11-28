@@ -6,10 +6,10 @@ import Clipboard from 'v-clipboard';
 import App from './App.vue';
 import router from './router';
 import store from './store';
-import moduleTree from './helpers/moduleElement.vue';
+import ModuleTree from './components/ModuleTree.vue';
 
 Vue.config.productionTip = false;
-Vue.component('module-tree', moduleTree);
+Vue.component('module-tree', ModuleTree);
 Vue.use(Clipboard);
 
 Vue.config.productionTip = false;

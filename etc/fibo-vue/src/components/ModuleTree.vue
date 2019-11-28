@@ -19,7 +19,7 @@
 
 <script>
 import Vue from 'vue';
-import customLink from './link';
+import customLink from './chunks/link';
 
 Vue.component('customLink', customLink);
 
