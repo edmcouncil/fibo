@@ -24,8 +24,8 @@ export default {
         (typeof this.$route.query.tag === 'string' ? this.$route.query.tag : this.tag),
         (typeof path	=== 'string' ? path : ''));
     },
-    hrefP(path, product) {
-      return require('path').join(process.env.BASE_URL,
+    hrefP(path, product, addBaseUrl = true) {
+      return require('path').join((addBaseUrl ? process.env.BASE_URL : ""),
         (typeof product	=== 'string' ? product : this.$options.name),
         this.branch,
         this.timestamp,

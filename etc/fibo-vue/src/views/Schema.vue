@@ -7,8 +7,12 @@
         </h1>
         <h2>
           This
-          <a href="http://schema.org/docs/financial.html">page</a> provides background information on the use of
-          <a href="https://schema.org/">schema.org</a> for marking up banks and their financial products.
+          <a href="http://schema.org/docs/financial.html"
+            v-on:click="outboundLinkClick('http://schema.org/docs/financial.html')"
+          >page</a> provides background information on the use of
+          <a href="https://schema.org/"
+            v-on:click="outboundLinkClick('https://schema.org/')"
+          >schema.org</a> for marking up banks and their financial products.
         </h2>
       </article>
     </main>
@@ -17,9 +21,14 @@
 
 
 <script>
+import { outboundLinkClick } from '../helpers/ga';
+
 export default {
   name: 'schema',
   components: {},
+  methods: {
+    outboundLinkClick,
+  },
 };
 </script>
 

@@ -8,7 +8,9 @@
         <h2>
           The FIBO vocabulary is distributed using the Simple Knowledge
           Organization System
-          (<a href="https://www.w3.org/2004/02/skos/">SKOS</a>). SKOS is a W3C Recommendation that supports the use of knowledge organization systems (KOS) such as thesauri, classification schemes, subject heading lists, and taxonomies within the framework of the Semantic Web. The FIBO Vocabulary uses SKOS to provide a machine-readable dictionary of the FIBO terminology.
+          (<a href="https://www.w3.org/2004/02/skos/"
+              v-on:click="outboundLinkClick('https://www.w3.org/2004/02/skos/')"
+            >SKOS</a>). SKOS is a W3C Recommendation that supports the use of knowledge organization systems (KOS) such as thesauri, classification schemes, subject heading lists, and taxonomies within the framework of the Semantic Web. The FIBO Vocabulary uses SKOS to provide a machine-readable dictionary of the FIBO terminology.
         </h2>
 
         <div class="table-responsive">

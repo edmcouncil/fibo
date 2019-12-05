@@ -41,7 +41,7 @@
                   (
                   <a
                     :href="timestamped(element.link, timestamp)"
-                    v-on:click="outboundClick(element.link.name)"
+                    v-on:click="outboundLinkClick(element.link.name)"
                   >{{element.link.name}}</a>)
                 </span>
               </td>
@@ -50,7 +50,7 @@
                   v-for="xmlLink in element.xml"
                   :key="xmlLink.name"
                   :href="timestamped(xmlLink, timestamp)"
-                  v-on:click="outboundClick(xmlLink.name)"
+                  v-on:click="outboundLinkClick(xmlLink.name)"
                   class="inline"
                 >{{xmlLink.name}}</a>
                 <span v-if="!element.xml || element.xml.length === 0">N/A</span>
@@ -60,7 +60,7 @@
                   v-for="xmlLink in element.ttl"
                   :key="xmlLink.name"
                   :href="timestamped(xmlLink, timestamp)"
-                  v-on:click="outboundClick(xmlLink.name)"
+                  v-on:click="outboundLinkClick(xmlLink.name)"
                   class="inline"
                 >{{xmlLink.name}}</a>
                 <span v-if="!element.ttl || element.ttl.length === 0">N/A</span>
@@ -70,7 +70,7 @@
                   v-for="xmlLink in element.json"
                   :key="xmlLink.name"
                   :href="timestamped(xmlLink, timestamp)"
-                  v-on:click="outboundClick(xmlLink.name)"
+                  v-on:click="outboundLinkClick(xmlLink.name)"
                   class="inline"
                 >{{xmlLink.name}}</a>
                 <span v-if="!element.json || element.json.length === 0">N/A</span>
@@ -80,7 +80,7 @@
                   v-for="xmlLink in element.nq"
                   :key="xmlLink.name"
                   :href="timestamped(xmlLink, timestamp)"
-                  v-on:click="outboundClick(xmlLink.name)"
+                  v-on:click="outboundLinkClick(xmlLink.name)"
                   class="inline"
                 >{{xmlLink.name}}</a>
                 <span v-if="!element.nq || element.nq.length === 0">N/A</span>
@@ -98,6 +98,7 @@
 import { mapState } from 'vuex';
 import helpers from '../store/helpers.js';
 import { outboundClick } from '../helpers/ga';
+import { outboundLinkClick } from '../helpers/ga';
 
 export default {
   extends: helpers,
@@ -120,6 +121,7 @@ export default {
           : eval(`\`${link.url}\``);
     },
     outboundClick,
+    outboundLinkClick,
   },
 };
 </script>
