@@ -172,6 +172,7 @@ export default {
           const result = await getOntology(query, this.ontologyServer);
           const body = await result.json();
           this.data = body;
+          this.error = false;
         } catch (err) {
           console.error(err);
           this.error = true;
@@ -202,6 +203,20 @@ export default {
     },
   },
   beforeRouteUpdate(to, from, next) {
+    if (to != from) {
+      let queryParam = '';
+
+      if (to.query && to.query.query) {
+        queryParam = to.query.query || '';
+      } else {
+        queryParam = 'https://spec.edmcouncil.org/fibo' + to.path;
+      }
+      console.log(queryParam);
+      this.query = queryParam;
+      this.$nextTick(async function () {
+        this.fetchData(this.query);
+      });
+    };
     next();
   },
 };
