@@ -208,12 +208,12 @@ footer {
           font-size: 15px;
           color: map-get($colors-map, "white");
           text-decoration: none;
-          background: url(http://edmcouncil.site-ym.com/resource/resmgr/images/Homepage_Images/bgr_footer_contact_mail.png)
+          background: url(//edmcouncil.site-ym.com/resource/resmgr/images/Homepage_Images/bgr_footer_contact_mail.png)
             no-repeat left 15px;
         }
         &.phone {
           padding-left: 33px;
-          background: url(http://edmcouncil.site-ym.com/resource/resmgr/images/Homepage_Images/bgr_footer_contact_phone.png)
+          background: url(//edmcouncil.site-ym.com/resource/resmgr/images/Homepage_Images/bgr_footer_contact_phone.png)
             no-repeat left 15px;
         }
         &:last-child {
@@ -272,14 +272,14 @@ footer {
         display: block;
         width: 54px;
         height: 54px;
-        background: url(http://edmcouncil.site-ym.com/resource/resmgr/images/Homepage_Images/footer_twitter.png)
+        background: url(//edmcouncil.site-ym.com/resource/resmgr/images/Homepage_Images/footer_twitter.png)
           no-repeat left top;
       }
       &.linkedin a {
         display: block;
         width: 54px;
         height: 54px;
-        background: url(http://edmcouncil.site-ym.com/resource/resmgr/images/Homepage_Images/footer_linkedin.png)
+        background: url(//edmcouncil.site-ym.com/resource/resmgr/images/Homepage_Images/footer_linkedin.png)
           no-repeat left top;
       }
     }
