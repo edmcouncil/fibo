@@ -4,7 +4,7 @@
       <i :class="{down: isOpen}" />
     </div>
     <div class="label" :class="{ selected: isSelected}">
-      <customLink class="custom-link" :name="item.label" :query="item.iri"></customLink>
+      <customLink class="custom-link" :name="item.label" :query="item.iri" :customLinkOnClick="this.ontologyClicked"></customLink>
     </div>
     <ul v-show="isOpen" v-if="isFolder" class="list-unstyled">
       <module-tree
@@ -39,6 +39,29 @@ export default {
     toggle() {
       this.isOpen = !this.isOpen;
     },
+    ontologyClicked(event) {
+      var processedVueObj = this;
+      while(processedVueObj.$parent.item !== undefined){
+        processedVueObj = processedVueObj.$parent;
+      }
+      //processedVueObj - here it is the domain element
+      for(var domainEl in processedVueObj.$parent.$children){
+        processedVueObj.$parent.$children[domainEl].isOpen = false;
+        processedVueObj.$parent.$children[domainEl].isSelected = false;
+      }
+    }
+  },
+  mounted() {
+    if(this.item.iri.endsWith(window.location.pathname) || this.item.iri.endsWith(window.location.pathname + "/")){
+      var processedVueObj = this;
+      while(processedVueObj.$parent.item !== undefined){
+        processedVueObj.isOpen = true;
+        processedVueObj.isSelected = true;
+        processedVueObj = processedVueObj.$parent;
+      }
+      processedVueObj.isOpen = true;
+      processedVueObj.isSelected = true;
+    }
   },
   computed: {
     isFolder() {
