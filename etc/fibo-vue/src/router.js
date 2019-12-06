@@ -34,11 +34,6 @@ export default new Router({
       component: () => import(/* webpackChunkName: "SMIF-UML" */ './views/SMIF-UML.vue'),
     },
     {
-      path: '/linked-data-fragments',
-      name: 'LinkedDataFragments',
-      component: () => import(/* webpackChunkName: "LinkedDataFragments" */ './views/LinkedDataFragments.vue'),
-    },
-    {
       path: '/contact',
       name: 'Contact',
       component: () => import(/* webpackChunkName: "Contact" */ './views/Contact.vue'),

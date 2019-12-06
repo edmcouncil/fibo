@@ -22,12 +22,6 @@
                 <li>
                   <router-link replace :to="{ path: router('SMIF-UML') }">SMIF / UML Diagrams</router-link>
                 </li>
-                <li>
-                  <router-link
-                    replace
-                    :to="{ path: router('linked-data-fragments') }"
-                  >FIBO Linked Data Fragments</router-link>
-                </li>
               </ul>
             </div>
             <div class="col-md-6">
