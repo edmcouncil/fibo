@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <a name="ontologyViewerTopOfContainer" id="ontologyViewerTopOfContainer"></a>
     <div class="row" v-if="loader">
       <div class="col-12">
         <div class="text-center">
@@ -118,7 +119,7 @@ export default {
     ANY_URI: () => import(/* webpackChunkName: "ANY_URI" */ '../components/chunks/ANY_URI'),
     VisNetwork: () => import(/* webpackChunkName: "ANY_URI" */ '../components/VisNetwork'),
   },
-  props: ['ontology'],
+  props: ['ontology', 'ontologyHasBeenClickedFlag'], //ontologyHasBeenClickedFlag flag is used to do scrollTo: ontologyViewerTopOfContainer later on
   data() {
     return {
       loader: false,
@@ -219,6 +220,15 @@ export default {
     };
     next();
   },
+  updated(){
+    //scrollTo: ontologyViewerTopOfContainer
+    if(this.ontologyHasBeenClickedFlag){
+      var element = document.getElementById('ontologyViewerTopOfContainer');
+      var top = element.offsetTop;
+      window.scrollTo(0, top);
+      this.ontologyHasBeenClickedFlag = false;
+    }
+  }
 };
 </script>
 
