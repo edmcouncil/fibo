@@ -49,6 +49,8 @@ export default {
         processedVueObj.$parent.$children[domainEl].isOpen = false;
         processedVueObj.$parent.$children[domainEl].isSelected = false;
       }
+      
+      processedVueObj.$parent.ontologyHasBeenClickedFlag = true; //this flag is here to do scrollTo: ontologyViewerTopOfContainer later on
     }
   },
   mounted() {
