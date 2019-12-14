@@ -65,7 +65,7 @@
             >Documentation</a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <router-link class="dropdown-item" replace :to="{ path: router('FIBO-Communities') }">FIBO Communities</router-link>
-              <router-link class="dropdown-item" replace :to="{ path: router('') }">Development process</router-link>
+              <router-link class="dropdown-item" replace :to="{ path: router('development-process') }">Development process</router-link>
               <router-link class="dropdown-item" replace :to="{ path: router('') }">Ontology guide</router-link>
             </div>
           </li>

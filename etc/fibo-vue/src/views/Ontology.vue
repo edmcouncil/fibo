@@ -158,7 +158,7 @@
                 <p class="">
                   <strong>Release</strong>
                 </p>
-                <ul class="maturity-levels">
+                <ul class="nolmal-line-height">
                   <li>
                     Release ontologies have undergone unit and integration testing, and have passed the most rigorous tests for completeness, consistency, and correctness.
                   </li>
@@ -167,7 +167,7 @@
                 <p class="">
                   <strong>Provisional</strong>
                 </p>
-                <ul class="maturity-levels">
+                <ul class="nolmal-line-height">
                   <li>
                     Provisional ontologies were developed in the early days of FIBO but have not been vetted or tested to the level of Release.
                   </li>
@@ -176,7 +176,7 @@
                 <p class="">
                   <strong>Informative</strong>
                 </p>
-                <ul class="maturity-levels">
+                <ul class="nolmal-line-height">
                   <li>
                     Informative ontologies are ones that have been considered by the FIBO Community but have been explicitly rejected.
                     They are included in FIBO sources because they include information, without which FIBO would fail basic referential
@@ -354,11 +354,5 @@ h6 {
 }
 .modules-list {
   margin: 20px 0 0 20px;
-}
-article ul.maturity-levels li{
-  line-height: 1.5;
-}
-article ul.maturity-levels li:before{
-  margin-top: 10px;
 }
 </style>
