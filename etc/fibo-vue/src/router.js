@@ -49,9 +49,9 @@ export default new Router({
       component: () => import(/* webpackChunkName: "OWL" */ './views/OWL.vue'),
     },
     {
-      path: '/glossary',
-      name: 'Glossary',
-      component: () => import(/* webpackChunkName: "Glossary" */ './views/Glossary.vue'),
+      path: '/data-dictionary',
+      name: 'DataDictionary',
+      component: () => import(/* webpackChunkName: "DataDictionary" */ './views/DataDictionary.vue'),
     },
     {
       path: '/vocabulary',

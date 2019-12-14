@@ -46,7 +46,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-md-12 col-lg-4">
+      <div class="module-tree col-md-12 col-lg-4">
         <ul class="modules-list list-unstyled">
           <module-tree :item="item" v-for="item in modulesList" :location="data" :key="item.label" />
         </ul>
@@ -98,6 +98,103 @@
           </div>
         </div>
       </div>
+
+
+      <div class="col-md-12 col-lg-8" v-else>
+        <div class="row">
+          <div class="col-md-12">
+            <main>
+              <article>
+                <h1>
+                  <span>Viewer</span>
+                </h1>
+
+                <h3>About FIBO Viewer</h3>
+                <p>
+                  FIBO Viewer is a JAVA application that is specifically designed to access both the FIBO structure and its content
+                  in the easiest possible way. It can serve both as a web application and REST API. FIBO Viewer is an open-source
+                  project that is hosted by EDM Council.  See <a href="https://github.com/edmcouncil/fibo-viewer">https://github.com/edmcouncil/fibo-viewer</a> for details.
+                </p>
+
+                <h3>FIBO structure and maturity levels</h3>
+                <p class="text">
+                  To fully benefit from the FIBO Viewer, one should keep in mind two very important things about FIBO.
+                </p>
+                <p>
+                  1) FIBO is a set of ontologies. It is organized in a hierarchical directory structure to organize the ontologies.
+                  Top-level directories are called <i>domains</i>; beneath that may be one or two levels of <i>sub-domain</i>
+                  and then <i>modules</i> and dozens of <i>ontologies</i> at the bottom level:
+                </p>
+                
+                <ul>
+                  <li>
+                    FIBO domain
+                    <ul>
+                      <li>
+                        (FIBO sub-domain)
+                        <ul>
+                          <li>
+                            FIBO module
+                            <ul>
+                              <li>
+                                FIBO ontology
+                              </li>
+                            </ul>
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+
+                <p>
+                  On the left-hand side, there is a list of eleven FIBO Domains staring with the Business Entities at the top and ending with Securities at the bottom.
+                </p>
+                
+                <p class="text">
+                  2) Each FIBO ontology has one of <strong>three levels of maturity</strong>.
+                </p>
+                
+                <p class="">
+                  <strong>Release</strong>
+                </p>
+                <ul class="maturity-levels">
+                  <li>
+                    Release ontologies have undergone unit and integration testing, and have passed the most rigorous tests for completeness, consistency, and correctness.
+                  </li>
+                </ul>
+                
+                <p class="">
+                  <strong>Provisional</strong>
+                </p>
+                <ul class="maturity-levels">
+                  <li>
+                    Provisional ontologies were developed in the early days of FIBO but have not been vetted or tested to the level of Release.
+                  </li>
+                </ul>
+                
+                <p class="">
+                  <strong>Informative</strong>
+                </p>
+                <ul class="maturity-levels">
+                  <li>
+                    Informative ontologies are ones that have been considered by the FIBO Community but have been explicitly rejected.
+                    They are included in FIBO sources because they include information, without which FIBO would fail basic referential
+                    consistency tests. Casual users should usually ignore them. Developers should consider these for information only,
+                    to determine the detailed meaning of the things that reference them.
+                  </li>
+                </ul>
+                
+                <p class="text">
+                  One can see the maturity level for each FIBO ontology, see e.g.
+                  <a href="https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/FunctionalEntities/">https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/FunctionalEntities/</a>
+                </p>
+              </article>
+            </main>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </template>
@@ -244,8 +341,8 @@ h6 {
 .search-box {
   margin: 20px;
 }
-ul,
-li {
+.module-tree ul,
+.module-tree li {
   margin: 0;
   padding: 0;
   line-height: 24px;
@@ -257,5 +354,15 @@ li {
 }
 .modules-list {
   margin: 20px 0 0 20px;
+}
+article p.text {
+  padding-top: 30px;
+  padding-bottom: 10px;
+}
+article ul.maturity-levels li{
+  line-height: 1.5;
+}
+article ul.maturity-levels li:before{
+  margin-top: 10px;
 }
 </style>

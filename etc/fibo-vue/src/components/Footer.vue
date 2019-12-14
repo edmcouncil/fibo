@@ -30,16 +30,16 @@
                   <router-link replace :to="{ path: router('products') }">All Products</router-link>
                 </li>
                 <li>
-                  <router-link replace :to="{ path: router('OWL') }">FIBO OWL</router-link>
+                  <router-link replace :to="{ path: router('schema') }">FIBO Extension To Schema.org</router-link>
                 </li>
                 <li>
-                  <router-link replace :to="{ path: router('glossary') }">FIBO Glossary</router-link>
+                  <router-link replace :to="{ path: router('OWL') }">FIBO OWL</router-link>
                 </li>
                 <li>
                   <router-link replace :to="{ path: router('vocabulary') }">FIBO Vocabulary</router-link>
                 </li>
                 <li>
-                  <router-link replace :to="{ path: router('schema') }">FIBO Extension To Schema.org</router-link>
+                  <router-link replace :to="{ path: router('data-dictionary') }">FIBO data dictionary</router-link>
                 </li>
               </ul>
             </div>

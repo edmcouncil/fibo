@@ -27,7 +27,7 @@
           <table class="table table-style-grey">
             <tr>
               <td>
-                <router-link :to="{ path: router('glossary') }">FIBO glossary</router-link>
+                <router-link :to="{ path: router('data-dictionary') }">FIBO data dictionary</router-link>
               </td>
               <td>Web searchable, downloadable in .csv and .xlsx</td>
               <td>
