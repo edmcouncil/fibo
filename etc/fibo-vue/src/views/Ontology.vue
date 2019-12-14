@@ -119,7 +119,7 @@ export default {
     ANY_URI: () => import(/* webpackChunkName: "ANY_URI" */ '../components/chunks/ANY_URI'),
     VisNetwork: () => import(/* webpackChunkName: "ANY_URI" */ '../components/VisNetwork'),
   },
-  props: ['ontology', 'ontologyHasBeenClickedFlag'], //ontologyHasBeenClickedFlag flag is used to do scrollTo: ontologyViewerTopOfContainer later on
+  props: ['ontology'],
   data() {
     return {
       loader: false,
@@ -204,6 +204,7 @@ export default {
     },
   },
   beforeRouteUpdate(to, from, next) {
+    this.$root.ontologyRouteIsUpdating = true;
     if (to != from) {
       let queryParam = '';
 
@@ -222,11 +223,11 @@ export default {
   },
   updated(){
     //scrollTo: ontologyViewerTopOfContainer
-    if(this.ontologyHasBeenClickedFlag){
+    if((this.data != undefined) && (this.data.iri != undefined) && (this.$root.ontologyRouteIsUpdating)){
       var element = document.getElementById('ontologyViewerTopOfContainer');
       var top = element.offsetTop;
       window.scrollTo(0, top);
-      this.ontologyHasBeenClickedFlag = false;
+      this.$root.ontologyRouteIsUpdating = false;
     }
   }
 };
