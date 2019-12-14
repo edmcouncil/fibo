@@ -223,7 +223,10 @@ export default {
   },
   updated(){
     //scrollTo: ontologyViewerTopOfContainer
-    if((this.data != undefined) && (this.data.iri != undefined) && (this.$root.ontologyRouteIsUpdating)){
+    if(
+      ((this.data != undefined) && (this.data.iri != undefined) && (this.$root.ontologyRouteIsUpdating)) ||
+      (this.$route.query.scrollToTop == 'true'))
+    {
       var element = document.getElementById('ontologyViewerTopOfContainer');
       var top = element.offsetTop;
       window.scrollTo(0, top);
