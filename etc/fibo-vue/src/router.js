@@ -64,6 +64,11 @@ export default new Router({
       component: () => import(/* webpackChunkName: "Schema" */ './views/Schema.vue'),
     },
     {
+      path: '/FIBO-Communities',
+      name: 'FIBOCommunities',
+      component: () => import(/* webpackChunkName: "FIBOCommunities" */ './views/FIBOCommunities.vue'),
+    },
+    {
       path: '/ontology/:1?/:2?/:3?/:4?/:5?',
       name: 'ontology',
       component: () => import(/* webpackChunkName: "Schema" */ './views/Ontology.vue'),

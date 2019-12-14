@@ -147,7 +147,7 @@
                   </li>
                 </ul>
 
-                <p>
+                <p class="text">
                   On the left-hand side, there is a list of eleven FIBO Domains staring with the Business Entities at the top and ending with Securities at the bottom.
                 </p>
                 
@@ -354,10 +354,6 @@ h6 {
 }
 .modules-list {
   margin: 20px 0 0 20px;
-}
-article p.text {
-  padding-top: 30px;
-  padding-bottom: 10px;
 }
 article ul.maturity-levels li{
   line-height: 1.5;
