@@ -16,7 +16,7 @@ def runInOntologyPublisherContainer(Map config, Closure body) {
 
       echo "runInOntologyPublisherContainer shortStageName:${config.shortStageName}, longStageName:${config.longStageName}"
 
-      def containerName = "ontology-publisher-${env.BUILD_NUMBER}-${config.shortStageName}"
+      def containerName = "ontology-publisher-${env.EXECUTOR_NUMBER}-${config.shortStageName}"
 
       node('docker') {
         echo "Running in stage \"${config.longStageName}\" now"

@@ -40,30 +40,9 @@ export default {
       this.isOpen = !this.isOpen;
     },
     ontologyClicked(event) {
-      var processedVueObj = this;
-      while(processedVueObj.$parent.item !== undefined){
-        processedVueObj = processedVueObj.$parent;
-      }
-      //processedVueObj - here it is the domain element
-      for(var domainEl in processedVueObj.$parent.$children){
-        processedVueObj.$parent.$children[domainEl].isOpen = false;
-        processedVueObj.$parent.$children[domainEl].isSelected = false;
-      }
-      
-      processedVueObj.$parent.ontologyHasBeenClickedFlag = true; //this flag is here to do scrollTo: ontologyViewerTopOfContainer later on
     }
   },
   mounted() {
-    if(this.item.iri.endsWith(window.location.pathname) || this.item.iri.endsWith(window.location.pathname + "/")){
-      var processedVueObj = this;
-      while(processedVueObj.$parent.item !== undefined){
-        processedVueObj.isOpen = true;
-        processedVueObj.isSelected = true;
-        processedVueObj = processedVueObj.$parent;
-      }
-      processedVueObj.isOpen = true;
-      processedVueObj.isSelected = true;
-    }
   },
   computed: {
     isFolder() {
@@ -77,7 +56,7 @@ export default {
           this.isSelected = val.locationInModules.some(
             location => location == this.item.iri,
           );
-          this.isOpen = this.isOpen || this.isSelected;
+          this.isOpen = /* this.isOpen || */ this.isSelected; //isOpen is commented out to enable collapsing tree after opening different branch 
         }
       },
       deep: true,

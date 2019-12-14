@@ -123,14 +123,14 @@ export default {
           const sNode = selectedNodes[0];
           nodes.forEach((entry) => {
             if (entry.id === sNode) {
-              window.location.href = `/fibo/ontology?query=${entry.iri}`;
+              window.location.href = `/fibo/ontology?query=${entry.iri}&scrollToTop=true`;
             }
           });
         } else if (selectedEdges[0] !== undefined) {
           const sEgde = selectedEdges[0];
           edgesView.forEach((entry) => {
             if (entry.id === sEgde) {
-              window.location.href = `/fibo/ontology?query=${entry.iri}`;
+              window.location.href = `/fibo/ontology?query=${entry.iri}&scrollToTop=true`;
             }
           });
         }
