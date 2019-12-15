@@ -86,8 +86,7 @@
 
 <script>
 import helpers from '../store/helpers.js';
-import { outboundClick } from '../helpers/ga';
-import { outboundLinkClick } from '../helpers/ga';
+import { outboundClick, outboundLinkClick } from '../helpers/ga';
 
 export default {
   extends: helpers,

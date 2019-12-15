@@ -50,19 +50,54 @@
           </a>
           provides a layman's version of what is FIBO and how to use its content.
         </p>
+
+
+        <h3>Mission</h3>
+        <p>
+          Since January 2020, EDMC FIBO has been developed by an open community process with a mission to develop, maintain,
+          and promote global platform-independent, machine-readable and unambiguous data standard that enables understanding of
+          the financial terminology, cross-system federation and aggregation of data to improve effectiveness of decisions, to
+          improve efficiency in regulatory reporting and to fast-track the adoption of advanced analytical capabilities for financial
+          services.
+        </p>
+
+
+        <h3>How to contribute</h3>
+        <p class="text">
+          The FIBO development process follows rigorous and well-defined rules and principles
+          [REF TO <router-link :to="{ path: router('development-process') }">Development process</router-link>
+          AND
+          <router-link :to="{ path: router('ontology-guide') }">Ontology guide</router-link>]. 
+        </p>
+        <p class="text">
+          FIBO activities and development process are organized via two groups: the
+          <router-link :to="{ path: router('FIBO-Communities') }">FIBO Steering Group</router-link> and the
+          <router-link :to="{ path: router('FIBO-Communities') }">FIBO Community Group</router-link>.
+        </p>
+        <p class="text">
+          Since January 2020, the FIBO
+          <a href="https://github.com/edmcouncil/fibo"
+            v-on:click="outboundLinkClick('https://github.com/edmcouncil/fibo')">GitHub repository</a>
+          is the main platform for the FIBO Community Group discussion.
+          Please read <a href="https://github.com/edmcouncil/fibo/blob/master/README.md"
+            v-on:click="outboundClick('https://github.com/edmcouncil/fibo/blob/master/README.md')">READ.md</a> for details.
+        </p>
       </article>
     </main>
   </div>
 </template>
 
 <script>
-import { outboundClick } from '../helpers/ga';
+import helpers from '../store/helpers.js';
+import { outboundClick, outboundLinkClick } from '../helpers/ga';
 
 export default {
+  extends: helpers,
   name: 'home',
   components: {},
   methods: {
     outboundClick,
+    outboundLinkClick,
   },
 };
 </script>

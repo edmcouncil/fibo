@@ -38,7 +38,7 @@
             While it is possible to perform certain tests on sources (in most languages, these tests are largely syntactic; in the case of OWL, they can include some semantic completeness and logical correctness tests), official software testing for the development process is done on the products. Just as in classical software engineering, this is necessary, since it is imperative that the product delivered to the customers has itself been tested, not just some source that was used in building it. 
           </li>
           <li>
-            The conventional <a href="https://en.wikipedia.org/wiki/Software_release_life_cycle">Software Release Cycle</a> specifies many possible stages of development for a product.  In FIBO, we only use two of these, which we call DEVELOPMENT (corresponding roughly to Beta in the conventional cycle) and PRODUCTION (corresponding roughly to RC in the conventional cycle).  These stages are described in more detail below as "Publication Maturity Levels"
+            The conventional <a href="https://en.wikipedia.org/wiki/Software_release_life_cycle" v-on:click="outboundLinkClick('https://en.wikipedia.org/wiki/Software_release_life_cycle')">Software Release Cycle</a> specifies many possible stages of development for a product.  In FIBO, we only use two of these, which we call DEVELOPMENT (corresponding roughly to Beta in the conventional cycle) and PRODUCTION (corresponding roughly to RC in the conventional cycle).  These stages are described in more detail below as "Publication Maturity Levels"
           </li>
           <li>
             In conventional software development, especially when using a formal version control system like git, there can be many
@@ -51,9 +51,9 @@
         
         <h3>GitHub</h3>
         <p class="text">
-          The FIBO sources are kept in a repository on GitHub, <a href="https://github.com/edmcouncil">https://github.com/edmcouncil</a>.
+          The FIBO sources are kept in a repository on GitHub, <a href="https://github.com/edmcouncil" v-on:click="outboundLinkClick('https://github.com/edmcouncil')">https://github.com/edmcouncil</a>.
           As is customary with GitHub, changes to FIBO are made in a fork of the EDMC repository, and these changes are proposed to the
-          FIBO Community Group through a pull request. All FIBO Content and Tools are here. You will need a <a href="https://github.com/">GitHub</a> user name to
+          FIBO Community Group through a pull request. All FIBO Content and Tools are here. You will need a <a href="https://github.com/" v-on:click="outboundLinkClick('https://github.com/')">GitHub</a> user name to
           participate in the development process.  
         </p>
         
@@ -150,16 +150,21 @@
         </p>
         <ol class="nolmal-line-height">
           <li>
-            Create a login for <a href="https://github.com">github.com</a>.
+            Create a login for <a href="https://github.com"
+                                v-on:click="outboundLinkClick('https://github.com')">github.com</a>.
           </li>
           <li>
-            Make sure you have java installed; see <a href="https://www.oracle.com/technetwork/java/javase/downloads/index.html">https://www.oracle.com/technetwork/java/javase/downloads/index.html</a>, if you need to download java.
+            Make sure you have java installed; see <a href="https://www.oracle.com/technetwork/java/javase/downloads/index.html"
+                                                        v-on:click="outboundLinkClick('https://www.oracle.com/technetwork/java/javase/downloads/index.html')">https://www.oracle.com/technetwork/java/javase/downloads/index.html</a>, if you need to download java.
           </li>
           <li>
-            Install a git client.  In FIBO, we recommend Sourcetree from Atlassian (<a href="https://www.sourcetreeapp.com/">https://www.sourcetreeapp.com/</a>)
+            Install a git client.  In FIBO, we recommend Sourcetree from Atlassian (<a href="https://www.sourcetreeapp.com/"
+                                                        v-on:click="outboundLinkClick('https://www.sourcetreeapp.com/')">https://www.sourcetreeapp.com/</a>)
           </li>
           <li>
-            Make a "fork" of the "fibo" repository at <a href="https://github.com/edmcouncil/fibo">https://github.com/edmcouncil/fibo</a>. Clone your fork to your local repository.
+            Make a "fork" of the "fibo" repository at <a href="https://github.com/edmcouncil/fibo"
+                                                        v-on:click="outboundLinkClick('https://github.com/edmcouncil/fibo')">https://github.com/edmcouncil/fibo</a>.
+            Clone your fork to your local repository.
           </li>
           <li>
             Install FIBO serialization tools (see below). This is important so that your code can be compared and merged with code from other contributors. You cannot submit a pull request to the fibo repository without this step. 
@@ -190,7 +195,8 @@
           <li>
             The Git command line can be run from within the SourceTree tool by selecting "Open in terminal" from the Actions menu.
             Alternatively, you may set up a Git shell environment – see separate page
-            ‘<a href="https://wiki.edmcouncil.org/display/INFRA/Setting+up+a+Git+Shell">Setting up the Git Shell</a>’ for details.
+            ‘<a href="https://wiki.edmcouncil.org/display/INFRA/Setting+up+a+Git+Shell"
+              v-on:click="outboundLinkClick('https://wiki.edmcouncil.org/display/INFRA/Setting+up+a+Git+Shell')">Setting up the Git Shell</a>’ for details.
           </li>
           <li>
             Running the initialization command should ensure that your .git environment exists and that it includes the /hooks directory. This does not automatically install or update the two files that you need to have in place for the Serializer to work. These are: 
@@ -203,13 +209,15 @@
             These files are updated from time to time so it is recommended that you re-download these directly from the links below before proceeding.
           </li>
           <li>
-            Copy the file <a href="https://raw.githubusercontent.com/edmcouncil/rdf-toolkit/master/etc/git-hook/pre-commit">pre-commit</a> to your hooks directory (use right-click on the link and select the save option).  Make sure that the name of the file is just pre-commit; your browser might want to append a suffix like .txt to it. 
+            Copy the file <a href="https://raw.githubusercontent.com/edmcouncil/rdf-toolkit/master/etc/git-hook/pre-commit"
+            v-on:click="outboundLinkClick('https://raw.githubusercontent.com/edmcouncil/rdf-toolkit/master/etc/git-hook/pre-commit')">pre-commit</a> to your hooks directory (use right-click on the link and select the save option).  Make sure that the name of the file is just pre-commit; your browser might want to append a suffix like .txt to it. 
           </li>
           <li>
             Edit this pre-commit file to point to your Java JRE/JDK. To do this, open the pre-commit file in a text editor and search for “JAVA_HOME”. Edit the directory after JAVA_HOME= to point to the location of your Java 8 (a.k.a version 1.8) or higher JRE/JDK, and save it. 
           </li>
           <li>
-            Copy the file <a href="https://jenkins.edmcouncil.org/job/rdf-toolkit-build/lastSuccessfulBuild/artifact/target/scala-2.12/rdf-toolkit.jar">rdf-toolkit.jar</a> to your hooks directory by clicking on the link, viewing where the download was saved, and moving or copying it to the .git/hooks directory. 
+            Copy the file <a href="https://jenkins.edmcouncil.org/job/rdf-toolkit-build/lastSuccessfulBuild/artifact/target/scala-2.12/rdf-toolkit.jar"
+                            v-on:click="outboundClick('https://jenkins.edmcouncil.org/job/rdf-toolkit-build/lastSuccessfulBuild/artifact/target/scala-2.12/rdf-toolkit.jar')">rdf-toolkit.jar</a> to your hooks directory by clicking on the link, viewing where the download was saved, and moving or copying it to the .git/hooks directory. 
           </li>
         </ul>
 
@@ -271,7 +279,8 @@
           </li>
           <li>
             Download the FIBO tools from
-            <a href="https://jenkins.edmcouncil.org/job/fibo-infra-publish/lastSuccessfulBuild/artifact/jenkins/bin/dev_toolkit.zip">https://jenkins.edmcouncil.org/job/fibo-infra-publish/lastSuccessfulBuild/artifact/jenkins/bin/dev_toolkit.zip</a>
+            <a href="https://jenkins.edmcouncil.org/job/fibo-infra-publish/lastSuccessfulBuild/artifact/jenkins/bin/dev_toolkit.zip"
+               v-on:click="outboundClick('https://jenkins.edmcouncil.org/job/fibo-infra-publish/lastSuccessfulBuild/artifact/jenkins/bin/dev_toolkit.zip')">https://jenkins.edmcouncil.org/job/fibo-infra-publish/lastSuccessfulBuild/artifact/jenkins/bin/dev_toolkit.zip</a>
             <span style="color: red;"> [DOES NOT WORK]</span>.  Unzip this into your FIBO installation directory. 
           </li>
           <li>
@@ -309,7 +318,7 @@
 
 <script>
 import helpers from '../store/helpers.js';
-import { outboundClick } from '../helpers/ga';
+import { outboundClick, outboundLinkClick } from '../helpers/ga';
 
 export default {
   extends: helpers,
@@ -317,6 +326,7 @@ export default {
   components: {},
   methods: {
     outboundClick,
+    outboundLinkClick,
   },
 };
 </script>

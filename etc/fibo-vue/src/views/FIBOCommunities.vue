@@ -54,8 +54,9 @@
                 <p class="text">
                   Any proposed FIBO extension should strictly follow the code of conduct [ref to code of conduct in repo],
                   which includes the principles for best practice
-                  [ref to <a href="/">C. Ontology guide</a>]
-                  and the steps described in the FIBO developer guide [ref to <a href="/">B. Development process</a>].
+                  <router-link :to="{ path: router('ontology-guide') }">Ontology guide</router-link>
+                  and the steps described in the
+                  <router-link :to="{ path: router('development-process') }">FIBO developer guide</router-link>.
                 </p>
                 
                 <p class="text">
@@ -66,7 +67,9 @@
            
                 <h3>FIBO GitHub repository and FIBO website</h3>
                 <p>
-                  Since January 2020, the FIBO <a href="/">GitHub repository</a> is the main platform for the FIBO Community Group
+                  Since January 2020, the FIBO
+                  <a href="https://github.com/edmcouncil/fibo"
+                    v-on:click="outboundLinkClick('https://github.com/edmcouncil/fibo')">GitHub repository</a> is the main platform for the FIBO Community Group
                   discussion and the FIBO website is the space where all the official FIBO materials are located.
                 </p>
               </article>
@@ -80,13 +83,16 @@
 </template>
 
 <script>
-import { outboundClick } from '../helpers/ga';
+import helpers from '../store/helpers.js';
+import { outboundClick, outboundLinkClick } from '../helpers/ga';
 
 export default {
+  extends: helpers,
   name: 'FIBOCommunities',
   components: {},
   methods: {
     outboundClick,
+    outboundLinkClick,
   },
 };
 </script>

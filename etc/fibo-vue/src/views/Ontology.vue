@@ -106,14 +106,17 @@
             <main>
               <article>
                 <h1>
-                  <span>Viewer</span>
+                  <span>FIBO Viewer</span>
                 </h1>
 
                 <h3>About FIBO Viewer</h3>
                 <p>
                   FIBO Viewer is a JAVA application that is specifically designed to access both the FIBO structure and its content
                   in the easiest possible way. It can serve both as a web application and REST API. FIBO Viewer is an open-source
-                  project that is hosted by EDM Council.  See <a href="https://github.com/edmcouncil/fibo-viewer">https://github.com/edmcouncil/fibo-viewer</a> for details.
+                  project that is hosted by EDM Council.
+                  See <a href="https://github.com/edmcouncil/fibo-viewer"
+                          v-on:click="outboundLinkClick('https://github.com/edmcouncil/fibo-viewer')">https://github.com/edmcouncil/fibo-viewer</a>
+                  for details.
                 </p>
 
                 <h3>FIBO structure and maturity levels</h3>
@@ -187,7 +190,8 @@
                 
                 <p class="text">
                   One can see the maturity level for each FIBO ontology, see e.g.
-                  <a href="https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/FunctionalEntities/">https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/FunctionalEntities/</a>
+                  <a href="https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/FunctionalEntities/"
+                    v-on:click="outboundLinkClick('https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/FunctionalEntities/')">https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/FunctionalEntities/</a>
                 </p>
               </article>
             </main>
@@ -202,6 +206,7 @@
 <script>
 import { mapState } from 'vuex';
 import { getOntology, getModules } from '../api/ontology';
+import { outboundClick, outboundLinkClick } from '../helpers/ga';
 
 export default {
   components: {
@@ -257,6 +262,8 @@ export default {
     this.fetchModules();
   },
   methods: {
+    outboundClick,
+    outboundLinkClick,
     queryForOntology() {
       const { query } = this;
       this.$router.push({ path: this.$route.path, query: { query } });
