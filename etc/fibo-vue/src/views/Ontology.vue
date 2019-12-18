@@ -43,6 +43,24 @@
       <!-- <pre class="language-json"><code>{{ searchBox.selectedData }}</code></pre> -->
     </div>
 
+    <div class="row" v-if="loader">
+      <div class="col-12">
+        <div class="text-center">
+          <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" v-if="error">
+      <div class="col-12">
+        <div class="alert alert-danger" role="alert">
+          <strong>Error!</strong> Cannot fetch data, please try later.
+        </div>
+      </div>
+    </div>
+
     <div class="searchResults" v-if="searchBox.selectedData && searchBox.selectedData.isSearch">
       <div v-for="result in searchBox.searchResults" :key="result" class="row">
         <div class="col-12">
@@ -61,22 +79,7 @@
       </div>
     </div>
 
-    <div class="row" v-if="loader">
-      <div class="col-12">
-        <div class="text-center">
-          <div class="spinner-border" role="status">
-            <span class="sr-only">Loading...</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row" v-if="error">
-      <div class="col-12">
-        <div class="alert alert-danger" role="alert">
-          <strong>Error!</strong> Cannot fetch data, please try later.
-        </div>
-      </div>
-    </div>
+    <div v-else>
     <div class="row" v-if="data">
       <div class="col-12">
         <div class="card">
@@ -167,6 +170,7 @@
           </article>
         </main>
       </div>
+    </div>
     </div>
   </div>
 
@@ -444,6 +448,9 @@ li {
 }
 .modules-list {
   margin: 20px 0 0 20px;
+}
+.searchResults{
+  margin: 20px 20px 0px 20px;
 }
 .searchResults a{
   font-weight: 500;
