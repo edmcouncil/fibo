@@ -18,7 +18,7 @@
                       id="ajax"
                       label="label"
                       track-by="iri"
-                      placeholder="Search for FIBO resource IRI"
+                      placeholder="Search..."
                       open-direction="bottom"
                       :options="searchBox.data"
                       :multiple="false"
@@ -66,12 +66,17 @@
             <div class="col-12">
               <div class="row">
                 <div class="col-12">
-                  <a :href="result.iri.replace('https://spec.edmcouncil.org', '')">{{result.label}}</a>
+                  <customLink class="custom-link" :name="result.label" :query="result.iri"></customLink>
                 </div>
               </div>
               <div class="row">
                 <div class="col-12 text-link">
                   {{result.iri}}
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12 text">
+                  {{result.description}}
                 </div>
               </div>
               <div class="border-bottom"></div>
@@ -182,7 +187,7 @@
                       id="ajax2"
                       label="label"
                       track-by="iri"
-                      placeholder="Search for FIBO resource IRI"
+                      placeholder="Search..."
                       open-direction="bottom"
                       :options="searchBox.data"
                       :multiple="false"
@@ -414,6 +419,7 @@ export default {
       ((this.data != undefined) && (this.data.iri != undefined) && (this.$root.ontologyRouteIsUpdating)) ||
       (this.$route.query.scrollToTop == 'true'))
     {
+      this.searchBox.selectedData = null; //to hide search results after ontology clicked on left tree
       this.scrollToOntologyViewerTopOfContainer();
     }
   },
@@ -457,8 +463,14 @@ li {
   margin-bottom: 5px;
   display: block;
 }
+.searchResults .text{
+  color: #707070;
+}
 .searchResults .text-link{
   color: #adb5bd;
+}
+.border-bottom{
+  margin-bottom: 5px;
 }
 .multiselect-container{
   margin: 20px 20px 0px 20px;
