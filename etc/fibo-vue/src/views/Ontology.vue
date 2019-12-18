@@ -1,4 +1,15 @@
 <template>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-2 col-xxxl-3 d-none d-xxl-block">
+        <div class="float-right">
+          <ul class="modules-list list-unstyled">
+            <module-tree :item="item" v-for="item in modulesList" :location="data" :key="item.label" />
+          </ul>
+        </div>
+      </div>
+      <div class="col-12 col-xxl-8 col-xxxl-6">
+
   <div class="container">
     <a name="ontologyViewerTopOfContainer" id="ontologyViewerTopOfContainer"></a>
     <div class="row" v-if="loader">
@@ -45,8 +56,19 @@
         </div>
       </div>
     </div>
+    <div class="row" v-else>
+      <div class="col-12">
+        <main>
+          <article>
+            <h1>
+              <span>What is Viewer?</span>
+            </h1>
+          </article>
+        </main>
+      </div>
+    </div>
     <div class="row">
-      <div class="col-md-12 col-lg-4">
+      <div class="col-md-12 col-lg-4 d-xxl-none">
         <ul class="modules-list list-unstyled">
           <module-tree :item="item" v-for="item in modulesList" :location="data" :key="item.label" />
         </ul>
@@ -56,7 +78,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-12 col-lg-8" v-if="data">
+      <div class="col-md-12 col-lg-8 col-xxl-12" v-if="data">
         <div class="row">
           <div
             class="col-md-12"
@@ -98,6 +120,11 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+
+      </div>
+      <div class="col-2 col-xxxl-3 d-none d-xxl-block"></div>
     </div>
   </div>
 </template>
@@ -261,5 +288,18 @@ li {
 }
 .modules-list {
   margin: 20px 0 0 20px;
+}
+</style>
+
+<style lang="scss">
+@media (min-width: 1px){
+  #ontograph{
+    height: 500px;
+  }
+}
+@media (min-width: 1900px){
+  #ontograph{
+    height: 1000px;
+  }
 }
 </style>

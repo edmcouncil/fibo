@@ -110,8 +110,6 @@ export default {
       };
       const network = new vis.Network(container, data, options);
 
-      const height = 500;
-      container.style.height = `${height}px`;
       network.redraw();
 
       network.on('doubleClick', (params) => {
