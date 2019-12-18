@@ -20,5 +20,13 @@ const getModules = function (domain) {
   }).then(parseServerError);
 };
 
+const getHint = function (query, domain) {
+  return fetch(domain + '/' + encodeURI(query), {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+    mode: 'no-cors',
+  }).then(parseServerError);
+};
 
-export { getOntology, getModules };
+
+export { getOntology, getModules, getHint };

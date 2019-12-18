@@ -12,6 +12,56 @@
 
   <div class="container">
     <a name="ontologyViewerTopOfContainer" id="ontologyViewerTopOfContainer"></a>
+
+    <div>
+      <label class="typo__label" for="ajax">Async multiselect</label>
+      <multiselect v-model="searchBox.selectedData"
+                   id="ajax"
+                   label="label"
+                   track-by="iri"
+                   placeholder="Type to search"
+                   open-direction="bottom"
+                   :options="searchBox.data"
+                   :multiple="false"
+                   :searchable="true"
+                   :loading="searchBox.isLoading"
+                   :internal-search="false"
+                   :clear-on-select="false"
+                   :close-on-select="true"
+                   :options-limit="300" :limit="3" :limit-text="searchBox_limitText"
+                   :max-height="600"
+                   :show-no-results="false"
+                   :hide-selected="false"
+                   :taggable="true"
+                   @select="searchBox_optionSelected"
+                   @tag="searchBox_addTag"
+                   @search-change="searchBox_asyncFind">
+        <template slot="tag" slot-scope="{ option, remove }"><span class="custom__tag"><span>{{ option.label }}</span><span class="custom__remove" @click="remove(option)">❌</span></span></template>
+        <template slot="clear" slot-scope="props">
+          <div class="multiselect__clear" v-if="searchBox.selectedData" @mousedown.prevent.stop="clearAll(props.search)"></div>
+        </template><span slot="noResult">Oops! No elements found. Consider changing the search query.</span>
+      </multiselect>
+      <!-- <pre class="language-json"><code>{{ searchBox.selectedData }}</code></pre> -->
+    </div>
+
+    <div class="searchResults" v-if="searchBox.selectedData && searchBox.selectedData.isSearch">
+      <div v-for="result in searchBox.searchResults" :key="result" class="row">
+        <div class="col-12">
+          <div class="row">
+            <div class="col-12">
+              <a :href="result.iri.replace('https://spec.edmcouncil.org', '')">{{result.label}}</a>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 text-link">
+              {{result.iri}}
+            </div>
+          </div>
+          <div class="border-bottom"></div>
+        </div>
+      </div>
+    </div>
+
     <div class="row" v-if="loader">
       <div class="col-12">
         <div class="text-center">
@@ -131,7 +181,8 @@
 
 <script>
 import { mapState } from 'vuex';
-import { getOntology, getModules } from '../api/ontology';
+import { getOntology, getModules, getHint } from '../api/ontology';
+import Multiselect from 'vue-multiselect';
 
 export default {
   components: {
@@ -145,6 +196,7 @@ export default {
     INSTANCES: () => import(/* webpackChunkName: "INSTANCES" */ '../components/chunks/INSTANCES'),
     ANY_URI: () => import(/* webpackChunkName: "ANY_URI" */ '../components/chunks/ANY_URI'),
     VisNetwork: () => import(/* webpackChunkName: "ANY_URI" */ '../components/VisNetwork'),
+    Multiselect,
   },
   props: ['ontology'],
   data() {
@@ -156,6 +208,18 @@ export default {
       modulesServer: null,
       modulesList: null,
       error: false,
+      searchBox: {
+        selectedData: null,
+        data: [],
+        isLoading: false,
+        searchResults: null
+      },
+      scrollToOntologyViewerTopOfContainer: function(){
+        var element = document.getElementById('ontologyViewerTopOfContainer');
+        var top = element.offsetTop;
+        window.scrollTo(0, top);
+        this.$root.ontologyRouteIsUpdating = false;
+      }
     };
   },
   mounted() {
@@ -199,7 +263,10 @@ export default {
         try {
           const result = await getOntology(query, this.ontologyServer);
           const body = await result.json();
-          this.data = body;
+          if(body.type != "details"){
+            console.error("body.type: " + body.type + ", expected: details");
+          }
+          this.data = body.result;
           this.error = false;
         } catch (err) {
           console.error(err);
@@ -218,6 +285,65 @@ export default {
         this.error = true;
       }
     },
+    
+    //vue-multiselect
+    searchBox_limitText (count) {
+      return `and ${count} other results`
+    },
+    searchBox_optionSelected(selectedOption, id){
+      var destRoute = selectedOption.iri;
+      if(destRoute.startsWith('https://spec.edmcouncil.org/fibo')){
+        //internal ontology
+        destRoute = destRoute.replace('https://spec.edmcouncil.org/fibo', '');
+        this.$router.push(destRoute);
+      }else{
+        //external ontology
+        this.$router.push({ path: '/ontology', query: { query: encodeURI(destRoute) }})
+      }
+      this.scrollToOntologyViewerTopOfContainer();
+    },
+    async searchBox_addTag (newTag) {
+      try {
+        const result = await getOntology(newTag, this.ontologyServer);
+        const body = await result.json();
+        if(body.type != "list"){
+          console.error("body.type: " + body.type + ", expected: list");
+        }
+        this.searchBox.searchResults = body.result;
+        this.error = false;
+      } catch (err) {
+        console.error(err);
+        this.error = true;
+      }
+
+      const tag = {
+        isSearch: true,
+        iri: newTag,
+        label: newTag
+      };
+      this.searchBox.selectedData = tag;
+    },
+    async searchBox_asyncFind (query) {
+      if(query.trim().length == 0){
+        this.searchBox.data = [];
+        return;
+      }
+
+      this.searchBox.isLoading = true
+      try {
+        const result = await getHint(query, '/hint');
+        const hints = await result.json();
+        this.searchBox.data = hints;
+        this.error = false;
+      } catch (err) {
+        console.error(err);
+        this.error = true;
+      }
+      this.searchBox.isLoading = false;
+    },
+    clearAll () {
+      this.searchBox.selectedData = null;
+    }
   },
   computed: {
     ...mapState({
@@ -240,7 +366,6 @@ export default {
       } else {
         queryParam = 'https://spec.edmcouncil.org/fibo' + to.path;
       }
-      console.log(queryParam);
       this.query = queryParam;
       this.$nextTick(async function () {
         this.fetchData(this.query);
@@ -254,14 +379,14 @@ export default {
       ((this.data != undefined) && (this.data.iri != undefined) && (this.$root.ontologyRouteIsUpdating)) ||
       (this.$route.query.scrollToTop == 'true'))
     {
-      var element = document.getElementById('ontologyViewerTopOfContainer');
-      var top = element.offsetTop;
-      window.scrollTo(0, top);
-      this.$root.ontologyRouteIsUpdating = false;
+      this.scrollToOntologyViewerTopOfContainer();
     }
-  }
+  },
 };
 </script>
+
+
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 
 <style lang="scss" scoped>
 h5,
@@ -288,6 +413,14 @@ li {
 }
 .modules-list {
   margin: 20px 0 0 20px;
+}
+.searchResults a{
+  font-weight: 500;
+  margin-bottom: 5px;
+  display: block;
+}
+.searchResults .text-link{
+  color: #adb5bd;
 }
 </style>
 
