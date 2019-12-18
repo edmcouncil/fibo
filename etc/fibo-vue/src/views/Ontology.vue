@@ -10,169 +10,169 @@
       </div>
       <div class="col-12 col-xxl-8 col-xxxl-6">
 
-  <div class="container">
-    <a name="ontologyViewerTopOfContainer" id="ontologyViewerTopOfContainer"></a>
+      <div class="container">
+        <a name="ontologyViewerTopOfContainer" id="ontologyViewerTopOfContainer"></a>
 
-    <div class="d-xxl-none multiselect-container">
-      <multiselect v-model="searchBox.selectedData"
-                   id="ajax"
-                   label="label"
-                   track-by="iri"
-                   placeholder="Search for FIBO resource IRI"
-                   open-direction="bottom"
-                   :options="searchBox.data"
-                   :multiple="false"
-                   :searchable="true"
-                   :loading="searchBox.isLoading"
-                   :internal-search="false"
-                   :clear-on-select="false"
-                   :close-on-select="true"
-                   :options-limit="300" :limit="3" :limit-text="searchBox_limitText"
-                   :max-height="600"
-                   :show-no-results="false"
-                   :hide-selected="false"
-                   :taggable="true"
-                   @select="searchBox_optionSelected"
-                   @tag="searchBox_addTag"
-                   @search-change="searchBox_asyncFind">
-        <template slot="tag" slot-scope="{ option, remove }"><span class="custom__tag"><span>{{ option.label }}</span><span class="custom__remove" @click="remove(option)">❌</span></span></template>
-        <template slot="clear" slot-scope="props">
-          <div class="multiselect__clear" v-if="searchBox.selectedData" @mousedown.prevent.stop="clearAll(props.search)"></div>
-        </template><span slot="noResult">Oops! No elements found. Consider changing the search query.</span>
-      </multiselect>
-      <!-- <pre class="language-json"><code>{{ searchBox.selectedData }}</code></pre> -->
-    </div>
+        <div class="d-xxl-none multiselect-container">
+          <multiselect v-model="searchBox.selectedData"
+                      id="ajax"
+                      label="label"
+                      track-by="iri"
+                      placeholder="Search for FIBO resource IRI"
+                      open-direction="bottom"
+                      :options="searchBox.data"
+                      :multiple="false"
+                      :searchable="true"
+                      :loading="searchBox.isLoading"
+                      :internal-search="false"
+                      :clear-on-select="false"
+                      :close-on-select="true"
+                      :options-limit="300" :limit="3" :limit-text="searchBox_limitText"
+                      :max-height="600"
+                      :show-no-results="false"
+                      :hide-selected="false"
+                      :taggable="true"
+                      @select="searchBox_optionSelected"
+                      @tag="searchBox_addTag"
+                      @search-change="searchBox_asyncFind">
+            <template slot="tag" slot-scope="{ option, remove }"><span class="custom__tag"><span>{{ option.label }}</span><span class="custom__remove" @click="remove(option)">❌</span></span></template>
+            <template slot="clear" slot-scope="props">
+              <div class="multiselect__clear" v-if="searchBox.selectedData" @mousedown.prevent.stop="clearAll(props.search)"></div>
+            </template><span slot="noResult">Oops! No elements found. Consider changing the search query.</span>
+          </multiselect>
+          <!-- <pre class="language-json"><code>{{ searchBox.selectedData }}</code></pre> -->
+        </div>
 
-    <div class="row" v-if="loader">
-      <div class="col-12">
-        <div class="text-center">
-          <div class="spinner-border" role="status">
-            <span class="sr-only">Loading...</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row" v-if="error">
-      <div class="col-12">
-        <div class="alert alert-danger" role="alert">
-          <strong>Error!</strong> Cannot fetch data, please try later.
-        </div>
-      </div>
-    </div>
-
-    <div class="searchResults" v-if="searchBox.selectedData && searchBox.selectedData.isSearch">
-      <div v-for="result in searchBox.searchResults" :key="result" class="row">
-        <div class="col-12">
-          <div class="row">
-            <div class="col-12">
-              <a :href="result.iri.replace('https://spec.edmcouncil.org', '')">{{result.label}}</a>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-12 text-link">
-              {{result.iri}}
-            </div>
-          </div>
-          <div class="border-bottom"></div>
-        </div>
-      </div>
-    </div>
-
-    <div v-else>
-    <div class="row" v-if="data">
-      <div class="col-12">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">{{data.label.toUpperCase()}}</h5>
-            <h6 class="card-subtitle mb-2 text-muted" v-if="data.iri">
-              {{data.iri}}
-              <button v-clipboard="data.iri" type="button" class="btn btn-sm btn-outline-primary">Copy</button>
-            </h6>
-            <h6 class="card-subtitle mb-2 text-muted" v-if="data.qName">
-              {{data.qName}}
-              <button v-clipboard="data.qName.replace('QName: ', '')" type="button" class="btn btn-sm btn-outline-primary">Copy</button>
-            </h6>
-            <span v-if="data.taxonomy && data.taxonomy.value">
-              <p v-for="taxonomy in data.taxonomy.value" :key="taxonomy" class="taxonomy">
-                <span v-for="(element,index) in taxonomy" :key="element">
-                  <customLink :name="element.valueA.value" :query="element.valueB.value"></customLink>
-                  <span
-                    class="card-subtitle mb-2 text-muted"
-                    v-if="index != Object.keys(taxonomy).length - 1"
-                  >&nbsp;>&nbsp;</span>
-                </span>
-              </p>
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-12 col-lg-4 d-xxl-none">
-        <ul class="modules-list list-unstyled">
-          <module-tree :item="item" v-for="item in modulesList" :location="data" :key="item.label" />
-        </ul>
-        <div class="text-center" v-if="!modulesList && !error">
-          <div class="spinner-border" role="status">
-            <span class="sr-only">Loading...</span>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-12 col-lg-8 col-xxl-12" v-if="data">
-        <div class="row">
-          <div
-            class="col-md-12"
-            v-for="(section, sectionName) in data.properties"
-            :key="sectionName"
-          >
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">{{sectionName}}</h5>
-                <dl
-                  class="row"
-                  v-for="( property, name ) in data.properties[sectionName]"
-                  :key="name"
-                >
-                  <dt class="col-sm-3">{{name}}</dt>
-                  <dd class="col-sm-9">
-                    <component
-                      v-for="field in property"
-                      :key="field.id"
-                      :is="field.type"
-                      :value="field.value"
-                      :entityMaping="field.entityMaping"
-                      v-bind="field"
-                    ></component>
-                  </dd>
-                </dl>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row" v-if="data && data.graph">
+        <div class="row" v-if="loader">
           <div class="col-12">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Data model for {{data.label}}</h5>
-                <vis-network :data="data.graph" />
+            <div class="text-center">
+              <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
               </div>
             </div>
           </div>
         </div>
+
+        <div class="row" v-if="error">
+          <div class="col-12">
+            <div class="alert alert-danger" role="alert">
+              <strong>Error!</strong> Cannot fetch data, please try later.
+            </div>
+          </div>
+        </div>
+
+        <div class="searchResults" v-if="searchBox.selectedData && searchBox.selectedData.isSearch">
+          <div v-for="result in searchBox.searchResults" :key="result" class="row">
+            <div class="col-12">
+              <div class="row">
+                <div class="col-12">
+                  <a :href="result.iri.replace('https://spec.edmcouncil.org', '')">{{result.label}}</a>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12 text-link">
+                  {{result.iri}}
+                </div>
+              </div>
+              <div class="border-bottom"></div>
+            </div>
+          </div>
+        </div>
+
+        <div v-else>
+          <div class="row" v-if="data">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">{{data.label.toUpperCase()}}</h5>
+                  <h6 class="card-subtitle mb-2 text-muted" v-if="data.iri">
+                    {{data.iri}}
+                    <button v-clipboard="data.iri" type="button" class="btn btn-sm btn-outline-primary">Copy</button>
+                  </h6>
+                  <h6 class="card-subtitle mb-2 text-muted" v-if="data.qName">
+                    {{data.qName}}
+                    <button v-clipboard="data.qName.replace('QName: ', '')" type="button" class="btn btn-sm btn-outline-primary">Copy</button>
+                  </h6>
+                  <span v-if="data.taxonomy && data.taxonomy.value">
+                    <p v-for="taxonomy in data.taxonomy.value" :key="taxonomy" class="taxonomy">
+                      <span v-for="(element,index) in taxonomy" :key="element">
+                        <customLink :name="element.valueA.value" :query="element.valueB.value"></customLink>
+                        <span
+                          class="card-subtitle mb-2 text-muted"
+                          v-if="index != Object.keys(taxonomy).length - 1"
+                        >&nbsp;>&nbsp;</span>
+                      </span>
+                    </p>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 col-lg-4 d-xxl-none">
+              <ul class="modules-list list-unstyled">
+                <module-tree :item="item" v-for="item in modulesList" :location="data" :key="item.label" />
+              </ul>
+              <div class="text-center" v-if="!modulesList && !error">
+                <div class="spinner-border" role="status">
+                  <span class="sr-only">Loading...</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12 col-lg-8 col-xxl-12" v-if="data">
+              <div class="row">
+                <div
+                  class="col-md-12"
+                  v-for="(section, sectionName) in data.properties"
+                  :key="sectionName"
+                >
+                  <div class="card">
+                    <div class="card-body">
+                      <h5 class="card-title">{{sectionName}}</h5>
+                      <dl
+                        class="row"
+                        v-for="( property, name ) in data.properties[sectionName]"
+                        :key="name"
+                      >
+                        <dt class="col-sm-3">{{name}}</dt>
+                        <dd class="col-sm-9">
+                          <component
+                            v-for="field in property"
+                            :key="field.id"
+                            :is="field.type"
+                            :value="field.value"
+                            :entityMaping="field.entityMaping"
+                            v-bind="field"
+                          ></component>
+                        </dd>
+                      </dl>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row" v-if="data && data.graph">
+                <div class="col-12">
+                  <div class="card">
+                    <div class="card-body">
+                      <h5 class="card-title">Data model for {{data.label}}</h5>
+                      <vis-network :data="data.graph" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12 col-lg-8 col-xxl-12" v-else>
+              <main>
+                <article>
+                  <h1>
+                    <span>What is Viewer?</span>
+                  </h1>
+                </article>
+              </main>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="col-md-12 col-lg-8 col-xxl-12" v-else>
-        <main>
-          <article>
-            <h1>
-              <span>What is Viewer?</span>
-            </h1>
-          </article>
-        </main>
-      </div>
-    </div>
-    </div>
-  </div>
 
       </div>
       <div class="col-2 col-xxxl-3 d-none d-xxl-block">
