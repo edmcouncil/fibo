@@ -13,13 +13,12 @@
   <div class="container">
     <a name="ontologyViewerTopOfContainer" id="ontologyViewerTopOfContainer"></a>
 
-    <div>
-      <label class="typo__label" for="ajax">Async multiselect</label>
+    <div class="d-xxl-none multiselect-container">
       <multiselect v-model="searchBox.selectedData"
                    id="ajax"
                    label="label"
                    track-by="iri"
-                   placeholder="Type to search"
+                   placeholder="Search for FIBO resource IRI"
                    open-direction="bottom"
                    :options="searchBox.data"
                    :multiple="false"
@@ -106,17 +105,6 @@
         </div>
       </div>
     </div>
-    <div class="row" v-else>
-      <div class="col-12">
-        <main>
-          <article>
-            <h1>
-              <span>What is Viewer?</span>
-            </h1>
-          </article>
-        </main>
-      </div>
-    </div>
     <div class="row">
       <div class="col-md-12 col-lg-4 d-xxl-none">
         <ul class="modules-list list-unstyled">
@@ -170,11 +158,51 @@
           </div>
         </div>
       </div>
+      <div class="col-md-12 col-lg-8 col-xxl-12" v-else>
+        <main>
+          <article>
+            <h1>
+              <span>What is Viewer?</span>
+            </h1>
+          </article>
+        </main>
+      </div>
     </div>
   </div>
 
       </div>
-      <div class="col-2 col-xxxl-3 d-none d-xxl-block"></div>
+      <div class="col-2 col-xxxl-3 d-none d-xxl-block">
+        
+        <div class="multiselect-xxl-container">
+          <multiselect v-model="searchBox.selectedData"
+                      id="ajax2"
+                      label="label"
+                      track-by="iri"
+                      placeholder="Search for FIBO resource IRI"
+                      open-direction="bottom"
+                      :options="searchBox.data"
+                      :multiple="false"
+                      :searchable="true"
+                      :loading="searchBox.isLoading"
+                      :internal-search="false"
+                      :clear-on-select="false"
+                      :close-on-select="true"
+                      :options-limit="300" :limit="3" :limit-text="searchBox_limitText"
+                      :max-height="600"
+                      :show-no-results="false"
+                      :hide-selected="false"
+                      :taggable="true"
+                      @select="searchBox_optionSelected"
+                      @tag="searchBox_addTag"
+                      @search-change="searchBox_asyncFind">
+            <template slot="tag" slot-scope="{ option, remove }"><span class="custom__tag"><span>{{ option.label }}</span><span class="custom__remove" @click="remove(option)">❌</span></span></template>
+            <template slot="clear" slot-scope="props">
+              <div class="multiselect__clear" v-if="searchBox.selectedData" @mousedown.prevent.stop="clearAll(props.search)"></div>
+            </template><span slot="noResult">Oops! No elements found. Consider changing the search query.</span>
+          </multiselect>
+          <!-- <pre class="language-json"><code>{{ searchBox.selectedData }}</code></pre> -->
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -216,8 +244,11 @@ export default {
       },
       scrollToOntologyViewerTopOfContainer: function(){
         var element = document.getElementById('ontologyViewerTopOfContainer');
-        var top = element.offsetTop;
-        window.scrollTo(0, top);
+
+        var rect = element.getBoundingClientRect(),
+        scrollTop = rect.top + (window.pageYOffset || document.documentElement.scrollTop);
+
+        window.scrollTo(0, scrollTop);
         this.$root.ontologyRouteIsUpdating = false;
       }
     };
@@ -421,6 +452,12 @@ li {
 }
 .searchResults .text-link{
   color: #adb5bd;
+}
+.multiselect-container{
+  margin: 20px 20px 0px 20px;
+}
+.multiselect-xxl-container{
+  margin-top: 20px;
 }
 </style>
 
