@@ -23,6 +23,7 @@ Thanks for your interest in contributing to FIBO! This page will give you a quic
 	* [Use case development](#use-case-development)
 	* [Terminology Work](#terminology-work)
 		* [Ontology Header Information](#ontology-header-information)
+		* [Maturity levels](#maturity-levels)
 		* [FIBO standard IRI format](#fibo-standard-iri-format)
 		* [Capturing Terminology for the Body of an Ontology](#capturing-terminology-for-the-body-of-an-ontology)
 		* [Naming and Labeling Conventions](#naming-and-labeling-conventions)
@@ -30,8 +31,8 @@ Thanks for your interest in contributing to FIBO! This page will give you a quic
 			* [Properties](#properties)
 			* [Naming conventions](#naming-conventions)
 			* [Definitions](#definitions)			
-* [FIBO website](#fibo-website)
-* [EDMC WIKI & JIRA](#edmc-wiki-&-jira)
+* [FIBO website](#fibo-vue-website)
+* [EDMC WIKI and JIRA](#edmc-wiki-and-jira)
 * [Code of conduct](#code-of-conduct)
  
 
@@ -81,7 +82,7 @@ documentation
 
 ## FIBO website
 
-* Help improving the [FIBO website](https://spec.edmcouncil.org/fibo/) (see below)
+* Help [improving the FIBO website](#fibo-vue-website)
 * Conduct user research to reorganize and refine the project’s navigation or menus
 * Put together a style guide to help the project have a consistent visual design
 * Create nice graphics
@@ -89,12 +90,10 @@ documentation
 
 
 # FIBO Content Teams
-FIBO Working Groups (FWGs) are formed when the FIBO Community Group  decides what existing or new FIBO Domain should be further developed. FWGs can also focus on creating documentation or use cases and user stories for FIBO.
+FIBO Content Teams (FCTs) are working groups that are formed when the FIBO Community Group  decides what existing or new FIBO Domain should be further developed. FCTs can also focus on creating documentation or use cases and user stories for FIBO.
 
 
-FCTs are designed to build FIBO with content that has been developed by the subject matter experts (SMEs) from the Finance industry and tested to the highest requirements published by the FIBO Community. Because of this, and the fact that several FCTs will be working simultaneously, it is necessary that each FCT operate under identical guidelines (this documents explains and defines.......). In between these meetings, Ontologists and other experts prepare for SME reviews that should be publish in the FIBO project repository.
-
-FCTs should be composed by who people who understand the idea of ontology and the Finance Domain.
+FCTs are designed to build FIBO with content that has been developed by the subject matter experts (SMEs) from the finance industry and tested to the highest requirements published by the FIBO Community. Because of this, and the fact that several FCTs will be working simultaneously, it is necessary that each FCT operate under identical guidelines (this documents explains and defines the [principles for best practices](#principles-of-best-practices)). FCTs should be composed by people who understand both the finance domain and the idea of ontology.
 
 
 
@@ -294,6 +293,24 @@ Note that there are cases where tooling such as Protege
 
 These issues are considered show stoppers from a FIBO publication perspective and must be rectified prior to checking in any ontology revisions.  In other words, DOCTYPE ENTITY declarations are required, use of abbreviated IRIs and QNames is required for readability purposes, and there must not be a default IRI in any FIBO ontology.
 
+### Maturity levels
+
+Each FIBO ontology has one of three levels of maturity.
+
+**Release**
+
+* Release ontologies have undergone unit and integration testing, and have passed the most rigorous tests for completeness, consistency, and correctness.
+
+**Provisional**
+
+* Provisional ontologies were developed in the early days of FIBO but have not been vetted or tested to the level of Release.
+
+**Informative**
+
+* Informative ontologies are ones that have been considered by the FIBO Community but have been explicitly rejected. They are included in FIBO sources because they include information, without which FIBO would fail basic referential consistency tests. Casual users should usually ignore them. Developers should consider these for information only, to determine the detailed meaning of the things that reference them.
+
+One can see the maturity level for each FIBO ontology, see e.g. [https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/FunctionalEntities/](https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/FunctionalEntities/)
+
 
 
 ### FIBO standard IRI format
@@ -387,13 +404,13 @@ Additional requirements with respect to definition development and supporting an
 
 
 
-# FIBO website 
+# FIBO Vue website 
 <img src="https://vuejs.org/images/logo.png" width="50" align="right"/>
 
-The FIBO Vue application sources are located in FIBO main repository. In the FIBO Vue source code is located under: fibo/etc/fibo-vue/. Please consult the [README.md](./etc/fibo-vue/README.md) file to learn how to update the FIBO website.
+The FIBO Vue application sources are located in FIBO main repository. Please consult the [README.md](./etc/fibo-vue/README.md) file to learn how to update the FIBO website.
   
 
-# EDMC WIKI & JIRA
+# EDMC WIKI and JIRA
 Before January 2020, [EDMC Wiki](https://wiki.edmcouncil.org/) and [EDMC Jira](https://jira.edmcouncil.org) were the main platforms for organizing the FIBO development process by the FIBO Community. They remain available for the FIBO Community.
 
 
