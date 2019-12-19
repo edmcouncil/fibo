@@ -138,7 +138,6 @@ Git has a "-s" command-line option to append the signature automatically to the 
 
 ```
 $ git commit -s -m 'This is my commit message'
-
 ```
 
 ## FIBO Serialization tools
@@ -168,22 +167,26 @@ You can test Your Installation with the following steps.  These steps assume you
 ```
 &fibo-fnd-law-lcap;hasCapacity.
 ```
-  It is a few lines after a line that contains fibo-be-le-lp;isRecognizedIn.
+
+It is a few lines after a line that contains fibo-be-le-lp;isRecognizedIn.
 * change 
 ```
 &fibo-fnd-law-lcap;hasCapacity
-```  to 
+```  
+to 
 ```
 &fibo-be-le-lp;isCapableOf
-``` .   Save the file. 
+```   
+Save the file. 
 * Commit the file to your branch.  In Sourcetree, select LegalPersons.rdf in the staging area, then "Stage Selected", then click "Commit" in the upper left.  Enter a comment (e.g., "Test serialization"), and click "commit" in the lower right.   Make sure that the toggle "Push changes immediately ..." is unselected. 
 * Examine LegalPersons.rdf,  It should have changed since you saved in a few steps ago.  Verify that your new line, with 
 ```
 &fibo-be-le-lp;isCapableOf
-``` now appears before the line with 
+``` 
+now appears before the line with 
 ```
 fibo-be-le-lp;isRecognizedIn
-``` .
+```
 * Return to the branch you were working on before this test (in Sourcetree, double-click in the left pane on, e.g., "master"). 
 * Delete branch SerializerTest.  (in Sourcetree, right-click on the branch in the left pane, and select "delete".  You might have to enable "Force delete" to make it work correctly. 
 
