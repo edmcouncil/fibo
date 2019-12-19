@@ -1,15 +1,13 @@
 <img src="https://spec.edmcouncil.org/fibo/htmlpages/master/latest/img/FIBO_logo.11aeaf9b.jpg" width="300" align="right"/>
 
-# FIBO
-
-## Financial Industry Business Ontology
+# Financial Industry Business Ontology
 <img src="https://spec.edmcouncil.org/fibo/htmlpages/master/latest/img/logo.66a988fe.png" width="150" align="right"/>
 
 FIBO is hosted and sponsored by the [Enterprise Data Management Council (EDM Council)](https://edmcouncil.org). 
 
 FIBO is a trademark of EDM Council, Inc. It is also standardized by the [Object Management Group (OMG)](https://www.omg.org/index.htm).
 
-## Introduction
+# Introduction
 
 FIBO defines the sets of things that are of interest in financial business applications and the ways that those things can relate to one another. In this way, FIBO can give meaning to any data (e.g., spreadsheets, relational databases, XML documents) that describe the business of finance. 
 
@@ -20,28 +18,28 @@ FIBO is published in a number of formats for operating use and business definiti
 FIBO concepts have been reviewed by [EDMC member firms](https://edmcouncil.org/page/listofmembersreview) over the years and represent a consensus of the common concepts as understood in the industry and as reflected in industry data models and message standards. 
 
 
-## Mission
+# Mission
 Since January 2020, FIBO has been developed by an **open community process** with a mission to develop, maintain, and promote global platform-independent, machine-readable and unambiguous data standard that enables understanding of the financial terminology, cross-system federation and aggregation of data to improve effectiveness of decisions, to improve efficiency in regulatory reporting and to fast-track the adoption of advanced analytical capabilities for financial services.
 
 
-## License
+# License
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-## How to contribute
+# How to contribute
 
-### Code of conduct
+## Code of conduct
 This project adheres to the Contributor Covenant code of conduct. By participating, you are expected to uphold this code. Please report unacceptable behavior to [fibo@edmcouncil.org](mailto:fibo@edmcouncil.org). 
 
 
-### Developer Certificate of Origin (DCO) 
+## Developer Certificate of Origin (DCO) 
 
 We use [Probot / DCO framework](https://github.com/probot/dco) to enforce the Developer Certificate of Origin (DCO) on Pull Requests. It requires all commit messages to contain the Signed-off-by line with an email address that matches the commit author. Contributors sign-off that they adhere to [these requirements](DCO) by adding a "Signed-off-by" line to commit messages.
 
-### Contributing to FIBO
+## Contributing to FIBO
 The FIBO development process follows rigorous and well-defined rules and principles. Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details. 
 
 
-## Directories
+# Directories
 
 Directory                | Description | Browse in FIBO Viewer |
 :----------------------- |:------- |:-----------|
@@ -59,7 +57,7 @@ Directory                | Description | Browse in FIBO Viewer |
 [/etc](./etc/)  | Everything that is not a published OWL ontology in a financial domain. The [fibo-vue](./etc/fibo-vue) subdirectory contains the source code of FIBO website. |  |
 [/etc/fibo-vue](./etc/)  | This subdirectory of [/etc](./etc/) contains the source code of FIBO website. |  |
 
-## External links
+# External links
 
 - [FIBO official website](https://spec.edmcouncil.org/fibo/)
 - [OMG Specification of FIBO](https://www.omg.org/spec/EDMC-FIBO/)
