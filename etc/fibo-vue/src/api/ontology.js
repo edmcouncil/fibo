@@ -21,9 +21,10 @@ const getModules = function (domain) {
 };
 
 const getHint = function (query, domain) {
-  return fetch(domain + '/' + encodeURI(query), {
-    method: 'GET',
+  return fetch(domain + '/', {
+    method: 'POST',
     headers: { 'Content-Type': 'application/json' },
+    body: query,
     mode: 'no-cors',
   }).then(parseServerError);
 };
