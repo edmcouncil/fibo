@@ -5,29 +5,34 @@ Thanks for your interest in contributing to FIBO! This page will give you a quic
 
 ## Table of contents
 
-* [What it means to contribute]()
-	* [Developing FIBO]()
-	* [FIBO Github space]()
-	* [Planning events and organizing]()
-	* [Coding]()
-	* [FIBO education and documentation]()
-	* [FIBO website]()
-* [FIBO Working Groups (aka FIBO Content Teams)]()
-* [Bug reports, feature requests and Pull Requests]()
-	* [Bug reports and feature requests]()
-	* [Pull Requests]()
-* [Contributing to the FIBO code]()
-	* [Developer Certificate of Origin (DCO)]()
+* [What it means to contribute](#what-it-means-to-contribute)
+	* [Developing FIBO](#developing-fibo)
+	* [FIBO Github space](#fibo-github-space)
+	* [Planning events and organizing](#planning-events-and-organizing)
+	* [Coding](#coding)
+	* [FIBO education and documentation](#fibo-education-and-documentation)
+	* [FIBO website](#fibo-website)
+* [FIBO Content Teams](#fibo-content-teams)
+* [Contributing to the FIBO code](#contributing-to-the-fibo-code)
+	* [Bug reports and feature requests](#bug-reports-and-feature-requests)
+	* [Pull Requests](#pull-requests)
+	* [Developer Certificate of Origin](#developer-certificate-of-origin)
 	* [FIBO Serialization tools](#fibo-serialization-tools)
 	* [Local Testing tools](#local-testing-tools)
-	* [Principles of best practices (aka FIBO code conventions)]()
-* [Updating the FIBO website]()
-	* [Sources location]()
-	* [Requirements]()
-	* [Running the content of website locally]()
-	* [Editing the FIBO website content]()
-* [EDMC WIKI & JIRA]()
-* [Code of conduct]()
+* [Principles of best practices](#principles-of-best-practices)
+	* [Use case development](#use-case-development)
+	* [Terminology Work](#terminology-work)
+		* [Ontology Header Information](#ontology-header-information)
+		* [FIBO standard IRI format](#fibo-standard-iri-format)
+		* [Capturing Terminology for the Body of an Ontology](#capturing-terminology-for-the-body-of-an-ontology)
+		* [Naming and Labeling Conventions](#naming-and-labeling-conventions)
+			* [Classes](#classes)
+			* [Properties](#properties)
+			* [Naming conventions](#naming-conventions)
+			* [Definitions](#definitions)			
+* [FIBO website](#fibo-website)
+* [EDMC WIKI & JIRA](#edmc-wiki-&-jira)
+* [Code of conduct](#code-of-conduct)
  
 
 # What it means to contribute
@@ -83,7 +88,7 @@ documentation
 * Suggest improvements in [FIBO Viewer](https://spec.edmcouncil.org/fibo/ontology/)
 
 
-# FIBO Working Groups (aka FIBO Content Teams)
+# FIBO Content Teams
 FIBO Working Groups (FWGs) are formed when the FIBO Community Group  decides what existing or new FIBO Domain should be further developed. FWGs can also focus on creating documentation or use cases and user stories for FIBO.
 
 
@@ -92,7 +97,13 @@ FCTs are designed to build FIBO with content that has been developed by the subj
 FCTs should be composed by who people who understand the idea of ontology and the Finance Domain.
 
 
-# Bug reports, feature requests and Pull Requests
+
+
+# Contributing to the FIBO code
+
+The FIBO sources are kept in this repository on GitHub. As is customary with GitHub, changes to FIBO can be proposed via the bug reports and feature requests or can be made in a fork of this repository, and then proposed directly to the FIBO Community Group through a pull request.   
+
+**You will need a GitHub user name to participate in the development process**.  
 
 ## Bug reports and feature requests
 Bug reports and feature requests are tracked as [GitHub issues](https://guides.github.com/features/issues/). Create an issue on FIBO repository and provide the following information by filling in the templates:
@@ -100,34 +111,31 @@ Bug reports and feature requests are tracked as [GitHub issues](https://guides.g
 * [bug report](./.github/ISSUE_TEMPLATE/bug_report.md)
 * [feature_request](./.github/ISSUE_TEMPLATE/feature_request.md)
 
+
 ## Pull Requests
 
-Please follow these steps to have your contribution considered by the maintainers:
+If you want to extend the content of FIBO trough pull requests, you'll need to do the following things: 
 
-1. Follow all instructions in [the template](PULL_REQUEST_TEMPLATE.md)
-2. Follow the FIBO developer quide and make sure that you proposal follows the principles of best practice 
-3. After you submit your pull request, verify that all [status checks](https://help.github.com/articles/about-status-checks/) are passing 
-4. If a status check is failing, and you believe that the failure is unrelated to your change, please leave a comment on the pull request explaining why you believe the failure is unrelated. A maintainer will re-run the status check for you. If we conclude that the failure was a false positive, then we will open an issue to track that problem with our status check suite.
-
-While the prerequisites above must be satisfied prior to having your pull request reviewed, the reviewer(s) may ask you to complete additional design work, tests, or other changes before your pull request can be ultimately accepted.
-
-
-# Contributing to the FIBO code
-
-If you want to extend the content of FIBO, you'll need to do the following things: 
-
-1. Create a login for github.com. 
 1. Make sure you have java installed; see https://www.oracle.com/technetwork/java/javase/downloads/index.html, if you need to download java.
 1. Install a git client.  In FIBO, we recommend [Sourcetree from Atlassian](https://www.sourcetreeapp.com/)
 1. Make a "fork" of the ["fibo" repository](https://github.com/edmcouncil/fibo). Clone your fork to your local repository.
 1. Install [FIBO serialization tools](#fibo-serialization-tools). This is important so that your code can be compared and merged with code from other contributors. You cannot submit a pull request to the fibo repository without this step. 
-1. Install the local testing tools (see below). This will allow you to process FIBO with the most common semantic web editing tools.
+1. Install the [local testing tools](#local-testing-tools). This will allow you to process FIBO with the most common semantic web editing tools.
 1. Edit FIBO using the RDF/OWL editor of your choice (Protégé, TopBraid, MagicDraw CCM, VOM, Cognitum Fluent Editor, etc. ).
-1. Submit a Pull Request to the EDM Council's ["fibo" repository](https://github.com/edmcouncil/fibo).
+1. Submit a Pull Request to the EDM Council's ["fibo" repository](https://github.com/edmcouncil/fibo). Please follow all instructions in [the template](PULL_REQUEST_TEMPLATE.md)
 
-You only have to do steps 1-6 once. Once you have begun contributing, you just repeat steps 7 and 8. 
+You only have to do steps 1-5 once. Once you have begun contributing, you just repeat steps 6 and 7. 
 
-## Developer Certificate of Origin (DCO) 
+
+### To have your contribution considered by the maintainers
+
+* Follow all instructions in [the template](PULL_REQUEST_TEMPLATE.md)
+* Follow the [principles of best practices](#principles-of-best-practices)
+* After you submit your pull request, verify that all [status checks](https://help.github.com/articles/about-status-checks/) are passing 
+* If a status check is failing, and you believe that the failure is unrelated to your change, please leave a comment on the pull request explaining why you believe the failure is unrelated. A maintainer will re-run the status check for you. If we conclude that the failure was a false positive, then we will open an issue to track that problem with our status check suite.
+* While the prerequisites above must be satisfied prior to having your pull request reviewed, the reviewer(s) may ask you to complete additional design work, tests, or other changes before your pull request can be ultimately accepted.
+
+## Developer Certificate of Origin
 
 We use [Probot / DCO framework](https://github.com/probot/dco) to enforce the Developer Certificate of Origin (DCO) on Pull Requests. It requires all commit messages to contain the Signed-off-by line with an email address that matches the commit author. Please read the full text of the [DCO](DCO). Contributors sign-off that they adhere to these requirements by adding a Signed-off-by line to commit messages.
 
@@ -150,7 +158,7 @@ When you cloned your fork to your local repository, you chose a directory in whi
 	* rdf-toolkit.jar
 * These files are updated from time to time so it is recommended that you re-download these directly from the links below before proceeding.
 * Copy the file pre-commit to your hooks directory (use right-click on the link and select the save option).  Make sure that the name of the file is just pre-commit; your browser might want to append a suffix like .txt to it. 
-* Edit this pre-commit file to point to your Java JRE/JDK. To do this, open the pre-commit file in a text editor and search for “JAVA_HOME”. Edit the directory after JAVA_HOME= to point to the location of your Java 8 (a.k.a version 1.8) or higher JRE/JDK, and save it. 
+* Edit this pre-commit file to point to your Java JRE/JDK. To do this, open the pre-commit file in a text editor and search for “JAVA\_HOME”. Edit the directory after JAVA\_HOME= to point to the location of your Java 8 (a.k.a version 1.8) or higher JRE/JDK, and save it. 
 * Copy the file rdf-toolkit.jar to your hooks directory by clicking on the link, viewing where the download was saved, and moving or copying it to the .git/hooks directory. 
 
 Once you have installed these two files, every commit you do will re-write your RDF/OWL files in a consistent way that can be compared and merged with work done by other FIBO collaborators. 
@@ -160,49 +168,30 @@ You can test Your Installation with the following steps.  These steps assume you
 * Create a branch of the FIBO repository (in Sourcetree, click the "branch" icon).  Name your branch SerializerTest.
 * In a text editor, open the file fibo/BE/LegalEntities/LegalPersons.rdf
 * Find the definition of LegalPerson in this file; it looks like this: 
-```
-<owl:Class rdf:about="&fibo-be-le-lp;LegalPerson">
-```
-* A few lines later, notice a line that contains 
-```
-&fibo-fnd-law-lcap;hasCapacity.
-```
+```<owl:Class rdf:about="&fibo-be-le-lp;LegalPerson">```
 
-It is a few lines after a line that contains fibo-be-le-lp;isRecognizedIn.
-* change 
-```
-&fibo-fnd-law-lcap;hasCapacity
-```  
-to 
-```
-&fibo-be-le-lp;isCapableOf
-```   
-Save the file. 
+* A few lines later, notice a line that contains 
+```&fibo-fnd-law-lcap;hasCapacity```. It is a few lines after a line that contains ```fibo-be-le-lp;isRecognizedIn.```
+
+* Change ```&fibo-fnd-law-lcap;hasCapacity``` to ```&fibo-be-le-lp;isCapableOf```. Save the file. 
 * Commit the file to your branch.  In Sourcetree, select LegalPersons.rdf in the staging area, then "Stage Selected", then click "Commit" in the upper left.  Enter a comment (e.g., "Test serialization"), and click "commit" in the lower right.   Make sure that the toggle "Push changes immediately ..." is unselected. 
-* Examine LegalPersons.rdf,  It should have changed since you saved in a few steps ago.  Verify that your new line, with 
-```
-&fibo-be-le-lp;isCapableOf
-``` 
-now appears before the line with 
-```
-fibo-be-le-lp;isRecognizedIn
-```
+* Examine LegalPersons.rdf,  It should have changed since you saved in a few steps ago.  Verify that your new line, with ```&fibo-be-le-lp;isCapableOf``` now appears before the line with ```fibo-be-le-lp;isRecognizedIn```.
 * Return to the branch you were working on before this test (in Sourcetree, double-click in the left pane on, e.g., "master"). 
 * Delete branch SerializerTest.  (in Sourcetree, right-click on the branch in the left pane, and select "delete".  You might have to enable "Force delete" to make it work correctly. 
 
 ## Local Testing tools
 FIBO developers are accustomed to using desktop tools like Protégé, TopBraid Composer, VOM, and MagicDraw/CCM.  These tools include a variety of tests that experienced users rely on to determine the correctness of their models. In order to satisfy themselves that the ontologies are correct, they need to be able to test the same configuration of ontologies that will be published (i.e., Production and Development, see above).  
 
-In order to make this possible on their local machine, developers need to be able to load just the Release ontologies (from their current testbed).  This is done by creating a file called AboutProd.ttl (also AboutProd.rdf).  Developers working with the pre-release files will want to load all FIBO files; this is done with a file called AboutDev.ttl (also AboutDev.rdf).  These "About" files load the same files that are loaded by the publishing process of FIBO (for Prod and Dev, respectively).  
+In order to make this possible on their local machine, developers need to be able to load just the Release ontologies (from their current testbed).  This is done by creating a file called **AboutProd.ttl** (also AboutProd.rdf).  Developers working with the pre-release files will want to load all FIBO files; this is done with a file called **AboutDev.ttl** (also AboutDev.rdf).  These "About" files load the same files that are loaded by the publishing process of FIBO (for Prod and Dev, respectively).  
 
 Some tools (e.g., Protégé and CCM) use catalog files to manage the file loading.  These can also be automatically created. 
 
 To perform local testing, do the following steps:
 
-1. Make sure you can run a Bash shell.  Windows now has a native Bash shell (Windows 10).  One is also available as part of SourceTree. 
-1. Download the FIBO tools from https://jenkins.edmcouncil.org/job/fibo-infra-publish/lastSuccessfulBuild/artifact/jenkins/bin/dev_toolkit.zip [DOES NOT WORK].  Unzip this into your FIBO installation directory. 
-1. Create a catalog file by running the shell command ./createCatalog.sh (optional, for use with Protege or CCM only)
-1. Create the About files by running the shell command ./createAbout.sh (this can take a while)
+1. Make sure you can run a Bash shell.  Windows now has a native Bash shell.  One is also available as part of SourceTree. 
+1. Download the FIBO tools: [dev_toolkit.zip](https://github.com/edmcouncil/fibo-infra/tree/master/jenkins/bin/dev_toolkit.zip).  Unzip this into your FIBO installation directory. 
+1. Create a catalog file by running the shell command ```./createCatalog.sh``` (optional, for use with Protege or CCM only)
+1. Create the About files by running the shell command ```./createAbout.sh``` (this can take a while)
 1. Load AboutProd.ttl (.rdf) or AboutDev.ttl (.rdf) to perform local tests. 
 
 Step 3 needs to be done again whenever you create a new file or change the base URI of a file. 
@@ -210,11 +199,8 @@ Step 3 needs to be done again whenever you create a new file or change the base 
 Step 4 needs to be done again whenever you change the maturity level or base URI of a file, add a new file or delete a file. 
 
 
-[url](https://spec.edmcouncil.org/fibo/development-process)
-
-
-## Principles of best practices (aka FIBO code conventions)
-### I. Use case development
+# Principles of best practices
+## Use case development
 
 * In general, and especially at more specific levels in the hierarchy, **every ontology element (i.e., class, property and definitional individual) should be used in at least one competency question in at least one use case**.  
 
@@ -251,7 +237,7 @@ There are a number of example use cases under development and/or complete.  Thes
 
 which may provide useful insight for those developing new use cases, and follow the guidelines listed above.
 
-### II. Terminology Work
+## Terminology Work
 
 FIBO generally follows the guidance provided in
 
@@ -270,7 +256,7 @@ Many institutions and government organizations are using FIBO as a reference for
 
 We recommend and are using ISO 704 for FIBO primarily because the principles it defines help ensure the consistency and quality of our definitions. Note that there is [a version of ISO 704 available online](http://semanticweb.kaist.ac.kr/org/tc37/pdocument/standards/ISO%20704.pdf).  Although it is a revision of the standard that has since been superseded, the principles for definition formation remain largely unchanged in newer editions.
 
-#### Ontology Header Information
+### Ontology Header Information
 FIBO ontologies are used for many different applications and are expressed in terms of the W3C Resource Description Framework (RDF), RDF Schema, and Web Ontology Language (OWL 2) standards.  There is a modular structure to facilitate reuse, and we use a standard RDF/XML serialization in Github that is supported by [the serializer tool](#fibo-serialization-tools) to ensure consistency.  
 
 The header of every ontology must include certain information that supports standardization and documentation for FIBO.  We reuse a number of ontologies in the development of terminology included in the header as well as the body of every ontology we publish, including:
@@ -310,7 +296,7 @@ These issues are considered show stoppers from a FIBO publication perspective an
 
 
 
-#### FIBO standard IRI format
+### FIBO standard IRI format
 
 For FIBO the basic pattern for non-versioned resource IRIs is:
 
@@ -340,7 +326,7 @@ fibo-<domain abbreviation>-<module abbreviation>-...-<module abbreviation>-<onto
 ```
 where all elements between the dashes are lower-case alpha. 
 
-#### Capturing Terminology for the Body of an Ontology
+### Capturing Terminology for the Body of an Ontology
 While there are ontologists that argue that naming in an ontology is not only irrelevant but can be challenging due to the number and nature of overlapping terms, overloaded terms, and other issues that many industries face, **FIBO's primary use case is to assist in the standardization and disambiguation of terminology used in the financial domain**, and specifically for use in contracts.  
 
 This means that the terminology is just as important as the underlying logic and mathematics as a product that the industry can use, and **words do matter**.  Having said this, it can be very difficult to ensure that the terminology used is acceptable to all of our FIBO stakeholders, and so we encourage and need participation by subject matter experts to ensure that we have complete and appropriate coverage for the terms used in a given sub-domain of finance.  Many institutions have found that their team members are sometimes 'sloppy' with the language that they use.  Culturally, especially within small sub-groups, the language used can evolve based on internal jargon, the jargon used in the applications that the team needs to do their work, and due to other factors.  The intent here is to do our best to use the language that the business analysts in the relevant sub-domains agree on, and we attempt to get multiple SMEs across institutions to agree to limit the influence of any particular organization or group of people using a specific tool or application alone to accomplish their job.  
@@ -349,7 +335,7 @@ We cross-reference the terminology with government glossaries, standards glossar
 
 A generic template for capturing terminology and related annotations can be found [here](https://www.morganclaypool.com/doi/suppl/10.2200/S00834ED1V01Y201802WBE018/suppl_file/OETerminologyTemplate.xlsx), which is described in depth in Chapter 4 of the Ontology Engineering book referenced above.
 
-#### Naming and Labeling Conventions
+### Naming and Labeling Conventions
 In general, **FIBO enforces a unique names assumption**, even across namespaces, even though the OWL language does not.  There is content in the provisional and informative ontologies that does not adhere to this policy, but for any released ontology we require unique naming. 
 
 * **Class names must be singular**,
@@ -358,17 +344,17 @@ In general, **FIBO enforces a unique names assumption**, even across namespaces,
 
 From that policy, the following requirements must be followed:
 
-##### Classes
+#### Classes
 * **Class names should be expressed in upper camel case, no special characters, no abbreviations in names**.  There are rare examples where we deviate from this policy, such as for code lists that are automatically generated, but otherwise, abbreviations should not be used despite resulting in lengthy names in some cases. 
 * **Abbreviations should be included as annotations (using an abbreviation annotation) on the class** where appropriate. 
 * **Class names must be singular and should not be duplicated** - i.e., having a class named "Lifecycle" in two different ontologies, regardless of the domain or module, is strictly prohibited.  There have been cases where a class introduced at some domain level has been needed in another domain, and thus the class has been promoted to a higher, common level in the ontology architecture - in these cases, the lower level class should be deprecated.
 
-##### Properties
+#### Properties
 * **Property names, both object and data properties, should be expressed in lower camel case, no special characters, no abbreviations in names**.  
 * **Verbs must be used for property naming for all object and data properties, without the inclusion of the name of the domain or range class names, with few exceptions for properties of the form "has x", for readability purposes**.  
 * **Property names should not be duplicated** - i.e., having a property named "hasJurisdiction" in two different ontologies, regardless of the domain or module, is strictly prohibited.  There have been cases where, due to legacy naming or moving properties from a lower-level domain to an upper-level domain have resulted in temporary duplication - in these cases, the lower level property should be deprecated.  Properties in OWL can be specified so that they are reusable in property restrictions and other axioms on many classes, which limits, if not eliminates, the need to duplicate names.  If a property is needed at a higher level in the ontology network, or with a different or less constrained domain that that which was used in its initial definition, one should raise an issue.
 
-##### Naming conventions
+#### Naming conventions
 Naming conventions for OWL individuals are less consistent across practitioners.  
 
 * ISO 704 promotes the **use of lower case for individuals unless they incorporate proper names, which we have largely followed in FIBO for labels, but not at the URI level**. 
@@ -401,17 +387,14 @@ Additional requirements with respect to definition development and supporting an
 
 
 
-# FIBO website <img src="https://vuejs.org/images/logo.png" width="50" align="right"/>
-
+# FIBO website 
+<img src="https://vuejs.org/images/logo.png" width="50" align="right"/>
 
 The FIBO Vue application sources are located in FIBO main repository. In the FIBO Vue source code is located under: fibo/etc/fibo-vue/. Please consult the [README.md](./etc/fibo-vue/README.md) file to learn how to update the FIBO website.
-
-      
+  
 
 # EDMC WIKI & JIRA
-
-* [EDMC WIKI](https://wiki.edmcouncil.org/)
-* [EDMC JIRA](https://jira.edmcouncil.org)
+Before January 2020, [EDMC Wiki](https://wiki.edmcouncil.org/) and [EDMC Jira](https://jira.edmcouncil.org) were the main platforms for organizing the FIBO development process by the FIBO Community. They remain available for the FIBO Community.
 
 
 # Code of conduct
