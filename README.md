@@ -28,7 +28,7 @@ Since January 2020, FIBO has been developed by an **open community process** wit
 # How to contribute
 
 ## Code of conduct
-This project adheres to the Contributor Covenant code of conduct. By participating, you are expected to uphold this code. Please report unacceptable behavior to [fibo@edmcouncil.org](mailto:fibo@edmcouncil.org). 
+This project adheres to the Contributor Covenant [code of conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to [fibo@edmcouncil.org](mailto:fibo@edmcouncil.org). 
 
 
 ## Developer Certificate of Origin (DCO) 
