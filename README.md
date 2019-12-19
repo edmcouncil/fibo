@@ -5,7 +5,7 @@
 
 FIBO is hosted and sponsored by the [Enterprise Data Management Council (EDM Council)](https://edmcouncil.org). 
 
-FIBO is a trademark of EDM Council, Inc. It is also standardized by the [Object Management Group (OMG)](https://www.omg.org/index.htm).
+FIBO is a trademark of EDM Council, Inc. It is also standardized by the [Object Management Group](https://www.omg.org/index.htm).
 
 # Introduction
 
