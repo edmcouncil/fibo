@@ -57,6 +57,13 @@ Directory                | Description | Browse in FIBO Viewer |
 [/etc](./etc/)  | Everything that is not a published OWL ontology in a financial domain. The [fibo-vue](./etc/fibo-vue) subdirectory contains the source code of FIBO website. |  |
 [/etc/fibo-vue](./etc/fibo-vue)  | This subdirectory of [/etc](./etc/) contains the source code of FIBO website. |  |
 
+
+# Releases
+[https://github.com/edmcouncil/fibo/releases](https://github.com/edmcouncil/fibo/releases)
+
+# Contributors
+https://github.com/edmcouncil/fibo/graphs/contributors
+
 # External links
 
 - [FIBO official website](https://spec.edmcouncil.org/fibo/)
