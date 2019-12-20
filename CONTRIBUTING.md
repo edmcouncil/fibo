@@ -6,31 +6,35 @@ Thanks for your interest in contributing to FIBO! This page will give you a quic
 ## Table of contents
 
 * [What it means to contribute](#what-it-means-to-contribute)
-    * [Developing FIBO](#developing-fibo)
-    * [FIBO Github space](#fibo-github-space)
-    * [Planning events and organizing](#planning-events-and-organizing)
-    * [Coding](#coding)
-    * [FIBO education and documentation](#fibo-education-and-documentation)
-    * [FIBO website](#fibo-website)
+	* [Developing FIBO](#developing-fibo)
+	* [FIBO Github space](#fibo-github-space)
+	* [Planning events and organizing](#planning-events-and-organizing)
+	* [Coding](#coding)
+	* [FIBO education and documentation](#fibo-education-and-documentation)
+	* [FIBO website](#fibo-website)
 * [FIBO Content Teams](#fibo-content-teams)
 * [Contributing to the FIBO code](#contributing-to-the-fibo-code)
-    * [Bug reports and feature requests](#bug-reports-and-feature-requests)
-    * [Pull Requests](#pull-requests)
-    * [Developer Certificate of Origin](#developer-certificate-of-origin)
-    * [FIBO Serialization tools](#fibo-serialization-tools)
-    * [Local Testing tools](#local-testing-tools)
+	* [FIBO Sources and Products](#fibo-sources-and-products)
+	* [Maturity levels](#maturity-levels)
+		* [Publication Maturity Levels](#publication-maturity-levels)
+	* [Issues and Pull Requests](#bug-reports-feature-requests-and-pull-requests)
+		* [Bug reports and feature requests](#bug-reports-and-feature-requests)
+		* [Pull Requests](#pull-requests)
+	* [Developer Certificate of Origin](#developer-certificate-of-origin)
+	* [FIBO serialization tools](#fibo-serialization-tools)
+	* [Local testing tools](#local-testing-tools)
+	* [Automated testing and publication](#automated-testing-and-publication)
 * [Principles of best practices](#principles-of-best-practices)
-    * [Use case development](#use-case-development)
-    * [Terminology Work](#terminology-work)
-        * [Ontology Header Information](#ontology-header-information)
-        * [Maturity levels](#maturity-levels)
-        * [FIBO standard IRI format](#fibo-standard-iri-format)
-        * [Capturing Terminology for the Body of an Ontology](#capturing-terminology-for-the-body-of-an-ontology)
-        * [Naming and Labeling Conventions](#naming-and-labeling-conventions)
-            * [Classes](#classes)
-            * [Properties](#properties)
-            * [Naming conventions](#naming-conventions)
-            * [Definitions](#definitions)            
+	* [Use case development](#use-case-development)
+	* [Terminology Work](#terminology-work)
+		* [Ontology Header Information](#ontology-header-information)
+		* [FIBO standard IRI format](#fibo-standard-iri-format)
+		* [Capturing Terminology for the Body of an Ontology](#capturing-terminology-for-the-body-of-an-ontology)
+		* [Naming and Labeling Conventions](#naming-and-labeling-conventions)
+			* [Classes](#classes)
+			* [Properties](#properties)
+			* [Naming conventions](#naming-conventions)
+			* [Definitions](#definitions)            
 * [FIBO website](#fibo-vue-website)
 * [EDMC WIKI and JIRA](#edmc-wiki-and-jira)
 * [Code of conduct](#code-of-conduct)
@@ -71,6 +75,8 @@ There are many possible forms of contribution to the FIBO project. It really dep
 ## Coding
 * Ask if you can help to improve the FIBO infrastructure.
 * Suggest improvement of tooling and testing.
+	* The code of FIBO Viewer is developed in [this Github repository](https://github.com/edmcouncil/fibo-viewer).
+	* Please consult also [ontology-publisher](https://github.com/edmcouncil/ontology-publisher) and [rdf-toolkit](https://github.com/edmcouncil/rdf-toolkit)
 
 ## FIBO education and documentation
 * Write and improve the FIBO documentation.
@@ -85,7 +91,7 @@ There are many possible forms of contribution to the FIBO project. It really dep
 * Conduct user research to reorganize and refine the project's navigation or menus
 * Put together a style guide to help the project have a consistent visual design
 * Create nice graphics
-* Suggest improvements in [FIBO Viewer](https://spec.edmcouncil.org/fibo/ontology/)
+* Suggest improvements in [FIBO Viewer](https://spec.edmcouncil.org/fibo/ontology/). 
 
 
 # FIBO Content Teams
@@ -99,18 +105,84 @@ FCTs are designed to build FIBO with content that has been developed by the subj
 
 # Contributing to the FIBO code
 
+## FIBO Sources and Products
+FIBO is developed using a familiar process from software engineering, in which a product is developed using source code, which is compiled into a product. In most software settings, source code is written in a programming language (e.g., Java, C++, or Python), which is compiled into executable code for the product.  FIBO is developed in the same way, but the product code is not 'executable' in any normal sense of the word. 
+
+In fact, the FIBO products can be published in the same language as the source (i.e., OWL), so it is easy to be confused when looking at any particular file, whether you are looking at source or product. Management of the FIBO development process follows conventional software engineering practices, so the difference between source and product is clear when you think about the process. 
+
+FIBO sources are managed in RDF/XML format.  The FIBO products are published in many formats and serializations (RDF/XML, ttl, json-ld, csv, MS Excel(tm), and SKOS) on the [FIBO website](http://spec.edmcouncil.org/fibo).
+
+The sources are edited by developers using development tools (which can range in sophistication from text editing tools to elaborate WYSIWYG environments).  Products are automatically produced from an integrated testing environment. 
+
+While it is possible to perform certain tests on sources (in most languages, these tests are largely syntactic; in the case of OWL, they can include some semantic completeness and logical correctness tests), official software testing for the development process is done on the products. Just as in classical software engineering, this is necessary, since it is imperative that the product delivered to the customers has itself been tested, not just some source that was used in building it. 
+The conventional Software Release Cycle specifies many possible stages of development for a product.  In FIBO, we only use two of these, which we call 
+
+* DEVELOPMENT (corresponding roughly to Beta in the conventional cycle) and 
+* PRODUCTION (corresponding roughly to RC in the conventional cycle).  
+
+These stages are described in more detail below as ["Publication Maturity Levels"](#maturity-levels).
+In conventional software development, especially when using a formal version control system like git, there can be many versions of the source code.  Some versions are developing new features; some are bug fixes, others are experimental versions that will never move forward.  FIBO recognizes three statuses for its source code; Informative, Provisional, and Release.  These statuses are described in more detail below as ["Maturity Levels"](@maturity-levels). 
+
+## Maturity levels
+
+FIBO maturity levels are indicated on an ontology basis; that is, an ontology has a maturity level, not a class or a property (classes and properties have the maturity level of their containing ontology). Each FIBO ontology has one of three levels of maturity.
+
+**Release**
+
+* Release ontologies have undergone unit and integration testing, and have passed the most rigorous tests for completeness, consistency, and correctness.
+
+**Provisional**
+
+* Provisional ontologies were developed in the early days of FIBO but have not been vetted or tested to the level of Release.
+
+**Informative**
+
+* Informative ontologies are ones that have been considered by the FIBO Community but have been explicitly rejected. They are included in FIBO sources because they include information, without which FIBO would fail basic referential consistency tests. Casual users should usually ignore them. Developers should consider these for information only, to determine the detailed meaning of the things that reference them.
+
+One can see the maturity level for each FIBO ontology, see e.g. 
+
+* [https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/FunctionalEntities/](https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/FunctionalEntities/)
+* [https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanCore/](https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanCore/)
+
+The maturity level of an ontology is indicated in the ontology file itself, with a triple in RDF, e.g., 
+
+```
+fibo-bp-iss-doc: fibo-fnd-utl-av:hasMaturityLevel fibo-fnd-utl-av:Provisional . 
+``` 
+The development process could go as follows:
+
+* A developer (in his/her local repo) changes the maturity of an ontology from Provisional to Release.
+* They make changes to definitions in the ontology (to classes and properties).
+* They test these changes until they are satisfied that the ontology is ready.
+* They push the ontologies to GitHub and see what the automated tests say.
+* Repeat the previous 3 steps until the tests pass. 
+
+
+### Publication Maturity Levels
+The FIBO publications are built from sources through a process that involves re-writing URIs to match publication conventions, converting files into multiple standard formats, and triggering derivative products such as the glossary and FIBO-V. 
+
+The two FIBO publication products are built by combining models from the source maturity levels as follows:
+
+* Production is made up of the Release sources only. 
+* Development is made up of sources from Release, Provisional, and Informative levels, all combined together. 
+
+FIBO Community is working to move ontologies up the maturity ladder.  Specifically, to develop Provisional ontologies to become part of the Release, and to remove reliance on Informative models so that they can be removed entirely. 
+
+
+## Issues and Pull Requests
+
 The FIBO sources are kept in this repository on GitHub. As is customary with GitHub, changes to FIBO can be proposed via the bug reports and feature requests or can be made in a fork of this repository, and then proposed directly to the FIBO Community Group through a pull request.   
 
-**You will need a GitHub user name to participate in the development process**.  
+**You will need a GitHub user name to participate in the development process**. 
 
-## Bug reports and feature requests
+### Bug reports and feature requests
 Bug reports and feature requests are tracked as [GitHub issues](https://guides.github.com/features/issues/). Create an issue on FIBO repository and provide the following information by filling in the templates:
 
 * [bug report](./.github/ISSUE_TEMPLATE/bug_report.md)
 * [feature_request](./.github/ISSUE_TEMPLATE/feature_request.md)
 
 
-## Pull Requests
+### Pull Requests
 
 If you want to extend the content of FIBO trough pull requests, you'll need to do the following things: 
 
@@ -125,7 +197,7 @@ If you want to extend the content of FIBO trough pull requests, you'll need to d
 You only have to do steps 1-5 once. Once you have begun contributing, you just repeat steps 6 and 7. 
 
 
-### To have your contribution considered by the maintainers
+#### To have your contribution considered by the maintainers
 
 * Follow all instructions in [the template](PULL_REQUEST_TEMPLATE.md)
 * Follow the [principles of best practices](#principles-of-best-practices)
@@ -142,11 +214,11 @@ If you use Sourcetree, please make sure that you choose "Sign off" from Commit O
 
 Git has a "-s" command-line option to append the signature automatically to the commits:
 
-`"
+```
 $ git commit -s -m 'This is my commit message'
-`"
+```
 
-## FIBO Serialization tools
+## FIBO serialization tools
 When you cloned your fork to your local repository, you chose a directory in which FIBO resides.  This is your fibo installation directory. In order to use the FIBO Serialization tools, you will need two files, a pre-commit hook file and a Java application file called RDF Toolkit. These need to reside in a directory called /hooks under your local Git working directory, called .git; the instructions below should be followed in order to ensure that you have the latest versions of these files in their intended locations.
 
 * In your FIBO installation directory, there is a directory called ".git", and a folder in there called "hooks".  This folder should have been created for you when you cloned the repository; if not, you can initialize your repository from the Git command line by changing directory to your fibo installation directory and typing: git init
@@ -177,7 +249,7 @@ You can test Your Installation with the following steps.  These steps assume you
 * Return to the branch you were working on before this test (in Sourcetree, double-click in the left pane on, e.g., "master"). 
 * Delete branch SerializerTest.  (in Sourcetree, right-click on the branch in the left pane, and select "delete".  You might have to enable "Force delete" to make it work correctly. 
 
-## Local Testing tools
+## Local testing tools
 FIBO developers are accustomed to using desktop tools like Protégé, TopBraid Composer, VOM, and MagicDraw/CCM.  These tools include a variety of tests that experienced users rely on to determine the correctness of their models. In order to satisfy themselves that the ontologies are correct, they need to be able to test the same configuration of ontologies that will be published (i.e., Production and Development, see above).  
 
 In order to make this possible on their local machine, developers need to be able to load just the Release ontologies (from their current testbed).  This is done by creating a file called **AboutProd.ttl** (also AboutProd.rdf).  Developers working with the pre-release files will want to load all FIBO files; this is done with a file called **AboutDev.ttl** (also AboutDev.rdf).  These "About" files load the same files that are loaded by the publishing process of FIBO (for Prod and Dev, respectively).  
@@ -195,6 +267,13 @@ To perform local testing, do the following steps:
 Step 3 needs to be done again whenever you create a new file or change the base URI of a file. 
 
 Step 4 needs to be done again whenever you change the maturity level or base URI of a file, add a new file, or delete a file. 
+
+## Automated testing and publication
+
+When FIBO is 'pushed' to a registered fork, a Jenkins job runs to perform standard tests. These tests are strict and comprehensive for the Production release of FIBO and are quite lax for the Development release of FIBO (for Development, they just check that nothing is referenced unless it is defined)
+
+When a pull request results in a new version of FIBO in the EDMC repository, a series of publication processes are performed according to the FIBO publication policy.  
+
 
 
 # Principles of best practices
@@ -292,25 +371,6 @@ Note that there are cases where tooling such as Protege
 
 These issues are considered to show stoppers from a FIBO publication perspective and must be rectified prior to checking in any ontology revisions.  In other words, DOCTYPE ENTITY declarations are required, the use of abbreviated IRIs and QNames is required for readability purposes, and there must not be a default IRI in any FIBO ontology.
 
-### Maturity levels
-
-Each FIBO ontology has one of three levels of maturity.
-
-**Release**
-
-* Release ontologies have undergone unit and integration testing, and have passed the most rigorous tests for completeness, consistency, and correctness.
-
-**Provisional**
-
-* Provisional ontologies were developed in the early days of FIBO but have not been vetted or tested to the level of Release.
-
-**Informative**
-
-* Informative ontologies are ones that have been considered by the FIBO Community but have been explicitly rejected. They are included in FIBO sources because they include information, without which FIBO would fail basic referential consistency tests. Casual users should usually ignore them. Developers should consider these for information only, to determine the detailed meaning of the things that reference them.
-
-One can see the maturity level for each FIBO ontology, see e.g. [https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/FunctionalEntities/](https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/FunctionalEntities/)
-
-
 
 ### FIBO standard IRI format
 
@@ -329,9 +389,9 @@ Note that the strategy defined herein reflects what we do in the "gold source" G
 
 Embedded versionIRIs, which we revise with every agreed change to any ontology, use the following pattern:
 
-`"
+```
 https://spec.edmcouncil.org/fibo/ontology/<domain abbreviation>/YYYYMMDD/<module>/.../<module>/<ontology name>/
-`"
+```
 
 and should be accompanied by a short change note indicating what changed from the prior version of that ontology.
 
