@@ -2,6 +2,7 @@
 <!DOCTYPE rdf:RDF [
 	<!ENTITY dct "http://purl.org/dc/terms/">
 	<!ENTITY fibo-be-fct-fct "https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/FunctionalEntities/">
+	<!ENTITY fibo-fbc-fct-mkt "https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/Markets/">
 	<!ENTITY fibo-fbc-fct-ra "https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/RegistrationAuthorities/">
 	<!ENTITY fibo-fbc-fct-rga "https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/RegulatoryAgencies/">
 	<!ENTITY fibo-fbc-fi-fi "https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/">
@@ -25,6 +26,7 @@
 <rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesIdentification/"
 	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fibo-be-fct-fct="https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/FunctionalEntities/"
+	xmlns:fibo-fbc-fct-mkt="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/Markets/"
 	xmlns:fibo-fbc-fct-ra="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/RegistrationAuthorities/"
 	xmlns:fibo-fbc-fct-rga="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/RegulatoryAgencies/"
 	xmlns:fibo-fbc-fi-fi="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"
@@ -60,6 +62,7 @@
 		<sm:filename>SecuritiesIdentification.rdf</sm:filename>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/FunctionalEntities/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/Markets/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/RegistrationAuthorities/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/RegulatoryAgencies/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/"/>
@@ -71,10 +74,11 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesListings/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Countries/CountryRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20190701/Securities/SecuritiesIdentification/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20191201/Securities/SecuritiesIdentification/"/>
 		<skos:changeNote>The http://www.omg.org/spec/EDMC-FIBO/FND/20180801/Securities/SecuritiesIdentification.rdf version of this ontology was modified to use the hasCoverageArea property rather than hasJurisdiction for coverage of national numbering agencies.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20181101/Securities/SecuritiesIdentification/ version of this ontology was modified to correct several logic issues.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20190601/Securities/SecuritiesIdentification/ version of this ontology was modified to add the concept of a ticker symbol and rename (migrate) the hasDefinition property to isDefinedIn to clarify intent.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20190701/Securities/SecuritiesIdentification/ version of this ontology was modified to restructure the concept of a listing and augment it with a number of relevant characteristics.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -96,7 +100,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isManagedBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-lst;SecuritiesExchange"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-fct-mkt;Exchange"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>exchange-specific securities registry</rdfs:label>
@@ -181,7 +185,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-fct-ra;isRegisteredBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-lst;SecuritiesExchange"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-fct-mkt;Exchange"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -332,6 +336,18 @@
 		<fibo-fnd-utl-av:explanatoryNote>generally incorporated into the ISIN scheme as well</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-sec-sec-id;PreferredListedSecurityIdentifier">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-id;ListedSecurityIdentifier"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-sec-id;isPreferredByExchange"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-fct-mkt;Exchange"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<skos:definition>listed security identifier for a given security that is preferred by some exchange</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>This is the preferred security ID if a security has more than one identifier on a specific exchange.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-sec-sec-id;ProprietarySecurityIdentificationScheme">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-id;SecurityIdentificationScheme"/>
 		<rdfs:subClassOf>
@@ -407,6 +423,13 @@
 		<fibo-fnd-utl-av:explanatoryNote>Every listed security has a unique ticker symbol, facilitating the vast array of trade orders that flow through the financial markets every day.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
+	<owl:ObjectProperty rdf:about="&fibo-sec-sec-id;isPreferredByExchange">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
+		<rdfs:label>is preferred by exchange</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fbc-fct-mkt;Exchange"/>
+		<skos:definition>indicates the exchange that prefers a specific identifier for a security</skos:definition>
+	</owl:ObjectProperty>
+	
 	<owl:Class rdf:about="&fibo-sec-sec-lst;ExchangeTradedSecurity">
 		<rdfs:subClassOf>
 			<owl:Restriction>
@@ -414,6 +437,10 @@
 				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-id;TickerSymbol"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-sec-lst;Listing">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-id;ExchangeSpecificSecuritiesRegistryEntry"/>
 	</owl:Class>
 
 </rdf:RDF>
