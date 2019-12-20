@@ -60,27 +60,35 @@
             </div>
           </div>
         </div>
-
+        
         <div class="searchResults" v-if="searchBox.selectedData && searchBox.selectedData.isSearch">
-          <div v-for="result in searchBox.searchResults" :key="result" class="row">
-            <div class="col-12">
-              <div class="row">
-                <div class="col-12">
-                  <customLink class="custom-link" :name="result.label" :query="result.iri"></customLink>
+          <h5 style="padding-top: 0px; margin-bottom: 20px;">Search results for "{{searchBox.selectedData.iri}}":</h5>
+          <div v-if="searchBox.searchResults && searchBox.searchResults.length">
+            <div v-for="result in searchBox.searchResults" :key="result" class="row">
+              <div class="col-12">
+                <div class="row">
+                  <div class="col-12">
+                    <!-- <router-link :to="{ path: result.iri.replace('https://spec.edmcouncil.org/fibo', '') }">{{result.label}}</router-link> -->
+                    
+                    <customLink class="custom-link" :name="result.label" :query="result.iri"></customLink>
+                  </div>
                 </div>
-              </div>
-              <div class="row">
-                <div class="col-12 text-link">
-                  {{result.iri}}
+                <div class="row">
+                  <div class="col-12 text-link">
+                    {{result.iri}}
+                  </div>
                 </div>
-              </div>
-              <div class="row">
-                <div class="col-12 text">
-                  {{result.description}}
+                <div class="row">
+                  <div class="col-12 text">
+                    {{result.description}}
+                  </div>
                 </div>
+                <div class="border-bottom"></div>
               </div>
-              <div class="border-bottom"></div>
             </div>
+          </div>
+          <div v-else>
+            <!-- No results -->
           </div>
         </div>
 
@@ -167,10 +175,10 @@
               </div>
             </div>
             <div class="col-md-12 col-lg-8 col-xxl-12" v-else>
-              <main>
+              <main  v-if="!loader">
                 <article>
                   <h1>
-                    <span>What is Viewer?</span>
+                    <span>FIBO Viewer</span>
                   </h1>
                 </article>
               </main>
@@ -420,8 +428,8 @@ export default {
       (this.$route.query.scrollToTop == 'true'))
     {
       this.searchBox.selectedData = null; //to hide search results after ontology clicked on left tree
-      this.scrollToOntologyViewerTopOfContainer();
     }
+    this.scrollToOntologyViewerTopOfContainer(); //move it to above IF to scroll only after internal navigaion (not on page load)
   },
 };
 </script>
