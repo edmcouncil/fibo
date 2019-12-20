@@ -589,4 +589,9 @@ article ul.maturity-levels li:before{
     height: 1000px;
   }
 }
+.multiselect__option--highlight,
+.multiselect__option--highlight:after {
+  background: #f3f3f3;
+  color: #000;
+}
 </style>
