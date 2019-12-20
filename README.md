@@ -61,3 +61,5 @@ Directory                | Description | Browse in FIBO Viewer |
 
 - [FIBO official website](https://spec.edmcouncil.org/fibo/)
 - [OMG Specification of FIBO](https://www.omg.org/spec/EDMC-FIBO/)
+
+Before January 2020, [EDMC Wiki](https://wiki.edmcouncil.org/) and [EDMC Jira](https://jira.edmcouncil.org) were the main platforms for organizing the FIBO development process by the FIBO Community. They remain available for the FIBO Community.
