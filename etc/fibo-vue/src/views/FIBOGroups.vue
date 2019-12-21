@@ -4,14 +4,14 @@
               <article>
 
                 <h1>
-                  <span>FIBO Communities</span>
+                  <span>FIBO Groups</span>
                 </h1>
 
                 <p class="text">
                   FIBO development process is organized by two groups: the <strong>FIBO Steering Group</strong> and the <strong>FIBO Community Group</strong>.
                 </p>
 
-                <h3>FIBO Steering Group (FSG)</h3>
+                <h3 style="padding-top: 10px;">FIBO Steering Group (FSG)</h3>
                 <p>
                   The FIBO Steering Group (FSG) is responsible for
                 </p>
@@ -21,7 +21,7 @@
                     the strategic orientation of the FIBO evolution
                   </li>
                   <li>
-                    review and approval of new releases (by voting; with the assistance of the chair of the FIBO Community Group)
+                    review and approval of new releases
                   </li>
                   <li>
                     changes in the FSG membership
@@ -33,7 +33,7 @@
                 </p>
 
                 <p class="text">
-                  The FSG members are: Jurgen Ziemer (Jayzed Data Models Inc.), ...
+                  The FSG members will be announced soon.
                 </p>
 
                 <p class="text">
@@ -44,7 +44,7 @@
                 <h3>FIBO Community Group (FCG)</h3>
                 <p class="text">
                   The FIBO Community Group (FCG) is open to any interested individuals, groups, and organizations that have agreed to
-                  the Developer's Certificate of Origin 1.1 [ref to DCO and <a href="/">README.md</a>].
+                  <a href="https://github.com/edmcouncil/fibo/blob/master/README.md#developer-certificate-of-origin-dco">the Developer's Certificate of Origin 1.1</a>.
                 </p>
                 
                 <p class="text">
@@ -52,15 +52,16 @@
                 </p>
                 
                 <p class="text">
-                  Any proposed FIBO extension should strictly follow the code of conduct [ref to code of conduct in repo],
-                  which includes the principles for best practice
-                  <router-link :to="{ path: router('ontology-guide') }">Ontology guide</router-link>
-                  and the steps described in the
-                  <router-link :to="{ path: router('development-process') }">FIBO developer guide</router-link>.
+                  Every proposed FIBO extension should strictly follow the rigorous and well-defined
+                  <a href="https://github.com/edmcouncil/fibo/blob/master/CONTRIBUTING.md">rules and principles</a>,
+                  including the 
+                  <a href="https://github.com/edmcouncil/fibo/blob/INFRA-489/ONTOLOGY_GUIDE.md">principles of best practices for FIBO</a>.
+                  FIBO project also adheres to the Contributor Covenant
+                  <a href="https://github.com/edmcouncil/fibo/blob/master/CODE_OF_CONDUCT.md">code of conduct</a>.
                 </p>
                 
                 <p class="text">
-                  The FCG is chaired by ..., who acts in this capacity on behalf of the EDMC.
+                  The FCG chair will be announced soon.
                 </p>
                 
                 

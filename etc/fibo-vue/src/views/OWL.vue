@@ -6,20 +6,16 @@
           <span>FIBO OWL</span>
         </h1>
         <h2>
-          FIBO is available in a number of RDF formats. These are available for offline use (i.e., download all of FIBO as a zip), or online use. Each FIBO ontology file is available for "follow your nose" treatment, a
-          general description of which is available here.
+          FIBO is available in a number of RDF formats. These are available for offline use (i.e., download all of FIBO as a zip), or online use. Each FIBO ontology file is available for "follow your nose" treatment, a general description of which is available here.
         </h2>
 
         <p>Each FIBO product is published in two releases:</p>
-        <ul>
+        <ul class="space-at-top">
           <li>
-            <b>FIBO Production</b> is published at the end of each calendar quarter and has
-            been vetted by SMEs and passed standard industry
-            <i>hygiene</i> tests for OWL.
+            <b>FIBO Production</b> is published at the end of each calendar quarter and has been vetted by SMEs and passed standard industry <i>hygiene</i> tests for OWL.
           </li>
           <li>
-            <b>FIBO Development</b> is published in real time as changes are incorporated
-            by the FIBO Leadership Team and consists of draft as well vetted content.
+            <b>FIBO Development</b> is published in real-time as changes are incorporated by the FIBO Community and consists of a draft as well-vetted content.
           </li>
         </ul>
 
@@ -145,7 +141,10 @@ article h2 {
 .inline {
   display: inline-block;
 }
-li {
+article ul.space-at-top li {
   line-height: 24px;
+}
+article ul.space-at-top li::before {
+  margin-top: 10px;
 }
 </style>

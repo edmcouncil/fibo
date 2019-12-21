@@ -51,7 +51,7 @@
             <router-link class="nav-link" replace :to="{ path: router() }">About</router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" replace :to="{ path: router('ontology') }">VIEWER</router-link>
+            <router-link class="nav-link" replace :to="{ path: router('ontology') }">FIBO VIEWER</router-link>
           </li>
           <li class="nav-item dropdown">
             <a
@@ -64,9 +64,10 @@
               aria-expanded="false"
             >Documentation</a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <router-link class="dropdown-item" replace :to="{ path: router('FIBO-Communities') }">FIBO Communities</router-link>
-              <router-link class="dropdown-item" replace :to="{ path: router('development-process') }">Development process</router-link>
-              <router-link class="dropdown-item" replace :to="{ path: router('') }">Ontology guide</router-link>
+              <router-link class="dropdown-item" replace :to="{ path: router('FIBO-Groups') }">FIBO Groups</router-link>
+              <!-- <router-link class="dropdown-item" replace :to="{ path: router('development-process') }">Development process</router-link>
+              <router-link class="dropdown-item" replace :to="{ path: router('') }">Ontology guide</router-link> -->
+              <router-link class="dropdown-item" replace :to="{ path: router('how-to-contribute') }">How to contribute</router-link>
             </div>
           </li>
           <li class="nav-item dropdown">
@@ -111,11 +112,11 @@
               aria-expanded="false"
             >EXTERNAL</a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <router-link class="dropdown-item" replace :to="{ path: router('') }">FIBO SCHEMA.ORG</router-link>
-              <router-link class="dropdown-item" replace :to="{ path: router('') }">FIB-DM</router-link>
+              <router-link class="dropdown-item" replace :to="{ path: router('schema') }">FIBO SCHEMA.ORG</router-link>
+              <router-link class="dropdown-item" replace :to="{ path: router('FIB-DM') }">FIB-DM</router-link>
             </div>
           </li>
-          <li class="nav-item dropdown">
+          <!-- <li class="nav-item dropdown">
             <a
               class="nav-link dropdown-toggle"
               href="#"
@@ -134,7 +135,7 @@
               <router-link class="dropdown-item" replace :to="{ path: router('products') }">All FIBO Products</router-link>
               <router-link class="dropdown-item" replace :to="{ path: router('schema') }">FIBO extension to schema.org</router-link>
             </div>
-          </li>
+          </li> -->
         </ul>
       </div>
     </nav>

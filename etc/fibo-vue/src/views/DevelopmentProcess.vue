@@ -200,7 +200,7 @@
           </li>
           <li>
             Running the initialization command should ensure that your .git environment exists and that it includes the /hooks directory. This does not automatically install or update the two files that you need to have in place for the Serializer to work. These are: 
-            <ul style="margin-top: 10px;">
+            <ul class="space-at-top">
               <li>pre-commit (no file extension)</li>
               <li>rdf-toolkit.jar</li>
             </ul>

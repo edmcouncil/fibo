@@ -6,49 +6,24 @@
           <span>What is FIBO?</span>
         </h1>
 
-        <h3>What is an ontology?</h3>
-        <p>
-          An ontology in OWL is made up of statements about Classes (i.e., sets of things) and Properties (ways that things relate to other things). FIBO defines the sets of things that are of interest in financial business applications, and the ways that those things can relate to one another. In this way, FIBO can give meaning to any data (e.g., spreadsheets, relational databases, XML documents) that describe the business of finance. FIBO
-          considers both Classes and Properties to be Concepts. The languages of Ontologies were originally developed by the US DoD and are codified by the World Wide Web Consortium (W3C).
-        </p>
-
         <h3>What is FIBO?</h3>
         <p>
           <img src="../assets/img/FIBO_logo.jpg" class="fibo-logo img-fluid" />
-          <strong>The Financial Industry Business Ontology (FIBO)</strong> is the industry-standard resource for the definitions of business concepts in the financial services industry. It is developed and hosted by the
-          Enterprise Data Management Council (EDMC) and is published in a number for formats for operating use and for business definitions.
-          <a
-            href="fibo_owl.html"
-          >
-            FIBO is developed as an ontology in the Web Ontology Language
-            (OWL)
-          </a>. As such, it is not a data model but a representation of the "things in the world" of financial services. The use of logic ensures that each real-world concept is framed in a way that is unambiguous and that is readable both by humans and machines. These common concepts have been reviewed by EDM Council member firms over a period of years and represent a consensus of the common concepts as understood in the industry and as reflected in industry data models and message standards. FIBO is developed according to a rigorous and
-          a well-defined process referred to as the
-          <a
-            href="development.html"
-          >
-            "Build-Test-Deploy-Maintain"
-            methodology
-          </a>. In essence, the FIBO ontology is developed and maintained by FIBO Content Teams, which are coordinated by a single FIBO Leadership Team, with process and automation support provided by a FIBO Process team.
-        </p>
 
-        <p
-          class="pt-5 pb-5"
-        >The figure below shows FIBO Domains: Derivatives, Loans, Indices and Indicators, Securities, Business Entities, Financial Business and Commerce and Foundations.</p>
-        <center>
-          <img src="../assets/img/fiibo_modules.png" width="500" height="400" class="img-fluid" />
-        </center>
-
-        <p>
-          The
-          <a
-            href="https://edmcouncil.org/resource/collection/16D6DC67-430E-4F75-9E07-08B1EC228091/FIBO_Primer_v0.2.pdf"
-            v-on:click="outboundClick('FIBO_Primer_v0.2.pdf')"
-          >
-            FIBO
-            Primer
-          </a>
-          provides a layman's version of what is FIBO and how to use its content.
+<p>
+          The Financial Industry Business Ontology (FIBO) defines the sets of things that are of interest in financial business applications and the ways that those things can relate to one another. In this way, FIBO can give meaning to any data (e.g., spreadsheets, relational databases, XML documents) that describe the business of finance. 
+</p><br>
+<p>
+          FIBO is hosted and sponsored by the Enterprise Data Management Council (EDMC) and is published in a number of formats for operating use and business definitions. FIBO is a trademark of EDM Council, Inc. It is also standardized by the Object Management Group (OMG).
+</p><br>
+<p>
+          FIBO is developed as an ontology in the Web Ontology Language (OWL). The language is codified by the World Wide Web Consortium (W3C), and it is based on Description Logic. The use of logic ensures that each FIBO concept is framed in a way that is unambiguous and that is readable both by humans and machines.
+</p><br>
+<p>
+          FIBO concepts have been reviewed by <a href="https://edmcouncil.org/page/listofmembersreview">EDMC member firms</a> over the years and represent a consensus of the common concepts as understood in the industry and as reflected in industry data models and message standards. 
+</p><br>
+<p>
+          A number of companies and people have made substantial contributions to FIBO over the years. These include 88 Solutions, Adaptive, Inc., BIAN, Bloomberg LP, Bureau of Economic Analysis (BEA, US Department of Commerce), Bureau of Labor Statistics (BLS, US Department of Commerce), Census Bureau (US Department of Commerce), Citigroup, Commodities Futures Trading Commission (CFTC), Credit Suisse, Deutsche Bank, Exprentis, Federal Reserve Bank of Kansas City, Goldman Sachs, HP Enterprise / Mphasis, MakoLab, Mizuho, NoMagic, Nordea Bank AB, Office of Financial Research (US Dept of the Treasury), Pinnacle Bank (Morgan Hill, California), Quarule, State Street Bank and Trust, Statistics Canada, Tahoe Blue Ltd, Thematix Partners LLC, Wells Fargo, and Working Ontologist.
         </p>
 
 
@@ -64,15 +39,12 @@
 
         <h3>How to contribute</h3>
         <p class="text">
-          The FIBO development process follows rigorous and well-defined rules and principles
-          [REF TO <router-link :to="{ path: router('development-process') }">Development process</router-link>
-          AND
-          <router-link :to="{ path: router('ontology-guide') }">Ontology guide</router-link>]. 
+          The FIBO development process follows rigorous and well-defined
+          <router-link :to="{ path: router('development-process') }">rules and principles</router-link>. 
         </p>
         <p class="text">
-          FIBO activities and development process are organized via two groups: the
-          <router-link :to="{ path: router('FIBO-Communities') }">FIBO Steering Group</router-link> and the
-          <router-link :to="{ path: router('FIBO-Communities') }">FIBO Community Group</router-link>.
+          FIBO activities and development process are organized via two groups: 
+          <router-link :to="{ path: router('FIBO-Communities') }">the FIBO Steering Group and the FIBO Community Group</router-link>.
         </p>
         <p class="text">
           Since January 2020, the FIBO

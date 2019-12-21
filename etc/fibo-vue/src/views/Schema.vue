@@ -5,6 +5,7 @@
         <h1>
           <span>FIBO schema.org</span>
         </h1>
+        https://wiki.edmcouncil.org/display/FLT/A.+FIBO+SCHEMA.ORG
         <h2>
           This
           <a href="http://schema.org/docs/financial.html"

@@ -64,14 +64,24 @@ export default new Router({
       component: () => import(/* webpackChunkName: "Schema" */ './views/Schema.vue'),
     },
     {
-      path: '/FIBO-Communities',
-      name: 'FIBOCommunities',
-      component: () => import(/* webpackChunkName: "FIBOCommunities" */ './views/FIBOCommunities.vue'),
+      path: '/FIBO-Groups',
+      name: 'FIBOGroups',
+      component: () => import(/* webpackChunkName: "FIBOCommunities" */ './views/FIBOGroups.vue'),
     },
     {
       path: '/development-process',
       name: 'DevelopmentProcess',
       component: () => import(/* webpackChunkName: "DevelopmentProcess" */ './views/DevelopmentProcess.vue'),
+    },
+    {
+      path: '/FIB-DM',
+      name: 'FIB-DM',
+      component: () => import(/* webpackChunkName: "FIB-DM" */ './views/FIB-DM.vue'),
+    },
+    {
+      path: '/how-to-contribute',
+      name: 'HowToContribute',
+      component: () => import(/* webpackChunkName: "FIB-DM" */ './views/HowToContribute.vue'),
     },
     {
       path: '/ontology/:1?/:2?/:3?/:4?/:5?',
