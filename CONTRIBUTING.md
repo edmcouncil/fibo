@@ -31,7 +31,7 @@ Thanks for your interest in contributing to FIBO! This page will give you a quic
 
 # What it means to contribute
 
-There are many possible forms of contribution to the FIBO project. It really depends on whether you are a programmer, a web designer, an ontology expert, or a subject matter expert. Below there are a few groups of activities that you can be involved in.
+There are many possible ways to participate in the FIBO project. It really depends on whether you are a programmer, a web designer, an ontology expert, or a subject matter expert. Below there are a few groups of activities that you can be involved in.
 
 ## Developing FIBO
 * Organize a group of people that will work on a FIBO extension (see FIBO Content Teams)
