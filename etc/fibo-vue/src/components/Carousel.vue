@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid slider">
-    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+    <div id="carouselExampleIndicators" class="carousel slide">
       <ol class="carousel-indicators">
         <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
         <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
@@ -10,25 +10,25 @@
         <div class="carousel-item active">
           <img class="d-block w-100" src="../assets/img/baner2.png" alt="First slide">
           <div class="carousel-caption d-none d-md-block">
-            <h2>What is an ontology?</h2>
-            <p>An ontology is a formal, explicit specification of a shared conceptualization</p>
-            <router-link replace :to="{ path: router('products') }" class="btn-sl">DOWNLOAD FIBO PRODUCTS</router-link>
+            <h2>FIBO OWL</h2>
+            <p>FIBO is developed as an ontology in the Web Ontology Language (OWL)</p>
+            <router-link replace :to="{ path: router('OWL') }" class="btn-sl">DOWNLOAD FIBO OWL</router-link>
           </div>
         </div>
         <div class="carousel-item">
           <img class="d-block w-100" src="../assets/img/baner2.png" alt="Second slide">
           <div class="carousel-caption d-none d-md-block">
-            <h2>What is FIBO?</h2>
-            <p>FIBO gives meaning to any data that describe the business of finance</p>
-            <router-link replace :to="{ path: router('products') }" class="btn-sl">DOWNLOAD FIBO PRODUCTS</router-link>
+            <h2>FIBO SKOS Vocabulary</h2>
+            <p>The FIBO vocabulary is distributed using the Simple Knowledge Organization System (SKOS)</p>
+            <router-link replace :to="{ path: router('vocabulary') }" class="btn-sl">DOWNLOAD FIBO SKOS Vocabulary</router-link>
           </div>
         </div>
         <div class="carousel-item">
           <img class="d-block w-100" src="../assets/img/baner2.png" alt="Third slide">
           <div class="carousel-caption d-none d-md-block">
-            <h2>FIBO Structure</h2>
-            <p>FIBO covers Derivatives, Loans, Indices and Indicators, Securities, Business Entities, Financial Business and Commerce and Foundations</p>
-            <router-link replace :to="{ path: router('products') }" class="btn-sl">DOWNLOAD FIBO PRODUCTS</router-link>
+            <h2>FIBO Data Dictionary</h2>
+            <p>FIBO data dictionary is downloadable in CSV and Excel formats</p>
+            <router-link replace :to="{ path: router('data-dictionary') }" class="btn-sl">DOWNLOAD FIBO Data Dictionary</router-link>
           </div>
         </div>
       </div>

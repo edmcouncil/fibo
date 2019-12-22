@@ -40,11 +40,11 @@
         <h3>How to contribute</h3>
         <p class="text">
           The FIBO development process follows rigorous and well-defined
-          <router-link :to="{ path: router('development-process') }">rules and principles</router-link>. 
+          <router-link :to="{ path: router('how-to-contribute') }">rules and principles</router-link>. 
         </p>
         <p class="text">
           FIBO activities and development process are organized via two groups: 
-          <router-link :to="{ path: router('FIBO-Communities') }">the FIBO Steering Group and the FIBO Community Group</router-link>.
+          <router-link :to="{ path: router('FIBO-Groups') }">the FIBO Steering Group and the FIBO Community Group</router-link>.
         </p>
         <p class="text">
           Since January 2020, the FIBO

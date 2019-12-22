@@ -12,24 +12,30 @@
 
 <ul>
   <li>
-        LICENSE: FIBO is made available under MIT License.
+        <a href="https://github.com/edmcouncil/fibo/blob/master/LICENSE"
+            v-on:click="outboundClick('https://github.com/edmcouncil/fibo/blob/master/LICENSE')">LICENSE</a>: FIBO is made available under MIT License.
   </li>
   <li>
 
-        DCO: We enforce the Developer Certificate of Origin (DCO) on Pull Requests. It requires all commit messages to contain the Signed-off-by line with an email address that matches the commit author. Contributors sign-off that they adhere to these requirements by adding a "Signed-off-by" line to commit messages.
+        <a href="https://github.com/edmcouncil/fibo/blob/master/DCO"
+            v-on:click="outboundClick('https://github.com/edmcouncil/fibo/blob/master/DCO')">DCO</a>: We enforce the Developer Certificate of Origin (DCO) on Pull Requests. It requires all commit messages to contain the Signed-off-by line with an email address that matches the commit author. Contributors sign-off that they adhere to these requirements by adding a "Signed-off-by" line to commit messages.
 
   </li>
   <li>
-        README: The README is the instruction manual. It explains how to get started.
+        <a href="https://github.com/edmcouncil/fibo/blob/master/README.md"
+            v-on:click="outboundClick('https://github.com/edmcouncil/fibo/blob/master/README.md')">READ.md</a>: The README is the instruction manual. It explains how to get started.
 
   </li>
   <li>
-        CONTRIBUTING and ONTOLOGY_GUIDE: These contributing documents explain what types of contributions are needed and how the process works. 
+        <a href="https://github.com/edmcouncil/fibo/blob/master/CONTRIBUTING.md"
+            v-on:click="outboundClick('https://github.com/edmcouncil/fibo/blob/master/CONTRIBUTING.md')">CONTRIBUTING.md</a> and <a href="https://github.com/edmcouncil/fibo/blob/master/ONTOLOGY_GUIDE.md"
+            v-on:click="outboundClick('https://github.com/edmcouncil/fibo/blob/master/ONTOLOGY_GUIDE.md')">ONTOLOGY_GUIDE.md</a>: These contributing documents explain what types of contributions are needed and how the process works. 
 
   </li>
   <li>
 
-        CODE_OF_CONDUCT: The code of conduct sets ground rules for participants’ behavior associated and helps to facilitate a friendly, welcoming environment. The FIBO project adheres to the Contributor Covenant code of conduct. By participating, you are expected to uphold this code.
+        <a href="https://github.com/edmcouncil/fibo/blob/master/CODE_OF_CONDUCT.md"
+            v-on:click="outboundClick('https://github.com/edmcouncil/fibo/blob/master/CODE_OF_CONDUCT.md')">CODE_OF_CONDUCT.md</a>: The code of conduct sets ground rules for participants’ behavior associated and helps to facilitate a friendly, welcoming environment. The FIBO project adheres to the Contributor Covenant code of conduct. By participating, you are expected to uphold this code.
   </li>
   </ul>
       </article>
