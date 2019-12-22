@@ -11,7 +11,7 @@
                   FIBO development process is organized by two groups: the <strong>FIBO Steering Group</strong> and the <strong>FIBO Community Group</strong>.
                 </p>
 
-                <h3 style="padding-top: 10px;">FIBO Steering Group (FSG)</h3>
+                <h3>FIBO Steering Group (FSG)</h3>
                 <p>
                   The FIBO Steering Group (FSG) is responsible for
                 </p>
