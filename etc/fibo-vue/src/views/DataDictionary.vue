@@ -5,14 +5,21 @@
         <h1>
           <span>FIBO data dictionary</span>
         </h1>
-        <h2>
+
+
+        <p>
           FIBO data dictionary (aka glossary) is downloadable in .csv and .xlsx. It contains a summary of each operational class in FIBO, with its properties, presented in the form of tables and fields for viewers familiar with relational data dictionaries.
-        </h2>
+        </p>
         
         <h3>
           <a name="CSV">Comma Separated Values format</a>
-        </h3>A comma-separated file with the same information as the web page; label, curated defintion, synonyms and
-        model-generated defintion. For use in spreadsheets, including Excel.
+        </h3>
+        
+        <p class="text">
+          A comma-separated file with the same information as the web page; label, curated defintion, synonyms and
+          model-generated defintion. For use in spreadsheets, including Excel.
+        </p>
+
         <ul>
           <li>
             <a
@@ -30,9 +37,14 @@
 
         <h3>
           <a name="XLS">Excel format</a>
-        </h3>A file that can be read with Microsoft Excel, containing a label, curated definition, synonyms,
-        model-generated definition, examples, and explanatory notes (when available). Exclusively for use with Excel,
-        this file includes formatting to make the spreadsheet easier to read.
+        </h3>
+        
+        <p class="text">
+          A file that can be read with Microsoft Excel, containing a label, curated definition, synonyms,
+          model-generated definition, examples, and explanatory notes (when available). Exclusively for use with Excel,
+          this file includes formatting to make the spreadsheet easier to read.
+        </p>
+
         <ul>
           <li>
             <a
@@ -71,19 +83,5 @@ export default {
 };
 </script>
 
-<style>
-article {
-  padding-top: 30px;
-}
-article h2 {
-  font-size: 17px;
-  color: #455560;
-  line-height: 28px;
-  text-transform: none;
-  padding-top: 30px;
-  padding-bottom: 10px;
-  text-align: left;
-  font-weight: 400;
-  letter-spacing: 1px;
-}
+<style lang="scss" scoped>
 </style>

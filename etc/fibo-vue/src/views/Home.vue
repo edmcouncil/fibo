@@ -38,15 +38,15 @@
 
 
         <h3>How to contribute</h3>
-        <p class="text">
+        <p class="">
           The FIBO development process follows rigorous and well-defined
           <router-link :to="{ path: router('how-to-contribute') }">rules and principles</router-link>. 
         </p>
-        <p class="text">
+        <p class="">
           FIBO activities and development process are organized via two groups: 
           <router-link :to="{ path: router('FIBO-Groups') }">the FIBO Steering Group and the FIBO Community Group</router-link>.
         </p>
-        <p class="text">
+        <p class="">
           Since January 2020, the FIBO
           <a href="https://github.com/edmcouncil/fibo"
             v-on:click="outboundLinkClick('https://github.com/edmcouncil/fibo')">GitHub repository</a>
@@ -74,5 +74,5 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
 </style>

@@ -332,9 +332,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-h1{
-  margin-bottom: 30px;
-}
 ol li{
   list-style-type: inherit;
   padding-left: 10px;

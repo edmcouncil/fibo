@@ -6,11 +6,11 @@
           <span>FINANCIAL INDUSTRY BUSINESS DATA MODEL (FIB-DM)</span>
         </h1>
 
-        <p class="text-margin-top">
+        <p class="text-margin-top text">
           FIB-DM is a complete model transformation of the FIBO into a Conceptual Data Model.
         </p>
         
-        <figure class="wp-block-image size-large">
+        <figure class="wp-block-image size-large text-center">
           <img src="@/assets/img/FIBO-in-Data-Modeling-tools.png"
               alt="FIBO in Data Modeling tools"
               class=""
@@ -33,9 +33,9 @@
         <hr class="wp-block-separator">
 
 
-        <p>We created FIB-DM with CODT our&nbsp;<a href="https://fib-dm.com/patent/">patent-pending</a>&nbsp;Configurable Ontology to Data-model Transformation. </p>
+        <p class="text">We created FIB-DM with CODT our&nbsp;<a href="https://fib-dm.com/patent/">patent-pending</a>&nbsp;Configurable Ontology to Data-model Transformation. </p>
 
-        <figure class="wp-block-image size-large">
+        <figure class="wp-block-image size-large text-center">
           <a href="https://www.linkedin.com/pulse/open-source-data-model-financial-industry-jurgen-ziemer/"
               target="_blank" rel="noreferrer noopener">
             <img src="@/assets/img/Ontology-Graph-to-Entity-Replationship-diagram.png"
@@ -51,9 +51,9 @@
 
         <p class="text">Standalone FIB-DM is an Enterprise Data Model, a lower-cost alternative to industry vendor models. We believe that the ontology-derived data model is also more comprehensive, modern, and conceptually sound, thanks to the exceptional work of the FIBO development team and EDMC members supporting the content groups. </p>
 
-        <p>Strategically, adopting the industry standard for relational and object modeling today, you are fully prepared for Semantic Enterprise Information Architecture with the ontology at the apex and derived models for data, message, object, and process in the future.</p>
+        <p class="text">Strategically, adopting the industry standard for relational and object modeling today, you are fully prepared for Semantic Enterprise Information Architecture with the ontology at the apex and derived models for data, message, object, and process in the future.</p>
 
-        <figure class="wp-block-image size-large">
+        <figure class="wp-block-image size-large text-center">
           <a href="https://fib-dm.com/semantics-for-finance-users/" target="_blank" rel="noreferrer noopener">
             <img src="@/assets/img/Semantic-Enterprise-Information-Architecture-1024x418.png"
                 alt="Semantic Enterprise Information Architecture diagram" class="wp-image-1676"
@@ -98,21 +98,7 @@ export default {
 };
 </script>
 
-<style>
-article {
-  padding-top: 30px;
-}
-article h2 {
-  font-size: 17px;
-  color: #455560;
-  line-height: 28px;
-  text-transform: none;
-  padding-top: 30px;
-  padding-bottom: 10px;
-  text-align: left;
-  font-weight: 400;
-  letter-spacing: 1px;
-}
+<style lang="scss" scoped>
 hr.wp-block-separator{
   border-bottom: 1px solid;
 }

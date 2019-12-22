@@ -99,7 +99,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-h1{
-  margin-bottom: 30px;
-}
 </style>

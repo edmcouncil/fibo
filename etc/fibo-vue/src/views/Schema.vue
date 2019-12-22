@@ -125,7 +125,7 @@
             </span>
           </p>
           <h5>Properties:</h5>
-          <p>All properties below except&nbsp;<a style="text-decoration: none;" href="http://pending.schema.org/identifier" class="external-link" rel="nofollow">identifier</a>&nbsp;and&nbsp;<a href="http://pending.schema.org/duration" style="text-decoration: none;" class="external-link" rel="nofollow">duration</a>&nbsp;are the FIBO <a href="http://schema.org" class="external-link" rel="nofollow">schema.org</a> extension terms<span>. </span>
+          <p class="text">All properties below except&nbsp;<a style="text-decoration: none;" href="http://pending.schema.org/identifier" class="external-link" rel="nofollow">identifier</a>&nbsp;and&nbsp;<a href="http://pending.schema.org/duration" style="text-decoration: none;" class="external-link" rel="nofollow">duration</a>&nbsp;are the FIBO <a href="http://schema.org" class="external-link" rel="nofollow">schema.org</a> extension terms<span>. </span>
           </p>
           <ul>
             <li>
@@ -243,7 +243,7 @@
             </li>
           </ul>
           <h3>An example of diagram for MortgageLoan type</h3>
-          <p>In this example, the<span>&nbsp;</span>
+          <p class="text">In this example, the<span>&nbsp;</span>
             <a style="text-decoration: none;" href="http://schema.org/MortgageLoan" class="external-link" rel="nofollow">MortgageLoan</a>
             <span>&nbsp;</span>(sub-class of the sequence of<span>&nbsp;</span>
             <a style="text-decoration: none;" href="http://schema.org/LoanOrCredit" class="external-link" rel="nofollow">LoanOrCredit</a>
@@ -255,8 +255,9 @@
             <span>&nbsp;</span>(representing APR),<span>&nbsp;</span>
             <a href="http://schema.org/loanTerm" style="text-decoration: none;" class="external-link" rel="nofollow">loanTerm</a>
             <span>&nbsp;</span>and<span>&nbsp;</span>
-            <a style="text-decoration: none;" href="http://schema.org/loanRepaymentForm" class="external-link" rel="nofollow">loanRepaymentForm</a>.</p>
-          <p>
+            <a style="text-decoration: none;" href="http://schema.org/loanRepaymentForm" class="external-link" rel="nofollow">loanRepaymentForm</a>.
+          </p>
+          <p class="text-center">
             <span class="confluence-embedded-file-wrapper">
               <img class="confluence-embedded-image confluence-external-resource" src="@/assets/img/schema-financial-img-6.png" data-image-src="https://schema.org/docs/financial-img/6.png">
               </span>
@@ -1058,27 +1059,7 @@ export default {
 };
 </script>
 
-<style>
-article {
-  padding-top: 30px;
-}
-article h2 {
-  font-size: 17px;
-  color: #455560;
-  line-height: 28px;
-  text-transform: none;
-  padding-top: 30px;
-  padding-bottom: 10px;
-  text-align: left;
-  font-weight: 400;
-  letter-spacing: 1px;
-}
-li {
-  line-height: 30px;
-}
-li::before {
-  margin-top: 13px;
-}
+<style lang="scss" scoped>
 ol.linenums {
   padding-inline-start: 10px
 }

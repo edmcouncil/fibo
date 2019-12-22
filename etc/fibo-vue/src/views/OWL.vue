@@ -5,9 +5,10 @@
         <h1>
           <span>FIBO OWL</span>
         </h1>
-        <h2>
+
+        <p>
           FIBO OWL is available in a number of RDF formats. These are available for offline use (i.e., download all of FIBO as a zip), or online use. Each FIBO ontology file is available for "follow your nose" treatment, a general description of which is available here.
-        </h2>
+        </p>
 
         <p>FIBO OWL is published in two releases:</p>
         <ul class="space-at-top">
@@ -123,27 +124,7 @@ export default {
 
 
 <style lang="scss" scoped>
-article {
-  padding-top: 30px;
-}
-article h2 {
-  font-size: 17px;
-  color: #455560;
-  line-height: 28px;
-  text-transform: none;
-  padding-top: 30px;
-  padding-bottom: 10px;
-  text-align: left;
-  font-weight: 400;
-  letter-spacing: 1px;
-}
 .inline {
   display: inline-block;
-}
-article ul.space-at-top li {
-  line-height: 24px;
-}
-article ul.space-at-top li::before {
-  margin-top: 10px;
 }
 </style>

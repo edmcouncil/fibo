@@ -337,22 +337,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-h5,
-h6 {
-  padding-top: 10px;
-}
 .card {
   margin: 20px;
   background: #f3f3f3;
 }
 .search-box {
   margin: 20px;
-}
-li {
-  line-height: 30px;
-}
-li::before {
-  margin-top: 10px;
 }
 .module-tree ul,
 .module-tree li {
