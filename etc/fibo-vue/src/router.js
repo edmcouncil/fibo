@@ -84,6 +84,16 @@ export default new Router({
       component: () => import(/* webpackChunkName: "FIB-DM" */ './views/HowToContribute.vue'),
     },
     {
+      path: '/courses',
+      name: 'Courses',
+      component: () => import(/* webpackChunkName: "Courses" */ './views/Courses.vue'),
+    },
+    {
+      path: '/use-cases',
+      name: 'UseCases',
+      component: () => import(/* webpackChunkName: "UseCases" */ './views/UseCases.vue'),
+    },
+    {
       path: '/ontology/:1?/:2?/:3?/:4?/:5?',
       name: 'ontology',
       component: () => import(/* webpackChunkName: "Schema" */ './views/Ontology.vue'),
