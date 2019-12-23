@@ -68,9 +68,7 @@
               <div class="col-12">
                 <div class="row">
                   <div class="col-12">
-                    <!-- <router-link :to="{ path: result.iri.replace('https://spec.edmcouncil.org/fibo', '') }">{{result.label}}</router-link> -->
-                    
-                    <customLink class="custom-link" :name="result.label" :query="result.iri"></customLink>
+                    <customLink class="custom-link" :name="result.label" :query="result.iri" :customLinkOnClick="searchResultClicked"></customLink>
                   </div>
                 </div>
                 <div class="row">
@@ -472,6 +470,9 @@ export default {
     },
     clearAll () {
       this.searchBox.selectedData = null;
+    },
+    searchResultClicked(){
+      this.$root.ontologyRouteIsUpdating = true;
     }
   },
   computed: {
@@ -496,6 +497,10 @@ export default {
         queryParam = 'https://spec.edmcouncil.org/fibo' + to.path;
       }
       this.query = queryParam;
+      if(this.query == 'https://spec.edmcouncil.org/fibo/ontology'){
+        this.query = '';
+        this.data = null;
+      }
       this.$nextTick(async function () {
         this.fetchData(this.query);
       });
@@ -505,10 +510,10 @@ export default {
   updated(){
     //scrollTo: ontologyViewerTopOfContainer
     if(
-      ((this.data != undefined) && (this.data.iri != undefined) && (this.$root.ontologyRouteIsUpdating)) ||
+      (this.$root.ontologyRouteIsUpdating) ||
       (this.$route.query.scrollToTop == 'true'))
     {
-      this.searchBox.selectedData = null; //to hide search results after ontology clicked on left tree
+      this.searchBox.selectedData = null; //to hide search results after rerouting on ontology page
     }
     this.scrollToOntologyViewerTopOfContainer(); //move it to above IF to scroll only after internal navigaion (not on page load)
   },
