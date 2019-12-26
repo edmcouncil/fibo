@@ -5,7 +5,6 @@
 	<!ENTITY fibo-fnd-dt-fd "https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/">
 	<!ENTITY fibo-fnd-math-math "https://spec.edmcouncil.org/fibo/ontology/FND/MathExt/Math/">
 	<!ENTITY fibo-fnd-qt-qtu "https://spec.edmcouncil.org/fibo/ontology/FND/Quantities/QuantitiesAndUnits/">
-	<!ENTITY fibo-fnd-tim-tim "https://spec.edmcouncil.org/fibo/ontology/FND/TimeExt/Time/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
 	<!ENTITY fibo-fnd-utl-val "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Values/">
 	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
@@ -20,7 +19,6 @@
 	xmlns:fibo-fnd-dt-fd="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"
 	xmlns:fibo-fnd-math-math="https://spec.edmcouncil.org/fibo/ontology/FND/MathExt/Math/"
 	xmlns:fibo-fnd-qt-qtu="https://spec.edmcouncil.org/fibo/ontology/FND/Quantities/QuantitiesAndUnits/"
-	xmlns:fibo-fnd-tim-tim="https://spec.edmcouncil.org/fibo/ontology/FND/TimeExt/Time/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
 	xmlns:fibo-fnd-utl-val="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Values/"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
@@ -36,7 +34,6 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Quantities/QuantitiesAndUnits/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/TimeExt/Time/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Values/"/>
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/MathExt/Math/"/>
@@ -74,12 +71,6 @@
 	
 	<owl:Class rdf:about="&fibo-fnd-math-math;CurrentValue">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-math-math;TimedValue"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-math-math;tense"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-tim-tim;Present"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">current value</rdfs:label>
 		<owl:disjointWith rdf:resource="&fibo-fnd-math-math;PastValue"/>
 		<owl:disjointWith rdf:resource="&fibo-fnd-math-math;ProjectedValue"/>
@@ -264,12 +255,6 @@
 	
 	<owl:Class rdf:about="&fibo-fnd-math-math;PastValue">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-math-math;TimedValue"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-math-math;tense"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-tim-tim;Past"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">past value</rdfs:label>
 		<owl:disjointWith rdf:resource="&fibo-fnd-math-math;ProjectedValue"/>
 		<skos:definition xml:lang="en">The value is determined at some point in the past.</skos:definition>
@@ -302,12 +287,6 @@
 				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-math-math;tense"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-tim-tim;Future"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">projected value</rdfs:label>
 		<skos:definition xml:lang="en">The value is some projected future value.</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Note that the future is not known, so in fact future tense refers to some project value. The value should therefore be accompanied by terms defining how and by what means it is being predicted.</fibo-fnd-utl-av:explanatoryNote>
@@ -316,24 +295,6 @@
 	<owl:Class rdf:about="&fibo-fnd-math-math;PublishedFutureValue">
 		<rdfs:label xml:lang="en">published future value</rdfs:label>
 		<skos:definition xml:lang="en">A value defined in advance in a schedule, as part of the bond terms in the prospectus. an example of this is a stepped coupon in a bond.</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-fnd-math-math;Rate">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-math-math;NumericalParameter"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-math-math;isOver"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-tim-tim;TemporalUnit"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-math-math;isRateOf"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-math-math;Value"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">rate</rdfs:label>
-		<skos:definition xml:lang="en">The rate of change of some measurable parameter over some period of time.</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-math-math;Relation">
@@ -502,12 +463,6 @@
 		<rdfs:range rdf:resource="&fibo-fnd-math-math;NumericalParameter"/>
 	</owl:ObjectProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-fnd-math-math;isOver">
-		<rdfs:label xml:lang="en">is over</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-math-math;Rate"/>
-		<rdfs:range rdf:resource="&fibo-fnd-tim-tim;TemporalUnit"/>
-	</owl:ObjectProperty>
-	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-math-math;isParameterOf">
 		<rdfs:label xml:lang="en">is parameter of</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fnd-math-math;TimedParameter"/>
@@ -518,13 +473,6 @@
 		<rdfs:label xml:lang="en">is parameter of reference entity</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fnd-math-math;TimedParameter"/>
 		<rdfs:range rdf:resource="&fibo-fnd-math-math;ParametricReferenceEntity"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-fnd-math-math;isRateOf">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-math-math;takesValue"/>
-		<rdfs:label xml:lang="en">is rate of</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-math-math;Rate"/>
-		<rdfs:range rdf:resource="&fibo-fnd-math-math;Value"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-math-math;percentageProbability">
@@ -592,13 +540,6 @@
 		<rdfs:label xml:lang="en">takes values over time</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fnd-math-math;TimedParameter"/>
 		<rdfs:range rdf:resource="&fibo-fnd-math-math;TimedValue"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-fnd-math-math;tense">
-		<rdfs:label xml:lang="en">tense</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-math-math;TimedValue"/>
-		<rdfs:range rdf:resource="&fibo-fnd-tim-tim;Tense"/>
-		<skos:definition xml:lang="en">Whether the value is in the past, present or future tense. Note that different qualifying terms are required for each of these, so the specific sub-type should be referred to in all cases.</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-fnd-math-math;valueExpressedAs">
