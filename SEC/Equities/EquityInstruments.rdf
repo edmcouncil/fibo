@@ -22,6 +22,7 @@
 	<!ENTITY fibo-sec-sec-iss "https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesIssuance/">
 	<!ENTITY fibo-sec-sec-lst "https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesListings/">
 	<!ENTITY fibo-sec-sec-rst "https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesRestrictions/">
+	<!ENTITY fibo-sec-sec-sch "https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/ParametricSchedules/">
 	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
 	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
 	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
@@ -52,6 +53,7 @@
 	xmlns:fibo-sec-sec-iss="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesIssuance/"
 	xmlns:fibo-sec-sec-lst="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesListings/"
 	xmlns:fibo-sec-sec-rst="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesRestrictions/"
+	xmlns:fibo-sec-sec-sch="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/ParametricSchedules/"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
@@ -69,6 +71,8 @@
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/BE/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FBC/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/</sm:dependsOn>
+		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/ParametricSchedules/</sm:dependsOn>
+		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesIssuance/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesListings/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesRestrictions/</sm:dependsOn>
 		<sm:fileAbbreviation>fibo-sec-eq-eq</sm:fileAbbreviation>
@@ -91,12 +95,13 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/ProductsAndServices/PaymentsAndSchedules/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/ParametricSchedules/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesIssuance/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesListings/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesRestrictions/"/>
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20191201/Equities/EquityInstruments/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20180801/Equities/EquityInstruments.rdf version of this ontology was revised to replace &apos;publicly-traded share&apos; with &apos;exchange-specific share&apos;, which is the more commonly used designation and corresponds better with the intended semantics of this concept, to merge in concepts that were formerly in a separate ShareTerms ontology, and eliminate deprecated elements.</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20190901/Equities/EquityInstruments.rdf version of this ontology was revised to refine the definition of listed share share, update definitions to remove leading articles, add missing properties and restrictions.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20190901/Equities/EquityInstruments.rdf version of this ontology was revised to refine the definition of listed share share, update definitions to remove leading articles, add missing properties and restrictions, revise the definition of dividend.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -166,13 +171,6 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-agr;Commitment"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-pas-psch;hasPaymentAmount"/>
-				<owl:onClass rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
-				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-eq-eq;hasDistributionMethod"/>
 				<owl:onClass rdf:resource="&fibo-sec-eq-eq;DividendDistributionMethod"/>
 				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
@@ -180,9 +178,16 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-pas-psch;hasPaymentAmount"/>
+				<owl:onClass rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-dt-fd;hasSchedule"/>
 				<owl:onClass rdf:resource="&fibo-sec-eq-eq;DividendOrShareCouponSchedule"/>
-				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>dividend</rdfs:label>
@@ -197,8 +202,8 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-eq-eq;DividendOrShareCouponSchedule">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-fd;RegularSchedule"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-psch;PaymentSchedule"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-sch;ParametricSchedule"/>
 		<rdfs:label>dividend or share coupon schedule</rdfs:label>
 		<skos:definition>payment schedule indicating the dates on which dividends or share coupon payments are due to be paid</skos:definition>
 	</owl:Class>
@@ -333,7 +338,7 @@
 	<owl:Class rdf:about="&fibo-sec-eq-eq;OrdinaryDividend">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;Dividend"/>
 		<rdfs:label>ordinary dividend</rdfs:label>
-		<skos:definition>dividend that is taxed as ordinary income on receipt by a shareholder</skos:definition>
+		<skos:definition>dividend that is paid to shareholders periodically</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote>Most dividends are considered ordinary, unless they are specifically designated as qualified dividends.</fibo-fnd-utl-av:explanatoryNote>
 		<fibo-fnd-utl-av:explanatoryNote>Note that the terms related to ordinary dividend payment are typically specified in the context of a board resolution rather than contractually.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
@@ -477,6 +482,13 @@
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">share</rdfs:label>
 		<skos:definition xml:lang="en">financial instrument that signifies a unit of equity ownership in a corporation, or a unit of ownership in a mutual fund, or interest in a general or limited partnership, or a unit of ownership in a structured product, such as a real estate investment trust</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-eq-eq;SpecialDividend">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;Dividend"/>
+		<rdfs:label>special dividend</rdfs:label>
+		<skos:definition>dividend that is paid to shareholders on a one-time basis</skos:definition>
+		<fibo-fnd-utl-av:usageNote xml:lang="en">Special dividends may be included in a dividend schedule as an ad-hoc entry, since they still need to be tracked based on the date of issuance.</fibo-fnd-utl-av:usageNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-eq-eq;VotingRight">
