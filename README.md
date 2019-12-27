@@ -36,7 +36,7 @@ This project adheres to the Contributor Covenant [code of conduct](CODE_OF_CONDU
 We use [Probot / DCO framework](https://github.com/probot/dco) to enforce the Developer Certificate of Origin ([DCO](DCO)) on Pull Requests. It requires all commit messages to contain the Signed-off-by line with an email address that matches the commit author. Contributors sign-off that they adhere to [these requirements](DCO) by adding a "Signed-off-by" line to commit messages.
 
 ## Contributing to FIBO
-The FIBO development process follows rigorous and well-defined rules and principles. Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details. 
+The FIBO development process follows rigorous and well-defined rules and principles. Please read [CONTRIBUTING.md](CONTRIBUTING.md) and [ONTOLOGY\_GUIDE.md](ONTOLOGY_GUIDE.md) for details. 
 
 
 # Directories

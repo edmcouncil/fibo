@@ -176,23 +176,29 @@ Bug reports and feature requests are tracked as [GitHub issues](https://guides.g
 If you want to extend the content of FIBO trough pull requests, you'll need to do the following things: 
 
 1. Make sure you have java installed; see https://www.oracle.com/technetwork/java/javase/downloads/index.html, if you need to download java.
-1. Install a git client.  In FIBO, we recommend [Sourcetree from Atlassian](https://www.sourcetreeapp.com/)
+1. Install a git client.  
+	* In FIBO, we recommend [Sourcetree from Atlassian](https://www.sourcetreeapp.com/)
 1. Make a "fork" of the ["fibo" repository](https://github.com/edmcouncil/fibo). Clone your fork to your local repository.
 1. Install [FIBO serialization tools](#fibo-serialization-tools). This is important so that your code can be compared and merged with code from other contributors. You cannot submit a pull request to the fibo repository without this step. 
 1. Install the [local testing tools](#local-testing-tools). This will allow you to process FIBO with the most common semantic web editing tools.
 1. Edit FIBO using the RDF/OWL editor of your choice (Protégé, TopBraid, MagicDraw CCM, VOM, Cognitum Fluent Editor, etc. ).
-1. Submit a Pull Request to the EDM Council's ["fibo" repository](https://github.com/edmcouncil/fibo). Please follow all instructions in [the template](PULL_REQUEST_TEMPLATE.md)
+1. Submit a pull request to the EDM Council's ["fibo" repository](https://github.com/edmcouncil/fibo). Please add "(WIP)" sufix to the title of your pull request.
 
 You only have to do steps 1-5 once. Once you have begun contributing, you just repeat steps 6 and 7. 
 
 
 #### To have your contribution considered by the maintainers
 
-* Follow all instructions in [the template](PULL_REQUEST_TEMPLATE.md)
-* Follow the [principles of best practices](#principles-of-best-practices)
+* Follow all instructions in [the template](.github/PULL_REQUEST_TEMPLATE.md).
+* Follow the [principles of best practices](#principles-of-best-practices).
+* Add "(WIP)" sufix to the title of your pull request.
 * After you submit your pull request, verify that all [status checks](https://help.github.com/articles/about-status-checks/) are passing 
-* If a status check is failing, and you believe that the failure is unrelated to your change, please leave a comment on the pull request explaining why you believe the failure is unrelated. A maintainer will re-run the status check for you. If we conclude that the failure was a false positive, then we will open an issue to track that problem with our status check suite.
+* If a status check is failing, and you believe that the failure is unrelated to your change, please leave a comment on the pull request explaining why you believe the failure is unrelated. A maintainer will re-run the status check for you.
 * While the prerequisites above must be satisfied prior to having your pull request reviewed, the reviewer(s) may ask you to complete additional design work, tests, or other changes before your pull request can be ultimately accepted.
+
+#### Who can accept pull requests?
+
+* Pull requests can be accepted only by the members of [FIBO Core Write Team](https://github.com/orgs/edmcouncil/teams/fibo-core-write-team) who have “Write” permission.
 
 ## Developer Certificate of Origin
 
