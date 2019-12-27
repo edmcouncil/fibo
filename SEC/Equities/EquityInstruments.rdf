@@ -101,7 +101,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesRestrictions/"/>
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20191201/Equities/EquityInstruments/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20180801/Equities/EquityInstruments.rdf version of this ontology was revised to replace &apos;publicly-traded share&apos; with &apos;exchange-specific share&apos;, which is the more commonly used designation and corresponds better with the intended semantics of this concept, to merge in concepts that were formerly in a separate ShareTerms ontology, and eliminate deprecated elements.</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20190901/Equities/EquityInstruments.rdf version of this ontology was revised to refine the definition of listed share share, update definitions to remove leading articles, add missing properties and restrictions, revise the definition of dividend.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20190901/Equities/EquityInstruments.rdf version of this ontology was revised to refine the definition of listed share, update definitions to remove leading articles, add missing properties and restrictions, revise the definition of dividend.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -366,8 +366,7 @@
 	<owl:Class rdf:about="&fibo-sec-eq-eq;PrecedenceRight">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-law-lcap;ContractualRight"/>
 		<rdfs:label>precedence right</rdfs:label>
-		<skos:definition>rights of various parties in respect of the assets of some entity in the event of that entity being wound up</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote>Some of these rights are enshrined in law. A special case of these is shareholder rights which are defined, for different classes of equity, by the Company Articles of Association or equivalent Documentation. These are the rights defined in the Equity Priority Terms Set.</fibo-fnd-utl-av:explanatoryNote>
+		<skos:definition>right that give the shareholder higher priority with respect to certain pre-defined dividend payments over other shareholders and that pay out first in the case of liquidation</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-eq-eq;PreferredShare">
@@ -566,14 +565,13 @@
 		<skos:definition>indicates a pre-arranged dividend rate</skos:definition>
 	</owl:ObjectProperty>
 	
-	<owl:DatatypeProperty rdf:about="&fibo-sec-eq-eq;hasFloatingSupply">
+	<owl:DatatypeProperty rdf:about="&fibo-sec-eq-eq;hasFloatingShares">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasAmount"/>
-		<rdfs:label xml:lang="en">has floating supply</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-eq-eq;ListedShare"/>
+		<rdfs:label xml:lang="en">has floating shares</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-sec-eq-eq;Share"/>
 		<rdfs:range rdf:resource="&xsd;nonNegativeInteger"/>
-		<skos:definition xml:lang="en">indicates the number of shares outstanding and available for trading publicly</skos:definition>
+		<skos:definition xml:lang="en">indicates the number of shares that are available for trading, i.e., the number of shares outstanding less closely held shares (those held by insiders) and restricted shares</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">A relatively small float results in higher volatility, as a large purchase or sell order will have significant influence on the value of the stock.</fibo-fnd-utl-av:explanatoryNote>
-		<fibo-fnd-utl-av:synonym xml:lang="en">has float</fibo-fnd-utl-av:synonym>
 	</owl:DatatypeProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-eq-eq;hasGracePeriod">
@@ -583,6 +581,31 @@
 		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Duration"/>
 		<skos:definition>indicates a period of time after a coupon payment becomes due, before the issuer is subject to penalties</skos:definition>
 	</owl:ObjectProperty>
+	
+	<owl:DatatypeProperty rdf:about="&fibo-sec-eq-eq;hasSharesIssued">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasAmount"/>
+		<rdfs:label xml:lang="en">has shares issued</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-sec-eq-eq;Share"/>
+		<rdfs:range rdf:resource="&xsd;nonNegativeInteger"/>
+		<skos:definition xml:lang="en">indicates the number of shares authorized for sale by the board of directors, including shares sold to and held by shareholders as well as shares that are available for sale to generate capital, and shares available for distribution to insiders as part of their compensation packages</skos:definition>
+	</owl:DatatypeProperty>
+	
+	<owl:DatatypeProperty rdf:about="&fibo-sec-eq-eq;hasSharesOutstanding">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasAmount"/>
+		<rdfs:label xml:lang="en">has shares outstanding</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-sec-eq-eq;Share"/>
+		<rdfs:range rdf:resource="&xsd;nonNegativeInteger"/>
+		<skos:definition xml:lang="en">indicates the number of shares currently held by shareholders, including those held by retail investors, institutional investors and insiders, and typically available for trading</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">The number of outstanding shares is used in calculating key metrics such as a company&apos;s market capitalization, as well as its earnings per share (EPS) and cash flow per share (CFPS).</fibo-fnd-utl-av:explanatoryNote>
+	</owl:DatatypeProperty>
+	
+	<owl:DatatypeProperty rdf:about="&fibo-sec-eq-eq;hasTreasuryShares">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasAmount"/>
+		<rdfs:label xml:lang="en">has treasury shares</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-sec-eq-eq;Share"/>
+		<rdfs:range rdf:resource="&xsd;nonNegativeInteger"/>
+		<skos:definition xml:lang="en">indicates the number of shares issued but not outstanding, including those that were available in the market at one time but have been repurchased by the company</skos:definition>
+	</owl:DatatypeProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-sec-eq-eq;hasVotingRestriction">
 		<rdfs:label xml:lang="en">has voting restriction</rdfs:label>
@@ -600,6 +623,8 @@
 	</owl:DatatypeProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-eq-eq;isSeniorTo">
+		<rdf:type rdf:resource="&owl;AsymmetricProperty"/>
+		<rdf:type rdf:resource="&owl;TransitiveProperty"/>
 		<rdfs:label>is senior to</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-eq-eq;Share"/>
 		<rdfs:range rdf:resource="&fibo-sec-eq-eq;Share"/>
