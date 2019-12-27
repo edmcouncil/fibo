@@ -7,7 +7,9 @@
 	<!ENTITY fibo-fnd-dt-fd "https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/">
 	<!ENTITY fibo-fnd-inf-tem "https://spec.edmcouncil.org/fibo/ontology/FND/InformationExt/TemporalInfo/">
 	<!ENTITY fibo-fnd-rel-rel "https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/">
+	<!ENTITY fibo-fnd-utl-alx "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Analytics/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
+	<!ENTITY fibo-ind-ind-ind "https://spec.edmcouncil.org/fibo/ontology/IND/Indicators/Indicators/">
 	<!ENTITY fibo-md-dbtx-aly "https://spec.edmcouncil.org/fibo/ontology/MD/DebtTemporal/DebtAnalytics/">
 	<!ENTITY fibo-md-dbtx-py "https://spec.edmcouncil.org/fibo/ontology/MD/DebtTemporal/DebtPricingYields/">
 	<!ENTITY fibo-md-temx-ins "https://spec.edmcouncil.org/fibo/ontology/MD/TemporalCore/InstrumentTemporalTerms/">
@@ -29,7 +31,9 @@
 	xmlns:fibo-fnd-dt-fd="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"
 	xmlns:fibo-fnd-inf-tem="https://spec.edmcouncil.org/fibo/ontology/FND/InformationExt/TemporalInfo/"
 	xmlns:fibo-fnd-rel-rel="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"
+	xmlns:fibo-fnd-utl-alx="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Analytics/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
+	xmlns:fibo-ind-ind-ind="https://spec.edmcouncil.org/fibo/ontology/IND/Indicators/Indicators/"
 	xmlns:fibo-md-dbtx-aly="https://spec.edmcouncil.org/fibo/ontology/MD/DebtTemporal/DebtAnalytics/"
 	xmlns:fibo-md-dbtx-py="https://spec.edmcouncil.org/fibo/ontology/MD/DebtTemporal/DebtPricingYields/"
 	xmlns:fibo-md-temx-ins="https://spec.edmcouncil.org/fibo/ontology/MD/TemporalCore/InstrumentTemporalTerms/"
@@ -51,9 +55,10 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Arrangements/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/InformationExt/TemporalInfo/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/MathExt/Math/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Analytics/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/Indicators/Indicators/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/MD/DebtTemporal/DebtPricingYields/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/MD/TemporalCore/InstrumentTemporalTerms/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/MD/TemporalCore/TemporalConcepts/"/>
@@ -87,7 +92,12 @@
 	
 	<owl:Class rdf:about="&fibo-md-dbtx-aly;DebtConvexityAnalytic">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-arr;DatedCollectionConstituent"/>
-		<rdfs:subClassOf rdf:resource="&fibo-md-temx-tem;CurveConvexity"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasArgument"/>
+				<owl:someValuesFrom rdf:resource="&fibo-ind-ind-ind;MarketSpread"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-md-dbtx-aly;definedInRelationTo"/>
@@ -324,7 +334,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-md-dbtx-aly;PoolFactor">
-		<rdfs:subClassOf rdf:resource="&fibo-md-temx-ins;ReferenceFactor"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;Percentage"/>
 		<rdfs:label xml:lang="en">pool factor</rdfs:label>
 		<skos:definition xml:lang="en">How much of the original pool is still outstanding. This is a number below one. Expressed as percentage.</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Would multiply the factor by the starting value of the pool. This determines how much it is paying down. Would take the form of a 10 digit decimal factor showing how much of the pool is outstanding. You get Factor information every month or so which includes the WAM figure (and the WALA and WAC). The rate can be derived from this. that would be the rate at which the pool is paying down. These all come from the issuer.</fibo-fnd-utl-av:explanatoryNote>
@@ -508,7 +518,6 @@
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-md-dbtx-aly;isRateOfChangeOf">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-inf-tem;analyzes"/>
 		<rdfs:label xml:lang="en">is rate of change of</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-md-dbtx-aly;DebtConvexityAnalytic"/>
 		<rdfs:range rdf:resource="&fibo-md-dbtx-aly;DurationAnalytic"/>
@@ -519,12 +528,6 @@
 		<rdfs:domain rdf:resource="&fibo-md-dbtx-aly;ModifiedDurationAnalytic"/>
 		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Duration"/>
 		<skos:definition xml:lang="en">The Modified Duration in Years.</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-md-dbtx-aly;prepaymentSpeedValue">
-		<rdfs:label xml:lang="en">prepayment speed value</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-md-dbtx-aly;PrepaymentSpeed"/>
-		<rdfs:range rdf:resource="&fibo-md-temx-tem;DatedPercentage"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-md-dbtx-aly;takesIntoAccount">

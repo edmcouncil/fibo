@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE rdf:RDF [
 	<!ENTITY dct "http://purl.org/dc/terms/">
+	<!ENTITY fibo-fbc-fct-breg "https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/BusinessRegistries/">
 	<!ENTITY fibo-fbc-fct-mkt "https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/Markets/">
 	<!ENTITY fibo-fbc-fct-ra "https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/RegistrationAuthorities/">
 	<!ENTITY fibo-fbc-fi-fi "https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/">
@@ -23,6 +24,7 @@
 ]>
 <rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesListings/"
 	xmlns:dct="http://purl.org/dc/terms/"
+	xmlns:fibo-fbc-fct-breg="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/BusinessRegistries/"
 	xmlns:fibo-fbc-fct-mkt="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/Markets/"
 	xmlns:fibo-fbc-fct-ra="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/RegistrationAuthorities/"
 	xmlns:fibo-fbc-fi-fi="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"
@@ -55,6 +57,7 @@
 		<sm:fileAbbreviation>fibo-sec-sec-lst</sm:fileAbbreviation>
 		<sm:filename>SecuritiesListings.rdf</sm:filename>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/BusinessRegistries/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/Markets/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/RegistrationAuthorities/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/"/>
@@ -68,12 +71,22 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/ProductsAndServices/ProductsAndServices/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20190901/Securities/SecuritiesListings/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20191201/Securities/SecuritiesListings/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20180801/Securities/SecuritiesListings.rdf version of this ontology was revised to reuse the composite date value datatype and add disjointness between registered security and exempt security.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20190401/Securities/SecuritiesListings.rdf version of this ontology was revised to eliminate an extraneous subclass axiom.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20190701/Securities/SecuritiesListings.rdf version of this ontology was revised to rename isIssuedIn to isIssuedOn, which is more natural to most securities SMEs, generalized certain references to securities exchanges, and eliminate deprecated elements.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20190901/Securities/SecuritiesListings.rdf version of this ontology was revised to restructure the concept of a listing and augment it with a number of relevant characteristics.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
+	
+	<owl:Class rdf:about="&fibo-fbc-fct-mkt;Exchange">
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;provides"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-lst;ExchangeAndListingService"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-lst;ExchangeAndListingService">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;FinancialService"/>
@@ -94,38 +107,95 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;provides"/>
-				<owl:onClass rdf:resource="&fibo-sec-sec-lst;SecurityListing"/>
+				<owl:onClass rdf:resource="&fibo-sec-sec-lst;Listing"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>exchange and listing service</rdfs:label>
-		<skos:definition>a trading and (optionally) listing service for the purposes of securities trading</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-sec-sec-lst;ExchangeTradedSecurity">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-lst;ListedSecurity"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-sec-lst;isIssuedOn"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-fct-mkt;Exchange"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-sec-lst;isTradedOn"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-fct-mkt;Exchange"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">exchange traded security</rdfs:label>
-		<skos:definition>listed security that may be traded on a particular exchange</skos:definition>
+		<skos:definition>trading and (optionally) listing service for the purposes of securities trading</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-lst;ListedSecurity">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-lst;RegisteredSecurity"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;Security"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-sec-lst;hasHomeExchange"/>
+				<owl:onClass rdf:resource="&fibo-fbc-fct-mkt;Exchange"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-sec-lst;hasOriginalPlaceOfListing"/>
+				<owl:onClass rdf:resource="&fibo-fbc-fct-mkt;Exchange"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-sec-lst;isListedVia"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-lst;Listing"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>listed security</rdfs:label>
+		<skos:definition>registered security listed on one or more exchanges</skos:definition>
+		<fibo-fnd-utl-av:synonym>exchange-traded security</fibo-fnd-utl-av:synonym>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-sec-lst;Listing">
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-fct-breg;hasRegistrationStatus"/>
+				<owl:onClass rdf:resource="&fibo-fbc-fct-breg;RegistrationStatus"/>
+				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-sec-lst;hasTickSize"/>
+				<owl:onClass rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-sec-lst;hasLastTradingDateTime"/>
+				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;DateTime"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-sec-lst;hasDelistingDate"/>
+				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-sec-lst;hasIssue"/>
+				<owl:onClass rdf:resource="&fibo-fbc-fi-fi;Security"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-sec-lst;lists"/>
+				<owl:onClass rdf:resource="&fibo-fbc-fi-fi;Security"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isProvidedBy"/>
+				<owl:onClass rdf:resource="&fibo-fbc-fct-mkt;Exchange"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-sec-lst;hasListingDate"/>
-				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;Date"/>
+				<owl:onDataRange rdf:resource="&fibo-fnd-dt-fd;CombinedDateTime"/>
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -137,20 +207,13 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-sec-lst;isListedVia"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-lst;SecurityListing"/>
+				<owl:onProperty rdf:resource="&fibo-sec-sec-lst;isTradedOn"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-fct-mkt;Exchange"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label>listed security</rdfs:label>
-		<skos:definition>a registered security listed on a specific exchange</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-sec-sec-lst;NotionalFinancialMarketplace">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-mkt;Exchange"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-plc-vrt;NotionalPlace"/>
-		<rdfs:label>notional financial marketplace</rdfs:label>
-		<skos:definition>a place which is identified as a financial market but which is not a physical place such as a country or region. This may be a conceptual place such as the Eurobond market or the Global market.</skos:definition>
-		<skos:editorialNote>These may still have properties such as holiday calendars, e.g. the London Interbank Market in USD has New York dates fo negotiation but pricing can changes whenever London is open.</skos:editorialNote>
+		<rdfs:label xml:lang="en">listing</rdfs:label>
+		<skos:definition>registry entry for a security that provides information regarding the eligibility for making that security available for trading</skos:definition>
+		<fibo-fnd-utl-av:synonym xml:lang="en">market listing</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-lst;RegisteredSecurity">
@@ -176,99 +239,86 @@
 		</rdfs:subClassOf>
 		<rdfs:label>registered security</rdfs:label>
 		<owl:disjointWith rdf:resource="&fibo-fbc-fi-fi;ExemptSecurity"/>
-		<skos:definition>a security that is registered with some registration authority and that may be traded in some trading venue (market)</skos:definition>
+		<skos:definition>security that is registered with some registration authority and that may be traded in some trading venue (market) or over the counter</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-sec-lst;SecuritiesExchange">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-mkt;Exchange"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;FinancialServiceProvider"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-aap-agt;isIdentifiedBy"/>
-				<owl:onClass rdf:resource="&fibo-fbc-fct-mkt;MarketIdentifier"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-pas-pas;provisions"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-lst;ExchangeAndListingService"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-pas-pas;provisions"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-lst;SecuritiesExchange"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;provides"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-lst;ExchangeAndListingService"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">securities exchange</rdfs:label>
-		<skos:definition>an organized, national exchange where securities, options, and futures contracts may be traded by members for their own accounts and for the accounts of their customers</skos:definition>
-		<fibo-fnd-utl-av:adaptedFrom>Barron&apos;s Dictionary of Finance and Investment Terms, Ninth Edition, 2014.</fibo-fnd-utl-av:adaptedFrom>
-		<fibo-fnd-utl-av:explanatoryNote>A securities exchange is a corporation or mutual organization that provides securities trading services, where securities may be bought and sold by third parties. As a facility, a securities exchange is also a place of trade associated with a particular site, i.e., stock exchange, regulated market such as an Electronic Trading Platform (ECN), or unregulated market, such as an Automated Trading System (ATS) (MIC - ISO 10383). Stock exchanges also provide facilities for the issue and redemption of securities as well as other financial instruments and capital events including the payment of income and dividends.
-
-The securities traded on a stock exchange include: shares issued by companies, unit trusts, derivatives, pooled investment products and bonds. To be able to trade a security on a certain stock exchange, it has to be listed there. Usually there is a central location at least for recordkeeping, but trade is less and less linked to such a physical place, as modern markets are electronic networks, which gives them advantages of speed and cost of transactions. Trade on an exchange is by members only.</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-sec-sec-lst;SecurityListing">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-ra;RegistrationService"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;FinancialService"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-plc-fac;Capability"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-sec-lst;lists"/>
-				<owl:onClass rdf:resource="&fibo-sec-sec-lst;ListedSecurity"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isProvidedBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-lst;SecuritiesExchange"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">security listing</rdfs:label>
-		<skos:definition>a capability for listing a security provided by a securities trading facility</skos:definition>
-	</owl:Class>
-	
-	<owl:ObjectProperty rdf:about="&fibo-sec-sec-lst;hasListingDate">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDate"/>
-		<rdfs:label>has listing date</rdfs:label>
-		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Date"/>
-		<skos:definition>indicates the date on which a security is listed</skos:definition>
+	<owl:ObjectProperty rdf:about="&fibo-sec-sec-lst;hasDelistingDate">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasExplicitDate"/>
+		<rdfs:label>has delisting date</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-sec-sec-lst;Listing"/>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
+		<skos:definition>specifies the date set by the exchange for delisting a security</skos:definition>
 	</owl:ObjectProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-sec-sec-lst;isIssuedOn">
-		<rdfs:subPropertyOf rdf:resource="&fibo-sec-sec-lst;isTradedOn"/>
-		<rdfs:label>is issued on</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-sec-lst;ExchangeTradedSecurity"/>
+	<owl:ObjectProperty rdf:about="&fibo-sec-sec-lst;hasHomeExchange">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;has"/>
+		<rdfs:label>has home exchange</rdfs:label>
 		<rdfs:range rdf:resource="&fibo-fbc-fct-mkt;Exchange"/>
-		<skos:definition>identifies the exchange in which a security is issued</skos:definition>
+		<skos:definition>indicates the current exchange that is considered the primary trading venue for a security</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>A security may have been originally listed on the Frankfort exchange, but its current home is the London Stock Exchange, for example.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:synonym>has primary trading market</fibo-fnd-utl-av:synonym>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-sec-sec-lst;hasIssue">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;has"/>
+		<rdfs:label>has issue</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-sec-sec-lst;Listing"/>
+		<rdfs:range rdf:resource="&fibo-fbc-fi-fi;Security"/>
+		<skos:definition>links a given exchange-specific security to its issue</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-sec-sec-lst;hasLastTradingDateTime">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDateTime"/>
+		<rdfs:label>has last trading date and time</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-sec-sec-lst;Listing"/>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;DateTime"/>
+		<skos:definition>specifies the last date and time that the security was traded on the exchange</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:DatatypeProperty rdf:about="&fibo-sec-sec-lst;hasListingDate">
+		<rdfs:label>has listing date</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;CombinedDateTime"/>
+		<skos:definition>indicates the date on which a security is listed</skos:definition>
+	</owl:DatatypeProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-sec-sec-lst;hasOriginalPlaceOfListing">
+		<rdfs:label>has original place of listing</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fbc-fct-mkt;Exchange"/>
+		<skos:definition>indicates the original exchange that listed the security</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-sec-sec-lst;hasTickSize">
+		<rdfs:label xml:lang="en">has tick size</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-sec-sec-lst;Listing"/>
+		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
+		<skos:definition xml:lang="en">specifies a minimum price movement for the contract or security with respect to an exchange</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-sec-lst;isListedVia">
 		<rdfs:label>is listed via</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-sec-lst;ListedSecurity"/>
-		<rdfs:range rdf:resource="&fibo-sec-sec-lst;SecurityListing"/>
+		<rdfs:range rdf:resource="&fibo-sec-sec-lst;Listing"/>
 		<owl:inverseOf rdf:resource="&fibo-sec-sec-lst;lists"/>
 		<skos:definition>identifies the service responsible for listing the security</skos:definition>
 	</owl:ObjectProperty>
 	
+	<owl:DatatypeProperty rdf:about="&fibo-sec-sec-lst;isSeasoned">
+		<rdfs:label>is seasoned</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-sec-sec-lst;ListedSecurity"/>
+		<rdfs:range rdf:resource="&xsd;boolean"/>
+		<skos:definition>indicates that the security has been publicly traded long enough to eliminate any short-term price or trading volume volatility from its initial public offering</skos:definition>
+	</owl:DatatypeProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-sec-sec-lst;isTradedOn">
 		<rdfs:label>is traded on</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-sec-lst;ListedSecurity"/>
+		<rdfs:domain rdf:resource="&fibo-sec-sec-lst;Listing"/>
 		<rdfs:range rdf:resource="&fibo-fbc-fct-mkt;Exchange"/>
 		<skos:definition>identifies the trading facility on which the security is traded</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-sec-lst;lists">
 		<rdfs:label>lists</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-sec-lst;SecurityListing"/>
+		<rdfs:domain rdf:resource="&fibo-sec-sec-lst;Listing"/>
 		<rdfs:range rdf:resource="&fibo-sec-sec-lst;ListedSecurity"/>
 		<skos:definition>identifies a security that is listed by the listing service</skos:definition>
 	</owl:ObjectProperty>

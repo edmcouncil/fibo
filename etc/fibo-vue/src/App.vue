@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <Header></Header>
-    <Carousel></Carousel>
+    <Carousel v-if="!$route.meta.plainLayout"></Carousel>
     <router-view/>
     <Footer></Footer>
   </div>

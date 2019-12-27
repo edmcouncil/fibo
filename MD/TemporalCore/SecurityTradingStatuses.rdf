@@ -3,10 +3,10 @@
 	<!ENTITY dct "http://purl.org/dc/terms/">
 	<!ENTITY fibo-fnd-dt-fd "https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/">
 	<!ENTITY fibo-fnd-inf-tem "https://spec.edmcouncil.org/fibo/ontology/FND/InformationExt/TemporalInfo/">
-	<!ENTITY fibo-fnd-tim-tim "https://spec.edmcouncil.org/fibo/ontology/FND/TimeExt/Time/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
 	<!ENTITY fibo-md-temx-tem "https://spec.edmcouncil.org/fibo/ontology/MD/TemporalCore/TemporalConcepts/">
 	<!ENTITY fibo-md-temx-trs "https://spec.edmcouncil.org/fibo/ontology/MD/TemporalCore/SecurityTradingStatuses/">
+	<!ENTITY fibo-sec-sec-lst "https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesListings/">
 	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
 	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
 	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
@@ -17,10 +17,10 @@
 	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fibo-fnd-dt-fd="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"
 	xmlns:fibo-fnd-inf-tem="https://spec.edmcouncil.org/fibo/ontology/FND/InformationExt/TemporalInfo/"
-	xmlns:fibo-fnd-tim-tim="https://spec.edmcouncil.org/fibo/ontology/FND/TimeExt/Time/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
 	xmlns:fibo-md-temx-tem="https://spec.edmcouncil.org/fibo/ontology/MD/TemporalCore/TemporalConcepts/"
 	xmlns:fibo-md-temx-trs="https://spec.edmcouncil.org/fibo/ontology/MD/TemporalCore/SecurityTradingStatuses/"
+	xmlns:fibo-sec-sec-lst="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesListings/"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
@@ -34,9 +34,9 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/InformationExt/InfoCore/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/InformationExt/TemporalInfo/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/TimeExt/Time/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/MD/TemporalCore/TemporalConcepts/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesListings/"/>
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/MD/TemporalCore/SecurityTradingStatuses/"/>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Provisional"/>
 	</owl:Ontology>
@@ -58,12 +58,6 @@
 	<owl:Class rdf:about="&fibo-md-temx-trs;CurrentStatus">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-inf-tem;Status"/>
 		<rdfs:subClassOf rdf:resource="&fibo-md-temx-tem;StatusCodeValue"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-inf-tem;statusHasTense"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-tim-tim;Present"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">current status</rdfs:label>
 		<owl:disjointWith rdf:resource="&fibo-md-temx-trs;PastStatus"/>
 		<skos:definition xml:lang="en">The status at the present time.</skos:definition>
@@ -89,12 +83,6 @@
 	<owl:Class rdf:about="&fibo-md-temx-trs;PastStatus">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-inf-tem;Status"/>
 		<rdfs:subClassOf rdf:resource="&fibo-md-temx-tem;StatusCodeValue"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-inf-tem;statusHasTense"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-tim-tim;Past"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">past status</rdfs:label>
 	</owl:Class>
 	
@@ -158,7 +146,7 @@
 	<owl:ObjectProperty rdf:about="&fibo-md-temx-trs;hasStatus">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-inf-tem;hasStatus"/>
 		<rdfs:label xml:lang="en">has listing status</rdfs:label>
-		<rdfs:domain rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesListings/SecurityListing"/>
+		<rdfs:domain rdf:resource="&fibo-sec-sec-lst;Listing"/>
 		<rdfs:range rdf:resource="&fibo-md-temx-trs;ExchangeSecurityTradingStatus"/>
 		<skos:definition xml:lang="en">The trading status of this listing i.e. this security on this exchange.</skos:definition>
 	</owl:ObjectProperty>
@@ -192,8 +180,5 @@
 		<rdfs:domain rdf:resource="&fibo-md-temx-trs;Worthless"/>
 		<rdfs:range rdf:resource="&xsd;boolean"/>
 	</owl:DatatypeProperty>
-	
-	<owl:Class rdf:about="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesListings/SecurityListing">
-	</owl:Class>
 
 </rdf:RDF>

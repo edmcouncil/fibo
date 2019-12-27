@@ -6,8 +6,7 @@
           <span>FIBO OWL</span>
         </h1>
         <h2>
-          FIBO is available in a number of RDF formats. These are available for offline use (i.e., download
-          all of FIBO as a zip), or online use. Each FIBO ontology file is available for follow your nose treatment, a
+          FIBO is available in a number of RDF formats. These are available for offline use (i.e., download all of FIBO as a zip), or online use. Each FIBO ontology file is available for "follow your nose" treatment, a
           general description of which is available here.
         </h2>
 
@@ -40,7 +39,10 @@
                 {{element.name}}
                 <span v-if="element.link && element.link.name">
                   (
-                  <a :href="timestamped(element.link, timestamp)">{{element.link.name}}</a>)
+                  <a
+                    :href="timestamped(element.link, timestamp)"
+                    v-on:click="outboundLinkClick(element.link.name)"
+                  >{{element.link.name}}</a>)
                 </span>
               </td>
               <td>
@@ -48,6 +50,7 @@
                   v-for="xmlLink in element.xml"
                   :key="xmlLink.name"
                   :href="timestamped(xmlLink, timestamp)"
+                  v-on:click="outboundLinkClick(xmlLink.name)"
                   class="inline"
                 >{{xmlLink.name}}</a>
                 <span v-if="!element.xml || element.xml.length === 0">N/A</span>
@@ -57,6 +60,7 @@
                   v-for="xmlLink in element.ttl"
                   :key="xmlLink.name"
                   :href="timestamped(xmlLink, timestamp)"
+                  v-on:click="outboundLinkClick(xmlLink.name)"
                   class="inline"
                 >{{xmlLink.name}}</a>
                 <span v-if="!element.ttl || element.ttl.length === 0">N/A</span>
@@ -66,6 +70,7 @@
                   v-for="xmlLink in element.json"
                   :key="xmlLink.name"
                   :href="timestamped(xmlLink, timestamp)"
+                  v-on:click="outboundLinkClick(xmlLink.name)"
                   class="inline"
                 >{{xmlLink.name}}</a>
                 <span v-if="!element.json || element.json.length === 0">N/A</span>
@@ -75,6 +80,7 @@
                   v-for="xmlLink in element.nq"
                   :key="xmlLink.name"
                   :href="timestamped(xmlLink, timestamp)"
+                  v-on:click="outboundLinkClick(xmlLink.name)"
                   class="inline"
                 >{{xmlLink.name}}</a>
                 <span v-if="!element.nq || element.nq.length === 0">N/A</span>
@@ -90,7 +96,9 @@
 
 <script>
 import { mapState } from 'vuex';
-import helpers from "../store/helpers.js";
+import helpers from '../store/helpers.js';
+import { outboundClick } from '../helpers/ga';
+import { outboundLinkClick } from '../helpers/ga';
 
 export default {
   extends: helpers,
@@ -106,32 +114,38 @@ export default {
   },
   methods: {
     timestamped(link, timestamp) {
-     return (typeof link.PRODUCT === 'string' ? this.hrefP(link.name, link.PRODUCT) : (typeof link.product === 'string' ? this.hrefD(link.name, link.product) : eval(`\`${link.url}\``)));
+      return typeof link.PRODUCT === 'string'
+        ? this.hrefP(link.name, link.PRODUCT)
+        : typeof link.product === 'string'
+          ? this.hrefD(link.name, link.product)
+          : eval(`\`${link.url}\``);
     },
+    outboundClick,
+    outboundLinkClick,
   },
 };
 </script>
 
 
 <style lang="scss" scoped>
-  article {
-    padding-top: 30px;
-  }
-  article h2 {
-    font-size: 17px;
-    color: #455560;
-    line-height: 28px;
-    text-transform: none;
-    padding-top: 30px;
-    padding-bottom: 10px;
-    text-align: left;
-    font-weight: 400;
-    letter-spacing: 1px;
-  }
-  .inline {
-    display: inline-block;
-  }
-  li {
-    line-height: 24px;
-  }
+article {
+  padding-top: 30px;
+}
+article h2 {
+  font-size: 17px;
+  color: #455560;
+  line-height: 28px;
+  text-transform: none;
+  padding-top: 30px;
+  padding-bottom: 10px;
+  text-align: left;
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+.inline {
+  display: inline-block;
+}
+li {
+  line-height: 24px;
+}
 </style>

@@ -6,11 +6,8 @@
           <span>EDM Council FIBO Glossary</span>
         </h1>
         <h2>
-          Generated from the OWL, the FIBO glossary is a list of classes and properties defined in FIBO, including
-          their logical definition, curated natural language definition and synonyms where available. As with all of
-          FIBO, there is a Production version of the Glossary, which includes definitions of terms that have been
-          vetted by the FIBO content teams, as well as a Development version, which includes terms that are currently
-          being developed.
+          Generated from the OWL, the FIBO glossary is a list of classes and properties defined in FIBO, including their logical definition, curated natural language definition and synonyms where available. As with all of
+          FIBO, there is a Production version of the Glossary, which includes definitions of terms that have been vetted by the FIBO content teams, as well as a Development version, which includes terms that are currently being developed.
         </h2>There are four ways to work with the FIBO Glossary.
         <ol>
           <li>
@@ -27,7 +24,9 @@
           </li>
         </ol>The glossary incudes human-readable versions of the logical relationships in FIBO that are represented in
         OWL. These definitions are available on their own as annotations on the FIBO classes in
-        <a :href="hrefD('glossary-dev.ttl','glossary')">ttl</a>
+        <a
+          :href="hrefD('glossary-dev.ttl','glossary')"
+        >ttl</a>
         format.
         <h3>
           <a name="WS">Web Searchable</a>
@@ -42,7 +41,7 @@
         </ul>A user-friendly web page that includes label, curated definition, synonyms (where available) and
         model-generated definitions for all classes and properties in FIBO.
         <p>Example:</p>
-        <img border="1" src="../assets/img/glossary1.png" class="img-fluid">
+        <img border="1" src="../assets/img/glossary1.png" class="img-fluid" />
 
         <h3>
           <a name="CSV">Comma Separated Values format</a>
@@ -50,29 +49,41 @@
         model-generated defintion. For use in spreadsheets, including Excel.
         <ul>
           <li>
-            <a :href="hrefP('glossary-prod.csv','glossary')">Production</a>
+            <a
+              :href="hrefP('glossary-prod.csv','glossary')"
+              v-on:click="outboundClick('glossary-prod.csv')"
+            >Production</a>
           </li>
           <li>
-            <a :href="hrefD('glossary-dev.csv','glossary')">Development</a>
+            <a
+              :href="hrefD('glossary-dev.csv','glossary')"
+              v-on:click="outboundClick('glossary-dev.csv')"
+            >Development</a>
           </li>
         </ul>
 
         <h3>
           <a name="XLS">Excel format</a>
-        </h3>A file that can be read with Microsoft Excel, containing label, curated definition, synonyms,
-        model-generated definition, examples and explanatory notes (when available). Exclusively for use with Excel,
+        </h3>A file that can be read with Microsoft Excel, containing a label, curated definition, synonyms,
+        model-generated definition, examples, and explanatory notes (when available). Exclusively for use with Excel,
         this file includes formatting to make the spreadsheet easier to read.
         <ul>
           <li>
-            <a :href="hrefP('glossary-prod.xlsx','glossary')">Production</a>
+            <a
+              :href="hrefP('glossary-prod.xlsx','glossary')"
+              v-on:click="outboundClick('glossary-prod.xlsx')"
+            >Production</a>
           </li>
           <li>
-            <a :href="hrefD('glossary-dev.xlsx','glossary')">Development</a>
+            <a
+              :href="hrefD('glossary-dev.xlsx','glossary')"
+              v-on:click="outboundClick('glossary-dev.xlsx')"
+            >Development</a>
           </li>
         </ul>
         <p>Example:</p>
-        <img border="1" src="../assets/img/glossary2.png" class="img-fluid" alt="glossary example">
-        <p/>
+        <img border="1" src="../assets/img/glossary2.png" class="img-fluid" alt="glossary example" />
+        <p />
 
         <h3>
           <a name="NOTE">Downloadable RDF Annotations</a>
@@ -80,6 +91,7 @@
         that is avaiable in
         <a
           :href="hrefD('glossary-dev.ttl','glossary')"
+          v-on:click="outboundClick('glossary-dev.ttl')"
         >ttl</a> format.
         Release Notes:
         <ul>
@@ -121,12 +133,16 @@
 
 
 <script>
-import helpers from "../store/helpers.js";
+import helpers from '../store/helpers.js';
+import { outboundClick } from '../helpers/ga';
 
 export default {
   extends: helpers,
   name: 'glossary',
   components: {},
+  methods: {
+    outboundClick,
+  },
 };
 </script>
 

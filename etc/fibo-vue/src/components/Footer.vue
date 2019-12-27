@@ -22,9 +22,6 @@
                 <li>
                   <router-link replace :to="{ path: router('SMIF-UML') }">SMIF / UML Diagrams</router-link>
                 </li>
-                <li>
-                  <router-link replace :to="{ path: router('linked-data-fragments') }">FIBO Linked Data Fragments</router-link>
-                </li>
               </ul>
             </div>
             <div class="col-md-6">
@@ -82,18 +79,21 @@
                 <a
                   href="https://cdn.ymaws.com/edmcouncil.org/resource/resmgr/Featured_Documents/Legal/EDMC__Terms_of_Use_032318.pdf"
                   target="_blank"
+                  v-on:click="outboundClick('EDMC__Terms_of_Use_032318.pdf')"
                 >Terms of Use</a>
               </li>
               <li>
                 <a
                   href="https://cdn.ymaws.com/edmcouncil.org/resource/resmgr/Featured_Documents/Legal/EDMC_Privacy_Policy_032318.pdf"
                   target="_blank"
+                  v-on:click="outboundClick('EDMC_Privacy_Policy_032318.pdf')"
                 >Privacy Policy</a>
               </li>
               <li>
                 <a
                   href="https://cdn.ymaws.com/edmcouncil.org/resource/resmgr/Featured_Documents/Legal/EDMC_Copyright_Policy_032318.pdf"
                   target="_blank"
+                  v-on:click="outboundClick('EDMC_Copyright_Policy_032318.pdf')"
                 >Copyright</a>
               </li>
             </ul>
@@ -103,10 +103,18 @@
           <div class="footer-social-links">
             <ul>
               <li class="twitter">
-                <a href="https://twitter.com/edmcouncil" target="_blank"></a>
+                <a
+                  href="https://twitter.com/edmcouncil"
+                  target="_blank"
+                  v-on:click="outboundClick('twitter')"
+                ></a>
               </li>
               <li class="linkedin">
-                <a href="https://www.linkedin.com/company/edm-council/" target="_blank"></a>
+                <a
+                  href="https://www.linkedin.com/company/edm-council/"
+                  target="_blank"
+                  v-on:click="outboundClick('linkedin')"
+                ></a>
               </li>
             </ul>
           </div>
@@ -117,25 +125,28 @@
 </template>
 
 <script>
-import helpers from "../store/helpers.js";
+import helpers from '../store/helpers.js';
+import { outboundClick } from '../helpers/ga';
 
 export default {
   extends: helpers,
   name: 'Footer',
+  methods: {
+    outboundClick,
+  },
 };
 </script>
 
 <style lang="scss">
-
 footer {
-  background-color: map-get($colors-map, 'blue');
+  background-color: map-get($colors-map, "blue");
   padding: 40px 0;
 
   a {
-    color: map-get($colors-map, 'white');
+    color: map-get($colors-map, "white");
   }
   a:hover {
-    color: map-get($colors-map, 'orange');
+    color: map-get($colors-map, "orange");
   }
   p {
     font-size: 12px;
@@ -143,7 +154,7 @@ footer {
   }
   .footer-text {
     padding: 30px 0;
-    color: map-get($colors-map, 'white');
+    color: map-get($colors-map, "white");
     font-weight: 300;
     font-size: 14px;
   }
@@ -157,7 +168,7 @@ footer {
     padding-bottom: 12px;
     font-weight: 600;
     font-size: 24px;
-    color: map-get($colors-map, 'white');
+    color: map-get($colors-map, "white");
   }
   ul {
     margin: 0;
@@ -175,27 +186,29 @@ footer {
       li {
         list-style-type: none;
         font-size: 15px;
-        color:map-get($colors-map, 'white');
+        color: map-get($colors-map, "white");
         text-decoration: none;
         height: 50px;
         line-height: 50px;
-        border-bottom: 1px map-get($colors-map, 'white') dotted;
+        border-bottom: 1px map-get($colors-map, "white") dotted;
 
         a {
-          color: map-get($colors-map, 'white');
+          color: map-get($colors-map, "white");
         }
 
         &.mail a {
           display: block;
           padding-left: 33px;
           font-size: 15px;
-          color: map-get($colors-map, 'white');
+          color: map-get($colors-map, "white");
           text-decoration: none;
-          background: url(http://edmcouncil.site-ym.com/resource/resmgr/images/Homepage_Images/bgr_footer_contact_mail.png) no-repeat left 15px;
+          background: url(//edmcouncil.site-ym.com/resource/resmgr/images/Homepage_Images/bgr_footer_contact_mail.png)
+            no-repeat left 15px;
         }
         &.phone {
           padding-left: 33px;
-          background: url(http://edmcouncil.site-ym.com/resource/resmgr/images/Homepage_Images/bgr_footer_contact_phone.png) no-repeat left 15px;
+          background: url(//edmcouncil.site-ym.com/resource/resmgr/images/Homepage_Images/bgr_footer_contact_phone.png)
+            no-repeat left 15px;
         }
         &:last-child {
           border-bottom: 0;
@@ -205,7 +218,7 @@ footer {
   }
 
   .footer-sitemap ul {
-    border-left: 1px dotted map-get($colors-map, 'white');
+    border-left: 1px dotted map-get($colors-map, "white");
     padding-left: 10px;
   }
 
@@ -225,11 +238,11 @@ footer {
       font-size: 12px;
 
       &:first-child {
-        border-right: 1px solid map-get($colors-map, 'white');
+        border-right: 1px solid map-get($colors-map, "white");
         padding-right: 12px;
       }
       &:nth-child(2) {
-        border-right: 1px solid map-get($colors-map, 'white');
+        border-right: 1px solid map-get($colors-map, "white");
         padding-right: 12px;
         padding-left: 12px;
       }
@@ -253,13 +266,15 @@ footer {
         display: block;
         width: 54px;
         height: 54px;
-        background: url(http://edmcouncil.site-ym.com/resource/resmgr/images/Homepage_Images/footer_twitter.png) no-repeat left top;
+        background: url(//edmcouncil.site-ym.com/resource/resmgr/images/Homepage_Images/footer_twitter.png)
+          no-repeat left top;
       }
       &.linkedin a {
         display: block;
         width: 54px;
         height: 54px;
-        background: url(http://edmcouncil.site-ym.com/resource/resmgr/images/Homepage_Images/footer_linkedin.png) no-repeat left top;
+        background: url(//edmcouncil.site-ym.com/resource/resmgr/images/Homepage_Images/footer_linkedin.png)
+          no-repeat left top;
       }
     }
   }

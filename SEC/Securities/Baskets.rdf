@@ -38,8 +38,8 @@
 		<dct:abstract>This ontology defines the concept of a tradable container of securities, indices, and/or market rates, and identifies the elements that can be constituents of a such a basket.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
 		<sm:contentLanguage rdf:datatype="&xsd;anyURI">http://www.w3.org/standards/techs/owl#w3c_all</sm:contentLanguage>
-		<sm:copyright>Copyright (c) 2016-2018 EDM Council, Inc.</sm:copyright>
-		<sm:copyright>Copyright (c) 2018 Object Management Group, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2016-2019 EDM Council, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2018-2019 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FBC/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/IND/</sm:dependsOn>
@@ -52,12 +52,14 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/EconomicIndicators/EconomicIndicators/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/Indicators/Indicators/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20180801/Securities/Baskets/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20191201/Securities/Baskets/"/>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20180801/Securities/Baskets.rdf version of this ontology was revised to augment the definitions of various baskets to include weighting and to be dated, as needed to represent various benchmarks and funds based on these baskets.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-bsk;BasketOfIndices">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;Basket"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;WeightedBasket"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-arr;DatedStructuredCollection"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-arr-arr;hasConstituent"/>
@@ -65,12 +67,13 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>market basket</rdfs:label>
-		<skos:definition>a basket made up of market indices</skos:definition>
+		<skos:definition>basket composed of market indices</skos:definition>
 		<skos:example>For example, certain equities derivatives have an underlying basket which is a basket of more than one index, not a basket of securities.</skos:example>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-bsk;BasketOfIndicesConstituent">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;BasketConstituent"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;WeightedBasketConstituent"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-arr;DatedCollectionConstituent"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasIdentity"/>
@@ -87,12 +90,12 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>basket Of indices constituent</rdfs:label>
-		<skos:definition>a single constituent of a basket of indices</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote>This is a published index, defined as a part of the basket. Further notes: Not to be confused with the constituent of an index of securities.</fibo-fnd-utl-av:explanatoryNote>
+		<skos:definition>single constituent of a basket of indices</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-bsk;BasketOfSecurities">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;Basket"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;WeightedBasket"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-arr;DatedStructuredCollection"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-arr-arr;hasConstituent"/>
@@ -100,12 +103,12 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>basket of securities</rdfs:label>
-		<skos:definition>a basket of traded securities</skos:definition>
-		<skos:editorialNote>This does not include baskets of indices, which are modeled separately. also does not include basket of baskets. Also need to break down by Country, by Region (e.g. non Japan Asia sub-indices). See MSCI World Index.</skos:editorialNote>
+		<skos:definition>basket composed of securities, typically of a particular asset class such as equities or bonds</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-bsk;MixedBasket">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;Basket"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;WeightedBasket"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-arr;DatedStructuredCollection"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-arr-arr;hasConstituent"/>
@@ -122,11 +125,12 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>mixed basket</rdfs:label>
-		<skos:definition>a basket that has a mix of constituents, including securities and indices</skos:definition>
+		<skos:definition>basket that has a mix of constituents, including securities and indices</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-bsk;SecuritiesBasketConstituent">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;BasketConstituent"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;WeightedBasketConstituent"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-arr;DatedCollectionConstituent"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasIdentity"/>
@@ -134,7 +138,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>securities basket constituent</rdfs:label>
-		<skos:definition>a security identified as a component of a basket of securities</skos:definition>
+		<skos:definition>security identified as a component of a basket of securities</skos:definition>
 	</owl:Class>
 
 </rdf:RDF>

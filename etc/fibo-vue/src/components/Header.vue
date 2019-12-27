@@ -78,7 +78,6 @@
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <router-link class="dropdown-item" replace :to="{ path: router('ontology-tools') }">Dedicated ontology tools</router-link>
               <router-link class="dropdown-item" replace :to="{ path: router('SMIF-UML') }" >SMIF/UML Diagrams for FIBO</router-link>
-              <router-link class="dropdown-item" replace :to="{ path: router('linked-data-fragments') }">linked data fragments</router-link>
             </div>
           </li>
           <li class="nav-item dropdown">
@@ -109,7 +108,7 @@
 </template>
 
 <script>
-import helpers from "../store/helpers.js";
+import helpers from '../store/helpers.js';
 
 export default {
   extends: helpers,

@@ -1,6 +1,8 @@
 export default {
   data: () => ({
-    timestamp: '2019Q3.1',
+    timestamp:  process.env.VUE_APP_TIMESTAMP,
+    branch:     process.env.VUE_APP_BRANCH,
+    tag:        process.env.VUE_APP_TAG,
   }),
   mutations: {
 
@@ -11,27 +13,23 @@ export default {
   namespaced: true,
   methods: {
     router(product) {
-      var s = [];
+      const s = [];
       if (typeof product === 'string') s.push(product);
-      if (typeof this.$route.params.branch === 'string') s.push(this.$route.params.branch);
-      if (typeof this.$route.params.tag === 'string') s.push(this.$route.params.tag);
-      return '/'+s.join('/');
+      return `/${s.join('/')}${typeof this.$route.query.tag === 'string' ? `?tag=${this.$route.query.tag}` : ''}`;
     },
-    hrefD(path,product) {
+    hrefD(path, product) {
       return require('path').join(process.env.BASE_URL,
-		(typeof product	=== 'string'?product:this.$options.name),
-		(typeof this.$route.params.branch === 'string'?this.$route.params.branch:'master'),
-		(typeof this.$route.params.tag    === 'string'?this.$route.params.tag   :'latest'),
-		(typeof path	=== 'string'?path:'')
-        );
+        (typeof product	=== 'string' ? product : this.$options.name),
+        this.branch,
+        (typeof this.$route.query.tag === 'string' ? this.$route.query.tag : this.tag),
+        (typeof path	=== 'string' ? path : ''));
     },
-    hrefP(path,product) {
-      return require('path').join(process.env.BASE_URL,
-		(typeof product	=== 'string'?product:this.$options.name),
-		(typeof this.$route.params.branch === 'string'?this.$route.params.branch:'master'),
-		this.timestamp,
-		(typeof path	=== 'string'?path:'')
-        );
-    }
-  }
+    hrefP(path, product, addBaseUrl = true) {
+      return require('path').join((addBaseUrl ? process.env.BASE_URL : ""),
+        (typeof product	=== 'string' ? product : this.$options.name),
+        this.branch,
+        this.timestamp,
+        (typeof path	=== 'string' ? path : ''));
+    },
+  },
 };

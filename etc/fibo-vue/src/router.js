@@ -9,69 +9,67 @@ export default new Router({
   base: process.env.BASE_URL,
   routes: [
     {
-      path: '/:branch/:tag',
-      name: 'home',
-      component: Home,
-    },
-    {
       path: '/',
       name: 'home',
       component: Home,
     },
     {
-      path: '/development/:branch?/:tag?',
+      path: '/development',
       name: 'development',
       component: () => import(/* webpackChunkName: "development" */ './views/Development.vue'),
     },
     {
-      path: '/working-group/:branch?/:tag?',
+      path: '/working-group',
       name: 'workingGroups',
       component: () => import(/* webpackChunkName: "workingGroups" */ './views/WorkingGroups.vue'),
     },
     {
-      path: '/ontology-tools/:branch?/:tag?',
+      path: '/ontology-tools',
       name: 'ontologyTools',
       component: () => import(/* webpackChunkName: "ontologyTools" */ './views/OntologyTools.vue'),
     },
     {
-      path: '/SMIF-UML/:branch?/:tag?',
+      path: '/SMIF-UML',
       name: 'SMIF-UML',
       component: () => import(/* webpackChunkName: "SMIF-UML" */ './views/SMIF-UML.vue'),
     },
     {
-      path: '/linked-data-fragments/:branch?/:tag?',
-      name: 'LinkedDataFragments',
-      component: () => import(/* webpackChunkName: "LinkedDataFragments" */ './views/LinkedDataFragments.vue'),
-    },
-    {
-      path: '/contact/:branch?/:tag?',
+      path: '/contact',
       name: 'Contact',
       component: () => import(/* webpackChunkName: "Contact" */ './views/Contact.vue'),
     },
     {
-      path: '/products/:branch?/:tag?',
+      path: '/products',
       name: 'Products',
       component: () => import(/* webpackChunkName: "Products" */ './views/Products.vue'),
     },
     {
-      path: '/OWL/:branch?/:tag?',
+      path: '/OWL',
       name: 'OWL',
       component: () => import(/* webpackChunkName: "OWL" */ './views/OWL.vue'),
     },
     {
-      path: '/glossary/:branch?/:tag?',
+      path: '/glossary',
       name: 'Glossary',
       component: () => import(/* webpackChunkName: "Glossary" */ './views/Glossary.vue'),
     },
     {
-      path: '/vocabulary/:branch?/:tag?',
+      path: '/vocabulary',
       name: 'Vocabulary',
       component: () => import(/* webpackChunkName: "Vocabulary" */ './views/Vocabulary.vue'),
     },
     {
-      path: '/schema/:branch?/:tag?',
+      path: '/schema',
       name: 'Schema',
       component: () => import(/* webpackChunkName: "Schema" */ './views/Schema.vue'),
+    },
+    {
+      path: '/ontology/:1?/:2?/:3?/:4?/:5?',
+      name: 'ontology',
+      component: () => import(/* webpackChunkName: "Schema" */ './views/Ontology.vue'),
+      meta: {
+        plainLayout: false, // Layout without banner
+      },
     },
     {
       path: '*',
