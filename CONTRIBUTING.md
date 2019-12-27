@@ -189,7 +189,7 @@ You only have to do steps 1-5 once. Once you have begun contributing, you just r
 
 #### To have your contribution considered by the maintainers
 
-* Follow all instructions in [the template](.github/PULL_REQUEST_TEMPLATE.md).
+* Follow all instructions in [the template](.github/pull_request_template.md).
 * Follow the [principles of best practices](#principles-of-best-practices).
 * Add "(WIP)" sufix to the title of your pull request.
 * After you submit your pull request, verify that all [status checks](https://help.github.com/articles/about-status-checks/) are passing 
