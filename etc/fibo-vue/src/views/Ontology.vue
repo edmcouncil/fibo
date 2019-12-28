@@ -16,7 +16,7 @@
         <div class="d-xxl-none multiselect-container">
           <multiselect v-model="searchBox.selectedData"
                       id="ajax"
-                      label="label"
+                      label="labelForInternalSearch"
                       track-by="iri"
                       placeholder="Search..."
                       open-direction="bottom"
@@ -272,7 +272,7 @@
         <div class="multiselect-xxl-container">
           <multiselect v-model="searchBox.selectedData"
                       id="ajax2"
-                      label="label"
+                      label="labelForInternalSearch"
                       track-by="iri"
                       placeholder="Search..."
                       open-direction="bottom"
@@ -460,6 +460,9 @@ export default {
       try {
         const result = await getHint(query, '/hint');
         const hints = await result.json();
+        hints.forEach(el => {
+          el.labelForInternalSearch = el.label + " "; //this is hacky to make it possible to search text (add tag) the same as the label in hint results
+        })
         this.searchBox.data = hints;
         this.error = false;
       } catch (err) {
