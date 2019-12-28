@@ -18,7 +18,7 @@
                 
 
                 <h5><span>Course Objectives</span></h5>
-                <p>After finishing this course, you will know:
+                <p>After finishing this course, you will know:</p>
                 <ol>
                   <li>What a Knowledge Graph is,  what are its uses, and how does it provide business value.</li>
                   <li>Different approaches to Knowledge Graphs, and when to use them</li>
@@ -30,7 +30,7 @@
 
 
 
-</p>
+
 
         <h3 id="KG-M1">
           <span>Module 1: Knowledge Graph Fundamentals</span>
