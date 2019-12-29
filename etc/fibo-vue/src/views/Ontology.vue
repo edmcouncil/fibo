@@ -31,6 +31,7 @@
                       :close-on-select="true"
                       :options-limit="300" :limit="3" :limit-text="searchBox_limitText"
                       :max-height="600"
+                      :preserve-search="true"
                       :show-no-results="false"
                       :hide-selected="true"
                       :taggable="true"
@@ -289,6 +290,7 @@
                       :close-on-select="true"
                       :options-limit="300" :limit="3" :limit-text="searchBox_limitText"
                       :max-height="600"
+                      :preserve-search="true"
                       :show-no-results="false"
                       :hide-selected="true"
                       :taggable="true"
@@ -453,7 +455,8 @@ export default {
       const tag = {
         isSearch: true,
         iri: searchBQuery,
-        label: searchBQuery
+        label: searchBQuery,
+        labelForInternalSearch: searchBQuery
       };
       this.searchBox.selectedData = tag;
     },
