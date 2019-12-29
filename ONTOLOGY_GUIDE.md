@@ -12,7 +12,8 @@
 	* [Naming and Labeling Conventions](#naming-and-labeling-conventions)
 		* [Classes](#classes)
 		* [Properties](#properties)
-		* [Naming conventions](#naming-conventions)
+		* [Individuals](#individuals)
+		* [General naming conventions](#general-naming-conventions)
 	* [Definitions](#definitions)
 	* [Additional Annotations](#additional-annotations)
 * [Conceptual Modeling Approach](#conceptual-modeling-approach)
@@ -176,12 +177,15 @@ From that policy, the following requirements must be followed:
 * **Verbs must be used for property naming for all object and data properties, without the inclusion of the name of the domain or range class names, with few exceptions for properties of the form "has x", for readability purposes**.  
 * **Property names should not be duplicated** - i.e., having a property named "hasJurisdiction" in two different ontologies, regardless of the domain or module, is strictly prohibited.  There have been cases where, due to legacy naming or moving properties from a lower-level domain to an upper-level domain, have resulted in temporary duplication - in these cases, the lower level property should be deprecated.  Properties in OWL can be specified so that they are reusable in property restrictions and other axioms on many classes, which limits, if not eliminates, the need to duplicate names.  If a property is needed at a higher level in the ontology network, or with a different or less constrained domain that that which was used in its initial definition, one should raise an issue.
 
-### Naming conventions
+#### Individuals
 Naming conventions for OWL individuals are less consistent across practitioners.  
 
 * ISO 704 promotes the **use of the lower case for individuals unless they incorporate proper names, which we have largely followed in FIBO for labels, but not at the URI level**. 
 * **Individual names should be expressed in upper camel case, no special characters, no abbreviations in names**.  There are rare examples where we deviate from this policy, such as for code lists that are automatically generated, but otherwise, abbreviations should not be used despite resulting in lengthy names in some cases.  **Abbreviations should be included as annotations on the individual** where appropriate.  
 * **Individual names should not be duplicated** if at all possible, but there are times when this is difficult to avoid, such as with respect to stages or states related to something.  In these cases, the FIBO Community Group should determine the right approach, given that the namespace will distinguish the individuals from one another.
+
+#### General naming conventions
+
 * **Every (Classes, Properties, and Individuals) curated entity must have a label and a definition**, at a minimum, with **additional annotations, such as the source for the term or definition, strongly encouraged**.
 * **Labels should be expressed in lower case, English, with proper spacing as if they were written as text**.  The only exception to the lower case rule in labels is for **proper names, which may be capitalized**, as appropriate.  **Abbreviations should be captured in upper case, no spacing, with special characters only in cases where the abbreviation is commonly used with an embedded hyphen, for example**.  
 * Given that FIBO is expressed primarily in American English and that we have a unique names assumption policy as described above, **there should be only one rdfs:label for any entity**, and **it should be the natural language (American English) representation of that entity, space-separated, including the language tag for English, with all other names represented using synonym or abbreviation annotations**.  Where alternate language equivalents are available, **additional language-tagged labels may be used**, however.  Some of our Canadian entities include French labels, for example, in which case proper diacritical marks expressed in UTF-8 format should be included in the label (but not in the camel case name). 
