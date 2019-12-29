@@ -430,8 +430,11 @@ export default {
       this.scrollToOntologyViewerTopOfContainer();
     },
     async searchBox_addTag (newTag) {
+      this.$router.push({ path: '/ontology', query: { searchBoxQuery: encodeURI(newTag) }});
+    },
+    async handleSearchBoxQuery(searchBQuery){
       try {
-        const result = await getOntology(newTag, this.ontologyServer);
+        const result = await getOntology(searchBQuery, this.ontologyServer);
         const body = await result.json();
         if(body.type != "list"){
           console.error("body.type: " + body.type + ", expected: list");
@@ -445,8 +448,8 @@ export default {
 
       const tag = {
         isSearch: true,
-        iri: newTag,
-        label: newTag
+        iri: searchBQuery,
+        label: searchBQuery
       };
       this.searchBox.selectedData = tag;
     },
@@ -519,6 +522,12 @@ export default {
       this.searchBox.selectedData = null; //to hide search results after rerouting on ontology page
     }
     this.scrollToOntologyViewerTopOfContainer(); //move it to above IF to scroll only after internal navigaion (not on page load)
+    
+
+    if(this.$route.query.searchBoxQuery && (this.$route.query.searchBoxQuery_isExecuted !== true)){
+      this.handleSearchBoxQuery(decodeURI(this.$route.query.searchBoxQuery));
+      this.$route.query.searchBoxQuery_isExecuted = true;
+    }
   },
 };
 </script>
