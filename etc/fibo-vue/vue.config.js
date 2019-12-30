@@ -22,6 +22,9 @@ module.exports = {
       '^/module/json$': {
         target: 'http://172.30.1.116:9000',
       },
+      '^/hint': {
+        target: 'http://172.30.1.116:9000',
+      },
     },
   },
 };

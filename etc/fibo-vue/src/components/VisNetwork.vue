@@ -110,8 +110,6 @@ export default {
       };
       const network = new vis.Network(container, data, options);
 
-      const height = 500;
-      container.style.height = `${height}px`;
       network.redraw();
 
       network.on('doubleClick', (params) => {
@@ -123,14 +121,22 @@ export default {
           const sNode = selectedNodes[0];
           nodes.forEach((entry) => {
             if (entry.id === sNode) {
-              window.location.href = `/fibo/ontology?query=${entry.iri}&scrollToTop=true`;
+              if(entry.iri.match(/^https:\/\/spec\.edmcouncil\.org\/fibo/)){
+                window.location.href = `/fibo${entry.iri.replace('https://spec.edmcouncil.org/fibo', '')}`; //&scrollToTop=true
+              }else{
+                window.location.href = `/fibo/ontology?query=${entry.iri}`; //&scrollToTop=true
+              }
             }
           });
         } else if (selectedEdges[0] !== undefined) {
           const sEgde = selectedEdges[0];
           edgesView.forEach((entry) => {
             if (entry.id === sEgde) {
-              window.location.href = `/fibo/ontology?query=${entry.iri}&scrollToTop=true`;
+              if(entry.iri.match(/^https:\/\/spec\.edmcouncil\.org\/fibo/)){
+                window.location.href = `/fibo${entry.iri.replace('https://spec.edmcouncil.org/fibo', '')}`; //&scrollToTop=true
+              }else{
+                window.location.href = `/fibo/ontology?query=${entry.iri}`; //&scrollToTop=true
+              }
             }
           });
         }

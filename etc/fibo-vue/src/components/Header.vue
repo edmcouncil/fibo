@@ -48,7 +48,10 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <router-link class="nav-link" replace :to="{ path: router() }">About FIBO</router-link>
+            <router-link class="nav-link" replace :to="{ path: router() }">About</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link" replace :to="{ path: router('ontology') }">VIEWER</router-link>
           </li>
           <li class="nav-item dropdown">
             <a
