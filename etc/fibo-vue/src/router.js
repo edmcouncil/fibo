@@ -84,6 +84,11 @@ export default new Router({
       component: () => import(/* webpackChunkName: "FIB-DM" */ './views/HowToContribute.vue'),
     },
     {
+      path: '/FIBO-Release-Notes',
+      name: 'FIBOReleaseNotes',
+      component: () => import(/* webpackChunkName: "FIBOReleaseNotes" */ './views/FIBOReleaseNotes.vue'),
+    },     
+    {
       path: '/courses',
       name: 'Courses',
       component: () => import(/* webpackChunkName: "Courses" */ './views/Courses.vue'),

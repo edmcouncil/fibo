@@ -68,6 +68,7 @@
               <!-- <router-link class="dropdown-item" replace :to="{ path: router('development-process') }">Development process</router-link>
               <router-link class="dropdown-item" replace :to="{ path: router('') }">Ontology guide</router-link> -->
               <router-link class="dropdown-item" replace :to="{ path: router('how-to-contribute') }">How to contribute</router-link>
+              <router-link class="dropdown-item" replace :to="{ path: router('FIBO-Release-Notes') }">FIBO Release Notes</router-link>              
             </div>
           </li>
           <li class="nav-item dropdown">
