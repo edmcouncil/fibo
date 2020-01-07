@@ -56,22 +56,6 @@ form {
     }
 }
 
-li {
-  list-style-type: none;
-  line-height: 47px;
-  padding-left: 28px;
-  letter-spacing: 1px;
-
-  &:before {
-    content: "";
-    border: 2px solid map-get($colors-map, 'dark-grey') !important;
-    border-radius: 50px;
-    margin-top: 20px;
-    margin-left: -20px;
-    position: absolute;
-  }
-}
-
 hr {
   border-width: 1px;
   border-color: map-get($colors-map, 'white');
