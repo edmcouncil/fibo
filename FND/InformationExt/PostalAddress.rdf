@@ -5,8 +5,6 @@
 	<!ENTITY fibo-fnd-inf-padr "https://spec.edmcouncil.org/fibo/ontology/FND/InformationExt/PostalAddress/">
 	<!ENTITY fibo-fnd-plc-adr "https://spec.edmcouncil.org/fibo/ontology/FND/Places/Addresses/">
 	<!ENTITY fibo-fnd-plc-loc "https://spec.edmcouncil.org/fibo/ontology/FND/Places/Locations/">
-	<!ENTITY fibo-fnd-plcx-gph "https://spec.edmcouncil.org/fibo/ontology/FND/PlacesExt/Geophysical/">
-	<!ENTITY fibo-fnd-plcx-re "https://spec.edmcouncil.org/fibo/ontology/FND/PlacesExt/RealEstate/">
 	<!ENTITY fibo-fnd-rel-rel "https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
 	<!ENTITY lcc-cr "https://www.omg.org/spec/LCC/Countries/CountryRepresentation/">
@@ -22,8 +20,6 @@
 	xmlns:fibo-fnd-inf-padr="https://spec.edmcouncil.org/fibo/ontology/FND/InformationExt/PostalAddress/"
 	xmlns:fibo-fnd-plc-adr="https://spec.edmcouncil.org/fibo/ontology/FND/Places/Addresses/"
 	xmlns:fibo-fnd-plc-loc="https://spec.edmcouncil.org/fibo/ontology/FND/Places/Locations/"
-	xmlns:fibo-fnd-plcx-gph="https://spec.edmcouncil.org/fibo/ontology/FND/PlacesExt/Geophysical/"
-	xmlns:fibo-fnd-plcx-re="https://spec.edmcouncil.org/fibo/ontology/FND/PlacesExt/RealEstate/"
 	xmlns:fibo-fnd-rel-rel="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
 	xmlns:lcc-cr="https://www.omg.org/spec/LCC/Countries/CountryRepresentation/"
@@ -39,8 +35,6 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/IdentifiersAndIndices/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Places/Addresses/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Places/Locations/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/PlacesExt/Geophysical/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/PlacesExt/RealEstate/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Countries/CountryRepresentation/"/>
@@ -48,15 +42,74 @@
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Informative"/>
 	</owl:Ontology>
 	
+	<owl:Class rdf:about="&fibo-fnd-inf-padr;Apartment">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-inf-padr;BuildingSubUnit"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-inf-padr;apartmentIdentifiedBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-inf-padr;BuildingSubUnitAddressFragment"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">apartment</rdfs:label>
+		<skos:definition xml:lang="en">A building subbdivision intended for habitation.</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-inf-padr;Building">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-inf-padr;BuiltProperty"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-inf-padr;buildingIdentifiedBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-inf-padr;StreetAddressText"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasPart"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-inf-padr;BuildingSubUnit"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">building</rdfs:label>
+		<skos:definition xml:lang="en">A discrete construction on its own foundations or pilings.</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-inf-padr;BuildingSubUnit">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-inf-padr;BuiltProperty"/>
+		<rdfs:label xml:lang="en">building sub unit</rdfs:label>
+		<skos:definition xml:lang="en">A discrete subdivision of some Building.</skos:definition>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-fnd-inf-padr;BuildingSubUnitAddressFragment">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-inf-padr;PostalAddressElement"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-inf-padr;identifiesBuildingSubUnit"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-plcx-re;BuildingSubUnit"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-inf-padr;BuildingSubUnit"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">building sub unit address fragment</rdfs:label>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-inf-padr;BuiltProperty">
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-plc-loc;isLocatedAt"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-plc-loc;PhysicalLocation"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">built property</rdfs:label>
+		<skos:definition xml:lang="en">Something which is constructed via construction methods; bricks and mortar.</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-inf-padr;Floor">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-inf-padr;BuildingSubUnit"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-inf-padr;floorIdentifiedBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-inf-padr;BuildingSubUnitAddressFragment"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">floor</rdfs:label>
+		<skos:definition xml:lang="en">A building subdivision whose extent is the horizontal extent of the building at that height.</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-inf-padr;NonSpecificAddressText">
@@ -95,9 +148,9 @@
 							</rdf:Description>
 							<rdf:Description rdf:about="&fibo-fnd-inf-padr;PostBox">
 							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-fnd-plcx-gph;GeophysicalLocation">
+							<rdf:Description rdf:about="&fibo-fnd-plc-loc;PhysicalLocation">
 							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-fnd-plcx-re;BuiltProperty">
+							<rdf:Description rdf:about="&fibo-fnd-inf-padr;BuiltProperty">
 							</rdf:Description>
 						</owl:unionOf>
 					</owl:Class>
@@ -124,10 +177,22 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-inf-padr;identifiesBuilding"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-plcx-re;Building"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-inf-padr;Building"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">street address text</rdfs:label>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-inf-padr;Suite">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-inf-padr;BuildingSubUnit"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-inf-padr;suiteIdentifiedBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-inf-padr;BuildingSubUnitAddressFragment"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">suite</rdfs:label>
+		<skos:definition xml:lang="en">A subdivision of a building for which the purposes are not clearly defined or may be variable, generally consisting of a number of contiguous rooms on one or more floors.</skos:definition>
 	</owl:Class>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-fnd-inf-padr;addressFragment">
@@ -150,7 +215,7 @@
 	<owl:ObjectProperty rdf:about="&fibo-fnd-inf-padr;buildingIdentifiedBy">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-inf-padr;physicalAddressComponentIdentifiedBy"/>
 		<rdfs:label xml:lang="en">building identified by</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-plcx-re;Building"/>
+		<rdfs:domain rdf:resource="&fibo-fnd-inf-padr;Building"/>
 		<rdfs:range rdf:resource="&fibo-fnd-inf-padr;StreetAddressText"/>
 	</owl:ObjectProperty>
 	
@@ -162,7 +227,7 @@
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-inf-padr;identifiesPhysicalAddressComponent"/>
 		<rdfs:label xml:lang="en">identifies building</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fnd-inf-padr;StreetAddressText"/>
-		<rdfs:range rdf:resource="&fibo-fnd-plcx-re;Building"/>
+		<rdfs:range rdf:resource="&fibo-fnd-inf-padr;Building"/>
 		<owl:inverseOf rdf:resource="&fibo-fnd-inf-padr;buildingIdentifiedBy"/>
 	</owl:ObjectProperty>
 	
@@ -170,7 +235,7 @@
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-inf-padr;identifiesPhysicalAddressComponent"/>
 		<rdfs:label xml:lang="en">identifies building sub unit</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fnd-inf-padr;BuildingSubUnitAddressFragment"/>
-		<rdfs:range rdf:resource="&fibo-fnd-plcx-re;BuildingSubUnit"/>
+		<rdfs:range rdf:resource="&fibo-fnd-inf-padr;BuildingSubUnit"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-inf-padr;identifiesPhysicalAddressComponent">
@@ -186,9 +251,9 @@
 					</rdf:Description>
 					<rdf:Description rdf:about="&fibo-fnd-inf-padr;PostBox">
 					</rdf:Description>
-					<rdf:Description rdf:about="&fibo-fnd-plcx-gph;GeophysicalLocation">
+					<rdf:Description rdf:about="&fibo-fnd-plc-loc;PhysicalLocation">
 					</rdf:Description>
-					<rdf:Description rdf:about="&fibo-fnd-plcx-re;BuiltProperty">
+					<rdf:Description rdf:about="&fibo-fnd-inf-padr;BuiltProperty">
 					</rdf:Description>
 				</owl:unionOf>
 			</owl:Class>
@@ -231,9 +296,9 @@
 					</rdf:Description>
 					<rdf:Description rdf:about="&fibo-fnd-inf-padr;PostBox">
 					</rdf:Description>
-					<rdf:Description rdf:about="&fibo-fnd-plcx-gph;GeophysicalLocation">
+					<rdf:Description rdf:about="&fibo-fnd-plc-loc;PhysicalLocation">
 					</rdf:Description>
-					<rdf:Description rdf:about="&fibo-fnd-plcx-re;BuiltProperty">
+					<rdf:Description rdf:about="&fibo-fnd-inf-padr;BuiltProperty">
 					</rdf:Description>
 				</owl:unionOf>
 			</owl:Class>
@@ -260,19 +325,12 @@
 		<rdfs:range rdf:resource="&xsd;string"/>
 	</owl:DatatypeProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-fnd-inf-padr;streetIdentifiedBy">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-inf-padr;physicalAddressComponentIdentifiedBy"/>
-		<rdfs:label xml:lang="en">street identified by</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-plcx-gph;Street"/>
-		<rdfs:range rdf:resource="&fibo-fnd-inf-padr;StreetAddressText"/>
-	</owl:ObjectProperty>
-	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-inf-padr;suiteIdentifiedBy">
 		<rdfs:label>suite identified by</rdfs:label>
 	</owl:ObjectProperty>
 	
 	<owl:Class rdf:about="&fibo-fnd-plc-adr;PostCodeArea">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-plcx-gph;GeophysicalLocation"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-plc-loc;PhysicalLocation"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-inf-padr;postCodeAreaIdentifiedBy"/>
@@ -282,12 +340,9 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isPartOf"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-plcx-gph;GeographicalArea"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-plc-loc;PhysicalLocation"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-fnd-plcx-gph;Street">
 	</owl:Class>
 
 </rdf:RDF>
