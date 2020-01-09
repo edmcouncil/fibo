@@ -564,12 +564,15 @@ h6 {
     display: none;
   }
 }
-.modules-list {
-  margin: 20px 0 0 20px;
+@media (min-width: 1px){
+  .modules-list {
+    margin: 20px 0 0 20px;
+  }
 }
-article p.text {
-  padding-top: 30px;
-  padding-bottom: 10px;
+@media (min-width: 1900px){
+  .modules-list {
+    margin: 30px 0 0 20px;
+  }
 }
 article ul.maturity-levels li{
   line-height: 1.5;

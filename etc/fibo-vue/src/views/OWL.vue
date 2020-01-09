@@ -5,24 +5,20 @@
         <h1>
           <span>FIBO OWL</span>
         </h1>
-        <h2>
-          FIBO is available in a number of RDF formats. These are available for offline use (i.e., download all of FIBO as a zip), or online use. Each FIBO ontology file is available for "follow your nose" treatment, a
-          general description of which is available here.
-        </h2>
 
-        <p>Each FIBO product is published in two releases:</p>
-        <ul>
+        <p>
+          FIBO OWL is available in a number of RDF formats. These are available for offline use (i.e., download all of FIBO as a zip), or online use. Each FIBO ontology file is available for "follow your nose" treatment, a general description of which is available here.
+        </p>
+
+        <p>FIBO OWL is published in two releases:</p>
+        <ul class="space-at-top">
           <li>
-            <b>FIBO Production</b> is published at the end of each calendar quarter and has
-            been vetted by SMEs and passed standard industry
-            <i>hygiene</i> tests for OWL.
+            <b>FIBO Production</b> is published at the end of each calendar quarter and has been vetted by SMEs and passed standard industry <i>hygiene</i> tests for OWL.
           </li>
           <li>
-            <b>FIBO Development</b> is published in real time as changes are incorporated
-            by the FIBO Leadership Team and consists of draft as well vetted content.
+            <b>FIBO Development</b> is published in real-time as changes are incorporated by the FIBO Community and consists of a draft as well-vetted content.
           </li>
         </ul>
-
         <h3 v-if="serializations">Serializations of FIBO OWL</h3>
         <div v-if="serializations" class="table-responsive">
           <table class="table table-style-striped">
@@ -128,24 +124,7 @@ export default {
 
 
 <style lang="scss" scoped>
-article {
-  padding-top: 30px;
-}
-article h2 {
-  font-size: 17px;
-  color: #455560;
-  line-height: 28px;
-  text-transform: none;
-  padding-top: 30px;
-  padding-bottom: 10px;
-  text-align: left;
-  font-weight: 400;
-  letter-spacing: 1px;
-}
 .inline {
   display: inline-block;
-}
-li {
-  line-height: 24px;
 }
 </style>

@@ -27,7 +27,7 @@
           <table class="table table-style-grey">
             <tr>
               <td>
-                <router-link :to="{ path: router('glossary') }">FIBO glossary</router-link>
+                <router-link :to="{ path: router('data-dictionary') }">FIBO data dictionary</router-link>
               </td>
               <td>Web searchable, downloadable in .csv and .xlsx</td>
               <td>
@@ -86,8 +86,7 @@
 
 <script>
 import helpers from '../store/helpers.js';
-import { outboundClick } from '../helpers/ga';
-import { outboundLinkClick } from '../helpers/ga';
+import { outboundClick, outboundLinkClick } from '../helpers/ga';
 
 export default {
   extends: helpers,
@@ -100,19 +99,5 @@ export default {
 };
 </script>
 
-<style>
-article {
-  padding-top: 30px;
-}
-article h2 {
-  font-size: 17px;
-  color: #455560;
-  line-height: 28px;
-  text-transform: none;
-  padding-top: 30px;
-  padding-bottom: 10px;
-  text-align: left;
-  font-weight: 400;
-  letter-spacing: 1px;
-}
+<style lang="scss" scoped>
 </style>
