@@ -1,18 +1,10 @@
-# /fbc - Financial Business & Commerce
+<img src="https://spec.edmcouncil.org/fibo/htmlpages/master/latest/img/logo.66a988fe.png" width="165" align="right"/>
 
-The FIBO Financial Business and Commerce specification provides a model of business concepts that
-are common to financial services businesses, including products and services, financial 
-intermediaries, registrars and regulators, and financial instruments and products, as a part of the 
-overall FIBO family of specifications.  FBC provides concepts common to a number of the domain areas, 
-such as loans, securities, corporate actions, etc.
+# Financial Business and Commerce (FBC)
 
-- Co-Chair (industry):
-  - Stephen Creek, Citigroup
-  - Richard Beatch, Bloomberg
-- Co-Chair: (ontologist):
-  - Elisa Kendall, Thematix
+This directory contains ontologies belonging to the Financial Business and Commerce domain. This domain covers business concepts that are common to a number of finance areas, such as loans, securities, and corporate actions, including products and services, financial intermediaries, registrars and regulators, and financial instruments and products.
 
 ## Links
 
-- [JIRA](https://jira.edmcouncil.org/browse/FBC)
-- [Confluence](https://wiki.edmcouncil.org/display/FBC)
+- [FIBO Viewer](https://spec.edmcouncil.org/fibo/ontology/FBC/MetadataFBC/FBCDomain)
+- [WIKI](https://wiki.edmcouncil.org/display/FBC)

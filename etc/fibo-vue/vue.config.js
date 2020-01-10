@@ -1,4 +1,4 @@
-process.env.VUE_APP_TIMESTAMP = '2019Q3.1'
+process.env.VUE_APP_TIMESTAMP = '2019Q4.1'
 process.env.VUE_APP_BRANCH    = process.env.product_branch_tag && process.env.product_branch_tag.split('/',3)[1] || 'master'
 process.env.VUE_APP_TAG       = process.env.product_branch_tag && process.env.product_branch_tag.split('/',3)[2] || 'latest'
 
