@@ -40,7 +40,8 @@ The FIBO development process follows rigorous and well-defined rules and princip
 
 ### Community Discussion
 
-Our preferred method to discuss any topic around development of FIBO is [Slack](https://slack.com). Please join the *Slack workspace* [fibo-edmc.slack.com](https://fibo-edmc.slack.com) by sending an email with your information to slackinvite@edmcouncil.org, we will then send you a link (by email) that gets you in.
+Our preferred method for discussing topics unrelated to specific issues, pull requests, wiki pages or artifacts is [Slack](https://slack.com).
+Please join the *Slack workspace* [fibo-edmc.slack.com](https://fibo-edmc.slack.com) by sending an email with your information to slackinvite@edmcouncil.org, we will then send you a link (by email) that gets you in.
 
 A *Slack workspace* is a shared hub made up of channels where team members can communicate and work together. When you join a workspace, you need to create a Slack account using your email address.
 
