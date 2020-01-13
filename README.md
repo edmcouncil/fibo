@@ -38,6 +38,27 @@ We use [Probot / DCO framework](https://github.com/probot/dco) to enforce the De
 ## Contributing to FIBO
 The FIBO development process follows rigorous and well-defined rules and principles. Please read [CONTRIBUTING.md](CONTRIBUTING.md) and [ONTOLOGY\_GUIDE.md](ONTOLOGY_GUIDE.md) for details. 
 
+### Community Discussion
+
+Our preferred method for discussing topics unrelated to specific issues, pull requests, wiki pages or artifacts is [Slack](https://slack.com).
+Please join the *Slack workspace* [fibo-edmc.slack.com](https://fibo-edmc.slack.com) by sending an email with your information to slackinvite@edmcouncil.org, we will then send you a link (by email) that gets you in.
+
+A *Slack workspace* is a shared hub made up of channels where team members can communicate and work together. When you join a workspace, you need to create a Slack account using your email address.
+
+A *Slack workspace* consists of *channels* (like [#general](https://fibo-edmc.slack.com/archives/CF2C7EZKN) or [#fibo-user-group](https://fibo-edmc.slack.com/archives/CFH3QDUMC)) that can be either public or private. Most channels are public and as user you can select the channels that you wish to use. For private channels you would need to be invited by the owner of that channel.
+
+Channel | Description |
+:------ |:------------|
+| [#general](https://fibo-edmc.slack.com/archives/CF2C7EZKN) | Ecosystem-wide announcements and work-based matters |
+| [#fibo-user-group](https://fibo-edmc.slack.com/archives/CFH3QDUMC) | General discussion for users of FIBO | Public |
+| [#fibo-doc](https://fibo-edmc.slack.com/archives/CJQ7QUM8X) | Discussion about intent, structure and content of FIBO documentation |
+| [#ontology-publisher](https://fibo-edmc.slack.com/archives/CF2CEFFMJ) | Discussions around development and use of the [ontology-publisher](https://github.com/edmcouncil/ontology-publisher/blob/master/README.md) |
+| Many others | |
+
+Some helpful links:
+
+- [Getting started for new members](https://slack.com/intl/en-gb/help/articles/218080037)
+
 
 # Directories
 
