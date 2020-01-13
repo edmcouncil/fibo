@@ -2,7 +2,6 @@
 <!DOCTYPE rdf:RDF [
 	<!ENTITY dct "http://purl.org/dc/terms/">
 	<!ENTITY fibo-fnd-acc-cur "https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/">
-	<!ENTITY fibo-fnd-accx-acc "https://spec.edmcouncil.org/fibo/ontology/FND/AccountingExt/AccountsMain/">
 	<!ENTITY fibo-fnd-dt-fd "https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/">
 	<!ENTITY fibo-fnd-rel-rel "https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/">
 	<!ENTITY fibo-fnd-txn-ecr "https://spec.edmcouncil.org/fibo/ontology/FND/TransactionsExt/EconomicResources/">
@@ -22,7 +21,6 @@
 <rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/ontology/MD/TemporalCore/TemporalConcepts/"
 	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fibo-fnd-acc-cur="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"
-	xmlns:fibo-fnd-accx-acc="https://spec.edmcouncil.org/fibo/ontology/FND/AccountingExt/AccountsMain/"
 	xmlns:fibo-fnd-dt-fd="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"
 	xmlns:fibo-fnd-rel-rel="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"
 	xmlns:fibo-fnd-txn-ecr="https://spec.edmcouncil.org/fibo/ontology/FND/TransactionsExt/EconomicResources/"
@@ -44,7 +42,6 @@
 		<dct:abstract>This is the core ontology for temporally sensitive terms and provides the basic definitions that are extended in other ontologies specific to securities, types of security and so on. These concepts include basic prices, yields, volatilities, spreads and so on, as well as times percentages and amounts.
 		Note that this is a highly conceptual foundational ontology of these concepts, as it distinguishes between for example the notions of price and the ways these are specified. These concepts should be reviewed to make reference to the newer Values ontology and may be further simplified for application ontologies.</dct:abstract>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/AccountingExt/AccountsMain/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/TransactionsExt/EconomicResources/"/>
@@ -100,8 +97,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-md-temx-tem;PriceExchangeSpecification">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-accx-acc;PriceSpecification"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;RatioValue"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-acc-cur;MonetaryPrice"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;refersTo"/>
@@ -111,20 +107,6 @@
 		<rdfs:label xml:lang="en">price exchange specification</rdfs:label>
 		<skos:definition xml:lang="en">The specification of a price in terms of the exchange of some quantity of some item of value in return for some quantity of the item so priced. That is, a simple price or exchange ratio which specifies the amount of an asset that will be exchanged for another asset;</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Prices that fall into this category include: 1. Exchange Rates the amount of one currency that can be exchanged for a unit of another currency 2. Commodity Price the amount of a specific Commodity that can be exchanged for a unit of a currency 3. Security price per Hundred where - albeit not explicit - the numerator asset is today’s Currency and the denominator Asset is future Currency (face Value). Notes Origin: NAB</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-md-temx-tem;PriceInterpolationSpecification">
-		<rdfs:subClassOf rdf:resource="&fibo-md-temx-tem;PriceParameterSpecification"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-md-dbtx-py;interpolatedBetween"/>
-				<owl:onClass rdf:resource="&fibo-md-temx-ins;TradedSecurityPublishedPrice"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">2</owl:qualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">price interpolation specification</rdfs:label>
-		<skos:definition xml:lang="en">A price which is an interpolation between two publicly available prices fo rths instrument.</skos:definition>
-		<skos:editorialNote xml:lang="en">Establish at review whether these are always interpolations between two prices of the instrument itself, or for example an interpolation between a price of the instrument and the price of something comparable. If the latter exists, then there are two kinds of interpolation specifications for price. The term currently modeled is the interpolation between two prices of the instrument so priced.</skos:editorialNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-md-temx-tem;PriceModelSpecification">
@@ -140,8 +122,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-md-temx-tem;PriceParameterSpecification">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-accx-acc;PriceSpecification"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;Expression"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-acc-cur;MonetaryPrice"/>
 		<rdfs:label xml:lang="en">price parameter specification</rdfs:label>
 		<skos:definition xml:lang="en">The specification of a price as a quote of the primary parameter passed into an algorithm used to calculate the Present Value of the relevant Asset.</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Two significant examples of this pricing method are 1. Yields a yield is expressed as the annualized interest Rate that an investor requires for an investment. In the case of a loan the terms are set up so that the interest rate (coupon) equals that required yield and therefore the present value is equal to the loan principal. For a security, however the coupon rate is already determined so the required yield is applied to the projected cash flows in order to calculate a present value ( the price an investor is prepared to pay for the specified cash flows) Typically the required yield for a debt security is the yield to maturity 2. Volatilities in reality a volatility (used to calculate the fair value of an option) is a measure of the variability of the price of the transaction over which the beneficiary of the option has control. This is the primary parameter passed into an option valuation (eg Black-Scholes, Binomial) Notes Origin: NAB</fibo-fnd-utl-av:explanatoryNote>

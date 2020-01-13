@@ -9,7 +9,6 @@
 	<!ENTITY fibo-fbc-fct-ra "https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/RegistrationAuthorities/">
 	<!ENTITY fibo-fbc-fi-fi "https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/">
 	<!ENTITY fibo-fnd-acc-cur "https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/">
-	<!ENTITY fibo-fnd-accx-acc "https://spec.edmcouncil.org/fibo/ontology/FND/AccountingExt/AccountsMain/">
 	<!ENTITY fibo-fnd-agr-ctr "https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/">
 	<!ENTITY fibo-fnd-arr-arr "https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Arrangements/">
 	<!ENTITY fibo-fnd-arrxx-meth "https://spec.edmcouncil.org/fibo/ontology/FND/ArrangementsExt/MethodsAndRules/">
@@ -41,7 +40,6 @@
 	xmlns:fibo-fbc-fct-ra="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/RegistrationAuthorities/"
 	xmlns:fibo-fbc-fi-fi="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"
 	xmlns:fibo-fnd-acc-cur="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"
-	xmlns:fibo-fnd-accx-acc="https://spec.edmcouncil.org/fibo/ontology/FND/AccountingExt/AccountsMain/"
 	xmlns:fibo-fnd-agr-ctr="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"
 	xmlns:fibo-fnd-arr-arr="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Arrangements/"
 	xmlns:fibo-fnd-arrxx-meth="https://spec.edmcouncil.org/fibo/ontology/FND/ArrangementsExt/MethodsAndRules/"
@@ -74,7 +72,6 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/RegistrationAuthorities/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/AccountingExt/AccountsMain/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Arrangements/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/ArrangementsExt/MethodsAndRules/"/>
@@ -97,7 +94,7 @@
 	</owl:Ontology>
 	
 	<owl:Class rdf:about="&fibo-der-der-opt;AbsolutePriceStrikeSpecification">
-		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;StrikePriceSpecification"/>
+		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;StrikePrice"/>
 		<rdfs:label xml:lang="en">absolute price strike specification</rdfs:label>
 		<owl:disjointWith rdf:resource="&fibo-der-der-opt;PercentageStrikePriceSpecification"/>
 		<skos:definition xml:lang="en">Expression of the strike price as an absolute monetary price at which the option is to be struck.</skos:definition>
@@ -314,7 +311,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-der-opt;includesSpecificationTerm"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;StrikePriceSpecification"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;StrikePrice"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">fixed strike terms</rdfs:label>
@@ -829,7 +826,7 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-der-opt;PercentageStrikePriceSpecification">
-		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;StrikePriceSpecification"/>
+		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;StrikePrice"/>
 		<rdfs:label xml:lang="en">percentage strike price specification</rdfs:label>
 	</owl:Class>
 	
@@ -950,9 +947,9 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 		<rdfs:label xml:lang="en">strike formula</rdfs:label>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-der-opt;StrikePriceSpecification">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-accx-acc;PriceSpecification"/>
-		<rdfs:label xml:lang="en">strike price specification</rdfs:label>
+	<owl:Class rdf:about="&fibo-der-der-opt;StrikePrice">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-acc-cur;MonetaryPrice"/>
+		<rdfs:label xml:lang="en">strike price</rdfs:label>
 		<skos:definition xml:lang="en">The strike price for the option is the agreed price for the transaction if this takes place. Applies to all options types. Action: Make sure that&apos;s there for all Options types.</skos:definition>
 	</owl:Class>
 	
@@ -1163,7 +1160,7 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;includesSpecificationTerm">
 		<rdfs:label xml:lang="en">includes specification term</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-der-der-opt;FixedStrikeTerms"/>
-		<rdfs:range rdf:resource="&fibo-der-der-opt;StrikePriceSpecification"/>
+		<rdfs:range rdf:resource="&fibo-der-der-opt;StrikePrice"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;isOf">

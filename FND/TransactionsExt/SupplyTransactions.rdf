@@ -2,7 +2,6 @@
 <!DOCTYPE rdf:RDF [
 	<!ENTITY dct "http://purl.org/dc/terms/">
 	<!ENTITY fibo-fnd-acc-cur "https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/">
-	<!ENTITY fibo-fnd-accx-acc "https://spec.edmcouncil.org/fibo/ontology/FND/AccountingExt/AccountsMain/">
 	<!ENTITY fibo-fnd-txn-ecr "https://spec.edmcouncil.org/fibo/ontology/FND/TransactionsExt/EconomicResources/">
 	<!ENTITY fibo-fnd-txn-mkt "https://spec.edmcouncil.org/fibo/ontology/FND/TransactionsExt/MarketTransactions/">
 	<!ENTITY fibo-fnd-txn-rea "https://spec.edmcouncil.org/fibo/ontology/FND/TransactionsExt/REATransactions/">
@@ -17,7 +16,6 @@
 <rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/ontology/FND/TransactionsExt/SupplyTransactions/"
 	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fibo-fnd-acc-cur="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"
-	xmlns:fibo-fnd-accx-acc="https://spec.edmcouncil.org/fibo/ontology/FND/AccountingExt/AccountsMain/"
 	xmlns:fibo-fnd-txn-ecr="https://spec.edmcouncil.org/fibo/ontology/FND/TransactionsExt/EconomicResources/"
 	xmlns:fibo-fnd-txn-mkt="https://spec.edmcouncil.org/fibo/ontology/FND/TransactionsExt/MarketTransactions/"
 	xmlns:fibo-fnd-txn-rea="https://spec.edmcouncil.org/fibo/ontology/FND/TransactionsExt/REATransactions/"
@@ -34,7 +32,6 @@
 		<dct:abstract>This ontology defines the basic concepts in a supply transaction. 
 		This is an extension of the Market Transactions ontology and is included for completeness of those concepts and differentiates other kinds of market transaction from securities transactions. It is not expected that this is referred to in other FIBO ontologies and it may be left out of application ontologies.</dct:abstract>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/AccountingExt/AccountsMain/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/TransactionsExt/EconomicResources/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/TransactionsExt/MarketTransactions/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/TransactionsExt/REATransactions/"/>
@@ -65,23 +62,12 @@
 		<rdfs:label xml:lang="en">delivery terms</rdfs:label>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-fnd-txn-sup;NegotiableCash">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-txn-ecr;EconomicResource"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-accx-acc;isQuantityOf.1"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-accx-acc;Cash"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">negotiable cash</rdfs:label>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-fnd-txn-sup;SupplyTransaction">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-txn-mkt;MarketTransaction"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-txn-mkt;consideration"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-txn-sup;NegotiableCash"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-cur;AmountOfMoney"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -130,7 +116,7 @@
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-txn-sup;denomination">
 		<rdfs:label xml:lang="en">denomination</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-txn-sup;NegotiableCash"/>
+		<rdfs:domain rdf:resource="&fibo-fnd-acc-cur;AmountOfMoney"/>
 		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;Currency"/>
 		<skos:definition xml:lang="en">The currency in which the negotiable cash is denominated. This is the currency seen in the &quot;Monetary Amount&quot;.</skos:definition>
 	</owl:ObjectProperty>
