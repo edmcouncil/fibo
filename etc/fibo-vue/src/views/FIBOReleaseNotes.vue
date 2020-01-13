@@ -1374,11 +1374,7 @@
 
             </article>
         </main>
-    </div>
-    </div>
-    </div>
-
-    </div>
+        <button class="top-button" title="Go to top" @click="topBtnClick" ref="topButton">Top </button>
     </div>
 </template>
 
@@ -1393,13 +1389,48 @@
         extends: helpers,
         name: 'FIBOCommunities',
         components: {},
+        mounted(){
+            var self = this;
+            window.onscroll = function() {
+                if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                    self.$refs.topButton.style.display = "block";
+                } else {
+                    self.$refs.topButton.style.display = "none";
+                }
+            };
+        },
         methods: {
             outboundClick,
             outboundLinkClick,
+            topBtnClick(event){
+                window.scrollTo(0,0);
+            }
         },
     };
 </script>
 
 <style lang="scss" scoped>
+    .top-button {
+        &:after {
+            content: "\f077";
+            font-family: "Font Awesome 5 Solid";
+        }
+        display: none;
+        position: fixed;
+        bottom: 20px;
+        right: 30px;
+        z-index: 99;
+        border: none;
+        outline: none;
+        background-color: #e78747;
+        color: white;
+        cursor: pointer;
+        padding: 15px;
+        border-radius: 10px;
+        font-size: 18px;
+    }
 
+    .top-button:hover {
+        background-color: #707070;
+    }
 </style>
