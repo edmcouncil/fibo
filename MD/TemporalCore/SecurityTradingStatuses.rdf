@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE rdf:RDF [
 	<!ENTITY dct "http://purl.org/dc/terms/">
+	<!ENTITY fibo-fnd-arr-lif "https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Lifecycles/">
 	<!ENTITY fibo-fnd-dt-fd "https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/">
-	<!ENTITY fibo-fnd-inf-tem "https://spec.edmcouncil.org/fibo/ontology/FND/InformationExt/TemporalInfo/">
+	<!ENTITY fibo-fnd-rel-rel "https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
-	<!ENTITY fibo-md-temx-tem "https://spec.edmcouncil.org/fibo/ontology/MD/TemporalCore/TemporalConcepts/">
 	<!ENTITY fibo-md-temx-trs "https://spec.edmcouncil.org/fibo/ontology/MD/TemporalCore/SecurityTradingStatuses/">
 	<!ENTITY fibo-sec-sec-lst "https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesListings/">
 	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
@@ -15,10 +15,10 @@
 ]>
 <rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/ontology/MD/TemporalCore/SecurityTradingStatuses/"
 	xmlns:dct="http://purl.org/dc/terms/"
+	xmlns:fibo-fnd-arr-lif="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Lifecycles/"
 	xmlns:fibo-fnd-dt-fd="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"
-	xmlns:fibo-fnd-inf-tem="https://spec.edmcouncil.org/fibo/ontology/FND/InformationExt/TemporalInfo/"
+	xmlns:fibo-fnd-rel-rel="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
-	xmlns:fibo-md-temx-tem="https://spec.edmcouncil.org/fibo/ontology/MD/TemporalCore/TemporalConcepts/"
 	xmlns:fibo-md-temx-trs="https://spec.edmcouncil.org/fibo/ontology/MD/TemporalCore/SecurityTradingStatuses/"
 	xmlns:fibo-sec-sec-lst="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesListings/"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
@@ -31,11 +31,10 @@
 		<rdfs:label xml:lang="en">SecurityTradingStatuses</rdfs:label>
 		<dct:abstract>This ontology defines the various kinds of trading status that a security may be in at any given point in time. These includes such terms as active and halted, inactive and so on, along with their qualifying terms.</dct:abstract>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Lifecycles/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/InformationExt/InfoCore/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/InformationExt/TemporalInfo/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/MD/TemporalCore/TemporalConcepts/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesListings/"/>
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/MD/TemporalCore/SecurityTradingStatuses/"/>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Provisional"/>
@@ -55,18 +54,16 @@
 		<skos:definition xml:lang="en">Security is actively traded on the exchange or trading facility</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-md-temx-trs;CurrentStatus">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-inf-tem;Status"/>
-		<rdfs:subClassOf rdf:resource="&fibo-md-temx-tem;StatusCodeValue"/>
-		<rdfs:label xml:lang="en">current status</rdfs:label>
-		<owl:disjointWith rdf:resource="&fibo-md-temx-trs;PastStatus"/>
-		<skos:definition xml:lang="en">The status at the present time.</skos:definition>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-md-temx-trs;ExchangeSecurityTradingStatus">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-inf-tem;Status"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-lif;LifecycleStatus"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;classifies"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-lst;Listing"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">exchange security trading status</rdfs:label>
-		<skos:definition xml:lang="en">The trading status of a security on a given trading exchange.</skos:definition>
+		<skos:definition xml:lang="en">trading status of a listed security on a given trading exchange</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-md-temx-trs;Inactive">
@@ -80,22 +77,28 @@
 		<skos:definition xml:lang="en">The security has been issued into the secondary market.</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-md-temx-trs;PastStatus">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-inf-tem;Status"/>
-		<rdfs:subClassOf rdf:resource="&fibo-md-temx-tem;StatusCodeValue"/>
-		<rdfs:label xml:lang="en">past status</rdfs:label>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-md-temx-trs;SecurityLifecycleStatus">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-inf-tem;Status"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-lif;LifecycleStatus"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;classifies"/>
+				<owl:someValuesFrom rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/Security"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">security lifecycle status</rdfs:label>
-		<skos:definition xml:lang="en">The status of a security within its lifecycle.</skos:definition>
+		<skos:definition xml:lang="en">status of a security within its lifecycle</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-md-temx-trs;SecurityTradingStatus">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-inf-tem;Status"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-lif;LifecycleStatus"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;classifies"/>
+				<owl:someValuesFrom rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/Security"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">security trading status</rdfs:label>
-		<skos:definition xml:lang="en">The status of the security in terms of whether it is trading or not, and any special considerations relating to trading.</skos:definition>
+		<skos:definition xml:lang="en">status of the security in terms of whether it is trading or not, and any special considerations relating to trading</skos:definition>
 		<skos:editorialNote xml:lang="en">Exchange Traded Security trading status is now a separate term, covering trading suspension on an exchange, so that does not form part of this term.</skos:editorialNote>
 	</owl:Class>
 	
@@ -117,68 +120,10 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-md-temx-trs;Worthless">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-inf-tem;Status"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-md-temx-trs;describes"/>
-				<owl:someValuesFrom rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/Security"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
+		<rdfs:subClassOf rdf:resource="&fibo-md-temx-trs;SecurityLifecycleStatus"/>
 		<rdfs:label xml:lang="en">worthless</rdfs:label>
 		<skos:definition xml:lang="en">Announcement by the regulator that the security has become worthless.</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">e.g. bankruptcy hearings - might result in this being said.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
-	
-	<owl:DatatypeProperty rdf:about="&fibo-md-temx-trs;delisted">
-		<rdfs:label xml:lang="en">delisted</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-md-temx-trs;ExchangeSecurityTradingStatus"/>
-		<rdfs:range rdf:resource="&xsd;boolean"/>
-		<skos:definition xml:lang="en">Whether the security is currently delisted on that exchange or trading facility.</skos:definition>
-	</owl:DatatypeProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-md-temx-trs;describes">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-inf-tem;isOf"/>
-		<rdfs:label xml:lang="en">describes</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-md-temx-trs;Worthless"/>
-		<rdfs:range rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/Security"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-md-temx-trs;hasStatus">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-inf-tem;hasStatus"/>
-		<rdfs:label xml:lang="en">has listing status</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-sec-lst;Listing"/>
-		<rdfs:range rdf:resource="&fibo-md-temx-trs;ExchangeSecurityTradingStatus"/>
-		<skos:definition xml:lang="en">The trading status of this listing i.e. this security on this exchange.</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-md-temx-trs;hasTradingStatus">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-inf-tem;hasStatus"/>
-		<rdfs:label xml:lang="en">has trading status</rdfs:label>
-		<rdfs:domain rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/Security"/>
-		<rdfs:range rdf:resource="&fibo-md-temx-trs;SecurityTradingStatus"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-md-temx-trs;status">
-		<rdfs:label xml:lang="en">status</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-md-temx-trs;SecurityLifecycleStatus"/>
-		<rdfs:range rdf:resource="&fibo-md-temx-trs;SecurityLifecycleStatus"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-md-temx-trs;statusDate">
-		<rdfs:label xml:lang="en">status date</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-md-temx-trs;PastStatus"/>
-		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Date"/>
-		<skos:definition xml:lang="en">Date at which the status of the security is taken.</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:DatatypeProperty rdf:about="&fibo-md-temx-trs;tense.1">
-		<rdfs:label xml:lang="en">tense</rdfs:label>
-	</owl:DatatypeProperty>
-	
-	<owl:DatatypeProperty rdf:about="&fibo-md-temx-trs;worthless">
-		<rdfs:label xml:lang="en">worthless</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-md-temx-trs;Worthless"/>
-		<rdfs:range rdf:resource="&xsd;boolean"/>
-	</owl:DatatypeProperty>
 
 </rdf:RDF>
