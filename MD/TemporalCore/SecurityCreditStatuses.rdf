@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE rdf:RDF [
 	<!ENTITY dct "http://purl.org/dc/terms/">
-	<!ENTITY fibo-fnd-inf-tem "https://spec.edmcouncil.org/fibo/ontology/FND/InformationExt/TemporalInfo/">
+	<!ENTITY fibo-fnd-arr-lif "https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Lifecycles/">
+	<!ENTITY fibo-fnd-rel-rel "https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
 	<!ENTITY fibo-md-temx-crs "https://spec.edmcouncil.org/fibo/ontology/MD/TemporalCore/SecurityCreditStatuses/">
 	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
@@ -12,7 +13,8 @@
 ]>
 <rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/ontology/MD/TemporalCore/SecurityCreditStatuses/"
 	xmlns:dct="http://purl.org/dc/terms/"
-	xmlns:fibo-fnd-inf-tem="https://spec.edmcouncil.org/fibo/ontology/FND/InformationExt/TemporalInfo/"
+	xmlns:fibo-fnd-arr-lif="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Lifecycles/"
+	xmlns:fibo-fnd-rel-rel="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
 	xmlns:fibo-md-temx-crs="https://spec.edmcouncil.org/fibo/ontology/MD/TemporalCore/SecurityCreditStatuses/"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
@@ -26,8 +28,8 @@
 		<dct:abstract>This ontology extends the credit status ontology to define credit status concepts that are specific to issued securities. These include cashflow status and the basic credit statuses of being OK or in default. 
 		Note that in application data models these concepts would be represented as one or more selectable code lists or enumerations.</dct:abstract>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/InformationExt/InfoCore/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/InformationExt/TemporalInfo/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Lifecycles/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/MD/TemporalCore/SecurityCreditStatuses/"/>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Provisional"/>
@@ -47,7 +49,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-md-temx-crs;SecurityCashflowStatus">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-inf-tem;Status"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-lif;LifecycleStatus"/>
 		<rdfs:label xml:lang="en">security cashflow status</rdfs:label>
 		<owl:disjointWith rdf:resource="&fibo-md-temx-crs;SecurityCreditStatus"/>
 		<skos:definition xml:lang="en">The status of the cashflow due to the holder from the security.</skos:definition>
@@ -55,10 +57,10 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-md-temx-crs;SecurityCreditStatus">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-inf-tem;Status"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-lif;LifecycleStatus"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-md-temx-crs;isStatusOf"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
 				<owl:someValuesFrom rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/Security"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -76,13 +78,6 @@
 		<rdfs:domain rdf:resource="&fibo-md-temx-crs;SecurityCashflowStatus"/>
 		<rdfs:range rdf:resource="&xsd;boolean"/>
 	</owl:DatatypeProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-md-temx-crs;isStatusOf">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-inf-tem;isOf"/>
-		<rdfs:label xml:lang="en">is status of</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-md-temx-crs;SecurityCreditStatus"/>
-		<rdfs:range rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/Security"/>
-	</owl:ObjectProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-md-temx-crs;principalPaymentsExpected">
 		<rdfs:label xml:lang="en">principal payments expected</rdfs:label>
