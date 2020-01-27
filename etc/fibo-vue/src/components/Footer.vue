@@ -11,35 +11,41 @@
                   <router-link replace :to="{ path: router() }">About</router-link>
                 </li>
                 <li>
-                  <router-link replace :to="{ path: router('development') }">Development</router-link>
+                  <router-link replace :to="{ path: router('ontology') }">FIBO Viewer</router-link>
                 </li>
                 <li>
-                  <router-link replace :to="{ path: router('working-group') }">FIBO Working Groups</router-link>
+                  <router-link replace :to="{ path: router('FIBO-Groups') }">FIBO Groups</router-link>
                 </li>
                 <li>
-                  <router-link replace :to="{ path: router('ontology-tools') }">Ontology Tools</router-link>
+                  <router-link replace :to="{ path: router('how-to-contribute') }">How to contribute</router-link>
                 </li>
                 <li>
-                  <router-link replace :to="{ path: router('SMIF-UML') }">SMIF / UML Diagrams</router-link>
+                  <router-link replace :to="{ path: router('FIBO-Release-Notes') }">Release notes</router-link>
                 </li>
+                <li>
+                  <router-link replace :to="{ path: router('OWL') }">FIBO OWL</router-link>
+                </li>                               
               </ul>
             </div>
             <div class="col-md-6">
               <ul>
                 <li>
-                  <router-link replace :to="{ path: router('products') }">All Products</router-link>
+                  <router-link replace :to="{ path: router('vocabulary') }">FIBO vocabulary</router-link>
+                </li>                 	
+                <li>
+                  <router-link replace :to="{ path: router('data-dictionary') }">FIBO data dict.</router-link>
                 </li>
                 <li>
-                  <router-link replace :to="{ path: router('schema') }">FIBO Extension To Schema.org</router-link>
+                  <router-link replace :to="{ path: router('courses') }">FIBO courses</router-link>
                 </li>
                 <li>
-                  <router-link replace :to="{ path: router('OWL') }">FIBO OWL</router-link>
+                  <router-link replace :to="{ path: router('use-cases') }">FIBO use cases</router-link>
                 </li>
                 <li>
-                  <router-link replace :to="{ path: router('vocabulary') }">FIBO Vocabulary</router-link>
+                  <router-link replace :to="{ path: router('schema') }">FIBO schema.org</router-link>
                 </li>
                 <li>
-                  <router-link replace :to="{ path: router('data-dictionary') }">FIBO data dictionary</router-link>
+                  <router-link replace :to="{ path: router('FIB-DM') }">FIBO FIB-DM</router-link>
                 </li>
               </ul>
             </div>
@@ -68,7 +74,7 @@
       <div class="row">
         <div class="col-md-8">
           <p>
-            © 2019 EDM Council. All rights reserved. DCAM and FIBO are registered trademarks of EDM Council.
+            © 2020 EDM Council. All rights reserved. DCAM and FIBO are registered trademarks of EDM Council.
             All other marks are the property of their respective owners. Membership Management Software Powered by
             YourMembership
           </p>
