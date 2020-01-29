@@ -58,8 +58,8 @@
 		<dct:abstract>This ontology defines concepts that are common to all debt instruments, such as debt, borrower, lender, debtor, creditor, interest, principal, and the like. It is designed to be used by various other FIBO specifications, including but not limited to SEC/Debt and LOAN.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
 		<sm:contentLanguage rdf:datatype="&xsd;anyURI">http://www.w3.org/standards/techs/owl#w3c_all</sm:contentLanguage>
-		<sm:copyright>Copyright (c) 2016-2019 EDM Council, Inc.</sm:copyright>
-		<sm:copyright>Copyright (c) 2016-2019 Object Management Group, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2016-2020 EDM Council, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2016-2020 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/"/>
 		<sm:dependsOn rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"/>
 		<sm:dependsOn rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/"/>
@@ -83,9 +83,10 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Analytics/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/20190501/DebtAndEquities/Debt/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/20200101/DebtAndEquities/Debt/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20180801/DebtAndEquities/Debt/ version of this ontology was added to the FBC domain via the FIBO 2.0 RFC in support of several FIBO debt-oriented initiatives.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20180801/DebtAndEquities/Debt/ version of this ontology was modified to use the generic statistical measures and measurements now in FND.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20190501/DebtAndEquities/Debt/ version of this ontology was modified to add several common day count conventions used to calculate the amount of accrued interest or the present value when the next coupon payment is less than a full coupon period away.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -276,6 +277,37 @@
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.investopedia.com/terms/d/daycount.asp</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:explanatoryNote>Day-count conventions apply to swaps, mortgages and forward rate agreements as well as bonds, each of which has its own day-count convention, which varies depending on the type of instrument, whether the interest rate is fixed or floating, and the country of issuance. Among the most common conventions are 30/360 or 365, actual/360 or 365, and actual/actual. A 30/360 convention assumes 30 days in a month and 360 days in a year. An actual/360 convention assumes the actual number of days in the given month and 360 days in the year. An actual/ actual convention uses the actual number of days in the given interest period and year.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
+	
+	<owl:NamedIndividual rdf:about="&fibo-fbc-dae-dbt;DayCountConvention-30360">
+		<rdf:type rdf:resource="&fibo-fbc-dae-dbt;DayCountConvention"/>
+		<rdfs:label>day-count convention 30/360</rdfs:label>
+		<skos:definition>day-count convention indicating that uses 30 days in a month and 360 days in a year for calculating interest payments</skos:definition>
+	</owl:NamedIndividual>
+	
+	<owl:NamedIndividual rdf:about="&fibo-fbc-dae-dbt;DayCountConvention-30365">
+		<rdf:type rdf:resource="&fibo-fbc-dae-dbt;DayCountConvention"/>
+		<rdfs:label>day-count convention 30/365</rdfs:label>
+		<skos:definition>day-count convention indicating that uses 30 days in a month and 365 days in a year for calculating interest payments</skos:definition>
+	</owl:NamedIndividual>
+	
+	<owl:NamedIndividual rdf:about="&fibo-fbc-dae-dbt;DayCountConvention-Actual360">
+		<rdf:type rdf:resource="&fibo-fbc-dae-dbt;DayCountConvention"/>
+		<rdfs:label>day-count convention actual/360</rdfs:label>
+		<skos:definition>day-count convention indicating that uses the actual number of days in a month and 360 days in a year for calculating interest payments</skos:definition>
+	</owl:NamedIndividual>
+	
+	<owl:NamedIndividual rdf:about="&fibo-fbc-dae-dbt;DayCountConvention-Actual365">
+		<rdf:type rdf:resource="&fibo-fbc-dae-dbt;DayCountConvention"/>
+		<owl:sameAs rdf:resource="&fibo-fbc-dae-dbt;DayCountConvention-ActualActual"/>
+		<rdfs:label>day-count convention actual/365</rdfs:label>
+		<skos:definition>day-count convention indicating that uses the actual number of days in a month and 365 days in a year for calculating interest payments</skos:definition>
+	</owl:NamedIndividual>
+	
+	<owl:NamedIndividual rdf:about="&fibo-fbc-dae-dbt;DayCountConvention-ActualActual">
+		<rdf:type rdf:resource="&fibo-fbc-dae-dbt;DayCountConvention"/>
+		<rdfs:label>day-count convention actual/actual</rdfs:label>
+		<skos:definition>day-count convention indicating that uses the actual number of days in a month and actual number of days in a year for calculating interest payments</skos:definition>
+	</owl:NamedIndividual>
 	
 	<owl:Class rdf:about="&fibo-fbc-dae-dbt;Debt">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-agr;Commitment"/>
