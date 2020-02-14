@@ -49,7 +49,7 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20170201/DatesAndTimes/FinancialDates/ version of this ontology was revised by the FIBO 2.0 RFC in order to introduce the definition of a time instant, to eliminate a reasoning issue with relative dates, and remove a circular dependency inadvertently incorporated in the ontology with a FIBO FND 1.2 modification.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20180801/DatesAndTimes/FinancialDates/ version of this ontology was revised to introduce a composite date datatype to allow for cases whereby the representation of a date for certain purposes, such as GLEIF LEI data, is inconsistent, and to facilitate mapping FIBO to multiple data sources in user environments.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20190201/DatesAndTimes/FinancialDates/ version of this ontology was revised to eliminate deprecated elements.</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20200201/DatesAndTimes/FinancialDates/ version of this ontology was revised to add the &apos;has date added&apos; property, which is needed for the date a constituent is added to a basket, among other purposes.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20200201/DatesAndTimes/FinancialDates/ version of this ontology was revised to add the &apos;has date added&apos; property, which is needed for the date a constituent is added to a basket, and to add a TimeOfDay class, needed for representing rate reset times.</skos:changeNote>
 		<skos:changeNote>This ontology was added to Foundations in advance of the December 2014 Long Beach meeting in support of the SEC specification.  It is also needed to provide temporal relationships for Ownership and Control.
 
 These three ontologies are designed for use together:
@@ -565,6 +565,20 @@ The recurrence start date can also be relative to the starting Date of the overa
 		<fibo-fnd-utl-av:explanatoryNote>Time intervals may be indefinite, meaning that their beginning is primordiality or their end is perpetuity, or both (eternity). This vocabulary assumes that indefinite time intervals exist and have some duration, but their duration is unknown.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-fnd-dt-fd;TimeOfDay">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-fd;TimeInstant"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-dt-fd;hasTimeValue"/>
+				<owl:onDataRange rdf:resource="&xsd;string"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>time of day</rdfs:label>
+		<skos:definition>explicit time, according to a clock</skos:definition>
+		<fibo-fnd-utl-av:usageNote>The representation should be the same as for xsd:dateTime, excluding the date component of the string value. The value of the hasTimeValue property corresponds to xsd:time in XML schema datatypes, which is prohibited from use in OWL due to ambiguity in its definition.</fibo-fnd-utl-av:usageNote>
+	</owl:Class>
+	
 	<owl:NamedIndividual rdf:about="&fibo-fnd-dt-fd;Tuesday">
 		<rdf:type rdf:resource="&fibo-fnd-dt-fd;TimeInterval"/>
 		<rdfs:label>Tuesday</rdfs:label>
@@ -786,7 +800,7 @@ The recurrence start date can also be relative to the starting Date of the overa
 	<owl:DatatypeProperty rdf:about="&fibo-fnd-dt-fd;hasTimeValue">
 		<rdfs:label>has time value</rdfs:label>
 		<rdfs:range rdf:resource="&xsd;string"/>
-		<skos:definition>specifies an actual literal (explicit) time, captured in the format specified for xsd:time (i.e., ISO 8601 format), WITHOUT the date or timezone information; the semantics are identical to those of xsd:time, which is not available for use in OWL</skos:definition>
+		<skos:definition>specifies an actual literal (explicit) time, captured in the format specified for xsd:time (i.e., ISO 8601 format), WITHOUT the date or timezone information, but potentially including a time zone offset; the semantics are identical to those of xsd:time, which is not available for use in OWL</skos:definition>
 	</owl:DatatypeProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-dt-fd;isRelativeTo">
