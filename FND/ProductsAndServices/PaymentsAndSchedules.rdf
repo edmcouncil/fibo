@@ -48,8 +48,8 @@
 		<dct:abstract>This ontology defines basic concepts such as payment, payee, payer, and payment schedule, extending the scheduling concepts from the Dates and Times module, among others.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
 		<sm:contentLanguage rdf:datatype="&xsd;anyURI">http://www.w3.org/standards/techs/owl#w3c_all</sm:contentLanguage>
-		<sm:copyright>Copyright (c) 2013-2019 EDM Council, Inc.</sm:copyright>
-		<sm:copyright>Copyright (c) 2013-2019 Object Management Group, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2013-2020 EDM Council, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2013-2020 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Agreements/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/</sm:dependsOn>
@@ -80,6 +80,7 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20150801/ProductsAndServices/PaymentsAndSchedules.rdf version of this ontology was modified per the issue resolutions identified in the FIBO FND 1.1 RTF report to replace MoneyAmount with MonetaryAmount.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20160201/ProductsAndServices/PaymentsAndSchedules.rdf version of this ontology was modified per the FIBO 2.0 RFC to make hasPaymentAmount a child of hasMonetaryAmount and move hasObligation and isObligationOf to Agreements.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20181001/ProductsAndServices/PaymentsAndSchedules.rdf version of this ontology was modified to eliminate deprecated elements.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20190901/ProductsAndServices/PaymentsAndSchedules.rdf version of this ontology was modified to revise payments to better support loan requirements.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -115,34 +116,16 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-pas-psch;Payment">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-oc;Occurrence"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-fd;AdHocScheduleEntry"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-psch;PaymentObligation"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-pas-psch;hasPaymentAmount"/>
-				<owl:allValuesFrom rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-pas-psch;fulfillsObligation"/>
-				<owl:onClass rdf:resource="&fibo-fnd-pas-psch;PaymentObligation"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-pty-pty;hasPartyInRole"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-pas-psch;Payee"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-pty-pty;hasPartyInRole"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-pas-psch;Payer"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>payment</rdfs:label>
-		<skos:definition>delivery of money in fulfillment of an obligation, such as to satisfy a claim or debt</skos:definition>
+		<skos:definition>delivery of money in fulfillment of an obligation, such as to satisfy a claim or debt, identified as part of a payment schedule</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom>Barron&apos;s Dictionary of Business and Economics Terms, Fifth Edition, 2012</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
 	
