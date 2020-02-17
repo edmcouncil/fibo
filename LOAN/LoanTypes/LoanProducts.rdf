@@ -2,12 +2,11 @@
 <!DOCTYPE rdf:RDF [
 	<!ENTITY dct "http://purl.org/dc/terms/">
 	<!ENTITY fibo-fnd-agr-ctr "https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/">
+	<!ENTITY fibo-fnd-gao-obj "https://spec.edmcouncil.org/fibo/ontology/FND/GoalsAndObjectives/Objectives/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
 	<!ENTITY fibo-loan-ln-ln "https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanCore/">
 	<!ENTITY fibo-loan-loan-col "https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoansCollateral/">
-	<!ENTITY fibo-loan-loan-loan "https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoanBasicTerms/">
 	<!ENTITY fibo-loan-loan-reg "https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoansRegulatory/">
-	<!ENTITY fibo-loan-typ-mtg "https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanTypes/MortgageLoans/">
 	<!ENTITY fibo-loan-typ-prod "https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanTypes/LoanProducts/">
 	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
 	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
@@ -18,12 +17,11 @@
 <rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanTypes/LoanProducts/"
 	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fibo-fnd-agr-ctr="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"
+	xmlns:fibo-fnd-gao-obj="https://spec.edmcouncil.org/fibo/ontology/FND/GoalsAndObjectives/Objectives/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
 	xmlns:fibo-loan-ln-ln="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanCore/"
 	xmlns:fibo-loan-loan-col="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoansCollateral/"
-	xmlns:fibo-loan-loan-loan="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoanBasicTerms/"
 	xmlns:fibo-loan-loan-reg="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoansRegulatory/"
-	xmlns:fibo-loan-typ-mtg="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanTypes/MortgageLoans/"
 	xmlns:fibo-loan-typ-prod="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanTypes/LoanProducts/"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -37,10 +35,9 @@
 		Note that considerable work has been done on products to support a separate loan product concept in the HMDA-derived Loan Contracts module, so this work now needs integrating with that or deprecating</dct:abstract>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/CreditFacilities/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/GoalsAndObjectives/Objectives/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanCore/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanTypes/MortgageLoans/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoanBasicTerms/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoansCollateral/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoansRegulatory/"/>
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanTypes/LoanProducts/"/>
@@ -52,7 +49,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/isEmbodiedIn"/>
-				<owl:someValuesFrom rdf:resource="&fibo-loan-ln-ln;LoanContract"/>
+				<owl:someValuesFrom rdf:resource="&fibo-loan-ln-ln;Loan"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -64,7 +61,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-loan-typ-prod;isTemplateFor"/>
-				<owl:someValuesFrom rdf:resource="&fibo-loan-ln-ln;LoanContract"/>
+				<owl:someValuesFrom rdf:resource="&fibo-loan-ln-ln;Loan"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -75,10 +72,41 @@
 		</rdfs:subClassOf>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-loan-typ-prod;AutoLoanPurpose">
+		<rdfs:subClassOf rdf:resource="&fibo-loan-typ-prod;LoanPurpose"/>
+		<rdfs:label xml:lang="en">auto loan purpose</rdfs:label>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-loan-typ-prod;BridgingLoanPurpose">
+		<rdfs:subClassOf rdf:resource="&fibo-loan-typ-prod;LoanPurpose"/>
+		<rdfs:label xml:lang="en">bridging loan purpose</rdfs:label>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-loan-typ-prod;ConstructionLoanPurpose">
+		<rdfs:subClassOf rdf:resource="&fibo-loan-typ-prod;LoanPurpose"/>
+		<rdfs:label xml:lang="en">construction loan purpose</rdfs:label>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-loan-typ-prod;CreditCardReceivablePurpose">
+		<rdfs:subClassOf rdf:resource="&fibo-loan-typ-prod;LoanPurpose"/>
+		<rdfs:label xml:lang="en">credit card receivable purpose</rdfs:label>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-loan-typ-prod;HomeEquityLoanPurpose">
+		<rdfs:subClassOf rdf:resource="&fibo-loan-typ-prod;LoanPurpose"/>
+		<rdfs:label xml:lang="en">home equity loan purpose</rdfs:label>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-loan-typ-prod;LoanProductDisclosureRight">
 		<rdfs:subClassOf rdf:resource="&fibo-loan-loan-reg;ProductDisclosureRight"/>
 		<rdfs:label xml:lang="en">loan product disclosure right</rdfs:label>
 		<skos:definition xml:lang="en">Right to fair representation of the facts about Loan products before entrering into agreements for same.</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-loan-typ-prod;LoanPurpose">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-gao-obj;Objective"/>
+		<rdfs:label xml:lang="en">loan purpose</rdfs:label>
+		<skos:definition xml:lang="en">A selection of different types of loan purpose, being the purpose for which and manner in which loan (credit) draw-down amounts are to be used. This shows the purpose for which credit is to be used, and implies certain kinds of fact that relate to that specific type of loan e.g. mortgages. These are also identified as tranche types in tranches of a credit facility.</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-typ-prod;MortgageProduct">
@@ -102,6 +130,36 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">mortgage product</rdfs:label>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-loan-typ-prod;MotorhomeLoanPurpose">
+		<rdfs:subClassOf rdf:resource="&fibo-loan-typ-prod;LoanPurpose"/>
+		<rdfs:label xml:lang="en">motorhome loan purpose</rdfs:label>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-loan-typ-prod;OrdinaryLoanPurpose">
+		<rdfs:subClassOf rdf:resource="&fibo-loan-typ-prod;LoanPurpose"/>
+		<rdfs:label xml:lang="en">ordinary loan purpose</rdfs:label>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-loan-typ-prod;OverdraftFacilityPurpose">
+		<rdfs:subClassOf rdf:resource="&fibo-loan-typ-prod;LoanPurpose"/>
+		<rdfs:label xml:lang="en">overdraft facility purpose</rdfs:label>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-loan-typ-prod;ResidentialHouseboatLoanPurpose">
+		<rdfs:subClassOf rdf:resource="&fibo-loan-typ-prod;LoanPurpose"/>
+		<rdfs:label xml:lang="en">residential houseboat loan purpose</rdfs:label>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-loan-typ-prod;StudentLoanPurpose">
+		<rdfs:subClassOf rdf:resource="&fibo-loan-typ-prod;LoanPurpose"/>
+		<rdfs:label xml:lang="en">student loan purpose</rdfs:label>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-loan-typ-prod;WorkingCapitalPurpose">
+		<rdfs:subClassOf rdf:resource="&fibo-loan-typ-prod;LoanPurpose"/>
+		<rdfs:label xml:lang="en">working capital purpose</rdfs:label>
 	</owl:Class>
 	
 	<owl:ObjectProperty rdf:about="&fibo-loan-typ-prod;hasPreconditions">
