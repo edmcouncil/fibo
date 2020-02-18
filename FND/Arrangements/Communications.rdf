@@ -61,12 +61,25 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-com;Request"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-arr-com;hasApplicationDate"/>
+				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-dt-fd;hasDateReceived"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;Date"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-pty-pty;hasPartyInRole"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-arr-com;Applicant"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>application</rdfs:label>
-		<skos:definition>a request submitted by an applicant to receive something (e.g. a licence, a loan, a membership) accompanied by documentation of pertinent information to determine whether the request should be granted</skos:definition>
+		<skos:definition>request submitted by an applicant to receive something (e.g. a licence, a loan, a membership) accompanied by documentation of pertinent information to determine whether the request should be granted</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-arr-com;Request">
@@ -90,13 +103,19 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>request</rdfs:label>
-		<skos:definition>an occurrence whereby an agent asks another agent for something or to do something</skos:definition>
+		<skos:definition>occurrence whereby an agent asks another agent for something or to do something</skos:definition>
 	</owl:Class>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-arr-com;hasApplicationDate">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasExplicitDate"/>
+		<rdfs:label xml:lang="en">has application date</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
+		<skos:definition xml:lang="en">date on which an an application was completed and submitted</skos:definition>
+	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-arr-com;isRequestFor">
 		<rdfs:label>is request for</rdfs:label>
 		<skos:definition>relates a request to that which is being requested, e.g. a report</skos:definition>
-		<skos:editorialNote>Future consideration: move this property to somewhere in FND.</skos:editorialNote>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-arr-com;isResponseTo">
@@ -104,19 +123,18 @@
 		<rdfs:domain rdf:resource="&fibo-fnd-dt-oc;Occurrence"/>
 		<rdfs:range rdf:resource="&fibo-fnd-dt-oc;Occurrence"/>
 		<skos:definition>relates an occurrence to another occurrence that it is a response to, most often in the context of communication</skos:definition>
-		<skos:editorialNote>Future consideration: move this property to somewhere in FND.</skos:editorialNote>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-arr-com;isSentFrom">
-		<rdfs:label>is from</rdfs:label>
-		<skos:definition>relates e.g. a communication to its source or origin (e.g. the agent originating a request)</skos:definition>
-		<skos:editorialNote>Future consideration: move this property to the Relations ontology (fibo-fnd-rel-rel).</skos:editorialNote>
+		<rdfs:label>is sent from</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fnd-aap-agt;AutonomousAgent"/>
+		<skos:definition>relates something, e.g. a communication to its source or origin to the agent that sent it</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-arr-com;isSentTo">
-		<rdfs:label>is to</rdfs:label>
-		<skos:definition>relates e.g. a communication to a target or destination (e.g. the agent receiving a request)</skos:definition>
-		<skos:editorialNote>Future consideration: move this property to the Relations ontology (fibo-fnd-rel-rel).</skos:editorialNote>
+		<rdfs:label>is sent to</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fnd-aap-agt;AutonomousAgent"/>
+		<skos:definition>relates something, e.g. a communication to a target or destination (e.g. the agent receiving a request) to the agent that is its intended recipient</skos:definition>
 	</owl:ObjectProperty>
 
 </rdf:RDF>

@@ -11,7 +11,6 @@
 	<!ENTITY fibo-loan-loan-loan "https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoanBasicTerms/">
 	<!ENTITY fibo-loan-loan-pty "https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoansParties/">
 	<!ENTITY fibo-loan-tem-app "https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansTemporal/LoanApplicationsTemporal/">
-	<!ENTITY fibo-loan-tem-apr "https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansTemporal/LoansAppraisal/">
 	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
 	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
 	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
@@ -30,7 +29,6 @@
 	xmlns:fibo-loan-loan-loan="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoanBasicTerms/"
 	xmlns:fibo-loan-loan-pty="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoansParties/"
 	xmlns:fibo-loan-tem-app="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansTemporal/LoanApplicationsTemporal/"
-	xmlns:fibo-loan-tem-apr="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansTemporal/LoansAppraisal/"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
@@ -50,10 +48,35 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoanBasicTerms/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoansGuaranties/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansTemporal/LoanApplicationsTemporal/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansTemporal/LoansAppraisal/"/>
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoansParties/"/>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Provisional"/>
 	</owl:Ontology>
+	
+	<owl:Class rdf:about="&fibo-fbc-dae-dbt;Borrower">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;Counterparty"/>
+		<rdfs:subClassOf rdf:resource="&fibo-loan-loan-loan;LoanParty"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasIdentity"/>
+				<owl:someValuesFrom rdf:resource="&fibo-be-le-lp;LegalPerson"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-loan-loan-loan;accepts"/>
+				<owl:someValuesFrom rdf:resource="&fibo-loan-ln-ln;CommitmentToRepay"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-loan-loan-loan;borrows"/>
+				<owl:someValuesFrom rdf:resource="&fibo-loan-loan-loan;LoanDrawdown"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">loan borrower</rdfs:label>
+		<skos:definition xml:lang="en">The Borrower of the Loan. This is the party which draws down the offered credit in the form of a loan under conditions agreed in the Loan Contract to which the Borrower is party.</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">The Party &quot;Loan Borrower&quot; is both party to the Loan as the party which borrows and owes the money, and party to the Loan Contract which sets out the agreed conditions between the Borrower and the Lender for the loan and for the repayment thereof.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-loan-pty;AVMProvider">
 		<rdfs:subClassOf rdf:resource="&fibo-loan-loan-pty;LoanThirdParty"/>
@@ -69,30 +92,12 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-loan-pty;Cosigner">
-		<rdfs:subClassOf rdf:resource="&fibo-loan-loan-pty;LoanBorrower"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;Borrower"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-loan-loan-pty;borrows.1"/>
-				<owl:onClass rdf:resource="&fibo-loan-ln-ln;LoanContract"/>
+				<owl:onClass rdf:resource="&fibo-loan-ln-ln;Loan"/>
 				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-loan-loan-pty;mayBe"/>
-				<owl:someValuesFrom rdf:resource="&fibo-loan-loan-gty;LoanGuarantor"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-loan-tem-app;hasAssessmentInformation"/>
-				<owl:someValuesFrom rdf:resource="&fibo-loan-tem-app;LoanApplicationBorrowerAssessmentInformation"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-loan-tem-apr;mayBecome"/>
-				<owl:someValuesFrom rdf:resource="&fibo-loan-loan-pty;LoanBorrower"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">cosigner</rdfs:label>
@@ -101,37 +106,10 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-loan-pty;JointBorrower">
-		<rdfs:subClassOf rdf:resource="&fibo-loan-loan-pty;LoanBorrower"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;Borrower"/>
 		<rdfs:label xml:lang="en">joint borrower</rdfs:label>
 		<skos:definition xml:lang="en">Any additional borrower(s) whose name(s) appear on loan documents and whose income and credit history are used to qualify for the loan. Under this arrangement, all parties involved have an obligation to repay the loan. For mortgages, the names of applicable joint borrowers also appear on the property&apos;s title.</skos:definition>
 		<skos:editorialNote xml:lang="en">Definition sourced in SME Review by Steve Smith. Quiting from a source, http://www.investopedia.com/terms/c/co_borrowers.asp</skos:editorialNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-loan-loan-pty;LoanBorrower">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;Borrower"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;Counterparty"/>
-		<rdfs:subClassOf rdf:resource="&fibo-loan-loan-loan;LoanParty"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-loan-loan-loan;accepts"/>
-				<owl:allValuesFrom rdf:resource="&fibo-loan-loan-loan;LoanBorrowerCommitment"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-loan-loan-loan;borrows"/>
-				<owl:someValuesFrom rdf:resource="&fibo-loan-loan-loan;LoanDrawdown"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-loan-loan-pty;identity"/>
-				<owl:someValuesFrom rdf:resource="&fibo-be-le-lp;LegalPerson"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">loan borrower</rdfs:label>
-		<skos:definition xml:lang="en">The Borrower of the Loan. This is the party which draws down the offered credit in the form of a loan under conditions agreed in the Loan Contract to which the Borrower is party.</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">The Party &quot;Loan Borrower&quot; is both party to the Loan as the party which borrows and owes the money, and party to the Loan Contract which sets out the agreed conditions between the Borrower and the Lender for the loan and for the repayment thereof.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-loan-pty;LoanLender">
@@ -141,7 +119,7 @@
 		<rdfs:label xml:lang="en">loan lender</rdfs:label>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-loan-loan-pty;LoanServicer.1">
+	<owl:Class rdf:about="&fibo-loan-loan-pty;LoanServicer">
 		<rdfs:subClassOf rdf:resource="&fibo-loan-loan-pty;LoanThirdParty"/>
 		<rdfs:label xml:lang="en">loan servicer</rdfs:label>
 		<skos:definition xml:lang="en">The party which is the Loan Servicer. Further notes: The Loan Servicer may be the original lender or it may be someone else. For instance, if the bank is sold by Bank A, it may be given to some third party for servicing. Servicing is either done by the original lender or by someone else. Idea: Look at a data model from one of the main agencies. See Fannie Mae enterprise common data model. In progress. More precise definition needed for what it is to service a loan, i.e. what activities this party participates in and what facts apply. Some of these are defined in the facts which are emerging from these reviews. There seem to be several functions which may or may not be combined.</skos:definition>
@@ -156,49 +134,35 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-loan-pty;PrimaryBorrower">
-		<rdfs:subClassOf rdf:resource="&fibo-loan-loan-pty;LoanBorrower"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;Borrower"/>
 		<rdfs:label xml:lang="en">primary borrower</rdfs:label>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-loan-pty;SecondaryBorrower">
-		<rdfs:subClassOf rdf:resource="&fibo-loan-loan-pty;LoanBorrower"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;Borrower"/>
 		<rdfs:label xml:lang="en">secondary borrower</rdfs:label>
 	</owl:Class>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-loan-loan-pty;assessmentDate">
 		<rdfs:label xml:lang="en">assessment date</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-loan-pty;LoanBorrower"/>
+		<rdfs:domain rdf:resource="&fibo-fbc-dae-dbt;Borrower"/>
 	</owl:DatatypeProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-loan-loan-pty;borrows.1">
 		<rdfs:label xml:lang="en">borrows</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-loan-loan-pty;Cosigner"/>
-		<rdfs:range rdf:resource="&fibo-loan-ln-ln;LoanContract"/>
+		<rdfs:range rdf:resource="&fibo-loan-ln-ln;Loan"/>
 		<owl:inverseOf rdf:resource="&fibo-loan-loan-pty;hasCoBorower"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-loan-loan-pty;hasCoBorower">
 		<rdfs:label xml:lang="en">has co borower</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-ln-ln;LoanContract"/>
+		<rdfs:domain rdf:resource="&fibo-loan-ln-ln;Loan"/>
 		<rdfs:range rdf:resource="&fibo-loan-loan-pty;Cosigner"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-loan-loan-pty;hasLoanThirdParty">
 		<rdfs:label>has loan third party</rdfs:label>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-loan-loan-pty;identity">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;hasIdentity"/>
-		<rdfs:label xml:lang="en">borrower identity</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-loan-pty;LoanBorrower"/>
-		<rdfs:range rdf:resource="&fibo-be-le-lp;LegalPerson"/>
-		<skos:definition xml:lang="en">The borrower of the loan is a legal entity of some type.</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-loan-loan-pty;mayBe">
-		<rdfs:label xml:lang="en">may be</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-loan-pty;Cosigner"/>
-		<rdfs:range rdf:resource="&fibo-loan-loan-gty;LoanGuarantor"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-loan-loan-pty;originatedBy">

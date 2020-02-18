@@ -86,7 +86,7 @@
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/20200101/DebtAndEquities/Debt/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20180801/DebtAndEquities/Debt/ version of this ontology was added to the FBC domain via the FIBO 2.0 RFC in support of several FIBO debt-oriented initiatives.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20180801/DebtAndEquities/Debt/ version of this ontology was modified to use the generic statistical measures and measurements now in FND.</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20190501/DebtAndEquities/Debt/ version of this ontology was modified to add several common day count conventions used to calculate the amount of accrued interest or the present value when the next coupon payment is less than a full coupon period away.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20190501/DebtAndEquities/Debt/ version of this ontology was modified to add several common day count conventions used to calculate the amount of accrued interest or the present value when the next coupon payment is less than a full coupon period away, and to support collateral agreements such as deeds of trust, UCC filings and the like.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -208,6 +208,8 @@
 							</rdf:Description>
 							<rdf:Description rdf:about="&fibo-fbc-fi-fi;Security">
 							</rdf:Description>
+							<rdf:Description rdf:about="&fibo-fnd-agr-ctr;PromissoryNote">
+							</rdf:Description>
 						</owl:unionOf>
 					</owl:Class>
 				</owl:onClass>
@@ -216,8 +218,43 @@
 		</rdfs:subClassOf>
 		<rdfs:label>collateral</rdfs:label>
 		<rdfs:isDefinedBy rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"/>
-		<skos:definition>an asset offered as security, pledged as an inducement to another party, to lend money, extend credit, or provision securities</skos:definition>
+		<skos:definition>asset offered as security, pledged as an inducement to another party, to lend money, extend credit, or provision securities</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom>Barron&apos;s Dictionary of Business and Economics Terms, Fifth Edition, 2012</fibo-fnd-utl-av:adaptedFrom>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-dae-dbt;CollateralAgreement">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;WrittenContract"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;isCollateralizedBy"/>
+				<owl:onClass rdf:resource="&fibo-fbc-dae-dbt;Collateral"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isGovernedBy"/>
+				<owl:onClass>
+					<owl:Class>
+						<owl:unionOf rdf:parseType="Collection">
+							<rdf:Description rdf:about="&fibo-fbc-dae-dbt;CreditAgreement">
+							</rdf:Description>
+							<rdf:Description rdf:about="&fibo-fbc-fi-fi;DebtInstrument">
+							</rdf:Description>
+							<rdf:Description rdf:about="&fibo-fbc-fi-fi;Security">
+							</rdf:Description>
+							<rdf:Description rdf:about="&fibo-fnd-agr-ctr;PromissoryNote">
+							</rdf:Description>
+						</owl:unionOf>
+					</owl:Class>
+				</owl:onClass>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>collateral agreement</rdfs:label>
+		<rdfs:isDefinedBy rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"/>
+		<skos:definition>written contract that specifies terms, over and above those specified in a promissory note, loan, or other debt instrument, under which the collateral must be made available to the lender</skos:definition>
+		<skos:example>Examples include deeds of trust and uniform commercial code (UCC) agreements.</skos:example>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-dae-dbt;CreditAgreement">
