@@ -3,6 +3,12 @@
     <div class="arrow-container" :class="{hidden: !isFolder}" @click="toggle">
       <i :class="{down: isOpen}" />
     </div>
+    <i :class="[
+                'indicator',
+                this.item.maturityLevel.label == 'dev' ? 'devIndicator' : '',
+                this.item.maturityLevel.label == 'prod' ? 'prodIndicator' : '',
+                this.item.maturityLevel.label == 'prodDev' ? 'prodDevIndicator' : '',
+                ]"></i>
     <div class="label" :class="{ selected: isSelected}">
       <customLink class="custom-link" :name="item.label" :query="item.iri" :customLinkOnClick="this.ontologyClicked"></customLink>
     </div>
@@ -113,6 +119,23 @@ export default {
       }
     }
   }
+  .indicator{
+    margin-left: 10px;
+    font-size: 0.75rem;
+    height: 0.9em;
+    width: 0.9em;
+    border-radius: 50%;
+    display: inline-block;
+    &.devIndicator {
+      background: linear-gradient(90deg, #51D355 0%, #F1DF3F 0%);
+    }
+    &.prodIndicator {
+      background: linear-gradient(90deg, #51D355 100%, #F1DF3F 50%);
+    }
+    &.prodDevIndicator {
+      background: linear-gradient(90deg, #51D355 50%, #F1DF3F 50%);
+    }
+  }
   .label {
     display: inline;
     &.selected {
@@ -120,7 +143,7 @@ export default {
     }
 
     .custom-link {
-      margin-left: 10px;
+      margin-left: 6px;
     }
   }
 }
