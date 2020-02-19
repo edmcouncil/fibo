@@ -36,8 +36,8 @@
 		<dct:abstract>This ontology defines the high level concept of formal organization for use in other FIBO ontology elements.  It is purposefully underspecified to facilitate mapping to other formal organization ontologies, such as the emerging W3C formal organization ontology, or others defined for specific business and financial services standards. The concepts in this ontology extend those in the Organizations ontology.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
 		<sm:contentLanguage rdf:datatype="&xsd;anyURI">http://www.w3.org/standards/techs/owl#w3c_all</sm:contentLanguage>
-		<sm:copyright>Copyright (c) 2013-2018 EDM Council, Inc.</sm:copyright>
-		<sm:copyright>Copyright (c) 2013-2018 Object Management Group, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2013-2020 EDM Council, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2013-2020 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/AgentsAndPeople/Agents/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Arrangements/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/Organizations/Organizations/</sm:dependsOn>
@@ -61,16 +61,23 @@
    (3) to change the file suffix from .owl to .rdf to increase usability in RDF tools
    (4) to use 4-level abbreviations and corresponding namespace prefixes for all FIBO ontologies, reflecting a family/specification/module/ontology structure
    (5) to incorporate changes to the specification metadata to support documentation at the family, specification, module, and ontology level, similar to the abbreviations.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20180801/Organizations/FormalOrganizations.rdf version of this ontology was revised to loosen the constraints on the range of isDomiciledIn, allow for multiple values, and update remaining definitions to be ISO 704 compliant.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
 	<owl:Class rdf:about="&fibo-fnd-org-fm;FormalOrganization">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-org-org;Organization"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-org-fm;isDomiciledIn"/>
+				<owl:someValuesFrom rdf:resource="&lcc-cr;GeopoliticalEntity"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label>formal organization</rdfs:label>
 		<owl:disjointWith rdf:resource="&fibo-fnd-org-fm;InformalOrganization"/>
-		<skos:definition>An Organization that is recognized in some legal jurisdiction, with associated rights and responsibilities. Examples include a Corporation, Charity, Government or Church.</skos:definition>
-		<skos:editorialNote>W3C Definition - An Organization which is recognized in the world at large, in particular in legal jurisdictions, with associated rights and responsibilities. Examples include a Corporation, Charity, Government or Church.</skos:editorialNote>
-		<fibo-fnd-utl-av:adaptedFrom>W3C Organization Ontology</fibo-fnd-utl-av:adaptedFrom>
+		<skos:definition>organization that is recognized in some legal jurisdiction, with associated rights and responsibilities</skos:definition>
+		<skos:example>Examples include a corporation, charity, government or church.</skos:example>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.w3.org/TR/vocab-org/#class-formalorganization</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-org-fm;Group">
@@ -82,21 +89,21 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>group</rdfs:label>
-		<skos:definition>a collection of autonomous entities</skos:definition>
+		<skos:definition>collection of agents (people, organizations, software agents, etc.) that are considered as a unit</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-org-fm;InformalOrganization">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-org-org;Organization"/>
 		<rdfs:label>informal organization</rdfs:label>
-		<skos:definition>An organization which is not formally constituted in some way.</skos:definition>
+		<skos:definition>organization that is not formally constituted in some way</skos:definition>
 	</owl:Class>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-org-fm;isDomiciledIn">
 		<rdfs:label>is domiciled in</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fnd-org-fm;FormalOrganization"/>
-		<rdfs:range rdf:resource="&lcc-cr;Country"/>
-		<skos:definition>the country in which the formal organization is officially domiciled</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote>This would normally be the country corresponding to the jurisdiction in which the formal organization is constituted or incorporated. For some primarily federal countries, the domicile is the country that makes up the federation while the jurisdiction under which the entity is registered (if it is a registered entity) would be that of some state in that federation.</fibo-fnd-utl-av:explanatoryNote>
+		<rdfs:range rdf:resource="&lcc-cr;GeopoliticalEntity"/>
+		<skos:definition>indicates a primary location where an entity conducts business, such as where its headquarters is located</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Corporate domicile refers to a place where a company&apos;s affairs are discharged. It is also typically the legal home of a corporation because the place is considered by law as the centre of corporate affairs. In cases where a business has incorporated in one location for convenience, such as for taxation, legal, or regulatory purposes, but operates primarily in one or more other locations, domicile in FIBO refers to the operational location(s) rather than legal location.  Many companies in the US have incorporated in the State of Delaware, for example, but do not have operational facilities in Delaware (or only have small offices there).</fibo-fnd-utl-av:explanatoryNote>
 	</owl:ObjectProperty>
 
 </rdf:RDF>
