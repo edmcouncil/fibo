@@ -96,12 +96,6 @@
         <div v-else>
           <div class="row" v-if="data">
             <div class="col-12">
-              
-              <div class="alert alert-primary alert-maturity" role="alert" v-if="data.maturityLevel.label != 'release' && data.maturityLevel.label != ''">
-                This resource has maturity level <strong>{{this.data.maturityLevel.label}}</strong>. Read more about
-                <customLink class="custom-link" :name="this.data.maturityLevel.label" :query="data.maturityLevel.iri" :customLinkOnClick="this.ontologyClicked"></customLink>.
-              </div>
-              
               <div class="card">
                 <div class="card-body">
                   <h5 class="card-title">{{data.label.toUpperCase()}}</h5>
@@ -552,9 +546,6 @@ export default {
 h5,
 h6 {
   padding-top: 10px;
-}
-.alert-maturity{
-  margin: 20px;
 }
 .card {
   margin: 20px;
