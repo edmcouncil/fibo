@@ -1,4 +1,5 @@
 <template>
+  <!-- eslint-disable max-len -->
   <div class="container-fluid">
     <div class="row">
       <div class="col-2 col-xxxl-3 d-none d-xxl-block">
@@ -63,7 +64,7 @@
             </div>
           </div>
         </div>
-        
+
         <div class="searchResults" v-if="searchBox.selectedData && searchBox.selectedData.isSearch">
           <h5 style="padding-top: 0px; margin-bottom: 20px;">Search results for "{{searchBox.selectedData.iri}}":</h5>
           <div v-if="searchBox.searchResults && searchBox.searchResults.length">
@@ -117,12 +118,12 @@
         <div v-else>
           <div class="row" v-if="data">
             <div class="col-12">
-              
+
               <div class="alert alert-primary alert-maturity" role="alert" v-if="data.maturityLevel.label != 'release' && data.maturityLevel.label != ''">
                 This resource has maturity level <strong>{{this.data.maturityLevel.label}}</strong>. Read more about
                 <customLink class="custom-link" :name="this.data.maturityLevel.label" :query="data.maturityLevel.iri" :customLinkOnClick="this.ontologyClicked"></customLink>.
               </div>
-              
+
               <div class="card">
                 <div class="card-body">
                   <h5 class="card-title">{{data.label.toUpperCase()}}</h5>
@@ -225,7 +226,7 @@
                     Top-level directories are called <i>domains</i>; beneath that may be one or two levels of <i>sub-domain</i>
                     and then <i>modules</i> and dozens of <i>ontologies</i> at the bottom level:
                   </p>
-                  
+
                   <ul>
                     <li>
                       FIBO domain
@@ -250,11 +251,11 @@
                   <p>
                     On the left-hand side, there is a list of eleven FIBO Domains staring with the Business Entities at the top and ending with Securities at the bottom.
                   </p>
-                  
+
                   <p class="text">
                     2) Each FIBO ontology has one of <strong>three levels of maturity</strong>.
                   </p>
-                  
+
                   <p class="">
                     <strong>Release</strong>
                   </p>
@@ -263,7 +264,7 @@
                       Release ontologies have undergone unit and integration testing, and have passed the most rigorous tests for completeness, consistency, and correctness.
                     </li>
                   </ul>
-                  
+
                   <p class="">
                     <strong>Provisional</strong>
                   </p>
@@ -272,7 +273,7 @@
                       Provisional ontologies were developed in the early days of FIBO but have not been vetted or tested to the level of Release.
                     </li>
                   </ul>
-                  
+
                   <p class="">
                     <strong>Informative</strong>
                   </p>
@@ -284,7 +285,7 @@
                       to determine the detailed meaning of the things that reference them.
                     </li>
                   </ul>
-                  
+
                   <p class="text">
                     One can see the maturity level for each FIBO ontology, see e.g.
                     <a href="https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/FunctionalEntities/">https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/FunctionalEntities/</a>
@@ -298,7 +299,7 @@
 
       </div>
       <div class="col-2 col-xxxl-3 d-none d-xxl-block">
-        
+
         <div class="multiselect-xxl-container">
           <multiselect v-model="searchBox.selectedData"
                       id="ajax2"
@@ -338,24 +339,22 @@
 
 <script>
 import { mapState } from 'vuex';
-import { getOntology, getModules, getHint } from '../api/ontology';
 import Multiselect from 'vue-multiselect';
 import Paginate from 'vuejs-paginate';
+import { getOntology, getModules, getHint } from '../api/ontology';
 
 export default {
   components: {
     AXIOM: () => import(/* webpackChunkName: "AXIOM" */ '../components/chunks/AXIOM'),
     STRING: () => import(/* webpackChunkName: "STRING" */ '../components/chunks/STRING'),
-    DIRECT_SUBCLASSES: () => import(
-      /* webpackChunkName: "DIRECT_SUBCLASSES" */ '../components/chunks/DIRECT_SUBCLASSES'
-    ),
+    DIRECT_SUBCLASSES: () => import(/* webpackChunkName: "DIRECT_SUBCLASSES" */ '../components/chunks/DIRECT_SUBCLASSES'),
     MODULES: () => import(/* webpackChunkName: "MODULES" */ '../components/chunks/MODULES'),
     IRI: () => import(/* webpackChunkName: "IRI" */ '../components/chunks/IRI'),
     INSTANCES: () => import(/* webpackChunkName: "INSTANCES" */ '../components/chunks/INSTANCES'),
     ANY_URI: () => import(/* webpackChunkName: "ANY_URI" */ '../components/chunks/ANY_URI'),
     VisNetwork: () => import(/* webpackChunkName: "ANY_URI" */ '../components/VisNetwork'),
     Multiselect,
-    Paginate
+    Paginate,
   },
   props: ['ontology'],
   data() {
@@ -373,17 +372,17 @@ export default {
         isLoading: false,
         searchResults: null,
         maxPage: null, // contains number of pages in searchResults. This prop. is handler for pagination
-        lastSearchBQuery: null // contains last searchBQuery used. This prop. is handler for pagination
+        lastSearchBQuery: null, // contains last searchBQuery used. This prop. is handler for pagination
       },
-      scrollToOntologyViewerTopOfContainer: function(){
-        var element = document.getElementById('ontologyViewerTopOfContainer');
+      scrollToOntologyViewerTopOfContainer() {
+        const element = document.getElementById('ontologyViewerTopOfContainer');
 
-        var rect = element.getBoundingClientRect(),
-        scrollTop = rect.top + (window.pageYOffset || document.documentElement.scrollTop);
+        const rect = element.getBoundingClientRect();
+        const scrollTop = rect.top + (window.pageYOffset || document.documentElement.scrollTop);
 
         window.scrollTo(0, scrollTop);
         this.$root.ontologyRouteIsUpdating = false;
-      }
+      },
     };
   },
   mounted() {
@@ -427,8 +426,8 @@ export default {
         try {
           const result = await getOntology(query, this.ontologyServer);
           const body = await result.json();
-          if(body.type != "details"){
-            console.error("body.type: " + body.type + ", expected: details");
+          if (body.type !== 'details') {
+            console.error(`body.type: ${body.type}, expected: details`);
           }
           this.data = body.result;
           this.error = false;
@@ -449,32 +448,32 @@ export default {
         this.error = true;
       }
     },
-    
-    //vue-multiselect
-    searchBox_limitText (count) {
-      return `and ${count} other results`
+
+    // vue-multiselect
+    searchBox_limitText(count) {
+      return `and ${count} other results`;
     },
-    searchBox_optionSelected(selectedOption, id){
-      var destRoute = selectedOption.iri;
-      if(destRoute.startsWith('https://spec.edmcouncil.org/fibo')){
-        //internal ontology
+    searchBox_optionSelected(selectedOption /* , id */) {
+      let destRoute = selectedOption.iri;
+      if (destRoute.startsWith('https://spec.edmcouncil.org/fibo')) {
+        // internal ontology
         destRoute = destRoute.replace('https://spec.edmcouncil.org/fibo', '');
         this.$router.push(destRoute);
-      }else{
-        //external ontology
-        this.$router.push({ path: '/ontology', query: { query: encodeURI(destRoute) }})
+      } else {
+        // external ontology
+        this.$router.push({ path: '/ontology', query: { query: encodeURI(destRoute) } });
       }
       this.scrollToOntologyViewerTopOfContainer();
     },
-    async searchBox_addTag (newTag) {
-      this.$router.push({ path: '/ontology', query: { searchBoxQuery: encodeURI(newTag) }});
+    async searchBox_addTag(newTag) {
+      this.$router.push({ path: '/ontology', query: { searchBoxQuery: encodeURI(newTag) } });
     },
-    async handleSearchBoxQuery(searchBQuery, pageIndex = null){
+    async handleSearchBoxQuery(searchBQuery, pageIndex = null) {
       try {
-        const result = await getOntology(searchBQuery, this.ontologyServer + (pageIndex != null ? "/page/" + pageIndex : "" ));
+        const result = await getOntology(searchBQuery, this.ontologyServer + (pageIndex != null ? `/page/${pageIndex}` : ''));
         const body = await result.json();
-        if(body.type != "list"){
-          console.error("body.type: " + body.type + ", expected: list");
+        if (body.type !== 'list') {
+          console.error(`body.type: ${body.type}, expected: list`);
         }
         this.searchBox.searchResults = body.result;
         this.searchBox.maxPage = body.maxPage;
@@ -489,23 +488,24 @@ export default {
         isSearch: true,
         iri: searchBQuery,
         label: searchBQuery,
-        labelForInternalSearch: searchBQuery
+        labelForInternalSearch: searchBQuery,
       };
       this.searchBox.selectedData = tag;
     },
-    async searchBox_asyncFind (query) {
-      if(query.trim().length == 0){
+    async searchBox_asyncFind(query) {
+      if (query.trim().length === 0) {
         this.searchBox.data = [];
         return;
       }
 
-      this.searchBox.isLoading = true
+      this.searchBox.isLoading = true;
       try {
         const result = await getHint(query, '/hint');
         const hints = await result.json();
-        hints.forEach(el => {
-          el.labelForInternalSearch = el.label + " "; //this is hacky to make it possible to search text (add tag) the same as the label in hint results
-        })
+        hints.forEach((el) => {
+          // eslint-disable-next-line no-param-reassign
+          el.labelForInternalSearch = `${el.label} `; // this is hacky to make it possible to search text (add tag) the same as the label in hint results
+        });
         this.searchBox.data = hints;
         this.error = false;
       } catch (err) {
@@ -514,15 +514,15 @@ export default {
       }
       this.searchBox.isLoading = false;
     },
-    clearAll () {
+    clearAll() {
       this.searchBox.selectedData = null;
     },
-    searchResultClicked(){
+    searchResultClicked() {
       this.$root.ontologyRouteIsUpdating = true;
     },
-    paginateClickCallback(pageIndex){
+    paginateClickCallback(pageIndex) {
       this.handleSearchBoxQuery(this.searchBox.lastSearchBQuery, pageIndex);
-    }
+    },
   },
   computed: {
     ...mapState({
@@ -537,37 +537,39 @@ export default {
   },
   beforeRouteUpdate(to, from, next) {
     this.$root.ontologyRouteIsUpdating = true;
-    if (to != from) {
+    if (to !== from) {
       let queryParam = '';
 
       if (to.query && to.query.query) {
         queryParam = to.query.query || '';
       } else {
-        queryParam = 'https://spec.edmcouncil.org/fibo' + to.path;
+        queryParam = `https://spec.edmcouncil.org/fibo${to.path}`;
       }
       this.query = queryParam;
-      if(this.query == 'https://spec.edmcouncil.org/fibo/ontology'){
+      if (this.query === 'https://spec.edmcouncil.org/fibo/ontology') {
         this.query = '';
         this.data = null;
       }
       this.$nextTick(async function () {
         this.fetchData(this.query);
       });
-    };
+    }
     next();
   },
-  updated(){
-    //scrollTo: ontologyViewerTopOfContainer
-    if(
-      (this.$root.ontologyRouteIsUpdating) ||
-      (this.$route.query.scrollToTop == 'true'))
-    {
-      this.searchBox.selectedData = null; //to hide search results after rerouting on ontology page
+  updated() {
+    // scrollTo: ontologyViewerTopOfContainer
+    if (
+      (this.$root.ontologyRouteIsUpdating)
+      || (this.$route.query.scrollToTop === 'true')
+    ) {
+      this.searchBox.selectedData = null; // to hide search results after rerouting on ontology page
     }
-    this.scrollToOntologyViewerTopOfContainer(); //move it to above IF to scroll only after internal navigaion (not on page load)
-    
+    this.scrollToOntologyViewerTopOfContainer(); // move it to above IF to scroll only after internal navigaion (not on page load)
 
-    if(this.$route.query.searchBoxQuery && (this.$route.query.searchBoxQuery_isExecuted !== true)){
+    if (
+      this.$route.query.searchBoxQuery
+      && (this.$route.query.searchBoxQuery_isExecuted !== true)
+    ) {
       this.handleSearchBoxQuery(decodeURI(this.$route.query.searchBoxQuery));
       this.$route.query.searchBoxQuery_isExecuted = true;
     }
