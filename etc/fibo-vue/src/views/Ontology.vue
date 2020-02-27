@@ -87,6 +87,27 @@
                 <div class="border-bottom"></div>
               </div>
             </div>
+            <div class="row" v-if="this.searchBox.maxPage > 1">
+              <div class="col-12">
+                <div class="text-center">
+                  <paginate
+                    :page-count="this.searchBox.maxPage"
+                    :page-range="3"
+                    :margin-pages="2"
+                    :click-handler="paginateClickCallback"
+                    :prev-text="'«'"
+                    :next-text="'»'"
+                    :container-class="'pagination'"
+                    :page-class="'page-item'"
+                    :page-link-class="'page-link'"
+                    :prev-class="'page-item'"
+                    :prev-link-class="'page-link'"
+                    :next-class="'page-item'"
+                    :next-link-class="'page-link'">
+                  </paginate>
+                </div>
+              </div>
+            </div>
           </div>
           <div v-else>
             <!-- No results -->
@@ -319,6 +340,7 @@
 import { mapState } from 'vuex';
 import { getOntology, getModules, getHint } from '../api/ontology';
 import Multiselect from 'vue-multiselect';
+import Paginate from 'vuejs-paginate';
 
 export default {
   components: {
@@ -333,6 +355,7 @@ export default {
     ANY_URI: () => import(/* webpackChunkName: "ANY_URI" */ '../components/chunks/ANY_URI'),
     VisNetwork: () => import(/* webpackChunkName: "ANY_URI" */ '../components/VisNetwork'),
     Multiselect,
+    Paginate
   },
   props: ['ontology'],
   data() {
@@ -348,7 +371,9 @@ export default {
         selectedData: null,
         data: [],
         isLoading: false,
-        searchResults: null
+        searchResults: null,
+        maxPage: null, // contains number of pages in searchResults. This prop. is handler for pagination
+        lastSearchBQuery: null // contains last searchBQuery used. This prop. is handler for pagination
       },
       scrollToOntologyViewerTopOfContainer: function(){
         var element = document.getElementById('ontologyViewerTopOfContainer');
@@ -444,14 +469,16 @@ export default {
     async searchBox_addTag (newTag) {
       this.$router.push({ path: '/ontology', query: { searchBoxQuery: encodeURI(newTag) }});
     },
-    async handleSearchBoxQuery(searchBQuery){
+    async handleSearchBoxQuery(searchBQuery, pageIndex = null){
       try {
-        const result = await getOntology(searchBQuery, this.ontologyServer);
+        const result = await getOntology(searchBQuery, this.ontologyServer + (pageIndex != null ? "/page/" + pageIndex : "" ));
         const body = await result.json();
         if(body.type != "list"){
           console.error("body.type: " + body.type + ", expected: list");
         }
         this.searchBox.searchResults = body.result;
+        this.searchBox.maxPage = body.maxPage;
+        this.searchBox.lastSearchBQuery = searchBQuery;
         this.error = false;
       } catch (err) {
         console.error(err);
@@ -492,6 +519,9 @@ export default {
     },
     searchResultClicked(){
       this.$root.ontologyRouteIsUpdating = true;
+    },
+    paginateClickCallback(pageIndex){
+      this.handleSearchBoxQuery(this.searchBox.lastSearchBQuery, pageIndex);
     }
   },
   computed: {
@@ -590,7 +620,7 @@ article ul.maturity-levels li:before{
   margin-top: 10px;
 }
 .searchResults{
-  margin: 20px 20px 0px 20px;
+  margin: 20px 20px 20px 20px;
 }
 .searchResults a{
   font-weight: 500;
@@ -629,5 +659,21 @@ article ul.maturity-levels li:before{
 .multiselect__option--highlight:after {
   background: #f3f3f3;
   color: #000;
+}
+.pagination{
+  width: min-content;
+  padding: unset;
+  margin: 20px auto 0px;
+  .page-item {
+    padding-left: 0px;
+    &:before {
+      display: none;
+    }
+  }
+  .page-item.active{
+    .page-link{
+      background-color: #2a83be;
+    }
+  }
 }
 </style>

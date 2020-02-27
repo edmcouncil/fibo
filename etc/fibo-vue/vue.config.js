@@ -16,7 +16,7 @@ module.exports = {
   runtimeCompiler: true,
   devServer: {
     proxy: {
-      '^/search/json$': {
+      '^/search/json': {
         target: 'http://172.30.1.116:9000',
       },
       '^/module/json$': {
