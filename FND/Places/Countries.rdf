@@ -40,12 +40,12 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Places/Locations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Countries/CountryRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20200101/Places/Countries/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20200301/Places/Countries/"/>
 		<skos:changeNote>The http://www.omg.org/spec/EDMC-FIBO/FND/20130801/Places/Countries.rdf version of this ontology was modified per the issue resolutions identified in the FIBO FND 1.0 FTF report and in http://www.omg.org/spec/EDMC-FIBO/FND/1.0/AboutFND-1.0/.</skos:changeNote>
 		<skos:changeNote>The http://www.omg.org/spec/EDMC-FIBO/FND/20141101/Places/Countries.rdf version of this ontology was modified per the FIBO 2.0 RFC to integrate LCC.</skos:changeNote>
 		<skos:changeNote>The http://www.omg.org/spec/EDMC-FIBO/FND/20180801/Places/Countries.rdf version of this ontology was modified to add the hasCoverageArea property as needed for other FIBO domain areas.</skos:changeNote>
 		<skos:changeNote>The http://www.omg.org/spec/EDMC-FIBO/FND/20181101/Places/Countries.rdf version of this ontology was modified to eliminate deprecated elements.</skos:changeNote>
-		<skos:changeNote>The http://www.omg.org/spec/EDMC-FIBO/FND/20190901/Places/Countries.rdf version of this ontology was modified to add the concept of a county and of a parcel, and revise definitions to make them ISO 704 compliant.</skos:changeNote>
+		<skos:changeNote>The http://www.omg.org/spec/EDMC-FIBO/FND/20190901/Places/Countries.rdf version of this ontology was modified to add the concept of a county and of a parcel, revise definitions to make them ISO 704 compliant, and add a number of properties to simplify address representation.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -102,11 +102,56 @@
 		<skos:definition>community in which people live or have lived, without being specific as to size, population or importance</skos:definition>
 	</owl:Class>
 	
+	<owl:DatatypeProperty rdf:about="&fibo-fnd-plc-cty;hasCity">
+		<rdfs:label>has city</rdfs:label>
+		<skos:definition>indicates the name of a city</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:usageNote>This property should be used in cases where a formal individual for the business center or municipality is not available.  Note that Geonames could be used as a source in addition to FIBO, however, in cases where an individual is desired.</fibo-fnd-utl-av:usageNote>
+	</owl:DatatypeProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-plc-cty;hasCountry">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-plc-cty;hasRegion"/>
+		<rdfs:label>has country</rdfs:label>
+		<rdfs:range rdf:resource="&lcc-cr;Country"/>
+		<skos:definition>identifies a country</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-plc-cty;hasCounty">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-plc-cty;hasSubdivision"/>
+		<rdfs:label>has county</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fnd-plc-cty;County"/>
+		<skos:definition>indicates a country subdivision providing certain local governmental services</skos:definition>
+	</owl:ObjectProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-plc-cty;hasCoverageArea">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-plc-loc;isLocatedAt"/>
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-plc-cty;hasRegion"/>
 		<rdfs:label>has coverage area</rdfs:label>
 		<rdfs:range rdf:resource="&lcc-cr;GeographicRegion"/>
 		<skos:definition>indicates a geographic region in which some service is provided, or to which some policy applies, or in which something is available</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-plc-cty;hasMunicipality">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-plc-cty;hasRegion"/>
+		<rdfs:label>has municipality</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fnd-plc-cty;Municipality"/>
+		<skos:definition>indicates a business center, city, or municipality</skos:definition>
+		<fibo-fnd-utl-av:usageNote>Note that certain greater metropolitan areas span multiple counties or states (e.g., the greater Washington, D.C. area, which includes parts of Maryland and Virginia, and divided/disputed cities such as Jerusalem), thus hasMunicipality is a subproperty of hasRegion rather than hasSubdivision.</fibo-fnd-utl-av:usageNote>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-plc-cty;hasRegion">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-plc-loc;isLocatedAt"/>
+		<rdfs:label>has region</rdfs:label>
+		<rdfs:range rdf:resource="&lcc-cr;GeographicRegion"/>
+		<skos:definition>indicates a demarcated area on the surface of the Earth</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-plc-cty;hasSubdivision">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-plc-cty;hasRegion"/>
+		<rdfs:label>has subdivision</rdfs:label>
+		<rdfs:range rdf:resource="&lcc-cr;CountrySubdivision"/>
+		<skos:definition>identifies a country subdivision (state, province, region, etc.)</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
 	</owl:ObjectProperty>
 
 </rdf:RDF>
