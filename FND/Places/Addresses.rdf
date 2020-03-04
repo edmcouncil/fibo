@@ -188,19 +188,6 @@
 		<skos:example>In the United States, these include N, S, E, W, NE, NW, SE, SW.</skos:example>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-fnd-plc-adr;InternationalAddress">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-plc-adr;PhysicalAddress"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-plc-cty;hasCountry"/>
-				<owl:onClass rdf:resource="&lcc-cr;Country"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>international address</rdfs:label>
-		<skos:definition>physical address that explicitly includes the country</skos:definition>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-fnd-plc-adr;PhysicalAddress">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-plc-adr;Address"/>
 		<rdfs:subClassOf>
@@ -234,13 +221,6 @@
 					</owl:Restriction>
 				</owl:unionOf>
 			</owl:Class>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isDefinedIn"/>
-				<owl:onClass rdf:resource="&fibo-fnd-plc-adr;PhysicalAddressingScheme"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
-			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
@@ -518,6 +498,20 @@
 		<fibo-fnd-utl-av:explanatoryNote>The suffix may provide some insight into the size or length of the street, though not necessarily consistently. In some cities, the suffix differentiates the street from another in the same context, such as 19th Street vs. 19th Avenue in San Francisco.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-fnd-plc-adr;StructureOrComplexName">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-plc-adr;AddressComponent"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&lcc-lr;hasTag"/>
+				<owl:onDataRange rdf:resource="&xsd;string"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>structure or complex name</rdfs:label>
+		<skos:definition>identifier for a building, house, office complex, shopping center, or other structure</skos:definition>
+		<skos:example>Examples include &apos;McCoy Center&apos;, which is the name of the office complex where JPMorgan Chase&apos;s Polaris facility is located, &apos;Apple Park&apos;, which is the name of the corporate headquarters of Apple, Inc., and &apos;Howells Bridge Cottage&apos;, which is the name of a very old cottage in Cornwall.</skos:example>
+	</owl:Class>
+	
 	<owl:NamedIndividual rdf:about="&fibo-fnd-plc-adr;Suite">
 		<rdf:type rdf:resource="&fibo-fnd-plc-adr;SecondaryUnitDesignator"/>
 		<rdfs:label>suite</rdfs:label>
@@ -552,6 +546,7 @@
 		</rdfs:subClassOf>
 		<rdfs:label>supplemental address component</rdfs:label>
 		<skos:definition>address component that provides additional information that is important to ensuring proper delivery of communications</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Supplemental components include post office box information, rural route and highway contract route information, private mailboxes, and so forth, that are not part of a conventional street address.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-plc-adr;SupplementalAddressDesignator">
@@ -697,6 +692,14 @@
 		<rdfs:domain rdf:resource="&fibo-fnd-plc-adr;StreetAddress"/>
 		<rdfs:range rdf:resource="&fibo-fnd-plc-adr;StreetSuffix"/>
 		<skos:definition>specifies an additional qualifier for a street or other delivery location, such as a dwelling located along a waterway</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-plc-adr;hasStructureOrComplexName">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-arr-arr;hasConstituent"/>
+		<rdfs:label>has structure or complex name</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fnd-plc-adr;PhysicalAddress"/>
+		<rdfs:range rdf:resource="&fibo-fnd-plc-adr;StructureOrComplexName"/>
+		<skos:definition>specifies an identifier for a building, house, office complex, shopping center, or other structure</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-plc-adr;hasTransliteratedAddress">
