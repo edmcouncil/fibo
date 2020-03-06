@@ -25,7 +25,7 @@
 	
 	<owl:Ontology rdf:about="https://spec.edmcouncil.org/fibo/ontology/FND/Places/Locations/">
 		<rdfs:label>Locations Ontology</rdfs:label>
-		<dct:abstract>This ontology provides a placeholder for use in mapping geographic location-oriented concepts to the appropriate standards.</dct:abstract>
+		<dct:abstract>This ontology provides a very high level definition of geographic region and geopolitical entity related concepts, including, but not limited to, countries, sub-country regions such as states and provinces, municipalities, etc., extending the Object Management Group (OMG)&apos;s Languages, Countries, and Codes (LCC) ontologies as needed in FIBO. As such, these terms are automatically mapped to the LCC controlled vocabulary representing ISO 3166 country and country subdivision codes, and may be mapped to other de facto standards such as Geonames and the CIA World Factbook.  The concept of a business center, defined herein, maps directly to the FpML concept with the same name, and to the set of business centers and broader municipalities included in ISO 10383, Codes for exchanges and market identification (MIC).</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
 		<sm:contentLanguage rdf:datatype="&xsd;anyURI">http://www.w3.org/standards/techs/owl#w3c_all</sm:contentLanguage>
 		<sm:copyright>Copyright (c) 2013-2020 EDM Council, Inc.</sm:copyright>
@@ -36,18 +36,71 @@
 		<sm:filename>Locations.rdf</sm:filename>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Countries/CountryRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20200101/Places/Locations/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20200301/Places/Locations/"/>
 		<skos:changeNote>The http://www.omg.org/spec/EDMC-FIBO/FND/20130801/Places/Locations.rdf version of this ontology was modified per the issue resolutions identified in the FIBO FND 1.0 FTF report and in http://www.omg.org/spec/EDMC-FIBO/FND/1.0/AboutFND-1.0/.</skos:changeNote>
 		<skos:changeNote>The http://www.omg.org/spec/EDMC-FIBO/FND/20141101/Places/Locations.rdf version of this ontology was modified for the FIBO 2.0 RFC to integrate it with LCC.</skos:changeNote>
 		<skos:changeNote>The https://www.omg.org/spec/EDMC-FIBO/FND/20180801/Places/Locations.rdf version of this ontology was modified eliminate deprecated elements.</skos:changeNote>
-		<skos:changeNote>The https://www.omg.org/spec/EDMC-FIBO/FND/20190901/Places/Locations.rdf version of this ontology was modified to revise definitions to improve them and make them ISO 704 compliant.</skos:changeNote>
+		<skos:changeNote>The https://www.omg.org/spec/EDMC-FIBO/FND/20190901/Places/Locations.rdf version of this ontology was modified to revise definitions to improve them and make them ISO 704 compliant, and merge the concepts that were previously in the countries ontology into this one.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
+	
+	<owl:Class rdf:about="&fibo-fnd-plc-loc;BusinessCenter">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-plc-loc;Municipality"/>
+		<rdfs:label>business center</rdfs:label>
+		<skos:definition>municipality where business is conducted, especially one that is considered a financial center</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>FpML Business Center and related codes, see http://www.fpml.org/coding-scheme/business-center-7-14.xml</fibo-fnd-utl-av:adaptedFrom>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-plc-loc;County">
+		<rdfs:subClassOf rdf:resource="&lcc-cr;CountrySubdivision"/>
+		<rdfs:label xml:lang="en">county</rdfs:label>
+		<skos:definition xml:lang="en">political and administrative division of a country, state or province, providing certain local governmental services</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-plc-loc;FederalCapitalArea">
+		<rdfs:subClassOf rdf:resource="&lcc-cr;GeopoliticalEntity"/>
+		<rdfs:label>federal capital area</rdfs:label>
+		<skos:definition>geopolitical entity that is or includes the municipality or capital city that acts as the seat of the federal government</skos:definition>
+		<skos:scopeNote>This model includes representation of the capital administrative region of those federations for which the capital is situated other than within one of the states or provinces which make up the country as a whole. This is so that addresses and other references which may need to refer to any location within the country may do so. Examples include the District of Columbia in the US, and the Canberra area in Australia. Not all federations have such an area.</skos:scopeNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-plc-loc;FederalState">
+		<rdfs:subClassOf rdf:resource="&lcc-cr;CountrySubdivision"/>
+		<rdfs:label>federal state</rdfs:label>
+		<skos:definition>self-governing geopolitical unit which forms part of a wider geopolitical unit that is recognized as a country</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>This type of entity, variously referred to as a state, province or canton, has a level of self government including its own legal system and court jurisdiction, but cedes a level of autonomy to the federation of which it forms a part.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-plc-loc;Municipality">
+		<rdfs:subClassOf rdf:resource="&lcc-cr;GeopoliticalEntity"/>
+		<rdfs:label>municipality</rdfs:label>
+		<skos:definition>urban administrative division having corporate status and usually powers of self-government or jurisdiction</skos:definition>
+		<skos:example>A municipality can be any political jurisdiction from a sovereign state, such as the Principality of Monaco, or a small village, such as West Hampton Dunes, New York.</skos:example>
+		<skos:scopeNote>The territory over which a municipality has jurisdiction may encompass:
+- only one populated place such as a city, town, or village
+- several of such places (e.g., early jurisdictions in the state of New Jersey (1798-1899) as townships governing several villages, Municipalities of Mexico)
+- only parts of such places, sometimes boroughs of a city such as the 34 municipalities of Santiago, Chile.</skos:scopeNote>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://en.wikipedia.org/wiki/Municipality</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:explanatoryNote>A municipality is a general-purpose administrative subdivision, as opposed to a special-purpose district.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-plc-loc;Parcel">
+		<rdfs:subClassOf rdf:resource="&lcc-cr;GeographicRegion"/>
+		<rdfs:label xml:lang="en">parcel</rdfs:label>
+		<skos:definition xml:lang="en">tract or plot of land</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>A parcel is a defined piece of real estate, usually resulting from the division of a large area of land.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-plc-loc;PhysicalLocation">
 		<rdfs:subClassOf rdf:resource="&lcc-cr;Location"/>
 		<rdfs:label>physical location</rdfs:label>
 		<skos:definition>location in physical space</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-plc-loc;PopulatedPlace">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-plc-loc;PhysicalLocation"/>
+		<rdfs:label>populated place</rdfs:label>
+		<skos:definition>community in which people live or have lived, without being specific as to size, population or importance</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-plc-loc;RealEstate">
@@ -56,6 +109,67 @@
 		<skos:definition>tract or plot of land including any fixed structures on it, as well as the natural resources of the land including uncultivated flora and fauna, farmed crops and livestock, water, and any additional mineral deposits</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote>Although media often refers to the &quot;real estate market&quot; from the perspective of residential living, real estate can be grouped into three broad categories based on its use, namely residential, commercial and industrial. Examples of real estate include undeveloped land, houses, condominiums, townhomes, office buildings, retail store buildings and factories.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-plc-loc;hasBusinessCenter">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-plc-loc;hasMunicipality"/>
+		<rdfs:label>has business center</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fnd-plc-loc;BusinessCenter"/>
+		<skos:definition>identifies a location where business is conducted, and hence the business calendar used to adjust dates</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:DatatypeProperty rdf:about="&fibo-fnd-plc-loc;hasCityName">
+		<rdfs:label>has city</rdfs:label>
+		<skos:definition>indicates the name of a large, permanent, and densely settled place</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://en.wikipedia.org/wiki/City</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:explanatoryNote>Typical working definitions for small-city populations start at around 100,000 people. Common population definitions for an urban area (city or town) range between 1,500 and 50,000 people, with most U.S states using a minimum between 1,500 and 5,000 inhabitants. Some jurisdictions set no such minima.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:usageNote>This property should be used in cases where a formal individual for the business center or municipality is not available.  Note that Geonames could be used as a source in addition to FIBO, however, in cases where an individual is desired.  Use the property fibo-fnd-plc-loc;hasMunicipality in cases where an individual is available.  Also note that with respect to an address, this property may stand in for any village, town, or city of any size.</fibo-fnd-utl-av:usageNote>
+	</owl:DatatypeProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-plc-loc;hasCountry">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-plc-loc;hasRegion"/>
+		<rdfs:label>has country</rdfs:label>
+		<rdfs:range rdf:resource="&lcc-cr;Country"/>
+		<skos:definition>identifies a country</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-plc-loc;hasCounty">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-plc-loc;hasSubdivision"/>
+		<rdfs:label>has county</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fnd-plc-loc;County"/>
+		<skos:definition>indicates a country subdivision providing certain local governmental services</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-plc-loc;hasCoverageArea">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-plc-loc;hasRegion"/>
+		<rdfs:label>has coverage area</rdfs:label>
+		<rdfs:range rdf:resource="&lcc-cr;GeographicRegion"/>
+		<skos:definition>indicates a geographic region in which some service is provided, or to which some policy applies, or in which something is available</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-plc-loc;hasMunicipality">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-plc-loc;hasRegion"/>
+		<rdfs:label>has municipality</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fnd-plc-loc;Municipality"/>
+		<skos:definition>indicates a business center, city, or municipality</skos:definition>
+		<fibo-fnd-utl-av:usageNote>Note that certain greater metropolitan areas span multiple counties or states (e.g., the greater Washington, D.C. area, which includes parts of Maryland and Virginia, and divided/disputed cities such as Jerusalem), thus hasMunicipality is a subproperty of hasRegion rather than hasSubdivision.</fibo-fnd-utl-av:usageNote>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-plc-loc;hasRegion">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-plc-loc;isLocatedAt"/>
+		<rdfs:label>has region</rdfs:label>
+		<rdfs:range rdf:resource="&lcc-cr;GeographicRegion"/>
+		<skos:definition>indicates a demarcated area on the surface of the Earth</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-plc-loc;hasSubdivision">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-plc-loc;hasRegion"/>
+		<rdfs:label>has subdivision</rdfs:label>
+		<rdfs:range rdf:resource="&lcc-cr;CountrySubdivision"/>
+		<skos:definition>identifies a country subdivision (state, province, region, etc.)</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.gleif.org/en/about-lei/common-data-file-format/lei-cdf-format/lei-cdf-format-version-2-1</fibo-fnd-utl-av:adaptedFrom>
+	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-plc-loc;isLocatedAt">
 		<rdfs:label>is located at</rdfs:label>
