@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE rdf:RDF [
 	<!ENTITY dct "http://purl.org/dc/terms/">
+	<!ENTITY fibo-fbc-dae-gty "https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Guaranty/">
+	<!ENTITY fibo-fbc-pas-caa "https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/ClientsAndAccounts/">
 	<!ENTITY fibo-fnd-acc-cur "https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/">
 	<!ENTITY fibo-fnd-agr-ctr "https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
 	<!ENTITY fibo-loan-ln-ln "https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanCore/">
-	<!ENTITY fibo-loan-loan-gty "https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoansGuaranties/">
-	<!ENTITY fibo-loan-loan-pty "https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoansParties/">
 	<!ENTITY fibo-loan-tem-app "https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansTemporal/LoanApplicationsTemporal/">
 	<!ENTITY fibo-loan-typ-mtg "https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanTypes/MortgageLoans/">
 	<!ENTITY fibo-loan-typ-prod "https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanTypes/LoanProducts/">
@@ -20,12 +20,12 @@
 ]>
 <rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanTypes/MortgageLoans/"
 	xmlns:dct="http://purl.org/dc/terms/"
+	xmlns:fibo-fbc-dae-gty="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Guaranty/"
+	xmlns:fibo-fbc-pas-caa="https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/ClientsAndAccounts/"
 	xmlns:fibo-fnd-acc-cur="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"
 	xmlns:fibo-fnd-agr-ctr="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
 	xmlns:fibo-loan-ln-ln="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanCore/"
-	xmlns:fibo-loan-loan-gty="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoansGuaranties/"
-	xmlns:fibo-loan-loan-pty="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoansParties/"
 	xmlns:fibo-loan-tem-app="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansTemporal/LoanApplicationsTemporal/"
 	xmlns:fibo-loan-typ-mtg="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanTypes/MortgageLoans/"
 	xmlns:fibo-loan-typ-prod="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanTypes/LoanProducts/"
@@ -41,28 +41,37 @@
 		<rdfs:label xml:lang="en">MortgageLoans</rdfs:label>
 		<dct:abstract>Loans which have collateral posted as security and where that collateral is real estate, and the real estate which makes up the collateral is purchased with the funds loaned. This ontology covers a range of mortgage concepts and parties, along with catewgories of mortgage loan purpose (remortgage, second home etc.)
 		Note that much of the material in this ontology will also have been covered in the separate Loan Contracts module, and is to be integrated. The terms here are not intended not be specific to US mortgage loans or HMDA reporting but are more general.</dct:abstract>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Guaranty/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/ClientsAndAccounts/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanCore/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanTypes/LoanProducts/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanTypes/SecuredLoans/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoansGuaranties/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoansParties/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansTemporal/LoanApplicationsTemporal/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/MD/TemporalCore/TemporalConcepts/"/>
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanTypes/MortgageLoans/"/>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Provisional"/>
 	</owl:Ontology>
 	
-	<owl:Class rdf:about="&fibo-loan-ln-ln;MortgageLoanContract">
-		<rdfs:subClassOf rdf:resource="&fibo-loan-ln-ln;Loan"/>
+	<owl:Class rdf:about="&fibo-loan-ln-ln;Mortgage">
+		<rdfs:subClassOf rdf:resource="&fibo-loan-typ-sec;CollateralizedSecuredLoan"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;definesTermsFor"/>
-				<owl:someValuesFrom rdf:resource="&fibo-loan-typ-mtg;MortgageLoan"/>
+				<owl:onProperty rdf:resource="&fibo-loan-ln-ln;isServicedBy"/>
+				<owl:onClass rdf:resource="&fibo-loan-ln-ln;Servicer"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-dae-gty;hasGuarantor"/>
+				<owl:onClass rdf:resource="&fibo-loan-typ-mtg;MortgageIndemnityGuarantor"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<skos:editorialNote xml:lang="en">Definition probably incomplete. Mortgage is not only securitized on the real estate but is used to fund the purchase of that real estate. Not sure of the best form of wording.</skos:editorialNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-ln-ln;MortgageLoanPurpose">
@@ -95,16 +104,9 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-typ-mtg;InvestmentHomeLoan">
-		<rdfs:subClassOf rdf:resource="&fibo-loan-typ-mtg;MortgageLoan"/>
+		<rdfs:subClassOf rdf:resource="&fibo-loan-ln-ln;Mortgage"/>
 		<rdfs:label xml:lang="en">investment home loan</rdfs:label>
-		<skos:definition xml:lang="en">A loan for a second or subsequent property which is taken out for investment purposes.</skos:definition>
-		<skos:editorialNote xml:lang="en">[formal definition to come from participants] The purpose for this is prospecitve income rather than personal use</skos:editorialNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-loan-typ-mtg;InvestmentHomeLoanContract">
-		<rdfs:subClassOf rdf:resource="&fibo-loan-ln-ln;MortgageLoanContract"/>
-		<rdfs:label xml:lang="en">investment home loan contract</rdfs:label>
-		<owl:disjointWith rdf:resource="&fibo-loan-typ-mtg;SecondHomeLoanContract"/>
+		<owl:disjointWith rdf:resource="&fibo-loan-typ-mtg;SecondHomeLoan"/>
 		<skos:definition xml:lang="en">A loan for a second or subsequent property which is taken out for investment purposes.</skos:definition>
 		<skos:editorialNote xml:lang="en">[formal definition to come from participants] The purpose for this is prospecitve income rather than personal use</skos:editorialNote>
 	</owl:Class>
@@ -114,48 +116,43 @@
 		<rdfs:label xml:lang="en">Investment Mortgage</rdfs:label>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-loan-typ-mtg;MortgageBorrower">
-		<rdfs:label xml:lang="en">mortgage borrower</rdfs:label>
+	<owl:Class rdf:about="&fibo-loan-typ-mtg;MortgageIndemnityGuarantee">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-gty;InsuranceBackedGuaranty"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-dae-gty;isGuaranteedBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-loan-typ-mtg;MortgageIndemnityGuarantor"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-pas-caa;isRealizedBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-loan-typ-mtg;MortgageIndemnityInsurancePolicy"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">mortgage indemnity guarantee</rdfs:label>
+		<skos:definition xml:lang="en">insurance-backed guarantee that protects lenders if the mortgage repayments cease for some reason, perhaps due to death or a homeowner being made redundant at work</skos:definition>
+		<skos:editorialNote xml:lang="en">See notes from SME Review and in MIG Provider. Applies to securitized pool, insures the lender. Additional note (IBM): there is a further application of this. When a lender takes a loan which is a where the value of the loan is greater than 80% of the value of the property, at that point it is required for the lender to also get a private mortgage insurance, so they are paying separately for the mortgage insurance so that if the borrower defaults above 80% then the mortgage insurance pays the loss. In the Loan Party Insurer (new &quot;Party&quot; type) you have Loan Party Insured Ratio (e.g. the 80% in the example above). These are different situations but the same principle. So this needs to be modeled for both. 30 June: Is this Lender or Borrower? since you have one lender and one borrower in a single loan, but multiple lenders in the case of packaging this up for a security - there are then multiple lenders and multiple borrowers. A similar kind of insurance exists in the one lender one borrower scenario i.e. the mortgage loan itself. There are two concepts here. the MIG thing was for bundling these. the MIG might apply across multiple contracts, but still be a fact about &quot;the&quot; contract? The notes about 80% above (IBM) are about the individual loan. ACTION: Tidy this up.</skos:editorialNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-loan-typ-mtg;MortgageLender">
-		<rdfs:label xml:lang="en">mortgage lender</rdfs:label>
+	<owl:Class rdf:about="&fibo-loan-typ-mtg;MortgageIndemnityGuarantor">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-gty;Guarantor"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-gty;Insurer"/>
+		<rdfs:label xml:lang="en">mortgage indemnity guarantor</rdfs:label>
+		<skos:definition xml:lang="en">guarantor and insurer that provides mortgage insurance in the form of a mortgage indemnity guarantee (MIG)</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">SME Review notes 16 Sept: Guaranty - mortgage insurance e.g. insure up to 80% exposure. When you get into indemnification, then for instance if the product doesn&apos;t meet the investor&apos;s requirement such that if it doesn&apos;t get paid then the lender steps in and takes the hit for the loan - this is usually a precondition for securitizing (issuing) the loan in a pool. If the loan is not going to be sold on the secondary market there would be no need to indemnify that loan so this term would not apply. Indemnification is insurance for the investor, while the lender is the one providing that indemnification.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-loan-typ-mtg;MortgageLoan">
-		<rdfs:subClassOf rdf:resource="&fibo-loan-typ-sec;CollateralizedSecuredLoan"/>
+	<owl:Class rdf:about="&fibo-loan-typ-mtg;MortgageIndemnityInsurancePolicy">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-gty;InsurancePolicy"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-loan-typ-mtg;hasBorrowingParty"/>
-				<owl:someValuesFrom rdf:resource="&fibo-loan-typ-mtg;MortgageBorrower"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;isEvidenceFor"/>
+				<owl:someValuesFrom rdf:resource="&fibo-loan-typ-mtg;MortgageIndemnityGuarantee"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-loan-typ-mtg;hasLendingParty"/>
-				<owl:someValuesFrom rdf:resource="&fibo-loan-typ-mtg;MortgageLender"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-loan-typ-mtg;hasMIGProvider"/>
-				<owl:someValuesFrom rdf:resource="&fibo-loan-loan-gty;LoanMIGProvider"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-loan-typ-mtg;hasParty"/>
-				<owl:someValuesFrom rdf:resource="&fibo-loan-loan-pty;LoanServicer"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">mortgage loan</rdfs:label>
-		<skos:definition xml:lang="en">A loan securitized against some real estate.</skos:definition>
-		<skos:editorialNote xml:lang="en">Definition probably incomplete. Mortgage is not only securitized on the real estate but is used to fund the purchase of that real estate. Not sure of the best form of wording.</skos:editorialNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-loan-typ-mtg;MortgageLoanBorrowerInformation">
-		<rdfs:subClassOf rdf:resource="&fibo-loan-tem-app;LoanApplicationBorrowerAssessmentInformation"/>
-		<rdfs:label xml:lang="en">mortgage loan borrower information</rdfs:label>
+		<rdfs:label xml:lang="en">mortgage indemnity insurance policy</rdfs:label>
+		<skos:definition xml:lang="en">insurance policy providing the mortgage indemnity guarantee</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-typ-mtg;Purchase">
@@ -184,7 +181,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-typ-mtg;ReverseMortgage">
-		<rdfs:subClassOf rdf:resource="&fibo-loan-typ-mtg;MortgageLoan"/>
+		<rdfs:subClassOf rdf:resource="&fibo-loan-ln-ln;Mortgage"/>
 		<rdfs:label xml:lang="en">reverse mortgage</rdfs:label>
 		<skos:definition xml:lang="en">Designed for senior citizens who want to borrow against the equity of house. The house has been paid for. How is it different?: Scenario based. If you have someone who is asset rich but cash poor then a traditional view of the mortgage wqould say yoiu must have th ecash to repay the loan, which would not apply in this case: we actually don&apos;t anticipate that you would repay it, maybe not even regular amounts on the loan, but when the loan expires, e.g. when you die, we will recover on the asset in the normal course of events. Not seen as a default but is an expectation that we will recover our funds. See Wikipedia. AKA Lifetime morgtage, seniores (age xxx or older) to release the home equity.</skos:definition>
 	</owl:Class>
@@ -195,61 +192,18 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-typ-mtg;SecondHomeLoan">
-		<rdfs:subClassOf rdf:resource="&fibo-loan-typ-mtg;MortgageLoan"/>
+		<rdfs:subClassOf rdf:resource="&fibo-loan-ln-ln;Mortgage"/>
 		<rdfs:label xml:lang="en">second home loan</rdfs:label>
 		<skos:definition xml:lang="en">A loan which may be used for a vacation home or second home used for personal reasons.</skos:definition>
 	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-loan-typ-mtg;SecondHomeLoanContract">
-		<rdfs:subClassOf rdf:resource="&fibo-loan-ln-ln;MortgageLoanContract"/>
-		<rdfs:label xml:lang="en">second home loan contract</rdfs:label>
-	</owl:Class>
-	
-	<owl:DatatypeProperty rdf:about="&fibo-loan-typ-mtg;domiciled">
-		<rdfs:label xml:lang="en">domiciled</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-typ-mtg;MortgageLoanBorrowerInformation"/>
-		<rdfs:range rdf:resource="&xsd;boolean"/>
-		<skos:definition xml:lang="en">Whether borrower is a resident of the jurisdiction where the property is located. Corporate: Where registered / whether registered in this jurisdiction? Where it pays taxes. Review 07 April: notes for &quot;Domicile&quot; are about the new term &quot;Domicile&quot;. Corporate can be &quot;resident&quot; in a location. can be regarded sa resident for tax purposes, which seems to be the thing we refer to as &quot;Registration&quot; (new term added today for Incorporated Company). So we have for example the Registered Address determines your residency? In the US most companies are incorporeated in Delaware because they have more lenient requirements. Place of Incorporation is usually their &quot;Place of REsidence&quot; but they may register in various states for various reasons, and in other foreign countries (except where this is a separate leagel entity presumably? MB). So: Is &quot;Resident&quot; the term we generally use for all legal entities or only for natural persons? Domicile is a better word, and is used in the context of corporations as well as natural persons. Examples: in Aus, someone nameless may have changed their place of residence due to issues around aspextos. Similar casinos incorporated in obscure countries.</skos:definition>
-	</owl:DatatypeProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-loan-typ-mtg;hasBorrowingParty">
-		<rdfs:label xml:lang="en">has borrowing party</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-typ-mtg;MortgageLoan"/>
-		<rdfs:range rdf:resource="&fibo-loan-typ-mtg;MortgageBorrower"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-loan-typ-mtg;hasLendingParty">
-		<rdfs:label xml:lang="en">has lending party</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-typ-mtg;MortgageLoan"/>
-		<rdfs:range rdf:resource="&fibo-loan-typ-mtg;MortgageLender"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-loan-typ-mtg;hasMIGProvider">
-		<rdfs:label xml:lang="en">has m i g provider</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-typ-mtg;MortgageLoan"/>
-		<rdfs:range rdf:resource="&fibo-loan-loan-gty;LoanMIGProvider"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-loan-typ-mtg;hasParty">
-		<rdfs:label xml:lang="en">has party</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-typ-mtg;MortgageLoan"/>
-		<rdfs:range rdf:resource="&fibo-loan-loan-pty;LoanServicer"/>
-	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-loan-typ-mtg;isLienOn">
 		<rdfs:label>is lien on</rdfs:label>
 	</owl:ObjectProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-loan-typ-mtg;loanMortgageMandateAmount">
-		<rdfs:label xml:lang="en">loan mortgage mandate amount</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-ln-ln;MortgageLoanContract"/>
-		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
-		<skos:definition xml:lang="en">Mortgage Mandate - Amount of mortgage mandate that can be converted into a proper mortgage at a later stage.</skos:definition>
-	</owl:ObjectProperty>
-	
 	<owl:ObjectProperty rdf:about="&fibo-loan-typ-mtg;mortgagePurpose">
 		<rdfs:label xml:lang="en">mortgage purpose</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-ln-ln;MortgageLoanContract"/>
+		<rdfs:domain rdf:resource="&fibo-loan-ln-ln;Mortgage"/>
 		<rdfs:range rdf:resource="&fibo-loan-ln-ln;MortgageLoanPurpose"/>
 		<skos:definition xml:lang="en">The purpose for which the Mortgage Loan has been taken out.</skos:definition>
 	</owl:ObjectProperty>
