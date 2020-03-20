@@ -18,7 +18,6 @@
 	<!ENTITY fibo-fnd-rel-rel "https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/">
 	<!ENTITY fibo-fnd-utl-alx "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Analytics/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
-	<!ENTITY fibo-md-dbtx-py "https://spec.edmcouncil.org/fibo/ontology/MD/DebtTemporal/DebtPricingYields/">
 	<!ENTITY lcc-cr "https://www.omg.org/spec/LCC/Countries/CountryRepresentation/">
 	<!ENTITY lcc-lr "https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/">
 	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
@@ -47,7 +46,6 @@
 	xmlns:fibo-fnd-rel-rel="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"
 	xmlns:fibo-fnd-utl-alx="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Analytics/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
-	xmlns:fibo-md-dbtx-py="https://spec.edmcouncil.org/fibo/ontology/MD/DebtTemporal/DebtPricingYields/"
 	xmlns:lcc-cr="https://www.omg.org/spec/LCC/Countries/CountryRepresentation/"
 	xmlns:lcc-lr="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
@@ -97,57 +95,13 @@
 	
 	<owl:Class rdf:about="&fibo-fbc-fi-ip;BestBid">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-ip;BidPrice"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-ip;MarketPrice"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-fi-ip;hasPricingSource"/>
-				<owl:someValuesFrom>
-					<owl:Class>
-						<owl:unionOf rdf:parseType="Collection">
-							<rdf:Description rdf:about="&fibo-fbc-fct-mkt;Exchange">
-							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-fbc-fi-ip;CompositeMarket">
-							</rdf:Description>
-						</owl:unionOf>
-					</owl:Class>
-				</owl:someValuesFrom>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasApplicableDatePeriod"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;DatePeriod"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">best bid</rdfs:label>
 		<skos:definition xml:lang="en">highest bid price for the stock</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Always based on a quote (not a trade) and is measured across markets, not just on the one market. Takes into account time and quote size. Real time price based on latest quotes and their sizes.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-fi-ip;BestOffer">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-ip;MarketPrice"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-ip;OfferPrice"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-fi-ip;hasPricingSource"/>
-				<owl:someValuesFrom>
-					<owl:Class>
-						<owl:unionOf rdf:parseType="Collection">
-							<rdf:Description rdf:about="&fibo-fbc-fct-mkt;Exchange">
-							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-fbc-fi-ip;CompositeMarket">
-							</rdf:Description>
-						</owl:unionOf>
-					</owl:Class>
-				</owl:someValuesFrom>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasApplicableDatePeriod"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;DatePeriod"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">best offer</rdfs:label>
 		<skos:definition xml:lang="en">lowest bid price for the stock up</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Takes into account time and quote size. And time (it&apos;s the latest). If these take place on more than one exchange at the same time, the best Bid or Offer are the ones with the highest size.</fibo-fnd-utl-av:explanatoryNote>
@@ -216,13 +170,6 @@
 		<rdfs:label xml:lang="en">end of day price</rdfs:label>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-fbc-fi-ip;ExchangeOpeningPrice">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-ip;SecurityPrice"/>
-		<rdfs:label xml:lang="en">exchange opening price</rdfs:label>
-		<skos:definition xml:lang="en">The value at the beginning of trading or opening of the market.</skos:definition>
-		<skos:editorialNote xml:lang="en">MDDL Exchange published price. Sometimes opening price is implied, sometimes it&apos;s published. you don&apos;t always see an opening price given. Review notes: One possibility: Opening price is an average of pre-market prices. This marks out the difference between closing price and opening price. Caution: Most exchanges may do it that way but some will not. Each exchange will have its on variane in how they determine an oprnhing price., Usually quoted as athe closing price of the previous session but see above. Opening price may be: Previous Closing Price First trade on that venue Difference between last closing and the out of market hours trading. If there is no OOO trading then the Previous Close in the Opening Price. This is only 2 possibillities: It never happens that out of hours trading is ignored. some regulations require some exchange to use the first trade. Composite Open: (also apples to Last, High, Low) BMB: Price at which the security first traded on the current session. Treat this as the only possible Opening Price. THe very 1st trade of the day is taken by the vendors as a trading price. It&apos;s a trading price semantically, and it becomes known as the Opening Price.</skos:editorialNote>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-fbc-fi-ip;ExchangeTradingSession">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-fd;DatePeriod"/>
 		<rdfs:label xml:lang="en">exchange trading session</rdfs:label>
@@ -244,7 +191,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-fi-ip;IntraDayPrice">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-ip;SecurityPrice"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-ip;MarketPrice"/>
 		<rdfs:label xml:lang="en">intra day price</rdfs:label>
 	</owl:Class>
 	
@@ -255,7 +202,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-fi-ip;LastPrice">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-ip;SecurityPrice"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-ip;MarketPrice"/>
 		<rdfs:label xml:lang="en">last price</rdfs:label>
 		<skos:definition xml:lang="en">The last (or most recent) valuation. This is an actual trade price not a derived price MDDL</skos:definition>
 	</owl:Class>
@@ -272,22 +219,29 @@
 		<skos:definition xml:lang="en">The lowest valuation over the period specified. Possibly but not necessarily based on a trade. Determined by the trading venue as to whether it&apos;s based on a trade or an offer. this can be regarded as a derived price. Price is based on a riule whil will cause one to pick a certain price type.</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-fbc-fi-ip;MarketOpeningPrice">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-ip;MarketPrice"/>
-		<rdfs:label xml:lang="en">market opening price</rdfs:label>
-		<skos:definition xml:lang="en">The market opening price is the price a broker or someone would refer to at the start of trading.</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Difference between last closing and the out of market hours trading. If there is no OOD trading then the Opening Price is the Previous Closing Price.</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-fbc-fi-ip;MarketOpeningPriceType">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-cls;Classifier"/>
-		<rdfs:label xml:lang="en">market opening price type</rdfs:label>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-fbc-fi-ip;MarketPrice">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-ip;SecurityPrice"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-fi-ip;hasPricingSource"/>
+				<owl:someValuesFrom>
+					<owl:Class>
+						<owl:unionOf rdf:parseType="Collection">
+							<rdf:Description rdf:about="&fibo-be-fct-pub;Publisher">
+							</rdf:Description>
+							<rdf:Description rdf:about="&fibo-fbc-pas-fpas;FinancialServiceProvider">
+							</rdf:Description>
+							<rdf:Description rdf:about="&fibo-fbc-fct-mkt;Exchange">
+							</rdf:Description>
+							<rdf:Description rdf:about="&fibo-fbc-fi-ip;CompositeMarket">
+							</rdf:Description>
+						</owl:unionOf>
+					</owl:Class>
+				</owl:someValuesFrom>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">market price</rdfs:label>
-		<skos:definition xml:lang="en">a price determined by a trading market as a whole</skos:definition>
+		<skos:definition xml:lang="en">last reported price at which a security was sold</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-fi-ip;MeanPriceDetermination">
@@ -297,8 +251,8 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-fi-ip;MidPrice">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-ip;PriceAnalytic"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-ip;SecurityPrice"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;ArithmeticMean"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasArgument"/>
@@ -318,6 +272,9 @@
 	<owl:Class rdf:about="&fibo-fbc-fi-ip;OfferPrice">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-ip;SecurityPrice"/>
 		<rdfs:label xml:lang="en">offer price</rdfs:label>
+		<fibo-fnd-utl-av:synonym xml:lang="en">ask price</fibo-fnd-utl-av:synonym>
+		<fibo-fnd-utl-av:synonym xml:lang="en">asking price</fibo-fnd-utl-av:synonym>
+		<fibo-fnd-utl-av:synonym xml:lang="en">offering price</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-fi-ip;OfficialClosingPrice">
@@ -331,6 +288,13 @@
 		<rdfs:label xml:lang="en">official closing price</rdfs:label>
 		<skos:definition xml:lang="en">The price at close of trading on a given trading day on an exchange.</skos:definition>
 		<skos:editorialNote xml:lang="en">The type of price which is quoted will be determined by the exchange. Last Price is recognised as the last trade on that exchange, not a last quote price. (fact about closing Price) Possibles: Last trade at the close of the market Last offer. Variants: what if there is no trade for example. Also may use prior to last trade. Official exchange calculated closing price. Questions at review: What about closing bid, mid offer. MDDL definition:The final price as of market close.</skos:editorialNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-fi-ip;OpeningPrice">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-ip;MarketPrice"/>
+		<rdfs:label xml:lang="en">opening price</rdfs:label>
+		<skos:definition xml:lang="en">price at which a security or commodity starts a trading day</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Investors that want to buy or sell as soon as the market opens will put in an order at the opening price.  Depending on how the closing price for the prior day is determined, and if there is no after hours trading, the opening price will be the same as the prior trading day&apos;s closing price.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-fi-ip;PriceAnalytic">
@@ -419,13 +383,6 @@
 		<skos:definition xml:lang="en">monetary price that some party is willing to pay, has recently paid, or would like to be paid for a given financial instrument at some point in time</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-fbc-fi-ip;SecurityPriceSpread">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-ip;PriceAnalytic"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;Difference"/>
-		<rdfs:label xml:lang="en">share price spread</rdfs:label>
-		<skos:definition xml:lang="en">Bid offer spread applies to any traded instrument.</skos:definition>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-fbc-fi-ip;Ufficiale">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-ip;ClosingPriceDeterminationMethod"/>
 		<rdfs:label xml:lang="en">ufficiale</rdfs:label>
@@ -456,19 +413,13 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;Percentage"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-md-dbtx-py;basedUpon"/>
+				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;isBasedOn"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-aeq;Income"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-md-dbtx-py;expressedInRelationTo"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;Duration"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">yield</rdfs:label>
-		<skos:definition xml:lang="en">The yield of a financial instrument based on its current price is the return to the investor expressed as an annual percentage.</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Yields come in various types with various qiualifying terms. A Yield must be based on a price, and must be in reference to some event or duration of time. It has a calculation method, and may have other qualifying terms such as for compounded yield. Most data models have these in a single selectable list, covering the different semantics above. Yield calculation methods remain as a selection list.</fibo-fnd-utl-av:explanatoryNote>
+		<skos:definition xml:lang="en">return on the investor&apos;s capital investment</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">A Yield must be based on a price, and must be in reference to some event or duration of time. It has a calculation method, and may have other qualifying terms such as for compounded yield.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-fi-ip;YieldSpread">
@@ -576,20 +527,6 @@
 		<rdfs:range rdf:resource="&fibo-fbc-fi-ip;RateOfReturn"/>
 	</owl:ObjectProperty>
 	
-	<owl:DatatypeProperty rdf:about="&fibo-fbc-fi-ip;openingPriceMethod">
-		<rdfs:label xml:lang="en">opening price method</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fbc-fi-ip;ExchangeOpeningPrice"/>
-		<rdfs:range rdf:resource="&xsd;string"/>
-		<skos:definition xml:lang="en">The method by which the Opening Price is determined for that exchange.</skos:definition>
-	</owl:DatatypeProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-fbc-fi-ip;openingPriceType">
-		<rdfs:label xml:lang="en">opening price type</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fbc-fi-ip;MarketOpeningPrice"/>
-		<rdfs:range rdf:resource="&fibo-fbc-fi-ip;MarketOpeningPriceType"/>
-		<skos:definition xml:lang="en">The type of price which is used and disseminated as the Opening Price on that particular market, for example the first trade price in that session or the closing price of the previous session.</skos:definition>
-	</owl:ObjectProperty>
-	
 	<owl:DatatypeProperty rdf:about="&fibo-fbc-fi-ip;priceDateVolume">
 		<rdfs:label xml:lang="en">price date volume</rdfs:label>
 		<rdfs:range rdf:resource="&xsd;decimal"/>
@@ -640,7 +577,7 @@
 	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-fi-ip;tradingSession">
 		<rdfs:label xml:lang="en">trading session</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fbc-fi-ip;MarketOpeningPrice"/>
+		<rdfs:domain rdf:resource="&fibo-fbc-fi-ip;OpeningPrice"/>
 		<rdfs:range rdf:resource="&fibo-fbc-fi-ip;ExchangeTradingSession"/>
 		<skos:definition xml:lang="en">Whether the price reflects the Open in post market session, pre market session or some trading period within the trading day.</skos:definition>
 	</owl:ObjectProperty>
