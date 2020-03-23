@@ -394,27 +394,6 @@
 		<fibo-fnd-utl-av:explanatoryNote>Note that the terms related to ordinary dividend payment are typically specified in the context of a board resolution rather than contractually.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-eq-eq;OrdinaryShareYield">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-ip;Yield"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasArgument"/>
-				<owl:someValuesFrom>
-					<owl:Class>
-						<owl:unionOf rdf:parseType="Collection">
-							<rdf:Description rdf:about="&fibo-sec-eq-eq;OrdinaryDividend">
-							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-fbc-fi-ip;SecurityPrice">
-							</rdf:Description>
-						</owl:unionOf>
-					</owl:Class>
-				</owl:someValuesFrom>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">ordinary share yield</rdfs:label>
-		<skos:definition xml:lang="en">ratio of a company&apos;s annual dividend with respect to its share price</skos:definition>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-sec-eq-eq;OrdinaryVotingRight">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;VotingRight"/>
 		<rdfs:label>ordinary voting right</rdfs:label>
@@ -555,6 +534,29 @@
 		<skos:definition xml:lang="en">financial instrument that signifies a unit of equity ownership in a corporation, or a unit of ownership in a mutual fund, or interest in a general or limited partnership, or a unit of ownership in a structured product, such as a real estate investment trust</skos:definition>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-sec-eq-eq;ShareYield">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-ip;Yield"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasArgument"/>
+				<owl:someValuesFrom>
+					<owl:Class>
+						<owl:unionOf rdf:parseType="Collection">
+							<rdf:Description rdf:about="&fibo-sec-eq-eq;OrdinaryDividend">
+							</rdf:Description>
+							<rdf:Description rdf:about="&fibo-fbc-fi-ip;SecurityPrice">
+							</rdf:Description>
+						</owl:unionOf>
+					</owl:Class>
+				</owl:someValuesFrom>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">share yield</rdfs:label>
+		<skos:definition xml:lang="en">ratio of the annualized dividend per share divided by the (current) price per share</skos:definition>
+		<fibo-fnd-utl-av:synonym xml:lang="en">dividend yield</fibo-fnd-utl-av:synonym>
+		<fibo-fnd-utl-av:synonym xml:lang="en">dividend-price ratio</fibo-fnd-utl-av:synonym>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-sec-eq-eq;SpecialDividend">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;Dividend"/>
 		<rdfs:label>special dividend</rdfs:label>
@@ -621,21 +623,21 @@
 		<skos:definition>relates a preferred share to a dividend or coupon that applies to the share</skos:definition>
 	</owl:ObjectProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-sec-eq-eq;hasDeclarationDate">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasExplicitDate"/>
-		<rdfs:label>has declaration date</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-eq-eq;Share"/>
-		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
-		<skos:definition>indicates a date on which an organization states that a dividend payment may be anticipated at some point in the future</skos:definition>
-		<fibo-fnd-utl-av:synonym>has announcement date</fibo-fnd-utl-av:synonym>
-	</owl:ObjectProperty>
-	
 	<owl:ObjectProperty rdf:about="&fibo-sec-eq-eq;hasDistributionMethod">
 		<rdfs:subPropertyOf rdf:resource="&lcc-lr;has"/>
 		<rdfs:label>has distribution method</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-eq-eq;Dividend"/>
 		<rdfs:range rdf:resource="&fibo-sec-eq-eq;DividendDistributionMethod"/>
 		<skos:definition>indicates the method by which dividend or coupon payments are to be distributed</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-sec-eq-eq;hasDividendDeclarationDate">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasExplicitDate"/>
+		<rdfs:label>has declaration date</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-sec-eq-eq;Share"/>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
+		<skos:definition>indicates a date on which an organization states that a dividend payment may be anticipated, including the the dividend amount and the ex-dividend and payment dates</skos:definition>
+		<fibo-fnd-utl-av:synonym>has announcement date</fibo-fnd-utl-av:synonym>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-eq-eq;hasDividendRate">
@@ -653,7 +655,7 @@
 		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
 		<skos:definition>indicates a date on which a stock &apos;goes ex-dividend&apos;, typically about three weeks before the dividend is paid to shareholders of record</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.investor.gov/introduction-investing/investing-basics/glossary/ex-dividend-dates-when-are-you-entitled-stock-and</fibo-fnd-utl-av:adaptedFrom>
-		<fibo-fnd-utl-av:explanatoryNote>Once the company sets the record date, the ex-dividend date is set based on stock exchange rules. The ex-dividend date for stocks is usually set one business day before the record date. If you purchase a stock on its ex-dividend date or after, you will not receive the next dividend payment.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:explanatoryNote>Once the company sets the record date, the ex-dividend date is set based on stock exchange rules. If you purchase a stock on its ex-dividend date or after, you will not receive the next dividend payment.</fibo-fnd-utl-av:explanatoryNote>
 		<fibo-fnd-utl-av:explanatoryNote>Shares listed on the New York Stock Exchange go ex-dividend four business days prior to the record date.</fibo-fnd-utl-av:explanatoryNote>
 		<fibo-fnd-utl-av:synonym>has ex-date</fibo-fnd-utl-av:synonym>
 		<fibo-fnd-utl-av:synonym>has expected dividend date</fibo-fnd-utl-av:synonym>
@@ -681,7 +683,7 @@
 		<rdfs:label>has record date</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-eq-eq;Share"/>
 		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
-		<skos:definition>indicates a date on which a party must be on the company&apos;s books as a shareholder to receive the next dividend</skos:definition>
+		<skos:definition>indicates the date on which the issuer checks to determine whether or not a party was on the company&apos;s books as a shareholder when required (i.e., they must have been on the books prior to the ex-dividend date), to identify who is eligible to receive the next dividend</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.investor.gov/introduction-investing/investing-basics/glossary/ex-dividend-dates-when-are-you-entitled-stock-and</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:explanatoryNote>Companies also use this date to determine who is sent proxy statements, financial reports, and other information.</fibo-fnd-utl-av:explanatoryNote>
 		<fibo-fnd-utl-av:synonym>has date of record</fibo-fnd-utl-av:synonym>
