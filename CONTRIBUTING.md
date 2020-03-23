@@ -18,7 +18,7 @@ Thanks for your interest in contributing to FIBO! This page will give you a quic
 	* [Maturity levels](#maturity-levels)
 		* [Publication Maturity Levels](#publication-maturity-levels)
 	* [Issues and Pull Requests](#bug-reports-feature-requests-and-pull-requests)
-		* [Bug reports and feature requests](#bug-reports-and-feature-requests)
+		* [Issues](#issues)
 		* [Pull Requests](#pull-requests)
 	* [Developer Certificate of Origin](#developer-certificate-of-origin)
 	* [FIBO serialization tools](#fibo-serialization-tools)
@@ -160,15 +160,17 @@ FIBO Community is working to move ontologies up the maturity ladder.  Specifical
 
 ## Issues and Pull Requests
 
-The FIBO sources are kept in this repository on GitHub. As is customary with GitHub, changes to FIBO can be proposed via the bug reports and feature requests or can be made in a fork of this repository, and then proposed directly to the FIBO Community Group through a pull request.   
+The FIBO sources are kept in this repository on GitHub. As is customary with GitHub, changes to FIBO can be proposed via the issues or can be made in a fork of this repository, and then proposed directly to the FIBO Community Group through a pull request.   
 
 **You will need a GitHub user name to participate in the development process**. 
 
-### Bug reports and feature requests
-Bug reports and feature requests are tracked as [GitHub issues](https://guides.github.com/features/issues/). Create an issue on FIBO repository and provide the following information by filling in the templates:
+### Issues
+[Create an issue](https://github.com/edmcouncil/fibo/issues/new/choose) if you would like to 
 
-* [bug report](./.github/ISSUE_TEMPLATE/bug_report.md)
-* [feature_request](./.github/ISSUE_TEMPLATE/feature_request.md)
+* suggest an idea for FIBO extension, FIBO documentation or website improvement,
+* report a problem or a bug,
+* ask a question about FIBO or
+* announce your FIBO Content Team to get more attendees.
 
 
 ### Pull Requests
@@ -247,17 +249,17 @@ You can test Your Installation with the following steps.  These steps assume you
 ## Local testing tools
 FIBO developers are accustomed to using desktop tools like Protégé, TopBraid Composer, VOM, and MagicDraw/CCM.  These tools include a variety of tests that experienced users rely on to determine the correctness of their models. In order to satisfy themselves that the ontologies are correct, they need to be able to test the same configuration of ontologies that will be published (i.e., Production and Development, see above).  
 
-In order to make this possible on their local machine, developers need to be able to load just the Release ontologies (from their current testbed).  This is done by creating a file called **AboutProd.ttl** (also AboutProd.rdf).  Developers working with the pre-release files will want to load all FIBO files; this is done with a file called **AboutDev.ttl** (also AboutDev.rdf).  These "About" files load the same files that are loaded by the publishing process of FIBO (for Prod and Dev, respectively).  
+In order to make this possible on their local machine, developers need to be able to load just the Release ontologies (from their current testbed).  This is done by creating a file called **AboutFIBOProd.rdf**.  Developers working with the pre-release files will want to load all FIBO files; this is done with a file called **AboutFIBODev.rdf**.  These "About" files load the same files that are loaded by the publishing process of FIBO (for Prod and Dev, respectively).  
 
 Some tools (e.g., Protégé and CCM) use catalog files to manage the file loading.  These can also be automatically created. 
 
 To perform local testing, do the following steps:
 
 1. Make sure you can run a Bash shell.  Windows now has a native Bash shell.  One is also available as part of SourceTree. 
-1. Download the FIBO tools: [dev_toolkit.zip](https://github.com/edmcouncil/fibo-infra/tree/master/jenkins/bin/dev_toolkit.zip).  Unzip this into your FIBO installation directory. 
+1. Download the FIBO tools: [dev_toolkit](./etc/dev_toolkit).
 1. Create a catalog file by running the shell command ```./createCatalog.sh``` (optional, for use with Protege or CCM only)
 1. Create the About files by running the shell command ```./createAbout.sh``` (this can take a while)
-1. Load AboutProd.ttl (.rdf) or AboutDev.ttl (.rdf) to perform local tests. 
+1. Load [AboutFIBOProd.rdf](AboutFIBOProd.rdf) or [AboutFIBODev.rdf](AboutFIBODev.rdf) to perform local tests. 
 
 Step 3 needs to be done again whenever you create a new file or change the base URI of a file. 
 
