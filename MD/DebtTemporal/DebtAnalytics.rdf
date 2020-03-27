@@ -11,11 +11,11 @@
 	<!ENTITY fibo-ind-ind-ind "https://spec.edmcouncil.org/fibo/ontology/IND/Indicators/Indicators/">
 	<!ENTITY fibo-md-dbtx-aly "https://spec.edmcouncil.org/fibo/ontology/MD/DebtTemporal/DebtAnalytics/">
 	<!ENTITY fibo-md-dbtx-py "https://spec.edmcouncil.org/fibo/ontology/MD/DebtTemporal/DebtPricingYields/">
-	<!ENTITY fibo-md-temx-ins "https://spec.edmcouncil.org/fibo/ontology/MD/TemporalCore/InstrumentTemporalTerms/">
-	<!ENTITY fibo-md-temx-tem "https://spec.edmcouncil.org/fibo/ontology/MD/TemporalCore/TemporalConcepts/">
 	<!ENTITY fibo-sec-dbt-ab-abs "https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/AssetBackedSecurities/AssetBackedSecurities/">
 	<!ENTITY fibo-sec-dbt-ab-pbs "https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/AssetBackedSecurities/PoolBackedSecurities/">
 	<!ENTITY fibo-sec-dbt-bnd "https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/Bonds/">
+	<!ENTITY fibo-sec-dbt-dbti "https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtInstruments/">
+	<!ENTITY fibo-sec-sec-pls "https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/Pools/">
 	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
 	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
 	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
@@ -34,11 +34,11 @@
 	xmlns:fibo-ind-ind-ind="https://spec.edmcouncil.org/fibo/ontology/IND/Indicators/Indicators/"
 	xmlns:fibo-md-dbtx-aly="https://spec.edmcouncil.org/fibo/ontology/MD/DebtTemporal/DebtAnalytics/"
 	xmlns:fibo-md-dbtx-py="https://spec.edmcouncil.org/fibo/ontology/MD/DebtTemporal/DebtPricingYields/"
-	xmlns:fibo-md-temx-ins="https://spec.edmcouncil.org/fibo/ontology/MD/TemporalCore/InstrumentTemporalTerms/"
-	xmlns:fibo-md-temx-tem="https://spec.edmcouncil.org/fibo/ontology/MD/TemporalCore/TemporalConcepts/"
 	xmlns:fibo-sec-dbt-ab-abs="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/AssetBackedSecurities/AssetBackedSecurities/"
 	xmlns:fibo-sec-dbt-ab-pbs="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/AssetBackedSecurities/PoolBackedSecurities/"
 	xmlns:fibo-sec-dbt-bnd="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/Bonds/"
+	xmlns:fibo-sec-dbt-dbti="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtInstruments/"
+	xmlns:fibo-sec-sec-pls="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/Pools/"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
@@ -57,11 +57,10 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/Indicators/Indicators/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/MD/DebtTemporal/DebtPricingYields/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/MD/TemporalCore/InstrumentTemporalTerms/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/MD/TemporalCore/TemporalConcepts/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/AssetBackedSecurities/AssetBackedSecurities/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/AssetBackedSecurities/PoolBackedSecurities/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/Bonds/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtInstruments/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/Pools/"/>
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/MD/DebtTemporal/DebtAnalytics/"/>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Provisional"/>
@@ -85,6 +84,30 @@
 		<rdfs:subClassOf rdf:resource="&fibo-md-dbtx-aly;AverageLife"/>
 		<rdfs:label xml:lang="en">average life at issue</rdfs:label>
 		<skos:definition xml:lang="en">The Average Life analytic at the time the security was issued.</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-md-dbtx-aly;CollectionOfDebtInstruments">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;StatisticalPopulation"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-arr-arr;hasConstituent"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-dbti;TradableDebtInstrument"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">collection of debt instruments</rdfs:label>
+		<skos:definition xml:lang="en">statistical population consisting of one or more tradable debt instrument(s)</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-md-dbtx-aly;CollectionOfDebtPools">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;StatisticalPopulation"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-arr-arr;hasConstituent"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-pls;DebtPool"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">collection of debt pools</rdfs:label>
+		<skos:definition xml:lang="en">statistical population consisting of one or more pools consisting of debt instrument(s)</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-md-dbtx-aly;DebtConvexityAnalytic">
@@ -112,43 +135,39 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-md-dbtx-aly;DebtInstrumentAnalyticalParameter">
-		<rdfs:subClassOf rdf:resource="&fibo-md-temx-ins;FinancialInstrumentAnalyticalParameter"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;ScopedMeasure"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-md-temx-ins;providesAnalysisAbout"/>
-				<owl:someValuesFrom rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtInstruments/TradableDebtInstrument"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
+				<owl:someValuesFrom rdf:resource="&fibo-md-dbtx-aly;CollectionOfDebtInstruments"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasApplicableDatePeriod"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;DatePeriod"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">debt instrument analytical parameter</rdfs:label>
-		<skos:definition xml:lang="en">Parameter describing some aspect of the behaviour of a debt instrument, that may vary over time.</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-md-dbtx-aly;DebtInstrumentPoolAnalytic">
-		<rdfs:subClassOf rdf:resource="&fibo-md-dbtx-aly;DebtPoolAnalyticalParameter"/>
-		<rdfs:label xml:lang="en">debt instrument pool analytic</rdfs:label>
-		<skos:definition xml:lang="en">A measure of some aspect of the behaviour or a pool of securitized debt i.e. a pool of debt instruments. Futher Notes: Nothing defined under this yet. We have analytics for pools of individual debt products (mortgages, loans, auto loans), but not the equivalent sorts of terms implied for a securitixed debt pool. Presumably these would be aggregate terms similar or equivalent to analytics for debt instruments, such as yield, average live, convixity and so on. As such these would be similar to porfolio analytics (not modeled).</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-md-dbtx-aly;DebtPool">
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-md-dbtx-aly;hasAnalytic"/>
-				<owl:someValuesFrom rdf:resource="&fibo-md-dbtx-aly;DebtPoolAnalyticalParameter"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-md-dbtx-aly;hasFactor"/>
-				<owl:someValuesFrom rdf:resource="&fibo-md-dbtx-aly;PoolFactor"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">debt pool</rdfs:label>
+		<skos:definition xml:lang="en">parameter describing some aspect of the behavior of one or more debt instrument(s) that may vary over time</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-md-dbtx-aly;DebtPoolAnalyticalParameter">
-		<rdfs:subClassOf rdf:resource="&fibo-md-dbtx-aly;PoolAnalyticalParameter"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;ScopedMeasure"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
+				<owl:someValuesFrom rdf:resource="&fibo-md-dbtx-aly;CollectionOfDebtPools"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasApplicableDatePeriod"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;DatePeriod"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">debt pool analytical parameter</rdfs:label>
-		<skos:definition xml:lang="en">A measure of some aspect of some pool of debt, such as a pool of loans or a pool of securitized debt products.</skos:definition>
+		<skos:definition xml:lang="en">measure of some aspect of some pool or pools of debt, such as a pool of loans or a pool of securitized debt products</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-md-dbtx-aly;DurationAnalytic">
@@ -222,21 +241,8 @@
 		<rdfs:label xml:lang="en">implied forward rate</rdfs:label>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-md-dbtx-aly;InstrumentAggregateLoanAnalytic">
-		<rdfs:subClassOf rdf:resource="&fibo-md-temx-ins;FinancialInstrumentAnalyticalParameter"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-md-dbtx-aly;isAggregateOf"/>
-				<owl:someValuesFrom rdf:resource="&fibo-md-dbtx-py;LoanPoolAnalytic"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">instrument aggregate loan analytic</rdfs:label>
-		<skos:definition xml:lang="en">Parameters that describe some feature of loan pools or mortgage pools, aggregated and defined at the level of the instrument (i.e. the tranche or class of security within the issue).</skos:definition>
-		<skos:editorialNote xml:lang="en">for some of these there may also be a similar aggregated figure at the level of the issue (i.e. for a whole MBS issue) and for some there would not. To be determined</skos:editorialNote>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-md-dbtx-aly;InstrumentWeightedAverageLoanAge">
-		<rdfs:subClassOf rdf:resource="&fibo-md-dbtx-aly;InstrumentAggregateLoanAnalytic"/>
+		<rdfs:subClassOf rdf:resource="&fibo-md-dbtx-aly;DebtPoolAnalyticalParameter"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-md-dbtx-aly;aggregateOf"/>
@@ -249,7 +255,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-md-dbtx-aly;InstrumentWeightedAverageRemainingMaturity">
-		<rdfs:subClassOf rdf:resource="&fibo-md-dbtx-aly;InstrumentAggregateLoanAnalytic"/>
+		<rdfs:subClassOf rdf:resource="&fibo-md-dbtx-aly;DebtPoolAnalyticalParameter"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-md-dbtx-aly;aggregateOf.1"/>
@@ -324,12 +330,6 @@
 		<skos:definition xml:lang="en">A model of how the early partial calls are estimated.</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-md-dbtx-aly;PoolAnalyticalParameter">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;QualifiedMeasure"/>
-		<rdfs:label xml:lang="en">pool analytical parameter</rdfs:label>
-		<skos:definition xml:lang="en">Paramater that describes some aspect of the behaviour of some kind of pool.</skos:definition>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-md-dbtx-aly;PoolFactor">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;Percentage"/>
 		<rdfs:label xml:lang="en">pool factor</rdfs:label>
@@ -349,7 +349,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-md-dbtx-aly;PoolWeightedAverageLoanAge">
-		<rdfs:subClassOf rdf:resource="&fibo-md-dbtx-py;LoanPoolAnalytic"/>
+		<rdfs:subClassOf rdf:resource="&fibo-md-dbtx-aly;DebtPoolAnalyticalParameter"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-md-dbtx-aly;derivedFrom"/>
@@ -362,7 +362,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-md-dbtx-aly;PoolWeightedAverageRemainingMaturity">
-		<rdfs:subClassOf rdf:resource="&fibo-md-dbtx-py;LoanPoolAnalytic"/>
+		<rdfs:subClassOf rdf:resource="&fibo-md-dbtx-aly;DebtPoolAnalyticalParameter"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-md-dbtx-aly;derivedFrom"/>
@@ -379,7 +379,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-md-dbtx-aly;PrepaymentSpeed">
-		<rdfs:subClassOf rdf:resource="&fibo-md-dbtx-py;LoanPoolAnalytic"/>
+		<rdfs:subClassOf rdf:resource="&fibo-md-dbtx-aly;DebtPoolAnalyticalParameter"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-md-dbtx-aly;determinedBy"/>
@@ -389,18 +389,6 @@
 		<rdfs:label xml:lang="en">prepayment speed</rdfs:label>
 		<skos:definition xml:lang="en">The rate at which the pool is paying down.</skos:definition>
 		<skos:editorialNote xml:lang="en">This is a model. Includes other factors such as homogeniety. Earlier notes: Same as Payment. Curtailment. Paydown is normally scheduled payments of the mortgage. Prepayment is when someone pays off the mortgage early I may send in 1500 when my monthly amount is 1000 a month. So the 500 is a prepayment. Scheduled principal payment. More notes 25 nov: Also factor in changes to the pool constituents where this is allowed for that kind of MBS. So we make estimates of how face value will will change. face value won&apos;t change but the underlying value of the Pf changes, so eg. the current mortgage factor. Model update note June 2010: Detailed types of &quot;Prepayment Speed&quot; analytic received from thomson Reuters, now modeled as sub types of this term. So term origin is PSA by extension, since this is the common super class of 3 specific prepayment speed analytic types defined by PSA. PSA stands for Public Securities Association. Type: PSA gives this as numeric, however definitions imply percentage, so defined as dated percentage for now. Many data models use numbers which are interpreted later as percentages so this may be the case here.</skos:editorialNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-md-dbtx-aly;PriceAnalytic">
-		<rdfs:subClassOf rdf:resource="&fibo-md-temx-ins;FinancialInstrumentAnalyticalParameter"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-md-temx-ins;derivedFrom"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-cur;MonetaryPrice"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">price analytic</rdfs:label>
-		<skos:definition xml:lang="en">Information that is about prices, rather than actually being a price.</skos:definition>
 	</owl:Class>
 	
 	<owl:ObjectProperty rdf:about="&fibo-md-dbtx-aly;aggregateOf">
@@ -479,19 +467,19 @@
 	<owl:ObjectProperty rdf:about="&fibo-md-dbtx-aly;factorValue">
 		<rdfs:label xml:lang="en">factor value</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-md-dbtx-aly;PoolFactor"/>
-		<rdfs:range rdf:resource="&fibo-md-temx-tem;TimedPercentage"/>
+		<rdfs:range rdf:resource="&fibo-fnd-utl-alx;Percentage"/>
 		<skos:definition xml:lang="en">The factor, expressed as a numeric amount in the past or present.</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-md-dbtx-aly;hasAnalytic">
 		<rdfs:label xml:lang="en">has analytic</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-md-dbtx-aly;DebtPool"/>
+		<rdfs:domain rdf:resource="&fibo-sec-sec-pls;DebtPool"/>
 		<rdfs:range rdf:resource="&fibo-md-dbtx-aly;DebtPoolAnalyticalParameter"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-md-dbtx-aly;hasFactor">
 		<rdfs:label xml:lang="en">has factor</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-md-dbtx-aly;DebtPool"/>
+		<rdfs:domain rdf:resource="&fibo-sec-sec-pls;DebtPool"/>
 		<rdfs:range rdf:resource="&fibo-md-dbtx-aly;PoolFactor"/>
 	</owl:ObjectProperty>
 	
@@ -503,8 +491,8 @@
 	
 	<owl:ObjectProperty rdf:about="&fibo-md-dbtx-aly;isAggregateOf">
 		<rdfs:label xml:lang="en">is aggregate of</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-md-dbtx-aly;InstrumentAggregateLoanAnalytic"/>
-		<rdfs:range rdf:resource="&fibo-md-dbtx-py;LoanPoolAnalytic"/>
+		<rdfs:domain rdf:resource="&fibo-md-dbtx-aly;DebtPoolAnalyticalParameter"/>
+		<rdfs:range rdf:resource="&fibo-md-dbtx-aly;DebtPoolAnalyticalParameter"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-md-dbtx-aly;isDefaultIn">
@@ -531,13 +519,6 @@
 		<rdfs:label xml:lang="en">takes into account</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-md-dbtx-aly;AverageLife"/>
 		<rdfs:range rdf:resource="&fibo-md-dbtx-aly;PrepaymentSpeed"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-md-dbtx-aly;value.2">
-		<rdfs:label xml:lang="en">value</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-md-dbtx-aly;PVBP"/>
-		<rdfs:range rdf:resource="&fibo-md-temx-tem;TimedPercentage"/>
-		<skos:definition xml:lang="en">The value of the PVBP expressed as a price change, with price denominated in percentage.</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-md-dbtx-aly;wALAValue">
@@ -574,6 +555,21 @@
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isCharacterizedBy"/>
 				<owl:someValuesFrom rdf:resource="&fibo-md-dbtx-aly;InstrumentWeightedAverageRemainingMaturity"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-sec-pls;DebtPool">
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-md-dbtx-aly;hasAnalytic"/>
+				<owl:someValuesFrom rdf:resource="&fibo-md-dbtx-aly;DebtPoolAnalyticalParameter"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-md-dbtx-aly;hasFactor"/>
+				<owl:someValuesFrom rdf:resource="&fibo-md-dbtx-aly;PoolFactor"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 	</owl:Class>
