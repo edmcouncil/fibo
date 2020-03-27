@@ -17,7 +17,7 @@ Thanks for your interest in contributing to FIBO! This page will give you a quic
 	* [FIBO Sources and Products](#fibo-sources-and-products)
 	* [Maturity levels](#maturity-levels)
 		* [Publication Maturity Levels](#publication-maturity-levels)
-	* [Issues and Pull Requests](#bug-reports-feature-requests-and-pull-requests)
+	* [Issues and Pull Requests](#issues-and-pull-requests)
 		* [Issues](#issues)
 		* [Pull Requests](#pull-requests)
 	* [Developer Certificate of Origin](#developer-certificate-of-origin)
