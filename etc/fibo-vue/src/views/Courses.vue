@@ -73,7 +73,7 @@
 
 
                         <h3><span>Course Palette</span></h3>
-                        <p><em>Open Knowledge graph and FIBO Fundamentals Course</em> is just part of our educational offer. Our full offer of courses covers different areas of Knowledge Graph Industry. These are shown below as a mind map that interlinks different learning topics.</p>
+                        <p><em>Open Knowledge Graph and FIBO Fundamentals Course</em> is just part of our educational offer. Our full offer of courses covers different areas of Knowledge Graph Industry. These are shown below as a mind map that interlinks different learning topics.</p>
                         <p> </p>
                         <br>
                         <img style='height: 100%; width: 100%; object-fit: contain' src="../assets/img/course_palette.png" alt="FIBO Course Map" />
