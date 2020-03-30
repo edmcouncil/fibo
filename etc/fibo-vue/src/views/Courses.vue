@@ -53,17 +53,17 @@
     <li><b>AMERICAS</b></li>
     <ul>
         <li>May 5-6</li>
-        <li>11a.m. – 5p.m. ET / 8a – 2p PT</li>
+        <li>11a – 5p EDT / 8a – 2p PDT</li>
     </ul>
     <li><b>APAC</b></li>
         <ul>
         <li>May 12-13</li>
-        <li>Singapore 8a-2p / Australia 10a – 4p</li>
+        <li>8a - 2p SGT / 10a – 4p AEDT</li>
     </ul>
     <li><b>UK / EUROPE / INDIA</b></li>
         <ul>
         <li>May 19-20</li>
-        <li>UK 830a-230p GMT / Europe 930-330p CET / India 1-7p IST</li>
+        <li>UK 8.30a - 2.30p GMT / Europe 9.30a - 3.30p CET / India 1 - 7p IST</li>
     </ul>
 </ul>
 
@@ -133,7 +133,7 @@
  border-radius: 100px;
  -webkit-border-radius: 100px;
  margin: 0px 30px
- -moz-border-radius: 100px;' src="../assets/img/dean.jpg" alt="Pawel Garbacz, PhD" align="left" />
+ -moz-border-radius: 100px;' src="../assets/img/dean.jpg" alt="Dean Allemang, PhD" align="left" />
                 <ul>
                     <li>Chief Scientist, TopQuadrant Inc, Capsicum Business Architects PTY LLC</li>
                     <li>Advisor, Open PHACTS project</li>
