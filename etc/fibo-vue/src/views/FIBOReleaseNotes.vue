@@ -6,36 +6,293 @@
                 <h1>
                   <span>FIBO Release Notes</span>
                 </h1>
+                <p class="text"><b>2020</b></p>
+                <ul>
+                    <li><a href="#2019Q1">2020 Q1</a></li>
+                </ul>
                 <p class="text"><b>2019</b></p>
                 <ul>
-                  <li><a href="#2019Q4">2019 Q4</a></li>
-                  <li><a href="#2019Q3">2019 Q3</a></li>
-                  <li><a href="#2019Q2">2019 Q2</a></li>
-                  <li><a href="#2019Q1">2019 Q1</a></li>
+                    <li><a href="#2019Q4">2019 Q4</a></li>
+                    <li><a href="#2019Q3">2019 Q3</a></li>
+                    <li><a href="#2019Q2">2019 Q2</a></li>
+                    <li><a href="#2019Q1">2019 Q1</a></li>
                 </ul>
                 <p class="text"><b>2018</b></p>
                 <ul>
-                  <li><a href="#2018Q4">2018 Q4</a></li>
-                  <li><a href="#2018Q3">2018 Q3</a></li>
-                  <li><a href="#2018Q2">2018 Q2</a></li>
-                  <li><a href="#2018Q1">2018 Q1</a></li>
+                    <li><a href="#2018Q4">2018 Q4</a></li>
+                    <li><a href="#2018Q3">2018 Q3</a></li>
+                    <li><a href="#2018Q2">2018 Q2</a></li>
+                    <li><a href="#2018Q1">2018 Q1</a></li>
                 </ul>
                 <p class="text"><b>2017</b></p>
                 <ul>
-                  <li><a href="#2017Q4">2017 Q4</a></li>
-                  <li><a href="#2017Q3">2017 Q3</a></li>
-                </ul>                
+                    <li><a href="#2017Q4">2017 Q4</a></li>
+                    <li><a href="#2017Q3">2017 Q3</a></li>
+                </ul>
 
                 <h1>
                   <span>@@@</span>
                 </h1>
 
+                <h3 id="2020Q1"><strong>2020 Q1</strong></h3>
+
+                <p>Q1 2020 activities were primarily use case driven. We have added a number of examples, in BE to provide individuals representing companies the issue shares, in FBC to augment those individuals with GLEIF LEI registration and other details, in SEC to add examples representing shares those companies issue, and in IND to show how to integrate the information about those shares in an index, such as the Dow Jones Industrial Average. Additional work included clean up / merging of content that was in informative ontologies, better integration with the OMG Languages, Countries, and Codes (LCC) standard to eliminate redundancy (which we already depended on), and address bugs raised by the community.</p>
+
+                <h4>Business Entities</h4>
+                <p class="text"><em>Highlights</em></p>
+
+                <p>This quarter’s BE updates, in addition to adding the examples described above, were usability oriented.</p>
+
+                <p class="text"></p>
+                <p class="text"><em>Detailed Changes</em></p>
+                <ul>
+                    <li>BE-206 – Clarify the definition of LegalPerson – revised the definition of legal person per suggestion from the user community</li>
+                </ul>
+
+                <h4>Business Process</h4>
+                <p class="text"><em>Highlights</em></p>
+
+                <p>The BP domain is provisional, and some amount of the content has been moved/integrated with the released FIBO domain areas, such as Securities. In addition, the overall consistency issues were resolved.</p>
+
+                <p class="text"></p>
+                <p class="text"><em>Detailed Changes</em></p>
+                <ul>
+                    <li>BP – <a href="https://github.com/edmcouncil/fibo/issues/865">GitHub issue #865</a> - eliminate additional reference to redundant property</li>
+                    <li>BP – <a href="https://github.com/edmcouncil/fibo/issues/865">GitHub issue #865</a> - eliminated additional redundant / ill-specified content and merged IssuanceProcessTerms ontology into IssuanceProcess ontology, since most of the ontologies that imported one, also imported the other one</li>
+                    <li>BP – <a href="https://github.com/edmcouncil/fibo/issues/865">GitHub issue #865</a> - eliminated redundant concepts including SecuritiesOffering from provisional issuance ontologies</li>
+                </ul>
+
+                <h4>Derivatives</h4>
+                <p class="text"><em>Highlights</em></p>
+
+                <p>The focus in derivatives over the last six months has been on documenting use cases, particularly for Standardized Reporting. We also initiated work on swap-related examples that will be added FIBO in Q2. In addition, the overall consistency issues were resolved.</p>
+
+                <p class="text"></p>
+                <p class="text"><em>Detailed Changes</em></p>
+                <ul>
+                    <li>DER-66 – <a href="https://github.com/edmcouncil/fibo/issues/878">GitHub issue #878</a> - eliminated the circular reference between Options and ExchangeTradedOptions, as well as the cycle within the ExchangeTradedOptions ontology</li>
+                </ul>
+
+                <h4>Financial Business and Commerce</h4>
+                <p class="text"><em>Highlights</em></p>
+
+                <p>Updates to FBC were driving by use case and example development for securities primarily. The most important change is the inclusion of a new InstrumentPricing ontology, which was needed to support our SEC, IND, and DER use cases.</p>
+
+                <p class="text"></p>
+                <p class="text"><em>Detailed Changes</em></p>
+                <ul>
+                    <li>FBC-238 – <a href="https://github.com/edmcouncil/fibo/issues/849">GitHub issue #849</a> - Missing individuals for day count convention - adds several of the most commonly used day count conventions as individuals to support several FIBO use cases for bonds and derivatives</li>
+                    <li>FBC-238 - revised definitions for day count conventions to be significantly more detailed, including various synonyms and sources for definitions, as requested by reviewer</li>
+                    <li>FBC-239 – <a href="https://github.com/edmcouncil/fibo/issues/889">GitHub issue #889</a> - Labels on a few of the individuals in FBC are not unique -addressed feedback on the initial set of changes.</li>
+                    <li>FBC-239 - corrected / normalized labels for certain entities, normalized definitions, revised name of the Federal Reserve Board functional entity to make it more understandable, updated LEI registry details</li>
+                    <li>FBC-239 - correction for hygiene issue</li>
+                    <li>FBC-240 – <a href="https://github.com/edmcouncil/fibo/issues/913">GitHub issue #913</a> - A registry entry should be a child of collection constituent - addressed feedback with respect to definitions; corrected the parent of relationship record to be a collection constituent</li>
+                    <li>FBC-240 - cleaned up the definitions for registry and registry entry, making a registry a child of record and structured collection, and registry entry a child of collection constituent</li>
+                    <li>FBC-241 – <a href="https://github.com/edmcouncil/fibo/issues/929">GitHub issue #929</a> - Rationalize/Eliminate Registered and Registration addresses</li>
+                    <li>FBC-241 - addressed hygiene issue uncovered during testing</li>
+                    <li>FBC-241 - eliminated both Registered and Registration address classes, also hasPrimaryAddress property, which was misleading. Replaced RegisteredAddress with ConventionalStreetAddress and RegistrationAddress with PhysicalAddress. Moved hasHeadquartersAddress from FBC to BE.</li>
+                    <li>FBC-243 – <a href="https://github.com/edmcouncil/fibo/issues/935">GitHub issue #935</a> - Property 'operates in municipality' is defined as a data property and used as object property - corrected typing on the property operates in municipality and made it a subproperty of hasMunicipality</li>
+                    <li>FBC-244 – <a href="https://github.com/edmcouncil/fibo/issues/941">GitHub issue #941</a>- addressed orphaned properties left over from LCC merge</li>
+                    <li>FBC-245 – <a href="https://github.com/edmcouncil/fibo/issues/954">GitHub issue #954</a> - Add a new pricing ontology to FBC under financial instruments:</li>
+                    <li>FBC-245 - added InstrumentPricing to AboutFIBOProd</li>
+                    <li>FBC-245 - added missing definition</li>
+                    <li>FBC-245 - additional clean-up pass on instrument pricing</li>
+                    <li>FBC-245 - addressed remaining review issues</li>
+                    <li>FBC-245 - cleaned up remaining definitions, removed undefined elements for which definitions were impossible to find (terms were non-US jurisdiction specific), and so forth</li>
+                    <li>FBC-245 - further revisions to the two debt temporal ontologies from MD per feedback</li>
+                    <li>FBC-245 - initial pass at merging TemporalConcepts, InstrumentTemporalTerms, and EquityPricing into a single instrument pricing ontology in FBC</li>
+                    <li>FBC-245 - made OfficialClosingPrice a subclass of MarketPrice, added InstrumentPricing to AllFBC</li>
+                    <li>FBC-245 - made maintenance margin a sibling of initial margin per feedback</li>
+                    <li>FBC-245 - revised equity instruments to reflect feedback</li>
+                    <li>FBC-245 - revised the parent of exchange option price to be a market price, thus limiting its pricing sources to published prices</li>
+                    <li>FBC-245 - revised/improved naming conventions and definitions related to properties for dividend dates, over those that were originally in the provisional equity pricing ontology; note that this addresses, at least in part, SEC-117 in addition to FBC-245</li>
+                    <li>FBC-246 – <a href="https://github.com/edmcouncil/fibo/issues/945">GitHub issue #945</a> - Misspelled annotation property in RegistrationAuthorities - corrected</li>
+                    <li>FBC-247 – <a href="https://github.com/edmcouncil/fibo/issues/952">GitHub issue #952</a> - The definition of InstitutionType with respect to the NIC repository creates a disjunction of 19 elements which is not recommended - removed redundant institution type class, which was flagged by pellet lint as having a very large number of disjuncts and is not needed to answer the question, 'what kind of institution is this organization?'</li>
+                </ul>
+
+                <h4>Foundations</h4>
+                <p class="text"><em>Highlights</em></p>
+
+                <p>Most of the work performed in FND this quarter involved integration and/or elimination of informative ontologies that were largely duplicative or unused (and in need of complete refactoring / replacement). Important revisions include: (1) the elimination of classes and properties that duplicated concepts in LCC – all were replaced with the LCC equivalent, (2) revision of the address hierarchy and related concepts and properties, including migration of a number of properties from FBC to FND, elimination of unnecessary subclasses in BE and FBC, and support for the US Postal Service Publication 28, which is a US-specific address standard for addressing used by many countries for shipping, and (3) revision of the definition and hierarchy of asset, to align more closely with US GAAP and IFRS accounting definitions. As a result of the work done this quarter, there are only a handful of informative ontologies remaining in FND (and FIBO in general), 1 related to contracts and a number of transaction-specific ontologies. We anticipate merging/integrating these and a few additional provisional ontologies remaining in FND over the course of Q2 2020.</p>
+
+                <p class="text"></p>
+                <p class="text"><em>Detailed Changes</em></p>
+                <ul>
+                    <li>FND – GitHub Issue #839 - eliminated the informative Risk ontology, which was very small and did not add any useful concepts
+                        <li>FND-228 – An ad hoc schedule entry should be a child of collection constituent - cleans up the top-level hierarchy of FIBO by making ad hoc schedule entry a child of dated collection constituent</li>
+                        <li>FND-271 – <a href="https://github.com/edmcouncil/fibo/issues/812">GitHub issue #812</a> - Merge concepts from PlacesExt with existing released ontologies and eliminate the Ext / informative / provisional ontologies - eliminated three informative places ontologies; integrated concepts used elsewhere in FIBO with other ontologies as appropriate, including adjusting a few definitions</li>
+                        <li>FND-272 – <a href="https://github.com/edmcouncil/fibo/issues/813">GitHub issue #813</a> - Augment the concept of an Asset in the Ownership ontology with tangible asset, intangible asset and so forth and eliminate the asset extensions informative ontology - eliminated some of the more accounting-specific terms but retained those that are needed for valuation of a business; revised definitions to more closely correspond to those published in SEC, US GAAP and IFRS glossaries</li>
+                        <li>FND-272 - further revisions to the definitions for tangible and intangible asset</li>
+                        <li>FND-272 - revised and extended asset-specific concepts in the Ownership ontology to include tangible and intangible assets, and eliminated the informative AssetExtensions ontology in AccountingExt</li>
+                        <li>FND-274 – GitHub issue #819 - Eliminate the remaining accounting EXT informative ontologies and augment existing ontologies with concepts required elsewhere in FIBO - eliminated remaining AccountingExt informative ontologies, and added certain concepts used elsewhere to AccountingEquity (FND) and ClientsAndAccounts (FBC)</li>
+                        <li>FND-274 - revised per reviewer comments, including eliminating explicit account open/close date classes, eliminating redundant restrictions and using isProvidedBy rather than hasPartyInRole to be more precise, adding a date period restriction on income, etc.</li>
+                        <li>FND-275 – <a href="https://github.com/edmcouncil/fibo/issues/828">GitHub issue #828</a> - Merge concepts from Documentation in InformationExt with the existing Documents ontology and eliminate the informative ontology - eliminates concepts from Documentation in InformationExt, including redundant document and report classes, several unneeded terms for various kinds of drafts, written communications, etc.; augments Documents with new concepts for certificate, draft, and notice, and adds the concept of a term sheet to the Contracts ontology; also revised other definitions in Contracts to be ISO 704 conformant using more typical contract terminology in cases where the definitions were muddy</li>
+                        <li>FND-275 - added effective date time stamp, made either a date or date time stamp for both effective and execution date restrictions on contract, added a restriction for contract party to be played by a party to a contract (was missing), refined definitions</li>
+                        <li>FND-275 - eliminated the notion of a draft document, which may require more work to develop a proper document lifecycle and set of related concepts - original, master, draft, etc. for complex documents managed in document management systems</li>
+                        <li>FND-275 - revised conditions precedent --> condition precendent and the definition of hasContractParty as requested</li>
+                        <li>FND-275 - revised the definition of organization and the explanatory note, again, per comments received</li>
+                        <li>FND-275 - simplified contract counterparty to counterparty; cleaned up the definition of counterparty per discussion</li>
+                        <li>FND-276 – GitHub issue #830 - Refine the definition of Organization to replace person or persons with individual or individuals and eliminate subclasses that do not conform to the latest definition - revise the definition of organization as suggested and eliminate unnecessary / unused legitimate organizations ontology to simplify the hierarchy</li>
+                        <li>FND-276 - additional tweaks to the definition of organization, combining the definition provided by the W3C organization ontology with the ISO 6523 definition to suit FIBO community requirements</li>
+                        <li>FND-279 – <a href="https://github.com/edmcouncil/fibo/issues/896">GitHub issue #896</a> - Range of isDomiciledIn should not be Country - loosened constraints on the isDomiciledIn property in FormalOrganizations and revised definitions in that ontology to be ISO 704 compliant; eliminated a more constrained restriction from Corporation, which was made redundant by the change to FormalOrganization.</li>
+                        <li>FND-280 – <a href="https://github.com/edmcouncil/fibo/issues/896">GitHub issue #896</a> - The business dates ontology includes properties whose domains are overly restricted - loosens constraints on business day related properties to eliminate a reasoning bug, eliminates a duplicate individual that was not properly defined, and normalizes definitions to be ISO 704 compliant</li>
+                        <li>FND-281 – <a href="https://github.com/edmcouncil/fibo/issues/902">GitHub issue #902</a> - Eliminate duplicate collection and arrangement classes in FND in favor of those defined in LCC - </li>
+                        <li>-281 - added missing ontologies to prod and related catalog</li>
+                        <li>FND-281 - eliminated an unnecessary restriction on OrganizationIdentificationScheme</li>
+                        <li>FND-281 - eliminated duplicate classifies/isClassifiedBy properties</li>
+                        <li>FND-281 - eliminated duplicates of several properties that were in Relations in FND, duplicating properties in LCC, including denotes, hasDenotation, hasMember, and isMemberOf</li>
+                        <li>FND-281 - eliminated hygiene error - missed reference to Collection</li>
+                        <li>FND-281 - eliminated other hygiene issues in provisional ontologies</li>
+                        <li>FND-281 - initial commit to eliminate duplicate classes with LCC for Arrangement and Collection, Code and CodeSet, and eliminate the FND Codes ontology since it was entirely redundant</li>
+                        <li>FND-281 - replaced duplicate properties from Agents (identifies, isIdentifiedBy, hasName) with the corresponding properties in LCC (which had the same definition and were equivalenced)</li>
+                        <li>FND-281 - replaced identification scheme and identifier from FND with the LCC equivalents, and adjusted restrictions accordingly so that we did not have duplicate restrictions</li>
+                        <li>FND-281 - replaced properties in relations with their equivalents in LCC country representation (hasPart, isPartOf, uses, isUsedBy, etc.)</li>
+                        <li>FND-283 – <a href="https://github.com/edmcouncil/fibo/issues/911">GitHub issue #911</a> - hasDispositionDate should not be functional and probably should not exist - eliminated hasDispositionDate, whose semantics were unclear at best</li>
+                        <li>FND-286 – <a href="https://github.com/edmcouncil/fibo/issues/917">GitHub issue #917</a> - The Locations and Countries ontologies should be merged - merged the concepts that were in the countries ontology into the locations ontology in FND</li>
+                        <li>FND-287 – <a href="https://github.com/edmcouncil/fibo/issues/918">GitHub issue #918</a> - OrganizationalSubUnit should not subclass FormalOrganization - revised the definition of OrganizationSubUnit so that it is a subclass of Organization, rather than FormalOrganization and eliminated references to 'formal' in the textual definition</li>
+                        <li>FND-290 – <a href="https://github.com/edmcouncil/fibo/issues/922">GitHub issue #922</a> - Need to extend addresses to include the specifics for US addresses per the USPS Pub 28 standard - </li>
+                        <li>FND-290 - added the US specific postal addressing ontologies, added a new 'all' file to support loading it; and revised the metadata for the Places module to include these ontologies</li>
+                        <li>FND-290 - adds two new annotation properties for common and preferred designation, which are needed for the US postal address extensions, corrects the representation of 3 individuals for maturity level by declaring them properly as named individuals, updates other definitions to be ISO 704 compliant, and corrects a bug with respect to the modifiedOn annotation to declare the Dublin Core 'modified' property, which is not declared in the OMG's specification metadata and should have been declared herein as a consequence</li>
+                        <li>FND-290 - completes the set of secondary unit designators in the addresses ontology so that they are declared in the same namespace, thus simplifying the US extension that uses them</li>
+                        <li>FND-290 - corrected annotations, hygiene issues</li>
+                        <li>FND-290 - eliminate unnecessary '-SFX' from Key and Trailer, since they are in separate namespaces from the secondary unit designators with the same name; add the US postal address ontologies to the BE North American all file</li>
+                        <li>FND-290 - fixed versionIRI</li>
+                        <li>FND-290 - further loosen restrictions to account for addresses such as '3rd & Main' or named buildings on a street without a number</li>
+                        <li>FND-290 - further simplification of restrictions on street address to include cases where an address reflects a street corner, which may include 2 streets and possibly 2 building numbers</li>
+                        <li>FND-290 - revised top-level about files and catalog to make sure everything was included</li>
+                        <li>FND-290 - simplify restrictions on pre- and post- directionals to allow for more complex situations</li>
+                        <li>FND-291 – <a href="https://github.com/edmcouncil/fibo/issues/934">GitHub issue #934</a> - Invalid triples in 'identity document' - corrects invalid cardinality restriction on identity document</li>
+                        <li>FND-291 - revised restriction to be a qualified cardinality restriction rather than unqualified (bug fix)</li>
+                        <li>FND-292 – <a href="https://github.com/edmcouncil/fibo/issues/937">GitHub issue #937</a> - Unexpected triple in 'qualified measure' - corrected typing on a data range union for qualified measure</li>
+                        <li>FND-294 – <a href="https://github.com/edmcouncil/fibo/issues/948">GitHub issue #948</a> - An additional datatype property is needed for local designations for states and provinces - added property hasLocaleDesignation to Addresses; added the locale designation to US state and territory codes as well as to Canadian province codes, which are specified in USPS Pub 28, although created and managed by the Canadian government in Ottawa</li>
+                        <li>FND-294 - this iteration takes a different approach, eliminating the hasLocaleDesignation property in favor of a region-specific identifier, and then adding the appropriate identifiers for the US states and territories and Canadian provinces</li>
+                        <li>FND-843 – <a href="https://github.com/edmcouncil/fibo/issues/943">GitHub issue #943</a> - correct URI in DebtIssuance</li>
+                        <li>FND-95 – <a href="https://github.com/edmcouncil/fibo/issues/906">GitHub issue #906</a> - Rationalize Addresses - </li>
+                        <li>FND-95 - added abbreviations for the property hasElectronicMailAddress, in addition to those that had already been added to the class.</li>
+                        <li>FND-95 - additional clean-up of addresses; note that these changes allow a person to have a registered address and a primary address, which is important for sole proprietorships</li>
+                        <li>FND-95 - addressed feedback on the virtual places ontology, correcting two prefixes for properties and adjusting definitions</li>
+                        <li>FND-95 - addressed remaining feedback, mainly definition adjustments</li>
+                        <li>FND-95 - clean up of URI in markets and unnecessary imports in examples</li>
+                        <li>FND-95 - eliminated informative postal address ontology in favor of the contents of the revised addresses ontology</li>
+                        <li>FND-95 - further changes to address feedback</li>
+                        <li>FND-95 - modified definitions, eliminated InternationalAddress as a separate class, renamed hasPostcode to hasIndividualPostcode, relaxed some restrictions, added properties for street address components, and dealt with comments in general</li>
+                        <li>FND-95 - moved hasBusinessCenter from business dates to countries, where the BusinessCenter class is defined; changed hasCity to hasCityName, revised other definitions in the countries ontology per reviewer request</li>
+                        <li>FND-95 - preliminary commit for address reconciliation, moving address properties from FBC to FND to their appropriate locations, adding address components to allow for reification of street address elements as needed for some use cases, and adjusting usage across FIBO accordingly</li>
+                        <li>FND-95 - reasserts change to abstract to the current version of the countries ontology, rather than to an older version</li>
+                        <li>FND-95 - removed InternationalAddress and restriction related to scheme, added structure or complex name</li>
+                        <li>FND-95 - revised the abstract for the countries ontology to better reflect what it now contains</li>
+                        <li>FND-95 - simplified reasoning by using comprises rather than hasConstituent and added an explicit property to link a conventional street address to the expanded street address itself</li>
+                </ul>
+
+                <h4>Indices and Indicators</h4>
+                <p class="text"><em>Highlights</em></p>
+
+                <p>Two major updates were completed in Q1 with respect to IND: (1) revision of the strategy for representation of interest rate benchmarks, such as those published as FpML reference interest rates, and (2) significant work towards releasing market indices, including examples such as the Dow Jones Industrial Average (DJIA) and S&P 500, among others. The work was largely the outcome of our use case work on market indices, and represents the first step among many needed in this area. The examples provided allow us to demonstrate how to model the value of an index and its constitutents, whose current stock values and market cap we can now represent. The next step will be to integrate more details about the constituents of an index, including how changes in the value of a given constituent impact the value of the index.</p>
+
+                <p class="text"></p>
+                <p class="text"><em>Detailed Changes</em></p>
+                <ul>
+                    <li>IND-77 – <a href="https://github.com/edmcouncil/fibo/issues/920">GitHub issue #920</a> - Need to represent the values of an index independently from the index definition:</li>
+                    <li>IND-77 - Added the DJIA to the example indices</li>
+                    <li>IND-77 - Revised the approach to issuer short name and FISN representation; added details for IBM Common Stock</li>
+                    <li>IND-77 - added Citigroup common stock to the set of example equity individuals</li>
+                    <li>IND-77 - added JPMorgan Chase - specific equity example individuals</li>
+                    <li>IND-77 - added a restriction on share to indicate the number of shares outstanding</li>
+                    <li>IND-77 - added a value for the DJIA as of 12:15pm, 2020-06-03 in NYC</li>
+                    <li>IND-77 - added hasDateAdded property to financial dates; added restriction on basket constituents that they have at most one date added; revised individuals in equity index example individuals accordingly</li>
+                    <li>IND-77 - added imports</li>
+                    <li>IND-77 - added individuals for Alphabet Inc. Class A and Class C shares as well as Apple Inc common shares</li>
+                    <li>IND-77 - added individuals for Alphabet Inc. and Citicorp LLC as business and legal entities, including LEI registration and ownership relations for Citicorp</li>
+                    <li>IND-77 - added individuals for the common stock of The Coca-Cola Company, The Home Depot, Inc. and The Procter & Gamble Company; corrected target of the restriction on TickerSymbol to be Listing rather than ListedSecurity</li>
+                    <li>IND-77 - added new example individuals specifying legal entities for a number of the stocks that are common to the DJIA and S&P 500</li>
+                    <li> IND-77 - added remaining stocks represented in SEC to the DJIA</li>
+                    <li> IND-77 - adjusted the calculation on the index to more accurately reflect how that is done and moved the comment that was there to an </li>explanatory note on the basket</li>
+                    <li> IND-77 - augmented details for the set of companies we need to represent various instruments as a part of the DJIA and S&P 500 for the IND-EFT-DEV use case; added representation of Wells Fargo Bank, National Association and WFC Holdings, LLC, added a property to the US regulatory agencies ontology for secondary regulator, which is needed for the representation of some institutions including Wells Fargo per the FDIC database</li>
+                    <li> IND-77 - integrated new US example entities, including their business identifiers and LEIs, into BE to provide examples for use in (1) SEC use cases that reflect instrument data about securities issued by these organizations and (2) IND use cases that reference the securities issued by these organizations as a part of the Dow Jones Industrial Average and other indices</li>
+                    <li>IND-77 - minor changes to the equity index examples ontology metadata</li>
+                    <li>IND-77 - revised definition of listed security identifier to reference the listing; added initial consituent of an equity index basket</li>
+                    <li>IND-77 - revised metadata and all / about load files and XML catalog, made equity example individuals release status</li>
+                    <li>IND-77 - revised the definition of a financial instrument identifier (and security identifier) so that it can identify either a security or a listing</li>
+                    <li>IND-90 – <a href="https://github.com/edmcouncil/fibo/issues/861">GitHub issue #861</a> - Update the FpML reference interest rates per the latest published version - </li>
+                    <li>IND-90 - Initial commit, IND-90 preliminary additions for classifiers of interest rates</li>
+                    <li>IND-90 - added the concept of a TimeOfDay in Financial Dates, and of a RateResetTimeOfDay in Debt, to allow representation of the individuals needed for certain FpML rates that are published / reset at a specific time of day</li>
+                    <li>IND-90 - corrected URI prefix on MarketDataProvider</li>
+                    <li>IND-90 - final changes needed to revise the approach to and content of the FpML reference rates, including minor updates to EU agencies to fix / update LEI data, removal of extra Fed Funds class from Interest Rates, additional market data providers, and so forth.</li>
+                    <li>IND-90 - initial commit for the new market data providers ontology and minor changes to the name of the functional entity for the FRB</li>
+                    <li>IND-90 - integrated changes requested and added in new 'all files' created in the process of doing the work on this issue</li>
+                    <li>IND-90 - revised interest rates ontology to better reflect the distinction between a reference interest rate and the benchmark on which it depends (and that classifies the rate), normalize definitions, and merge interest rate publishers to simplify the hierarchy and eliminate circular dependencies; revised quantities and units ontology to allow for dimensionless quantities; eliminated references to interest rate publishers elsewhere</li>
+                    <li>IND-90 - revised metadata to include the new MarketDataProviders ontology</li>
+                    <li>IND-90 - update top level about files to include the new market data providers ontology</li>
+                </ul>
+
+                <h4>Loans</h4>
+                <p class="text"><em>Highlights</em></p>
+
+                <p>This quarter we spent some time to begin to ‘coagulate’ loans, to quote Dennis and Michael Uschold, who worked on the LOAN FCT for many months, ending roughly a year ago. The goal is to take the work to the next level so that it can be released for use by the community. Work completed this quarter was just the starting point, but lays the groundwork for additional ‘coagulation’ and integration over the coming months.</p>
+
+                <p class="text"></p>
+                <p class="text"><em>Detailed Changes</em></p>
+                <ul>
+                    <li>LOAN-146 – <a href="https://github.com/edmcouncil/fibo/issues/884">GitHub issue #884</a> - Circular references among ontologies in LOAN need to be eliminated - Preliminary work to merge provisional loan concepts</li>
+                    <li>LOAN-146 - continued 'coagulation', migrating concepts from LoansBasicTerms to LoanCore, eliminating duplication, simplification where possible, and migration of some terms such as loan purpose to other ontologies</li>
+                    <li>LOAN-146 - fix to subproperty declaration</li>
+                    <li>LOAN-146 - further changes to address feedback in comments</li>
+                    <li>LOAN-146 - further merge of loan application details</li>
+                    <li>LOAN-146 - merged loan collateral into debt with respect to collateral agreement and eliminated other duplicate elements</li>
+                    <li>LOAN-146 - initial pass to eliminate informative loans ontologies, merge some of the content into other ontologies and eliminate circular </li>imports between loan borrowers temporal and load applications temporal</li>
+                    <li>LOAN-146 - merged the valuation ontology contents into the assessments ontology and modified references to it accordingly</li>
+                    <li>LOAN-146 - moved credit rating specific details from LoanCore to CreditRatings; eliminated / merged payment schedule and payment details in LoanCore with the FND PaymentsAndSchedules ontology</li>
+                    <li>LOAN-147 – <a href="https://github.com/edmcouncil/fibo/issues/924">GitHub issue #924</a> - Merge LoanParties and LoanGuaranties into LoanCore and MortgageLoans:</li>
+                    <li>LOAN-147 - additional revisions to address feedback, clean things up a bit more</li>
+                    <li>LOAN-147 - eliminated duplicate terms in LoanParties and LoanGuaranties as well as in LoansAppraisal; merged relevant elements into either LoanCore or MortgageLoans; cleaned up LoanCore to eliminate contact details which are now available in FND</li>
+                </ul>
+
+                <h4>Market Data</h4>
+                <p class="text"><em>Highlights</em></p>
+
+                <p>Several MD provisional ontologies were merged/eliminated this quarter, integrated into the new pricing ontology in FBC. In addition to that, the following issue was resolved:</p>
+
+                <p class="text"></p>
+                <p class="text"><em>Detailed Changes</em></p>
+                <ul>
+                    <li>MD-850 – <a href="https://github.com/edmcouncil/fibo/issues/850">GitHub issue #850</a> - corrected URI in equity pricing (prior to the merge work that eliminated this ontology through the move to instrument pricing)</li>
+                </ul>
+
+                <h4>Securities</h4>
+                <p class="text"><em>Highlights</em></p>
+
+                <p>Most of the work this quarter built on use case work completed at the end of last year, towards demonstrating how to represent individual equities in FIBO. We started with the basic information available in OpenFIGI, and then augmented that with some of the listing information we found in various sources online. The goal of the securities use case is to be able to represent instrument master data in FIBO, for which we now have the most basic details. The examples are now available in the released version of FIBO, and include the set of equities we use in IND to demonstrate how to represent the constituents of the DJIA. Other issues we resolved were primarily things we noticed along the way. </p>
+
+                <p class="text"></p>
+                <p class="text"><em>Detailed Changes</em></p>
+                <ul>
+                    <li>SEC-116 – <a href="https://github.com/edmcouncil/fibo/issues/950">GitHub issue #950</a> - Properties lists and hasIssue seem redundant for class Listing - eliminated the redundancy between lists and hasIssue, retaining lists with a revised definition
+                        <li>SEC-120 – <a href="https://github.com/edmcouncil/fibo/issues/926">GitHub issue #926</a> - 'has estate or death put feature' inconsistent property definitions - removed erroneous subproperty relationship on hasEstateOrDeathPutFeature</li>
+                        <li>SEC-121 – <a href="https://github.com/edmcouncil/fibo/issues/942">GitHub issue #942</a> - Inconsistent usage of 'registers' and 'issues' - corrected punning in the definition of financial service provider definitions that register and issue certain identifiers</li>
+                        <li>SEC-121 - revised approach to indicating who issues and registers which security identifier by moving the restrictions to the identifiers themselves, which provides stronger semantics and is a cleaner approach from an OWL reasoning perspective</li>
+                        <li>SEC-122 – <a href="https://github.com/edmcouncil/fibo/issues/949">GitHub issue #949</a> - Property hasSharesOutstanding should be applied to the Entity - added the concept of an equity issuer; moved the domain of several properties from share to equity issuer and included appropriate restrictions (optional) on equity issuer for those properties; updated equities example individuals accordingly</li>
+                        <li>SEC-123 – GitHub issue #951 - hasIdentity is not the correct property to use to link a basketConstituent to its security - replaced property hasIdentity with involves to indicate securities that are referenced by basket constituents</li>
+                        <li>SEC-74 – <a href="https://github.com/edmcouncil/fibo/issues/864">GitHub issue #864</a> - Demonstrate how to represent individual equities in FIBO SEC </li>
+                        <li>SEC-74 - added hasTag to FISN individuals</li>
+                        <li>SEC-74 - added individuals for Apple common stock listed on the London Stock Exchange to demonstrate how to represent the same stock listed on multiple exchanges per our use case, SEC-02</li>
+                        <li>SEC-74 - added registration schemes that are state-specific, revised definitions in US regulatory agencies to eliminate 'individual representing the'</li>
+                        <li>SEC-74 - changed hasPrice to hasArgument in yield calculations (which are provisional and likely to change significantly)</li>
+                        <li>SEC-74 - corrected error in URI caught in hygiene testing</li>
+                        <li>SEC-74 - fixed URI for Listing in example individuals</li>
+                        <li>SEC-74 - fixed orphaned properties uncovered by hygiene testing (unrelated to this issue but needed fixing)</li>
+                        <li>SEC-74 - normalized / clarified some labels and definitions in the equities example individuals</li>
+                        <li>SEC-74 - normalized all labels and definitions in the US example individuals in FBC/North American Entities</li>
+                        <li>SEC-74 - normalized labels and definitions for the US example entities in BE/LegalEntities/NorthAmericanEntities</li>
+                </ul>
+
                 <h3 id="2019Q4"><strong>2019 Q4</strong></h3>
                 <h4>Foundations</h4>
                 <p class="text"><em>Highlights</em></p>
+
                 <p>Changes this quarter were mainly in support of other domain areas, including clean up of a few definitions and merging/eliminating the informative Time and Math ontologies, which were confusing to users.</p>
-                
-                <p class="text"></p><p class="text"><em>Detailed Changes</em></p>
+
+                <p class="text"></p>
+                <p class="text"><em>Detailed Changes</em></p>
                 <ul>
                     <li>"FND" has been removed from &lt;owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/FND/DatesAndTimes/FinancialDates/"/&gt;</li>
                     <li>FND-225 hasNotionalAmount Expanded explanatory note to describe a wider range of potential uses of this property for different instrument types, based on available sources, and corrected it from wrongly being styled as an editorial note. Restyled the definition to capture the essential intended nature of this relationship, removing the near-circularity in which nominal was substituted for notional in previous drafts.</li>
@@ -49,7 +306,8 @@
                 <h4>Financial Business and Commerce</h4>
                 <p class="text"><em>Highlights</em></p>
                 <p>Changes this quarter include: (a) additional work on the provisional credit ratings and credit events based on use case requirements from IND-EFT-DEV (for credit events) and user feedback, (b) revision of market identifiers (MIC codes) to reflect the 12/6/2019 update by ISO, and (c) miscellaneous bug fixing.</p>
-                <p class="text"></p><p class="text"><em>Detailed Changes</em></p>
+                <p class="text"></p>
+                <p class="text"><em>Detailed Changes</em></p>
                 <ul>
                     <li>FBC-208 - additional clean-up in order to move both the credit events and credit ratings ontologies further along towards release</li>
                     <li>FBC-208 - additional clean-up of definitions and property names</li>
@@ -64,7 +322,8 @@
                 <h4>Indices and Indicators</h4>
                 <p class="text"><em>Highlights</em></p>
                 <p>Changes this quarter were mainly to support the IND-EFT-DEV use case, the goal of which is to support representation of market index data sufficient for analytics by financial institutions that monitor various indices and their make-up internally, that manage various funds based on those indices, and so forth. The revisions include, but are not limited to: adding support for weighted baskets and weighting functions, further work on representing filters for baskets, and preliminary development of examples that FIBO users can leverage to build out internal models for index analysis and management.</p>
-                <p class="text"></p><p class="text"><em>Detailed Changes</em></p>
+                <p class="text"></p>
+                <p class="text"><em>Detailed Changes</em></p>
                 <ul>
                     <li>IND-11 - additional revisions needed to pull the basket indices ontology up to date for IND-EFT-DEV</li>
                     <li>IND-11 - partial revisions to better represent an index per the IND-EFT-DEV use case</li>
@@ -77,7 +336,8 @@
                 <h4>Securities</h4>
                 <p class="text"><em>Highlights</em></p>
                 <p>Changes this quarter were made primarily in support of the SEC-02 use case, the goal of which is to support representation of instrument data for market traded instruments, for regulatory purposes, for decision making, or for portfolio management. The use case specifically targets the subset of security master file data that might be published by an exchange. Revisions include, but are not limited to: differentiating the concept of a security from a listing of that security, representation of additional key properties of listings, cleaning up definitions and terminology that has been superseded by recent work, and adding a preliminary example that we can use for further testing and as the basis for more revisions in Q1.</p>
-                <p class="text"></p><p class="text"><em>Detailed Changes</em></p>
+                <p class="text"></p>
+                <p class="text"><em>Detailed Changes</em></p>
                 <ul>
                     <li>SEC-101 - removed asymmetric relation on isSeniorTo due to reasoning issues</li>
                     <li>SEC-106 - added a property, hasIssue, to link a market listing (exchange traded security) to the more general issue; incorporated an example for Wells Fargo common stock to show how this works, and an 'all file' to facilitate review in Protege</li>
@@ -105,7 +365,8 @@
                 <h4>Infrastructure</h4>
                 <p class="text"><em>Highlights</em></p>
                 <p>Update FIBO viewer to have more functionality from FIBOpedia and FIBO Glossary.</p>
-                <p class="text"></p><p class="text"><em>Detailed Changes</em></p>
+                <p class="text"></p>
+                <p class="text"><em>Detailed Changes</em></p>
                 <ul>
                     <li>INFRA-468 - preserve the search query when opening/closing the searchBox</li>
                     <li>INFRA-468 - there was no action on click in search result link</li>
@@ -131,7 +392,8 @@
                 <h4>Derivatives</h4>
                 <p class="text"><em>Highlights</em></p>
                 <p>Clean up ontologies to remove circular dependencies.</p>
-                <p class="text"></p><p class="text"><em>Detailed Changes</em></p>
+                <p class="text"></p>
+                <p class="text"><em>Detailed Changes</em></p>
                 <ul>
                     <li>DER-63 - eliminated circular dependency between commodity forwards and commodities delivery by merging the two ontologies; integrated commodities with precious metals in FND (#741)</li>
                     <li>DER-63 fibo-der-com-del;CommodityCashCloseout to fibo-der-com-fwd;CommodityCashCloseout</li>
@@ -146,7 +408,8 @@
                     <li>Update MIC codes to correspond to recent ISO 10383 release</li>
                 </ul>
                 <p>This release also included fixes to minor errors in labels and URIs.</p>
-                <p class="text"></p><p class="text"><em>Detailed Changes</em></p>
+                <p class="text"></p>
+                <p class="text"><em>Detailed Changes</em></p>
                 <ul>
                     <li>FBC-226 - Integrate new postal addressing (U.S Publication 28 specific) content into FBC, including but not limited to the government entities for the U.S. Postal Service</li>
                     <li>FBC-226 - added international address, labels in Spanish in some cases, details for a Puerto Rico address (needs additional supplemental address components for condominiums, certain other residential details), details for some addresses other than conventional addresses (e.g., rural route, highway contract route, etc.)</li>
@@ -173,7 +436,8 @@
                     <li>Updates to simplify Contracts</li>
                     <li>Adjustments to correspond with requirements from Ratings</li>
                 </ul>
-                <p class="text"></p><p class="text"><em>Detailed Changes</em></p>
+                <p class="text"></p>
+                <p class="text"><em>Detailed Changes</em></p>
                 <ul>
                     <li>FND-104 in FND/Utililties/Values.rdf change all occurrences of the hasValue FIBO property to hasDataValue and update label and definition references; in FND/TimeExt/Time.rdf change one reference to hasValue to hasDataValue; in LOAN/LoanExt/LoanGeneric change 2 references to hasValue to hasDataValule</li>
                     <li>FND-104 in FND/Utilities/Values.rdf renamed hasValue to hasDataValue</li>
@@ -197,7 +461,8 @@
                 <h4>Securities</h4>
                 <p class="text"><em>Highlights</em></p>
                 <p>The main update to Securities this quarter is the addition of Bonds. Other changes were in support of this major update.</p>
-                <p class="text"></p><p class="text"><em>Detailed Changes</em></p>
+                <p class="text"></p>
+                <p class="text"><em>Detailed Changes</em></p>
                 <ul>
                     <li>SEC-103 - moved a number of concepts to ABS from Bonds that were more appropriate for structured instruments</li>
                     <li>SEC-103 - revised properties to eliminate duplicates, revise names to be verbs, added/revised definitions as appropriate</li>
@@ -217,12 +482,13 @@
                 <p class="text"><em>Highlights</em></p>
                 <p>In 2019 Q2, we released a new web site. It still points to the same products, but now with a styling and look-and-feel that is more in alignment with the main EDMC website.</p>
                 <p>&nbsp;</p>
-                
+
                 <h3 id="2019Q2"><strong>2019 Q2</strong></h3>
                 <h4>Business Entities</h4>
                 <p class="text"><em>Highlights</em></p>
                 <p>This quarter&rsquo;s BE updates were primarily (1) migrate remaining, relevant content that was originally in informative BE ontologies to various other ontologies (and thus eliminate the remaining obsolete informative ontologies), and (2) fix reasoning errors related to government entities.</p>
-                <p class="text"></p><p class="text"><em>Detailed Changes</em></p>
+                <p class="text"></p>
+                <p class="text"><em>Detailed Changes</em></p>
                 <ul>
                     <li>BE-202 - eliminated references to BE/FunctionalEntitiesExt ontologies now that their contents have been merged into other ontologies as appropriate</li>
                     <li>BE-202 - integrated content from informative ontologies in BE/FunctionalEntitiesExt into the ontologies where those concepts were used</li>
@@ -235,7 +501,8 @@
                     <li>moving certain individuals around to improve modularity and reasoning performance, and</li>
                     <li>cleaning up the logic related to baskets and registries as indicated through additional testing.</li>
                 </ul>
-                <p class="text"></p><p class="text"><em>Detailed Changes</em></p>
+                <p class="text"></p>
+                <p class="text"><em>Detailed Changes</em></p>
                 <ul>
                     <li>FBC-103 - added the definition of exempt security, which is required for some of the definitions in the bonds and traded short-term debt ontologies, to financial instruments and made a registered security disjoint with exempt security (#717)</li>
                     <li>FBC-221 - addressed feedback received in GitHub comments</li>
@@ -252,7 +519,8 @@
                     <li>the addition of a new combined date time datatype that is useful for mapping knowledge graphs to back-end data stores whose representation of dates and times is inconsistent, and</li>
                     <li>the addition of identifiers associated with certain identity documents in support of data privacy and knowledge graph integration/interoperability use cases.</li>
                 </ul>
-                <p class="text"></p><p class="text"><em>Detailed Changes</em></p>
+                <p class="text"></p>
+                <p class="text"><em>Detailed Changes</em></p>
                 <ul>
                     <li>FND-240 - loosens the restrictions on certain date time properties to use the new combined date time datatype or its equivalent and as appropriate for representation of acquisition dates and times, sale dates and times, any member of a dated collection, such as a series of dates related to prices in a yield curve, etc.</li>
                     <li>FND-240 - loosens the restrictions on certain date time properties</li>
@@ -287,7 +555,8 @@
                     <li>migration of basic statistical concepts from IND to FND to enable wider use, and</li>
                     <li>work towards support for time series data, which is expected to be completed during Q3, to facilitate representation of versioned, time series indicators, market rates, and other reference data.</li>
                 </ul>
-                <p class="text"></p><p class="text"><em>Detailed Changes</em></p>
+                <p class="text"></p>
+                <p class="text"><em>Detailed Changes</em></p>
                 <ul>
                     <li>IND-24 - augmented the definition of statistical measure as discussed by the IND FCT and migrated all of the general statistics concepts from EconomicIndicators to FND/Utilities/Analytics (created/revised in FND, eliminated references to the quantities and units ontology to avoid circular dependencies and deprecated in IND)</li>
                     <li>IND-24 - augmented the definition of statistical measure</li>
@@ -303,7 +572,8 @@
                 <h4>Securities</h4>
                 <p class="text"><em>Highlights</em></p>
                 <p>Most of the work this quarter built on work completed in Q1 to further simplify and clean up the bonds ontology in preparation for review and release in Q3 and to integrate / eliminate the last two informative ontologies remaining in the Securities hierarchy.</p>
-                <p class="text"></p><p class="text"><em>Detailed Changes</em></p>
+                <p class="text"></p>
+                <p class="text"><em>Detailed Changes</em></p>
                 <ul>
                     <li>SEC-82 - eliminated remaining references to the provisional Values ontology; further simplified the notion of a bond registrar</li>
                     <li>SEC-82 - further simplification, normalization of definitions with added explanatory notes, etc.</li>
@@ -315,14 +585,14 @@
                 <h4>Infrastructure</h4>
                 <p class="text"><em>Highlights</em></p>
                 <p>In 2019 Q2, we released a new web site. It still points to the same products, but now with a styling and look-and-feel that is more in alignment with the main EDMC website.</p>
-                
 
                 <h3 id="2019Q1"><strong>2019 Q1</strong></h3>
                 <p><em>Full change record</em></p>
                 <h4>Business Entities</h4>
                 <p class="text"><em>Highlights</em></p>
                 <p>bug fixes and continued simplification of the legal entities hierarchy, enabling better support of the GLEIF LEI data</p>
-                <p class="text"></p><p class="text"><em>Detailed Changes</em></p>
+                <p class="text"></p>
+                <p class="text"><em>Detailed Changes</em></p>
                 <ul>
                     <li>BE-196 - eliminate duplicate restriction on Shareholder</li>
                     <li>BE-197 - replaced union of legal entity and formal organization with formal organization</li>
@@ -336,7 +606,8 @@
                 <ul>
                     <li>bug fixes, minor change to the way USIs are interpreted</li>
                 </ul>
-                <p class="text"></p><p class="text"><em>Detailed Changes</em></p>
+                <p class="text"></p>
+                <p class="text"><em>Detailed Changes</em></p>
                 <ul>
                     <li>DER-52 - modified the parent for USI to financial instrument identifier, added a restriction on Swap that it optionally has a USI, since they apply primarily in the US</li>
                     <li>DER-60 - replaced references to the TimeExt ontology with those from the FinancialDates ontology, and cleaned up master agreement to define what early termination is rather referencing early termination date (which was not defined and used the TimeExt ontology for date determination agent)</li>
@@ -353,7 +624,8 @@
                     <li>revised identifier strategy for functional entities,</li>
                     <li>revision of a number of properties and restrictions, especially related to names, to allow for multi-lingual representation including language codes.</li>
                 </ul>
-                <p class="text"></p><p class="text"><em>Detailed Changes</em></p>
+                <p class="text"></p>
+                <p class="text"><em>Detailed Changes</em></p>
                 <ul>
                     <li>FBC-143 - Revised registration authorities to loosen some of the restrictions on registrar, allow either a registration authority or registrar to actually register something, added properties to identify the registration authority independently of the registrar, with inverses, and revised the US examples related to IIN and RTN to demonstrate that</li>
                     <li>FBC-196 - added new individuals for GLEIF LEI entity expiration reason and validation level; revised properties to use these individuals and deprecated the related datatypes; revised individuals in North American and European jurisdictions accordingly</li>
@@ -399,7 +671,8 @@
                     <li>addition of a new combined date / date time / date time stamp datatype that can be used as needed to map to inconsistent data and support time stamps that include milliseconds or smaller increments,</li>
                     <li>the introduction of new, provisional assessments and ratings content</li>
                 </ul>
-                <p class="text"></p><p class="text"><em>Detailed Changes</em></p>
+                <p class="text"></p>
+                <p class="text"><em>Detailed Changes</em></p>
                 <ul>
                     <li>FND-230 Make hasMaturityLevel an AnnotationProperty.</li>
                     <li>FND-232 - made independent party a child of autonomous agent; made person and organization direct subclasses of independent party - to assert the semantics previously only inferred</li>
@@ -412,7 +685,8 @@
                 <h4>Loans</h4>
                 <p class="text"><em>Highlights</em></p>
                 <p>minor bug fixes only</p>
-                <p class="text"></p><p class="text"><em>Detailed Changes</em></p>
+                <p class="text"></p>
+                <p class="text"><em>Detailed Changes</em></p>
                 <ul>
                     <li>LOAN-144 - corrected URI for metadata ontology in header declarations</li>
                     <li>LOAN-145 - replace references to the informative TimeExt ontology with those in the released FinancialDates ontology, as appropriate</li>
@@ -420,7 +694,8 @@
                 <h4>Securities</h4>
                 <p class="text"><em>Highlights</em></p>
                 <p>bug fixes and clean up of several provisional debt-specific ontologies in preparation for release</p>
-                <p class="text"></p><p class="text"><em>Detailed Changes</em></p>
+                <p class="text"></p>
+                <p class="text"><em>Detailed Changes</em></p>
                 <ul>
                     <li>SEC-69 - move the restriction from discounted commercial paper up to commercial paper and delete the two unnecessary subclasses per FCT discussion of 2/4/2019</li>
                     <li>SEC-76 - based on usage of exercise conventions across FIBO, separated the notion of the convention from the contractual terms that specify a given convention so that both concepts are now part of this ontology</li>
@@ -436,7 +711,8 @@
                 <h4>Infrastructure</h4>
                 <p class="text"><em>Highlights</em></p>
                 <p>2019Q1 marks a sea-change in the FIBO publication process, whereby all publishing activities have been migrated to docker. This makes the process more portable, repeatable, and simplifies testing. .</p>
-                <p class="text"></p><p class="text"><em>Detailed Changes</em></p>
+                <p class="text"></p>
+                <p class="text"><em>Detailed Changes</em></p>
                 <ul>
                     <li>Addition of "quickstart" products that allow FIBO to be read in a single file.</li>
                     <li>rdf-toolkit can now work on whole directories</li>
@@ -445,7 +721,6 @@
                     <li>New XSLT to create CSV file of FIBOpedia content with a row per ontology and columns for Domain label, Module label, Ontology label, Ontology abstract, Maturity</li>
                     <li>Add a file that publishes official namespace prefixes for FIBO</li>
                 </ul>
-                
 
                 <h3 id="2018Q4"><strong>2018 Q4</strong></h3>
                 <h4>Business Entities</h4>
@@ -455,7 +730,8 @@
                     <li>Simplified the hierarchies involving formal organizations and legal entities substantially, including deprecating 'formally constituted organization' and 'juridical person', and adding the latter as a synonym of 'legal entity'</li>
                     <li>Clarified the distinction between a natural person and legally competent natural person</li>
                 </ul>
-                <p class="text"></p><p class="text"><em>Detailed Changes</em></p>
+                <p class="text"></p>
+                <p class="text"><em>Detailed Changes</em></p>
                 <ul>
                     <li>BE-195 - moved the restriction that an entity may be identified by a legal entity identifier from LEIEligibleEntity to LegalPerson and deprecated LEIEligibleEntity as a part of organization hierarchy simplification</li>
                     <li>BE-181 - replaced 'natural person' with 'legally competent natural person' across ontologies where that concept was required</li>
@@ -488,7 +764,8 @@
                 <ul>
                     <li>Primary changes this quarter in DER were bug fixes.</li>
                 </ul>
-                <p class="text"></p><p class="text"><em>Detailed Changes</em></p>
+                <p class="text"></p>
+                <p class="text"><em>Detailed Changes</em></p>
                 <ul>
                     <li>DER-59 - eliminated improperly defined valuationTime property which is not referenced by anything</li>
                     <li>DER-59 - eliminated the extraneous property for relativeNotionalAmount, as the class that it was used on already had a restriction on notional amount</li>
@@ -511,7 +788,8 @@
                     <li>Adding support for NAICS and SIC industry classification codes (high-level model only at this point without reference data)</li>
                     <li>Miscellaneous bug fixing</li>
                 </ul>
-                <p class="text"></p><p class="text"><em>Detailed Changes</em></p>
+                <p class="text"></p>
+                <p class="text"><em>Detailed Changes</em></p>
                 <ul>
                     <li>FBC-209 - corrected duplicate Deutsche Bank Systemmatic Internalizer to add a suffix on the one in London</li>
                     <li>FBC-209 - revised MIC codes (generated) as of December 12, 2018</li>
@@ -572,7 +850,8 @@
                     <li>Deprecation of the nameOrigin annotation</li>
                     <li>Miscellaneous bug fixing</li>
                 </ul>
-                <p class="text"></p><p class="text"><em>Detailed Changes</em></p>
+                <p class="text"></p>
+                <p class="text"><em>Detailed Changes</em></p>
                 <ul>
                     <li>FND-227 - eliminated the domain of hasCurrency to correct reasoning issues and revised the definition accordingly</li>
                     <li>FND-223 changes to Agreement and FND-224 changes to Contract. Includes changes to Agreement in response to comments in FND-335 on Contract. All changes are to annotations only.</li>
@@ -587,7 +866,8 @@
                 <h4>Loans</h4>
                 <p class="text"><em>Highlights</em></p>
                 <p>Primary changes this quarter in LOAN involved staging with respect to some of the older LOAN provisional content in preparation for further integration work in 2019.</p>
-                <p class="text"></p><p class="text"><em>Detailed Changes</em></p>
+                <p class="text"></p>
+                <p class="text"><em>Detailed Changes</em></p>
                 <ul>
                     <li>LOAN-138 Move Informative LOAN ontologies to a new module LoanExt</li>
                     <li>Generally replace unofficial use of fibo-ln- abbreviation for the domain by official fibo-loan-</li>
@@ -606,7 +886,8 @@
                     <li>Integrated 6 SEC/Debt/Bonds ontologies into a single coherent ontology, eliminating circular references between them</li>
                     <li>Eliminated redundant content in SEC/Debt/DebtFoundations and SEC/Debt/MoneyMarkets and moved the resulting ontologies, including 'traded short-term debt' and 'exercise conventions' to the SEC/Debt level and moved remaining concepts that were not redundant into the SEC/Debt/DebtInstruments ontology or to other provisional ontologies under LOAN, DER, or SEC/Debt/AssetBackedSecurities</li>
                 </ul>
-                <p class="text"></p><p class="text"><em>Detailed Changes</em></p>
+                <p class="text"></p>
+                <p class="text"><em>Detailed Changes</em></p>
                 <ul>
                     <li>SEC-75 - clean up some of the labels and definitions, add missing definitions (not all, just some per the concepts relevant to FINRA), bridge a few properties to the proper concepts in the debt instruments ontology, etc.</li>
                     <li>SEC-75 - correct label and definition on has scheduled maturity date</li>
@@ -674,7 +955,6 @@
                     <li>INFRA-114 Add hygeine test for bad characters</li>
                     <li>INFRA-114 Change smart quotes and dashes to dumb ones.</li>
                 </ul>
-                
 
                 <h3 id="2018Q3"><strong>2018 Q3</strong></h3>
                 <p>Quarterly release. Because of the interim release (omg-finance-18-08-04) in August, this release is releatively brief.</p>
@@ -893,7 +1173,6 @@
                     <li>Merged the 2 classes from CIVFundsExt/CIVClassification into the main CIV ontology and deleted the CIVFundsExt module.</li>
                     <li>Remove Metadata imports from files in BE,FND and FBC. Tidy up extraneous MetadataArrangements import in ClassificationSchemes.</li>
                 </ul>
-                
 
                 <h3 id="2018Q2"><strong>2018 Q2</strong></h3>
                 <p class="text"><em>Highlights</em></p>
@@ -1073,7 +1352,6 @@
                     <li>SEC-51 - eliminated securities tax treatment, which was tiny, overly simplified, and not very useful in general once references to it were eliminated</li>
                     <li>SEC-43 - eliminated numerous duplicate concepts and properties from LoansEvents and replaced them with their equivalents from released ontologies</li>
                 </ul>
-                
 
                 <h3 id="2018Q1"><strong>2018 Q1</strong></h3>
                 <p class="text"><em>Highlights</em></p>
@@ -1331,7 +1609,6 @@
                     <li>FBC-160 - fix prefix for hasName with respect to hasRegistryName</li>
                     <li>FBC-160 - integrate changes responding to comments from Pete and Jeff Braswell on requirements for and implementation of the LEI-CDF v2.1 (incomplete but closer - address changes and testing are todo for Level 1 data, also to investigate relationships)</li>
                 </ul>
-                
 
                 <h3 id="2017Q4"><strong>2017 Q4</strong></h3>
                 <h4>Business Entities (BE)</h4>
@@ -1389,7 +1666,7 @@
         extends: helpers,
         name: 'FIBOCommunities',
         components: {},
-        mounted(){
+        mounted() {
             var self = this;
             window.onscroll = function() {
                 if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
@@ -1402,8 +1679,8 @@
         methods: {
             outboundClick,
             outboundLinkClick,
-            topBtnClick(event){
-                window.scrollTo(0,0);
+            topBtnClick(event) {
+                window.scrollTo(0, 0);
             }
         },
     };
@@ -1429,7 +1706,7 @@
         border-radius: 10px;
         font-size: 18px;
     }
-
+    
     .top-button:hover {
         background-color: #707070;
     }
