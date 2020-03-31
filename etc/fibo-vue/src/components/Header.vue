@@ -111,7 +111,7 @@
               data-toggle="dropdown"
               aria-haspopup="true"
               aria-expanded="false"
-            >EXTERNAL</a>
+            >PARTNERS</a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <router-link class="dropdown-item" replace :to="{ path: router('schema') }">FIBO SCHEMA.ORG</router-link>
               <router-link class="dropdown-item" replace :to="{ path: router('FIB-DM') }">FIB-DM</router-link>
