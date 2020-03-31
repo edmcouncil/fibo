@@ -54,16 +54,20 @@
     <ul>
         <li>May 5-6</li>
         <li>11a – 5p EDT / 8a – 2p PDT</li>
+        <li><button type="button" onclick="window.location.href = 'https://edmcouncil.org/events/EventDetails.aspx?id=1359357&group=';" style="background-color: #e78747;"><b>REGISTER</b></button></li>
+
     </ul>
     <li><b>APAC</b></li>
         <ul>
         <li>May 12-13</li>
         <li>8a - 2p SGT / 10a – 4p AEDT</li>
+        <li><button type="button" onclick="window.location.href = 'https://edmcouncil.org/events/EventDetails.aspx?id=1359364&group=';" style="background-color: #e78747;"><b>REGISTER</b></button></li>
     </ul>
     <li><b>UK / EUROPE / INDIA</b></li>
         <ul>
         <li>May 19-20</li>
         <li>UK 8.30a - 2.30p GMT / Europe 9.30a - 3.30p CET / India 1 - 7p IST</li>
+        <li><button type="button" onclick="window.location.href = 'https://edmcouncil.org/events/EventDetails.aspx?id=1359363&group=';" style="background-color: #e78747;"><b>REGISTER</b></button></li>
     </ul>
 </ul>
 
