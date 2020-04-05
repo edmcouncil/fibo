@@ -3,7 +3,8 @@
 	<!ENTITY dct "http://purl.org/dc/terms/">
 	<!ENTITY fibo-der-der-cof "https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/OptionContractsOnFutures/">
 	<!ENTITY fibo-der-der-opt "https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Options/">
-	<!ENTITY fibo-der-etd-fut "https://spec.edmcouncil.org/fibo/ontology/DER/ExchangeTradedDerivatives/Futures/">
+	<!ENTITY fibo-der-drc-bsc "https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/DerivativesBasics/">
+	<!ENTITY fibo-fbc-fi-fi "https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
 	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
 	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
@@ -16,7 +17,8 @@
 	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fibo-der-der-cof="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/OptionContractsOnFutures/"
 	xmlns:fibo-der-der-opt="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Options/"
-	xmlns:fibo-der-etd-fut="https://spec.edmcouncil.org/fibo/ontology/DER/ExchangeTradedDerivatives/Futures/"
+	xmlns:fibo-der-drc-bsc="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/DerivativesBasics/"
+	xmlns:fibo-fbc-fi-fi="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -28,50 +30,28 @@
 	<owl:Ontology rdf:about="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/OptionContractsOnFutures/">
 		<rdfs:label xml:lang="en">OptionContractsOnFutures</rdfs:label>
 		<dct:abstract>Over the counter option contracts giving the holder to purchase or sell a given futures contract at the allowed times.</dct:abstract>
+		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
+		<sm:contentLanguage rdf:resource="http://www.w3.org/standards/techs/owl#w3c_all"/>
+		<sm:copyright>Copyright (c) 2015-2020 EDM Council, Inc.</sm:copyright>
 		<sm:fileAbbreviation>fibo-der-der-cof</sm:fileAbbreviation>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/DerivativesBasics/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Options/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/ExchangeTradedDerivatives/Futures/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/OptionContractsOnFutures/"/>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Provisional"/>
 	</owl:Ontology>
 	
-	<owl:Class rdf:about="&fibo-der-der-cof;FuturesContractUnderlying">
-		<rdfs:subClassOf rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/DerivativesBasics/Underlier"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-der-cof;identity"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-etd-fut;FutureInstrument"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">futures contract underlying</rdfs:label>
-		<skos:definition xml:lang="en">An underlying which is a futures contract.</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">(not an underlying OF a future instrument)</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-der-der-cof;OTCContractOnFuture">
 		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;OTCOptionContract"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-der-cof;hasUnderlying"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-der-cof;FuturesContractUnderlying"/>
+				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-fi;Future"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">o t c contract on future</rdfs:label>
-		<skos:definition xml:lang="en">An option contract with an underlying futures contract.</skos:definition>
+		<rdfs:label xml:lang="en">over-the-counter contract on future</rdfs:label>
+		<skos:definition xml:lang="en">option contract with an underlying futures contract</skos:definition>
 	</owl:Class>
-	
-	<owl:ObjectProperty rdf:about="&fibo-der-der-cof;hasUnderlying">
-		<rdfs:label xml:lang="en">has underlying</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-der-cof;OTCContractOnFuture"/>
-		<rdfs:range rdf:resource="&fibo-der-der-cof;FuturesContractUnderlying"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-der-der-cof;identity">
-		<rdfs:label xml:lang="en">identity</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-der-cof;FuturesContractUnderlying"/>
-		<rdfs:range rdf:resource="&fibo-der-etd-fut;FutureInstrument"/>
-	</owl:ObjectProperty>
 
 </rdf:RDF>

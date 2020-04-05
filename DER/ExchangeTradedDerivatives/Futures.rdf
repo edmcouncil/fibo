@@ -17,6 +17,7 @@
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
 	<!ENTITY fibo-ind-ei-ei "https://spec.edmcouncil.org/fibo/ontology/IND/EconomicIndicators/EconomicIndicators/">
 	<!ENTITY fibo-sec-dbt-bnd "https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/Bonds/">
+	<!ENTITY fibo-sec-dbt-dbti "https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtInstruments/">
 	<!ENTITY fibo-sec-dbt-tstd "https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/TradedShortTermDebt/">
 	<!ENTITY fibo-sec-eq-eq "https://spec.edmcouncil.org/fibo/ontology/SEC/Equities/EquityInstruments/">
 	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
@@ -44,6 +45,7 @@
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
 	xmlns:fibo-ind-ei-ei="https://spec.edmcouncil.org/fibo/ontology/IND/EconomicIndicators/EconomicIndicators/"
 	xmlns:fibo-sec-dbt-bnd="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/Bonds/"
+	xmlns:fibo-sec-dbt-dbti="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtInstruments/"
 	xmlns:fibo-sec-dbt-tstd="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/TradedShortTermDebt/"
 	xmlns:fibo-sec-eq-eq="https://spec.edmcouncil.org/fibo/ontology/SEC/Equities/EquityInstruments/"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
@@ -54,9 +56,12 @@
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema#">
 	
 	<owl:Ontology rdf:about="https://spec.edmcouncil.org/fibo/ontology/DER/ExchangeTradedDerivatives/Futures/">
-		<rdfs:label xml:lang="en">Futures</rdfs:label>
+		<rdfs:label xml:lang="en">Futures Ontology</rdfs:label>
 		<dct:abstract>Futures are functionally the same as forwards on the over the counter market, but are marketed via futures exchanges. Includes a wide range of asset types (instruments, indices, foreign exchange, rates, commodities etc.) and the kinds of futures that are based on these.
 		Note that some of the contract types are named similarly to their OTC equivalents, such as bond option.</dct:abstract>
+		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
+		<sm:contentLanguage rdf:resource="http://www.w3.org/standards/techs/owl#w3c_all"/>
+		<sm:copyright>Copyright (c) 2015-2020 EDM Council, Inc.</sm:copyright>
 		<sm:fileAbbreviation>fibo-der-etd-fut</sm:fileAbbreviation>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/Publishers/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/AssetDerivatives/AssetDerivatives/"/>
@@ -75,6 +80,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/EconomicIndicators/EconomicIndicators/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/Bonds/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtInstruments/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/TradedShortTermDebt/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Equities/EquityInstruments/"/>
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/ExchangeTradedDerivatives/Futures/"/>
@@ -107,7 +113,7 @@
 	
 	<owl:Class rdf:about="&fibo-der-etd-fut;CommodityFuture">
 		<rdfs:subClassOf rdf:resource="&fibo-der-com-ctr;CommodityDerivativeContract"/>
-		<rdfs:subClassOf rdf:resource="&fibo-der-etd-fut;FutureInstrument"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;Future"/>
 		<rdfs:label xml:lang="en">commodity future</rdfs:label>
 		<skos:definition xml:lang="en">A futures contract tied to the movement of a particular commodity. This enables contract buyers to buy a specific amount of a commodity at a specific price on a particular date in the future.</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">The price of the contract is determined using the &quot;Open Outcry&quot; system on the floor of a commodity exchange such as the Chicago Board of Trade or the Commodity Exchange in New York. There are commodity futures contracts based on meats such as cattle and pork bellies; grains such as corn, oats, soybeans and wheat; metals such as gold, silver and platinum; and energy products such as heating oil, natural gas and crude oil.</fibo-fnd-utl-av:explanatoryNote>
@@ -128,7 +134,7 @@
 	
 	<owl:Class rdf:about="&fibo-der-etd-fut;EquityFuture">
 		<rdfs:subClassOf rdf:resource="&fibo-der-ass-ass;EquityDerivativeContract"/>
-		<rdfs:subClassOf rdf:resource="&fibo-der-etd-fut;FinancialFuture"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;Future"/>
 		<rdfs:label xml:lang="en">equity future</rdfs:label>
 		<skos:definition xml:lang="en">A Futures instrument which is based on an equity security or securities, specifically a publicly issued and traded share.</skos:definition>
 	</owl:Class>
@@ -146,64 +152,9 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-etd-fut;EquityFutureStandardizedTerms">
-		<rdfs:subClassOf rdf:resource="&fibo-der-etd-fut;FinancialFutureStandardizedTerms"/>
+		<rdfs:subClassOf rdf:resource="&fibo-der-etd-fut;StandardizedFuturesTerms"/>
 		<rdfs:label xml:lang="en">equity future standardized terms</rdfs:label>
 		<skos:definition xml:lang="en">A set of standard terms for equity futures contracts, as set out by the derivatives exchange. Equity Futures contracts issued by and traded on that exchange will take on these terms or override them.</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-etd-fut;FinancialFuture">
-		<rdfs:subClassOf rdf:resource="&fibo-der-etd-fut;FutureInstrument"/>
-		<rdfs:label xml:lang="en">financial future</rdfs:label>
-		<skos:definition xml:lang="en">A futures contract based on a financial instrument.</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Typically a financial futures contract is based on an underlying debt instrument. Examples of instruments underlying financial futures contracts include Treasury bills, Treasury notes, Government National Mortgage Association (Ginnie Mae) pass-throughs, foreign currencies, and certificates of deposit. Such contracts usually move under the influence of interest rates. As rates rise, contracts fall in value; as rates fall, contracts gain in value. Trading in these contracts is governed in the U.S. by the federal Commodities Futures Trading Commission. Traders use these futures to speculate on the direction of interest rates. Financial institutions use them to hedge financial portfolios against adverse fluctuations in interest rates.</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-etd-fut;FinancialFutureStandardizedTerms">
-		<rdfs:subClassOf rdf:resource="&fibo-der-etd-fut;StandardizedFuturesTerms"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-etd-fut;FinancialFuture"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">financial future standardized terms</rdfs:label>
-		<skos:definition xml:lang="en">A set of standard terms for financial futures contracts, as set out by the derivatives exchange. Financial Futures contracts issued by and traded on that exchange will take on these terms or override them.</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-etd-fut;FutureInstrument">
-		<rdfs:subClassOf rdf:resource="&fibo-der-der-fwd;ForwardContract"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-drc-bsc;Underlier"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-etd-fut;hasSettlementArrangement"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-drc-bsc;DeliveryTerms"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-etd-fut;pricingDeterminedBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-etd-std;DerivativesPriceDeterminationMethod"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isProvidedBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-etd-fut;FuturesTradingAccountProvider"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="https://spec.edmcouncil.org/fibo/ontology/MD/DerivativesTemporal/FuturesTemporal/hasAccountHolder"/>
-				<owl:someValuesFrom rdf:resource="https://spec.edmcouncil.org/fibo/ontology/MD/DerivativesTemporal/FuturesTemporal/FuturesTradingAccountHolder"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">future instrument</rdfs:label>
-		<skos:definition xml:lang="en">Agreement to buy or sell a specific amount of a commodity, a currency or a financial instrument at a particular price on a stipulated future date. A futures contract obligates the buyer to purchase the underlying commodity, currency or financial instrument and the seller to sell it unless the contract is sold to another before settlement date which may happen if a trader waits to take a profit or cut a loss. Further notes: This contrasts with options trading in which the option buyer may choose whether or not to exercise the option by the exercise date. Unlike options, futures convey an obligation to buy. The risk to the holder is unlimited, and because the payoff pattern is symmetrical, the risk to the seller is unlimited as well. Dollars lost and gained by each party on a futures contract are equal and opposite. In other words, futures trading is a zero-sum game. Futures contracts are forward contracts, meaning they represent a pledge to make a certain transaction at a future date. The exchange of assets occurs on the date specified in the contract. Futures are distinguished from generic forward contracts in that they contain standardized terms, trade on a formal exchange, are regulated by overseeing agencies, and are guaranteed by clearinghouses. Also, in order to insure that payment will occur, futures have a margin requirement that must be settled daily. Finally, by making an offsetting trade, taking delivery of goods, or arranging for an exchange of goods, futures contracts can be closed. Hedgers often trade futures for the purpose of keeping price risk in check. Definition origin: Barrons, adapted by EDMC SMER.</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-etd-fut;FuturesCommodityUnderlying">
@@ -269,19 +220,19 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-etd-fut;IndexFuture">
-		<rdfs:subClassOf rdf:resource="&fibo-der-etd-fut;FinancialFuture"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;Future"/>
 		<rdfs:label xml:lang="en">index future</rdfs:label>
 		<skos:definition xml:lang="en">A futures contract on a stock or financial index. For each index there may be a different multiple for determining the price of the futures contract.</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-etd-fut;IndexFutureStandardizedTerms">
-		<rdfs:subClassOf rdf:resource="&fibo-der-etd-fut;FinancialFutureStandardizedTerms"/>
+		<rdfs:subClassOf rdf:resource="&fibo-der-etd-fut;StandardizedFuturesTerms"/>
 		<rdfs:label xml:lang="en">index future standardized terms</rdfs:label>
 		<skos:definition xml:lang="en">A set of standard terms for index futures contracts, as set out by the derivatives exchange. Index Futures contracts issued by and traded on that exchange will take on these terms or override them.</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-etd-fut;InterestRateFuture">
-		<rdfs:subClassOf rdf:resource="&fibo-der-etd-fut;FinancialFuture"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;Future"/>
 		<rdfs:label xml:lang="en">interest rate future</rdfs:label>
 		<skos:definition xml:lang="en">An Interest Rate Future is a futures contract with an interest-bearing instrument as the underlying asset.</skos:definition>
 	</owl:Class>
@@ -291,7 +242,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasIdentity"/>
-				<owl:someValuesFrom rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtInstruments/TradableDebtInstrument"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-dbti;TradableDebtInstrument"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">interest rate future debt underlying</rdfs:label>
@@ -299,7 +250,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-etd-fut;InterestRateFutureStandardizedTerms">
-		<rdfs:subClassOf rdf:resource="&fibo-der-etd-fut;FinancialFutureStandardizedTerms"/>
+		<rdfs:subClassOf rdf:resource="&fibo-der-etd-fut;StandardizedFuturesTerms"/>
 		<rdfs:label xml:lang="en">interest rate future standardized terms</rdfs:label>
 		<skos:definition xml:lang="en">A set of standard terms for interest rate futures contracts, as set out by the derivatives exchange. Interest Rate Futures contracts issued by and traded on that exchange will take on these terms or override them.</skos:definition>
 	</owl:Class>
@@ -383,7 +334,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-etd-fut;FutureInstrument"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-fi;Future"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">standardized futures terms</rdfs:label>
@@ -396,7 +347,7 @@
 		<rdfs:domain>
 			<owl:Class>
 				<owl:unionOf rdf:parseType="Collection">
-					<rdf:Description rdf:about="&fibo-der-etd-fut;FutureInstrument">
+					<rdf:Description rdf:about="&fibo-fbc-fi-fi;Future">
 					</rdf:Description>
 					<rdf:Description rdf:about="&fibo-der-etd-fut;EquityFutureStandardizedTerms">
 					</rdf:Description>
@@ -409,7 +360,7 @@
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-etd-fut;contractValue">
 		<rdfs:label xml:lang="en">contract value</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-etd-fut;FutureInstrument"/>
+		<rdfs:domain rdf:resource="&fibo-fbc-fi-fi;Future"/>
 		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
 		<skos:definition xml:lang="en">The deliverable value of goods, instruments or commodities underlying the futures contract.</skos:definition>
 	</owl:ObjectProperty>
@@ -432,27 +383,27 @@
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-etd-fut;firstDeliveryDate">
 		<rdfs:label xml:lang="en">first delivery date</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-etd-fut;FutureInstrument"/>
+		<rdfs:domain rdf:resource="&fibo-fbc-fi-fi;Future"/>
 		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Date"/>
 		<skos:definition xml:lang="en">The start date of the range of dates by which the underlying for a futures contract must be delivered in order for the terms of the contract to be fulfilled.</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-etd-fut;firstNoticeDate">
 		<rdfs:label xml:lang="en">first notice date</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-etd-fut;FutureInstrument"/>
+		<rdfs:domain rdf:resource="&fibo-fbc-fi-fi;Future"/>
 		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Date"/>
 		<skos:definition xml:lang="en">The first date at which a delivery notice can be issued.</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-etd-fut;hasListing">
 		<rdfs:label xml:lang="en">has listing</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-etd-fut;FutureInstrument"/>
+		<rdfs:domain rdf:resource="&fibo-fbc-fi-fi;Future"/>
 		<rdfs:range rdf:resource="&fibo-der-etd-fut;FuturesListing"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-etd-fut;hasSettlementArrangement">
 		<rdfs:label xml:lang="en">has settlement arrangement</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-etd-fut;FutureInstrument"/>
+		<rdfs:domain rdf:resource="&fibo-fbc-fi-fi;Future"/>
 		<rdfs:range rdf:resource="&fibo-der-drc-bsc;DeliveryTerms"/>
 		<skos:definition xml:lang="en">The action by which an underlying commodity, security, cash value, or delivery instrument covering a contract is tendered and received by the contract holder.</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">This determines what is delivered to the holder when the future is exercised.</fibo-fnd-utl-av:explanatoryNote>
@@ -460,14 +411,14 @@
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-etd-fut;lastDeliveryDate">
 		<rdfs:label xml:lang="en">last delivery date</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-etd-fut;FutureInstrument"/>
+		<rdfs:domain rdf:resource="&fibo-fbc-fi-fi;Future"/>
 		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Date"/>
 		<skos:definition xml:lang="en">The last date in the range of dates by which the underlying for a futures contract must be delivered in order for the terms of the contract to be fulfilled.</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-etd-fut;lastNoticeDate">
 		<rdfs:label xml:lang="en">last notice date</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-etd-fut;FutureInstrument"/>
+		<rdfs:domain rdf:resource="&fibo-fbc-fi-fi;Future"/>
 		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Date"/>
 		<skos:definition xml:lang="en">The last date at which a delivery notice can be issued.</skos:definition>
 	</owl:ObjectProperty>
@@ -530,7 +481,7 @@
 		<rdfs:domain>
 			<owl:Class>
 				<owl:unionOf rdf:parseType="Collection">
-					<rdf:Description rdf:about="&fibo-der-etd-fut;FutureInstrument">
+					<rdf:Description rdf:about="&fibo-fbc-fi-fi;Future">
 					</rdf:Description>
 					<rdf:Description rdf:about="&fibo-der-etd-fut;StandardizedFuturesTerms">
 					</rdf:Description>
@@ -542,7 +493,7 @@
 	
 	<owl:DatatypeProperty rdf:about="&fibo-der-etd-fut;securityDescription">
 		<rdfs:label xml:lang="en">security description</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-etd-fut;FutureInstrument"/>
+		<rdfs:domain rdf:resource="&fibo-fbc-fi-fi;Future"/>
 		<rdfs:range rdf:resource="&xsd;string"/>
 		<skos:definition xml:lang="en">The name of the security that uniquely identifies it amongst all other securities.</skos:definition>
 	</owl:DatatypeProperty>
@@ -558,7 +509,7 @@
 		<rdfs:domain>
 			<owl:Class>
 				<owl:unionOf rdf:parseType="Collection">
-					<rdf:Description rdf:about="&fibo-der-etd-fut;FutureInstrument">
+					<rdf:Description rdf:about="&fibo-fbc-fi-fi;Future">
 					</rdf:Description>
 					<rdf:Description rdf:about="&fibo-der-etd-fut;StandardizedFuturesTerms">
 					</rdf:Description>
@@ -581,9 +532,9 @@
 		<rdfs:domain>
 			<owl:Class>
 				<owl:unionOf rdf:parseType="Collection">
-					<rdf:Description rdf:about="&fibo-der-etd-fut;FinancialFuture">
+					<rdf:Description rdf:about="&fibo-fbc-fi-fi;Future">
 					</rdf:Description>
-					<rdf:Description rdf:about="&fibo-der-etd-fut;FinancialFutureStandardizedTerms">
+					<rdf:Description rdf:about="&fibo-der-etd-fut;StandardizedFuturesTerms">
 					</rdf:Description>
 				</owl:unionOf>
 			</owl:Class>
@@ -592,8 +543,28 @@
 		<skos:definition xml:lang="en">How many of the underlying securities can be sold.</skos:definition>
 	</owl:DatatypeProperty>
 	
-	<owl:Class rdf:about="https://spec.edmcouncil.org/fibo/ontology/MD/DerivativesTemporal/FuturesTemporal/FuturesTradingAccountHolder">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;Counterparty"/>
+	<owl:Class rdf:about="&fibo-fbc-fi-fi;Future">
+		<rdfs:subClassOf rdf:resource="&fibo-der-der-fwd;ForwardContract"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-etd-fut;pricingDeterminedBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-etd-std;DerivativesPriceDeterminationMethod"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isHeldBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-der-fwd;ForwardContractBuyer"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isProvidedBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-etd-fut;FuturesTradingAccountProvider"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<skos:editorialNote xml:lang="en">Note that the restriction that has been replaced isHeldBy was that a futures contract has an account holder that is a futures trading account holder - that restriction was inappropriate, but a restriction indicating that the holder of a futures instrument has an account with a derivatives exchange should be considered when this ontology is reviewed with SMEs.</skos:editorialNote>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">A futures contract obligates the buyer to purchase the underlying commodity, currency or financial instrument and the seller to sell it unless the contract is sold to another before settlement date which may happen if a trader waits to take a profit or cut a loss. Further notes: This contrasts with options trading in which the option buyer may choose whether or not to exercise the option by the exercise date. Unlike options, futures convey an obligation to buy. The risk to the holder is unlimited, and because the payoff pattern is symmetrical, the risk to the seller is unlimited as well. Dollars lost and gained by each party on a futures contract are equal and opposite. In other words, futures trading is a zero-sum game. Futures contracts are forward contracts, meaning they represent a pledge to make a certain transaction at a future date. The exchange of assets occurs on the date specified in the contract. Futures are distinguished from generic forward contracts in that they contain standardized terms, trade on a formal exchange, are regulated by overseeing agencies, and are guaranteed by clearinghouses. Also, in order to insure that payment will occur, futures have a margin requirement that must be settled daily. Finally, by making an offsetting trade, taking delivery of goods, or arranging for an exchange of goods, futures contracts can be closed. Hedgers often trade futures for the purpose of keeping price risk in check. Definition origin: Barrons, adapted by EDMC SMER.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 
 </rdf:RDF>
