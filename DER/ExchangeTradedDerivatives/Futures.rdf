@@ -8,6 +8,7 @@
 	<!ENTITY fibo-der-drc-bsc "https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/DerivativesBasics/">
 	<!ENTITY fibo-der-etd-fut "https://spec.edmcouncil.org/fibo/ontology/DER/ExchangeTradedDerivatives/Futures/">
 	<!ENTITY fibo-der-etd-std "https://spec.edmcouncil.org/fibo/ontology/DER/ExchangeTradedDerivatives/DerivativesStandardizedTerms/">
+	<!ENTITY fibo-fbc-fct-ra "https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/RegistrationAuthorities/">
 	<!ENTITY fibo-fbc-fi-fi "https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/">
 	<!ENTITY fibo-fnd-acc-cur "https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/">
 	<!ENTITY fibo-fnd-agr-ctr "https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/">
@@ -38,6 +39,7 @@
 	xmlns:fibo-der-drc-bsc="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/DerivativesBasics/"
 	xmlns:fibo-der-etd-fut="https://spec.edmcouncil.org/fibo/ontology/DER/ExchangeTradedDerivatives/Futures/"
 	xmlns:fibo-der-etd-std="https://spec.edmcouncil.org/fibo/ontology/DER/ExchangeTradedDerivatives/DerivativesStandardizedTerms/"
+	xmlns:fibo-fbc-fct-ra="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/RegistrationAuthorities/"
 	xmlns:fibo-fbc-fi-fi="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"
 	xmlns:fibo-fnd-acc-cur="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"
 	xmlns:fibo-fnd-agr-ctr="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"
@@ -75,6 +77,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/ExchangeTradedDerivatives/DerivativesStandardizedTerms/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/RateDerivatives/RateDerivatives/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/RegistrationAuthorities/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"/>
@@ -230,7 +233,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-etd-fut;StandardizedFuturesListingTerms">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractualCommitment"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;StandardizedTerms"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-be-fct-pub;hasPublisher"/>
@@ -252,19 +255,7 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;StandardizedTerms"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-be-fct-pub;hasPublisher"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-etd-std;DerivativesExchange"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-etd-fut;pricingDeterminedBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-etd-std;DerivativesPriceDeterminationMethod"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-etd-fut;specifiesDeliveryMethod"/>
+				<owl:onProperty rdf:resource="&fibo-fbc-fct-ra;specifies"/>
 				<owl:someValuesFrom rdf:resource="&fibo-der-drc-bsc;DeliveryTerms"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -299,13 +290,6 @@
 		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Date"/>
 		<skos:definition xml:lang="en">The first date at which a delivery notice can be issued.</skos:definition>
 	</owl:ObjectProperty>
-	
-	<owl:DatatypeProperty rdf:about="&fibo-der-etd-fut;hasContractSize">
-		<rdfs:label xml:lang="en">has contract size</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fbc-fi-fi;Future"/>
-		<rdfs:range rdf:resource="&xsd;integer"/>
-		<skos:definition xml:lang="en">indicates the deliverable quantity of goods, commodities, or shares underlying the futures contract. This is denominated as a multiple of the lot size in the case of a commodity future. For financial futures this is the number of units of the underlying security.</skos:definition>
-	</owl:DatatypeProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-der-etd-fut;hasConversionFactor">
 		<rdfs:label xml:lang="en">has conversion factor</rdfs:label>
@@ -371,27 +355,6 @@
 		<skos:definition xml:lang="en">An amount necessary to cover the purchase of the underlying security since delivery is mandatory, be it physical or cash. Failing to provide a sufficient provision will result in a margin call.</skos:definition>
 	</owl:ObjectProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-der-etd-fut;pricingDeterminedBy">
-		<rdfs:label xml:lang="en">pricing determined by</rdfs:label>
-		<rdfs:domain>
-			<owl:Class>
-				<owl:unionOf rdf:parseType="Collection">
-					<rdf:Description rdf:about="&fibo-fbc-fi-fi;Future">
-					</rdf:Description>
-					<rdf:Description rdf:about="&fibo-der-etd-fut;StandardizedFuturesTerms">
-					</rdf:Description>
-				</owl:unionOf>
-			</owl:Class>
-		</rdfs:domain>
-		<rdfs:range rdf:resource="&fibo-der-etd-std;DerivativesPriceDeterminationMethod"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-der-etd-fut;specifiesDeliveryMethod">
-		<rdfs:label xml:lang="en">specifies delivery method</rdfs:label>
-		<rdfs:range rdf:resource="&fibo-der-drc-bsc;DeliveryTerms"/>
-		<skos:definition xml:lang="en">Type of delivery for contracts. This determines what is delivered to the holder when the future is exercised.</skos:definition>
-	</owl:ObjectProperty>
-	
 	<owl:ObjectProperty rdf:about="&fibo-der-etd-fut;tickValue">
 		<rdfs:label xml:lang="en">tick value</rdfs:label>
 		<rdfs:domain>
@@ -423,29 +386,5 @@
 		<rdfs:range rdf:resource="&xsd;integer"/>
 		<skos:definition xml:lang="en">How many of the underlying securities can be sold.</skos:definition>
 	</owl:DatatypeProperty>
-	
-	<owl:Class rdf:about="&fibo-fbc-fi-fi;Future">
-		<rdfs:subClassOf rdf:resource="&fibo-der-der-fwd;ForwardContract"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-etd-fut;pricingDeterminedBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-etd-std;DerivativesPriceDeterminationMethod"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isHeldBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-der-fwd;ForwardContractBuyer"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isProvidedBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-etd-fut;FuturesTradingAccountProvider"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<skos:editorialNote xml:lang="en">Note that the restriction that has been replaced isHeldBy was that a futures contract has an account holder that is a futures trading account holder - that restriction was inappropriate, but a restriction indicating that the holder of a futures instrument has an account with a derivatives exchange should be considered when this ontology is reviewed with SMEs.</skos:editorialNote>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">A futures contract obligates the buyer to purchase the underlying commodity, currency or financial instrument and the seller to sell it unless the contract is sold to another before settlement date which may happen if a trader waits to take a profit or cut a loss. Further notes: This contrasts with options trading in which the option buyer may choose whether or not to exercise the option by the exercise date. Unlike options, futures convey an obligation to buy. The risk to the holder is unlimited, and because the payoff pattern is symmetrical, the risk to the seller is unlimited as well. Dollars lost and gained by each party on a futures contract are equal and opposite. In other words, futures trading is a zero-sum game. Futures contracts are forward contracts, meaning they represent a pledge to make a certain transaction at a future date. The exchange of assets occurs on the date specified in the contract. Futures are distinguished from generic forward contracts in that they contain standardized terms, trade on a formal exchange, are regulated by overseeing agencies, and are guaranteed by clearinghouses. Also, in order to insure that payment will occur, futures have a margin requirement that must be settled daily. Finally, by making an offsetting trade, taking delivery of goods, or arranging for an exchange of goods, futures contracts can be closed. Hedgers often trade futures for the purpose of keeping price risk in check. Definition origin: Barrons, adapted by EDMC SMER.</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
 
 </rdf:RDF>
