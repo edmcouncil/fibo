@@ -71,7 +71,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Countries/CountryRepresentation/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20200301/Utilities/Analytics/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20200401/Utilities/Analytics/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20140501/Utilities/Analytics.rdf version of this ontology was modified per the issue resolutions identified in the FIBO FND 1.0 FTF report and in https://spec.edmcouncil.org/fibo/ontology/FND/1.0/AboutFND-1.0/.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20141101/Utilities/Analytics.rdf version of this ontology was modified to address issue FIBOFND11-20, which added the definition of Calculation and corrected a reasoning issue related to the use of a custom datatype.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20160201/Utilities/Analytics.rdf version of this ontology was modified per the FIBO 2.0 RFC.</skos:changeNote>
@@ -79,6 +79,7 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20190501/Utilities/Analytics.rdf version of this ontology was modified to eliminate deprecated elements.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20190901/Utilities/Analytics.rdf version of this ontology was modified to add the concept of a weighting algorithm.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20191101/Utilities/Analytics.rdf version of this ontology was modified to eliminate duplication with concepts in LCC, merge countries with locations, and correct a restriction on qualified measure.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20200301/Utilities/Analytics.rdf version of this ontology was modified to revise numeric index to be called numeric index value, and revise its definition to include a reference date, change its parent to quantity value, and move base date and period to scoped measure.</skos:changeNote>
 		<skos:changeNote>This ontology was added to Foundations in advance of the June 2014 Boston meeting in support of the IND RFC.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
@@ -114,7 +115,9 @@
 	
 	<owl:Class rdf:about="&fibo-fnd-utl-alx;Aspect">
 		<rdfs:label>aspect</rdfs:label>
-		<skos:definition>charateristic or feature that can be used to dimensionalize, filter, or subset something</skos:definition>
+		<skos:definition>characteristic or feature that can be used to dimensionalize, filter, or subset something</skos:definition>
+		<fibo-fnd-utl-av:synonym>dimension</fibo-fnd-utl-av:synonym>
+		<fibo-fnd-utl-av:synonym>filter</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-utl-alx;AverageAbsoluteDeviation">
@@ -305,25 +308,24 @@
 		<skos:definition>median of the absolute deviations of observations from the average which may be the arithmetic mean, the median or the mode</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-fnd-utl-alx;NumericIndex">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;Expression"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;ScopedMeasure"/>
+	<owl:Class rdf:about="&fibo-fnd-utl-alx;NumericIndexValue">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-qt-qtu;QuantityValue"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-arr-doc;hasReportingPeriod"/>
-				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;ExplicitDatePeriod"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;isMeasureOf"/>
+				<owl:onClass rdf:resource="&fibo-fnd-utl-alx;ScopedMeasure"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasBasePeriod"/>
-				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;ExplicitDatePeriod"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasReferenceDateTime"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+				<owl:onDataRange rdf:resource="&fibo-fnd-dt-fd;CombinedDateTime"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label>numeric index</rdfs:label>
-		<skos:definition>change in some aggregate relative to the value of the aggregate at a reference period</skos:definition>
+		<rdfs:label>numeric index value</rdfs:label>
+		<skos:definition>change in some aggregate relative to the value of the aggregate as of some reference date</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.statcan.gc.ca/edu/power-pouvoir/glossary-glossaire/5214842-eng.htm#i</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:explanatoryNote>a mathematical device or number which is used to express the observation (e.g., price level, volume of trade, relative amount etc.) of a given period, in comparison with that of a base period</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
@@ -395,6 +397,20 @@
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasPeriodicity"/>
 				<owl:allValuesFrom rdf:resource="&fibo-fnd-dt-fd;RecurrenceInterval"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasBaseDate"/>
+				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasBasePeriod"/>
+				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;ExplicitDatePeriod"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -658,6 +674,13 @@ For certain indices, one of the most common weighting factor is by market capita
 		<fibo-fnd-utl-av:synonym>has independent variable</fibo-fnd-utl-av:synonym>
 	</owl:ObjectProperty>
 	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-utl-alx;hasBaseDate">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasExplicitDate"/>
+		<rdfs:label>has base date</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
+		<skos:definition>specifies the base date against which the value of a numberic index for a more recent date is compared (or from which it stems)</skos:definition>
+	</owl:ObjectProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-utl-alx;hasBasePeriod">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDatePeriod"/>
 		<rdfs:label>has base period</rdfs:label>
@@ -736,6 +759,12 @@ For certain indices, one of the most common weighting factor is by market capita
 		<rdfs:label>has population size</rdfs:label>
 		<rdfs:range rdf:resource="&xsd;nonNegativeInteger"/>
 		<skos:definition>indicates the number of elements in a given population</skos:definition>
+	</owl:DatatypeProperty>
+	
+	<owl:DatatypeProperty rdf:about="&fibo-fnd-utl-alx;hasReferenceDateTime">
+		<rdfs:label>has reference date and time</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;CombinedDateTime"/>
+		<skos:definition>specifies a reference date and possibly a time for a given value</skos:definition>
 	</owl:DatatypeProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-utl-alx;hasReferencePeriod">
