@@ -133,6 +133,19 @@
 		<fibo-fnd-utl-av:synonym xml:lang="en-GB">ordinary share</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-sec-eq-eq;ConvertibleCommonShare">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;CommonShare"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-iss;ConvertibleSecurity"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;hasContractualElement"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-eq-eq;EquityConversionTerms"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>convertible common share</rdfs:label>
+		<skos:definition>common share that is convertible into another security</skos:definition>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-sec-eq-eq;ConvertiblePreferredShare">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;PreferredShare"/>
 		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-iss;ConvertibleSecurity"/>
@@ -143,7 +156,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>convertible preferred share</rdfs:label>
-		<skos:definition>a preferred share that is convertible into another security</skos:definition>
+		<skos:definition>preferred share that is convertible into another security</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-eq-eq;CumulativePreferredShare">
@@ -217,6 +230,12 @@
 		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-sch;ParametricSchedule"/>
 		<rdfs:label>dividend or share coupon schedule</rdfs:label>
 		<skos:definition>payment schedule indicating the dates on which dividends or share coupon payments are due to be paid</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-eq-eq;EnhancedVoting">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;VotingRight"/>
+		<rdfs:label>enhanced voting</rdfs:label>
+		<skos:definition>shareholder is entitled to more than one vote per share</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-eq-eq;EquityConversionTerms">
@@ -386,6 +405,18 @@
 		<skos:definition>preferred share that is not a participating preferred share</skos:definition>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-sec-eq-eq;NonVoting">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;VotingRight"/>
+		<rdfs:label>non-voting</rdfs:label>
+		<owl:equivalentClass>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-eq-eq;confersNumberOfVotesPerShare"/>
+				<owl:hasValue rdf:datatype="&xsd;decimal">0</owl:hasValue>
+			</owl:Restriction>
+		</owl:equivalentClass>
+		<skos:definition>share has no voting rights</skos:definition>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-sec-eq-eq;OrdinaryDividend">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;Dividend"/>
 		<rdfs:label>ordinary dividend</rdfs:label>
@@ -510,10 +541,17 @@
 		<skos:definition>dividend that falls under capital gains tax rates that are lower than the income tax rates on unqualified, or ordinary, dividends</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-eq-eq;RestrictedVotingRight">
+	<owl:Class rdf:about="&fibo-sec-eq-eq;RestrictedShare">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;Share"/>
+		<rdfs:label xml:lang="en">restricted share</rdfs:label>
+		<owl:disjointWith rdf:resource="&fibo-sec-eq-eq;UnrestrictedShare"/>
+		<skos:definition xml:lang="en">share whose ownership/transfer/sale is subject to special conditions including country-specific restrictions</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-eq-eq;RestrictedVoting">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;VotingRight"/>
-		<rdfs:label>restricted voting right</rdfs:label>
-		<skos:definition>voting right that has certain limitations associated with it</skos:definition>
+		<rdfs:label>restricted voting</rdfs:label>
+		<skos:definition>shareholder is restricted to less than one vote per share</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-eq-eq;Share">
@@ -564,12 +602,31 @@
 		<fibo-fnd-utl-av:usageNote xml:lang="en">Special dividends may be included in a dividend schedule as an ad-hoc entry, since they still need to be tracked based on the date of issuance.</fibo-fnd-utl-av:usageNote>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-sec-eq-eq;UnrestrictedShare">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;NegotiableSecurity"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;Share"/>
+		<rdfs:label xml:lang="en">unrestricted share</rdfs:label>
+		<skos:definition xml:lang="en">share whose ownership/transfer/sale is not subject to special conditions including country-specific restrictions</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-eq-eq;Voting">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;VotingRight"/>
+		<rdfs:label>voting</rdfs:label>
+		<owl:equivalentClass>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-eq-eq;confersNumberOfVotesPerShare"/>
+				<owl:hasValue rdf:datatype="&xsd;decimal">1</owl:hasValue>
+			</owl:Restriction>
+		</owl:equivalentClass>
+		<skos:definition>voting right that confers exactly one vote per share</skos:definition>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-sec-eq-eq;VotingRight">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-law-lcap;ContractualRight"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-eq-eq;hasVotingRestriction"/>
-				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 				<owl:onDataRange rdf:resource="&xsd;string"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -719,6 +776,7 @@
 		<rdfs:domain rdf:resource="&fibo-sec-eq-eq;VotingRight"/>
 		<rdfs:range rdf:resource="&xsd;string"/>
 		<skos:definition>specifies restrictions on voting rights, if any</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Such restrictions may apply regardless of the number of votes per share.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:DatatypeProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-sec-eq-eq;indicatesNumberOfShares">
