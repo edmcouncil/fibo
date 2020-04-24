@@ -401,14 +401,28 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasBaseDate"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasAnchorDate"/>
 				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasBasePeriod"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasFixedComparativeDate"/>
+				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasRelativeComparativeDate"/>
+				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasRelativeComparativePeriod"/>
 				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;ExplicitDatePeriod"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
@@ -429,6 +443,7 @@
 		</rdfs:subClassOf>
 		<rdfs:label>scoped measure</rdfs:label>
 		<skos:definition>qualified measure that is constrained by filters on the statistical population to which it applies</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Note that (1) the anchor date reflects the start of the current series, such as 1982-1984 for the CPI, (2) the fixed comparative date might be something like March 2009, if one is comparing a current index against its value at the end of the great recession, (3) the relative comparative date might be something like a month or year ago, depending on the analysis requirements, and (4) the relative comparative period might be a 3 month average prior value, again depending on the analysis requirements.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-utl-alx;StandardDeviation">
@@ -657,6 +672,13 @@ For certain indices, one of the most common weighting factor is by market capita
 		<skos:definition>calculates a quantity value based on some mathematical formula</skos:definition>
 	</owl:ObjectProperty>
 	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-utl-alx;hasAnchorDate">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasExplicitDate"/>
+		<rdfs:label>has anchor date</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
+		<skos:definition>specifies the base date against which the value of a numeric index for a more recent date is compared (i.e., the starting point from which it stems)</skos:definition>
+	</owl:ObjectProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-utl-alx;hasApplicableDatePeriod">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDatePeriod"/>
 		<rdfs:label>has applicable date period</rdfs:label>
@@ -674,26 +696,19 @@ For certain indices, one of the most common weighting factor is by market capita
 		<fibo-fnd-utl-av:synonym>has independent variable</fibo-fnd-utl-av:synonym>
 	</owl:ObjectProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-fnd-utl-alx;hasBaseDate">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasExplicitDate"/>
-		<rdfs:label>has base date</rdfs:label>
-		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
-		<skos:definition>specifies the base date against which the value of a numberic index for a more recent date is compared (or from which it stems)</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-fnd-utl-alx;hasBasePeriod">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDatePeriod"/>
-		<rdfs:label>has base period</rdfs:label>
-		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;ExplicitDatePeriod"/>
-		<skos:definition>specifies the base period (typically a prior period) against which a numberic index for a more recent reporting period is compared</skos:definition>
-	</owl:ObjectProperty>
-	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-utl-alx;hasExpression">
 		<rdfs:subPropertyOf rdf:resource="&lcc-lr;has"/>
 		<rdfs:label>has expression</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fnd-rel-rel;Reference"/>
 		<rdfs:range rdf:resource="&fibo-fnd-utl-alx;Expression"/>
 		<skos:definition>specifies a mathematical or other formal expression, which may be part of a formula</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-utl-alx;hasFixedComparativeDate">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasExplicitDate"/>
+		<rdfs:label>has fixed comparative date</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
+		<skos:definition>specifies the a specific date, such as the end of the last recession (e.g., March 2009) against which the scoped measure is compared</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-utl-alx;hasFormula">
@@ -772,6 +787,20 @@ For certain indices, one of the most common weighting factor is by market capita
 		<rdfs:label>has reference period</rdfs:label>
 		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;RecurrenceInterval"/>
 		<skos:definition>specifies a reference (baseline) recurrence interval for which a given economic indicator applies</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-utl-alx;hasRelativeComparativeDate">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasRelativeDate"/>
+		<rdfs:label>has relative comparative date</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
+		<skos:definition>specifies a date against which the value of a scoped measure is compared (e.g., one month prior, three months prior, etc., and typically against a prior release or average over prior releases)</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-utl-alx;hasRelativeComparativePeriod">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDatePeriod"/>
+		<rdfs:label>has relative comparative period</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;DatePeriod"/>
+		<skos:definition>specifies a period (typically a prior period) against which the scoped measure is compared, such as an average set of values for some period of time compared with a more recent or projected average for a forward looking period of time</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-utl-alx;hasReleaseDate">
