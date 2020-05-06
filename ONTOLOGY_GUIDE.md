@@ -348,7 +348,7 @@ Ontology elements (classes, relationships or attributes) must not be disconnecte
 
 This issue involves including a cycle between classes in the hierarchy, although it is not intended to have such classes as equivalent.  That is, some class A has a subclass B and at the same time B is a superclass of A. An example of this type of pitfall is represented by the class “Professor” as subclass of “Person”, and the class “Person” as subclass of “Professor”.
 
-FIBO policy strictly forbids cycles among classes.  Cycles are not only considered poor modeling practice, but can make mapping an ontology to a data model or other artifact impossible.  The FIBO ontologies are designed at a conceptual level, but are intended to support meeting Basel III RDARR and other data governance regulations, and therefore must be designed to support mapping to various application and repository standards.  Cycles would prohibit such mappings.
+FIBO policy strictly forbids cycles among ontologies.  Cycles are not only considered poor modeling practice, but can make mapping an ontology to a data model or other artifact impossible.  The FIBO ontologies are designed at a conceptual level, but are intended to support meeting Basel III RDARR and other data governance regulations, and therefore must be designed to support mapping to various application and repository standards.  Cycles would prohibit such mappings.
 
 ### T6. Merging different concepts in the same class
 
