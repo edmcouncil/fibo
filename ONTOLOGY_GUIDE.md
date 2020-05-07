@@ -166,11 +166,11 @@ A generic template for capturing terminology and related annotations can be foun
 
 **Naming conventions** refer to the FIBO policies that concern the names of FIBO resources that are parts of their identifiers (URIs):
 
-<span style="color:GREEN">`FIBO_ONTOLOGY_NAMESPACE/`</span><span style="color:BLUE">`RESOURCE_NAME`</span>
+FIBO\_ONTOLOGY\_NAMESPACE/**RESOURCE\_NAME**
 
-E.g.:
+E.g.: **LegalEntity** is **RESOURCE\_NAME** in
 
-<span style="color:GREEN">`https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/`</span><span style="color:BLUE">`LegalEntity`</span>
+https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/LegalEntity
 
 **Labeling conventions** are the FIBO policies that characterize what annotations should and can be used to describe FIBO resources.
 
