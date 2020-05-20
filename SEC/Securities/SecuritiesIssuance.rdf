@@ -6,7 +6,9 @@
 	<!ENTITY fibo-fbc-fct-fse "https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/FinancialServicesEntities/">
 	<!ENTITY fibo-fbc-fct-ra "https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/RegistrationAuthorities/">
 	<!ENTITY fibo-fbc-fi-fi "https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/">
+	<!ENTITY fibo-fbc-pas-caa "https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/ClientsAndAccounts/">
 	<!ENTITY fibo-fbc-pas-fpas "https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/">
+	<!ENTITY fibo-fnd-acc-aeq "https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/AccountingEquity/">
 	<!ENTITY fibo-fnd-acc-cur "https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/">
 	<!ENTITY fibo-fnd-agr-agr "https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Agreements/">
 	<!ENTITY fibo-fnd-agr-ctr "https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/">
@@ -34,7 +36,9 @@
 	xmlns:fibo-fbc-fct-fse="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/FinancialServicesEntities/"
 	xmlns:fibo-fbc-fct-ra="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/RegistrationAuthorities/"
 	xmlns:fibo-fbc-fi-fi="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"
+	xmlns:fibo-fbc-pas-caa="https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/ClientsAndAccounts/"
 	xmlns:fibo-fbc-pas-fpas="https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/"
+	xmlns:fibo-fnd-acc-aeq="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/AccountingEquity/"
 	xmlns:fibo-fnd-acc-cur="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"
 	xmlns:fibo-fnd-agr-agr="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Agreements/"
 	xmlns:fibo-fnd-agr-ctr="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"
@@ -75,7 +79,9 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/FinancialServicesEntities/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/RegistrationAuthorities/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/RegulatoryAgencies/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/ClientsAndAccounts/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/AccountingEquity/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Agreements/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"/>
@@ -90,9 +96,10 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20200201/Securities/SecuritiesIssuance/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20200401/Securities/SecuritiesIssuance/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20180801/Securities/SecuritiesIssuance/ version of this ontology was modified to refine the concept of a securities underwriter.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20181201/Securities/SecuritiesIssuance/ version of this ontology was modified to eliminate duplication of concepts in LCC.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20200201/Securities/SecuritiesIssuance/ version of this ontology was modified to add the concept of the form the security is issued in, namely bearer or registered.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -115,6 +122,38 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-fi-fi;Security">
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-sec-iss;isRegisteredWith"/>
+				<owl:onClass rdf:resource="&fibo-fbc-fct-ra;RegistrationAuthority"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-sec-iss;isIssuedInForm"/>
+				<owl:onClass rdf:resource="&fibo-sec-sec-iss;SecurityForm"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+	</owl:Class>
+	
+	<owl:NamedIndividual rdf:about="&fibo-sec-sec-iss;BearerAndRegisteredForm">
+		<rdf:type rdf:resource="&fibo-fnd-arr-doc;Certificate"/>
+		<rdf:type rdf:resource="&fibo-sec-sec-iss;SecurityForm"/>
+		<rdfs:label>bearer and registered form</rdfs:label>
+		<skos:definition>form of a security that may be issued in both bearer and registered form but with the same identification number</skos:definition>
+	</owl:NamedIndividual>
+	
+	<owl:NamedIndividual rdf:about="&fibo-sec-sec-iss;BearerForm">
+		<rdf:type rdf:resource="&fibo-fnd-arr-doc;Certificate"/>
+		<rdf:type rdf:resource="&fibo-sec-sec-iss;SecurityForm"/>
+		<rdfs:label>bearer form</rdfs:label>
+		<skos:definition>form of a security that is not registered in the books of the issuer or of the registrar and is payable to the person possessing the stock or bond certificate</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Unlike normal registered instruments, no record is kept of who owns bearer instruments or of transactions involving the transfer of ownership.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:NamedIndividual>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-iss;BestEffortsOffering">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-iss;SecuritiesOffering"/>
@@ -219,6 +258,12 @@
 		<fibo-fnd-utl-av:adaptedFrom>Barron&apos;s Dictionary of Finance and Investment Terms, Ninth Edition, 2014.</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
 	
+	<owl:NamedIndividual rdf:about="&fibo-sec-sec-iss;MiscellaneousForm">
+		<rdf:type rdf:resource="&fibo-sec-sec-iss;SecurityForm"/>
+		<rdfs:label>miscellaneous form</rdfs:label>
+		<skos:definition>form of a security that is not identified as registered or bearer</skos:definition>
+	</owl:NamedIndividual>
+	
 	<owl:Class rdf:about="&fibo-sec-sec-iss;OfferingDocument">
 		<rdfs:subClassOf rdf:resource="&fibo-be-fct-pub;Publication"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-doc;LegalDocument"/>
@@ -314,6 +359,13 @@
 		<fibo-fnd-utl-av:explanatoryNote>In the US, public offerings generally require approval of the Securities Exchange Commission and/or relevant state regulators, unless the issuer is an exempt issuer, and are usually conducted by an investment banker or a syndicate made up of several investment bankers, at a price agreed upon between the issuer and the investment bankers.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
+	<owl:NamedIndividual rdf:about="&fibo-sec-sec-iss;RegisteredForm">
+		<rdf:type rdf:resource="&fibo-sec-sec-iss;SecurityForm"/>
+		<rdfs:label>registered form</rdfs:label>
+		<skos:definition>form of a security whereby ownership is recorded in the name of the owner on the books of the issuer or the issuer&apos;s registrar and can only be transferred to another owner when endorsed by the registered owner</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>With registered securities, a ledger is kept by the issuing company or agent which records the owners of all the securities. Transfer of ownership can only occur when names are changed in the ledger.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:NamedIndividual>
+	
 	<owl:Class rdf:about="&fibo-sec-sec-iss;SecuritiesContractTerms">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractualCommitment"/>
 		<rdfs:subClassOf>
@@ -389,6 +441,25 @@
 		<fibo-fnd-utl-av:adaptedFrom>Barron&apos;s Dictionary of Finance and Investment Terms, Ninth Edition, 2014.</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.investopedia.com/</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:explanatoryNote>If the offering is public, then it can only be made after regulatory registration requirements have been met. The securities may be new or a secondary offering of a previously issued security, and may include stock, multiple classes of equity shares, municipal or other government bonds, and so forth. Offerings, especially to the investment public, are typically made by an investment banker, or syndicate of investment bankers.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-sec-iss;SecurityForm">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractDocument"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-pas-caa;realizes"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-aeq;FinancialAsset"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-fi;Security"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>security form</rdfs:label>
+		<skos:definition>contract document and certificate that is evidence for ownership of a security and that may be digital or physical</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Securities are typically issued in one of two forms, registered or bearer. Most securities issued today are in registered form, which enables the issuing firm or registrar to keep records of a security&apos;s owner and mail them any dividend, coupon, or other payments.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<rdfs:Datatype rdf:about="&fibo-sec-sec-iss;SecurityOfferingDistributionType">
@@ -547,8 +618,16 @@
 		<skos:definition>indicates a period of time in which investors can commit to purchase shares (or units) to be issued</skos:definition>
 	</owl:ObjectProperty>
 	
-	<owl:DatatypeProperty rdf:about="&fibo-sec-sec-iss;isOverAlloted">
-		<rdfs:label>is over-alloted</rdfs:label>
+	<owl:ObjectProperty rdf:about="&fibo-sec-sec-iss;isIssuedInForm">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fbc-pas-caa;isRealizedBy"/>
+		<rdfs:label>is issued in form</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fbc-fi-fi;Security"/>
+		<rdfs:range rdf:resource="&fibo-sec-sec-iss;SecurityForm"/>
+		<skos:definition>indicates the form in which the security is issued, typically in registered form</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:DatatypeProperty rdf:about="&fibo-sec-sec-iss;isOverAllotted">
+		<rdfs:label>is over-allotted</rdfs:label>
 		<rdfs:range rdf:resource="&xsd;boolean"/>
 		<skos:definition>indicates whether or not the subscription is over-subscribed</skos:definition>
 	</owl:DatatypeProperty>
