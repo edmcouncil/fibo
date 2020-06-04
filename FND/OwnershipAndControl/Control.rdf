@@ -38,8 +38,8 @@
 		<dct:abstract>This ontology defines high-level, control-related concepts for use in other FIBO ontology elements.  The ontology covers basic concepts around control, along with a distinction between de jure and de facto control, the former being derived with reference to terms in the LegalCapacity ontology.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
 		<sm:contentLanguage rdf:datatype="&xsd;anyURI">http://www.w3.org/standards/techs/owl#w3c_all</sm:contentLanguage>
-		<sm:copyright>Copyright (c) 2013-2018 EDM Council, Inc.</sm:copyright>
-		<sm:copyright>Copyright (c) 2013-2018 Object Management Group, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2013-2020 EDM Council, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2013-2020 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/BusinessDates/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/Law/LegalCapacity/</sm:dependsOn>
@@ -64,34 +64,30 @@
    (4) to use 4-level abbreviations and corresponding namespace prefixes for all FIBO ontologies, reflecting a family/specification/module/ontology structure
    (5) to incorporate changes to the specification metadata to support documentation at the family, specification, module, and ontology level, similar to the abbreviations.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20130801/OwnershipAndControl/Control.rdf version of the ontology was was modified per the issue resolutions identified in the FIBO FND 1.0 FTF report and in https://spec.edmcouncil.org/fibo/ontology/FND/1.0/AboutFND-1.0/.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20180801/OwnershipAndControl/Control.rdf version of the ontology was modified to integrate the concept of a situation, situational roles, and corresponding relations with the definition of control.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
 	<owl:Class rdf:about="&fibo-fnd-oac-ctl;Control">
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-dt-bd;holdsDuring"/>
-				<owl:allValuesFrom rdf:resource="&fibo-fnd-dt-fd;DatePeriod"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-pty-pty;Situation"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-oac-ctl;hasPartyInControl"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-pty-pty;PartyInRole"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-pty-pty;Actor"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-oac-ctl;isInControlOfThing"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-pty-rl;ThingInRole"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-pty-pty;Undergoer"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>control</rdfs:label>
-		<skos:definition>the possession by a party, direct or indirect, of the power to direct or cause the direction of the management and policies of a thing, whether through the ownership of voting shares, by contract, or otherwise</skos:definition>
+		<skos:definition>situation in which some party possesses something (explicitly or implicitly), or has the power to direct or strongly influence the direction of the management and policies related to it, whether through the ownership of voting shares, by contract, or otherwise</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-oac-ctl;ControlledThing">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-pty-rl;ThingInRole"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-pty-pty;Undergoer"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
@@ -104,16 +100,16 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>controlled thing</rdfs:label>
-		<skos:definition>thing over which some party exercises some form of control in some context</skos:definition>
+		<skos:definition>something over which some party exercises some form of control with respect to some situation</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-oac-ctl;ControllingCapacity">
 		<rdfs:label>controlling capacity</rdfs:label>
-		<skos:definition>the possession, direct or indirect, of the power to direct or cause the direction of the thing which is controlled</skos:definition>
+		<skos:definition>the possession, direct or indirect, of the power to direct or or strongly influence the direction of something</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-oac-ctl;ControllingParty">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-pty-pty;PartyInRole"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-pty-pty;Actor"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
@@ -126,7 +122,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>controlling party</rdfs:label>
-		<skos:definition>Party which exercises some form of control in some context.</skos:definition>
+		<skos:definition>actor that exercises some form of control in the context of some situation</skos:definition>
 		<skos:editorialNote>At this level of abstraction it is not defined whether the control is some degree of controlling interest, or some level of actual control (asserted or calculated) in some entity.</skos:editorialNote>
 	</owl:Class>
 	
@@ -149,33 +145,37 @@
 	</owl:Class>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-oac-ctl;hasPartyInControl">
-		<rdfs:label>control by party</rdfs:label>
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-pty-pty;hasActor"/>
+		<rdfs:label>has party in control</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fnd-oac-ctl;Control"/>
 		<rdfs:range rdf:resource="&fibo-fnd-oac-ctl;ControllingParty"/>
-		<skos:definition>indicates the party in a control relationship where a party controls a thing</skos:definition>
+		<skos:definition>indicates the actor in the context of a control situation, i.e., the party that has control</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-oac-ctl;isControlledThingInRole">
-		<rdfs:label>is a controlled thing in role</rdfs:label>
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-pty-pty;undergoes"/>
+		<rdfs:label>is controlled thing in role</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fnd-oac-ctl;ControlledThing"/>
 		<rdfs:range rdf:resource="&fibo-fnd-oac-ctl;Control"/>
 		<owl:inverseOf rdf:resource="&fibo-fnd-oac-ctl;isInControlOfThing"/>
-		<skos:definition>indicates the context of control in which the thing plays the role of being controlled</skos:definition>
+		<skos:definition>indicates the context of control in which something (undergoer) is being controlled</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-oac-ctl;isControllingPartyInRole">
-		<rdfs:label>is a controlling party in role</rdfs:label>
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-pty-pty;actsIn"/>
+		<rdfs:label>is controlling party in role</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fnd-oac-ctl;ControllingParty"/>
 		<rdfs:range rdf:resource="&fibo-fnd-oac-ctl;Control"/>
 		<owl:inverseOf rdf:resource="&fibo-fnd-oac-ctl;hasPartyInControl"/>
-		<skos:definition>indicates the context of control in which the party plays the role of controlling some thing</skos:definition>
+		<skos:definition>indicates the context of control in which the party plays the role of controlling something</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-oac-ctl;isInControlOfThing">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-pty-pty;hasUndergoer"/>
 		<rdfs:label>is in control of thing</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fnd-oac-ctl;Control"/>
 		<rdfs:range rdf:resource="&fibo-fnd-oac-ctl;ControlledThing"/>
-		<skos:definition>Indicates the thing in a control relationship where a party controls a thing</skos:definition>
+		<skos:definition>indicates something controlled in the context of a control situation</skos:definition>
 	</owl:ObjectProperty>
 
 </rdf:RDF>
