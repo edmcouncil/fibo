@@ -80,121 +80,112 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/20200201/Partnerships/Partnerships/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/20200601/Partnerships/Partnerships/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20131101/Partnerships/Partnerships.rdf version of this ontology was modified per the issue resolutions identified in the FIBO BE 1.0 FTF report.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20160201/Partnerships/Partnerships.rdf version of this ontology was modified per the FIBO 2.0 RFC to reference shareholders&apos; equity vs. stockholders&apos; equity and correct a number of restrictions.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20180801/Partnerships/Partnerships.rdf version of this ontology was modified to simplify / merge the legal person and formal organization class hierarchies.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20181101/Partnerships/Partnerships.rdf version of this ontology was modified to reflect the move of hasObjective to FND to enable higher level reuse.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20190401/Partnerships/Partnerships.rdf version of this ontology was modified to eliminate deprecated elements.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20190901/Partnerships/Partnerships.rdf version of this ontology was modified to eliminate duplication with concepts in LCC.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20200201/Partnerships/Partnerships.rdf version of this ontology was restructured to simplify the overall structure of partnerships, eliminate kinds of partnerships that do not exist, simplify the concept of a partnership agreement, loosen or eliminate restrictions as appropriate, add common forms of partnership that were missing, and revise definitions to be ISO 704 compliant.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
-	
-	<owl:Class rdf:about="&fibo-be-ptr-ptr;CorporateLimitedPartner">
-		<rdfs:subClassOf rdf:resource="&fibo-be-ptr-ptr;LimitedPartner"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasIdentity"/>
-				<owl:onClass rdf:resource="&fibo-be-le-cb;Corporation"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>corporate limited partner</rdfs:label>
-		<skos:definition>A limited partner in a partnership, who is and may only be a Corporate Legal Person (i.e., not a natural person)</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-be-ptr-ptr;EquityApportionmentTermsSet">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractualCommitment"/>
-		<rdfs:label>equity apportionment terms set</rdfs:label>
-		<skos:definition>contract terms defining the apportionment of equity for some formal business organization.</skos:definition>
-	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-ptr-ptr;GeneralPartner">
 		<rdfs:subClassOf rdf:resource="&fibo-be-oac-cpty;DeJureControllingInterestParty"/>
 		<rdfs:subClassOf rdf:resource="&fibo-be-ptr-ptr;Partner"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasIdentity"/>
-				<owl:onClass rdf:resource="&fibo-be-le-lp;LegallyCompetentNaturalPerson"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-be-oac-opty;holdsEquityIn"/>
-				<owl:someValuesFrom rdf:resource="&fibo-be-ptr-ptr;GeneralPartnerEquity"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
 				<owl:someValuesFrom>
 					<owl:Restriction>
 						<owl:onProperty rdf:resource="&fibo-fnd-law-lcap;hasCapacity"/>
-						<owl:allValuesFrom rdf:resource="&fibo-fnd-law-lcap;LiabilityCapacity"/>
+						<owl:someValuesFrom rdf:resource="&fibo-fnd-law-lcap;LiabilityCapacity"/>
 					</owl:Restriction>
 				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>general partner</rdfs:label>
-		<skos:definition>a partner in a partnership, who holds some part of the general partner equity and typically is jointly and severally liable with the other partners for the liabilities incurred by that partnership</skos:definition>
+		<skos:definition>partner and part-owner that is responsible for managing the day to day operations of the partnership and that may be jointly and severally liable for the obligations of the partnership</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Note that although typically a general partner is a person, in the context of certain funds, such as private equity, a general partner may be a firm that manages the fund.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-be-ptr-ptr;GeneralPartnerEquity">
-		<rdfs:subClassOf rdf:resource="&fibo-be-oac-opty;ControllingEquity"/>
-		<rdfs:subClassOf rdf:resource="&fibo-be-ptr-ptr;PartnershipEquity"/>
+	<owl:Class rdf:about="&fibo-be-ptr-ptr;GeneralPartnership">
+		<rdfs:subClassOf rdf:resource="&fibo-be-ptr-ptr;Partnership"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;confers"/>
-				<owl:allValuesFrom rdf:resource="&fibo-be-oac-cpty;ConstitutionalDeJureControl"/>
+				<owl:onProperty rdf:resource="&fibo-be-ptr-ptr;hasGeneralPartner"/>
+				<owl:someValuesFrom rdf:resource="&fibo-be-ptr-ptr;GeneralPartner"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label>general partner equity</rdfs:label>
-		<skos:definition>Equity in a partnership held by general partners; this is typically accompanied by full liability capability on the part of the holders of the equity.</skos:definition>
-		<skos:editorialNote>For a typical, non incorporated partnership, this is the only equity in the entity. Other typically incorporated partnerships may have additional limited equity in addition to or instead of this.</skos:editorialNote>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&lcc-lr;hasMember"/>
+				<owl:someValuesFrom>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&fibo-fnd-pty-rl;playsRole"/>
+						<owl:onClass rdf:resource="&fibo-be-ptr-ptr;GeneralPartner"/>
+						<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">2</owl:minQualifiedCardinality>
+					</owl:Restriction>
+				</owl:someValuesFrom>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>general partnership</rdfs:label>
+		<skos:definition>partnership that has at least two general partners that agree to share in all assets, profits, and financial and legal liabilities of the business</skos:definition>
+		<fibo-fnd-utl-av:abbreviation>GP</fibo-fnd-utl-av:abbreviation>
+		<fibo-fnd-utl-av:explanatoryNote>General partnerships are the most basic and common form of partnership world-wide.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-be-ptr-ptr;LiabilityApportionmentTermsSet">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractualCommitment"/>
-		<rdfs:label>liability apportionment terms set</rdfs:label>
-		<skos:definition>terms defining the apportionment of liabilities accrued by some formal business organization.</skos:definition>
+	<owl:Class rdf:about="&fibo-be-ptr-ptr;LimitedLiabilityLimitedPartnership">
+		<rdfs:subClassOf rdf:resource="&fibo-be-ptr-ptr;LimitedPartnership"/>
+		<rdfs:label>limited liability limited partnership</rdfs:label>
+		<skos:definition>limited partnership that consists of one or more general partners who are liable for the obligations of the entity as well as one or more protected limited liability partners</skos:definition>
+		<fibo-fnd-utl-av:abbreviation>LLLP</fibo-fnd-utl-av:abbreviation>
+		<fibo-fnd-utl-av:explanatoryNote>The primary difference between an LLLP and more traditional limited partnership is that an LLLP allows liability transfer from the general partner&apos;s (to external insurer) for debts and obligations of the limited partnership.  Typically, general partners manage the LLLP, while the limited partners&apos; interest is primarily for investment purposes.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-be-ptr-ptr;LimitedLiabilityPartnership">
+		<rdfs:subClassOf rdf:resource="&fibo-be-ptr-ptr;Partnership"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-be-ptr-ptr;hasGeneralPartner"/>
+				<owl:someValuesFrom rdf:resource="&fibo-be-ptr-ptr;GeneralPartner"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>limited liability partnership</rdfs:label>
+		<owl:disjointWith rdf:resource="&fibo-be-ptr-ptr;LimitedPartnership"/>
+		<skos:definition>partnership that has general partners but provides its individual partners some level of protection against personal liability for certain partnership liabilities</skos:definition>
+		<skos:example>Law firms, accountancies, wealth managers, professional medical groups, and other professional consultancies often take the form of a limited liability partnership.</skos:example>
+		<fibo-fnd-utl-av:abbreviation>LLP</fibo-fnd-utl-av:abbreviation>
+		<fibo-fnd-utl-av:explanatoryNote>LLPs are a flexible legal and tax entity that allows partners to benefit from economies of scale by working together while also reducing their liability for the actions of other partners.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-ptr-ptr;LimitedPartner">
 		<rdfs:subClassOf rdf:resource="&fibo-be-ptr-ptr;Partner"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-be-oac-opty;holdsEquityIn"/>
-				<owl:someValuesFrom rdf:resource="&fibo-be-ptr-ptr;LimitedPartnerEquity"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label>limited partner</rdfs:label>
-		<skos:definition>a partner whose liabilities are limited to the extent of their equity holding or guarantees</skos:definition>
+		<owl:disjointWith rdf:resource="&fibo-be-ptr-ptr;GeneralPartner"/>
+		<skos:definition>partner whose liabilities are limited to the extent of their investment or guarantees and that has no involvement in the day to day operations of the partnership</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-be-ptr-ptr;LimitedPartnerEquity">
-		<rdfs:subClassOf rdf:resource="&fibo-be-ptr-ptr;PartnershipEquity"/>
-		<rdfs:label>limited partner equity</rdfs:label>
-		<skos:definition>equity in a partnership held by limited partners; this is not accompanied by any liability capability on the part of the holders of this equity.</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-be-ptr-ptr;NaturalPersonLimitedPartner">
-		<rdfs:subClassOf rdf:resource="&fibo-be-ptr-ptr;LimitedPartner"/>
+	<owl:Class rdf:about="&fibo-be-ptr-ptr;LimitedPartnership">
+		<rdfs:subClassOf rdf:resource="&fibo-be-ptr-ptr;Partnership"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasIdentity"/>
-				<owl:onClass rdf:resource="&fibo-be-le-lp;LegallyCompetentNaturalPerson"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+				<owl:onProperty rdf:resource="&fibo-be-ptr-ptr;hasGeneralPartner"/>
+				<owl:someValuesFrom rdf:resource="&fibo-be-ptr-ptr;GeneralPartner"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label>natural person limited partner</rdfs:label>
-		<skos:definition>a limited partner in a partnership who is a natural person</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-be-ptr-ptr;NonIncorporatedPartnership">
-		<rdfs:subClassOf rdf:resource="&fibo-be-ptr-ptr;PartnershipWithGeneralPartners"/>
-		<rdfs:label>non-incorporated partnership</rdfs:label>
-		<skos:definition>a partnership in which the partners are jointly and severally liable for liabilities incurred by the entity</skos:definition>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-be-ptr-ptr;hasLimitedPartner"/>
+				<owl:someValuesFrom rdf:resource="&fibo-be-ptr-ptr;LimitedPartner"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>limited partnership</rdfs:label>
+		<skos:definition>partnership that has at least one general partner and at least one limited partner</skos:definition>
+		<skos:example>In the United States, film production companies, real estate investment firms, and private equity firms are typically formed as limited partnerships. In the United Kingdom, imited partnerships are governed by the Limited Partnerships Act 1907 and, on matters on which that Act is silent, also by the Partnership Act 1890.</skos:example>
+		<fibo-fnd-utl-av:abbreviation>LP</fibo-fnd-utl-av:abbreviation>
+		<fibo-fnd-utl-av:explanatoryNote>Limited partnerships are distinct from limited liability partnerships, in which all partners have limited liability.  Similar to a general partnership, the general partners have management control, share the right to use partnership property, share the profits of the firm in predefined proportions, and have joint and several liability for the debts of the partnership.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-ptr-ptr;Partner">
@@ -212,8 +203,8 @@
 				<owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
 				<owl:someValuesFrom>
 					<owl:Restriction>
-						<owl:onProperty rdf:resource="&lcc-lr;isMemberOf"/>
-						<owl:allValuesFrom rdf:resource="&fibo-be-ptr-ptr;Partnership"/>
+						<owl:onProperty rdf:resource="&fibo-fnd-pty-pty;isAPartyTo"/>
+						<owl:someValuesFrom rdf:resource="&fibo-be-ptr-ptr;PartnershipAgreement"/>
 					</owl:Restriction>
 				</owl:someValuesFrom>
 			</owl:Restriction>
@@ -223,20 +214,18 @@
 				<owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
 				<owl:someValuesFrom>
 					<owl:Restriction>
-						<owl:onProperty rdf:resource="&fibo-fnd-pty-pty;isAPartyTo"/>
-						<owl:onClass rdf:resource="&fibo-be-ptr-ptr;PartnershipAgreement"/>
-						<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+						<owl:onProperty rdf:resource="&lcc-lr;isMemberOf"/>
+						<owl:someValuesFrom rdf:resource="&fibo-be-ptr-ptr;Partnership"/>
 					</owl:Restriction>
 				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>partner</rdfs:label>
-		<skos:definition>a member of a partnership</skos:definition>
-		<skos:scopeNote>This term is not referred to directly in specific kinds of partnership. Nearly all partnerships have General Partners, while forms of (mostly legally incorporated) partnerships have in addition Limited Partners. This term is the common ancestor of both.</skos:scopeNote>
-		<fibo-fnd-utl-av:definitionOrigin rdf:datatype="&xsd;anyURI">http://www.investorwords.com/3608/partner.html</fibo-fnd-utl-av:definitionOrigin>
+		<skos:definition>co-owner, member, and agent of a partnership whose participation level, including proportional liabilities and share in the profit / loss of the business is specified in a partnership agreement</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-ptr-ptr;Partnership">
+		<rdfs:subClassOf rdf:resource="&fibo-be-le-lp;BusinessEntity"/>
 		<rdfs:subClassOf rdf:resource="&fibo-be-le-lp;LegalEntity"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
@@ -247,47 +236,28 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&lcc-lr;hasMember"/>
-				<owl:onClass>
-					<owl:Restriction>
-						<owl:onProperty rdf:resource="&fibo-fnd-pty-rl;playsRole"/>
-						<owl:someValuesFrom rdf:resource="&fibo-be-ptr-ptr;Partner"/>
-					</owl:Restriction>
-				</owl:onClass>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">2</owl:minQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-be-le-fbo;hasEquity"/>
-				<owl:someValuesFrom rdf:resource="&fibo-be-ptr-ptr;PartnershipEquity"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isGovernedBy"/>
 				<owl:someValuesFrom rdf:resource="&fibo-be-ptr-ptr;PartnershipAgreement"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&lcc-lr;hasMember"/>
+				<owl:someValuesFrom>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&fibo-fnd-pty-rl;playsRole"/>
+						<owl:someValuesFrom rdf:resource="&fibo-be-ptr-ptr;Partner"/>
+					</owl:Restriction>
+				</owl:someValuesFrom>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label>partnership</rdfs:label>
-		<skos:definition>venture in which two or more legal entities carry out some business activities under a common identity</skos:definition>
-		<skos:editorialNote>If the partnership doesn&apos;t limit the liability of the partners then the party to the contract is a natural person. If it does, then it&apos;s an artificial legal person (Body Corporate) - see Legally Incorporated Partnerships. Scope Note: This term of Partnership in the most general sense is ancestral to both of those.</skos:editorialNote>
+		<skos:definition>association of two or more legal persons to carry on as co-owners a business for profit</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Partnerships exist in many countries world-wide.  Examples of the laws related to the establishment and operation of partnerships include the Partnership Act of 1890 in the United Kingdom and the Uniform Partnership Act in the United States.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-ptr-ptr;PartnershipAgreement">
 		<rdfs:subClassOf rdf:resource="&fibo-be-le-fbo;OrganizationCoveringAgreement"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;hasContractualElement"/>
-				<owl:someValuesFrom rdf:resource="&fibo-be-ptr-ptr;EquityApportionmentTermsSet"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;hasContractualElement"/>
-				<owl:someValuesFrom rdf:resource="&fibo-be-ptr-ptr;LiabilityApportionmentTermsSet"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-pty-pty;hasPartyInRole"/>
@@ -295,134 +265,22 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>partnership agreement</rdfs:label>
-		<skos:definition>a document setting up a partnership, giving the details of the business and the amount each partner is contributing to it.</skos:definition>
+		<skos:definition>contract between partners in a partnership that establishes the terms and conditions of the relationship between the partners</skos:definition>
 		<fibo-fnd-utl-av:synonym>articles of partnership</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-be-ptr-ptr;PartnershipEquity">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-acc-aeq;OwnersEquity"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-acc-aeq;representsAnInterestIn"/>
-				<owl:someValuesFrom rdf:resource="&fibo-be-ptr-ptr;Partnership"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>partnership equity</rdfs:label>
-		<skos:definition>equity in some partnership</skos:definition>
-	</owl:Class>
+	<owl:ObjectProperty rdf:about="&fibo-be-ptr-ptr;hasGeneralPartner">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-pty-pty;isAffectedBy"/>
+		<rdfs:label>has general partner</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-be-ptr-ptr;GeneralPartner"/>
+		<skos:definition>indicates an actor that has some measure of control over the partnership</skos:definition>
+	</owl:ObjectProperty>
 	
-	<owl:Class rdf:about="&fibo-be-ptr-ptr;PartnershipIncorporatedByEquity">
-		<rdfs:subClassOf rdf:resource="&fibo-be-ptr-ptr;PartnershipWithLimitedPartners"/>
-		<rdfs:label>partnership incorporated by equity</rdfs:label>
-		<skos:definition>a partnership incorporated via the issuance of equity, with limited partners (i.e., partners whose liability is limited) that are necessarily not natural persons (i.e., cannot be individuals)</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-be-ptr-ptr;PartnershipIncorporatedThroughAgreement">
-		<rdfs:subClassOf rdf:resource="&fibo-be-le-cb;BodyIncorporatedThroughAgreement"/>
-		<rdfs:subClassOf rdf:resource="&fibo-be-ptr-ptr;Partnership"/>
-		<rdfs:label>partnership incorporated through agreement</rdfs:label>
-		<skos:definition>a partnership which has legal personhood, but for which there is not some issuance of limited partner equity</skos:definition>
-		<skos:editorialNote>An LLP (in the UK) is an example of this - in this case, the LLP document is the legal document which effectively constitutes the partnership</skos:editorialNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-be-ptr-ptr;PartnershipWithCorporateLimitedPartners">
-		<rdfs:subClassOf rdf:resource="&fibo-be-ptr-ptr;PartnershipWithLimitedPartners"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&lcc-lr;hasMember"/>
-				<owl:someValuesFrom>
-					<owl:Restriction>
-						<owl:onProperty rdf:resource="&fibo-fnd-pty-rl;playsRole"/>
-						<owl:someValuesFrom rdf:resource="&fibo-be-ptr-ptr;CorporateLimitedPartner"/>
-					</owl:Restriction>
-				</owl:someValuesFrom>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>partnership with corporate limited partners</rdfs:label>
-		<owl:disjointWith rdf:resource="&fibo-be-ptr-ptr;PartnershipWithNaturalPersonLimitedPartners"/>
-		<skos:definition>A partnership with limited partners (partners whose liability is limited) and where those partners are necessarily non natural persons (i.e. cannot be individuals).</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-be-ptr-ptr;PartnershipWithGeneralAndLimitedPartners">
-		<rdfs:subClassOf rdf:resource="&fibo-be-ptr-ptr;PartnershipWithGeneralPartners"/>
-		<rdfs:subClassOf rdf:resource="&fibo-be-ptr-ptr;PartnershipWithLimitedPartners"/>
-		<rdfs:label>partnership with general and limited partners</rdfs:label>
-		<owl:disjointWith rdf:resource="&fibo-be-ptr-ptr;PartnershipWithOnlyLimitedPartners"/>
-		<skos:definition>a partnership having both limited partners and general partners</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-be-ptr-ptr;PartnershipWithGeneralPartners">
-		<rdfs:subClassOf rdf:resource="&fibo-be-ptr-ptr;Partnership"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&lcc-lr;hasMember"/>
-				<owl:onClass>
-					<owl:Restriction>
-						<owl:onProperty rdf:resource="&fibo-fnd-pty-rl;playsRole"/>
-						<owl:someValuesFrom rdf:resource="&fibo-be-ptr-ptr;GeneralPartner"/>
-					</owl:Restriction>
-				</owl:onClass>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">2</owl:minQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>partnership with general partners</rdfs:label>
-		<skos:definition>a partnership that has two or more general partners</skos:definition>
-		<skos:editorialNote>The partnership may or may not also have limited partners. In a typical non-incorporated partnership, it does not. General partners of a partnership must be natural persons.</skos:editorialNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-be-ptr-ptr;PartnershipWithGeneralPartnersWithLimitedLiability">
-		<rdfs:subClassOf rdf:resource="&fibo-be-ptr-ptr;PartnershipWithGeneralPartners"/>
-		<rdfs:label>partnership with general partners with limited liability</rdfs:label>
-		<skos:definition>a partnership that has general partners, whose general partners have limited liability</skos:definition>
-		<skos:scopeNote>This is therefore necessarily a legal person (no-one else has liability); example in some US states is a limited liability limited partnership.</skos:scopeNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-be-ptr-ptr;PartnershipWithLimitedPartners">
-		<rdfs:subClassOf rdf:resource="&fibo-be-ptr-ptr;Partnership"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&lcc-lr;hasMember"/>
-				<owl:someValuesFrom>
-					<owl:Restriction>
-						<owl:onProperty rdf:resource="&fibo-fnd-pty-rl;playsRole"/>
-						<owl:someValuesFrom rdf:resource="&fibo-be-ptr-ptr;LimitedPartner"/>
-					</owl:Restriction>
-				</owl:someValuesFrom>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>partnership with limited partners</rdfs:label>
-		<skos:definition>a partnership having limited partners, that is partners whose liabilities are limited to the extent of their equity or guarantees</skos:definition>
-		<skos:editorialNote>Possibly but not necessarily a Legal Person. If there are only Limited Partners then this is of necessity a Legal Person (no-one else has liability in this structure).</skos:editorialNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-be-ptr-ptr;PartnershipWithNaturalPersonLimitedPartners">
-		<rdfs:subClassOf rdf:resource="&fibo-be-ptr-ptr;PartnershipWithLimitedPartners"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&lcc-lr;hasMember"/>
-				<owl:someValuesFrom>
-					<owl:Restriction>
-						<owl:onProperty rdf:resource="&fibo-fnd-pty-rl;playsRole"/>
-						<owl:someValuesFrom rdf:resource="&fibo-be-ptr-ptr;NaturalPersonLimitedPartner"/>
-					</owl:Restriction>
-				</owl:someValuesFrom>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>partnership with natural person limited partners</rdfs:label>
-		<skos:definition>a partnership with limited partners (partners whose liability is limited) and where those partners are necessarily natural persons (i.e. cannot be corporates)</skos:definition>
-		<skos:scopeNote>Example in US, a Limited Liability Partnership</skos:scopeNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-be-ptr-ptr;PartnershipWithOnlyLimitedPartners">
-		<rdfs:subClassOf rdf:resource="&fibo-be-ptr-ptr;PartnershipWithLimitedPartners"/>
-		<rdfs:label>partnership with only limited partners</rdfs:label>
-		<skos:definition>a partnership having limited partners but no general partners</skos:definition>
-	</owl:Class>
-	
-	<owl:DatatypeProperty rdf:about="&fibo-be-ptr-ptr;dateTradingFrom">
-		<rdfs:label>date trading from</rdfs:label>
-		<rdfs:range rdf:resource="&xsd;dateTime"/>
-		<skos:definition>date on which the partnership started trading</skos:definition>
-	</owl:DatatypeProperty>
+	<owl:ObjectProperty rdf:about="&fibo-be-ptr-ptr;hasLimitedPartner">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-pty-pty;isAffectedBy"/>
+		<rdfs:label>has limited partner</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-be-ptr-ptr;LimitedPartner"/>
+		<skos:definition>indicates an actor that may have some measure of influence over the partnership</skos:definition>
+	</owl:ObjectProperty>
 
 </rdf:RDF>
