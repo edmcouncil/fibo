@@ -68,7 +68,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20200501/Parties/Parties/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20200601/Parties/Parties/"/>
 		<skos:changeNote>The http://www.omg.org/spec/EDMC-FIBO/FND/20130801/Parties/Parties.rdf version of the ontology was was modified per the issue resolutions identified in the FIBO FND 1.0 FTF report and in https://spec.edmcouncil.org/fibo/ontology/FND/1.0/AboutFND-1.0/.</skos:changeNote>
 		<skos:changeNote>The http://www.omg.org/spec/EDMC-FIBO/FND/20141101/Parties/Parties.rdf version of this ontology was revised as a part of the issue resolutions identified in the FIBO FND 1.1 RTF report to add a parent of hasDate to date properties.</skos:changeNote>
 		<skos:changeNote>The http://www.omg.org/spec/EDMC-FIBO/FND/20160201/Parties/Parties.rdf version of this ontology was revised as a part of the FIBO 2.0 RFC to introduce disjointness axioms to aid users in understanding.</skos:changeNote>
@@ -243,8 +243,11 @@
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-pty-pty;directlyAffects">
 		<rdfs:label>directly affects</rdfs:label>
+		<owl:inverseOf rdf:resource="&fibo-fnd-pty-pty;experiencesWith"/>
 		<owl:propertyChainAxiom rdf:parseType="Collection">
-			<rdf:Description rdf:about="&fibo-fnd-pty-pty;actsOn">
+			<rdf:Description rdf:about="&fibo-fnd-pty-pty;actsIn">
+			</rdf:Description>
+			<rdf:Description rdf:about="&fibo-fnd-pty-pty;hasUndergoer">
 			</rdf:Description>
 			<rdf:Description rdf:about="&fibo-fnd-pty-rl;isPlayedBy">
 			</rdf:Description>
@@ -263,24 +266,25 @@
 		<skos:definition>relates something to a situation that affects them in some way</skos:definition>
 	</owl:ObjectProperty>
 	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-pty-pty;experiencesWith">
+		<rdfs:label>experiences with</rdfs:label>
+		<owl:propertyChainAxiom rdf:parseType="Collection">
+			<rdf:Description rdf:about="&fibo-fnd-pty-rl;playsRole">
+			</rdf:Description>
+			<rdf:Description rdf:about="&fibo-fnd-pty-pty;undergoes">
+			</rdf:Description>
+			<rdf:Description rdf:about="&fibo-fnd-pty-pty;hasActor">
+			</rdf:Description>
+		</owl:propertyChainAxiom>
+		<skos:definition>relates a person or organization to an actor that drives a situation involving them</skos:definition>
+	</owl:ObjectProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-pty-pty;hasActor">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-pty-pty;hasPartyInRole"/>
 		<rdfs:label>has actor</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fnd-pty-pty;Situation"/>
 		<rdfs:range rdf:resource="&fibo-fnd-pty-pty;Actor"/>
 		<skos:definition>identifies the primary party acting in a specific role with respect to a given situation</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-fnd-pty-pty;hasActorPlayedBy">
-		<rdfs:label>has actor played by</rdfs:label>
-		<owl:inverseOf rdf:resource="&fibo-fnd-pty-pty;playsActiveRoleIn"/>
-		<owl:propertyChainAxiom rdf:parseType="Collection">
-			<rdf:Description rdf:about="&fibo-fnd-pty-pty;hasActor">
-			</rdf:Description>
-			<rdf:Description rdf:about="&fibo-fnd-pty-rl;isPlayedBy">
-			</rdf:Description>
-		</owl:propertyChainAxiom>
-		<skos:definition>relates a situation to the person or organization acting in a primary role</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-pty-pty;hasCommencementDate">
@@ -303,6 +307,18 @@
 		<rdfs:label>has party in role</rdfs:label>
 		<rdfs:range rdf:resource="&fibo-fnd-pty-pty;PartyInRole"/>
 		<skos:definition>identifies a party acting in a specific role as related to the particular agreement, contract, policy, regulation, or other business relationship</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-pty-pty;hasPrimaryParty">
+		<rdfs:label>has primary party</rdfs:label>
+		<owl:inverseOf rdf:resource="&fibo-fnd-pty-pty;playsActiveRoleIn"/>
+		<owl:propertyChainAxiom rdf:parseType="Collection">
+			<rdf:Description rdf:about="&fibo-fnd-pty-pty;hasActor">
+			</rdf:Description>
+			<rdf:Description rdf:about="&fibo-fnd-pty-rl;isPlayedBy">
+			</rdf:Description>
+		</owl:propertyChainAxiom>
+		<skos:definition>relates a situation to the person or organization acting in a primary (agentive) role</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-pty-pty;hasRelatedPartyInRole">
@@ -329,18 +345,6 @@
 		<skos:definition>identifies the experiencer in a specific role with respect to a given situation</skos:definition>
 	</owl:ObjectProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-fnd-pty-pty;hasUndergoerPlayedBy">
-		<rdfs:label>has undergoer played by</rdfs:label>
-		<owl:inverseOf rdf:resource="&fibo-fnd-pty-pty;experiences"/>
-		<owl:propertyChainAxiom rdf:parseType="Collection">
-			<rdf:Description rdf:about="&fibo-fnd-pty-pty;hasUndergoer">
-			</rdf:Description>
-			<rdf:Description rdf:about="&fibo-fnd-pty-rl;isPlayedBy">
-			</rdf:Description>
-		</owl:propertyChainAxiom>
-		<skos:definition>relates a situation to something that is directly involved in or affected by it</skos:definition>
-	</owl:ObjectProperty>
-	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-pty-pty;isAPartyTo">
 		<rdfs:label>is a party to</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fnd-pty-pty;IndependentParty"/>
@@ -363,12 +367,26 @@
 	<owl:ObjectProperty rdf:about="&fibo-fnd-pty-pty;isDirectlyAffectedBy">
 		<rdfs:label>is directly affected by</rdfs:label>
 		<owl:propertyChainAxiom rdf:parseType="Collection">
-			<rdf:Description rdf:about="&fibo-fnd-pty-pty;isAffectedBy">
+			<rdf:Description rdf:about="&fibo-fnd-pty-pty;undergoes">
+			</rdf:Description>
+			<rdf:Description rdf:about="&fibo-fnd-pty-pty;hasActor">
 			</rdf:Description>
 			<rdf:Description rdf:about="&fibo-fnd-pty-rl;isPlayedBy">
 			</rdf:Description>
 		</owl:propertyChainAxiom>
-		<skos:definition>relates an undergoer in a given situation to the party that has an impact on them under the circumstances</skos:definition>
+		<skos:definition>relates an undergoer in a given situation to the person or organization that has an impact on them under the circumstances</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-pty-pty;isExperiencedBy">
+		<rdfs:label>is experienced by</rdfs:label>
+		<owl:inverseOf rdf:resource="&fibo-fnd-pty-pty;experiences"/>
+		<owl:propertyChainAxiom rdf:parseType="Collection">
+			<rdf:Description rdf:about="&fibo-fnd-pty-pty;hasUndergoer">
+			</rdf:Description>
+			<rdf:Description rdf:about="&fibo-fnd-pty-rl;isPlayedBy">
+			</rdf:Description>
+		</owl:propertyChainAxiom>
+		<skos:definition>relates a situation to something that is directly involved in or affected by it</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-pty-pty;playsActiveRoleIn">
@@ -380,6 +398,20 @@
 			</rdf:Description>
 		</owl:propertyChainAxiom>
 		<skos:definition>relates a person or organization to a situation that they are directly involved in</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-pty-pty;playsActiveRoleThatAffects">
+		<rdfs:label>plays active role that affects</rdfs:label>
+		<owl:inverseOf rdf:resource="&fibo-fnd-pty-pty;isDirectlyAffectedBy"/>
+		<owl:propertyChainAxiom rdf:parseType="Collection">
+			<rdf:Description rdf:about="&fibo-fnd-pty-rl;playsRole">
+			</rdf:Description>
+			<rdf:Description rdf:about="&fibo-fnd-pty-pty;actsIn">
+			</rdf:Description>
+			<rdf:Description rdf:about="&fibo-fnd-pty-pty;hasUndergoer">
+			</rdf:Description>
+		</owl:propertyChainAxiom>
+		<skos:definition>relates a person or organization to an undergoer they have an impact on under the circumstances</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-pty-pty;undergoes">
