@@ -82,12 +82,13 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/20200201/OwnershipAndControl/Executives/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/20200601/OwnershipAndControl/Executives/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20131101/OwnershipAndControl/Executives.rdf version of this ontology was modified per the issue resolutions identified in the FIBO BE 1.0 FTF report.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20160801/OwnershipAndControl/Executives.rdf version of this ontology was modified per the FIBO 2.0 RFC to fix reasoning issues.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20180801/OwnershipAndControl/Executives.rdf version of this ontology was modified to clarify the definition of responsible party.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20181101/OwnershipAndControl/Executives.rdf version of this ontology was modified to adjust the hierarchy to better support regulatory requirements.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20190501/OwnershipAndControl/Executives.rdf version of this ontology was modified to eliminate duplication with concepts in LCC.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20200201/OwnershipAndControl/Executives.rdf version of this ontology was modified to integrate concepts related to authorization, including the concept of a signatory (moved from legal persons) to improve semantics; simplify the ontology, and normalize definitions to be ISO 704 compliant.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -95,11 +96,10 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;governs"/>
-				<owl:onClass rdf:resource="&fibo-be-oac-exec;CompanyBylaw"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+				<owl:someValuesFrom rdf:resource="&fibo-be-oac-exec;Bylaws"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<fibo-fnd-utl-av:explanatoryNote>extends the definition of an instrument of incorporation to constrain corporate bylaws</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:explanatoryNote>An instrument of incorporation also constrains corporate bylaws.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-oac-cpty;DeFactoControllingInterestParty">
@@ -110,7 +110,7 @@
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<fibo-fnd-utl-av:explanatoryNote>a control owner (i.e., control person, per SEC regulations) may have some means or right that allows them to exercise control over board composition, other than through proxy assignment or vote.  Not all control persons have this facility, as it is not inherent to having a significant (for example, 20 percent or more) ownership stake.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:explanatoryNote>A control owner (i.e., control person, per SEC regulations) may have some means or right that allows them to exercise control over board composition, other than through proxy assignment or vote.  Not all control persons have this facility, as it is not inherent to having a significant (for example, 20 percent or more) ownership stake.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-oac-cctl;VotingShareholder">
@@ -127,17 +127,72 @@
 	<owl:Class rdf:about="&fibo-be-oac-exec;ArticlesOfIncorporation">
 		<rdfs:subClassOf rdf:resource="&fibo-be-le-cb;InstrumentOfIncorporation"/>
 		<rdfs:label>articles of incorporation</rdfs:label>
-		<skos:definition>The articles of association are a contract (1) between the members (stockholders, subscribers) and the organization and (2) among the members themselves. It sets out the rights and duties of directors and stockholders individually and in meetings. Certain statutory clauses (such as those dealing with allotment, transfer, and forfeiture of shares) must be included; the other clauses are chosen by the stockholders to make up the bylaws of the organization. A court, however, may declare a clause ultra vires if it is deemed unfair, unlawful, or unreasonable. A copy of the articles is lodged with the appropriate authority such as the registrar of companies. Articles are public documents and may be inspected by anyone (usually on payment of a fee) either at the premises of the organization or at the registrar&apos;s office. Lenders to the organization take special interest in its provisions that impose a ceiling on the borrowings beyond which the organization&apos;s management must get shareholders&apos; approval before taking on more debt. The usual American term is articles of incorporation.</skos:definition>
-		<fibo-fnd-utl-av:definitionOrigin rdf:datatype="&xsd;anyURI">http://www.businessdictionary.com/definition/articles-of-association.html</fibo-fnd-utl-av:definitionOrigin>
+		<skos:definition>contract (1) between members (stockholders, subscribers) and the organization and (2) among the members themselves, that sets out the rights and duties of directors and stockholders</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Certain statutory clauses (such as those dealing with allotment, transfer, and forfeiture of shares) must be included; the other clauses are chosen by the stockholders to make up the bylaws of the organization. A court, however, may declare a clause ultra vires if it is deemed unfair, unlawful, or unreasonable. A copy of the articles is lodged with the appropriate authority such as the registrar of companies. Articles are public documents and may be inspected by anyone (usually on payment of a fee) either at the premises of the organization or at the registrar&apos;s office. Lenders to the organization take special interest in its provisions that impose a ceiling on the borrowings beyond which the organization&apos;s management must get shareholders&apos; approval before taking on more debt.</fibo-fnd-utl-av:explanatoryNote>
 		<fibo-fnd-utl-av:synonym>articles of association</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-oac-exec;Auditor">
-		<rdfs:subClassOf rdf:resource="&fibo-be-oac-exec;ResponsibleParty"/>
+		<rdfs:subClassOf rdf:resource="&fibo-be-oac-exec;AuthorizedParty"/>
 		<rdfs:label>auditor</rdfs:label>
-		<skos:definition>an individual qualified (at the state level) to conduct audits. An auditor may be an internal auditor (an individual whose primary job function is to audit his or her own company) or an external auditor (an individual from outside the company, who typically is employed by an auditing firm who handles many different clients).</skos:definition>
-		<skos:editorialNote>They have power independently of the board. Power to assess the quality of the financial reports. Also has obligations to the statutory authorities in that regard. The auditor has obligations to the shareholders which are not directly to the Board. Their specific role is to supervise the board to ensure they are acting on behalf of the shareholders. To report to the shareholders on the activities of the Board. Therefore, Auditor&apos;s report is a required part of the financial reports. They are responsible for providing a true and fair view of the financial positions of the company. Election - Put up by the board. Appointed by the Board on behalf of the shareholders. Can be voted out by the shareholders at an AGM or EGM but the board can also put up a competitive process. Normally board elects them but the shareholders can override that selection.</skos:editorialNote>
-		<fibo-fnd-utl-av:definitionOrigin rdf:datatype="&xsd;anyURI">http://www.investorwords.com/326/auditor.html</fibo-fnd-utl-av:definitionOrigin>
+		<skos:definition>party qualified and authorized to review and verify the accuracy of financial records and ensure that companies comply with tax laws</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>An auditor may be an internal auditor - an individual whose primary job function is to audit his or her own company, or an external auditor - an individual from outside the company, who typically is employed by an auditing firm who handles many different clients.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-be-oac-exec;Authorization">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-pty-pty;Situation"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-be-oac-exec;hasAuthorizedParty"/>
+				<owl:someValuesFrom rdf:resource="&fibo-be-oac-exec;AuthorizedParty"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-be-oac-exec;hasAuthorizingParty"/>
+				<owl:someValuesFrom rdf:resource="&fibo-be-oac-exec;AuthorizingParty"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>authorization</rdfs:label>
+		<skos:definition>situation in which a party authorizes someone to act on their behalf under certain conditions for some period of time</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-be-oac-exec;AuthorizedParty">
+		<rdfs:subClassOf rdf:resource="&fibo-be-oac-exec;ResponsibleParty"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasIdentity"/>
+				<owl:onClass rdf:resource="&fibo-be-le-lp;LegallyCompetentNaturalPerson"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-be-oac-exec;isAuthorizedThrough"/>
+				<owl:someValuesFrom rdf:resource="&fibo-be-oac-exec;Authorization"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>authorized party</rdfs:label>
+		<skos:definition>party that has been given the responsibility to act on behalf of another party under some set of guidelines</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-be-oac-exec;AuthorizingParty">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-pty-pty;Actor"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasIdentity"/>
+				<owl:onClass rdf:resource="&fibo-be-le-lp;LegalPerson"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-be-oac-exec;authorizesThrough"/>
+				<owl:someValuesFrom rdf:resource="&fibo-be-oac-exec;Authorization"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>authorizing party</rdfs:label>
+		<skos:definition>party that delegates some role, authority, or control to another party</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-oac-exec;BoardCapacity">
@@ -145,7 +200,8 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isGovernedBy"/>
-				<owl:allValuesFrom rdf:resource="&fibo-be-oac-exec;CompanyLaw"/>
+				<owl:onClass rdf:resource="&fibo-be-oac-exec;CompanyLaw"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -156,7 +212,7 @@
 						<owl:unionOf rdf:parseType="Collection">
 							<rdf:Description rdf:about="&fibo-be-le-cb;InstrumentOfIncorporation">
 							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-be-oac-exec;CompanyBylaw">
+							<rdf:Description rdf:about="&fibo-be-oac-exec;Bylaws">
 							</rdf:Description>
 							<rdf:Description rdf:about="&fibo-be-corp-corp;BoardAgreement">
 							</rdf:Description>
@@ -177,18 +233,13 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>board capacity</rdfs:label>
-		<skos:definition>the capacity that resides in the board of directors of a company</skos:definition>
+		<skos:definition>authority to act in a fiduciary capacity with respect to the organization, including but not limited to determining and executing corporate policy</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-oac-exec;BoardMember">
+		<rdfs:subClassOf rdf:resource="&fibo-be-oac-exec;AuthorizedParty"/>
 		<rdfs:subClassOf rdf:resource="&fibo-be-oac-exec;LegallyDelegatedAuthority"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-pty-pty;OrganizationMember"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasIdentity"/>
-				<owl:allValuesFrom rdf:resource="&fibo-be-le-lp;LegalPerson"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
@@ -217,7 +268,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>board member</rdfs:label>
-		<skos:definition>a person who is a member of the board of directors of a corporation</skos:definition>
+		<skos:definition>party that is a member of the board of directors of an organization</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-oac-exec;BoardOfDirectors">
@@ -256,151 +307,72 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>board of directors</rdfs:label>
-		<skos:definition>Governing body (called the board) of an incorporated firm. Its members (directors) are elected normally by the subscribers (stockholders) of the firm (generally at an annual general meeting or AGM) to govern the firm and look after the subscribers&apos; interests. The board has the ultimate decision-making authority and, in general, is empowered to (1) set the company&apos;s policy, objectives, and overall direction, (2) adopt bylaws, (3) name members of the advisory, executive, finance, and other committees, (4) hire, monitor, evaluate, and fire the managing director and senior executives, (5) determine and pay the dividend, and (6) issue additional shares. Though all its members might not be engaged in the company&apos;s day-to-day operations, the entire board is held liable (under the doctrine of collective responsibility) for the consequences of the firm&apos;s policies, actions, and failures to act. Members of the board usually include senior-most executives (called inside directors or executive directors) as well as experts or respected persons chosen from the wider community (called outside directors or non-executive directors).</skos:definition>
-		<fibo-fnd-utl-av:definitionOrigin rdf:datatype="&xsd;anyURI">http://www.businessdictionary.com/definition/board-of-directors.html</fibo-fnd-utl-av:definitionOrigin>
+		<skos:definition>group of people comprising the governing body of an organization that has the authority to set organizational strategy and policies as well as to select and, to some degree manage, leadership</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>For a public, for profit organization, its members (directors) are elected normally by the subscribers (stockholders) of the firm (generally at an annual general meeting) to govern the firm and look after the subscribers&apos; interests. In the case of a not-for-profit organization, the board ensures the organization is acting in line with its mission. The board has the ultimate decision-making authority and, in general, is empowered to (1) set the company&apos;s policy, objectives, and overall direction, (2) adopt bylaws, (3) name members of the advisory, executive, finance, and other committees, (4) hire, monitor, evaluate, and fire the managing director and senior executives, (5) determine and pay the dividend, and (6) issue additional shares. Though all its members might not be engaged in the company&apos;s day-to-day operations, the entire board is held liable (under the doctrine of collective responsibility) for the consequences of the firm&apos;s policies, actions, and failures to act. Members of the board usually include senior-most executives (called inside directors or executive directors) as well as experts or respected persons chosen from the wider community (called outside directors or non-executive directors).</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-be-oac-exec;Bylaw">
+	<owl:Class rdf:about="&fibo-be-oac-exec;Bylaws">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-law-cor;Law"/>
-		<rdfs:label>bylaw</rdfs:label>
-		<skos:definition>Corporate bylaws are typically called Articles of Association in the United Kingdom, or Articles of Incorporation in the United States. In government usage, the term bylaws is used to describe laws, orders, regulations, rules, etc., made by a ministry, local authority (a municipality, for example), or public corporation, in accordance with the powers conferred by or delegated under a statue (called the parent act).</skos:definition>
-		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.businessdictionary.com/definition/bylaw.html</fibo-fnd-utl-av:adaptedFrom>
+		<rdfs:label>bylaws</rdfs:label>
+		<skos:definition>written rules for conduct of a corporation, association, partnership or any organization</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Corporate bylaws are typically called Articles of Association in the United Kingdom, or Articles of Incorporation in the United States. In government usage, the term bylaws is used to describe laws, orders, regulations, rules, etc., made by a ministry, local authority (a municipality, for example), or public corporation, in accordance with the powers conferred by or delegated under a statue (called the parent act).</fibo-fnd-utl-av:explanatoryNote>
 		<fibo-fnd-utl-av:synonym>byelaws</fibo-fnd-utl-av:synonym>
-		<fibo-fnd-utl-av:synonym>delegated legislation</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-oac-exec;ChiefExecutiveOfficer">
 		<rdfs:subClassOf rdf:resource="&fibo-be-oac-exec;CorporateOfficer"/>
 		<rdfs:subClassOf rdf:resource="&fibo-be-oac-exec;ExecutiveBoardMember"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
+				<owl:someValuesFrom>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;manages"/>
+						<owl:someValuesFrom rdf:resource="&fibo-fnd-org-fm;FormalOrganization"/>
+					</owl:Restriction>
+				</owl:someValuesFrom>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label>chief executive officer</rdfs:label>
-		<skos:definition>Top executive responsible for a firm&apos;s overall operations and performance. He or she is the leader of the firm, serves as the main link between the board of directors (the board) and the firm&apos;s various parts or levels, and is held solely responsible for the firm&apos;s success or failure. One of the major duties of a CEO is to maintain and implement corporate policy, as established by the board. Also called President or managing director, he or she may also be the chairman (or chairperson) of the board.</skos:definition>
+		<skos:definition>top corporate officer responsible for an organization&apos;s overall operations and performance</skos:definition>
 		<fibo-fnd-utl-av:abbreviation>CEO</fibo-fnd-utl-av:abbreviation>
-		<fibo-fnd-utl-av:definitionOrigin rdf:datatype="&xsd;anyURI">http://www.businessdictionary.com/definition/chief-executive-officer-CEO.html</fibo-fnd-utl-av:definitionOrigin>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.businessdictionary.com/definition/chief-executive-officer-CEO.html</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:explanatoryNote>He or she is the leader of the firm, serves as the main link between the board of directors (the board) and the firm&apos;s various parts or levels, and is held solely responsible for the firm&apos;s success or failure. One of the major duties of a CEO is to maintain and implement corporate policy, as established by the board. Also called President or managing director, he or she may also be the chairman (or chairperson) of the board.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-oac-exec;ChiefFinancialOfficer">
 		<rdfs:subClassOf rdf:resource="&fibo-be-oac-exec;CorporateOfficer"/>
 		<rdfs:subClassOf rdf:resource="&fibo-be-oac-exec;Executive"/>
 		<rdfs:label>chief financial officer</rdfs:label>
-		<skos:definition>Senior-most executive responsible for financial control and planning of a firm or project. He or she is in charge of all accounting functions including (1) credit control, (2) preparing budgets and financial statements, (3) coordinating financing and fund raising, (4) monitoring expenditure and liquidity, (5) managing investment and taxation issues, (6) reporting financial performance to the board, and (7) providing timely financial data to the CEO. Also called chief finance officer, comptroller, controller, or finance controller.</skos:definition>
+		<skos:definition>senior-most corporate officer responsible for financial control and planning of organization or project</skos:definition>
 		<fibo-fnd-utl-av:abbreviation>CFO</fibo-fnd-utl-av:abbreviation>
-		<fibo-fnd-utl-av:definitionOrigin rdf:datatype="&xsd;anyURI">http://www.businessdictionary.com/definition/chief-financial-officer-CFO.html</fibo-fnd-utl-av:definitionOrigin>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-be-oac-exec;CompanyBylaw">
-		<rdfs:subClassOf rdf:resource="&fibo-be-oac-exec;Bylaw"/>
-		<rdfs:label>company bylaw</rdfs:label>
-		<skos:definition>The official rules and regulations which govern a corporation&apos;s management. Drawn up at the time of incorporation, along with the charter.</skos:definition>
-		<fibo-fnd-utl-av:definitionOrigin rdf:datatype="&xsd;anyURI">http://www.investorwords.com/660/bylaws.html</fibo-fnd-utl-av:definitionOrigin>
-		<fibo-fnd-utl-av:synonym>corporate bylaw</fibo-fnd-utl-av:synonym>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.businessdictionary.com/definition/chief-financial-officer-CFO.html</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:explanatoryNote>He or she is in charge of all accounting functions including (1) credit control, (2) preparing budgets and financial statements, (3) coordinating financing and fund raising, (4) monitoring expenditure and liquidity, (5) managing investment and taxation issues, (6) reporting financial performance to the board, and (7) providing timely financial data to the CEO. Also called chief finance officer, comptroller, controller, or finance controller.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-oac-exec;CompanyLaw">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-law-jur;StatuteLaw"/>
 		<rdfs:label>company law</rdfs:label>
-		<skos:definition>Legislation under which the formation, registration or incorporation, governance, and dissolution of a firm is administered and controlled.</skos:definition>
-		<fibo-fnd-utl-av:definitionOrigin rdf:datatype="&xsd;anyURI">http://www.businessdictionary.com/definition/company-law.html</fibo-fnd-utl-av:definitionOrigin>
+		<skos:definition>legislation under which the formation, registration or incorporation, governance, and dissolution of a firm is administered and controlled</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.businessdictionary.com/definition/company-law.html</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:synonym>corporate law</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-oac-exec;CompanySecretary">
 		<rdfs:subClassOf rdf:resource="&fibo-be-oac-exec;CorporateOfficer"/>
 		<rdfs:label>company secretary</rdfs:label>
-		<skos:definition>Officer appointed by the directors of a firm as responsible for ensuring that firm&apos;s legal obligations under the corporate legislation are complied with. His or her formal duties include (1) calling meetings, (2) recording minutes of the meetings, (3) keeping statutory record books, (4) proper payment of dividend and interest payments, and (5) proper drafting and execution of agreements, contracts, and resolutions. A company secretary is not automatically an employee of the firm and, if employed with executive responsibilities, not be its director shareholder. If a firm has only two directors, one may act as its secretary; but a sole director may not. A firm (such as of accountants) may not act as a company secretary for any firm. Called corporate secretary in the US.</skos:definition>
-		<skos:editorialNote>Functionary but also a signer of documentation in the company. Does not have powes to do anything without instruction from the board. THe rol arsies from legal obligations iposed by the company. responsible to legislative authorities fo rthe company meeting those legal obligations. Role is that they gain a degree of control but only in the fact that they must report according to rules established by theirlegislative jurisdiction. Example: Delaware: you need a designated corporate secretary who is responsible for submitting certain documents etc.</skos:editorialNote>
-		<fibo-fnd-utl-av:definitionOrigin rdf:datatype="&xsd;anyURI">http://www.businessdictionary.com/definition/company-secretary.html</fibo-fnd-utl-av:definitionOrigin>
+		<skos:definition>corporate officer appointed by the directors of an organization, responsible for ensuring compliance with legal obligations related to corporate governance</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.businessdictionary.com/definition/company-secretary.html</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:explanatoryNote>His or her formal duties include (1) calling meetings, (2) recording minutes of the meetings, (3) keeping statutory record books, (4) proper payment of dividend and interest payments, and (5) proper drafting and execution of agreements, contracts, and resolutions. A company secretary is not automatically an employee of the firm and, if employed with executive responsibilities, not be its director shareholder. If a firm has only two directors, one may act as its secretary; but a sole director may not. A firm (such as of accountants) may not act as a company secretary for any firm. Called corporate secretary in the US.</fibo-fnd-utl-av:explanatoryNote>
 		<fibo-fnd-utl-av:synonym>corporate secretary</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-be-oac-exec;CompanyStatutoryObligation">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-law-lcap;LegalObligation"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isMandatedBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-be-oac-exec;CompanyLaw"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>company statutory obligation</rdfs:label>
-		<skos:definition>an obligation defined in company law (statute)</skos:definition>
-		<skos:editorialNote>This is the set of laws that define the statutory obligations on public officers for the jurisdiction in which the company operates.</skos:editorialNote>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-be-oac-exec;CorporateOfficer">
-		<rdfs:subClassOf rdf:resource="&fibo-be-oac-exec;ResponsibleParty"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasIdentity"/>
-				<owl:allValuesFrom rdf:resource="&fibo-be-le-lp;LegallyCompetentNaturalPerson"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
-				<owl:someValuesFrom>
-					<owl:Restriction>
-						<owl:onProperty rdf:resource="&fibo-be-oac-exec;hasResponsibility"/>
-						<owl:allValuesFrom rdf:resource="&fibo-be-oac-exec;CorporateOfficerDuty"/>
-					</owl:Restriction>
-				</owl:someValuesFrom>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
-				<owl:someValuesFrom>
-					<owl:Restriction>
-						<owl:onProperty rdf:resource="&fibo-be-oac-exec;hasResponsibility"/>
-						<owl:someValuesFrom rdf:resource="&fibo-be-oac-exec;CompanyStatutoryObligation"/>
-					</owl:Restriction>
-				</owl:someValuesFrom>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
-				<owl:someValuesFrom>
-					<owl:Restriction>
-						<owl:onProperty rdf:resource="&fibo-fnd-law-lcap;hasCapacity"/>
-						<owl:someValuesFrom rdf:resource="&fibo-be-oac-exec;CorporateOfficerCapacity"/>
-					</owl:Restriction>
-				</owl:someValuesFrom>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
-				<owl:someValuesFrom>
-					<owl:Restriction>
-						<owl:onProperty rdf:resource="&fibo-fnd-law-lcap;hasCapacity"/>
-						<owl:someValuesFrom rdf:resource="&fibo-fnd-law-lcap;SignatoryCapacity"/>
-					</owl:Restriction>
-				</owl:someValuesFrom>
-			</owl:Restriction>
-		</rdfs:subClassOf>
+		<rdfs:subClassOf rdf:resource="&fibo-be-oac-exec;Signatory"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-pty-pty;OrganizationMember"/>
 		<rdfs:label>corporate officer</rdfs:label>
-		<skos:definition>The executives of a corporation charged with certain operational responsibilities. Typically appointed by the board of directors, the corporate officers usually include the Chief Executive Officer (CEO), Chief Financial Officer (CFO), President, and in some corporations the Chief Operating Officer.</skos:definition>
-		<skos:editorialNote>Some party which is recognized by law as having the role and responsibilities defined for a Public Officer as described in that law.</skos:editorialNote>
-		<fibo-fnd-utl-av:definitionOrigin rdf:datatype="&xsd;anyURI">http://www.investorwords.com/15091/corporate_officers.html</fibo-fnd-utl-av:definitionOrigin>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-be-oac-exec;CorporateOfficerCapacity">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-law-lcap;DelegatedLegalAuthority"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isConferredBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-be-oac-exec;CompanyLaw"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>corporate officer capacity</rdfs:label>
-		<skos:definition>the capacity vested in a public officer of a company</skos:definition>
-		<skos:editorialNote>This is framed as a capacity: -an individual acts in their capacity of the role as CFO, CEO etc. but their legal liability rests in their relationship with the board itself i.e. comes from their membership on the board from a corporate standpoint.</skos:editorialNote>
-		<skos:scopeNote>Originally framed with reference to incorporated company, this term and its related terms have been re-framed as applying to any Body Corporate. May be specialized for Incorporated Companies and other Bodies Corporate at some future point.</skos:scopeNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-be-oac-exec;CorporateOfficerDuty">
-		<rdfs:subClassOf rdf:resource="&fibo-be-oac-exec;CompanyStatutoryObligation"/>
-		<rdfs:label>corporate officer duty</rdfs:label>
-		<skos:definition>some duty incumbent upon some officer of a company</skos:definition>
+		<skos:definition>high-level management executive of a corporation or other organization, hired by the board of directors or the business owner(s), charged with certain operational responsibilities</skos:definition>
+		<skos:example>Corporate officers may include a Chief Executive Officer (CEO), Chief Financial Officer (CFO), president, vice president(s), and in some cases a Chief Operating Officer (COO), Chief Compliance Officer (CCO), or other executive responsible for a critical function in the organization.</skos:example>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-oac-exec;Executive">
@@ -408,19 +380,20 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasIdentity"/>
-				<owl:allValuesFrom rdf:resource="&fibo-be-le-lp;LegallyCompetentNaturalPerson"/>
+				<owl:onClass rdf:resource="&fibo-be-le-lp;LegallyCompetentNaturalPerson"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>executive</rdfs:label>
-		<skos:definition>person appointed and given the responsibility to manage the affairs of an organization and the authority to make decisions within specified boundaries</skos:definition>
-		<fibo-fnd-utl-av:definitionOrigin rdf:datatype="&xsd;anyURI">http://www.businessdictionary.com/definition/executive.html</fibo-fnd-utl-av:definitionOrigin>
+		<skos:definition>person appointed and given the responsibility to manage the affairs of an organization and the authority to make decisions within specified role-specific boundaries</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.businessdictionary.com/definition/executive.html</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-oac-exec;ExecutiveBoardMember">
 		<rdfs:subClassOf rdf:resource="&fibo-be-oac-exec;BoardMember"/>
 		<rdfs:subClassOf rdf:resource="&fibo-be-oac-exec;Executive"/>
 		<rdfs:label>executive board member</rdfs:label>
-		<skos:definition>An individual performing the role of a board member of a company who also has executive responsibilities in the company.</skos:definition>
+		<skos:definition>executive that is also a member of the board of directors of the organization they manage</skos:definition>
 		<fibo-fnd-utl-av:synonym>inside director</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
@@ -433,13 +406,13 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>legally delegated authority</rdfs:label>
-		<skos:definition>a party having some legal control of some entity</skos:definition>
+		<skos:definition>party empowered with some level of legal control and corresponding responsibility</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-oac-exec;NonExecutiveBoardMember">
 		<rdfs:subClassOf rdf:resource="&fibo-be-oac-exec;BoardMember"/>
 		<rdfs:label>non-executive board member</rdfs:label>
-		<skos:definition>Some person performing the role of a Board Member of a company, and having no executive responsibilities towards the running of the company.</skos:definition>
+		<skos:definition>member of the board of directors of an organization that has no executive responsibilities towards the running of that organization</skos:definition>
 		<fibo-fnd-utl-av:synonym>outside director</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
@@ -463,9 +436,44 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>responsible party</rdfs:label>
-		<skos:definition>a person acting in a role that has some formal responsibility, such as a fiduciary responsibility, a signatory, an examiner or registrar, etc.</skos:definition>
-		<skos:editorialNote>The responsibility may be defined in terms of specific instruments such as laws, bylaws or contracts, or by some other means. These instruments would mandate certain obligations on the part of the party, for example statutory obligations.</skos:editorialNote>
+		<skos:definition>person acting in a role that has some formal responsibility, such as a fiduciary responsibility, a signatory, an examiner or registrar, etc.</skos:definition>
 	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-be-oac-exec;Signatory">
+		<rdfs:subClassOf rdf:resource="&fibo-be-oac-exec;AuthorizedParty"/>
+		<rdfs:subClassOf rdf:resource="&fibo-be-oac-exec;LegallyDelegatedAuthority"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
+				<owl:someValuesFrom>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&fibo-fnd-law-lcap;hasCapacity"/>
+						<owl:someValuesFrom rdf:resource="&fibo-fnd-law-lcap;SignatoryCapacity"/>
+					</owl:Restriction>
+				</owl:someValuesFrom>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>signatory</rdfs:label>
+		<skos:definition>responsible party authorized to sign agreements on behalf of themselves, another person, or an organization</skos:definition>
+	</owl:Class>
+	
+	<owl:ObjectProperty rdf:about="&fibo-be-oac-exec;authorizes">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-pty-pty;actsOn"/>
+		<rdfs:label>authorizes</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-be-oac-exec;AuthorizingParty"/>
+		<rdfs:range rdf:resource="&fibo-be-oac-exec;AuthorizedParty"/>
+		<owl:inverseOf rdf:resource="&fibo-be-oac-exec;isAuthorizedBy"/>
+		<skos:definition>endorses, enables, empowers, or gives permission to</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-be-oac-exec;authorizesThrough">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-pty-pty;actsIn"/>
+		<rdfs:label>authorizes through</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-be-oac-exec;AuthorizingParty"/>
+		<rdfs:range rdf:resource="&fibo-be-oac-exec;Authorization"/>
+		<owl:inverseOf rdf:resource="&fibo-be-oac-exec;hasAuthorizingParty"/>
+		<skos:definition>indicates the situation that faciliates designation of an authorized party by the authorizing party for some purpose</skos:definition>
+	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-be-oac-exec;delegatesControlTo">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;designates"/>
@@ -475,15 +483,38 @@
 		<skos:definition>indicates a party to which this legal person has delegated some authority or control</skos:definition>
 	</owl:ObjectProperty>
 	
+	<owl:ObjectProperty rdf:about="&fibo-be-oac-exec;designatesSignatory">
+		<rdfs:subPropertyOf rdf:resource="&fibo-be-oac-exec;authorizes"/>
+		<rdfs:label>designates signatory</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-be-oac-exec;Signatory"/>
+		<skos:definition>authorizes a responsible party to sign agreements, access accounts and/or perform other similar tasks on their behalf</skos:definition>
+	</owl:ObjectProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-be-oac-exec;elects">
 		<rdfs:label>elects</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-pty-pty;PartyInRole"/>
-		<rdfs:range rdf:resource="&fibo-fnd-pty-pty;PartyInRole"/>
+		<rdfs:domain rdf:resource="&fibo-be-oac-exec;AuthorizingParty"/>
+		<rdfs:range rdf:resource="&fibo-be-oac-exec;AuthorizedParty"/>
 		<skos:definition>chooses someone to hold office or some other position by voting</skos:definition>
 		<skos:editorialNote>In the case of an election for a member of the board of directors, the bylaws state the manner in which that process is effected. The candidate members may be recommended by the board or other proxy and are then elected by the shareholder. A similar process may be conducted to elect outside auditors.</skos:editorialNote>
 		<skos:example>the election of officers of an association, the election of directors by the shareholders</skos:example>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.businessdictionary.com/definition/elect.html</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.investorwords.com/9558/election.html</fibo-fnd-utl-av:adaptedFrom>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-be-oac-exec;hasAuthorizedParty">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-pty-pty;hasUndergoer"/>
+		<rdfs:label>has undergoer</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-be-oac-exec;Authorization"/>
+		<rdfs:range rdf:resource="&fibo-be-oac-exec;AuthorizedParty"/>
+		<skos:definition>indicates the party that is endorsed, enabled, empowered, or otherwise permitted to do something in the situation</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-be-oac-exec;hasAuthorizingParty">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-pty-pty;hasActor"/>
+		<rdfs:label>has authorizing party</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-be-oac-exec;Authorization"/>
+		<rdfs:range rdf:resource="&fibo-be-oac-exec;AuthorizingParty"/>
+		<skos:definition>indicates the party that endorses, enables, empowers, or gives permission in the situation</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-be-oac-exec;hasDelegatedControlOf">
@@ -506,7 +537,7 @@
 	<owl:ObjectProperty rdf:about="&fibo-be-oac-exec;hasResponsibility">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-law-lcap;hasCapacity"/>
 		<rdfs:label>has responsibility</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-aap-agt;AutonomousAgent"/>
+		<rdfs:domain rdf:resource="&fibo-fnd-pty-pty;IndependentParty"/>
 		<rdfs:range rdf:resource="&fibo-fnd-law-lcap;Duty"/>
 		<skos:definition>identifies a particular burden of obligation upon one who is responsible</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://dictionary.reference.com/browse/responsibility</fibo-fnd-utl-av:adaptedFrom>
@@ -520,6 +551,14 @@
 		<skos:definition>some party that has some defined responsibility with respect to the formal organization</skos:definition>
 	</owl:ObjectProperty>
 	
+	<owl:ObjectProperty rdf:about="&fibo-be-oac-exec;hasSigningAuthorityFor">
+		<rdfs:subPropertyOf rdf:resource="&fibo-be-oac-exec;isAuthorizedBy"/>
+		<rdfs:label>has signing authority for</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-be-oac-exec;Signatory"/>
+		<owl:inverseOf rdf:resource="&fibo-be-oac-exec;designatesSignatory"/>
+		<skos:definition>indicates the party for which a signatory has the ability to sign agreements, access accounts and perform related tasks</skos:definition>
+	</owl:ObjectProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-be-oac-exec;hasVestedInIt">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-law-lcap;hasCapacity"/>
 		<rdfs:label>has vested in it</rdfs:label>
@@ -528,12 +567,29 @@
 		<skos:definition>indicates the delegated legal authority that is vested in the controlling party</skos:definition>
 	</owl:ObjectProperty>
 	
+	<owl:ObjectProperty rdf:about="&fibo-be-oac-exec;isAuthorizedBy">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-pty-pty;isAffectedBy"/>
+		<rdfs:label>is authorized by</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-be-oac-exec;AuthorizedParty"/>
+		<rdfs:range rdf:resource="&fibo-be-oac-exec;AuthorizingParty"/>
+		<skos:definition>is endorsed, enabled, empowered, or otherwise permitted by</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-be-oac-exec;isAuthorizedThrough">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-pty-pty;undergoes"/>
+		<rdfs:label>is authorized through</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-be-oac-exec;AuthorizedParty"/>
+		<rdfs:range rdf:resource="&fibo-be-oac-exec;Authorization"/>
+		<owl:inverseOf rdf:resource="&fibo-be-oac-exec;hasAuthorizedParty"/>
+		<skos:definition>indicates the situation that faciliates endorsement of the authorized party for some purpose</skos:definition>
+	</owl:ObjectProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-be-oac-exec;nominates">
 		<rdfs:label>nominates</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fnd-pty-pty;PartyInRole"/>
 		<rdfs:range rdf:resource="&fibo-fnd-pty-pty;PartyInRole"/>
 		<skos:definition>appoints or proposes for appointment to an office or place</skos:definition>
-		<fibo-fnd-utl-av:definitionOrigin rdf:datatype="&xsd;anyURI">http://www.merriam-webster.com/dictionary/nominate</fibo-fnd-utl-av:definitionOrigin>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.merriam-webster.com/dictionary/nominate</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:explanatoryNote>Note that nominates is defined as a relation between two parties-in-role (the range of which could be a corporation or partnership in the case of an auditor), whereas appoints between independent parties.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:ObjectProperty>
 
