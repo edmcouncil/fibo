@@ -5,8 +5,7 @@
 	<!ENTITY fibo-fnd-acc-cur "https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
 	<!ENTITY fibo-loan-loan-loan "https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoanBasicTerms/">
-	<!ENTITY fibo-loan-tem-cl "https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansTemporal/ConstructionLoansTemporal/">
-	<!ENTITY fibo-loan-tem-sta "https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansTemporal/LoansStatus/">
+	<!ENTITY fibo-loan-tem-ev "https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansTemporal/LoansEvents/">
 	<!ENTITY fibo-loan-typ-cl "https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanTypes/ConstructionLoans/">
 	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
 	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
@@ -21,8 +20,7 @@
 	xmlns:fibo-fnd-acc-cur="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
 	xmlns:fibo-loan-loan-loan="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoanBasicTerms/"
-	xmlns:fibo-loan-tem-cl="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansTemporal/ConstructionLoansTemporal/"
-	xmlns:fibo-loan-tem-sta="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansTemporal/LoansStatus/"
+	xmlns:fibo-loan-tem-ev="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansTemporal/LoansEvents/"
 	xmlns:fibo-loan-typ-cl="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanTypes/ConstructionLoans/"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -40,8 +38,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoanBasicTerms/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansTemporal/ConstructionLoansTemporal/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansTemporal/LoansStatus/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansTemporal/LoansEvents/"/>
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanTypes/ConstructionLoans/"/>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Provisional"/>
 	</owl:Ontology>
@@ -50,8 +47,8 @@
 		<rdfs:subClassOf rdf:resource="&fibo-loan-loan-loan;LoanDrawdown"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-loan-tem-sta;hasSnapshot"/>
-				<owl:someValuesFrom rdf:resource="&fibo-loan-tem-cl;ConstructionLoanSnapshot"/>
+				<owl:onProperty rdf:resource="&fibo-loan-tem-ev;hasSnapshot"/>
+				<owl:someValuesFrom rdf:resource="&fibo-loan-typ-cl;ConstructionLoanSnapshot"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">construction loan</rdfs:label>
@@ -93,10 +90,24 @@
 		<skos:editorialNote xml:lang="en">from review of a separate question, where we identified the need for this term:</skos:editorialNote>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-loan-typ-cl;ConstructionLoanSnapshot">
+		<rdfs:subClassOf rdf:resource="&fibo-loan-tem-ev;LoanSnapshotOrStatus"/>
+		<rdfs:label xml:lang="en">construction loan snapshot</rdfs:label>
+		<skos:definition xml:lang="en">Information at a point in time, specific to a Construction Loan.</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">This covers the &quot;Loan advance to date&quot; amount, which will have a current value on any given day and which will vary over time, as milestones are passed and additional advances drawn down.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
 	<owl:ObjectProperty rdf:about="&fibo-loan-typ-cl;hasMilestoneTerm">
 		<rdfs:label xml:lang="en">has milestone term</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-loan-typ-cl;ConstructionLoanContract"/>
 		<rdfs:range rdf:resource="&fibo-loan-typ-cl;ConstructionLoanMilestoneTermsSet"/>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-loan-typ-cl;loanAdvanceToDate">
+		<rdfs:label xml:lang="en">loan advance to date</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-loan-typ-cl;ConstructionLoanSnapshot"/>
+		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
+		<skos:definition xml:lang="en">The amount of principal advanced to date.</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-loan-typ-cl;maximumAllowedBalance">
