@@ -74,8 +74,8 @@
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Provisional"/>
 	</owl:Ontology>
 	
-	<owl:Class rdf:about="&fibo-loan-ln-app;BorrowerInformation">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-doc;Record"/>
+	<owl:Class rdf:about="&fibo-loan-ln-app;BorrowerAssessment">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-asmt;AssessmentReport"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;comprises"/>
@@ -105,12 +105,18 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isProvidedBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-loan-ln-ln;Servicer"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-arr-doc;isAbout"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-dae-dbt;Borrower"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">borrower information</rdfs:label>
-		<skos:definition xml:lang="en">information about the borrower</skos:definition>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-arr-doc;isAbout"/>
+				<owl:someValuesFrom rdf:resource="&fibo-loan-ln-ln;LoanApplication"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">borrower assessment</rdfs:label>
+		<skos:definition xml:lang="en">assessment report detailing information about the borrower and their credit history that may be relevant to the loan application</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Includes credit rating information. Ongoing assessment reports both good and bad credit rating information. In the US, by regulation, lender is required to respot person&apos;s payment history on a monthly basis. This is the basis on which peope&apos;s score is changed. So the lender&apos;s reporting to the credit bureau may affect that person&apos;s credit rating. this may give rise to credit disputes. Also there is a scenario where the borrower may contact the lender and ask for some change. For student loans, they can apply for a deferment payment based on change in circumstances e.g. if losing job, or becoming disabled, then there are specific programs which they can apply for. can defer paymen for a time, and if proven eligible (e.g. also if in military, being deployed), then if they subbut the relevant document, they approve and change their repayment term, perhaps temporarily and then revert to the previously agreed terms. This results from the borrower contacting the lender.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
@@ -136,37 +142,6 @@
 		<rdfs:label xml:lang="en">loan application at disbursement stage</rdfs:label>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-loan-ln-app;LoanApplicationBorrowerAssessmentInformation">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-doc;Document"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-arr-doc;isAbout"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-dae-dbt;Borrower"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-arr-doc;isAbout"/>
-				<owl:someValuesFrom rdf:resource="&fibo-loan-ln-ln;LoanApplication"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;comprises"/>
-				<owl:someValuesFrom rdf:resource="&fibo-loan-ln-app;BorrowerInformation"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isProvidedBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-loan-ln-app;LoanAppraiser"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">loan application borrower assessment information</rdfs:label>
-		<skos:definition xml:lang="en">Information about the borrower in relation to the loan. Specifically this is a bundle of information whose purpose is to identify the borrower and to assess their ability to pay (credit worthiness etc.)</skos:definition>
-		<skos:editorialNote xml:lang="en">Originates from MBS PoC terms, where this was a data table for &quot;Borrower&quot; which on further investigation was really borrower information as at the time of the loan. Additional terms moved elsewhere. PoC review / working Notes: These are really terms of the &quot;Borrower&quot;. This separate class only added to make this information visible. Some of the terms form &quot;Commitment&quot; likely belong here as they describe the Loan Borrower relationship not the commitment per se. More process related terms to model about the details of the application process.</skos:editorialNote>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-loan-ln-app;LoanApplicationPhase">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-lif;LifecycleStage"/>
 		<rdfs:label xml:lang="en">loan application phase</rdfs:label>
@@ -175,13 +150,6 @@
 	<owl:Class rdf:about="&fibo-loan-ln-app;LoanApplicationStatus">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-lif;LifecycleStatus"/>
 		<rdfs:label xml:lang="en">loan application status</rdfs:label>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-loan-ln-app;LoanAppraiser">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractThirdParty"/>
-		<rdfs:label xml:lang="en">loan appraiser</rdfs:label>
-		<skos:definition xml:lang="en">That party which appraises the borrower for the purposes of the loan.</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Hired by the underwriter to give the market value of the property.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-ln-app;LoanAtApplicationStage">
@@ -200,7 +168,7 @@
 	<owl:ObjectProperty rdf:about="&fibo-loan-ln-app;hasGrossIncome">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasMonetaryAmount"/>
 		<rdfs:label xml:lang="en">has gross income</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-ln-app;BorrowerInformation"/>
+		<rdfs:domain rdf:resource="&fibo-loan-ln-app;BorrowerAssessment"/>
 		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
 		<skos:definition xml:lang="en">indicates the personal gross income of the borrower</skos:definition>
 	</owl:ObjectProperty>
@@ -214,7 +182,7 @@
 	
 	<owl:DatatypeProperty rdf:about="&fibo-loan-ln-app;originalLoanDTI">
 		<rdfs:label xml:lang="en">original loan d t i</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-ln-app;LoanApplicationBorrowerAssessmentInformation"/>
+		<rdfs:domain rdf:resource="&fibo-loan-ln-app;BorrowerAssessment"/>
 		<rdfs:range rdf:resource="&xsd;decimal"/>
 		<skos:definition xml:lang="en">Original Debt to Income (DTI) ratio when the loan was advanced. For combined income.</skos:definition>
 	</owl:DatatypeProperty>
