@@ -64,44 +64,14 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Roles/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/20200501/OwnershipAndControl/CorporateControl/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/20200601/OwnershipAndControl/CorporateControl/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20131101/OwnershipAndControl/CorporateControl.rdf version of this ontology was modified per the issue resolutions identified in the FIBO BE 1.0 FTF report.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20160201/OwnershipAndControl/CorporateControl.rdf version of this ontology was modified per the FIBO 2.0 RFC to add missing definitions and labels, eliminate references to BusinessFacingTypes, replace min 1 QCRs with someValuesFrom, address other hygiene issues, and limit the burden of certain restrictions, such as those on stock corporation, for typical applications.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20180801/OwnershipAndControl/CorporateControl.rdf version of this ontology was modified as a part of a simplification strategy for the organizational class hierarchy and to correct reasoning anomalies.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20190101/OwnershipAndControl/CorporateControl.rdf version of this ontology was revised to allow any legal entity to participate in control relations rather than limiting control to a stock corporation, and simplifying others such that any party can be a significant shareholder, for example, rather than limiting this role to a legal entity.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20200501/OwnershipAndControl/CorporateControl.rdf version of this ontology was revised to further clean up definitions related to control via ownership of shares, which only applies to corporations and some partnerships, and revise and extend the definition of affiliation.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
-	
-	<owl:Class rdf:about="&fibo-be-le-lp;LegalEntity">
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-be-oac-cctl;hasMajorityControllingInterestParty"/>
-				<owl:onClass rdf:resource="&fibo-be-oac-cctl;OverFiftyPercentControllingInterestParty"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-be-oac-cpty;hasSignificantControllingInterestParty"/>
-				<owl:onClass rdf:resource="&fibo-be-oac-cctl;SignificantShareholder"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-be-oac-cctl;isWhollyOwnedBy"/>
-				<owl:onClass rdf:resource="&fibo-be-oac-cctl;TotalControllingInterestParty"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-be-oac-cpty;hasControllingInterestParty"/>
-				<owl:onClass rdf:resource="&fibo-be-oac-cctl;VotingShareholder"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-oac-cctl;Affiliate">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-pty-pty;PartyInRole"/>
@@ -122,7 +92,7 @@
 				</owl:unionOf>
 			</owl:Class>
 		</owl:equivalentClass>
-		<skos:definition>legal person that directly, or indirectly through one or more intermediaries, controls, or is controlled by, or is under common control with, another legal person</skos:definition>
+		<skos:definition>party that is related to a legal entity, directly, or indirectly through one or more intermediaries, and controls, or is controlled by, or is under common control with that entity, typically determined by the degree of ownership</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-oac-cctl;Affiliation">
@@ -130,13 +100,13 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-pty-pty;hasActor"/>
-				<owl:someValuesFrom rdf:resource="&fibo-be-oac-cctl;ControlledAffiliate"/>
+				<owl:someValuesFrom rdf:resource="&fibo-be-oac-cctl;ControllingAffiliate"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-pty-pty;hasUndergoer"/>
-				<owl:someValuesFrom rdf:resource="&fibo-be-oac-cctl;ControllingAffiliate"/>
+				<owl:someValuesFrom rdf:resource="&fibo-be-oac-cctl;ControlledAffiliate"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>affiliation</rdfs:label>
@@ -193,36 +163,24 @@
 		<skos:definition>party that shares capital, technology, human resources, risks, and benefits of an entity under shared control</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-be-oac-cctl;NonWhollyOwnedSubsidiary">
-		<rdfs:subClassOf rdf:resource="&fibo-be-oac-cctl;Subsidiary"/>
-		<rdfs:label>non-wholly owned subsidiary</rdfs:label>
-		<skos:definition>subsidiary that is not 100 percent owned by its parent</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-be-oac-cctl;OverFiftyPercentControllingInterestParty">
-		<rdfs:subClassOf rdf:resource="&fibo-be-oac-cctl;VotingShareholder"/>
-		<rdfs:label>over fifty percent controlling interest party</rdfs:label>
-		<skos:definition>voting shareholder that owns more than fifty (50) percent of the voting shares in some legal entity</skos:definition>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-be-oac-cctl;SignificantShareholder">
 		<rdfs:subClassOf rdf:resource="&fibo-be-oac-cpty;SignificantControllingInterestParty"/>
 		<rdfs:subClassOf rdf:resource="&fibo-be-oac-cctl;VotingShareholder"/>
 		<rdfs:label>significant shareholder</rdfs:label>
-		<skos:definition>person or legal entity that owns a significant voting stake in another company</skos:definition>
+		<skos:definition>party that owns a significant voting stake in an organization</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote>Note that the concept of significance varies depending on the jurisdiction, and particularly with respect to reporting requirements.  For example, in some cases, three (3) percent ownership of any class or series of shares is considered significant, and in others it means more than five or ten percent of the total combined voting power across all classes of securities.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-oac-cctl;Subsidiary">
 		<rdfs:subClassOf rdf:resource="&fibo-be-oac-cctl;ControlledCompany"/>
 		<rdfs:label>subsidiary</rdfs:label>
-		<skos:definition>legal entity that is entirely or partially owned and entirely or partially controlled by another legal entity</skos:definition>
+		<skos:definition>legal entity that is entirely or majority owned and controlled by another legal entity</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote>A subsidiary is a separate, distinct legal entity from its parent company(ies) for the purposes of taxation, regulatory compliance, and with respect to liability.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-oac-cctl;TotalControllingInterestParty">
 		<rdfs:subClassOf rdf:resource="&fibo-be-oac-cpty;TotalOwner"/>
-		<rdfs:subClassOf rdf:resource="&fibo-be-oac-cctl;OverFiftyPercentControllingInterestParty"/>
+		<rdfs:subClassOf rdf:resource="&fibo-be-oac-cctl;SignificantShareholder"/>
 		<rdfs:label>total controlling interest party</rdfs:label>
 		<skos:definition>voting shareholder that owns 100 percent of the voting shares in some legal entity</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote>By virtue of holding 100 percent of the share ownership, the total controlling interest company also holds 100 percent of the controlling equity, if there is a difference.  Therefore, it is both a total owner and a total controlling party.</fibo-fnd-utl-av:explanatoryNote>
@@ -242,12 +200,6 @@
 		<skos:definition>shareholder whose shares confer the right to vote in corporate elections, including the right to elect directors at annual or special meetings, and to express their views to corporate management and directors on significant issues that may affect the value of those shares</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-be-oac-cctl;WhollyOwnedSubsidiary">
-		<rdfs:subClassOf rdf:resource="&fibo-be-oac-cctl;Subsidiary"/>
-		<rdfs:label>wholly owned subsidiary</rdfs:label>
-		<skos:definition>subsidiary that is entirely owned and controlled by another organization</skos:definition>
-	</owl:Class>
-	
 	<owl:ObjectProperty rdf:about="&fibo-be-oac-cctl;hasAffiliate">
 		<rdfs:subPropertyOf rdf:resource="&fibo-be-oac-cpty;hasControllingInterestParty"/>
 		<rdfs:label>has affiliate</rdfs:label>
@@ -258,11 +210,11 @@
 	
 	<owl:ObjectProperty rdf:about="&fibo-be-oac-cctl;hasControllingAffiliate">
 		<rdfs:subPropertyOf rdf:resource="&fibo-be-oac-cctl;isAffiliateOf"/>
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-pty-pty;actsOn"/>
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-pty-pty;isAffectedBy"/>
 		<rdfs:label>has controlling affiliate</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-be-oac-cctl;ControlledAffiliate"/>
 		<rdfs:range rdf:resource="&fibo-be-oac-cctl;ControllingAffiliate"/>
-		<skos:definition>indicates a party which directly, or indirectly through one or more intermediaries, controls the company</skos:definition>
+		<skos:definition>is directly, or indirectly through one or more intermediaries, controlled by</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-be-oac-cctl;hasDomesticUltimateParent">
@@ -283,41 +235,17 @@
 		<fibo-fnd-utl-av:adaptedFrom>consensus definition of ultimate parent, with the split between domestic and global parent</fibo-fnd-utl-av:adaptedFrom>
 	</owl:ObjectProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-be-oac-cctl;hasMajorityControllingInterestParty">
-		<rdfs:subPropertyOf rdf:resource="&fibo-be-oac-cpty;hasSignificantControllingInterestParty"/>
-		<rdfs:label>has majority controlling interest party</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-be-le-lp;LegalEntity"/>
-		<rdfs:range rdf:resource="&fibo-be-oac-cctl;OverFiftyPercentControllingInterestParty"/>
-		<skos:definition>relates a legal entity to a party that owns a controlling stake of greater than 50 percent (50 percent plus one voting share or above)</skos:definition>
-	</owl:ObjectProperty>
-	
 	<owl:ObjectProperty rdf:about="&fibo-be-oac-cctl;hasSubsidiary">
 		<rdfs:label>has subsidiary</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-be-le-lp;LegalEntity"/>
 		<rdfs:range rdf:resource="&fibo-be-oac-cctl;Subsidiary"/>
-		<skos:definition>relates a legal entity to another organization that it controls directly, or indirectly, through one or more intermediaries</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-be-oac-cctl;holdsMajorityControllingVotingRightsIn">
-		<rdfs:subPropertyOf rdf:resource="&fibo-be-oac-cctl;holdsSignificantControllingVotingRightsIn"/>
-		<rdfs:label>holds majority controlling voting rights in</rdfs:label>
-		<rdfs:range rdf:resource="&fibo-be-le-lp;LegalEntity"/>
-		<skos:definition>relates a party to a legal entity in which it holds fifty percent or more voting rights</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-be-oac-cctl;holdsSignificantControllingVotingRightsIn">
-		<rdfs:subPropertyOf rdf:resource="&fibo-be-oac-cctl;holdsSomeControllingVotingRightsIn"/>
-		<rdfs:label>holds significant controlling voting rights in</rdfs:label>
-		<rdfs:range rdf:resource="&fibo-be-le-lp;LegalEntity"/>
-		<skos:definition>relates a party to a legal entity in which it holds a significant proportion of the voting rights</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-be-oac-cctl;holdsSomeControllingVotingRightsIn">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;controls"/>
-		<rdfs:label>holds some controlling voting rights in</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-oac-ctl;ControllingParty"/>
-		<rdfs:range rdf:resource="&fibo-be-le-lp;LegalEntity"/>
-		<skos:definition>relates a party to a legal entity in which it holds voting rights</skos:definition>
+		<owl:propertyChainAxiom rdf:parseType="Collection">
+			<rdf:Description rdf:about="&fibo-fnd-pty-rl;playsRole">
+			</rdf:Description>
+			<rdf:Description rdf:about="&fibo-be-oac-cctl;isParentCompanyOf">
+			</rdf:Description>
+		</owl:propertyChainAxiom>
+		<skos:definition>relates a legal entity to another organization that it owns at least 50 percent of</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-be-oac-cctl;isAffiliateOf">
@@ -330,19 +258,41 @@
 	
 	<owl:ObjectProperty rdf:about="&fibo-be-oac-cctl;isControllingAffiliateOf">
 		<rdfs:subPropertyOf rdf:resource="&fibo-be-oac-cctl;isAffiliateOf"/>
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-pty-pty;isAffectedBy"/>
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-pty-pty;actsOn"/>
 		<rdfs:label>is controlling affiliate of</rdfs:label>
-		<rdfs:domai rdf:resource="&fibo-be-oac-cctl;ControllingAffiliate"/>
+		<rdfs:domain rdf:resource="&fibo-be-oac-cctl;ControllingAffiliate"/>
 		<rdfs:range rdf:resource="&fibo-be-oac-cctl;ControlledAffiliate"/>
 		<owl:inverseOf rdf:resource="&fibo-be-oac-cctl;hasControllingAffiliate"/>
 		<skos:definition>controls directly, or indirectly through one or more intermediaries</skos:definition>
 	</owl:ObjectProperty>
 	
+	<owl:ObjectProperty rdf:about="&fibo-be-oac-cctl;isParentCompanyOf">
+		<rdfs:subPropertyOf rdf:resource="&fibo-be-oac-cctl;isControllingAffiliateOf"/>
+		<rdfs:label>is parent company of</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-be-oac-cctl;ControllingAffiliate"/>
+		<rdfs:range rdf:resource="&fibo-be-oac-cctl;Subsidiary"/>
+		<owl:inverseOf rdf:resource="&fibo-be-oac-cctl;isSubsidiaryOf"/>
+		<skos:definition>indicates a controlled affiliate that it owns at least 50 percent of</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-be-oac-cctl;isSubsidiaryOf">
+		<rdfs:subPropertyOf rdf:resource="&fibo-be-oac-cctl;hasControllingAffiliate"/>
+		<rdfs:label>is subsidiary of</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-be-oac-cctl;Subsidiary"/>
+		<rdfs:range rdf:resource="&fibo-be-oac-cctl;ControllingAffiliate"/>
+		<skos:definition>is controlled directly, or indirectly through one or more intermediaries and owned at least 50 percent by</skos:definition>
+	</owl:ObjectProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-be-oac-cctl;isWhollyOwnedBy">
-		<rdfs:subPropertyOf rdf:resource="&fibo-be-oac-cctl;hasMajorityControllingInterestParty"/>
 		<rdfs:label>is wholly owned by</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-be-le-lp;LegalEntity"/>
 		<rdfs:range rdf:resource="&fibo-be-oac-cctl;TotalControllingInterestParty"/>
+		<owl:propertyChainAxiom rdf:parseType="Collection">
+			<rdf:Description rdf:about="&fibo-fnd-pty-rl;playsRole">
+			</rdf:Description>
+			<rdf:Description rdf:about="&fibo-be-oac-cctl;isSubsidiaryOf">
+			</rdf:Description>
+		</owl:propertyChainAxiom>
 		<skos:definition>relates a legal entity to a party that has 100 percent ownership and control over it</skos:definition>
 	</owl:ObjectProperty>
 
