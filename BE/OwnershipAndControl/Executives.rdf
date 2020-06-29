@@ -230,9 +230,37 @@
 		<skos:definition>authority to act in a fiduciary capacity with respect to the organization, including but not limited to determining and executing corporate policy</skos:definition>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-be-oac-exec;BoardCompositionControl">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-oac-ctl;Control"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-oac-ctl;hasPartyInControl"/>
+				<owl:onClass>
+					<owl:Class>
+						<owl:unionOf rdf:parseType="Collection">
+							<rdf:Description rdf:about="&fibo-be-oac-cctl;VotingShareholder">
+							</rdf:Description>
+							<rdf:Description rdf:about="&fibo-be-oac-opty;EntityOwner">
+							</rdf:Description>
+						</owl:unionOf>
+					</owl:Class>
+				</owl:onClass>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-oac-ctl;isInControlOfThing"/>
+				<owl:someValuesFrom rdf:resource="&fibo-be-oac-exec;BoardMember"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>board composition control</rdfs:label>
+		<skos:definition>situation in which a voting shareholder, entity owner, or some other party in the case of a not-for-profit organization, appoints and/or nominates someone to the board of directors of an organization for some period of time</skos:definition>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-be-oac-exec;BoardMember">
-		<rdfs:subClassOf rdf:resource="&fibo-be-oac-exec;AuthorizedParty"/>
 		<rdfs:subClassOf rdf:resource="&fibo-be-oac-exec;LegallyDelegatedAuthority"/>
+		<rdfs:subClassOf rdf:resource="&fibo-be-oac-exec;ResponsibleParty"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-pty-pty;OrganizationMember"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
@@ -262,36 +290,25 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>board member</rdfs:label>
-		<skos:definition>party that is a director of an organization</skos:definition>
-		<fibo-fnd-utl-av:synonym>director</fibo-fnd-utl-av:synonym>
+		<skos:definition>party that has fiduciary responsibility with respect to the organization, including but not limited to determining and executing corporate policy</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-oac-exec;BoardMembership">
-		<rdfs:subClassOf rdf:resource="&fibo-be-oac-exec;Authorization"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-oac-ctl;Control"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-be-oac-exec;hasAuthorizingParty"/>
-				<owl:onClass>
-					<owl:Class>
-						<owl:unionOf rdf:parseType="Collection">
-							<rdf:Description rdf:about="&fibo-be-oac-cctl;VotingShareholder">
-							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-be-oac-opty;EntityOwner">
-							</rdf:Description>
-						</owl:unionOf>
-					</owl:Class>
-				</owl:onClass>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-be-oac-exec;hasAuthorizedParty"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-oac-ctl;hasPartyInControl"/>
 				<owl:someValuesFrom rdf:resource="&fibo-be-oac-exec;BoardMember"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-oac-ctl;isInControlOfThing"/>
+				<owl:someValuesFrom rdf:resource="&fibo-be-oac-cpty;ControlledParty"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label>board membership</rdfs:label>
-		<skos:definition>situation in which a voting shareholder, entity owner, or some other party in the case of a not-for-profit organization appoints and authorizes someone to provide oversight of an organization for some period of time</skos:definition>
+		<skos:definition>situation relating an individual member of the board of directors to the organization</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-oac-exec;BoardOfDirectors">
@@ -416,7 +433,7 @@
 		<rdfs:subClassOf rdf:resource="&fibo-be-oac-exec;BoardMember"/>
 		<rdfs:subClassOf rdf:resource="&fibo-be-oac-exec;Executive"/>
 		<rdfs:label>executive board member</rdfs:label>
-		<skos:definition>executive that is also a director of the organization they manage</skos:definition>
+		<skos:definition>member of a board of directors that is also a corporate officer of the organization</skos:definition>
 		<fibo-fnd-utl-av:synonym>inside director</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
@@ -638,7 +655,7 @@
 		<rdfs:domain rdf:resource="&fibo-be-oac-exec;CorporateOfficer"/>
 		<rdfs:range rdf:resource="&fibo-be-oac-cpty;ControlledParty"/>
 		<owl:inverseOf rdf:resource="&fibo-be-oac-exec;hasCorporateOfficer"/>
-		<skos:definition>indicates the organization that the person has some managerial responsibility for</skos:definition>
+		<skos:definition>indicates the organization that the person has some authority over and managerial responsibility for</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-be-oac-exec;nominates">
