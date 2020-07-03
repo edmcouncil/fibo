@@ -3,7 +3,6 @@
 	<!ENTITY dct "http://purl.org/dc/terms/">
 	<!ENTITY fibo-fnd-arr-arr "https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Arrangements/">
 	<!ENTITY fibo-fnd-dt-fd "https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/">
-	<!ENTITY fibo-fnd-rel-rel "https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
 	<!ENTITY lcc-lr "https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/">
 	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
@@ -17,7 +16,6 @@
 	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fibo-fnd-arr-arr="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Arrangements/"
 	xmlns:fibo-fnd-dt-fd="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"
-	xmlns:fibo-fnd-rel-rel="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
 	xmlns:lcc-lr="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
@@ -35,13 +33,11 @@
 		<sm:copyright>Copyright (c) 2014-2020 EDM Council, Inc.</sm:copyright>
 		<sm:copyright>Copyright (c) 2014-2020 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Arrangements/</sm:dependsOn>
-		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://www.omg.org/spec/LCC/</sm:dependsOn>
 		<sm:fileAbbreviation>fibo-fnd-dt-fd</sm:fileAbbreviation>
 		<sm:filename>FinancialDates.rdf</sm:filename>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Arrangements/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20200701/DatesAndTimes/FinancialDates/"/>
@@ -67,7 +63,7 @@ They are modularized this way to minimize the ontological committments that are 
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-fd;Schedule"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;comprises"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-arr-arr;hasConstituent"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;AdHocScheduleEntry"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -100,7 +96,7 @@ They are modularized this way to minimize the ontological committments that are 
 * An OccurrenceBasedDate -- a Date that itself is defined by an Occurrence (see the Occurrences ontology)
 * A RelativeDate - a Date relative to another Date, such as T+3
 * A SpecifiedDate - a Date that is defined by an arbitrary rule</fibo-fnd-utl-av:usageNote>
-		<fibo-fnd-utl-av:usageNote>The fibo-fnd-dt-fd;hasDate property may be used to reify a date, if it is important to do so for a given application, or if not, the inherited fibo-fnd-dt-fd;hasObservedDateTime property may be used together with a fibo-fnd-dt-fd;CombinedDateTime value.</fibo-fnd-utl-av:usageNote>
+		<fibo-fnd-utl-av:usageNote>The fibo-fnd-dt-fd;hasDate property may be used to reify a date, if it is important to do so for a given application, or if not, the inherited fibo-fnd-dt-fd;hasObservedDateTime property may be used together with a fibo-fnd-dt-fd;CombinedDateTime value, as long as the resulting schedule is consistent in using one or the other.</fibo-fnd-utl-av:usageNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-dt-fd;CalculatedDate">
@@ -121,12 +117,13 @@ They are modularized this way to minimize the ontological committments that are 
 	<owl:Class rdf:about="&fibo-fnd-dt-fd;CalendarPeriod">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-fd;TimeInterval"/>
 		<rdfs:label>calendar period</rdfs:label>
-		<skos:definition>enumeration that indicates whether a calendar-specified date is figured with respect to a calendar week, a calendar month, a calendar quarter, or a calendar year</skos:definition>
+		<skos:definition>time interval that occurs within a system that fixes the beginning and length of a segment of the year with respect to that system</skos:definition>
 		<skos:editorialNote>The terms &apos;calendar xxx&apos; are intended to reinforce that these are periods on a calendar, not durations. 
 
 For example, a calendar year always starts on a January 1 and ends on a December 31. The term &apos;calendar year&apos; does not mean the same thing as  a duration (an amount of time) of 1 year, nor can a calendar year start on any arbitrary day of a year.  For example, a calendar year never starts on September 1.
 
 Similar points apply to other kinds of calendar periods, such as calendar week, calendar month, and calendar quarter.</skos:editorialNote>
+		<fibo-fnd-utl-av:explanatoryNote>A calendar-specified date may be figured with respect to a calendar week, a calendar month, a calendar quarter, or a calendar year.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:NamedIndividual rdf:about="&fibo-fnd-dt-fd;CalendarQuarter">
@@ -252,9 +249,8 @@ Similar points apply to other kinds of calendar periods, such as calendar week, 
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>date time</rdfs:label>
-		<skos:definition>combination of a date and a time, without a time zone</skos:definition>
+		<skos:definition>time point including a date and a time, optionally including a time zone offset</skos:definition>
 		<fibo-fnd-utl-av:usageNote>&apos;hasDateTimeValue&apos; is omitted if the DateTime is not (yet) known.</fibo-fnd-utl-av:usageNote>
-		<fibo-fnd-utl-av:usageNote>Use DateTime for the combination of a Date and a time, without a time zone. Use DateTimeStamp for the combination of a Date and a time and a time zone.</fibo-fnd-utl-av:usageNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-dt-fd;DateTimeStamp">
@@ -267,10 +263,9 @@ Similar points apply to other kinds of calendar periods, such as calendar week, 
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>date time stamp</rdfs:label>
-		<skos:definition>combination of a date, a time, and a time zone</skos:definition>
+		<skos:definition>time point including a date and a time that requires a time zone offset</skos:definition>
 		<fibo-fnd-utl-av:synonym>time stamp</fibo-fnd-utl-av:synonym>
 		<fibo-fnd-utl-av:usageNote>&apos;hasDateTimeStampValue&apos; is omitted if the DateTimeStamp is not (yet) established.</fibo-fnd-utl-av:usageNote>
-		<fibo-fnd-utl-av:usageNote>Use DateTimeStamp when the time stamp includes a time zone field. Use DateTime for the combination of a Date and a time, without a time zone.</fibo-fnd-utl-av:usageNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-dt-fd;DatedCollectionConstituent">
@@ -295,7 +290,7 @@ Similar points apply to other kinds of calendar periods, such as calendar week, 
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>dated structured collection</rdfs:label>
-		<skos:definition>structured collection that includes some dated elements</skos:definition>
+		<skos:definition>structured collection whose elements are ordered by date and time</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-dt-fd;Duration">
@@ -646,7 +641,7 @@ The recurrence start date can also be relative to the starting Date of the overa
 	<owl:DatatypeProperty rdf:about="&fibo-fnd-dt-fd;hasCount">
 		<rdfs:label>has count</rdfs:label>
 		<rdfs:range rdf:resource="&xsd;positiveInteger"/>
-		<skos:definition>indicates the number of things in a collection, such as the number of entries in a regular schedule</skos:definition>
+		<skos:definition>specifies the total number of things in a collection, such as the number of entries in a regular schedule</skos:definition>
 	</owl:DatatypeProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-dt-fd;hasDate">
@@ -724,7 +719,7 @@ The recurrence start date can also be relative to the starting Date of the overa
 		<rdfs:subPropertyOf rdf:resource="&lcc-lr;has"/>
 		<rdfs:label>has duration</rdfs:label>
 		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Duration"/>
-		<skos:definition>indictes the duration of a date period or similar concept, such as the tenor of a contract</skos:definition>
+		<skos:definition>specifies the duration of a date period or similar concept, such as the tenor of a contract</skos:definition>
 		<fibo-fnd-utl-av:usageNote>This duration may be omitted or unknown if either the start or end Date of the DatePeriod is a CalculatedDate or an ExplicitDate.</fibo-fnd-utl-av:usageNote>
 	</owl:ObjectProperty>
 	
