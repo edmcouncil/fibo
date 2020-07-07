@@ -40,13 +40,14 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20200201/Arrangements/Arrangements/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20200701/Arrangements/Arrangements/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20140801/Arrangements/Arrangements.rdf version of this ontology was introduced as a part of the issue resolutions identified in the FIBO FND 1.0 FTF report and in https://spec.edmcouncil.org/fibo/ontology/FND/1.0/AboutFND-1.0/.  It was further revised in the FTF in advance of the Long Beach meeting to promote Collection to the top level in the hierarchy, resulting in https://spec.edmcouncil.org/fibo/ontology/FND/20141101/Arrangements/Arrangements/.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20141101/Arrangements/Arrangements.rdf version of this ontology was revised as a part of the issue resolutions identified in the FIBO FND 1.2 RTF report to add a definition for a structured collection.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20170201/Arrangements/Arrangements.rdf version of this ontology was revised for the FIBO 2.0 RFC report to add a general definition for scheme, add dated collection, and add mappings to LCC.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20180801/Arrangements/Arrangements.rdf version of this ontology was revised to loosen the range on hasObservedDateTime such that it can be used more generally.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20190201/Arrangements/Arrangements.rdf version of this ontology was revised to loosen the restriction on hasObservedDateTime so that it can be used with the new CombinedDateTime datatype (in FinancialDates, which is not imported herein to avoid circular dependencies), with finer granularity than seconds as appropriate for trades, for example.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20190401/Arrangements/Arrangements.rdf version of this ontology was revised to eliminate duplication with concepts in LCC for classes including arrangement, collection, code element, code set, etc to simplify the hierarchy and usage for FIBO users.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20200201/Arrangements/Arrangements.rdf version of this ontology was revised to move the concepts of a dated collection and dated collection constituent to Financial Dates in order to improve usability and simplify reasoning and make definitions ISO 704 compliant.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -58,43 +59,7 @@
 				<owl:someValuesFrom rdf:resource="&lcc-lr;Collection"/>
 			</owl:Restriction>
 		</owl:equivalentClass>
-		<skos:definition>a constituent of a collection</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-fnd-arr-arr;DatedCollectionConstituent">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-arr;CollectionConstituent"/>
-		<rdfs:label>dated collection constituent</rdfs:label>
-		<owl:equivalentClass>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-arr-arr;hasObservedDateTime"/>
-				<owl:someValuesFrom>
-					<rdfs:Datatype>
-						<owl:unionOf rdf:parseType="Collection">
-							<rdf:Description rdf:about="&xsd;string">
-							</rdf:Description>
-							<rdf:Description rdf:about="&xsd;dateTime">
-							</rdf:Description>
-							<rdf:Description rdf:about="&xsd;dateTimeStamp">
-							</rdf:Description>
-						</owl:unionOf>
-					</rdfs:Datatype>
-				</owl:someValuesFrom>
-			</owl:Restriction>
-		</owl:equivalentClass>
-		<skos:definition>a constituent of a collection that is associated with a date and time</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote>Note that the use of several options for the representation of a date and time stamp enables extensions for milliseconds, nanoseconds using an xsd:string that has the format of an xsd:dateTime datatype but extending the level of granularity consistently.  An example of where this is required is to represent prices that change multiple times in a given day.</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-fnd-arr-arr;DatedStructuredCollection">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-arr;StructuredCollection"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-arr-arr;hasConstituent"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-arr-arr;DatedCollectionConstituent"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>dated structured collection</rdfs:label>
-		<skos:definition>a structured collection that includes some dated elements</skos:definition>
+		<skos:definition>element of a collection</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-arr-arr;Scheme">
@@ -106,13 +71,13 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>scheme</rdfs:label>
-		<skos:definition>a structure or means of organizing information such as a schema, numbering system, organization scheme, measurement system, taxonomy, or language for organizing information</skos:definition>
+		<skos:definition>structure or means of organizing information such as a blueprint, schema, numbering system, organization structure, measurement system, plan, taxonomy, or language for organizing information</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-arr-arr;StructuredCollection">
 		<rdfs:subClassOf rdf:resource="&lcc-lr;Collection"/>
 		<rdfs:label>structured collection</rdfs:label>
-		<skos:definition>a collection that has a clearly defined structure or organization</skos:definition>
+		<skos:definition>collection that has a clearly defined structure or organization</skos:definition>
 	</owl:Class>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-fnd-arr-arr;hasCollectionSize">
@@ -125,19 +90,15 @@
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;comprises"/>
 		<rdfs:label>has constituent</rdfs:label>
 		<rdfs:domain rdf:resource="&lcc-lr;Collection"/>
-		<skos:definition>an essential part, component, or element of some collection or set</skos:definition>
+		<skos:definition>consists of or contains</skos:definition>
+		<fibo-fnd-utl-av:usageNote>Being a constituent of something does not necessarily mean parthood.  Whole-part relations are transitive, whereas constituency is not necessarily transitive and so this property is useful in cases where transitivity is not necessarily desirable or appropriate.</fibo-fnd-utl-av:usageNote>
 	</owl:ObjectProperty>
-	
-	<owl:DatatypeProperty rdf:about="&fibo-fnd-arr-arr;hasObservedDateTime">
-		<rdfs:label>has observed date and time</rdfs:label>
-		<skos:definition>indicates a date and time for an observation captured in a collection constituent</skos:definition>
-	</owl:DatatypeProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-arr-arr;isConstituentOf">
 		<rdfs:label>is constituent of</rdfs:label>
 		<rdfs:range rdf:resource="&lcc-lr;Collection"/>
 		<owl:inverseOf rdf:resource="&fibo-fnd-arr-arr;hasConstituent"/>
-		<skos:definition>identifies the collection that something is an essential part, component, or element of</skos:definition>
+		<skos:definition>identifies the collection that something is an element of</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:Class rdf:about="&lcc-lr;CodeSet">
