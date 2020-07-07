@@ -3,7 +3,7 @@ prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
 prefix skos: <http://www.w3.org/2004/02/skos/core#>
 
-SELECT DISTINCT ?error
+SELECT DISTINCT ?error ?definition ?label
 WHERE {
   ?s rdfs:label ?label .
   ?s skos:definition ?definition .
@@ -12,7 +12,7 @@ WHERE {
   FILTER (CONTAINS(str(?s), "edmcouncil"))
 
   BIND (
-    concat ("PRODERROR: Definition of ", str(?s), " is circular ")
+    concat ("WARN: Definition of ", str(?s), " is circular ")
       AS ?error
     )
 }
