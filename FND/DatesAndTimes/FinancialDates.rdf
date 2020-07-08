@@ -46,7 +46,7 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20180801/DatesAndTimes/FinancialDates/ version of this ontology was revised to introduce a composite date datatype to allow for cases whereby the representation of a date for certain purposes, such as GLEIF LEI data, is inconsistent, and to facilitate mapping FIBO to multiple data sources in user environments.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20190201/DatesAndTimes/FinancialDates/ version of this ontology was revised to eliminate deprecated elements.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20200201/DatesAndTimes/FinancialDates/ version of this ontology was revised to add the &apos;has date added&apos; property, which is needed for the date a constituent is added to a basket, among other purposes, to add a TimeOfDay class, needed for representing rate reset times, eliminate duplication with concepts in LCC, and make AdHocScheduleEntry a child of DatedCollectionConstituent.</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20200301/DatesAndTimes/FinancialDates/ version of this ontology was revised to move dated collection and dated collection constituent as well as hasObservedDateTime and hasAcquisitionDate to financial dates in order to improve usability and simplify reasoning and made definitions ISO 704 compliant.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20200301/DatesAndTimes/FinancialDates/ version of this ontology was revised to move dated collection and dated collection constituent as well as hasObservedDateTime and hasAcquisitionDate to financial dates in order to improve usability, simplify reasoning, made definitions ISO 704 compliant, and eliminate redundant restrictions on ad hoc schedule entry.</skos:changeNote>
 		<skos:changeNote>This ontology was added to Foundations in advance of the December 2014 Long Beach meeting in support of the SEC specification.  It is also needed to provide temporal relationships for Ownership and Control.
 
 These three ontologies are designed for use together:
@@ -74,29 +74,15 @@ They are modularized this way to minimize the ontological committments that are 
 	
 	<owl:Class rdf:about="&fibo-fnd-dt-fd;AdHocScheduleEntry">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-fd;DatedCollectionConstituent"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-dt-fd;hasDate"/>
-				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;Date"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-dt-fd;hasObservedDateTime"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
-				<owl:onDataRange rdf:resource="&fibo-fnd-dt-fd;CombinedDateTime"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label>ad hoc schedule entry</rdfs:label>
 		<skos:definition>entry, including a date or date and time, among multiple non-regularly-recurring entries in a schedule</skos:definition>
-		<fibo-fnd-utl-av:usageNote>Other ontologies can extend AdHocScheduleEntry as needed. In particular, the Occurrences ontology extends AdHocScheduleEntry to consist of occurrences (events) of a given OccurrenceKind. The meaning is that an ad hoc schedule entry comprises a date and an event which is scheduled to occur on that date; in other words Occurrence of the OccurrenceKind should happen on the Date of the OccurrenceKind. Either reified dates or data values for dates can be used, as appropriate.</fibo-fnd-utl-av:usageNote>
+		<fibo-fnd-utl-av:usageNote>Other ontologies can extend AdHocScheduleEntry as needed. In particular, the Occurrences ontology extends AdHocScheduleEntry to consist of occurrences (events) of a given OccurrenceKind. The meaning is that an ad hoc schedule entry comprises a date and an event which is scheduled to occur on that date.</fibo-fnd-utl-av:usageNote>
 		<fibo-fnd-utl-av:usageNote>The Date of an AdHocScheduleEntry can be an ExplicitDate or any kind of CalculatedDate, such as:
 
 * An OccurrenceBasedDate -- a Date that itself is defined by an Occurrence (see the Occurrences ontology)
 * A RelativeDate - a Date relative to another Date, such as T+3
 * A SpecifiedDate - a Date that is defined by an arbitrary rule</fibo-fnd-utl-av:usageNote>
-		<fibo-fnd-utl-av:usageNote>The fibo-fnd-dt-fd;hasDate property may be used to reify a date, if it is important to do so for a given application, or if not, the inherited fibo-fnd-dt-fd;hasObservedDateTime property may be used together with a fibo-fnd-dt-fd;CombinedDateTime value, as long as the resulting schedule is consistent in using one or the other.</fibo-fnd-utl-av:usageNote>
+		<fibo-fnd-utl-av:usageNote>The fibo-fnd-dt-fd;hasDate property may be used to reify a date, if it is important to do so for a given application, or if not and typically, the inherited fibo-fnd-dt-fd;hasObservedDateTime property may be used together with a fibo-fnd-dt-fd;CombinedDateTime value, as long as the resulting schedule is consistent in using one or the other.</fibo-fnd-utl-av:usageNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-dt-fd;CalculatedDate">
