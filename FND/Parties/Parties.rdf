@@ -68,7 +68,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20200601/Parties/Parties/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20200701/Parties/Parties/"/>
 		<skos:changeNote>The http://www.omg.org/spec/EDMC-FIBO/FND/20130801/Parties/Parties.rdf version of the ontology was was modified per the issue resolutions identified in the FIBO FND 1.0 FTF report and in https://spec.edmcouncil.org/fibo/ontology/FND/1.0/AboutFND-1.0/.</skos:changeNote>
 		<skos:changeNote>The http://www.omg.org/spec/EDMC-FIBO/FND/20141101/Parties/Parties.rdf version of this ontology was revised as a part of the issue resolutions identified in the FIBO FND 1.1 RTF report to add a parent of hasDate to date properties.</skos:changeNote>
 		<skos:changeNote>The http://www.omg.org/spec/EDMC-FIBO/FND/20160201/Parties/Parties.rdf version of this ontology was revised as a part of the FIBO 2.0 RFC to introduce disjointness axioms to aid users in understanding.</skos:changeNote>
@@ -83,6 +83,7 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20190101/Parties/Parties.rdf version of this ontology was revised to add a relationship directly between parties and a party identifier and rename (migrate) the hasDefinition property to isDefinedIn to clarify intent.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20190701/Parties/Parties.rdf version of this ontology was revised to eliminate duplication with the concepts in LCC.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20200201/Parties/Parties.rdf version of this ontology was extended to support more complex situations involving parties in various roles, loosen the restriction on party in role with respect to commencement date, and to eliminate the redundant union in the definition of independent party.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20200601/Parties/Parties.rdf version of this ontology was extended to rename &apos;hasPrimaryParty&apos; to &apos;hasActiveParty&apos; to be more consistent.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -279,6 +280,18 @@
 		<skos:definition>relates a person or organization to an actor that drives a situation involving them</skos:definition>
 	</owl:ObjectProperty>
 	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-pty-pty;hasActiveParty">
+		<rdfs:label>has active party</rdfs:label>
+		<owl:inverseOf rdf:resource="&fibo-fnd-pty-pty;playsActiveRoleIn"/>
+		<owl:propertyChainAxiom rdf:parseType="Collection">
+			<rdf:Description rdf:about="&fibo-fnd-pty-pty;hasActor">
+			</rdf:Description>
+			<rdf:Description rdf:about="&fibo-fnd-pty-rl;isPlayedBy">
+			</rdf:Description>
+		</owl:propertyChainAxiom>
+		<skos:definition>relates a situation to the person or organization acting in a primary (agentive) role</skos:definition>
+	</owl:ObjectProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-pty-pty;hasActor">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-pty-pty;hasPartyInRole"/>
 		<rdfs:label>has actor</rdfs:label>
@@ -307,18 +320,6 @@
 		<rdfs:label>has party in role</rdfs:label>
 		<rdfs:range rdf:resource="&fibo-fnd-pty-pty;PartyInRole"/>
 		<skos:definition>identifies a party acting in a specific role as related to the particular agreement, contract, policy, regulation, or other business relationship</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-fnd-pty-pty;hasPrimaryParty">
-		<rdfs:label>has primary party</rdfs:label>
-		<owl:inverseOf rdf:resource="&fibo-fnd-pty-pty;playsActiveRoleIn"/>
-		<owl:propertyChainAxiom rdf:parseType="Collection">
-			<rdf:Description rdf:about="&fibo-fnd-pty-pty;hasActor">
-			</rdf:Description>
-			<rdf:Description rdf:about="&fibo-fnd-pty-rl;isPlayedBy">
-			</rdf:Description>
-		</owl:propertyChainAxiom>
-		<skos:definition>relates a situation to the person or organization acting in a primary (agentive) role</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-pty-pty;hasRelatedPartyInRole">
