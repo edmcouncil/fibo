@@ -1,0 +1,21 @@
+prefix owl:   <http://www.w3.org/2002/07/owl#> 
+
+SELECT ?error ?p1 ?p2 
+WHERE
+{
+{
+?p owl:inverseOf ?p1. 
+?p owl:inverseOf ?p2. 
+FILTER (?p1 != ?p2) 
+} 
+UNION
+{
+?p1 owl:inverseOf ?p. 
+?p2 owl:inverseOf ?p. 
+FILTER (?p1 != ?p2) 
+}
+FILTER (CONTAINS(str(?p), "edmcouncil"))
+FILTER (CONTAINS(str(?p1), "edmcouncil"))
+FILTER (CONTAINS(str(?p2), "edmcouncil"))
+BIND (concat ("WARN: object property whose iri is ", str(?p), " has more than one inverse object property") AS ?error)
+} 
