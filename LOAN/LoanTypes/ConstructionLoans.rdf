@@ -3,10 +3,14 @@
 	<!ENTITY dct "http://purl.org/dc/terms/">
 	<!ENTITY fibo-fbc-dae-crf "https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/CreditFacilities/">
 	<!ENTITY fibo-fnd-acc-cur "https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/">
+	<!ENTITY fibo-fnd-arr-cls "https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/ClassificationSchemes/">
+	<!ENTITY fibo-fnd-plc-loc "https://spec.edmcouncil.org/fibo/ontology/FND/Places/Locations/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
 	<!ENTITY fibo-loan-ln-ev "https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanEvents/">
+	<!ENTITY fibo-loan-ln-ln "https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanCore/">
 	<!ENTITY fibo-loan-loan-loan "https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoanBasicTerms/">
 	<!ENTITY fibo-loan-typ-cl "https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanTypes/ConstructionLoans/">
+	<!ENTITY lcc-cr "https://www.omg.org/spec/LCC/Countries/CountryRepresentation/">
 	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
 	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
 	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
@@ -18,10 +22,14 @@
 	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fibo-fbc-dae-crf="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/CreditFacilities/"
 	xmlns:fibo-fnd-acc-cur="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"
+	xmlns:fibo-fnd-arr-cls="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/ClassificationSchemes/"
+	xmlns:fibo-fnd-plc-loc="https://spec.edmcouncil.org/fibo/ontology/FND/Places/Locations/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
 	xmlns:fibo-loan-ln-ev="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanEvents/"
+	xmlns:fibo-loan-ln-ln="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanCore/"
 	xmlns:fibo-loan-loan-loan="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoanBasicTerms/"
 	xmlns:fibo-loan-typ-cl="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanTypes/ConstructionLoans/"
+	xmlns:lcc-cr="https://www.omg.org/spec/LCC/Countries/CountryRepresentation/"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
@@ -36,16 +44,31 @@
 		<sm:fileAbbreviation>fibo-loan-typ-cl</sm:fileAbbreviation>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/CreditFacilities/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/ClassificationSchemes/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Places/Locations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanCore/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanEvents/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoanBasicTerms/"/>
+		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Countries/CountryRepresentation/"/>
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanTypes/ConstructionLoans/"/>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Provisional"/>
 	</owl:Ontology>
 	
+	<owl:Class rdf:about="&fibo-fnd-plc-loc;RealEstate">
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&lcc-cr;isClassifiedBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-loan-typ-cl;ConstructionType"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-loan-typ-cl;ConstructionLoan">
-		<rdfs:subClassOf rdf:resource="&fibo-loan-loan-loan;LoanDrawdown"/>
+		<rdfs:subClassOf rdf:resource="&fibo-loan-ln-ln;Loan"/>
 		<rdfs:label xml:lang="en">construction loan</rdfs:label>
+		<skos:definition xml:lang="en">loan covering construction and development costs, secured by a mortgage on the property financed</skos:definition>
+		<fibo-fnd-utl-av:synonym xml:lang="en">construction mortgage</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-typ-cl;ConstructionLoanContract">
@@ -84,38 +107,75 @@
 		<skos:editorialNote xml:lang="en">from review of a separate question, where we identified the need for this term:</skos:editorialNote>
 	</owl:Class>
 	
-	<owl:ObjectProperty rdf:about="&fibo-loan-typ-cl;hasMilestoneTerm">
-		<rdfs:label xml:lang="en">has milestone term</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-typ-cl;ConstructionLoanContract"/>
-		<rdfs:range rdf:resource="&fibo-loan-typ-cl;ConstructionLoanMilestoneTermsSet"/>
-	</owl:ObjectProperty>
+	<owl:Class rdf:about="&fibo-loan-typ-cl;ConstructionType">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-cls;Classifier"/>
+		<rdfs:label>construction type</rdfs:label>
+		<skos:definition>particular kind of construction</skos:definition>
+	</owl:Class>
 	
-	<owl:ObjectProperty rdf:about="&fibo-loan-typ-cl;maximumAllowedBalance">
-		<rdfs:label xml:lang="en">maximum allowed balance</rdfs:label>
+	<owl:NamedIndividual rdf:about="&fibo-loan-typ-cl;ConstructionType_Manufactured">
+		<rdf:type rdf:resource="&fibo-loan-typ-cl;ConstructionType"/>
+		<rdfs:label>manufactured</rdfs:label>
+		<skos:definition>a factory-built dwelling built in compliance with the Federal Manufactured Home Construction and Safety Standards in effect at the time the home was manufactured as evidenced by the HUD label</skos:definition>
+	</owl:NamedIndividual>
+	
+	<owl:NamedIndividual rdf:about="&fibo-loan-typ-cl;ConstructionType_MobileHome">
+		<rdf:type rdf:resource="&fibo-loan-typ-cl;ConstructionType"/>
+		<rdfs:label>mobile home</rdfs:label>
+		<skos:definition>a dwelling unit constructed on a base frame which features wheels and axles to be used in transporting home from place to place</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>It does not meet HUD code.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:NamedIndividual>
+	
+	<owl:NamedIndividual rdf:about="&fibo-loan-typ-cl;ConstructionType_Modular">
+		<rdf:type rdf:resource="&fibo-loan-typ-cl;ConstructionType"/>
+		<rdfs:label>modular</rdfs:label>
+		<skos:definition>a factory-built dwelling not on a permanent chassis</skos:definition>
+	</owl:NamedIndividual>
+	
+	<owl:NamedIndividual rdf:about="&fibo-loan-typ-cl;ConstructionType_OnFrameModular">
+		<rdf:type rdf:resource="&fibo-loan-typ-cl;ConstructionType"/>
+		<rdfs:label>on frame modular</rdfs:label>
+		<skos:definition>a factory built dwelling on a permanent chassis which does not have a HUD label</skos:definition>
+	</owl:NamedIndividual>
+	
+	<owl:NamedIndividual rdf:about="&fibo-loan-typ-cl;ConstructionType_SiteBuilt">
+		<rdf:type rdf:resource="&fibo-loan-typ-cl;ConstructionType"/>
+		<rdfs:label>site built</rdfs:label>
+		<skos:definition>describes construction process, indicating that most elements are created at the homes permanent site. May include some prefabricated components</skos:definition>
+	</owl:NamedIndividual>
+	
+	<owl:ObjectProperty rdf:about="&fibo-loan-typ-cl;hasMaximumAllowedBalance">
+		<rdfs:label xml:lang="en">has maximum allowed balance</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-loan-typ-cl;ConstructionLoanContract"/>
 		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
 		<skos:definition xml:lang="en">Maximum balance - For loans with flexible re-draw facilities, the maximum loan amount that could potentially be outstanding</skos:definition>
 	</owl:ObjectProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-loan-typ-cl;maximumAnticipatedBalance">
-		<rdfs:label xml:lang="en">maximum anticipated balance</rdfs:label>
+	<owl:ObjectProperty rdf:about="&fibo-loan-typ-cl;hasMaximumAnticipatedBalance">
+		<rdfs:label xml:lang="en">has maximum anticipated balance</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-loan-typ-cl;ConstructionLoanCreditFacilityTranche"/>
 		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
 		<skos:definition xml:lang="en">Maximum balance - For loans with flexible re-draw facilities, the maximum loan amount that could potentially be outstanding</skos:definition>
 	</owl:ObjectProperty>
 	
-	<owl:DatatypeProperty rdf:about="&fibo-loan-typ-cl;milestoneDescription">
-		<rdfs:label xml:lang="en">milestone description</rdfs:label>
+	<owl:DatatypeProperty rdf:about="&fibo-loan-typ-cl;hasMilestoneDescription">
+		<rdfs:label xml:lang="en">has milestone description</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-loan-typ-cl;ConstructionLoanMilestoneTermsSet"/>
 		<rdfs:range rdf:resource="&xsd;string"/>
 		<skos:definition xml:lang="en">A textual description of the point at which it is legally recognized that the construction milestone has been reached.</skos:definition>
 	</owl:DatatypeProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-loan-typ-cl;milestoneMaximumDrawdownAmount">
-		<rdfs:label xml:lang="en">milestone maximum drawdown amount</rdfs:label>
+	<owl:ObjectProperty rdf:about="&fibo-loan-typ-cl;hasMilestoneMaximumDrawdownAmount">
+		<rdfs:label xml:lang="en">has milestone maximum drawdown amount</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-loan-typ-cl;ConstructionLoanMilestoneTermsSet"/>
 		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
 		<skos:definition xml:lang="en">The maximum amount of the loan that can be drawn by the Borrower on completion of this Milestone.</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-loan-typ-cl;hasMilestoneTerm">
+		<rdfs:label xml:lang="en">has milestone term</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-loan-typ-cl;ConstructionLoanContract"/>
+		<rdfs:range rdf:resource="&fibo-loan-typ-cl;ConstructionLoanMilestoneTermsSet"/>
 	</owl:ObjectProperty>
 
 </rdf:RDF>
