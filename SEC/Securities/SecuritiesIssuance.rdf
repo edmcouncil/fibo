@@ -3,6 +3,7 @@
 	<!ENTITY dct "http://purl.org/dc/terms/">
 	<!ENTITY fibo-be-fct-pub "https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/Publishers/">
 	<!ENTITY fibo-be-le-lp "https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/">
+	<!ENTITY fibo-fbc-dae-dbt "https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/">
 	<!ENTITY fibo-fbc-fct-fse "https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/FinancialServicesEntities/">
 	<!ENTITY fibo-fbc-fct-ra "https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/RegistrationAuthorities/">
 	<!ENTITY fibo-fbc-fi-fi "https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/">
@@ -33,6 +34,7 @@
 	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fibo-be-fct-pub="https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/Publishers/"
 	xmlns:fibo-be-le-lp="https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/"
+	xmlns:fibo-fbc-dae-dbt="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"
 	xmlns:fibo-fbc-fct-fse="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/FinancialServicesEntities/"
 	xmlns:fibo-fbc-fct-ra="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/RegistrationAuthorities/"
 	xmlns:fibo-fbc-fi-fi="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"
@@ -75,6 +77,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/Publishers/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/OwnershipAndControl/Executives/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/FinancialServicesEntities/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/RegistrationAuthorities/"/>
@@ -96,10 +99,11 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20200401/Securities/SecuritiesIssuance/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20200701/Securities/SecuritiesIssuance/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20180801/Securities/SecuritiesIssuance/ version of this ontology was modified to refine the concept of a securities underwriter.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20181201/Securities/SecuritiesIssuance/ version of this ontology was modified to eliminate duplication of concepts in LCC.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20200201/Securities/SecuritiesIssuance/ version of this ontology was modified to add the concept of the form the security is issued in, namely bearer or registered.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20200401/Securities/SecuritiesIssuance/ version of this ontology was modified to refactor conversion terms as a child of redemption provision and eliminate the unnecessary securities contract terms class.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -164,7 +168,13 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-iss;ConversionTerms">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-iss;SecuritiesContractTerms"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;RedemptionProvision"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-fi;Security"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-sec-iss;specifiesConversionInto"/>
@@ -173,7 +183,6 @@
 		</rdfs:subClassOf>
 		<rdfs:label>conversion terms</rdfs:label>
 		<skos:definition>contract terms specifying when and how a security may be converted to another security (usually of the same issuer)</skos:definition>
-		<skos:editorialNote>Not to be confused with the underlying indicators of a derivative, i.e., convertible bonds to common stock.</skos:editorialNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-iss;ConvertibleSecurity">
@@ -365,18 +374,6 @@
 		<skos:definition>form of a security whereby ownership is recorded in the name of the owner on the books of the issuer or the issuer&apos;s registrar and can only be transferred to another owner when endorsed by the registered owner</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote>With registered securities, a ledger is kept by the issuing company or agent which records the owners of all the securities. Transfer of ownership can only occur when names are changed in the ledger.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:NamedIndividual>
-	
-	<owl:Class rdf:about="&fibo-sec-sec-iss;SecuritiesContractTerms">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractualCommitment"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-fi;Security"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>securities contract terms</rdfs:label>
-		<skos:definition>one or more contractual commitments that are specific to financial instruments that can be bought or sold and may or may not be negotiable</skos:definition>
-	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-iss;SecuritiesOffering">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;Offering"/>

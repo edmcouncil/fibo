@@ -83,11 +83,12 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/EconomicIndicators/EconomicIndicators/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/InterestRates/InterestRates/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesIssuance/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20200401/Debt/DebtInstruments/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20200701/Debt/DebtInstruments/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20180801/Debt/DebtInstruments.rdf version of this ontology was modified to reflect use of actualExpression as an annotation rather than datatype property, to deprecate maturity-related properties which have been moved to financial instruments more generally, and to simplify restrictions on tradable debt instrument.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20190501/Debt/DebtInstruments.rdf version of this ontology was modified to eliminate deprecated elements.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20190501/Debt/DebtInstruments.rdf version of this ontology was modified to support integration of the bonds ontology.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20190901/Debt/DebtInstruments.rdf version of this ontology was modified to correct the declaration of the property &apos;has estate or death put feature&apos; to remove an erroneous subproperty relationship and integrate the instrument pricing ontology.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20200401/Debt/DebtInstruments.rdf version of this ontology was modified to reflect a change to make redemption provision a child of contractual commitment, as such provisions apply to preferred shares and other instruments in addition to debt, and eliminate non-tradable and tradable debt instrument redemption provisions, which are synonymous, and adjust the hierarchy for call feature, notification provision, and put feature accordingly.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -165,7 +166,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-dbti;CallFeature">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbti;TradableDebtInstrumentRedemptionProvision"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;RedemptionProvision"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbti;hasNotificationProvision"/>
@@ -180,7 +181,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>call feature</rdfs:label>
-		<skos:definition>a redemption provision defining the rights of the issuer to buy back a security at a call price after a call protection period</skos:definition>
+		<skos:definition>redemption provision defining the rights of the issuer to buy back a security at a call price after a call protection period</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom>EDM Council / Quarule</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:explanatoryNote>Most corporate and municipal bonds have ten-year call features (termed call protection by holders); government securities typically have none.</fibo-fnd-utl-av:explanatoryNote>
 		<fibo-fnd-utl-av:synonym>call provision</fibo-fnd-utl-av:synonym>
@@ -195,7 +196,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>call notification provision</rdfs:label>
-		<skos:definition>a provision of a call feature defining notification requirements</skos:definition>
+		<skos:definition>provision of a call feature defining notification requirements</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-dbti;CallPremium">
@@ -337,7 +338,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbti;hasRedemptionProvision"/>
-				<owl:onClass rdf:resource="&fibo-sec-dbt-dbti;NonTradableDebtRedemptionProvision"/>
+				<owl:onClass rdf:resource="&fibo-fbc-dae-dbt;RedemptionProvision"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -361,14 +362,8 @@
 		<fibo-fnd-utl-av:explanatoryNote>Generally, a nonnegotiable instrument may be redeemed by the issuer, but this is often subject to some limitations.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-dbt-dbti;NonTradableDebtRedemptionProvision">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;RedemptionProvision"/>
-		<rdfs:label>non-tradable debt redemption terms</rdfs:label>
-		<skos:definition>terms for repayment of principal on debt instruments that are not traded securities, such as over the counter, bilateral paper</skos:definition>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-sec-dbt-dbti;NotificationProvision">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbti;TradableDebtInstrumentRedemptionProvision"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;RedemptionProvision"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-dt-fd;hasDatePeriod"/>
@@ -376,7 +371,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>notification provision</rdfs:label>
-		<skos:definition>a provision of a redemption feature defining notification requirements</skos:definition>
+		<skos:definition>provision of a redemption feature defining notification requirements</skos:definition>
 	</owl:Class>
 	
 	<owl:NamedIndividual rdf:about="&fibo-sec-dbt-dbti;ParValue">
@@ -422,7 +417,8 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-dbti;PutFeature">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbti;TradableDebtInstrumentRedemptionProvision"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;DebtTerms"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;RedemptionProvision"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbti;hasNotificationProvision"/>
@@ -437,7 +433,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>put feature</rdfs:label>
-		<skos:definition>a redemption provision giving the holder the right, but not the obligation, to sell a specified amount of the debt instrument (i.e., redeem it), prior to maturity</skos:definition>
+		<skos:definition>redemption provision giving the holder the right, but not the obligation, to sell a specified amount of the debt instrument (i.e., redeem it), prior to maturity</skos:definition>
 		<skos:editorialNote>FIBIM has term &quot;Putable Date&quot; which (by implication, and comparing with definition for &quot;Next Call Date&quot;) is presumably a single calendar date in the future, at a given point in time. That does not cover the definition of formal terms defining when and how the issue may be put, which is what is modeled here.</skos:editorialNote>
 		<fibo-fnd-utl-av:adaptedFrom>Barron&apos;s Dictionary of Business and Economics Terms, Fifth Edition, 2012</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:synonym>put provision</fibo-fnd-utl-av:synonym>
@@ -550,13 +546,6 @@
 		<fibo-fnd-utl-av:explanatoryNote>Details from Ecofin: A [debt] instrument can be traded, if its features depend only on one borrower. If the instrument has no bilateral or multilateral obligations, the investor can easily transfer it to another investor without asking the borrower (except the terms prohibit this explicitly). This is simplified with securitised instruments, where the debt is already split into handy denominations which trade easily (e.g. in round thousands or millions as with bonds, commercial paper, etc.). But in principle it works also with interbank loans and similar instruments. FIBIM Definition: Financial instruments evidencing moneys owed by the issuer to the holder on terms as specified.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-dbt-dbti;TradableDebtInstrumentRedemptionProvision">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;RedemptionProvision"/>
-		<rdfs:label>tradable debt instrument redemption provision</rdfs:label>
-		<skos:definition>terms for the redemption of the debt represented by a debt security</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote>Debt represented by a tradable debt security may be paid as a one off payment at maturity, by paying down principal amounts periodically, or by a call of the issue by the issuer. Debt that is defined by a convertible bond are redeemed by conversion into an equity security issued by the same company. More notes from the EDMC SME Review: Distinction between call and amortizing is whether you pay off everybody at the same time or via a lottery. SF can be either. either amortize the payment of a SF or pay it off by a lottery. The terms of the instrument determine that. Mandatory - all in the schedule. Mandatory to the bond issuer. Issuer has to pay off a certain amount at a certain time - this is in the Schedule. Callable - nothing mandatory.</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-sec-dbt-dbti;VariableIncomeSecurity">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbti;TradableDebtInstrument"/>
 		<rdfs:label>variable income security</rdfs:label>
@@ -656,7 +645,7 @@
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-dbti;hasNotificationProvision">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-agr-ctr;hasContractualElement"/>
 		<rdfs:label>has notification provision</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-dbti;TradableDebtInstrumentRedemptionProvision"/>
+		<rdfs:domain rdf:resource="&fibo-fbc-dae-dbt;RedemptionProvision"/>
 		<rdfs:range rdf:resource="&fibo-sec-dbt-dbti;NotificationProvision"/>
 		<skos:definition>relates the redemption provision of a debt instrument to a notification provision (e.g., call or put notification)</skos:definition>
 	</owl:ObjectProperty>
@@ -769,14 +758,14 @@
 	
 	<owl:DatatypeProperty rdf:about="&fibo-sec-dbt-dbti;isExtendableByHolder">
 		<rdfs:label>is extendable by holder</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-dbti;TradableDebtInstrumentRedemptionProvision"/>
+		<rdfs:domain rdf:resource="&fibo-fbc-dae-dbt;RedemptionProvision"/>
 		<rdfs:range rdf:resource="&xsd;boolean"/>
 		<skos:definition>indicates whether the expiration date or maturity date can be extended by the holder</skos:definition>
 	</owl:DatatypeProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-sec-dbt-dbti;isExtendableByIssuer">
 		<rdfs:label>is extendable by issuer</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-dbti;TradableDebtInstrumentRedemptionProvision"/>
+		<rdfs:domain rdf:resource="&fibo-fbc-dae-dbt;RedemptionProvision"/>
 		<rdfs:range rdf:resource="&xsd;boolean"/>
 		<skos:definition>indicates whether the issuer has the option to extend the debt rather than refinancing</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote>If not, the issuer may only refinance the debt by calling the issue and creating a new issue.</fibo-fnd-utl-av:explanatoryNote>
