@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE rdf:RDF [
 	<!ENTITY dct "http://purl.org/dc/terms/">
+	<!ENTITY fibo-fbc-dae-crf "https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/CreditFacilities/">
 	<!ENTITY fibo-fbc-dae-dbt "https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/">
+	<!ENTITY fibo-fbc-pas-caa "https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/ClientsAndAccounts/">
 	<!ENTITY fibo-fbc-pas-fpas "https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/">
 	<!ENTITY fibo-fnd-acc-cur "https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/">
 	<!ENTITY fibo-fnd-agr-ctr "https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/">
@@ -28,7 +30,9 @@
 ]>
 <rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanTypes/LoanProducts/"
 	xmlns:dct="http://purl.org/dc/terms/"
+	xmlns:fibo-fbc-dae-crf="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/CreditFacilities/"
 	xmlns:fibo-fbc-dae-dbt="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"
+	xmlns:fibo-fbc-pas-caa="https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/ClientsAndAccounts/"
 	xmlns:fibo-fbc-pas-fpas="https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/"
 	xmlns:fibo-fnd-acc-cur="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"
 	xmlns:fibo-fnd-agr-ctr="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"
@@ -62,6 +66,7 @@
 		<sm:fileAbbreviation>fibo-loan-typ-prod</sm:fileAbbreviation>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/CreditFacilities/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/ClientsAndAccounts/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"/>
@@ -90,13 +95,6 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 	</owl:Class>
-	
-	<owl:ObjectProperty rdf:about="&fibo-loan-ln-ln;hasUnitCost">
-		<rdfs:subPropertyOf rdf:resource="&fibo-loan-ln-ln;hasCost"/>
-		<rdfs:label>has unit cost</rdfs:label>
-		<skos:definition>relates an item to its unit cost</skos:definition>
-		<skos:editorialNote>Future consideration: move this property to ProductsAndServices ontology (fibo-fnd-pas-pas).</skos:editorialNote>
-	</owl:ObjectProperty>
 	
 	<owl:Class rdf:about="&fibo-loan-typ-prod;AutoLoanPurpose">
 		<rdfs:subClassOf rdf:resource="&fibo-loan-typ-prod;LoanPurpose"/>
@@ -127,7 +125,7 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-arr;CollectionConstituent"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-loan-ln-ln;hasUnitCost"/>
+				<owl:onProperty rdf:resource="&fibo-loan-typ-prod;hasUnitCost"/>
 				<owl:onClass rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
@@ -211,30 +209,27 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;FinancialProduct"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-pas-fpas;isEmbodiedIn"/>
-				<owl:someValuesFrom rdf:resource="&fibo-loan-ln-ln;Loan"/>
+				<owl:onProperty rdf:resource="&fibo-loan-typ-prod;hasPreconditions"/>
+				<owl:onClass rdf:resource="&fibo-fbc-dae-crf;LoanPrecedentConditions"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;refersTo"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-dae-dbt;Collateral"/>
+				<owl:onClass rdf:resource="&fibo-fbc-dae-dbt;Collateral"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-loan-typ-prod;hasPreconditions"/>
-				<owl:someValuesFrom rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/CreditFacilities/LoanPrecedentConditions"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-loan-typ-prod;isTemplateFor"/>
-				<owl:someValuesFrom rdf:resource="&fibo-loan-ln-ln;Loan"/>
+				<owl:onProperty rdf:resource="&fibo-fbc-pas-caa;isRealizedBy"/>
+				<owl:onClass rdf:resource="&fibo-loan-ln-ln;Loan"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>loan product</rdfs:label>
-		<skos:definition>financial product that is realized as a loan that a borrower may acquire from a lending institution with specific characteristics and terms</skos:definition>
+		<skos:definition>financial product that is realized as a loan that a party may acquire from a lending institution with specific characteristics and terms</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-typ-prod;LoanProductDisclosureRight">
@@ -259,7 +254,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>loan offering</rdfs:label>
-		<skos:definition>generic loan product offered to the public, or a specific offer tailored to particular circumstances aimed at one potential borrower</skos:definition>
+		<skos:definition>offering related to a loan product that may be a tailored to particular circumstances, aimed at a group of borrowers or individual borrower</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-typ-prod;LoanPurpose">
@@ -272,14 +267,9 @@
 		<rdfs:subClassOf rdf:resource="&fibo-loan-typ-prod;LoanProduct"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-pas-fpas;isEmbodiedIn"/>
-				<owl:someValuesFrom rdf:resource="&fibo-loan-typ-mtg;Mortgage"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-loan-typ-prod;isTemplateFor"/>
-				<owl:someValuesFrom rdf:resource="&fibo-loan-typ-mtg;Mortgage"/>
+				<owl:onProperty rdf:resource="&fibo-fbc-pas-caa;isRealizedBy"/>
+				<owl:onClass rdf:resource="&fibo-loan-typ-mtg;Mortgage"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">mortgage product</rdfs:label>
@@ -318,13 +308,14 @@
 	<owl:ObjectProperty rdf:about="&fibo-loan-typ-prod;hasPreconditions">
 		<rdfs:label xml:lang="en">has preconditions</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-loan-typ-prod;LoanProduct"/>
-		<rdfs:range rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/CreditFacilities/LoanPrecedentConditions"/>
+		<rdfs:range rdf:resource="&fibo-fbc-dae-crf;LoanPrecedentConditions"/>
 	</owl:ObjectProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-loan-typ-prod;isTemplateFor">
-		<rdfs:label xml:lang="en">is template for</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-pas-pas;Product"/>
-		<rdfs:range rdf:resource="&fibo-fnd-agr-ctr;Contract"/>
+	<owl:ObjectProperty rdf:about="&fibo-loan-typ-prod;hasUnitCost">
+		<rdfs:subPropertyOf rdf:resource="&fibo-loan-ln-ln;hasCost"/>
+		<rdfs:label>has unit cost</rdfs:label>
+		<skos:definition>relates an item to its unit cost</skos:definition>
+		<skos:editorialNote>Future consideration: move this property to ProductsAndServices ontology (fibo-fnd-pas-pas).</skos:editorialNote>
 	</owl:ObjectProperty>
 	
 	<owl:Class rdf:about="&fibo-loan-typ-mtg;MortgageLoanPurpose">
