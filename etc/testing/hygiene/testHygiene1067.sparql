@@ -1,15 +1,21 @@
 PREFIX  xsd:  <http://www.w3.org/2001/XMLSchema#>
 PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
+##
+# banner Labels should be unique across FIBO.
+
 SELECT  (concat("Warn: '", ?label, "' labels multiple objects.") AS ?error) ?object
 WHERE
-  { { SELECT DISTINCT  ?label
-      WHERE
-        { ?s  rdfs:label  ?label
-          FILTER regex(xsd:string(?s), "edmcouncil")
+{ 
+	{ 
+		SELECT DISTINCT  ?label
+		WHERE
+        { 
+			?s  rdfs:label  ?label
+			FILTER regex(xsd:string(?s), "edmcouncil")
         }
-      GROUP BY ?label
-      HAVING ( COUNT(?label) > 1 )
+		GROUP BY ?label
+		HAVING ( COUNT(?label) > 1 )
     }
     ?object  rdfs:label  ?label
-  }
+}
