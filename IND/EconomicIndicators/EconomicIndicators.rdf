@@ -117,7 +117,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/Indicators/Indicators/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Countries/CountryRepresentation/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/20200401/EconomicIndicators/EconomicIndicators/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/20200701/EconomicIndicators/EconomicIndicators/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20140601/EconomicIndicators/EconomicIndicators.rdf version of this ontology was modified per the issue resolutions identified in the FIBO IND 1.0 FTF 1 report.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20150501/EconomicIndicators/EconomicIndicators.rdf version of this ontology was modified per the issue resolutions identified in the FIBO IND 1.0 FTF 3 report.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20160801/EconomicIndicators/EconomicIndicators.rdf version of this ontology was modified per the FIBO 2.0 RFC. Primary changes include the addition of a number of statistical measures (mean, total, etc.) and their use in existing and new indicators, and the addition of several more economic indicators.</skos:changeNote>
@@ -126,6 +126,7 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20190501/EconomicIndicators/EconomicIndicators.rdf version of this ontology was modified to eliminate deprecated elements.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20190901/EconomicIndicators/EconomicIndicators.rdf version of this ontology was modified to eliminate duplicatation with concepts in LCC and merge countries with locations in FND.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20200301/EconomicIndicators/EconomicIndicators.rdf version of this ontology was modified to reflect the change in name and definition of numeric index to numeric index value in FND.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20200401/EconomicIndicators/EconomicIndicators.rdf version of this ontology was modified to add definitions for alternative unemployment calculations and correct a circular property definition.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -426,6 +427,13 @@
 		<skos:definition>an explicit recurrence interval of one day, or 24 hours</skos:definition>
 		<fibo-fnd-dt-fd:hasDurationValue>P1D</fibo-fnd-dt-fd:hasDurationValue>
 	</owl:NamedIndividual>
+	
+	<owl:Class rdf:about="&fibo-ind-ei-ei;DiscouragedWorkerPopulation">
+		<rdfs:subClassOf rdf:resource="&fibo-ind-ei-ei;MarginallyAttachedPopulation"/>
+		<rdfs:label>discouraged worker population</rdfs:label>
+		<skos:definition>subset of the marginally attached population that have given a job-market related reason for not currently looking for work</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>https://www.bls.gov/news.release/empsit.t15.htm</fibo-fnd-utl-av:adaptedFrom>
+	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ind-ei-ei;EconomicIndicator">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;ScopedMeasure"/>
@@ -852,6 +860,13 @@ A household may be located in a housing unit or in a set of collective living qu
 		<fibo-fnd-utl-av:explanatoryNote>Shows the time profile of how productively labour is used to generate value added. Labour productivity changes reflect the joint influence of changes in capital, as well as technical, organisational and efficiency change within and between firms, the influence of economies of scale, varying degrees of capacity utilisation and measurement errors.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-ind-ei-ei;MarginallyAttachedPopulation">
+		<rdfs:subClassOf rdf:resource="&fibo-ind-ei-ei;PopulationNotInLaborForce"/>
+		<rdfs:label>marginally attached population</rdfs:label>
+		<skos:definition>subset of the population that includes people who currently are neither working nor looking for work but indicate that they want and are available for a job and have looked for work sometime in the past 12 months</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>https://www.bls.gov/news.release/empsit.t15.htm</fibo-fnd-utl-av:adaptedFrom>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-ind-ei-ei;MetropolitanStatisticalArea">
 		<rdfs:subClassOf rdf:resource="&fibo-ind-ei-ei;GovernmentSpecifiedStatisticalArea"/>
 		<rdfs:label>metropolitan statistical area</rdfs:label>
@@ -911,6 +926,14 @@ A household may be located in a housing unit or in a set of collective living qu
 		<skos:definition>a subset of the civilian, noninstitutional population, that is considered neither employed nor unemployed by the reporting agency during the reporting period</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom>U.S. Bureau of Labor Statistics and Statistics Canada reference definitions - https://wiki.edmcouncil.org/pages/viewpage.action?pageId=6358041</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:explanatoryNote>There are a number of distinctions with respect to how individuals are counted from country to country, including whether or not they are considered employed if they are on unpaid leave for some reason, and whether or not they are counted multiple times if they have more than one paying job.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-ind-ei-ei;PopulationTemporarilyNotAtWork">
+		<rdfs:subClassOf rdf:resource="&fibo-ind-ei-ei;EmployedPopulation"/>
+		<rdfs:label>population temporarily not at work</rdfs:label>
+		<skos:definition>subset of the employed population that includes persons that are temporarily absent from work for various reasons</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>https://www.bls.gov/news.release/empsit.t15.htm</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:explanatoryNote>This includes persons temporarily not at work because of illness or injury, holiday or vacation, strike or lockout, educational or training leave, maternity or parental leave, reduction in economic activity, temporary disorganisation or suspension of work due to such reasons as bad weather, mechanical or electrical breakdown, or shortage of raw materials or fuels, or other temporary absence with or without leave should be considered as in paid employment provided they had a formal job attachment.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ind-ei-ei;ProducerPriceIndex">
@@ -1002,6 +1025,32 @@ A household may be located in a housing unit or in a set of collective living qu
 		<fibo-fnd-utl-av:synonym>consumer as defined by the Consumer Price Index (CPI)</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-ind-ei-ei;UnderemployedPopulation">
+		<rdfs:subClassOf rdf:resource="&fibo-ind-ei-ei;EmployedPopulation"/>
+		<rdfs:label>underemployed population</rdfs:label>
+		<skos:definition>subset of the employed population that includes persons employed part-time for economic reasons, who want and are available for full-time work but have had to settle for a part-time schedule</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>https://www.bls.gov/news.release/empsit.t15.htm</fibo-fnd-utl-av:adaptedFrom>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-ind-ei-ei;UnderutilizedPopulation">
+		<rdfs:subClassOf rdf:resource="&fibo-ind-ei-ei;CivilianNonInstitutionalPopulation"/>
+		<rdfs:label>underutilized population</rdfs:label>
+		<owl:equivalentClass>
+			<owl:Class>
+				<owl:unionOf rdf:parseType="Collection">
+					<rdf:Description rdf:about="&fibo-ind-ei-ei;UnderemployedPopulation">
+					</rdf:Description>
+					<rdf:Description rdf:about="&fibo-ind-ei-ei;UnemployedPopulation">
+					</rdf:Description>
+					<rdf:Description rdf:about="&fibo-ind-ei-ei;MarginallyAttachedPopulation">
+					</rdf:Description>
+				</owl:unionOf>
+			</owl:Class>
+		</owl:equivalentClass>
+		<skos:definition>subset of the civilian non-institutional population that includes persons employed part-time for economic reasons, persons that are marginally attached to the labor force, and persons that are identified as umemployed</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>https://www.bls.gov/news.release/empsit.t15.htm</fibo-fnd-utl-av:adaptedFrom>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-ind-ei-ei;UnemployedPopulation">
 		<rdfs:subClassOf rdf:resource="&fibo-ind-ei-ei;CivilianLaborForce"/>
 		<rdfs:label>unemployed population</rdfs:label>
@@ -1077,20 +1126,20 @@ A household may be located in a housing unit or in a set of collective living qu
 		<rdfs:label>excludes energy and food</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-ind-ei-ei;ConsumerPriceIndex"/>
 		<rdfs:range rdf:resource="&xsd;boolean"/>
-		<skos:definition>a predicate indicating whether the index excludes energy and food prices</skos:definition>
+		<skos:definition>indicates whether the calculation of the index includes energy and food prices or not</skos:definition>
 	</owl:DatatypeProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-ind-ei-ei;hasIndicatorValue">
 		<rdfs:subPropertyOf rdf:resource="&lcc-lr;has"/>
 		<rdfs:label>has indicator value</rdfs:label>
 		<rdfs:range rdf:resource="&fibo-fnd-qt-qtu;QuantityValue"/>
-		<skos:definition>specifies quantity value for a given indicator</skos:definition>
+		<skos:definition>specifies a quantity value for a given indicator</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-ind-ei-ei;hasMinimumLegalWorkingAge">
 		<rdfs:label>has minimum legal working age</rdfs:label>
 		<rdfs:range rdf:resource="&xsd;integer"/>
-		<skos:definition>a predicate indicating the legal working age (minimum), in years, of people that are counted as members of the working population</skos:definition>
+		<skos:definition>indicates the legal working age (minimum), in years, of people that are counted as members of the working population</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:resource="http://www.investopedia.com/terms/w/working-age-population.asp"/>
 		<fibo-fnd-utl-av:explanatoryNote>The working-age population is the total population in a region, within a set range of ages, that is considered to be able and likely to work. The working-age population measure is used to give an estimate of the total number of potential workers within an economy. For example, in the U.S., it is 16, whereas in Canada it is 15.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:DatatypeProperty>
