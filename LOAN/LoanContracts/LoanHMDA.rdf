@@ -12,8 +12,10 @@
 	<!ENTITY fibo-fnd-rel-rel "https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/">
 	<!ENTITY fibo-fnd-utl-alx "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Analytics/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
+	<!ENTITY fibo-loan-ln-app "https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanApplications/">
 	<!ENTITY fibo-loan-ln-hmda "https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanHMDA/">
 	<!ENTITY fibo-loan-ln-ln "https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanCore/">
+	<!ENTITY fibo-loan-typ-mtg "https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanTypes/MortgageLoans/">
 	<!ENTITY lcc-cr "https://www.omg.org/spec/LCC/Countries/CountryRepresentation/">
 	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
 	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
@@ -35,8 +37,10 @@
 	xmlns:fibo-fnd-rel-rel="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"
 	xmlns:fibo-fnd-utl-alx="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Analytics/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
+	xmlns:fibo-loan-ln-app="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanApplications/"
 	xmlns:fibo-loan-ln-hmda="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanHMDA/"
 	xmlns:fibo-loan-ln-ln="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanCore/"
+	xmlns:fibo-loan-typ-mtg="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanTypes/MortgageLoans/"
 	xmlns:lcc-cr="https://www.omg.org/spec/LCC/Countries/CountryRepresentation/"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -64,14 +68,28 @@ Copyright (c) 2015-2018 Object Management Group, Inc.</sm:copyright>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Analytics/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanCore/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanHMDA/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanTypes/MortgageLoans/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Countries/CountryRepresentation/"/>
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanHMDA/"/>
 		<owl:versionInfo>Created with e6Tools Graphical OWL Editor from D:\SEMANTIC-ARTS\NAS\ClientsAndPartners\EDM Council\fibo ontologies\LoanOntology\loans.vsdx Page:loanHMDA</owl:versionInfo>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Provisional"/>
 	</owl:Ontology>
 	
-	<owl:Class rdf:about="&fibo-loan-ln-hmda;HMDA_CoveredLoanContract">
-		<rdfs:subClassOf rdf:resource="&fibo-loan-ln-ln;Mortgage"/>
+	<owl:Class rdf:about="&fibo-loan-ln-hmda;Ethnicity">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-cls;Classifier"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&lcc-cr;classifies"/>
+				<owl:someValuesFrom rdf:resource="&fibo-be-le-lp;LegallyCompetentNaturalPerson"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>ethnicity</rdfs:label>
+		<skos:definition>category based on a cultural factors, including nationality, regional culture, ancestry, and language</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-loan-ln-hmda;HMDA-CoveredLoanContract">
+		<rdfs:subClassOf rdf:resource="&fibo-loan-typ-mtg;Mortgage"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;confers"/>
@@ -89,21 +107,53 @@ Copyright (c) 2015-2018 Object Management Group, Inc.</sm:copyright>
 		<fibo-fnd-utl-av:adaptedFrom>the Revised HMDA regulatory text.</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-loan-ln-hmda;HMDA_Disposition">
+	<owl:Class rdf:about="&fibo-loan-ln-hmda;HMDA-Disposition">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-cls;Classifier"/>
 		<rdfs:label>HMDA disposition</rdfs:label>
 		<skos:definition>a type of action taken regarding an application for a HMDA covered loan</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-loan-ln-hmda;HMDA_PreApprovalRequest">
-		<rdfs:subClassOf rdf:resource="&fibo-loan-ln-ln;PreApprovalRequest"/>
+	<owl:NamedIndividual rdf:about="&fibo-loan-ln-hmda;HMDA-Disposition-ApplicationApprovedButNotAccepted">
+		<rdf:type rdf:resource="&fibo-loan-ln-hmda;HMDA-Disposition"/>
+	</owl:NamedIndividual>
+	
+	<owl:NamedIndividual rdf:about="&fibo-loan-ln-hmda;HMDA-Disposition-ApplicationDenied">
+		<rdf:type rdf:resource="&fibo-loan-ln-hmda;HMDA-Disposition"/>
+	</owl:NamedIndividual>
+	
+	<owl:NamedIndividual rdf:about="&fibo-loan-ln-hmda;HMDA-Disposition-ApplicationWithdrawn">
+		<rdf:type rdf:resource="&fibo-loan-ln-hmda;HMDA-Disposition"/>
+	</owl:NamedIndividual>
+	
+	<owl:NamedIndividual rdf:about="&fibo-loan-ln-hmda;HMDA-Disposition-FileClosedForIncompleteness">
+		<rdf:type rdf:resource="&fibo-loan-ln-hmda;HMDA-Disposition"/>
+	</owl:NamedIndividual>
+	
+	<owl:NamedIndividual rdf:about="&fibo-loan-ln-hmda;HMDA-Disposition-LoanOriginated">
+		<rdf:type rdf:resource="&fibo-loan-ln-hmda;HMDA-Disposition"/>
+	</owl:NamedIndividual>
+	
+	<owl:NamedIndividual rdf:about="&fibo-loan-ln-hmda;HMDA-Disposition-LoanPurchasedByYourInstitution">
+		<rdf:type rdf:resource="&fibo-loan-ln-hmda;HMDA-Disposition"/>
+	</owl:NamedIndividual>
+	
+	<owl:NamedIndividual rdf:about="&fibo-loan-ln-hmda;HMDA-Disposition-PreapprovalRequestApprovedButNotAccepted">
+		<rdf:type rdf:resource="&fibo-loan-ln-hmda;HMDA-Disposition"/>
+	</owl:NamedIndividual>
+	
+	<owl:NamedIndividual rdf:about="&fibo-loan-ln-hmda;HMDA-Disposition-PreapprovalRequestDenied">
+		<rdf:type rdf:resource="&fibo-loan-ln-hmda;HMDA-Disposition"/>
+	</owl:NamedIndividual>
+	
+	<owl:Class rdf:about="&fibo-loan-ln-hmda;HMDA-PreApprovalRequest">
+		<rdfs:subClassOf rdf:resource="&fibo-loan-ln-app;PreApprovalRequest"/>
 		<rdfs:label>HMDA pre-approval request</rdfs:label>
 		<skos:definition>a request for pre-approval of a home purchase loan up to a certain amount, and subject to certain non-credit related conditions</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom>the 2015 Revised HMDA regulation.</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:explanatoryNote>This request is approved only after a comprehensive analysis of the credit worthiness of the borrower is carried out.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-loan-ln-hmda;HMDA_Report">
+	<owl:Class rdf:about="&fibo-loan-ln-hmda;HMDA-Report">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-rep;Report"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
@@ -151,47 +201,33 @@ Copyright (c) 2015-2018 Object Management Group, Inc.</sm:copyright>
 		<fibo-fnd-utl-av:adaptedFrom>2015 Revised HMDA regulation</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
 	
-	<owl:NamedIndividual rdf:about="&fibo-loan-ln-hmda;_HMDA_Disposition_ApplicationApprovedButNotAccepted">
-		<rdf:type rdf:resource="&fibo-loan-ln-hmda;HMDA_Disposition"/>
-	</owl:NamedIndividual>
-	
-	<owl:NamedIndividual rdf:about="&fibo-loan-ln-hmda;_HMDA_Disposition_ApplicationDenied">
-		<rdf:type rdf:resource="&fibo-loan-ln-hmda;HMDA_Disposition"/>
-	</owl:NamedIndividual>
-	
-	<owl:NamedIndividual rdf:about="&fibo-loan-ln-hmda;_HMDA_Disposition_ApplicationWithdrawn">
-		<rdf:type rdf:resource="&fibo-loan-ln-hmda;HMDA_Disposition"/>
-	</owl:NamedIndividual>
-	
-	<owl:NamedIndividual rdf:about="&fibo-loan-ln-hmda;_HMDA_Disposition_FileClosedForIncompleteness">
-		<rdf:type rdf:resource="&fibo-loan-ln-hmda;HMDA_Disposition"/>
-	</owl:NamedIndividual>
-	
-	<owl:NamedIndividual rdf:about="&fibo-loan-ln-hmda;_HMDA_Disposition_LoanOriginated">
-		<rdf:type rdf:resource="&fibo-loan-ln-hmda;HMDA_Disposition"/>
-	</owl:NamedIndividual>
-	
-	<owl:NamedIndividual rdf:about="&fibo-loan-ln-hmda;_HMDA_Disposition_LoanPurchasedByYourInstitution">
-		<rdf:type rdf:resource="&fibo-loan-ln-hmda;HMDA_Disposition"/>
-	</owl:NamedIndividual>
-	
-	<owl:NamedIndividual rdf:about="&fibo-loan-ln-hmda;_HMDA_Disposition_PreapprovalRequestApprovedButNotAccepted">
-		<rdf:type rdf:resource="&fibo-loan-ln-hmda;HMDA_Disposition"/>
-	</owl:NamedIndividual>
-	
-	<owl:NamedIndividual rdf:about="&fibo-loan-ln-hmda;_HMDA_Disposition_PreapprovalRequestDenied">
-		<rdf:type rdf:resource="&fibo-loan-ln-hmda;HMDA_Disposition"/>
-	</owl:NamedIndividual>
-	
-	<owl:NamedIndividual rdf:about="&fibo-loan-ln-hmda;_HowSubmitted_directly">
+	<owl:NamedIndividual rdf:about="&fibo-loan-ln-hmda;HowSubmitted-directly">
 		<rdf:type rdf:resource="&fibo-loan-ln-hmda;HowSubmitted"/>
 	</owl:NamedIndividual>
 	
-	<owl:NamedIndividual rdf:about="&fibo-loan-ln-hmda;_HowSubmitted_notDirectly">
+	<owl:NamedIndividual rdf:about="&fibo-loan-ln-hmda;HowSubmitted-notDirectly">
 		<rdf:type rdf:resource="&fibo-loan-ln-hmda;HowSubmitted"/>
 	</owl:NamedIndividual>
 	
-	<owl:ObjectProperty rdf:about="&fibo-loan-ln-hmda;hasHMDA_DispositionDate">
+	<owl:Class rdf:about="&fibo-loan-ln-hmda;Race">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-cls;Classifier"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&skos;broaderTransitive"/>
+				<owl:someValuesFrom rdf:resource="&fibo-loan-ln-hmda;Race"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&lcc-cr;classifies"/>
+				<owl:someValuesFrom rdf:resource="&fibo-be-le-lp;LegallyCompetentNaturalPerson"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>race</rdfs:label>
+		<skos:definition>a category based on a person&apos;s physical characteristics, such as bone structure and skin, hair, or eye color</skos:definition>
+	</owl:Class>
+	
+	<owl:ObjectProperty rdf:about="&fibo-loan-ln-hmda;hasHMDA-DispositionDate">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDate"/>
 		<rdfs:label>HMDA disposition date</rdfs:label>
 		<skos:definition>the date associated with the HMDA Disposition for a HMDA Covered Loan</skos:definition>
