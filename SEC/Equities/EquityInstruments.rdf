@@ -268,7 +268,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-dt-fd;hasSchedule"/>
-				<owl:onClass rdf:resource="&fibo-sec-eq-eq;DividendOrShareCouponSchedule"/>
+				<owl:onClass rdf:resource="&fibo-sec-eq-eq;DividendSchedule"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -283,7 +283,7 @@
 		<skos:definition>convention by which dividends are distributed, i.e., by payment of a monetary amount or by reinvestment, as specified by the board of directors at the time a decision to issue a dividend is made</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-eq-eq;DividendOrShareCouponSchedule">
+	<owl:Class rdf:about="&fibo-sec-eq-eq;DividendSchedule">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-psch;PaymentSchedule"/>
 		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-sch;ParametricSchedule"/>
 		<rdfs:label>dividend or share coupon schedule</rdfs:label>
@@ -581,14 +581,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-eq-eq;PreferredDividend">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-agr;Commitment"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-pas-psch;hasPaymentAmount"/>
-				<owl:onClass rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
-				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;Dividend"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-eq-eq;hasFixedDividendRate"/>
@@ -600,20 +593,6 @@
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-eq-eq;hasGracePeriod"/>
 				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;Duration"/>
-				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-eq-eq;hasDistributionMethod"/>
-				<owl:onClass rdf:resource="&fibo-sec-eq-eq;DividendDistributionMethod"/>
-				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-dt-fd;hasSchedule"/>
-				<owl:onClass rdf:resource="&fibo-sec-eq-eq;DividendOrShareCouponSchedule"/>
 				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -632,7 +611,7 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-eq-eq;hasCoupon"/>
+				<owl:onProperty rdf:resource="&fibo-sec-eq-eq;hasDividend"/>
 				<owl:someValuesFrom>
 					<owl:Class>
 						<owl:unionOf rdf:parseType="Collection">
@@ -823,10 +802,18 @@
 		<skos:definition xml:lang="en">grants or bestows ownership via contract</skos:definition>
 	</owl:ObjectProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-sec-eq-eq;hasCoupon">
+	<owl:ObjectProperty rdf:about="&fibo-sec-eq-eq;hasDistributionMethod">
+		<rdfs:subPropertyOf rdf:resource="&lcc-lr;has"/>
+		<rdfs:label>has distribution method</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-sec-eq-eq;Dividend"/>
+		<rdfs:range rdf:resource="&fibo-sec-eq-eq;DividendDistributionMethod"/>
+		<skos:definition>indicates the method by which dividend or coupon payments are to be distributed</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-sec-eq-eq;hasDividend">
 		<rdfs:subPropertyOf rdf:resource="&lcc-lr;has"/>
 		<rdfs:label>has coupon</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-eq-eq;PreferredShare"/>
+		<rdfs:domain rdf:resource="&fibo-sec-eq-eq;Share"/>
 		<rdfs:range>
 			<owl:Class>
 				<owl:unionOf rdf:parseType="Collection">
@@ -837,15 +824,7 @@
 				</owl:unionOf>
 			</owl:Class>
 		</rdfs:range>
-		<skos:definition>relates a preferred share to a dividend or coupon that applies to the share</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-sec-eq-eq;hasDistributionMethod">
-		<rdfs:subPropertyOf rdf:resource="&lcc-lr;has"/>
-		<rdfs:label>has distribution method</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-eq-eq;Dividend"/>
-		<rdfs:range rdf:resource="&fibo-sec-eq-eq;DividendDistributionMethod"/>
-		<skos:definition>indicates the method by which dividend or coupon payments are to be distributed</skos:definition>
+		<skos:definition>relates a share to a dividend that applies to that share</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-eq-eq;hasDividendDeclarationDate">
