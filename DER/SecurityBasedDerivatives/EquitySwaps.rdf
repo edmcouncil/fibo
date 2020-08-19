@@ -7,6 +7,8 @@
 	<!ENTITY fibo-der-sbd-eqs "https://spec.edmcouncil.org/fibo/ontology/DER/SecurityBasedDerivatives/EquitySwaps/">
 	<!ENTITY fibo-der-sbd-sbd "https://spec.edmcouncil.org/fibo/ontology/DER/SecurityBasedDerivatives/SecurityBasedDerivatives/">
 	<!ENTITY fibo-fnd-acc-cur "https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/">
+	<!ENTITY fibo-fnd-agr-ctr "https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/">
+	<!ENTITY fibo-fnd-dt-fd "https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/">
 	<!ENTITY fibo-fnd-rel-rel "https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/">
 	<!ENTITY fibo-fnd-utl-alx "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Analytics/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
@@ -27,6 +29,8 @@
 	xmlns:fibo-der-sbd-eqs="https://spec.edmcouncil.org/fibo/ontology/DER/SecurityBasedDerivatives/EquitySwaps/"
 	xmlns:fibo-der-sbd-sbd="https://spec.edmcouncil.org/fibo/ontology/DER/SecurityBasedDerivatives/SecurityBasedDerivatives/"
 	xmlns:fibo-fnd-acc-cur="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"
+	xmlns:fibo-fnd-agr-ctr="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"
+	xmlns:fibo-fnd-dt-fd="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"
 	xmlns:fibo-fnd-rel-rel="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"
 	xmlns:fibo-fnd-utl-alx="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Analytics/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
@@ -49,6 +53,8 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/SecurityBasedDerivatives/SecurityBasedDerivatives/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/TransactionsExt/REATransactions/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Analytics/"/>
@@ -59,38 +65,7 @@
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Provisional"/>
 	</owl:Ontology>
 	
-	<owl:Class rdf:about="&fibo-der-sbd-eqs;CorrelationLeg">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-swp;PerformanceBasedVariableLeg"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
-				<owl:someValuesFrom>
-					<owl:Restriction>
-						<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasIdentity"/>
-						<owl:someValuesFrom rdf:resource="&fibo-ind-mkt-bas;ReferenceIndex"/>
-					</owl:Restriction>
-				</owl:someValuesFrom>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-acc-cur;hasNotionalAmount"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">correlation leg terms</rdfs:label>
-		<skos:definition xml:lang="en">Definition needed. FpML refers to this but does not define its meaning. Correslation between two prices</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Correlation Buyer is deemed to be the Equity Amount Receiver, Correlation Seller is deemed to be the Equity Amount Payer. FpML: &apos;Correlation Leg. Correlation Buyer is deemed to be the Equity Amount Receiver, Correlation Seller is deemed to be the Equity Amount Payer.&apos;</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-sbd-eqs;CovarianceLegTerms">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-swp;PerformanceBasedVariableLeg"/>
-		<rdfs:label xml:lang="en">covariance leg terms</rdfs:label>
-		<skos:definition xml:lang="en">A statistical leg based on covariance. REVIEW: This kmight specify the same kind of thing as Correlation Leg using different mathematics / different legal terms (in which case we need to model it as a different thing even though to the investor it has the same rationale and behavior. The relative movement of one thing to the other over a period of time. So this adds a time base to the Correlation calculation. difference with Correelation: The time base in correlation swap is implicit anyway (it&apos;s the duration of the contract. so Covariance is what allows you to explan x% of the vaqriabiltiy of the price of this asset with relation to that asset.</skos:definition>
-		<skos:editorialNote xml:lang="en">Original review note: Co-variance Leg Another statistical swap leg type where the stike determines the payout. Structured the same as the Correlation Leg. more notes 17 March: Covariane is actually the way you measure correlation. So people talk about this as a statistical leg but actually Talks about movement of price THe highter the covariance between two prices the more correlated they are. more general note: unlike fx market where e.g. I cna build a price out od AUS/USD and build a price out of that. In option markets I don&apos;t have that opportunity - one owiuld end up overpricing the option. The variability in the price of AUS/USD v AUS/GBP impacts on these calculations. By using three legs I cna put together a cros inthe options. Buy Aus/USD Option, .buy USD/GBP Option and sell the correlation Swap. This sells the correlationbeteen AUS/USD and AUS/GBP leaving me with a realistic price for AUS/GBP thereby enabling me to cross markets. So the swap enables me not to end up overpricing the option. THis basic principle is why correslation swaps are used. So correslation is a relatively new concept.</skos:editorialNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-sbd-eqs;DispersionSwapIndexConstituentsLegTerms">
+	<owl:Class rdf:about="&fibo-der-sbd-eqs;DispersionSwapIndexConstituentsLeg">
 		<rdfs:subClassOf rdf:resource="&fibo-der-drc-swp;DispersionLeg"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
@@ -103,11 +78,11 @@
 				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">dispersion swap index constituents leg terms</rdfs:label>
-		<skos:definition xml:lang="en">The side of a dispersion swap where the underlying is a defined sub-set of an index, i.e. a set of constituents of that index.</skos:definition>
+		<rdfs:label xml:lang="en">dispersion swap index constituents leg</rdfs:label>
+		<skos:definition xml:lang="en">dispersion leg whose underlying is a defined sub-set of an index, i.e. a set of constituents of that index</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-sbd-eqs;DispersionSwapIndexLegTerms">
+	<owl:Class rdf:about="&fibo-der-sbd-eqs;DispersionSwapIndexLeg">
 		<rdfs:subClassOf rdf:resource="&fibo-der-drc-swp;DispersionLeg"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
@@ -120,8 +95,8 @@
 				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">dispersion swap index leg terms</rdfs:label>
-		<skos:definition xml:lang="en">The side of a dispersion swap which has a particular index as its underlying. Further notes: This is a leg of a dispersion swap, which is defined by the index itself. This may be set against the other leg which is made up of a defined part of that index. Review comment: aren&apos;t really legs.</skos:definition>
+		<rdfs:label xml:lang="en">dispersion swap index leg</rdfs:label>
+		<skos:definition xml:lang="en">dispersion leg whose underlying is a particular index</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-sbd-eqs;DividendConditions">
@@ -134,7 +109,7 @@
 		<rdfs:subClassOf rdf:resource="&fibo-der-der-rsw;SimpleReturnLeg"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-sbd-eqs;hasComponent.1"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;hasContractualElement"/>
 				<owl:onClass rdf:resource="&fibo-der-sbd-eqs;SpecialDividendLegTerm"/>
 				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
 			</owl:Restriction>
@@ -158,28 +133,24 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-sbd-eqs;hasComponent"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-sbd-eqs;DividendLegDividendPeriod"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;hasContractualElement"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-sbd-eqs;DividendLegPeriodTerm"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">dividend leg</rdfs:label>
 		<skos:definition xml:lang="en">The Floating Payment Leg of a Dividend Swap. Swap dividend payment rates. Earlier notes this behaves very like a variance swap but instead of betting in pure variance you take a bet on dividend. What practically in one of these: The difference between th ereal life dividend and the one you think it should be. so I say it should bte 2% over the next 10 years, so I swap 2% for the actual dividend amount So then there is one single payment at the end which nets these up. So in the above example ... they are usually 3 month or 6 month contracts, so if for instance th edividend if quarterly, there might be 2 dividends where the difference is netted up at the end.for example. (Us 1/4ly usually , Eur 6 months). Depends on the company&apos;s articles of association etc. e.g. Unilever is 6 mo)/ Structurally, Div Swap corr Swap and Var Swap are structured similarly, with one strike at the beginning. Strike may be expressed in terms of the (price) variance (the variance of the returns) , the correlation between typically 2 underlyers. or the dividend for each of these three types of swap respectively. 17 march Dividend is a flow based on a share, so is this not the same as a Return Swap in that the dividend is the return on the dividend? Also recall that with stocks themselves, there is no comitment by the issuer to pay the dividends. FpML: &apos;Dividend leg.&apos;; &apos;Floating Payment Leg of a Dividend Swap.&apos;</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-sbd-eqs;DividendLegDividendPeriod">
+	<owl:Class rdf:about="&fibo-der-sbd-eqs;DividendLegPeriodTerm">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractualElement"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-sbd-eqs;hasSomeDividendPeriods"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-sbd-eqs;DividendPeriod"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-dt-fd;hasDatePeriod"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-sbd-eqs;QualifyingDividendPeriod"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">dividend leg dividend period</rdfs:label>
+		<rdfs:label xml:lang="en">dividend leg period term</rdfs:label>
 		<skos:definition xml:lang="en">A part of a Dividend Leg, which is the dividend period and the terms relating to this.</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-sbd-eqs;DividendPeriod">
-		<rdfs:label xml:lang="en">dividend period</rdfs:label>
-		<skos:definition xml:lang="en">A dividend payment period.</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-sbd-eqs;EquityCorrelationSwap">
@@ -240,14 +211,21 @@
 		<skos:definition xml:lang="en">no definition FpML (unusable): Specifies the structure of a variance swap.</skos:definition>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-der-sbd-eqs;QualifyingDividendPeriod">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-fd;ExplicitDatePeriod"/>
+		<rdfs:label xml:lang="en">qualifying dividend period</rdfs:label>
+		<skos:definition xml:lang="en">date period over which the sum of all qualifying dividends paid by the relevent issuers as identified in the swap terms is calculated</skos:definition>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-der-sbd-eqs;SpecialDividendLegTerm">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractualElement"/>
 		<rdfs:label xml:lang="en">special dividend leg term</rdfs:label>
 		<skos:definition xml:lang="en">Special dividends and memorial dividends which are applicable. FpML: &apos;If present and true, then special dividends and memorial dividends are applicable.&apos; Note that &quot;if true&quot; (a yes/no term) and &quot;if present&quot; (this term, which is the presence of the thing) are two separate meanings. FpML implies the truth of the Yes/No fact by the presence or absence of this term. However, although FpML definition says &quot;if present and true&quot;, the term is just a &quot;boolean&quot; ie a YTes/no applicability term. Not sure where the special dividends themselves are defined.</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-sbd-eqs;SwapStrikeTerms">
+	<owl:Class rdf:about="&fibo-der-sbd-eqs;StrikeLeg">
 		<rdfs:subClassOf rdf:resource="&fibo-der-drc-swp;SwapLeg"/>
-		<rdfs:label xml:lang="en">swap strike terms</rdfs:label>
+		<rdfs:label xml:lang="en">strike leg</rdfs:label>
 		<skos:definition xml:lang="en">Formal terms defining the strike leg on a swap that has a strike leg.</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">This kind of leg exists for variance swaps and other similar swaps. The realization of this leg is not a cashflow but a netting out against the terms defined in the other leg. Notes from Strike Leg: The abstract leg implied by the strike in a statistical swap. 
 Further Notes:This is effectively an abstract leg - there are no streams of payments. Rather, there is one payment on maturity of the contract, which is based on a netting out of this Strike leg and the outcome of the Realized Statistic Leg.</fibo-fnd-utl-av:explanatoryNote>
@@ -262,7 +240,7 @@ Further Notes:This is effectively an abstract leg - there are no streams of paym
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-sbd-eqs;correlationAmount">
 		<rdfs:label xml:lang="en">correlation amount</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-sbd-eqs;CorrelationLeg"/>
+		<rdfs:domain rdf:resource="&fibo-der-drc-swp;CorrelationLeg"/>
 		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
 		<skos:definition xml:lang="en">The Equity Amount to which the Equity Payment Date relates in relation to each Equity Payment Date.</skos:definition>
 	</owl:ObjectProperty>
@@ -283,33 +261,15 @@ Further Notes:This is effectively an abstract leg - there are no streams of paym
 	
 	<owl:DatatypeProperty rdf:about="&fibo-der-sbd-eqs;determinationMethod">
 		<rdfs:label xml:lang="en">determination method</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-sbd-eqs;CorrelationLeg"/>
+		<rdfs:domain rdf:resource="&fibo-der-drc-swp;CorrelationLeg"/>
 		<skos:definition xml:lang="en">The method according to which an amount or a date is determined.</skos:definition>
 	</owl:DatatypeProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-sbd-eqs;fixedStrike">
 		<rdfs:label xml:lang="en">fixed strike</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-sbd-eqs;DividendLegDividendPeriod"/>
+		<rdfs:domain rdf:resource="&fibo-der-sbd-eqs;DividendLegPeriodTerm"/>
 		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
 		<skos:definition xml:lang="en">The strike amount.</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-der-sbd-eqs;hasComponent">
-		<rdfs:label xml:lang="en">has component</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-sbd-eqs;DividendLeg"/>
-		<rdfs:range rdf:resource="&fibo-der-sbd-eqs;DividendLegDividendPeriod"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-der-sbd-eqs;hasComponent.1">
-		<rdfs:label xml:lang="en">has component</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-sbd-eqs;DividendLeg"/>
-		<rdfs:range rdf:resource="&fibo-der-sbd-eqs;SpecialDividendLegTerm"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-der-sbd-eqs;hasSomeDividendPeriods">
-		<rdfs:label xml:lang="en">has some dividend periods</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-sbd-eqs;DividendLegDividendPeriod"/>
-		<rdfs:range rdf:resource="&fibo-der-sbd-eqs;DividendPeriod"/>
 	</owl:ObjectProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-der-sbd-eqs;materialDividendsApplicable">
@@ -333,20 +293,13 @@ Further Notes:This is effectively an abstract leg - there are no streams of paym
 	
 	<owl:DatatypeProperty rdf:about="&fibo-der-sbd-eqs;relativeDeterminationMethod">
 		<rdfs:label xml:lang="en">relative determination method</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-sbd-eqs;CorrelationLeg"/>
+		<rdfs:domain rdf:resource="&fibo-der-drc-swp;CorrelationLeg"/>
 		<skos:definition xml:lang="en">&apos;A reference to a notional amount determination method defined elsewhere in this document.&apos;</skos:definition>
-	</owl:DatatypeProperty>
-	
-	<owl:DatatypeProperty rdf:about="&fibo-der-sbd-eqs;specialDividendTermsApplicable">
-		<rdfs:label xml:lang="en">special dividend terms applicable</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-sbd-eqs;DividendLeg"/>
-		<rdfs:range rdf:resource="&xsd;boolean"/>
-		<skos:definition xml:lang="en">Whether special dividends and memorial dividends are applicable. FpML: &apos;If present and true, then special dividends and memorial dividends are applicable.&apos; Note that &quot;if true&quot; (a yes/no term) and &quot;if present&quot; (this term, which is the presence of the thing) are two separate meanings. FpML implies the truth of the Yes/No fact by the presence or absence of the corresponding dividend term.</skos:definition>
 	</owl:DatatypeProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-sbd-eqs;strike">
 		<rdfs:label xml:lang="en">strike</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-sbd-eqs;SwapStrikeTerms"/>
+		<rdfs:domain rdf:resource="&fibo-der-sbd-eqs;StrikeLeg"/>
 		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
 		<skos:definition xml:lang="en">The strike amount defined for this leg.</skos:definition>
 	</owl:ObjectProperty>
