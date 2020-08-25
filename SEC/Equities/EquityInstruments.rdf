@@ -20,9 +20,11 @@
 	<!ENTITY fibo-fnd-oac-own "https://spec.edmcouncil.org/fibo/ontology/FND/OwnershipAndControl/Ownership/">
 	<!ENTITY fibo-fnd-pas-psch "https://spec.edmcouncil.org/fibo/ontology/FND/ProductsAndServices/PaymentsAndSchedules/">
 	<!ENTITY fibo-fnd-pty-rl "https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Roles/">
+	<!ENTITY fibo-fnd-qt-qtu "https://spec.edmcouncil.org/fibo/ontology/FND/Quantities/QuantitiesAndUnits/">
 	<!ENTITY fibo-fnd-rel-rel "https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/">
 	<!ENTITY fibo-fnd-utl-alx "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Analytics/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
+	<!ENTITY fibo-ind-ir-ir "https://spec.edmcouncil.org/fibo/ontology/IND/InterestRates/InterestRates/">
 	<!ENTITY fibo-sec-dbt-dbti "https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtInstruments/">
 	<!ENTITY fibo-sec-eq-eq "https://spec.edmcouncil.org/fibo/ontology/SEC/Equities/EquityInstruments/">
 	<!ENTITY fibo-sec-sec-iss "https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesIssuance/">
@@ -59,9 +61,11 @@
 	xmlns:fibo-fnd-oac-own="https://spec.edmcouncil.org/fibo/ontology/FND/OwnershipAndControl/Ownership/"
 	xmlns:fibo-fnd-pas-psch="https://spec.edmcouncil.org/fibo/ontology/FND/ProductsAndServices/PaymentsAndSchedules/"
 	xmlns:fibo-fnd-pty-rl="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Roles/"
+	xmlns:fibo-fnd-qt-qtu="https://spec.edmcouncil.org/fibo/ontology/FND/Quantities/QuantitiesAndUnits/"
 	xmlns:fibo-fnd-rel-rel="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"
 	xmlns:fibo-fnd-utl-alx="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Analytics/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
+	xmlns:fibo-ind-ir-ir="https://spec.edmcouncil.org/fibo/ontology/IND/InterestRates/InterestRates/"
 	xmlns:fibo-sec-dbt-dbti="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtInstruments/"
 	xmlns:fibo-sec-eq-eq="https://spec.edmcouncil.org/fibo/ontology/SEC/Equities/EquityInstruments/"
 	xmlns:fibo-sec-sec-iss="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesIssuance/"
@@ -114,9 +118,11 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/OwnershipAndControl/Ownership/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Roles/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/ProductsAndServices/PaymentsAndSchedules/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Quantities/QuantitiesAndUnits/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Analytics/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/InterestRates/InterestRates/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtInstruments/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/ParametricSchedules/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesIssuance/"/>
@@ -131,6 +137,25 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20200301/Equities/EquityInstruments.rdf version of this ontology was revised to incorporate additional features required to map the CFI classification scheme to equity instruments.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
+	
+	<owl:Class rdf:about="&fibo-sec-eq-eq;AdjustableRateDividend">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;PreferredDividend"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-qt-qtu;hasQuantityKind"/>
+				<owl:someValuesFrom rdf:resource="&fibo-ind-ir-ir;InterestRateBenchmark"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-eq-eq;hasAdjustableDividendRate"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-cur;PercentageMonetaryAmount"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>adjustable rate dividend</rdfs:label>
+		<skos:definition>dividend that varies with a benchmark</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>The value of the dividend from the preferred share is set by a predetermined formula to move with rates, and because of this flexibility preferred prices are often more stable then fixed-rate preferred stocks.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-eq-eq;CommonNonVotingUnrestrictedFullyPaidRegisteredShare">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;CommonShare"/>
@@ -455,6 +480,19 @@
 		<skos:definition>right to vote at extraordinary meetings, as opposed to being able to vote strictly at annual general meetings</skos:definition>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-sec-eq-eq;FixedRateDividend">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;PreferredDividend"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-eq-eq;hasFixedDividendRate"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-cur;PercentageMonetaryAmount"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>fixed rate dividend</rdfs:label>
+		<skos:definition>dividend that provides a specified annual return on the nominal value (and any premium) paid on shares</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>In other words, the return is not variable depending on whether or not the company makes a profit.  Annual dividends are calculated as a percentage of the par value, which is the price of the preferred stock at the time it was issued. Most preferred shares have fixed rate dividends.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
 	<owl:NamedIndividual rdf:about="&fibo-sec-eq-eq;FullyPaidShareStatus">
 		<rdf:type rdf:resource="&fibo-sec-eq-eq;SharePaymentStatus"/>
 		<rdfs:label>fully paid share status</rdfs:label>
@@ -637,14 +675,25 @@
 	
 	<owl:Class rdf:about="&fibo-sec-eq-eq;PreferredShareWithAdjustableRateDividend">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;PreferredShare"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-eq-eq;hasDividend"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-eq-eq;AdjustableRateDividend"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label>preferred share with adjustable rate dividend</rdfs:label>
 		<owl:disjointWith rdf:resource="&fibo-sec-eq-eq;PreferredShareWithFixedRateDividend"/>
 		<skos:definition>preferred share whose dividends will vary with a benchmark, most often a T-bill rate</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote>The value of the dividend from the preferred share is set by a predetermined formula to move with rates, and because of this flexibility preferred prices are often more stable then fixed-rate preferred stocks.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-eq-eq;PreferredShareWithFixedRateDividend">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;PreferredShare"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-eq-eq;hasDividend"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-eq-eq;FixedRateDividend"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label>preferred share with fixed rate dividend</rdfs:label>
 		<skos:definition>preferred share whose dividends are set, typically according to the terms of the prospectus</skos:definition>
 	</owl:Class>
@@ -816,6 +865,14 @@
 		<skos:definition xml:lang="en">grants or bestows ownership via contract</skos:definition>
 	</owl:ObjectProperty>
 	
+	<owl:ObjectProperty rdf:about="&fibo-sec-eq-eq;hasAdjustableDividendRate">
+		<rdfs:subPropertyOf rdf:resource="&lcc-lr;has"/>
+		<rdfs:label>has adjustable dividend rate</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-sec-eq-eq;PreferredDividend"/>
+		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;PercentageMonetaryAmount"/>
+		<skos:definition>indicates the pre-arranged variable dividend rate, typically specified in the prospectus as a formula based on a benchmark, for a preferred share</skos:definition>
+	</owl:ObjectProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-sec-eq-eq;hasDistributionMethod">
 		<rdfs:subPropertyOf rdf:resource="&lcc-lr;has"/>
 		<rdfs:label>has distribution method</rdfs:label>
@@ -876,7 +933,7 @@
 		<rdfs:label>has fixed dividend rate</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-eq-eq;PreferredDividend"/>
 		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;PercentageMonetaryAmount"/>
-		<skos:definition>indicates a pre-arranged dividend rate, typically specified in the prospectus, for a preferred share</skos:definition>
+		<skos:definition>indicates a pre-arranged fixed dividend rate, typically specified in the prospectus, for a preferred share</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-sec-eq-eq;hasFloatingShares">
