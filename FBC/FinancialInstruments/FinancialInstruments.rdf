@@ -83,13 +83,14 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/201200301/FinancialInstruments/FinancialInstruments/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/202000801/FinancialInstruments/FinancialInstruments/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20150801/FinancialInstruments/FinancialInstruments/ version of this ontology was modified to reflect issue resolutions detailed in the FIBO FBC 1.0 FTF report.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20160801/FinancialInstruments/FinancialInstruments/ version of this ontology was modified for the FIBO 2.0 RFC, including minor bug fixes.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20180801/FinancialInstruments/FinancialInstruments/ version of this ontology was modified as a part of organizational hierarchy simplification, to add maturity-related properties, and to add exempt security.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20190401/FinancialInstruments/FinancialInstruments/ version of this ontology was modified to correct the label on packaged financial product.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20190701/FinancialInstruments/FinancialInstruments/ version of this ontology was modified to eliminate deprecated elements.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20190901/FinancialInstruments/FinancialInstruments/ version of this ontology was modified to change the restriction on financial instrument identifier from some values to min 0, to allow for cases when an instrument identifier identifies a listing, eliminate duplication of concepts in LCC, and simplify addresses.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20200301/FinancialInstruments/FinancialInstruments/ version of this ontology was modified to move redemption provision from debt to financial instruments, given that it is a broader concept needed for equities.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -307,6 +308,14 @@
 		<fibo-fnd-utl-av:explanatoryNote>Certain properties of the instruments, such as their term, interest rate, eligibility of the client, etc., may be set as a part of the product specification.  Some of these are intrinsic but variable properties of the instrument, for example the exact interest rate, whereas others are extrinsic, such as client eligibility.  Products have prices, which may build in various fees, that are components of the cost of carry on a trader&apos;s books.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-fbc-fi-fi;RedemptionProvision">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractualCommitment"/>
+		<rdfs:label>redemption provision</rdfs:label>
+		<skos:definition>contract provision enabling the issuer (writer) to regain possession through repayment of some stipulated price</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>Barron&apos;s Dictionary of Business and Econonmics Terms, Fifth Edition, 2012</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:explanatoryNote>In general, redemption is synonymous with &apos;buy back&apos; or &apos;cash in&apos;, depending on the kind of instrument. Redemption provisions are commonly applicable to the process of annulling a defeasible title, such as for a mortgage or tax sale, by paying the debt or fulfilling an obligation.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-fbc-fi-fi;SecuritiesTransaction">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;Trade"/>
 		<rdfs:subClassOf>
@@ -381,6 +390,13 @@
 		<rdfs:range rdf:resource="&fibo-fnd-plc-adr;ConventionalStreetAddress"/>
 		<skos:definition>relates an organization, specifically the issuer of a financial instrument, to its principal executive address, as required for issuance of that instrument</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote>Note that in most cases, the principal executive office address is also the headquarters address for a company.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fbc-fi-fi;hasRedemptionProvision">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-agr-ctr;hasContractualElement"/>
+		<rdfs:label>has redemption terms</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fbc-fi-fi;RedemptionProvision"/>
+		<skos:definition>indicates the specific terms related to redemption as specified in the instrument or a related contract document</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-fi-fi;hasScheduledMaturityDate">
