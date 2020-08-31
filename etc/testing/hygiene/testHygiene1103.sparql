@@ -1,0 +1,16 @@
+prefix owl:   <http://www.w3.org/2002/07/owl#> 
+
+##
+# banner Equivalent classes may indicate polysemy spread accross multiple classes
+
+SELECT DISTINCT ?error
+WHERE {
+  FILTER (ISIRI(?class1))
+  FILTER (REGEX(str(?class1), "edmcouncil"))
+  FILTER NOT EXISTS {?class1 owl:deprecated "true"^^xsd:boolean}
+  FILTER (ISIRI (?class2))
+  FILTER (REGEX(str(?class2), "edmcouncil"))
+  FILTER NOT EXISTS {?class2 owl:deprecated "true"^^xsd:boolean}
+  ?class1 owl:equivalentClass ?class2 .
+  BIND (concat ("WARN: Class ", str(?class1), " is modeled as equivalent to ", str(?class2), " - this may indicate polysemy management that is not complient with FIBO.") AS ?error)
+}
