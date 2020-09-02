@@ -83,12 +83,12 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/EconomicIndicators/EconomicIndicators/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/InterestRates/InterestRates/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesIssuance/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20200701/Debt/DebtInstruments/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20200801/Debt/DebtInstruments/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20180801/Debt/DebtInstruments.rdf version of this ontology was modified to reflect use of actualExpression as an annotation rather than datatype property, to deprecate maturity-related properties which have been moved to financial instruments more generally, and to simplify restrictions on tradable debt instrument.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20190501/Debt/DebtInstruments.rdf version of this ontology was modified to eliminate deprecated elements.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20190501/Debt/DebtInstruments.rdf version of this ontology was modified to support integration of the bonds ontology.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20190901/Debt/DebtInstruments.rdf version of this ontology was modified to correct the declaration of the property &apos;has estate or death put feature&apos; to remove an erroneous subproperty relationship and integrate the instrument pricing ontology.</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20200401/Debt/DebtInstruments.rdf version of this ontology was modified to reflect a change to make redemption provision a child of contractual commitment, as such provisions apply to preferred shares and other instruments in addition to debt, and eliminate non-tradable and tradable debt instrument redemption provisions, which are synonymous, and adjust the hierarchy for call feature, notification provision, and put feature accordingly.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20200401/Debt/DebtInstruments.rdf version of this ontology was modified to reflect a change to make redemption provision a child of contractual commitment and move it to financial instruments, as such provisions apply to preferred shares and other instruments in addition to debt, and eliminate non-tradable and tradable debt instrument redemption provisions, which are synonymous, and adjust the hierarchy for call feature, notification provision, and put feature accordingly.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -116,6 +116,12 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;hasRedemptionProvision"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-fi;RedemptionProvision"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;hasTimeToMaturity"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;ExplicitDuration"/>
 			</owl:Restriction>
@@ -124,12 +130,6 @@
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbti;hasInterestPaymentTerms"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fbc-dae-dbt;InterestPaymentTerms"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbti;hasRedemptionProvision"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-dae-dbt;RedemptionProvision"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -166,7 +166,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-dbti;CallFeature">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;RedemptionProvision"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;RedemptionProvision"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbti;hasNotificationProvision"/>
@@ -337,8 +337,8 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;MutualContractualAgreement"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbti;hasRedemptionProvision"/>
-				<owl:onClass rdf:resource="&fibo-fbc-dae-dbt;RedemptionProvision"/>
+				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;hasRedemptionProvision"/>
+				<owl:onClass rdf:resource="&fibo-fbc-fi-fi;RedemptionProvision"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -363,7 +363,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-dbti;NotificationProvision">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;RedemptionProvision"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;RedemptionProvision"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-dt-fd;hasDatePeriod"/>
@@ -418,7 +418,7 @@
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-dbti;PutFeature">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;DebtTerms"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;RedemptionProvision"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;RedemptionProvision"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbti;hasNotificationProvision"/>
@@ -562,7 +562,7 @@
 	
 	<owl:DatatypeProperty rdf:about="&fibo-sec-dbt-dbti;allowsPaymentInKind">
 		<rdfs:label>allows payment in kind</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fbc-dae-dbt;RedemptionProvision"/>
+		<rdfs:domain rdf:resource="&fibo-fbc-fi-fi;RedemptionProvision"/>
 		<rdfs:range rdf:resource="&xsd;boolean"/>
 		<skos:definition>indicates whether the principal may be repaid in kind (i.e., replaced with another instrument) rather than in cash</skos:definition>
 	</owl:DatatypeProperty>
@@ -645,7 +645,7 @@
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-dbti;hasNotificationProvision">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-agr-ctr;hasContractualElement"/>
 		<rdfs:label>has notification provision</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fbc-dae-dbt;RedemptionProvision"/>
+		<rdfs:domain rdf:resource="&fibo-fbc-fi-fi;RedemptionProvision"/>
 		<rdfs:range rdf:resource="&fibo-sec-dbt-dbti;NotificationProvision"/>
 		<skos:definition>relates the redemption provision of a debt instrument to a notification provision (e.g., call or put notification)</skos:definition>
 	</owl:ObjectProperty>
@@ -680,13 +680,6 @@
 		</rdfs:domain>
 		<rdfs:range rdf:resource="&fibo-sec-dbt-dbti;PutFeature"/>
 		<skos:definition>indicates the specific terms related to any inherent put feature as specified in the offering/instrument</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-dbti;hasRedemptionProvision">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-agr-ctr;hasContractualElement"/>
-		<rdfs:label>has redemption terms</rdfs:label>
-		<rdfs:range rdf:resource="&fibo-fbc-dae-dbt;RedemptionProvision"/>
-		<skos:definition>indicates the specific terms related to redemption as specified in the instrument or a related contract document</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-dbti;hasRelativePriceAtIssue">
@@ -758,14 +751,14 @@
 	
 	<owl:DatatypeProperty rdf:about="&fibo-sec-dbt-dbti;isExtendableByHolder">
 		<rdfs:label>is extendable by holder</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fbc-dae-dbt;RedemptionProvision"/>
+		<rdfs:domain rdf:resource="&fibo-fbc-fi-fi;RedemptionProvision"/>
 		<rdfs:range rdf:resource="&xsd;boolean"/>
 		<skos:definition>indicates whether the expiration date or maturity date can be extended by the holder</skos:definition>
 	</owl:DatatypeProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-sec-dbt-dbti;isExtendableByIssuer">
 		<rdfs:label>is extendable by issuer</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fbc-dae-dbt;RedemptionProvision"/>
+		<rdfs:domain rdf:resource="&fibo-fbc-fi-fi;RedemptionProvision"/>
 		<rdfs:range rdf:resource="&xsd;boolean"/>
 		<skos:definition>indicates whether the issuer has the option to extend the debt rather than refinancing</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote>If not, the issuer may only refinance the debt by calling the issue and creating a new issue.</fibo-fnd-utl-av:explanatoryNote>
