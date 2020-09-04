@@ -274,12 +274,12 @@ Because we believe that it is important to ensure at least some minimal level of
 1. **Labels and Definitions** - Every Class and Property defined in FIBO must have an rdfs:label and a skos:definition. See [testHygiene0004.sparql](https://github.com/edmcouncil/fibo/blob/master/etc/testing/hygiene/testHygiene0004.sparql)
 1. **Ontology Metadata** - Every Ontology defined in FIBO must have a rdfs:label, sm:copyright, dct:license, dct:abstract. See [testHygiene0005.sparql](https://github.com/edmcouncil/fibo/blob/master/etc/testing/hygiene/testHygiene0005.sparql)
 1. **Special Characters** - The set of characters allowed in literals is limited to the alphanumeric characters, punctuation marks, and diacritic characters used in the languages FIBO uses. See [testHygiene0114.sparql](https://github.com/edmcouncil/fibo/blob/master/etc/testing/hygiene/testHygiene0114.sparql)
-1. **Reference to owl:Thing** - We should not make explicit references to owl:Thing as these are obsolete. See [testHygiene0268.sparql](https://github.com/edmcouncil/fibo/blob/master/etc/testing/hygiene/testHygiene0268.sparql)
 1. **Polysemous elements** - We should avoid using polysemous names, in particular no label can name more than one owl:Class or rdf:Property. See [testHygiene1067.sparql](https://github.com/edmcouncil/fibo/blob/master/etc/testing/hygiene/testHygiene1067.sparql)
 1. **Circular Definitions** - No Fibo definition should be circular, i.e., its definiens cannot contain any resource defined by means of its definiendum. See [testHygiene1068.sparql](https://github.com/edmcouncil/fibo/blob/master/etc/testing/hygiene/testHygiene1068.sparql)
 1. **Object Property Inverses** - No property may have more than one inverse. See [testHygiene1078.sparql](https://github.com/edmcouncil/fibo/blob/master/etc/testing/hygiene/testHygiene1078.sparql)
 1. **Use of rdfs:comment** - rdfs:comment shouldn't be used for FIBO annotations. See [testHygiene1079.sparql](https://github.com/edmcouncil/fibo/blob/master/etc/testing/hygiene/testHygiene1079.sparql)
-1. **Synonyms as classes** - Use of owl:equivalenTo may indicate that different synonyms are modeled as separate classes, which should be avoided. See [testHygiene1079.sparql](https://github.com/edmcouncil/fibo/blob/master/etc/testing/hygiene/testHygiene1079.sparql)
+1. **Reference to owl:Thing** - We should not make explicit references to owl:Thing as these are obsolete. See [testHygiene0268.sparql](https://github.com/edmcouncil/fibo/blob/master/etc/testing/hygiene/testHygiene0268.sparql)
+1. **Synonyms as classes** - Use of owl:equivalenTo may indicate that different synonyms are modeled as separate classes, which should be avoided. See [testHygiene1103.sparql](https://github.com/edmcouncil/fibo/blob/master/etc/testing/hygiene/testHygiene1103.sparql)
 
           
 ## Candidate Tests for Quality Compliance
