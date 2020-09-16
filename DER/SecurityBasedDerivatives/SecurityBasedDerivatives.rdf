@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE rdf:RDF [
 	<!ENTITY dct "http://purl.org/dc/terms/">
-	<!ENTITY fibo-der-der-fwd "https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Forwards/">
 	<!ENTITY fibo-der-drc-bsc "https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/DerivativesBasics/">
 	<!ENTITY fibo-der-drc-swp "https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Swaps/">
 	<!ENTITY fibo-der-sbd-sbd "https://spec.edmcouncil.org/fibo/ontology/DER/SecurityBasedDerivatives/SecurityBasedDerivatives/">
@@ -24,7 +23,6 @@
 ]>
 <rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/ontology/DER/SecurityBasedDerivatives/SecurityBasedDerivatives/"
 	xmlns:dct="http://purl.org/dc/terms/"
-	xmlns:fibo-der-der-fwd="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Forwards/"
 	xmlns:fibo-der-drc-bsc="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/DerivativesBasics/"
 	xmlns:fibo-der-drc-swp="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Swaps/"
 	xmlns:fibo-der-sbd-sbd="https://spec.edmcouncil.org/fibo/ontology/DER/SecurityBasedDerivatives/SecurityBasedDerivatives/"
@@ -50,7 +48,6 @@
 		<dct:abstract>Common concepts for derivatives based on securities as their underliers, including those based on indices or baskets of these assets.</dct:abstract>
 		<sm:fileAbbreviation>fibo-der-sbd-sbd</sm:fileAbbreviation>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/DerivativesBasics/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Forwards/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Swaps/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/"/>
@@ -173,53 +170,6 @@
 		<skos:definition>security underlier that is an individual debt instrument, a credit index, or a custom basket of debt assets</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-sbd-sbd;EquitiesMixedBasket">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-bsk;MixedBasket"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-arr-arr;hasConstituent"/>
-				<owl:someValuesFrom>
-					<owl:Class>
-						<owl:unionOf rdf:parseType="Collection">
-							<owl:Class>
-								<owl:unionOf rdf:parseType="Collection">
-									<rdf:Description rdf:about="&fibo-sec-sec-bsk;BasketOfIndicesConstituent">
-									</rdf:Description>
-									<owl:Restriction>
-										<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;comprises"/>
-										<owl:allValuesFrom rdf:resource="&fibo-ind-mkt-bas;EquityIndex"/>
-									</owl:Restriction>
-								</owl:unionOf>
-							</owl:Class>
-							<rdf:Description rdf:about="&fibo-ind-mkt-bas;EquitiesBasketConstituent">
-							</rdf:Description>
-						</owl:unionOf>
-					</owl:Class>
-				</owl:someValuesFrom>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">equities mixed basket</rdfs:label>
-		<skos:definition xml:lang="en">basket that consists of a combination of shares and equity indices</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-sbd-sbd;EquityBasket">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;Basket"/>
-		<rdfs:label xml:lang="en">equity basket</rdfs:label>
-		<owl:equivalentClass>
-			<owl:Class>
-				<owl:unionOf rdf:parseType="Collection">
-					<rdf:Description rdf:about="&fibo-der-sbd-sbd;BasketOfEquityIndices">
-					</rdf:Description>
-					<rdf:Description rdf:about="&fibo-der-sbd-sbd;EquitiesMixedBasket">
-					</rdf:Description>
-					<rdf:Description rdf:about="&fibo-ind-mkt-bas;BasketOfEquities">
-					</rdf:Description>
-				</owl:unionOf>
-			</owl:Class>
-		</owl:equivalentClass>
-		<skos:definition xml:lang="en">basket that consists of any combination of equity consituents</skos:definition>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-der-sbd-sbd;EquityDerivative">
 		<rdfs:subClassOf rdf:resource="&fibo-der-sbd-sbd;SecurityBasedDerivative"/>
 		<rdfs:subClassOf>
@@ -247,8 +197,6 @@
 							<rdf:Description rdf:about="&fibo-der-sbd-sbd;BasketOfEquityIndices">
 							</rdf:Description>
 							<rdf:Description rdf:about="&fibo-ind-mkt-bas;EquityIndex">
-							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-der-sbd-sbd;EquityBasket">
 							</rdf:Description>
 						</owl:unionOf>
 					</owl:Class>
