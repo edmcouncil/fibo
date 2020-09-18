@@ -38,7 +38,7 @@
 	<owl:Ontology rdf:about="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/CreditEvents/">
 		<rdfs:label xml:lang="en">Credit Events Ontology</rdfs:label>
 		<dct:abstract>This ontology defines a range of credit events, that is events in which some payment or payments are not made. These include credit events relating to a specific debt obligation and events relating to the business entity as a whole. 
-		Note: the events defined herein are primarily related to business rather than consumer events, and even those are specified fairly generally.  Many credit events are jurisdiction-specific, such as Chapter 11 restructuring and Chapter 7 bankruptcy in the United States.  This ontology is designed to facilitate jurisdiction and instrument-specific kinds extensions as needed for specific use cases.</dct:abstract>
+		Note: the events defined herein are primarily business rather than consumer oriented, and are specified fairly generally.  Many credit events are jurisdiction-specific, such as Chapter 11 restructuring and Chapter 7 bankruptcy in the United States.  This ontology is designed to facilitate jurisdiction and instrument-specific extensions as needed.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
 		<sm:contentLanguage rdf:datatype="&xsd;anyURI">http://www.w3.org/standards/techs/owl#w3c_all</sm:contentLanguage>
 		<sm:copyright>Copyright (c) 2018-2020 EDM Council, Inc.</sm:copyright>
@@ -62,25 +62,20 @@
 	<owl:Class rdf:about="&fibo-fbc-dae-cre;Bankruptcy">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-cre;EntitySpecificCreditEvent"/>
 		<rdfs:label xml:lang="en">bankruptcy</rdfs:label>
-		<skos:definition xml:lang="en">credit event involving a change in state or condition in which a party becomes insolvent or unable to meet debt obligations</skos:definition>
+		<skos:definition xml:lang="en">credit event involving a change in state or condition in which a party becomes insolvent</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom>Barron&apos;s Dictionary of Banking Terms, Sixth Edition, 2012</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://thelawdictionary.org/bankruptcy/</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-fbc-dae-cre;BreachOfCovenant">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-cre;CreditEvent"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;involves"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-agr-ctr;Contract"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">breach of covenant</rdfs:label>
-		<skos:definition xml:lang="en">credit event representing a violation of an express, or implied, condition of a contract to do or not to do something that has a negative financial impact</skos:definition>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-fbc-dae-cre;CreditEvent">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-oc;Occurrence"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-dt-oc;exemplifies"/>
+				<owl:onClass rdf:resource="&fibo-fnd-agr-ctr;BreachOfCovenant"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">credit event</rdfs:label>
 		<skos:definition xml:lang="en">event signifying a sudden change in credit standing, such as bankruptcy or a violation of a bond indenture or loan agreement, that raises doubts about the party&apos;s ability to meet current or future obligations</skos:definition>
 	</owl:Class>
@@ -88,32 +83,32 @@
 	<owl:Class rdf:about="&fibo-fbc-dae-cre;DefaultEvent">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-cre;ObligationSpecificCreditEvent"/>
 		<rdfs:label xml:lang="en">default event</rdfs:label>
-		<skos:definition xml:lang="en">credit event representing a failure to meet a contractual obligation, such as, but not limited to, failure to repay a debt including interest or principal on a loan or security</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">A default can occur when a borrower is unable to make timely payments, misses payments, or avoids or stops making payments, typically with respect to a single transaction. A default has adverse effects on the borrower&apos;s credit and ability to borrow in the future.</fibo-fnd-utl-av:explanatoryNote>
+		<skos:definition xml:lang="en">credit event representing a failure to meet a contractual obligation, such as failure to repay a debt including interest or principal on a loan or security</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">A default can occur when a borrower is unable to make timely payments, misses payments, or avoids or stops making payments, typically with respect to a single transaction. A default has adverse effects on the borrower&apos;s credit and ability to borrow in the future, and allows the creditor to demand immediate repayment of the obligation in full.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-dae-cre;DistressedRatingsDowngrade">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-cre;Downgrade"/>
 		<rdfs:label xml:lang="en">distressed ratings downgrade</rdfs:label>
-		<skos:definition xml:lang="en">credit event triggered when the credit rating of a party or reference obligation is downgraded to a distressed rating level or the rating is withdrawn by one or more ratings agency</skos:definition>
+		<skos:definition xml:lang="en">credit event triggered when the credit rating of an obligation is downgraded to a distressed debt level</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-dae-cre;Downgrade">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-cre;ObligationSpecificCreditEvent"/>
 		<rdfs:label xml:lang="en">downgrade</rdfs:label>
-		<skos:definition xml:lang="en">credit event triggered when the credit rating of a party or reference obligation is lowered</skos:definition>
+		<skos:definition xml:lang="en">credit event triggered when the credit rating of a party or obligation is lowered</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-dae-cre;EntitySpecificCreditEvent">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-cre;CreditEvent"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;involves"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
 				<owl:someValuesFrom rdf:resource="&fibo-be-le-lp;LegalPerson"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">entity-specific credit event</rdfs:label>
-		<skos:definition xml:lang="en">credit event that applies to a given legal person (legally-competent natural person or organization)</skos:definition>
+		<skos:definition xml:lang="en">credit event that applies to a given legal person</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-dae-cre;FailureToPay">
@@ -195,10 +190,10 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-dae-cre;ObligationSpecificCreditEvent">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-cre;BreachOfCovenant"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-cre;CreditEvent"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;involves"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fbc-dae-dbt;CreditAgreement"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -209,7 +204,7 @@
 	<owl:Class rdf:about="&fibo-fbc-dae-cre;Repudiation">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-cre;ObligationSpecificCreditEvent"/>
 		<rdfs:label xml:lang="en">repudiation</rdfs:label>
-		<skos:definition xml:lang="en">credit event involving the dispute of the validity of a contract and refusal to honor its terms</skos:definition>
+		<skos:definition xml:lang="en">credit event involving the refusal to honor the terms of a contract</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-dae-cre;SoftCreditEvent">
@@ -229,39 +224,24 @@
 	<owl:ObjectProperty rdf:about="&fibo-fbc-dae-cre;hasDefaultThresholdAmount">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasMonetaryAmount"/>
 		<rdfs:label xml:lang="en">has default threshold amount</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fbc-dae-cre;EntitySpecificCreditEvent"/>
+		<rdfs:domain rdf:resource="&fibo-fbc-dae-dbt;CreditAgreement"/>
 		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
-		<skos:definition xml:lang="en">specifies an amount of money that triggers a repudiation/moratorium or restructuring event</skos:definition>
+		<skos:definition xml:lang="en">specifies an amount of money that triggers a failure to pay, repudiation/moratorium or restructuring event</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-dae-cre;hasGracePeriod">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDatePeriod"/>
 		<rdfs:label xml:lang="en">has grace period</rdfs:label>
 		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;DatePeriod"/>
-		<skos:definition xml:lang="en">window following any payment due date during which a party must fulfil its obligations before a failure to pay credit event occurs. Further notes: ISDA 2003 Term: Grace Period. Note this may be a period denominated in business days or calendar days - this is a qualifying fact about the referenced term &quot;Date Period&quot;. FpML full definition: &apos;The number of calendar or business days after any due date that the reference entity has to fulfil its obligations before a failure to pay credit event is deemed to have occurred. ISDA 2003 Term: Grace Period.&apos;</skos:definition>
+		<skos:definition xml:lang="en">window following any payment due date during which a party must fulfill its obligations before a failure to pay credit event occurs</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Note that this may be a period denominated in business days or calendar days.</fibo-fnd-utl-av:explanatoryNote>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-fbc-dae-cre;hasPaymentThreshold">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasMonetaryAmount"/>
-		<rdfs:label xml:lang="en">has payment threshold</rdfs:label>
-		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
-		<skos:definition xml:lang="en">indicates a threshold with respect to triggering the failure to pay event</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Market standard is USD 1,000,000 (JPY 100,000,000 for Japanese Yen trades) or its equivalent in the relevant obligation currency. This is applied on an aggregate basis across all Obligations of the Reference Entity. Intended to prevent technical/operational errors from triggering credit events.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:ObjectProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-fbc-dae-cre;involvesMultipleEvents">
 		<rdfs:label xml:lang="en">involves multiple events</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fbc-dae-cre;ObligationRestructuring"/>
 		<rdfs:range rdf:resource="&xsd;boolean"/>
-		<skos:definition xml:lang="en">indicates that the restructuring actually involves more than one credit event</skos:definition>
-	</owl:DatatypeProperty>
-	
-	<owl:DatatypeProperty rdf:about="&fibo-fbc-dae-cre;involvesMultipleHolders">
-		<rdfs:label xml:lang="en">involves multiple holders</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fbc-dae-cre;ObligationRestructuring"/>
-		<rdfs:range rdf:resource="&xsd;boolean"/>
-		<skos:definition xml:lang="en">indicates that the obligation is held by more than three holders that are not affiliates of each other and where at least two thirds of the holders must agree to the event that constitutes the restructuring credit event</skos:definition>
+		<skos:definition xml:lang="en">indicates that the restructuring spans more than one credit event</skos:definition>
 	</owl:DatatypeProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-fbc-dae-cre;isGracePeriodExtendable">
