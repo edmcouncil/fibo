@@ -114,11 +114,18 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20190701/ProductsAndServices/ClientsAndAccounts.rdf version of this ontology was revised to eliminate deprecated elements.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20190901/ProductsAndServices/ClientsAndAccounts.rdf version of this ontology was revised to eliminate the disjointness between a deposit account and investment account to allow for certain portfolio management accounts that have characteristics of both.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20191201/ProductsAndServices/ClientsAndAccounts.rdf version of this ontology was revised to add definitions for balance, fee, general ledger, ledger account, income and related properties, revise definitions to be ISO 704 compliant, and eliminate duplication with concepts in LCC.</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20200201/ProductsAndServices/ClientsAndAccounts.rdf version of this ontology was revised to add definitions for transaction records, which are needed to represent statements of various sorts.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20200201/ProductsAndServices/ClientsAndAccounts.rdf version of this ontology was revised to add definitions for transaction records, which are needed to represent statements of various sorts, to add the concept of an account statement, and to clean up and augment definitions related to accounts, account holders, etc. as required for the purpose of representing credit card accounts.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-caa;Account">
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-pas-caa;hasAccountHolder"/>
+				<owl:onClass rdf:resource="&fibo-fbc-pas-caa;AccountHolder"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&lcc-lr;isIdentifiedBy"/>
@@ -128,22 +135,22 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;comprises"/>
-				<owl:onClass rdf:resource="&fibo-fnd-arr-doc;Record"/>
+				<owl:onProperty rdf:resource="&fibo-fbc-pas-caa;hasCloseDate"/>
+				<owl:onClass rdf:resource="&fibo-fbc-pas-caa;CloseDate"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-pas-caa;hasAccountCloseDate"/>
-				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-arr-doc;hasRecord"/>
+				<owl:onClass rdf:resource="&fibo-fbc-pas-caa;TransactionRecord"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-pas-caa;hasAccountOpenDate"/>
-				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
+				<owl:onProperty rdf:resource="&fibo-fbc-pas-caa;hasOpenDate"/>
+				<owl:onClass rdf:resource="&fibo-fbc-pas-caa;OpenDate"/>
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -161,11 +168,17 @@
 		</rdfs:subClassOf>
 		<rdfs:label>account</rdfs:label>
 		<skos:definition>container for records associated with a business arrangement for regular dealings or services (such as personal or professional services, banking)</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote>In general, an account is associated with a contractual relationship between a buyer and seller under which payment may be made at a later time.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:explanatoryNote>In general, an account is associated with a contractual relationship between a buyer and seller under which payment may be made at a later time. General ledger accounts are an exception to this, however, and typically do not have account holders, including internal account holders. They may, on the other hand, have responsible parties.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-caa;AccountHolder">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-oac-own;Owner"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-pas-caa;holdsAccount"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-caa;Account"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
@@ -189,7 +202,9 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>account holder</rdfs:label>
-		<skos:definition>party holding an account</skos:definition>
+		<skos:definition>party that owns the account</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>An account holder is named on the account and is authorized to conduct transactions associated with the account. Authorization is typically evidenced by signatures maintained on file by the account provider.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:explanatoryNote>Note that this concept of account holder applies to internal accounts that are non-general ledger accounts also have account holders, such as payroll accounts, internal checking accounts associated with cashier&apos;s checks, and so forth.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-caa;AccountIdentifier">
@@ -249,6 +264,48 @@
 		<fibo-fnd-utl-av:explanatoryNote>Customers of financial service providers frequently hold multiple accounts - brokerage accounts, checking and savings accounts, trust accounts, and so forth - which may have specific terms and conditions associated with them.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-fbc-pas-caa;AccountStatement">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-doc;LegalDocument"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-doc;Record"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-pas-caa;hasEndingBalance"/>
+				<owl:onClass rdf:resource="&fibo-fbc-pas-caa;Balance"/>
+				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-pas-caa;hasStartingBalance"/>
+				<owl:onClass rdf:resource="&fibo-fbc-pas-caa;Balance"/>
+				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-arr-doc;hasReportingPeriod"/>
+				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;ExplicitDatePeriod"/>
+				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-pas-caa;appliesToAccount"/>
+				<owl:onClass rdf:resource="&fibo-fbc-pas-caa;Account"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-pas-caa;recordsTransaction"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-caa;IndividualTransaction"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>account statement</rdfs:label>
+		<skos:definition>periodic summary of account activity for a given period of time</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Common kinds of account statements include checking account statements, usually provided monthly, and brokerage account statements, which are provided monthly or quarterly, depending on the terms of the account agreement. Monthly credit card bills are also considered account statements.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-fbc-pas-caa;AccountingTransaction">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-pas;TransactionEvent"/>
 		<rdfs:label>accounting transaction</rdfs:label>
@@ -262,35 +319,17 @@
 		<fibo-fnd-utl-av:explanatoryNote>The balance is the net amount after factoring in all debits and credits, including service charges and fees.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-fbc-pas-caa;BankAccount">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-caa;Account"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isProvidedBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-fct-fse;Bank"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&lcc-lr;isIdentifiedBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-caa;BankAccountIdentifier"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>bank account</rdfs:label>
-		<skos:definition>account held or provided by, as a service, a bank</skos:definition>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-fbc-pas-caa;BankAccountIdentifier">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-caa;AccountIdentifier"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&lcc-lr;identifies"/>
-				<owl:onClass rdf:resource="&fibo-fbc-pas-caa;BankAccount"/>
+				<owl:onClass rdf:resource="&fibo-fbc-pas-caa;DemandDepositAccount"/>
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>bank account identifier</rdfs:label>
-		<skos:definition>identifier that identifies a bank account</skos:definition>
+		<skos:definition>identifier that identifies a demand deposit account provided by a bank</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom>ISO 13616-1:2007 Financial services - International bank account number (IBAN)</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:synonym>bank account number</fibo-fnd-utl-av:synonym>
 	</owl:Class>
@@ -386,38 +425,21 @@
 		<fibo-fnd-utl-av:explanatoryNote>When the term is over it can be withdrawn or it can be held for another term. The longer the term the better the yield on the money.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-fbc-pas-caa;DemandDepositAccount">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-caa;TransactionDepositAccount"/>
-		<rdfs:label>demand deposit account</rdfs:label>
-		<skos:definition>non-interest-bearing deposit account in which deposits are payable immediately on demand, or that are issued with an original maturity or required notice period of less than seven days, or that represent funds for which the depository institution does not reserve the right to require at least seven days&apos; written notice of an intended withdrawal</skos:definition>
-		<fibo-fnd-utl-av:abbreviation>DDA</fibo-fnd-utl-av:abbreviation>
-		<fibo-fnd-utl-av:adaptedFrom>https://www.fdic.gov/regulations/resources/call/crinst/2010-09/910gloss_093010.pdf</fibo-fnd-utl-av:adaptedFrom>
-		<fibo-fnd-utl-av:explanatoryNote>Demand deposits include any matured time deposits without automatic renewal provisions, unless the deposit agreement provides for the funds to be transferred at maturity to another type of account. Demand deposits do not include: (i) money market deposit accounts (MMDAs) or (ii) NOW accounts.</fibo-fnd-utl-av:explanatoryNote>
+	<owl:Class rdf:about="&fibo-fbc-pas-caa;CloseDate">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
+		<rdfs:label>close date</rdfs:label>
+		<skos:definition>date on which something was closed</skos:definition>
+		<skos:example>account close date, transaction record close date, and so forth</skos:example>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-fbc-pas-caa;DepositAccount">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-fse;BankingProduct"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-caa;InvestmentOrDepositAccount"/>
+	<owl:Class rdf:about="&fibo-fbc-pas-caa;CustomerAccount">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-caa;Account"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isProvidedBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-fct-fse;DepositoryInstitution"/>
+				<owl:onProperty rdf:resource="&fibo-fbc-pas-caa;hasAccountHolder"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-caa;CustomerAccountHolder"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label>deposit account</rdfs:label>
-		<skos:definition>account that provides a record of money placed with a depository institution for safekeeping and management</skos:definition>
-		<skos:example>Deposit accounts include savings accounts, money market accounts, and transactional accounts, such as demand deposit accounts, among others.</skos:example>
-		<fibo-fnd-utl-av:explanatoryNote>The account holder has the right to withdraw deposited funds, as set forth in the terms and conditions governing the account agreement. Deposit accounts may be insured up to a certain amount, depending on the jurisdiction.</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-fbc-pas-caa;Fee">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
-		<rdfs:label>fee</rdfs:label>
-		<skos:definition>charge for services performed</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-fbc-pas-caa;FinancialServiceAccount">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-caa;Account"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-pas-caa;realizes"/>
@@ -429,27 +451,6 @@
 							<rdf:Description rdf:about="&fibo-fbc-pas-fpas;FinancialService">
 							</rdf:Description>
 						</owl:unionOf>
-					</owl:Class>
-				</owl:someValuesFrom>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-pty-pty;hasPartyInRole"/>
-				<owl:someValuesFrom>
-					<owl:Class>
-						<owl:intersectionOf rdf:parseType="Collection">
-							<rdf:Description rdf:about="&fibo-fbc-pas-caa;AccountHolder">
-							</rdf:Description>
-							<owl:Class>
-								<owl:unionOf rdf:parseType="Collection">
-									<rdf:Description rdf:about="&fibo-fnd-pas-pas;Client">
-									</rdf:Description>
-									<rdf:Description rdf:about="&fibo-fnd-pas-pas;Customer">
-									</rdf:Description>
-								</owl:unionOf>
-							</owl:Class>
-						</owl:intersectionOf>
 					</owl:Class>
 				</owl:someValuesFrom>
 			</owl:Restriction>
@@ -481,8 +482,55 @@
 				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-caa;AccountIdentifier"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label>financial service account</rdfs:label>
-		<skos:definition>account provided by a financial service provider associated with a specific financial product or service</skos:definition>
+		<rdfs:label>customer account</rdfs:label>
+		<skos:definition>account provided by a financial service provider to a customer or client that is associated with a specific financial product or service</skos:definition>
+		<fibo-fnd-utl-av:synonym>financial service account</fibo-fnd-utl-av:synonym>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-pas-caa;CustomerAccountHolder">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-caa;AccountHolder"/>
+		<rdfs:subClassOf>
+			<owl:Class>
+				<owl:unionOf rdf:parseType="Collection">
+					<rdf:Description rdf:about="&fibo-fnd-pas-pas;Client">
+					</rdf:Description>
+					<rdf:Description rdf:about="&fibo-fnd-pas-pas;Customer">
+					</rdf:Description>
+				</owl:unionOf>
+			</owl:Class>
+		</rdfs:subClassOf>
+		<rdfs:label>customer account holder</rdfs:label>
+		<skos:definition>party that is a client or customer and that owns an account</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-pas-caa;DemandDepositAccount">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-caa;TransactionDepositAccount"/>
+		<rdfs:label>demand deposit account</rdfs:label>
+		<skos:definition>non-interest-bearing deposit account in which deposits are payable immediately on demand, or that are issued with an original maturity or required notice period of less than seven days, or that represent funds for which the depository institution does not reserve the right to require at least seven days&apos; written notice of an intended withdrawal</skos:definition>
+		<fibo-fnd-utl-av:abbreviation>DDA</fibo-fnd-utl-av:abbreviation>
+		<fibo-fnd-utl-av:adaptedFrom>https://www.fdic.gov/regulations/resources/call/crinst/2010-09/910gloss_093010.pdf</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:explanatoryNote>Demand deposits include any matured time deposits without automatic renewal provisions, unless the deposit agreement provides for the funds to be transferred at maturity to another type of account. Demand deposits do not include: (i) money market deposit accounts (MMDAs) or (ii) NOW accounts.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-pas-caa;DepositAccount">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-fse;BankingProduct"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-caa;InvestmentOrDepositAccount"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isProvidedBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-fct-fse;DepositoryInstitution"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>deposit account</rdfs:label>
+		<skos:definition>account that provides a record of money placed with a depository institution for safekeeping and management</skos:definition>
+		<skos:example>Deposit accounts include savings accounts, money market accounts, and transactional accounts, such as demand deposit accounts, among others.</skos:example>
+		<fibo-fnd-utl-av:explanatoryNote>The account holder has the right to withdraw deposited funds, as set forth in the terms and conditions governing the account agreement. Deposit accounts may be insured up to a certain amount, depending on the jurisdiction.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-pas-caa;Fee">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
+		<rdfs:label>fee</rdfs:label>
+		<skos:definition>charge for services performed</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-caa;GeneralLedger">
@@ -626,10 +674,10 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-caa;InvestmentOrDepositAccount">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-caa;FinancialServiceAccount"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-caa;Account"/>
 		<rdfs:label>investment or deposit account</rdfs:label>
 		<skos:definition>account associated with a product or service that requires the account holder to provide funds for management by the account provider</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote>The account holder may or may not be entitled to consideration in exchange for providing such funds, for example, interest, depending on the type of account and the terms and conditions associated with it.  Also, there may be fees associated with management services provided by the account provider.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:explanatoryNote>The account holder may or may not be entitled to consideration in exchange for providing such funds, for example, interest, depending on the type of account and the terms and conditions associated with it.  Also, there may be fees associated with management services provided by the account provider.  Note too that this may be an internal account held on behalf of an institution or a customer account.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-caa;LedgerAccount">
@@ -639,10 +687,11 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-caa;LoanOrCreditAccount">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-caa;FinancialServiceAccount"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-caa;Account"/>
 		<rdfs:label>loan or credit account</rdfs:label>
 		<owl:disjointWith rdf:resource="&fibo-fbc-pas-caa;InvestmentOrDepositAccount"/>
 		<skos:definition>account associated with a service in which the account holder receives funds from the account provider under certain terms and conditions for repayment</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Note that this may be an internal account held on behalf of an institution or a customer account, such as a line of credit account associated with an internal line of business.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-caa;NonTransactionDepositAccount">
@@ -652,6 +701,12 @@
 		<skos:definition>any deposit account that is not explicitly considered a transaction account</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom>https://www.fdic.gov/regulations/resources/call/crinst/2010-09/910gloss_093010.pdf</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:explanatoryNote>Non-transaction accounts include: (a) savings deposits ((i) money market deposit accounts (MMDAs) and (ii) other savings deposits) and (b) time deposits ((i) time certificates of deposit and (ii) time deposits, open account).</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-pas-caa;OpenDate">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
+		<rdfs:label>open date</rdfs:label>
+		<skos:definition>date on which something was created</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-caa;PostingDate">
@@ -765,15 +820,15 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-pas-caa;hasTransactionRecordCloseDate"/>
-				<owl:onClass rdf:resource="&fibo-fbc-pas-caa;TransactionRecordCloseDate"/>
+				<owl:onProperty rdf:resource="&fibo-fbc-pas-caa;hasCloseDate"/>
+				<owl:onClass rdf:resource="&fibo-fbc-pas-caa;CloseDate"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-pas-caa;hasTransactionRecordOpenDate"/>
-				<owl:onClass rdf:resource="&fibo-fbc-pas-caa;TransactionRecordOpenDate"/>
+				<owl:onProperty rdf:resource="&fibo-fbc-pas-caa;hasOpenDate"/>
+				<owl:onClass rdf:resource="&fibo-fbc-pas-caa;OpenDate"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -806,12 +861,7 @@
 		</rdfs:subClassOf>
 		<rdfs:label>transaction record</rdfs:label>
 		<skos:definition>record of transactions associated with an account</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-fbc-pas-caa;TransactionRecordCloseDate">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
-		<rdfs:label>transaction record close date</rdfs:label>
-		<skos:definition>date on which a transaction record was closed</skos:definition>
+		<fibo-fnd-utl-av:usageNote>The date a particular transaction record is closed typically corresponds to (and may precede) the date the account is closed, though in the case of certain accounts, such as a credit card account, if a customer is issued a new account or card number due to loss, fraud, or for some other reason, it is possible that multiple transaction records would be associated with the account.  In that case, the close date might correspond to the date that a hold was placed on the original account.</fibo-fnd-utl-av:usageNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-caa;TransactionRecordIdentifier">
@@ -832,12 +882,6 @@
 		</rdfs:subClassOf>
 		<rdfs:label>transaction record identifier</rdfs:label>
 		<skos:definition>unique identifier for record of transactions</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-fbc-pas-caa;TransactionRecordOpenDate">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
-		<rdfs:label>transaction record open date</rdfs:label>
-		<skos:definition>date on which a transaction record was created</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-caa;TransactionSubcategory">
@@ -867,28 +911,44 @@
 		<skos:definition>indicates the account to which the transaction record or individual transaction applies</skos:definition>
 	</owl:ObjectProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-fbc-pas-caa;hasAccountCloseDate">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasEndDate"/>
-		<rdfs:label>has account close date</rdfs:label>
+	<owl:ObjectProperty rdf:about="&fibo-fbc-pas-caa;hasAccountHolder">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;isHeldBy"/>
+		<rdfs:label>has account holder</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fbc-pas-caa;Account"/>
-		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
-		<skos:definition>relates an account to the date that it was closed</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-fbc-pas-caa;hasAccountOpenDate">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasStartDate"/>
-		<rdfs:label>has account open date</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fbc-pas-caa;Account"/>
-		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
-		<skos:definition>relates an account to the date that it was created or opened</skos:definition>
+		<rdfs:range rdf:resource="&fibo-fbc-pas-caa;AccountHolder"/>
+		<skos:definition>relates an account to a client or customer that owns the account</skos:definition>
+		<fibo-fnd-utl-av:synonym>has account owner</fibo-fnd-utl-av:synonym>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-pas-caa;hasBalance">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasMonetaryAmount"/>
 		<rdfs:label>has balance</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fbc-pas-caa;Account"/>
 		<rdfs:range rdf:resource="&fibo-fbc-pas-caa;Balance"/>
 		<skos:definition>relates an account to the net amount of money available in that account</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fbc-pas-caa;hasCloseDate">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasEndDate"/>
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasExplicitDate"/>
+		<rdfs:label>has close date</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fbc-pas-caa;CloseDate"/>
+		<skos:definition>relates something to the date that it was closed</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fbc-pas-caa;hasEndingBalance">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fbc-pas-caa;hasBalance"/>
+		<rdfs:label>has ending balance</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fbc-pas-caa;AccountStatement"/>
+		<rdfs:range rdf:resource="&fibo-fbc-pas-caa;Balance"/>
+		<skos:definition>relates an account statement to the amount of money available in that account at the end of the statement period</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fbc-pas-caa;hasOpenDate">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasExplicitDate"/>
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasStartDate"/>
+		<rdfs:label>has open date</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fbc-pas-caa;OpenDate"/>
+		<skos:definition>relates something to the date that it was created</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-pas-caa;hasPostingDate">
@@ -898,11 +958,33 @@
 		<skos:definition>indicates the date that the transaction was posted to the account</skos:definition>
 	</owl:ObjectProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-fbc-pas-caa;hasRecord">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;comprises"/>
-		<rdfs:label>has record</rdfs:label>
-		<rdfs:range rdf:resource="&fibo-fbc-pas-caa;TransactionRecord"/>
-		<skos:definition>indicates a record associated with an account</skos:definition>
+	<owl:ObjectProperty rdf:about="&fibo-fbc-pas-caa;hasPrimaryAccountHolder">
+		<rdf:type rdf:resource="&owl;FunctionalProperty"/>
+		<rdfs:subPropertyOf rdf:resource="&fibo-fbc-pas-caa;hasAccountHolder"/>
+		<rdfs:label>has primary account holder</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fbc-pas-caa;CustomerAccount"/>
+		<rdfs:range rdf:resource="&fibo-fbc-pas-caa;AccountHolder"/>
+		<skos:definition>relates an account to a client or customer that is considered the primary owner of the account</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Note that for many financial institutions, there must be a client or customer designated as the primary owner. In cases where there is a tax identifier associated with the account, it is that of the primary owner.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:synonym>has primary account owner</fibo-fnd-utl-av:synonym>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fbc-pas-caa;hasSecondaryAccountHolder">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fbc-pas-caa;hasAccountHolder"/>
+		<rdfs:label>has secondary account holder</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fbc-pas-caa;CustomerAccount"/>
+		<rdfs:range rdf:resource="&fibo-fbc-pas-caa;AccountHolder"/>
+		<skos:definition>relates an account to a client or customer that is considered a secondary, co-owner of the account</skos:definition>
+		<fibo-fnd-utl-av:synonym>has account co-owner</fibo-fnd-utl-av:synonym>
+		<fibo-fnd-utl-av:synonym>has secondary account owner</fibo-fnd-utl-av:synonym>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fbc-pas-caa;hasStartingBalance">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fbc-pas-caa;hasBalance"/>
+		<rdfs:label>has starting balance</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fbc-pas-caa;AccountStatement"/>
+		<rdfs:range rdf:resource="&fibo-fbc-pas-caa;Balance"/>
+		<skos:definition>relates an account statement to the amount of money available in that account at the beginning of the statement period</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-pas-caa;hasTransactionDate">
@@ -919,30 +1001,20 @@
 		<skos:definition>provides a textual description of the transaction</skos:definition>
 	</owl:DatatypeProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-fbc-pas-caa;hasTransactionRecordCloseDate">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasEndDate"/>
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasExplicitDate"/>
-		<rdfs:label>has transaction record close date</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fbc-pas-caa;TransactionRecord"/>
-		<rdfs:range rdf:resource="&fibo-fbc-pas-caa;TransactionRecordCloseDate"/>
-		<skos:definition>relates a transaction record to the date on which it was closed</skos:definition>
-		<fibo-fnd-utl-av:usageNote>The date a particular transaction record is closed typically corresponds to (and may precede) the date the account is closed, though in the case of certain accounts, such as a credit card account, if a customer is issued a new account or card number due to loss, fraud, or for some other reason, it is possible that multiple transaction records would be associated with the account.  In that case, the close date might correspond to the date that a hold was placed on the original account.</fibo-fnd-utl-av:usageNote>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-fbc-pas-caa;hasTransactionRecordOpenDate">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasExplicitDate"/>
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasStartDate"/>
-		<rdfs:label>has transaction record open date</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fbc-pas-caa;TransactionRecord"/>
-		<rdfs:range rdf:resource="&fibo-fbc-pas-caa;TransactionRecordOpenDate"/>
-		<skos:definition>relates a transaction record to the date the record was created</skos:definition>
-	</owl:ObjectProperty>
-	
 	<owl:DatatypeProperty rdf:about="&fibo-fbc-pas-caa;hasTransactionRecordStatus">
 		<rdfs:label>has transaction record status</rdfs:label>
 		<rdfs:range rdf:resource="&xsd;string"/>
 		<skos:definition>indicates the status of the transaction record</skos:definition>
 	</owl:DatatypeProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fbc-pas-caa;holdsAccount">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;holds"/>
+		<rdfs:label>holds account</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fbc-pas-caa;AccountHolder"/>
+		<rdfs:range rdf:resource="&fibo-fbc-pas-caa;Account"/>
+		<owl:inverseOf rdf:resource="&fibo-fbc-pas-caa;hasAccountHolder"/>
+		<skos:definition>relates a client or customer to an account that they own</skos:definition>
+	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-pas-caa;involvesMerchant">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;involves"/>
@@ -961,6 +1033,19 @@
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
 		<rdfs:label>realizes</rdfs:label>
 		<skos:definition>makes concrete</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fbc-pas-caa;recordsTransaction">
+		<rdfs:label>records transaction</rdfs:label>
+		<owl:propertyChainAxiom rdf:parseType="Collection">
+			<rdf:Description rdf:about="&fibo-fbc-pas-caa;appliesToAccount">
+			</rdf:Description>
+			<rdf:Description rdf:about="&fibo-fnd-arr-doc;hasRecord">
+			</rdf:Description>
+			<rdf:Description rdf:about="&fibo-fbc-fct-ra;hasRegistryEntry">
+			</rdf:Description>
+		</owl:propertyChainAxiom>
+		<skos:definition>links an account statement to the individual transactions it documents</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:Class rdf:about="&fibo-fnd-pas-pas;ContractualProduct">
