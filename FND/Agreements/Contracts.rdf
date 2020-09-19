@@ -5,6 +5,7 @@
 	<!ENTITY fibo-fnd-agr-ctr "https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/">
 	<!ENTITY fibo-fnd-arr-doc "https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Documents/">
 	<!ENTITY fibo-fnd-dt-fd "https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/">
+	<!ENTITY fibo-fnd-dt-oc "https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/Occurrences/">
 	<!ENTITY fibo-fnd-law-jur "https://spec.edmcouncil.org/fibo/ontology/FND/Law/Jurisdiction/">
 	<!ENTITY fibo-fnd-pty-pty "https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Parties/">
 	<!ENTITY fibo-fnd-pty-rl "https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Roles/">
@@ -24,6 +25,7 @@
 	xmlns:fibo-fnd-agr-ctr="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"
 	xmlns:fibo-fnd-arr-doc="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Documents/"
 	xmlns:fibo-fnd-dt-fd="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"
+	xmlns:fibo-fnd-dt-oc="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/Occurrences/"
 	xmlns:fibo-fnd-law-jur="https://spec.edmcouncil.org/fibo/ontology/FND/Law/Jurisdiction/"
 	xmlns:fibo-fnd-pty-pty="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Parties/"
 	xmlns:fibo-fnd-pty-rl="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Roles/"
@@ -58,13 +60,14 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Agreements/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Documents/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/Occurrences/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Law/Jurisdiction/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Parties/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Roles/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Countries/CountryRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20200201/Agreements/Contracts/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20200901/Agreements/Contracts/"/>
 		<skos:changeNote>The http://www.omg.org/spec/FIBO/Foundations/20130601/Agreements/Contracts.owl version of the ontology was revised in advance of the September 2013 New Brunswick, NJ meeting, as follows:
    (1) to use slash style URI/IRIss (also called 303 URIs, vs. hash style) as required to support server side processing 
    (2) to use version-independent IRIs for all definitions internally as opposed to version-specific IRIs
@@ -77,8 +80,47 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20170201/Agreements/Contracts.rdf version of this ontology was revised as a part of the issue resolutions identified in the FIBO FND 2.0 RFC to augment restrictions on contract and contractual commitment.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20180801/Agreements/Contracts.rdf version of this ontology was revised to eliminate deprecated elements.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20190901/Agreements/Contracts.rdf version of this ontology was revised to add the concept of a term sheet, revise definitions to be ISO 704 compliant, and eliminate duplication of concepts in LCC.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20200201/Agreements/Contracts.rdf version of this ontology was revised to add the concepts of breach of contract and breach of covenant.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
+	
+	<owl:Class rdf:about="&fibo-fnd-agr-ctr;BreachOfContract">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-oc;OccurrenceKind"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-agr-ctr;Contract"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;refersTo"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-agr-ctr;ContractualCommitment"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">breach of contract</rdfs:label>
+		<skos:definition xml:lang="en">classifier of events representing a violation of an express, or implied, condition of a contract to do or not to do something, without a legitimate excuse</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Examples of events that are considered a breach of contract include discovery of misrepresentation, not completing a job, not paying in full or on time, failing to deliver all the goods, substituting inferior or significantly different goods, not providing a bond when required, being late without excuse, or any act that demonstrates that a party will not complete required work (&apos;anticipatory breach.&apos;) Breach of contract is one of the most common causes of law suits for damages and/or court-ordered &apos;specific performance&apos; of the contract. A breach of contract frequently invalidates the contract.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-agr-ctr;BreachOfCovenant">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-oc;OccurrenceKind"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-agr-ctr;Contract"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;refersTo"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-agr-ctr;ContractualCommitment"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">breach of covenant</rdfs:label>
+		<skos:definition xml:lang="en">classifier of events representing breaking a promise specified in a contract to do or not to do something, without a legitimate excuse</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">In the case of a breach of a covenant or warranty, the contract remains binding and damages only are recoverable for the breach, whereas a breach of contract typically invalidates the entire contract.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-agr-ctr;ConditionPrecedent">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractualElement"/>
@@ -466,7 +508,7 @@ A unilateral contract differs from a Bilateral Contract, in which the parties ex
 		<rdfs:label>supersedes</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fnd-agr-ctr;Contract"/>
 		<rdfs:range rdf:resource="&fibo-fnd-agr-ctr;Contract"/>
-		<skos:definition>the or any earlier contract which this contract supersedes</skos:definition>
+		<skos:definition>the or any earlier contract which this contract replaces</skos:definition>
 	</owl:ObjectProperty>
 
 </rdf:RDF>
