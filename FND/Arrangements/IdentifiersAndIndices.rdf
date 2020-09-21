@@ -3,6 +3,7 @@
 	<!ENTITY dct "http://purl.org/dc/terms/">
 	<!ENTITY fibo-fnd-arr-arr "https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Arrangements/">
 	<!ENTITY fibo-fnd-arr-id "https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/IdentifiersAndIndices/">
+	<!ENTITY fibo-fnd-dt-fd "https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/">
 	<!ENTITY fibo-fnd-rel-rel "https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
 	<!ENTITY lcc-lr "https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/">
@@ -17,6 +18,7 @@
 	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fibo-fnd-arr-arr="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Arrangements/"
 	xmlns:fibo-fnd-arr-id="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/IdentifiersAndIndices/"
+	xmlns:fibo-fnd-dt-fd="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"
 	xmlns:fibo-fnd-rel-rel="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
 	xmlns:lcc-lr="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"
@@ -35,12 +37,14 @@
 		<sm:copyright>Copyright (c) 2014-2020 EDM Council, Inc.</sm:copyright>
 		<sm:copyright>Copyright (c) 2014-2020 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Arrangements/</sm:dependsOn>
+		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://www.omg.org/spec/LCC/</sm:dependsOn>
 		<sm:fileAbbreviation>fibo-fnd-arr-id</sm:fileAbbreviation>
 		<sm:filename>IdentifiersAndIndices.rdf</sm:filename>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Arrangements/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
@@ -49,6 +53,7 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20141101/Arrangements/IdentifiersAndIndices.rdf version of this ontology was revised for the FIBO 2.0 RFC to incorporate mappings to LCC.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20180801/Arrangements/IdentifiersAndIndices.rdf version of this ontology was revised to replace hasDefinition with isDefinedIn to clarify intent.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20190701/Arrangements/IdentifiersAndIndices.rdf version of this ontology was revised to eliminate duplication of concepts with LCC.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20200201/Arrangements/IdentifiersAndIndices.rdf version of this ontology was revised to add the concept of a time-constrained, reassignable identifier.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -68,7 +73,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>index</rdfs:label>
-		<skos:definition>an indirect shortcut derived from and pointing into, a greater volume of values, data, information or knowledge</skos:definition>
+		<skos:definition>indirect shortcut derived from and pointing into, a greater volume of values, data, information or knowledge</skos:definition>
 		<fibo-fnd-utl-av:definitionOrigin rdf:datatype="&xsd;anyURI">http://en.wikipedia.org/wiki/Index</fibo-fnd-utl-av:definitionOrigin>
 	</owl:Class>
 	
@@ -83,6 +88,42 @@
 		<rdfs:label>indexing scheme</rdfs:label>
 		<skos:definition>system for indexing values, data, information, or knowledge</skos:definition>
 	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-arr-id;ReassignableIdentifier">
+		<rdfs:subClassOf rdf:resource="&lcc-lr;Identifier"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-arr-id;hasAssignmentTerminationDate"/>
+				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+				<owl:onDataRange rdf:resource="&fibo-fnd-dt-fd;CombinedDateTime"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-arr-id;hasInitialAssignmentDate"/>
+				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+				<owl:onDataRange rdf:resource="&fibo-fnd-dt-fd;CombinedDateTime"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>reassignable identifier</rdfs:label>
+		<skos:definition>identifier that uniquely identifies something for a given time period, and that may be reused to identify something else at a different point in time</skos:definition>
+		<skos:example>ticker symbol, vehicle license number, such as a vanity plate that can be reassigned and moved from one car to another</skos:example>
+		<fibo-fnd-utl-av:explanatoryNote>If no assignment termination date is provided, the identifier is considered to be assigned and valid. If there is no initial assignment date, then the identifier is assumed to be assigned up until the termination date, if any.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:DatatypeProperty rdf:about="&fibo-fnd-arr-id;hasAssignmentTerminationDate">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasObservedDateTime"/>
+		<rdfs:label>has assignment termination date</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;CombinedDateTime"/>
+		<skos:definition>the date on which an identifier is released from its assignment to some resource</skos:definition>
+	</owl:DatatypeProperty>
+	
+	<owl:DatatypeProperty rdf:about="&fibo-fnd-arr-id;hasInitialAssignmentDate">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasObservedDateTime"/>
+		<rdfs:label>has initial assignment date</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;CombinedDateTime"/>
+		<skos:definition>the date on which an identifier is first assigned to some resource</skos:definition>
+	</owl:DatatypeProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-arr-id;isIndexTo">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;refersTo"/>
