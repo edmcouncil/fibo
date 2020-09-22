@@ -82,18 +82,56 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/20200701/DerivativesContracts/Swaps/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/20200901/DerivativesContracts/Swaps/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20180801/DerivativesContracts/Swaps/ version of this ontology was modified to refine the concept of a unique swap identifier (USI).</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20190201/DerivativesContracts/Swaps/ version of this ontology was modified to eliminate duplication of concepts in LCC.</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20200201/DerivativesContracts/Swaps/ version of this ontology was modified to eliminate the property &apos;hasPaymentSchedule&apos; from this ontology in favor of the equivalent property with the same name from FND.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20200201/DerivativesContracts/Swaps/ version of this ontology was modified to eliminate the property &apos;hasPaymentSchedule&apos; from this ontology in favor of the equivalent property with the same name from FND, adding concepts related to statistical swaps, and revising definitions to be ISO 704 compliant.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
 	<owl:Class rdf:about="&fibo-der-drc-swp;BasisSwap">
 		<rdfs:subClassOf rdf:resource="&fibo-der-drc-swp;Swap"/>
 		<rdfs:label>basis swap</rdfs:label>
-		<skos:definition>a swap in which payment streams are referenced to different bases</skos:definition>
+		<skos:definition>swap in which payment streams are referenced to different bases</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote>A basis swap can have two legs of the same tenor but different indices, e.g., 3 month LIBOR vs. 3 month TIBOR. The difference in this case is not driven by different interest rate periods but from different markets, i.e., the difference in efficiency between the two markets. The objective is to hedge against basis risk which is the difference in price between two markets. See also forward swap, as a means for controlling interest rate.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-drc-swp;CorrelationLeg">
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-swp;PerformanceBasedVariableLeg"/>
+		<rdfs:label xml:lang="en">correlation leg</rdfs:label>
+		<skos:definition xml:lang="en">floating leg of a correlation swap that pays an amount based on the observed average correlation of the prices of a collection of underlying products</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-drc-swp;CorrelationSwap">
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-swp;StatisticalSwap"/>
+		<rdfs:label xml:lang="en">correlation swap</rdfs:label>
+		<skos:definition xml:lang="en">over-the-counter statistical derivative that allows one to hedge risks associated with the observed average correlation of a collection of underlying products, where each product has periodically observable prices, as with a commodity, exchange rate, interest rate, or stock index</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Correlation trading is a strategy in which the investor receives exposure to the average correlation of an index.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-drc-swp;DispersionLeg">
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-swp;PerformanceBasedVariableLeg"/>
+		<rdfs:label xml:lang="en">dispersion leg</rdfs:label>
+		<skos:definition>floating leg of a dispersion swap that pays an amount based on the realized dispersion (variance or volatility) of the price changes of the underlying product</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Underlying assets may include, for example, exchange rates, interest rates, or the price of an index.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:synonym xml:lang="en">variance leg</fibo-fnd-utl-av:synonym>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-drc-swp;DispersionSwap">
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-swp;StatisticalSwap"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-drc-swp;hasLeg"/>
+				<owl:onClass rdf:resource="&fibo-der-drc-swp;DispersionLeg"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">dispersion swap</rdfs:label>
+		<rdfs:seeAlso rdf:resource="https://www.sk3w.co/documents/volatility_trading.pdf"/>
+		<skos:definition xml:lang="en">statistical derivative used to hedge on the magnitude of a price movement of an underlying asset</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>A variance swap is an instrument that allows investors to trade future realized (or historical) volatility against current implied volatility.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:explanatoryNote>Some strategies involve selling a variance swap on an index and buying the variance swaps on the individual constituents; this particular kind of spread trade is called a variance dispersion trade.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:synonym xml:lang="en">variance swap</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-swp;FixedPaymentLeg">
@@ -114,9 +152,35 @@
 	<owl:Class rdf:about="&fibo-der-drc-swp;MajorSwapParticipant">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-fse;NonDepositoryInstitution"/>
 		<rdfs:label>major swap participant</rdfs:label>
-		<skos:definition>a financial service provider that maintains a substantial position in swaps for any of the major swap categories, excluding positions held for hedging or mitigating commercial risk and positions maintained by an employee benefit plan for the primary purpose of hedging or mitigating any risk directly associated with the operation of the plan</skos:definition>
+		<skos:definition>financial service provider that maintains a substantial position in swaps for any of the major swap categories, excluding positions held for hedging or mitigating commercial risk and positions maintained by an employee benefit plan for the primary purpose of hedging or mitigating any risk directly associated with the operation of the plan</skos:definition>
 		<fibo-fnd-utl-av:abbreviation>MSP</fibo-fnd-utl-av:abbreviation>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.cftc.gov/IndustryOversight/Intermediaries/index.htm</fibo-fnd-utl-av:adaptedFrom>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-drc-swp;PerformanceBasedVariableLeg">
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-swp;SwapLeg"/>
+		<rdfs:label>performance-based variable leg</rdfs:label>
+		<skos:definition>floating leg of a swap that depends on some statistical measure of the performance of the underlier</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-drc-swp;RealizedVariableLeg">
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-swp;PerformanceBasedVariableLeg"/>
+		<rdfs:label>realized variable leg</rdfs:label>
+		<skos:definition>performance-based leg wherein the payment is netted at maturity rather than periodically</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>In this case there is a single payment at maturity/settlement and so there is no stream of cashflows either way.  The other leg of these swaps is implied, and is simply the strike price.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-drc-swp;StatisticalSwap">
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-swp;Swap"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-drc-swp;hasLeg"/>
+				<owl:onClass rdf:resource="&fibo-der-drc-swp;PerformanceBasedVariableLeg"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>statistical swap</rdfs:label>
+		<skos:definition>swap that depends on some statistical measure of the performance of the underlier</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-swp;Swap">
@@ -156,16 +220,16 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>swap</rdfs:label>
-		<skos:definition>a derivative instrument that facilitates the exchange of financial instruments among the parties; the instruments can be almost anything, but most swaps involve cash flows (streams of payments or other commitments over time) based on a notional principal amount that both parties agree to</skos:definition>
-		<skos:editorialNote>The most common type is an interest rate swap, in which one party agrees to pay a fixed interest rate in return for receiving a adjustable rate from another party. Review session notes: 10 Mar Helpful to split these according to the assets that are swapped. So for instance there are equity swaps, commodity swaps where you swap different assets. These are not mutually exclusive to labels about Fund Leg, and so on, that are different ways that people trading in those assets distinguish between those legs. For example in IR, we talk Fixed, Floating. capital Index Swap, where the return on oen leg is indexed to an inflation index but it&apos;s still an IR swap where the payment relates to an inflation index. So keeping the 2 legs in some sort of notion balance - example index annuity swap, capital index swap and so on. These terms refer to the behavior of the underlying swap rather than an arbitrary classification of what leg is what. Different structures of swap is less relevant. 17 March: Remember: the contract does not necessarily have 2 legs, but it usually would. The structure is in the transactions, i.e., the commitments embodied in the terms for the two sides of those transactions, the legs which are simply the embodiment of those commitments, and so on. Then the details structure is in the leg definitions. Note also that different kinds of leg can have various structures regardless of how or why they are used in a contract.</skos:editorialNote>
+		<skos:definition>derivative instrument whereby two counterparties agree to exchange periodic streams of cash flows with each other</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>ISO 10962:2019 Securities and related financial instruments - Classification of financial instruments (CFI) code</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.investopedia.com/terms/s/swap.asp</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:explanatoryNote>The underlying instruments can be almost anything, representing various asset classes, but most swaps involve cash flows (streams of payments or other commitments over time) based on a notional principal amount that both parties agree to.</fibo-fnd-utl-av:explanatoryNote>
 		<fibo-fnd-utl-av:explanatoryNote>Usually, the principal does not change hands. Each cash flow comprises one leg of the swap. One cash flow is generally fixed, while the other is variable, that is, based on a a benchmark interest rate, floating currency exchange rate or index price.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-swp;SwapConfirmation">
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-bsc;OTCTransactionConfirmation"/>
 		<rdfs:subClassOf rdf:resource="&fibo-der-drc-swp;SwapLifecycleEvent"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;WrittenContract"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-pas;TransactionConfirmation"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;supersedes"/>
@@ -179,13 +243,13 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>swap confirmation</rdfs:label>
-		<skos:definition>a formal confirmation that codifies the terms and conditions specific to a lifecycle event with respect to the overall transaction between the parties</skos:definition>
+		<skos:definition>formal confirmation that codifies the terms and conditions specific to a lifecycle event with respect to the overall transaction between the parties</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-swp;SwapDataRepository">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;FinancialServiceProvider"/>
 		<rdfs:label>swap data repository</rdfs:label>
-		<skos:definition>a financial service provider that provides a central facility for swap data reporting and recordkeeping</skos:definition>
+		<skos:definition>financial service provider that provides a central facility for swap data reporting and recordkeeping</skos:definition>
 		<fibo-fnd-utl-av:abbreviation>SDR</fibo-fnd-utl-av:abbreviation>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.cftc.gov/IndustryOversight/DataRepositories/index.htm</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:explanatoryNote>Swap data repositories (&apos;SDRs&apos;) are new entities created by the Dodd-Frank Wall Street Reform and Consumer Protection Act (&apos;Dodd-Frank Act&apos;) in order to provide a central facility for swap data reporting and recordkeeping. Under the Dodd- Frank Act, all swaps, whether cleared or uncleared, are required to be reported to registered SDRs. The Dodd-Frank Act added new Section 21 to the Commodity Exchange Act (&apos;CEA&apos;), governing registration and regulation of SDRs and establishing registration requirements and core duties and responsibilities for SDRs.</fibo-fnd-utl-av:explanatoryNote>
@@ -195,7 +259,7 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-fse;NonDepositoryInstitution"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;Dealer"/>
 		<rdfs:label>swap dealer</rdfs:label>
-		<skos:definition>a financial service provider that holds itself out as a dealer in swaps; makes a market in swaps; regularly enters into swaps with counterparties as an ordinary course of business for its own account; or engages in any activity causing the person to be commonly known in the trade as a dealer or market maker in swaps</skos:definition>
+		<skos:definition>financial service provider that holds itself out as a dealer in swaps; makes a market in swaps; regularly enters into swaps with counterparties as an ordinary course of business for its own account; or engages in any activity causing the person to be commonly known in the trade as a dealer or market maker in swaps</skos:definition>
 		<fibo-fnd-utl-av:abbreviation>SD</fibo-fnd-utl-av:abbreviation>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.cftc.gov/IndustryOversight/Intermediaries/index.htm</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
@@ -206,7 +270,7 @@
 		<skos:definition>an exchange, trading system, or platform that enables many participants to execute or trade swaps</skos:definition>
 		<fibo-fnd-utl-av:abbreviation>SEF</fibo-fnd-utl-av:abbreviation>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.investopedia.com/terms/s/swap-execution-facility-sef.asp</fibo-fnd-utl-av:adaptedFrom>
-		<fibo-fnd-utl-av:explanatoryNote>A swap execution facility would allow for greater transparency and would be a significant shift in the way derivative trading is made. The Dodd-Frank Act lays the foundation for this change of derivative execution.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:explanatoryNote>swap execution facility would allow for greater transparency and would be a significant shift in the way derivative trading is made. The Dodd-Frank Act lays the foundation for this change of derivative execution.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-swp;SwapLeg">
@@ -283,7 +347,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>swap lifecycle event</rdfs:label>
-		<skos:definition>an event that occurs during the lifecycle of a swap, where the overall set of events includes those specific to the issuer, front office, middle office, and/or back office processes</skos:definition>
+		<skos:definition>event that occurs during the lifecycle of a swap, where the overall set of events includes those specific to the issuer, front office, middle office, and/or back office processes</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-swp;SwapLifecycleEventIdentifier">
@@ -296,7 +360,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>swap lifecycle event identifier</rdfs:label>
-		<skos:definition>an identifier that uniquely identifies a specific event in the lifecycle of a swap</skos:definition>
+		<skos:definition>identifier that uniquely identifies a specific event in the lifecycle of a swap</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-swp;SwapParty">
@@ -313,7 +377,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>swap party</rdfs:label>
-		<skos:definition>a party to a swap and therefore a legal party to the contract that embodies that transaction</skos:definition>
+		<skos:definition>party to a swap and therefore a legal party to the contract that embodies that transaction</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-swp;SwapPayingParty">
@@ -321,7 +385,7 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;Debtor"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-psch;Payer"/>
 		<rdfs:label>swap paying party</rdfs:label>
-		<skos:definition>a swap party responsible for making payments for a given leg of the transaction as defined in the contract</skos:definition>
+		<skos:definition>swap party responsible for making payments for a given leg of the transaction as defined in the contract</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-swp;SwapReceivingParty">
@@ -329,20 +393,20 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;Creditor"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-psch;Payee"/>
 		<rdfs:label>swap receiving party</rdfs:label>
-		<skos:definition>a swap party that receives payments for a given leg of the transaction as defined in the contract</skos:definition>
+		<skos:definition>swap party that receives payments for a given leg of the transaction as defined in the contract</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-swp;SwapStreamEvent">
 		<rdfs:subClassOf rdf:resource="&fibo-der-drc-swp;SwapLifecycleEvent"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-psch;PaymentEvent"/>
 		<rdfs:label>swap stream event</rdfs:label>
-		<skos:definition>a payment event (e.g., interest payment, coupon payment, etc.) against one leg of a swap stream</skos:definition>
+		<skos:definition>payment event (e.g., interest payment, coupon payment, etc.) against one leg of a swap stream</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-swp;SwapTerms">
 		<rdfs:subClassOf rdf:resource="&fibo-der-drc-bsc;DerivativeTransactionTerms"/>
 		<rdfs:label>swap terms</rdfs:label>
-		<skos:definition>the legal contractual terms of a swap transaction</skos:definition>
+		<skos:definition>legal contractual terms of a swap transaction</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-swp;UniqueSwapIdentifier">
@@ -355,9 +419,10 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>unique swap identifier</rdfs:label>
-		<skos:definition>a unique swap identifier (USI) is an identifier for a swap transaction, that is the CFTC term or Unique Transaction Identifier (UTI) which is the term used more globally is an identifier on the transaction level that stays unique throughout the life of a trade</skos:definition>
+		<skos:definition>identifier for a swap that is used in recordkeeping and swap data reporting</skos:definition>
 		<fibo-fnd-utl-av:abbreviation>USI</fibo-fnd-utl-av:abbreviation>
 		<fibo-fnd-utl-av:adaptedFrom>CFTC Data Management Branch &apos;Unique Swap Identifier (USI) Data Standard&apos;, October 1, 2012, usidatastandards100112.pdf</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.law.cornell.edu/cfr/text/17/45.5</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-drc-swp;exchanges">
