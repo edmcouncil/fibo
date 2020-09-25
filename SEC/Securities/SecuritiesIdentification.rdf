@@ -75,12 +75,13 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesListings/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Countries/CountryRepresentation/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20200401/Securities/SecuritiesIdentification/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20200901/Securities/SecuritiesIdentification/"/>
 		<skos:changeNote>The http://www.omg.org/spec/EDMC-FIBO/FND/20180801/Securities/SecuritiesIdentification.rdf version of this ontology was modified to use the hasCoverageArea property rather than hasJurisdiction for coverage of national numbering agencies, and eliminate redundant subclass relationships for two of the schemes defined herein.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20181101/Securities/SecuritiesIdentification/ version of this ontology was modified to correct several logic issues.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20190601/Securities/SecuritiesIdentification/ version of this ontology was modified to add the concept of a ticker symbol and rename (migrate) the hasDefinition property to isDefinedIn to clarify intent.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20190701/Securities/SecuritiesIdentification/ version of this ontology was modified to restructure the concept of a listing and augment it with a number of relevant characteristics.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20191201/Securities/SecuritiesIdentification/ version of this ontology was modified to correct the target of a ticker symbol, which identifies a listing not a listed security, refine the restriction on financial instrument identifier to say that it identifies an instrument or listing, normalize definitions to be ISO 704 compliant, eliminate duplication of concepts in LCC, and merge countries with locations in FND.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20200401/Securities/SecuritiesIdentification/ version of this ontology was modified to make a ticker symbol reassignable and address circular or ambiguous definitions.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -320,7 +321,8 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>proprietary security identification scheme</rdfs:label>
-		<skos:definition>security identification scheme published by a data provider or other commercial entity</skos:definition>
+		<skos:definition>security identification scheme published by a commercial entity</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Proprietary schemes may be unique to an exchange or data provider, for example.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-id;ProprietarySecurityIdentifier">
@@ -338,7 +340,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>proprietary security identifier</rdfs:label>
-		<skos:definition>identifier supplied by a commercial data provider or government, such as a RIC code</skos:definition>
+		<skos:definition>identifier supplied by a commercial entity</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-id;SecurityIdentificationScheme">
@@ -403,7 +405,8 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>security registry</rdfs:label>
-		<skos:definition>registry used to manage security identifiers and related information by an exchange, clearing house, or other financial services provider</skos:definition>
+		<skos:definition>registry used to manage security identifiers and related information</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Securities registries may be managed by an exchange, clearing house, custodian, bank, or other financial services provider.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-id;SecurityRegistryEntry">
@@ -421,10 +424,11 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>security registry entry</rdfs:label>
-		<skos:definition>entry in an exchange, clearing house, or other financial services provider securities repository</skos:definition>
+		<skos:definition>record for a listed security in a securities repository</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-id;TickerSymbol">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-id;ReassignableIdentifier"/>
 		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-id;ListedSecurityIdentifier"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
@@ -437,6 +441,7 @@
 		<rdfs:seeAlso rdf:resource="https://www.investopedia.com/terms/t/tickersymbol.asp"/>
 		<skos:definition>exchange-specific identifier for a particular security</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote>Every listed security has a unique ticker symbol, facilitating the vast array of trade orders that flow through the financial markets every day.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:usageNote>Ticker symbols are reusable, assigned to a given instrument by an exchange for some period of time.</fibo-fnd-utl-av:usageNote>
 	</owl:Class>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-sec-id;isPreferredByExchange">
