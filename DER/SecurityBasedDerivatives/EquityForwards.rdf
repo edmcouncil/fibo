@@ -2,6 +2,7 @@
 <!DOCTYPE rdf:RDF [
 	<!ENTITY dct "http://purl.org/dc/terms/">
 	<!ENTITY fibo-der-der-fwd "https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Forwards/">
+	<!ENTITY fibo-der-drc-bsc "https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/DerivativesBasics/">
 	<!ENTITY fibo-der-sbd-eqf "https://spec.edmcouncil.org/fibo/ontology/DER/SecurityBasedDerivatives/EquityForwards/">
 	<!ENTITY fibo-der-sbd-eqs "https://spec.edmcouncil.org/fibo/ontology/DER/SecurityBasedDerivatives/EquitySwaps/">
 	<!ENTITY fibo-der-sbd-sbd "https://spec.edmcouncil.org/fibo/ontology/DER/SecurityBasedDerivatives/SecurityBasedDerivatives/">
@@ -21,6 +22,7 @@
 <rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/ontology/DER/SecurityBasedDerivatives/EquityForwards/"
 	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fibo-der-der-fwd="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Forwards/"
+	xmlns:fibo-der-drc-bsc="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/DerivativesBasics/"
 	xmlns:fibo-der-sbd-eqf="https://spec.edmcouncil.org/fibo/ontology/DER/SecurityBasedDerivatives/EquityForwards/"
 	xmlns:fibo-der-sbd-eqs="https://spec.edmcouncil.org/fibo/ontology/DER/SecurityBasedDerivatives/EquitySwaps/"
 	xmlns:fibo-der-sbd-sbd="https://spec.edmcouncil.org/fibo/ontology/DER/SecurityBasedDerivatives/SecurityBasedDerivatives/"
@@ -71,13 +73,6 @@
 		<skos:editorialNote xml:lang="en">Referred to in formal terms for OTC Equity Forwards and Options. REVIEW: It does not look as though we have completely pinned down the meaning on this one, only that it&apos;s a piece of data that&apos;s used for something. We really need to see and model details of those deviation claculations, along with who does them and when. Also they may not directly be facts about the contract as such. REVIEW FpML: &apos;A single Dividend Adjustment Period.&apos;</skos:editorialNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-sbd-eqf;EquityForwardBuyer">
-		<rdfs:subClassOf rdf:resource="&fibo-der-der-fwd;ForwardContractBuyer"/>
-		<rdfs:label xml:lang="en">equity forward buyer</rdfs:label>
-		<skos:definition xml:lang="en">The party that buys this forwward contract, that is the party which pays for this instrument and receives the rights defined by it.</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">See note in Seller. See 2000 ISDA definitions Article 11.1 (b). FpML: &apos;A reference to the party that buys this instrument, ie. pays for this instrument and receives the rights defined by it. See 2000 ISDA definitions Article 11.1 (b). In the case of FRAs this the fixed rate payer.&apos; Interpretation: this is the party which is the counterparty to the contract.</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-der-sbd-eqf;EquityForwardCashSettlement">
 		<rdfs:subClassOf rdf:resource="&fibo-der-der-fwd;ForwardCashSettlementCommitment"/>
 		<rdfs:label xml:lang="en">equity forward cash settlement</rdfs:label>
@@ -88,32 +83,14 @@
 		<rdfs:subClassOf rdf:resource="&fibo-der-sbd-sbd;EquityDerivative"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/DerivativesBasics/hasUnderlier"/>
+				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
 				<owl:someValuesFrom rdf:resource="&fibo-der-sbd-sbd;EquityObservable"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-der-fwd;hasBuyer"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-sbd-eqf;EquityForwardBuyer"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-der-fwd;hasSeller"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-sbd-eqf;EquityForwardSeller"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-sbd-eqf;dividendAdjustment"/>
 				<owl:someValuesFrom rdf:resource="&fibo-der-sbd-eqf;DividendAdjustmentPeriod"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-sbd-eqf;hasConditions"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-sbd-eqs;DividendConditions"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -138,13 +115,6 @@
 		<rdfs:label xml:lang="en">equity forward delivery commitment</rdfs:label>
 		<skos:definition xml:lang="en">The commitment to deliver an equity underlying at the maturity of an OTC Equity Forward contract.</skos:definition>
 		<skos:editorialNote xml:lang="en">Or, presumably, some cash equivalent in the event that the undelying is non deliverable, or for a non deliverable forward generally.</skos:editorialNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-sbd-eqf;EquityForwardSeller">
-		<rdfs:subClassOf rdf:resource="&fibo-der-der-fwd;ForwardContractSeller"/>
-		<rdfs:label xml:lang="en">equity forward seller</rdfs:label>
-		<skos:definition xml:lang="en">The party that sells or writes this forward instrument, that is the party which grants the rights defined by this instrument and in return receives a payment for it.</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">The forward is always written by the party that is committing to sell the underlying, and is always bought by the party that is committing to take delivery of the underlying on the settlement date. The forward contract is the same as a conventional secondary market sale transaction but with the difference that the settlement date is in the future. See 2000 ISDA definitions Article 11.1 (a). FpML: &apos;A reference to the party that sells (&quot;writes&quot;) this instrument, i.e. that grants the rights defined by this instrument and in return receives a payment for it. See 2000 ISDA definitions Article 11.1 (a). In the case of FRAs this is the floating rate payer.&apos; Interpretation: this is the party which is the principal or writing party to the contract.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-sbd-eqf;EquityForwardTransaction">
@@ -220,12 +190,6 @@
 		<rdfs:domain rdf:resource="&fibo-der-sbd-eqf;EquityForwardContract"/>
 		<rdfs:range rdf:resource="&fibo-der-sbd-eqf;DividendAdjustmentPeriod"/>
 		<skos:definition xml:lang="en">One or more Dividend Adjustment Periods, which are used to calculate the Deviation between Expected Dividend and Actual Dividend in that Period.&apos;</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-der-sbd-eqf;hasConditions">
-		<rdfs:label xml:lang="en">has conditions</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-sbd-eqf;EquityForwardContract"/>
-		<rdfs:range rdf:resource="&fibo-der-sbd-eqs;DividendConditions"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-sbd-eqf;hasMethodOfAdjustment">
