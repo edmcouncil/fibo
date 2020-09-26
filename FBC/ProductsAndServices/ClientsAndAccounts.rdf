@@ -10,6 +10,7 @@
 	<!ENTITY fibo-fbc-fi-fi "https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/">
 	<!ENTITY fibo-fbc-pas-caa "https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/ClientsAndAccounts/">
 	<!ENTITY fibo-fbc-pas-fpas "https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/">
+	<!ENTITY fibo-fnd-acc-aeq "https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/AccountingEquity/">
 	<!ENTITY fibo-fnd-acc-cur "https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/">
 	<!ENTITY fibo-fnd-agr-ctr "https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/">
 	<!ENTITY fibo-fnd-arr-arr "https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Arrangements/">
@@ -44,6 +45,7 @@
 	xmlns:fibo-fbc-fi-fi="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"
 	xmlns:fibo-fbc-pas-caa="https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/ClientsAndAccounts/"
 	xmlns:fibo-fbc-pas-fpas="https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/"
+	xmlns:fibo-fnd-acc-aeq="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/AccountingEquity/"
 	xmlns:fibo-fnd-acc-cur="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"
 	xmlns:fibo-fnd-agr-ctr="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"
 	xmlns:fibo-fnd-arr-arr="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Arrangements/"
@@ -91,6 +93,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/FinancialServicesEntities/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/RegistrationAuthorities/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/AccountingEquity/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Arrangements/"/>
@@ -121,7 +124,7 @@
 	<owl:Class rdf:about="&fibo-fbc-pas-caa;Account">
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-pas-caa;hasAccountHolder"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isHeldBy"/>
 				<owl:onClass rdf:resource="&fibo-fbc-pas-caa;AccountHolder"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
@@ -171,14 +174,26 @@
 		<fibo-fnd-utl-av:explanatoryNote>In general, an account is associated with a contractual relationship between a buyer and seller under which payment may be made at a later time. General ledger accounts are an exception to this, however, and typically do not have account holders, including internal account holders. They may, on the other hand, have responsible parties.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-fbc-pas-caa;AccountHolder">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-oac-own;Owner"/>
+	<owl:Class rdf:about="&fibo-fbc-pas-caa;AccountAsAnAsset">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-acc-aeq;FinancialAsset"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-pas-caa;holdsAccount"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-oac-own;isOwnedBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-caa;AccountHolder"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-caa;Account"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
+		<rdfs:label>account as an asset</rdfs:label>
+		<skos:definition>financial asset in the form of an account</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-pas-caa;AccountHolder">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-oac-own;Owner"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
@@ -201,6 +216,12 @@
 				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;holds"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-caa;Account"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label>account holder</rdfs:label>
 		<skos:definition>party that owns the account</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote>An account holder is named on the account and is authorized to conduct transactions associated with the account. Authorization is typically evidenced by signatures maintained on file by the account provider.</fibo-fnd-utl-av:explanatoryNote>
@@ -220,6 +241,25 @@
 		<skos:definition>identifier that denotes an account</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom>ISO 13616-1:2007 Financial services - International bank account number (IBAN)</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:synonym>account number</fibo-fnd-utl-av:synonym>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-pas-caa;AccountOwnership">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;Holding"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-oac-own;hasOwnedThing"/>
+				<owl:onClass rdf:resource="&fibo-fbc-pas-caa;AccountAsAnAsset"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-oac-own;hasOwningParty"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-caa;AccountHolder"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>account ownership</rdfs:label>
+		<skos:definition>holding of an account</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-caa;AccountProvider">
@@ -436,12 +476,6 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-caa;Account"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-pas-caa;hasAccountHolder"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-caa;CustomerAccountHolder"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-pas-caa;realizes"/>
 				<owl:someValuesFrom>
 					<owl:Class>
@@ -459,6 +493,12 @@
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isDefinedIn"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fnd-pas-pas;ServiceAgreement"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isHeldBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-caa;CustomerAccountHolder"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -501,7 +541,7 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-pas-caa;holdsAccount"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;holds"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-caa;CustomerAccount"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -923,15 +963,6 @@
 		<skos:definition>indicates the account to which the transaction record or individual transaction applies</skos:definition>
 	</owl:ObjectProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-fbc-pas-caa;hasAccountHolder">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;isHeldBy"/>
-		<rdfs:label>has account holder</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fbc-pas-caa;Account"/>
-		<rdfs:range rdf:resource="&fibo-fbc-pas-caa;AccountHolder"/>
-		<skos:definition>relates an account to a client or customer that owns the account</skos:definition>
-		<fibo-fnd-utl-av:synonym>has account owner</fibo-fnd-utl-av:synonym>
-	</owl:ObjectProperty>
-	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-pas-caa;hasBalance">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasMonetaryAmount"/>
 		<rdfs:label>has balance</rdfs:label>
@@ -979,20 +1010,20 @@
 	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-pas-caa;hasPrimaryAccountHolder">
 		<rdf:type rdf:resource="&owl;FunctionalProperty"/>
-		<rdfs:subPropertyOf rdf:resource="&fibo-fbc-pas-caa;hasAccountHolder"/>
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;isHeldBy"/>
 		<rdfs:label>has primary account holder</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fbc-pas-caa;CustomerAccount"/>
-		<rdfs:range rdf:resource="&fibo-fbc-pas-caa;AccountHolder"/>
+		<rdfs:range rdf:resource="&fibo-fbc-pas-caa;CustomerAccountHolder"/>
 		<skos:definition>relates an account to a client or customer that is considered the primary owner of the account</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote>Note that for many financial institutions, there must be a client or customer designated as the primary owner. In cases where there is a tax identifier associated with the account, it is that of the primary owner.</fibo-fnd-utl-av:explanatoryNote>
 		<fibo-fnd-utl-av:synonym>has primary account owner</fibo-fnd-utl-av:synonym>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-pas-caa;hasSecondaryAccountHolder">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fbc-pas-caa;hasAccountHolder"/>
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;isHeldBy"/>
 		<rdfs:label>has secondary account holder</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fbc-pas-caa;CustomerAccount"/>
-		<rdfs:range rdf:resource="&fibo-fbc-pas-caa;AccountHolder"/>
+		<rdfs:range rdf:resource="&fibo-fbc-pas-caa;CustomerAccountHolder"/>
 		<skos:definition>relates an account to a client or customer that is considered a secondary, co-owner of the account</skos:definition>
 		<fibo-fnd-utl-av:synonym>has account co-owner</fibo-fnd-utl-av:synonym>
 		<fibo-fnd-utl-av:synonym>has secondary account owner</fibo-fnd-utl-av:synonym>
@@ -1025,15 +1056,6 @@
 		<rdfs:range rdf:resource="&xsd;string"/>
 		<skos:definition>indicates the status of the transaction record</skos:definition>
 	</owl:DatatypeProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-fbc-pas-caa;holdsAccount">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;holds"/>
-		<rdfs:label>holds account</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fbc-pas-caa;AccountHolder"/>
-		<rdfs:range rdf:resource="&fibo-fbc-pas-caa;Account"/>
-		<owl:inverseOf rdf:resource="&fibo-fbc-pas-caa;hasAccountHolder"/>
-		<skos:definition>relates a client or customer to an account that they own</skos:definition>
-	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-pas-caa;involvesMerchant">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;involves"/>
