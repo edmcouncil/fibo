@@ -1,7 +1,7 @@
 <img src="https://spec.edmcouncil.org/fibo/htmlpages/master/latest/img/FIBO_logo.11aeaf9b.jpg" width="200" align="right"/>
 
 # Financial Industry Business Ontology
-<img src="https://spec.edmcouncil.org/fibo/htmlpages/master/latest/img/logo.66a988fe.png" width="150" align="right"/>
+<img src="https://avatars0.githubusercontent.com/u/6618425?s=400&u=3ed327f38a1d043252af3177e5d6f48eef609e6a&v=4" width="150" align="right"/>
 
 FIBO is hosted and sponsored by the [Enterprise Data Management Council (EDM Council)](https://edmcouncil.org). 
 
