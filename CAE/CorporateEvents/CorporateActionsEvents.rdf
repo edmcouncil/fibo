@@ -3,7 +3,6 @@
 	<!ENTITY dct "http://purl.org/dc/terms/">
 	<!ENTITY fibo-be-le-lp "https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/">
 	<!ENTITY fibo-cae-ce-cae "https://spec.edmcouncil.org/fibo/ontology/CAE/CorporateEvents/CorporateActionsEvents/">
-	<!ENTITY fibo-der-drc-raw "https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/RightsAndWarrants/">
 	<!ENTITY fibo-fbc-dae-cre "https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/CreditEvents/">
 	<!ENTITY fibo-fbc-fi-fi "https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/">
 	<!ENTITY fibo-fnd-acc-cur "https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/">
@@ -34,7 +33,6 @@
 	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fibo-be-le-lp="https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/"
 	xmlns:fibo-cae-ce-cae="https://spec.edmcouncil.org/fibo/ontology/CAE/CorporateEvents/CorporateActionsEvents/"
-	xmlns:fibo-der-drc-raw="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/RightsAndWarrants/"
 	xmlns:fibo-fbc-dae-cre="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/CreditEvents/"
 	xmlns:fibo-fbc-fi-fi="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"
 	xmlns:fibo-fnd-acc-cur="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"
@@ -76,7 +74,6 @@
 		<sm:filename>CorporateActionsEvents.rdf</sm:filename>
 		<owl:imports rdf:resource="http://www.omg.org/techprocess/ab/SpecificationMetadata/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/RightsAndWarrants/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/CreditEvents/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"/>
@@ -157,7 +154,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-cae-ce-cae;BonusRightsIssue">
-		<rdfs:subClassOf rdf:resource="&fibo-cae-ce-cae;RightsIssue"/>
+		<rdfs:subClassOf rdf:resource="&fibo-cae-ce-cae;IntermediateSecuritiesDistribution"/>
 		<rdfs:label xml:lang="en">bonus rights issue</rdfs:label>
 		<skos:definition xml:lang="en">A Rights Issue in which the rights are given to the holders of the referenced shares for free.</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Rights = right to buy shares at a specified price. May be given the right for nothing (Bonus Rights Issue) or you may be offered to purchase that right at a subscription price (which you take up or don&apos;t). Bonus Rights Issue: given the option for free. May exercise at the Exercise Price.</fibo-fnd-utl-av:explanatoryNote>
@@ -242,7 +239,7 @@
 	</owl:NamedIndividual>
 	
 	<owl:Class rdf:about="&fibo-cae-ce-cae;CallOnIntermediateSecurities">
-		<rdfs:subClassOf rdf:resource="&fibo-cae-ce-cae;MandatoryCorporateAction"/>
+		<rdfs:subClassOf rdf:resource="&fibo-cae-ce-cae;MandatoryWithChoiceCorporateAction"/>
 		<rdfs:label xml:lang="en">call on intermediate securities</rdfs:label>
 		<skos:definition xml:lang="en">corporate action that involves a call or exercise on nil paid securities or intermediate securities resulting from an intermediate securities distribution (RHDI)</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">This code is used for the second event, when an intermediate securities&apos; issue (rights/coupons) is composed of two events, the first event being the distribution of intermediate securities.</fibo-fnd-utl-av:explanatoryNote>
@@ -319,13 +316,13 @@
 		<rdfs:subClassOf rdf:resource="&fibo-cae-ce-cae;VoluntaryCorporateAction"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-cae-ce-cae;isConversionFrom"/>
+				<owl:onProperty rdf:resource="&fibo-cae-ce-cae;convertsFrom"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-fi;Security"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-cae-ce-cae;isConversionTo"/>
+				<owl:onProperty rdf:resource="&fibo-cae-ce-cae;convertsTo"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-fi;Security"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -449,16 +446,16 @@
 	
 	<owl:Class rdf:about="&fibo-cae-ce-cae;CorporateChangeOfStatusEvent">
 		<rdfs:subClassOf rdf:resource="&fibo-cae-ce-cae;CorporateAction"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-lif;LifecycleEvent"/>
 		<rdfs:label xml:lang="en">corporate change of status event</rdfs:label>
 		<skos:definition xml:lang="en">Some change to the status of some security.</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">This is generally described by a corporate event message. For example, change in trading status, listing status.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-cae-ce-cae;CorporateModificationEvent">
-		<rdfs:subClassOf rdf:resource="&fibo-cae-ce-cae;CorporateAction"/>
-		<rdfs:label xml:lang="en">corporate modification event</rdfs:label>
-		<skos:definition xml:lang="en">Some change in details of some company, which needs to be described for publicly issued securities issued by that company.</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Usually described in a corporate event message. Note that the change relates to the company, but notification about this, for publicly issued securities (shares, bonds) is notificed to the holders of each such security, as corporate event messages.</fibo-fnd-utl-av:explanatoryNote>
+	<owl:Class rdf:about="&fibo-cae-ce-cae;CorporateInformationAction">
+		<rdfs:subClassOf rdf:resource="&fibo-cae-ce-cae;MandatoryCorporateAction"/>
+		<rdfs:label xml:lang="en">corporate information action</rdfs:label>
+		<skos:definition xml:lang="en">corporate action involving information provided by the issuer having no accounting/financial impact on the holder</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-cae-ce-cae;CouponStrip">
@@ -637,6 +634,7 @@
 	</owl:NamedIndividual>
 	
 	<owl:NamedIndividual rdf:about="&fibo-cae-ce-cae;EXWA">
+		<rdf:type rdf:resource="&fibo-cae-ce-cae;BusinessStrategyOrientedAction"/>
 		<rdf:type rdf:resource="&fibo-cae-ce-cae;IncomeOrientedAction"/>
 		<rdfs:label xml:lang="en">EXWA</rdfs:label>
 		<skos:definition xml:lang="en">SWIFT ISO 15022 classifier for corporate actions that offer holders the option to buy (call warrant) or to sell (put warrant) a specific amount of stock, cash, or commodity, at a predetermined price, during a predetermined period of time</skos:definition>
@@ -671,7 +669,7 @@
 				</owl:unionOf>
 			</owl:Class>
 		</owl:equivalentClass>
-		<skos:definition xml:lang="en">Event which is an offer to the holder or potential holder or other intersted party, to enter into a trade which is or would be legally binding on the part of the party making the offer (the offeror).</skos:definition>
+		<skos:definition xml:lang="en">corporat action involving an offer to a holder, potential holder, or other intersted party, to enter into a trade which is or would be legally binding on the part of the party making the offer (the offeror).</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-cae-ce-cae;FullCallEarlyRedemptionAction">
@@ -680,6 +678,17 @@
 		<skos:definition xml:lang="en">corporate action that involves redemption of an entire issue outstanding of securities prior to maturity</skos:definition>
 		<skos:example xml:lang="en">Examples securities that may be subject to a full call/early redemption include bonds, preferred equity, funds, that may be redeemed by the issuer or its agent before final maturity.</skos:example>
 	</owl:Class>
+	
+	<owl:NamedIndividual rdf:about="&fibo-cae-ce-cae;INFO">
+		<rdf:type rdf:resource="&fibo-cae-ce-cae;BusinessStrategyOrientedAction"/>
+		<rdfs:label xml:lang="en">INFO</rdfs:label>
+		<skos:definition xml:lang="en">SWIFT ISO 15022 classifier for corporate actions involving information provided by the issuer having no accounting/financial impact on the holder</skos:definition>
+		<fibo-fnd-rel-rel:isDefinedIn rdf:resource="&fibo-cae-ce-cae;ISO15022CorporateActionClassificationScheme"/>
+		<lcc-cr:classifies rdf:resource="&fibo-cae-ce-cae;CorporateInformationAction"/>
+		<lcc-lr:denotes rdf:resource="&fibo-cae-ce-cae;CorporateInformationAction"/>
+		<lcc-lr:hasTag>INFO</lcc-lr:hasTag>
+		<lcc-lr:isMemberOf rdf:resource="&fibo-cae-ce-cae;ISO15022CorporateActionClassificationScheme"/>
+	</owl:NamedIndividual>
 	
 	<owl:NamedIndividual rdf:about="&fibo-cae-ce-cae;INTR">
 		<rdf:type rdf:resource="&fibo-cae-ce-cae;IncomeOrientedAction"/>
@@ -737,10 +746,31 @@
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">The SWIFT definition as given defines the notification of the interest rate change, not the adjustment. Adjusted to describe the event. REVIEW: Is this really an action? Usually consider that it&apos;s expected. Given definition was for the announcement. SWIFT full definition &quot;Announcement of the current coupon rate for a floating or adjustable rate security.&quot;</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-cae-ce-cae;IntermediateSecuritiesDistribution">
+		<rdfs:subClassOf rdf:resource="&fibo-cae-ce-cae;MandatoryCorporateAction"/>
+		<rdfs:label xml:lang="en">intermediate securities distribution</rdfs:label>
+		<skos:definition xml:lang="en">corporate action involving the distribution of intermediate securities or privilege that gives the holder the right to take part in a future event</skos:definition>
+		<fibo-fnd-utl-av:synonym xml:lang="en">rights distribution</fibo-fnd-utl-av:synonym>
+	</owl:Class>
+	
+	<owl:NamedIndividual rdf:about="&fibo-cae-ce-cae;LIQU">
+		<rdf:type rdf:resource="&fibo-cae-ce-cae;BusinessStrategyOrientedAction"/>
+		<rdfs:label xml:lang="en">LIQU</rdfs:label>
+		<skos:definition xml:lang="en">SWIFT ISO 15022 classifier for corporate actions consisting of distribution of cash, assets, or both</skos:definition>
+		<fibo-fnd-rel-rel:isDefinedIn rdf:resource="&fibo-cae-ce-cae;ISO15022CorporateActionClassificationScheme"/>
+		<lcc-cr:classifies rdf:resource="&fibo-cae-ce-cae;LiquidationAction"/>
+		<lcc-lr:denotes rdf:resource="&fibo-cae-ce-cae;LiquidationAction"/>
+		<lcc-lr:hasTag>LIQU</lcc-lr:hasTag>
+		<lcc-lr:isMemberOf rdf:resource="&fibo-cae-ce-cae;ISO15022CorporateActionClassificationScheme"/>
+	</owl:NamedIndividual>
+	
 	<owl:Class rdf:about="&fibo-cae-ce-cae;LiquidationAction">
 		<rdfs:subClassOf rdf:resource="&fibo-cae-ce-cae;MandatoryCorporateAction"/>
 		<rdfs:label xml:lang="en">liquidation action</rdfs:label>
-		<skos:definition xml:lang="en">Liquidating dividend/Liquidation consist of a distribution of cash, assets, or both. Debt may be paid in order of priority based on preferred claims to assets specified by the security. SWIFT = LIQU</skos:definition>
+		<skos:definition xml:lang="en">corporate action consisting of distribution of cash, assets, or both</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Debt may be paid in order of priority based on preferred claims to assets specified by the security.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:synonym xml:lang="en">liquidation dividend</fibo-fnd-utl-av:synonym>
+		<fibo-fnd-utl-av:synonym xml:lang="en">liquidation payment</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-cae-ce-cae;ListingStatusDelistingMessage">
@@ -757,6 +787,17 @@
 		<lcc-cr:classifies rdf:resource="&fibo-cae-ce-cae;FullCallEarlyRedemptionAction"/>
 		<lcc-lr:denotes rdf:resource="&fibo-cae-ce-cae;FullCallEarlyRedemptionAction"/>
 		<lcc-lr:hasTag>MCAL</lcc-lr:hasTag>
+		<lcc-lr:isMemberOf rdf:resource="&fibo-cae-ce-cae;ISO15022CorporateActionClassificationScheme"/>
+	</owl:NamedIndividual>
+	
+	<owl:NamedIndividual rdf:about="&fibo-cae-ce-cae;MRGR">
+		<rdf:type rdf:resource="&fibo-cae-ce-cae;BusinessStrategyOrientedAction"/>
+		<rdfs:label xml:lang="en">MRGR</rdfs:label>
+		<skos:definition xml:lang="en">SWIFT ISO 15022 classifier for corporate actions that involve the exchange of outstanding securities, initiated by the issuer which may include options, as the result of two or more companies combining assets, that is, an external, third party company</skos:definition>
+		<fibo-fnd-rel-rel:isDefinedIn rdf:resource="&fibo-cae-ce-cae;ISO15022CorporateActionClassificationScheme"/>
+		<lcc-cr:classifies rdf:resource="&fibo-cae-ce-cae;PostMergerSecuritiesExchange"/>
+		<lcc-lr:denotes rdf:resource="&fibo-cae-ce-cae;PostMergerSecuritiesExchange"/>
+		<lcc-lr:hasTag>MRGR</lcc-lr:hasTag>
 		<lcc-lr:isMemberOf rdf:resource="&fibo-cae-ce-cae;ISO15022CorporateActionClassificationScheme"/>
 	</owl:NamedIndividual>
 	
@@ -801,7 +842,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-cae-ce-cae;OrganizationNameChange">
-		<rdfs:subClassOf rdf:resource="&fibo-cae-ce-cae;CorporateModificationEvent"/>
+		<rdfs:subClassOf rdf:resource="&fibo-cae-ce-cae;CorporateInformationAction"/>
 		<rdfs:label xml:lang="en">organization name change</rdfs:label>
 		<skos:definition xml:lang="en">The issuing company changes it&apos;s name. Event shows the change from old name to new name and may involve surrendering physical shares with the old name to the registrar. SWIFT = NAME</skos:definition>
 	</owl:Class>
@@ -867,21 +908,21 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-cae-ce-cae;PartialRedemptionWithReductionOfNominalValueAction">
-		<rdfs:subClassOf rdf:resource="&fibo-cae-ce-cae;VoluntaryCorporateAction"/>
+		<rdfs:subClassOf rdf:resource="&fibo-cae-ce-cae;CorporateAction"/>
 		<rdfs:label xml:lang="en">partial redemption with reduction of nominal value action</rdfs:label>
 		<skos:definition xml:lang="en">corporate action that involves redemption of securities in part before their scheduled final maturity date with reduction of the nominal value of the securities</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">The outstanding amount of securities will be reduced proportionally.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">The outstanding amount of securities will be reduced proportionally. May be mandatory or voluntary.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-cae-ce-cae;PartialRedemptionWithoutReductionOfNominalValueAction">
-		<rdfs:subClassOf rdf:resource="&fibo-cae-ce-cae;VoluntaryCorporateAction"/>
+		<rdfs:subClassOf rdf:resource="&fibo-cae-ce-cae;CorporateAction"/>
 		<rdfs:label xml:lang="en">partial redemption without reduction of nominal value action</rdfs:label>
 		<skos:definition xml:lang="en">corporate action that involves redemption of securities in part before their scheduled final maturity date with no reduction in nominal value</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">This is commonly done by pool factor reduction.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">This is commonly done by pool factor reduction. May be mandatory or voluntary.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-cae-ce-cae;PlaceOfIncorporationChange">
-		<rdfs:subClassOf rdf:resource="&fibo-cae-ce-cae;CorporateModificationEvent"/>
+		<rdfs:subClassOf rdf:resource="&fibo-cae-ce-cae;CorporateInformationAction"/>
 		<rdfs:label xml:lang="en">place of incorporation change</rdfs:label>
 		<skos:definition xml:lang="en">Changes in the state of incorporation for US companies and changes in the place of incorporation for foreign companies. Where shares need to be registered following the incorporation change, the holder(s) may have to elect the registrar. SWIFT = PLAC</skos:definition>
 	</owl:Class>
@@ -890,25 +931,26 @@
 		<rdfs:subClassOf rdf:resource="&fibo-cae-ce-cae;CorporateAction"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-cae-ce-cae;definesAdditional"/>
-				<owl:allValuesFrom rdf:resource="&fibo-fnd-acc-cur;AmountOfMoney"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-acc-cur;hasMonetaryAmount"/>
+				<owl:onClass rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-cae-ce-cae;exchangesFrom"/>
+				<owl:onProperty rdf:resource="&fibo-cae-ce-cae;convertsFrom"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-fi;Security"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-cae-ce-cae;exchangesInto"/>
+				<owl:onProperty rdf:resource="&fibo-cae-ce-cae;convertsTo"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-fi;Security"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">post merger securities exchange</rdfs:label>
-		<skos:definition xml:lang="en">Mandatory or voluntary exchange of an outstanding securities as the result of two or more companies combining assets. Cash payments may accompany share exchange.</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">This is an action as a result of the Merger, not the merger itself.</fibo-fnd-utl-av:explanatoryNote>
+		<rdfs:label xml:lang="en">post-merger securities exchange</rdfs:label>
+		<skos:definition xml:lang="en">corporate action that involves the exchange of outstanding securities, initiated by the issuer which may include options, as the result of two or more companies combining assets, that is, an external, third party company</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">This is an action as a result of the merger, not the merger itself, and may be mandatory or voluntary. Cash payments may accompany share exchange.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-cae-ce-cae;PriorityIssue">
@@ -942,6 +984,17 @@
 		<lcc-cr:classifies rdf:resource="&fibo-cae-ce-cae;RedenominationAction"/>
 		<lcc-lr:denotes rdf:resource="&fibo-cae-ce-cae;RedenominationAction"/>
 		<lcc-lr:hasTag>REDO</lcc-lr:hasTag>
+		<lcc-lr:isMemberOf rdf:resource="&fibo-cae-ce-cae;ISO15022CorporateActionClassificationScheme"/>
+	</owl:NamedIndividual>
+	
+	<owl:NamedIndividual rdf:about="&fibo-cae-ce-cae;RHDI">
+		<rdf:type rdf:resource="&fibo-cae-ce-cae;BusinessStrategyOrientedAction"/>
+		<rdfs:label xml:lang="en">RHDI</rdfs:label>
+		<skos:definition xml:lang="en">SWIFT ISO 15022 classifier for corporate actions involving the distribution of intermediate securities or privilege that gives the holder the right to take part in a future event</skos:definition>
+		<fibo-fnd-rel-rel:isDefinedIn rdf:resource="&fibo-cae-ce-cae;ISO15022CorporateActionClassificationScheme"/>
+		<lcc-cr:classifies rdf:resource="&fibo-cae-ce-cae;IntermediateSecuritiesDistribution"/>
+		<lcc-lr:denotes rdf:resource="&fibo-cae-ce-cae;IntermediateSecuritiesDistribution"/>
+		<lcc-lr:hasTag>RHDI</lcc-lr:hasTag>
 		<lcc-lr:isMemberOf rdf:resource="&fibo-cae-ce-cae;ISO15022CorporateActionClassificationScheme"/>
 	</owl:NamedIndividual>
 	
@@ -982,43 +1035,11 @@
 		<fibo-fnd-utl-av:synonym xml:lang="en">change in nominal value</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-cae-ce-cae;RightsDistribution">
-		<rdfs:subClassOf rdf:resource="&fibo-cae-ce-cae;RightsIssue"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-cae-ce-cae;oversubscriptionAmount"/>
-				<owl:onClass rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
-				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-eq-eq;Share"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">rights distribution</rdfs:label>
-		<skos:definition xml:lang="en">The distribution of rights to shareholders, in proportion to their equity holding.</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Does the Rights Distribution have to be proportion to the Shareholding? Sometimes this is offered at market prices, so all you are doing is offering shareholders the right to purchase. Conclusion: Not &quot;in proportion&quot; at all. REVISE: May also have Bonus Rights Issue, where you don&apos; have a subscriptiojn price. This works like a rights issue but without a price attached to it. The rate of how many you can buy is definitely in proportion to your holding. The rate of distribution of the right is proportional to the holdings. Another difference: A Rights thing you have to pay for the additional shares if you choose to purchase them (exercise the right) whereas a Bonus Issue you do not pay, you get them outright for free. TWO PARTS: 1. Distribution of the rights in proportion to their holding 2. Exercise of the Rights. Hence RHDI v EXRI where EXRI is the exercising of the right to purchase the shares. The Rights that are distributed is a formal &quot;Rights&quot; instrument. This may have the sort of features we see in other rights instruments, such as restriction in when you can exercise it.</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-cae-ce-cae;RightsExerciseEvent">
 		<rdfs:subClassOf rdf:resource="&fibo-cae-ce-cae;CorporateAction"/>
 		<rdfs:label xml:lang="en">rights exercise event</rdfs:label>
 		<skos:definition xml:lang="en">Exercising the right to purchase the shares. Furhter Notes: This is an action on the part of the holder. SWIFT: Call/exercise on nil-paid securities/rights resulting from a rights distribution (RHDI) (To be used for the second event in case rights issue is dealt with in 2 events, first event being the RHDI).</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">There is a rights trading period overlaps with rights subscriptiuon period (you can trade the rights) Rights exercise period - expiry date. Some time after the expiry the new shares are distributed. This is the distribution.</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-cae-ce-cae;RightsIssue">
-		<rdfs:subClassOf rdf:resource="&fibo-cae-ce-cae;MandatoryCorporateAction"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-cae-ce-cae;isDistributionOf"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-drc-raw;SubscriptionRight"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">rights issue</rdfs:label>
-		<skos:definition xml:lang="en">Some issue of rights to holders.</skos:definition>
 	</owl:Class>
 	
 	<owl:NamedIndividual rdf:about="&fibo-cae-ce-cae;SHPR">
@@ -1100,6 +1121,17 @@
 		<fibo-fnd-utl-av:synonym xml:lang="en">subdivision</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
+	<owl:NamedIndividual rdf:about="&fibo-cae-ce-cae;TEND">
+		<rdf:type rdf:resource="&fibo-cae-ce-cae;BusinessStrategyOrientedAction"/>
+		<rdfs:label xml:lang="en">TEND</rdfs:label>
+		<skos:definition xml:lang="en">SWIFT ISO 15022 classifier for corporate actions involving information provided by the issuer having no accounting/financial impact on the holder</skos:definition>
+		<fibo-fnd-rel-rel:isDefinedIn rdf:resource="&fibo-cae-ce-cae;ISO15022CorporateActionClassificationScheme"/>
+		<lcc-cr:classifies rdf:resource="&fibo-cae-ce-cae;TenderOffer"/>
+		<lcc-lr:denotes rdf:resource="&fibo-cae-ce-cae;TenderOffer"/>
+		<lcc-lr:hasTag>TEND</lcc-lr:hasTag>
+		<lcc-lr:isMemberOf rdf:resource="&fibo-cae-ce-cae;ISO15022CorporateActionClassificationScheme"/>
+	</owl:NamedIndividual>
+	
 	<owl:Class rdf:about="&fibo-cae-ce-cae;TenderOffer">
 		<rdfs:subClassOf rdf:resource="&fibo-cae-ce-cae;VoluntaryCorporateAction"/>
 		<rdfs:subClassOf>
@@ -1109,8 +1141,11 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">tender offer</rdfs:label>
-		<skos:definition xml:lang="en">Offer made to shareholders, normally by a third party, requesting them to sell (tender) their shares for a specified price usually at a premium over prevailing market prices. Generally, the objective of a tender is to take control of the target company.</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">The announcer is not the issuer of the shares. The party to which the offer is made need not be the holder. Assumption: someone else trying to take over ythe company.</fibo-fnd-utl-av:explanatoryNote>
+		<skos:definition xml:lang="en">corporate action involving an offer made to shareholders, normally by a third party, requesting them to sell (tender) or exchange their equities</skos:definition>
+		<fibo-fnd-utl-av:synonym xml:lang="en">acquisition</fibo-fnd-utl-av:synonym>
+		<fibo-fnd-utl-av:synonym xml:lang="en">buyback</fibo-fnd-utl-av:synonym>
+		<fibo-fnd-utl-av:synonym xml:lang="en">purchase offer</fibo-fnd-utl-av:synonym>
+		<fibo-fnd-utl-av:synonym xml:lang="en">takeover</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-cae-ce-cae;TradingStatusActiveMessage">
@@ -1178,53 +1213,16 @@
 		<skos:definition xml:lang="en">corporate action that involves booking out of valueless securities</skos:definition>
 	</owl:Class>
 	
-	<owl:ObjectProperty rdf:about="&fibo-cae-ce-cae;definesAdditional">
-		<rdfs:label xml:lang="en">defines additional</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-cae-ce-cae;PostMergerSecuritiesExchange"/>
-		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;AmountOfMoney"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-cae-ce-cae;exchangesFrom">
-		<rdfs:label xml:lang="en">exchanges from</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-cae-ce-cae;PostMergerSecuritiesExchange"/>
+	<owl:ObjectProperty rdf:about="&fibo-cae-ce-cae;convertsFrom">
+		<rdfs:label xml:lang="en">converts from</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-cae-ce-cae;CorporateAction"/>
 		<rdfs:range rdf:resource="&fibo-fbc-fi-fi;Security"/>
 	</owl:ObjectProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-cae-ce-cae;exchangesInto">
-		<rdfs:label xml:lang="en">exchanges into</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-cae-ce-cae;PostMergerSecuritiesExchange"/>
+	<owl:ObjectProperty rdf:about="&fibo-cae-ce-cae;convertsTo">
+		<rdfs:label xml:lang="en">converts to</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-cae-ce-cae;CorporateAction"/>
 		<rdfs:range rdf:resource="&fibo-fbc-fi-fi;Security"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-cae-ce-cae;isConversionFrom">
-		<rdfs:label xml:lang="en">is conversion from</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-cae-ce-cae;ConversionAction"/>
-		<rdfs:range rdf:resource="&fibo-fbc-fi-fi;Security"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-cae-ce-cae;isConversionTo">
-		<rdfs:label xml:lang="en">is conversion to</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-cae-ce-cae;ConversionAction"/>
-		<rdfs:range rdf:resource="&fibo-fbc-fi-fi;Security"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-cae-ce-cae;isDistributionOf">
-		<rdfs:label xml:lang="en">is distribution of</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-cae-ce-cae;RightsIssue"/>
-		<rdfs:range rdf:resource="&fibo-der-drc-raw;SubscriptionRight"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-cae-ce-cae;isIssueOf">
-		<rdfs:label xml:lang="en">is issue of</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-cae-ce-cae;BonusIssue"/>
-		<rdfs:range rdf:resource="&fibo-sec-eq-eq;Share"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-cae-ce-cae;oversubscriptionAmount">
-		<rdfs:label xml:lang="en">oversubscription amount</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-cae-ce-cae;RightsDistribution"/>
-		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
-		<skos:definition xml:lang="en">The amount of additional rights that may be purchased by the holder over and above the initial allocation. Further notes: In addition to a Subscription Price (see the Price term in the Subscription rights term), there is an additional privilege extended to the holders, to subscribe to additional shares. This also is in a certain proportion. This is to catch if not enough rights were subscribed, you may be left with some left over. These can then be given to the over-subscribers. Additional terms: if this exists there is a ratio for this as well. Notes Some people may pass up the right, and another person may pick this up through over-subscription. Therefore there is no oversubscription on a Bonus issue because people are getting it for free.</skos:definition>
 	</owl:ObjectProperty>
 
 </rdf:RDF>
