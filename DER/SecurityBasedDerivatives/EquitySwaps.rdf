@@ -101,25 +101,14 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;hasContractualElement"/>
-				<owl:onClass rdf:resource="&fibo-der-sbd-eqs;SpecialDividendLegTerm"/>
-				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+				<owl:onClass rdf:resource="&fibo-der-sbd-eqs;SpecialDividendLegTerms"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
 				<owl:someValuesFrom rdf:resource="&fibo-der-sbd-sbd;EquityObservable"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
-				<owl:someValuesFrom>
-					<owl:Restriction>
-						<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasIdentity"/>
-						<owl:someValuesFrom rdf:resource="&fibo-sec-eq-eq;ListedShare"/>
-					</owl:Restriction>
-				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -131,6 +120,19 @@
 		<rdfs:label xml:lang="en">dividend leg</rdfs:label>
 		<skos:definition xml:lang="en">floating leg of a dividend swap</skos:definition>
 		<skos:editorialNote xml:lang="en">FpML has a set of terms for Dividend Conditions which are usable across a range of derivatives, including Forward. Many of the definitions of individual terms refer specifically to equity return (swaps) and it is not clear whether each such term also applies to Equity forwards (i.e. the definition is more specific than it should be), or if these are terms unique to Equity Return Swaps, among which are terms applicable to Equity forwards. REVIEW: 19 May: If you have a forward contract with a dividend before you settle there must be some terms to determine how the dividend is resolved. Similar question would apply with Bond Interst? No becaues this is a known amount so it is taken into account in the price that&apos;s been agreed (discount premium). Whether it&apos;s cum or ex coupon therefore doesn&apos;t affect pricing; with Dividend this is not the case, there afore there are contractual trerms about how that is to be resolved. FpML: A type describing the conditions governing the payment of dividends to the receiver of the equity return. With the exception of the dividend payout ratio, which is defined for each of the underlying components.</skos:editorialNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-sbd-eqs;DividendSwap">
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-swp;Swap"/>
+		<rdfs:subClassOf rdf:resource="&fibo-der-sbd-sbd;EquityDerivative"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-drc-swp;hasLeg"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-sbd-eqs;DividendLeg"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">dividend swap</rdfs:label>
+		<skos:definition xml:lang="en">equity swap that has one leg whose underlier is a dividend stream</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-sbd-eqs;EquityCorrelationSwap">
@@ -147,35 +149,26 @@
 				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">equity correlation swap contract</rdfs:label>
+		<rdfs:label xml:lang="en">equity correlation swap</rdfs:label>
 		<skos:definition xml:lang="en">todo: the underlier for the leg can be any of (1) dividend stream for a single stock, (2) change in value for a single share, (3) change in value for a basket of shares, (4) change in value for an index, (5) value of a dividend stream for a basket of shares, or (6) comparison of the change in value of a given share or basket or index against something else - for example, a single share against an index, which is the thing you are cross-correlating with the volatility of the share</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-sbd-eqs;EquityDividendSwap">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-swp;Swap"/>
-		<rdfs:subClassOf rdf:resource="&fibo-der-sbd-sbd;EquityDerivative"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-sbd-sbd;EquityObservable"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">equity dividend swap</rdfs:label>
-		<skos:definition xml:lang="en">No definition FpML: Specifies the structure of the dividend swap transaction supplement.</skos:definition>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-der-sbd-eqs;EquityReturnSwap">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-swp;ReturnSwap"/>
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-swp;TotalReturnSwap"/>
 		<rdfs:subClassOf rdf:resource="&fibo-der-sbd-sbd;EquityDerivative"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-sbd-sbd;EquityObservable"/>
+				<owl:onProperty rdf:resource="&fibo-der-drc-swp;hasReturnLeg"/>
+				<owl:someValuesFrom>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
+						<owl:someValuesFrom rdf:resource="&fibo-der-sbd-sbd;EquityObservable"/>
+					</owl:Restriction>
+				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">equity return swap</rdfs:label>
-		<skos:definition xml:lang="en">No definition FpML has no distinct product type for this, instead the schema for Return Swaps has content which is an Equity Swap Transaction Supplement.</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote>The swap itself is typically based on the performance of the security in the marketplace, i.e., the market price.</fibo-fnd-utl-av:explanatoryNote>
+		<skos:definition xml:lang="en">total return swap whose return leg underlier is an equity observable</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-sbd-eqs;EquityVarianceSwap">
@@ -197,9 +190,9 @@
 		<skos:definition xml:lang="en">date period over which the sum of all qualifying dividends paid by the relevent issuers as identified in the swap terms is calculated</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-sbd-eqs;SpecialDividendLegTerm">
+	<owl:Class rdf:about="&fibo-der-sbd-eqs;SpecialDividendLegTerms">
 		<rdfs:subClassOf rdf:resource="&fibo-der-drc-bsc;CashflowTerms"/>
-		<rdfs:label xml:lang="en">special dividend leg term</rdfs:label>
+		<rdfs:label xml:lang="en">special dividend leg terms</rdfs:label>
 		<skos:definition xml:lang="en">Special dividends and memorial dividends which are applicable. FpML: &apos;If present and true, then special dividends and memorial dividends are applicable.&apos; Note that &quot;if true&quot; (a yes/no term) and &quot;if present&quot; (this term, which is the presence of the thing) are two separate meanings. FpML implies the truth of the Yes/No fact by the presence or absence of this term. However, although FpML definition says &quot;if present and true&quot;, the term is just a &quot;boolean&quot; ie a YTes/no applicability term. Not sure where the special dividends themselves are defined.</skos:definition>
 	</owl:Class>
 	
