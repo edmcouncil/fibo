@@ -1,0 +1,13 @@
+prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+
+##
+# banner Class subClassOf hierarchy shouldn't be circular.
+
+SELECT DISTINCT ?error ?class
+WHERE 
+{
+  FILTER (CONTAINS(str(?class), "edmcouncil"))
+  ?class rdfs:subClassOf+ ?class
+
+  BIND (concat ("PRODERROR: There is a hierarchy cycle around class ", str(?class)) AS ?error)
+}
