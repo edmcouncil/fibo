@@ -1,0 +1,13 @@
+prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+
+##
+# banner Property subPropertyOf hierarchy shouldn't be circular.
+
+SELECT DISTINCT ?error ?property
+WHERE 
+{
+  FILTER (CONTAINS(str(?property), "edmcouncil"))
+  ?property rdfs:subPropertyOf+ ?property
+
+  BIND (concat ("PRODERROR: There is a hierarchy cycle around property ", str(?property)) AS ?error)
+}
