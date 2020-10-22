@@ -63,7 +63,7 @@
 		<rdfs:label>Swaps Ontology</rdfs:label>
 		<dct:abstract>This ontology defines concepts specific to swap contracts, including relevant trading organizations, data repositories, and intermediaries.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
-		<sm:contentLanguage rdf:resource="http://www.w3.org/standards/techs/owl#w3c_all"/>
+		<sm:contentLanguage rdf:resource="https://www.w3.org/TR/owl2-quick-reference/"/>
 		<sm:copyright>Copyright (c) 2016-2020 EDM Council, Inc.</sm:copyright>
 		<sm:copyright>Copyright (c) 2016-2020 Object Management Group, Inc.</sm:copyright>
 		<sm:fileAbbreviation>fibo-der-drc-swp</sm:fileAbbreviation>
@@ -245,12 +245,25 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-drc-swp;hasLeg"/>
-				<owl:onClass rdf:resource="&fibo-der-drc-swp;PerformanceBasedVariableLeg"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+				<owl:onClass rdf:resource="&fibo-der-drc-swp;StrikeLeg"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-drc-swp;hasLeg"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-drc-swp;PerformanceBasedVariableLeg"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>statistical swap</rdfs:label>
 		<skos:definition>swap that depends on some statistical measure of the performance of the underlier</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-drc-swp;StrikeLeg">
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-swp;SwapLeg"/>
+		<rdfs:label xml:lang="en">strike leg</rdfs:label>
+		<skos:definition xml:lang="en">swap leg that specifies a fixed amount, &apos;the strike&apos;, of some variable or a monetary amount quoted at the time of execution</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">The realization of a strike leg is not a cashflow per se, but a netting out against the terms defined in the other leg of a statistical swap.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-swp;Swap">
@@ -530,6 +543,7 @@
 		<rdfs:subPropertyOf rdf:resource="&fibo-der-drc-swp;hasLeg"/>
 		<rdfs:label xml:lang="en">has funding leg</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-der-drc-swp;ReturnSwap"/>
+		<skos:definition>indicates the leg of a return swap that specifies a set payment rate, typically benchmark based but possibly a fixed rate</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-drc-swp;hasLeg">
@@ -560,6 +574,7 @@
 		<rdfs:label xml:lang="en">has return leg</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-der-drc-swp;ReturnSwap"/>
 		<rdfs:range rdf:resource="&fibo-der-drc-swp;ReturnLeg"/>
+		<skos:definition>indicates the leg of a return swap whose payments are based on the return of an underlying asset</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-drc-swp;hasSwapIdentifier">
