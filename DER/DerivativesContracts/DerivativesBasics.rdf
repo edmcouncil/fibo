@@ -99,8 +99,9 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/Indicators/Indicators/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/Baskets/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/20200401/DerivativesContracts/DerivativesBasics/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/20201001/DerivativesContracts/DerivativesBasics/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20180801/DerivativesContracts/DerivativesBasics.rdf version of this ontology was modified to eliminate duplication with concepts in LCC and eliminate a redundant subclass declaration in observable value.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20200401/DerivativesContracts/DerivativesBasics.rdf version of this ontology was modified to loosen the domain of the hasUnderlier property, which could be either an instrument or leg, and refine the definition of Underlier and hasUnderlier based on recent work on swaps.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -286,7 +287,6 @@
 		</rdfs:subClassOf>
 		<rdfs:label>over-the-counter (OTC) transaction</rdfs:label>
 		<skos:definition>an over-the-counter transaction to exchange an instrument for some consideration</skos:definition>
-		<skos:editorialNote>Removed inheritance relationship with Transactions/TransactionsExtended/CoveredTransaction for the sake of expediency.</skos:editorialNote>
 		<skos:editorialNote>This represents a covered transaction, that is, the OTC transaction is transacted under some previously agreed master agreement between the parties.</skos:editorialNote>
 	</owl:Class>
 	
@@ -380,16 +380,17 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>underlier</rdfs:label>
-		<skos:definition>the financial instrument(s), index or parameter, or combination thereof, that form the basis for the derivative instrument</skos:definition>
-		<skos:editorialNote>The underlier breaks down into two separate meanings: The item which determines the value of the contract (the observable), and the item that is deliverable upon expiry or exercise of the contract (if there is one). These are usually the same item but in some cases such as index derivatives the exercise takes a different form. Action: Add &apos;Observable&apos; as a distinct term. Then use Deliverable. Is Underlier the union? In a Call Option the Underlier is the Deliverable and is referred to as the Underlier. With an Fx Call Option, the deliverable is the cash value which you are exchanging for the amount in another currency (so this is no difference as cash is instrument). Then take IR Swap where 3mo LIBOR Rate is the Observable, but the delivery is Cash. Then one would refer to the LIBOR as the Observable. Delivers an amount based on the observable, and the delivered cash is the Deliverable. So what we refer to as Underlier may be the Observable or the Deliverable e.g. Call option on IBM the deliverable is the IBM Stock whereas a Swap leg depending on LIBOR, the Deliverable is Cash but the &apos;Underlier&apos; is the Observable. Would be nore accurate not to refer to the Observable not as an Underlier. Therefore there would be nothing referred to as the &apos;Underlier&apos; as such. However, all derivatives have Underlier. Take an IR Cap, would not not refer to it as having an Underlier - the notion of Underlier becomes fuzzier when you get to higher order derivatives. LIBOR on a list of dates is an &apos;Observable&apos; but is several amounts.</skos:editorialNote>
+		<skos:definition>something that can be assigned a value in the marketplace that forms the basis for a derivative instrument</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.lawinsider.com/dictionary/underlier</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:explanatoryNote>Underlier means any rate (including interest and foreign exchange rates), currency, commodity, security, instrument of indebtedness, index, quantitative measure, occurrence or non-occurrence of an event, or other financial or economic interest, or property of any kind, or any interest therein or based on the value thereof, in or by reference to which any payment or delivery under a transaction is to be made or determined.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-drc-bsc;hasUnderlier">
 		<rdfs:subPropertyOf rdf:resource="&lcc-lr;has"/>
 		<rdfs:label>has underlier</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fbc-fi-fi;DerivativeInstrument"/>
 		<rdfs:range rdf:resource="&fibo-der-drc-bsc;Underlier"/>
-		<skos:definition>relates a derivative to an asset, such as one or more financial instrument(s), index or parameter, or combination thereof on which the contract is based</skos:definition>
+		<skos:definition>relates a derivative to something on which the contract is based</skos:definition>
+		<fibo-fnd-utl-av:usageNote>The domain of this property can be either a derivative instrument or, in the case of a swap contract, one leg of the swap.</fibo-fnd-utl-av:usageNote>
 	</owl:ObjectProperty>
 	
 	<owl:Class rdf:about="&fibo-fbc-fi-fi;DerivativeInstrument">
