@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE rdf:RDF [
 	<!ENTITY dct "http://purl.org/dc/terms/">
+	<!ENTITY fibo-be-oac-cown "https://spec.edmcouncil.org/fibo/ontology/BE/OwnershipAndControl/CorporateOwnership/">
+	<!ENTITY fibo-be-oac-opty "https://spec.edmcouncil.org/fibo/ontology/BE/OwnershipAndControl/OwnershipParties/">
 	<!ENTITY fibo-der-drc-raw "https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/RightsAndWarrants/">
 	<!ENTITY fibo-fbc-fi-fi "https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/">
 	<!ENTITY fibo-fnd-acc-cur "https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/">
@@ -22,6 +24,8 @@
 ]>
 <rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/RightsAndWarrants/"
 	xmlns:dct="http://purl.org/dc/terms/"
+	xmlns:fibo-be-oac-cown="https://spec.edmcouncil.org/fibo/ontology/BE/OwnershipAndControl/CorporateOwnership/"
+	xmlns:fibo-be-oac-opty="https://spec.edmcouncil.org/fibo/ontology/BE/OwnershipAndControl/OwnershipParties/"
 	xmlns:fibo-der-drc-raw="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/RightsAndWarrants/"
 	xmlns:fibo-fbc-fi-fi="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"
 	xmlns:fibo-fnd-acc-cur="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"
@@ -45,6 +49,8 @@
 		<rdfs:label xml:lang="en">Rights and Warrants Ontology</rdfs:label>
 		<dct:abstract>This covers a range of special contracts or arrangement with selected holders such as company participants. These include rights (privileges) extended to existing security holders to make new securities available to them at reduced prices or free, and warrants whereby the holder can purchase or sell back a given quantity of the instrument, commodity or currency during a specified period at a pre-defined price.</dct:abstract>
 		<sm:fileAbbreviation>fibo-der-drc-raw</sm:fileAbbreviation>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/OwnershipAndControl/CorporateOwnership/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/OwnershipAndControl/OwnershipParties/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/DerivativesBasics/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"/>
@@ -81,7 +87,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-raw;AllotmentRightHolder">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-ast;SecurityHolder"/>
+		<rdfs:subClassOf rdf:resource="&fibo-be-oac-opty;Investor"/>
 		<rdfs:label xml:lang="en">allotment right holder</rdfs:label>
 		<skos:definition xml:lang="en">The party which is the holder of an allotment right. This is identified as being a party which is also an existing holder of the security identified as the underlying security.</skos:definition>
 	</owl:Class>
@@ -209,7 +215,16 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isHeldBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-ast;SecurityHolder"/>
+				<owl:someValuesFrom>
+					<owl:Class>
+						<owl:unionOf rdf:parseType="Collection">
+							<rdf:Description rdf:about="&fibo-be-oac-opty;Investor">
+							</rdf:Description>
+							<rdf:Description rdf:about="&fibo-be-oac-cown;Shareholder">
+							</rdf:Description>
+						</owl:unionOf>
+					</owl:Class>
+				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">stockholders rights instrument</rdfs:label>
