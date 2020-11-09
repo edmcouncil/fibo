@@ -6,6 +6,7 @@
 	<!ENTITY fibo-be-le-cb "https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/CorporateBodies/">
 	<!ENTITY fibo-be-le-fbo "https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/FormalBusinessOrganizations/">
 	<!ENTITY fibo-be-le-lp "https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/">
+	<!ENTITY fibo-be-oac-opty "https://spec.edmcouncil.org/fibo/ontology/BE/OwnershipAndControl/OwnershipParties/">
 	<!ENTITY fibo-civ-fnd-civ "https://spec.edmcouncil.org/fibo/ontology/CIV/Funds/CIV/">
 	<!ENTITY fibo-fbc-fi-fi "https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/">
 	<!ENTITY fibo-fbc-fi-stl "https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/Settlement/">
@@ -53,6 +54,7 @@
 	xmlns:fibo-be-le-cb="https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/CorporateBodies/"
 	xmlns:fibo-be-le-fbo="https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/FormalBusinessOrganizations/"
 	xmlns:fibo-be-le-lp="https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/"
+	xmlns:fibo-be-oac-opty="https://spec.edmcouncil.org/fibo/ontology/BE/OwnershipAndControl/OwnershipParties/"
 	xmlns:fibo-civ-fnd-civ="https://spec.edmcouncil.org/fibo/ontology/CIV/Funds/CIV/"
 	xmlns:fibo-fbc-fi-fi="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"
 	xmlns:fibo-fbc-fi-stl="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/Settlement/"
@@ -112,6 +114,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/CorporateBodies/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/FormalBusinessOrganizations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/OwnershipAndControl/OwnershipParties/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/Settlement/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/ClientsAndAccounts/"/>
@@ -228,7 +231,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-civ-fnd-civ;EquityAsset">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-ast;SecurityHolding"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-ast;PortfolioHolding"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasIdentity"/>
@@ -661,24 +664,6 @@
 		<rdfs:label xml:lang="en">fund investment policy</rdfs:label>
 		<skos:definition xml:lang="en">policy that the fund implements in order to achieve the stated fund objectives</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">EFAMA Note: Model distinguishes between strategy (what you intend to invest in) and portfolio structure (what is held). This semantics matches the EFAMA DD &quot;Fund Investment Policy&quot; No stated definition in EFAMA DD (&quot;Further discussion required&quot;).</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-civ-fnd-civ;FundInvestor">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;TransferableContractHolder"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-civ-fnd-civ;isUnitHolder"/>
-				<owl:someValuesFrom rdf:resource="&fibo-civ-fnd-civ;FundUnit"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">fund investor</rdfs:label>
-		<skos:definition xml:lang="en">A party which invests in the Fund. It does this by holding some tradable unit (which represents some stake) in that fund.</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Facts about investor tolerance and so on, are facts about Investor.</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-civ-fnd-civ;FundInvestorType">
-		<rdfs:label xml:lang="en">fund investor type</rdfs:label>
-		<skos:definition xml:lang="en">The type of party that is eligible to invest in a fund.</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-civ-fnd-civ;FundLegalContract">
@@ -1598,13 +1583,6 @@
 		<rdfs:range rdf:resource="&fibo-civ-fnd-civ;InvestmentAdvisor"/>
 	</owl:ObjectProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-civ-fnd-civ;allowedInvestorType">
-		<rdfs:label xml:lang="en">allowed investor type</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-civ-fnd-civ;FundProcessingGeneralTerms"/>
-		<rdfs:range rdf:resource="&fibo-civ-fnd-civ;FundInvestorType"/>
-		<skos:definition xml:lang="en">Type of investor that can invest in the fund class.</skos:definition>
-	</owl:ObjectProperty>
-	
 	<owl:ObjectProperty rdf:about="&fibo-civ-fnd-civ;anticipatedVolatility">
 		<rdfs:label xml:lang="en">anticipated volatility</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-civ-fnd-civ;FundProspectus"/>
@@ -2297,7 +2275,7 @@
 	
 	<owl:ObjectProperty rdf:about="&fibo-civ-fnd-civ;isUnitHolder">
 		<rdfs:label xml:lang="en">is unit holder</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-civ-fnd-civ;FundInvestor"/>
+		<rdfs:domain rdf:resource="&fibo-be-oac-opty;Investor"/>
 		<rdfs:range rdf:resource="&fibo-civ-fnd-civ;FundUnit"/>
 	</owl:ObjectProperty>
 	
