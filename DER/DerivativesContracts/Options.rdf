@@ -7,6 +7,7 @@
 	<!ENTITY fibo-der-sbd-sbd "https://spec.edmcouncil.org/fibo/ontology/DER/SecurityBasedDerivatives/SecurityBasedDerivatives/">
 	<!ENTITY fibo-fbc-fct-ra "https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/RegistrationAuthorities/">
 	<!ENTITY fibo-fbc-fi-fi "https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/">
+	<!ENTITY fibo-fbc-fi-ip "https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/InstrumentPricing/">
 	<!ENTITY fibo-fbc-pas-fpas "https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/">
 	<!ENTITY fibo-fnd-acc-cur "https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/">
 	<!ENTITY fibo-fnd-agr-ctr "https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/">
@@ -39,6 +40,7 @@
 	xmlns:fibo-der-sbd-sbd="https://spec.edmcouncil.org/fibo/ontology/DER/SecurityBasedDerivatives/SecurityBasedDerivatives/"
 	xmlns:fibo-fbc-fct-ra="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/RegistrationAuthorities/"
 	xmlns:fibo-fbc-fi-fi="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"
+	xmlns:fibo-fbc-fi-ip="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/InstrumentPricing/"
 	xmlns:fibo-fbc-pas-fpas="https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/"
 	xmlns:fibo-fnd-acc-cur="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"
 	xmlns:fibo-fnd-agr-ctr="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"
@@ -71,6 +73,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Forwards/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/SecurityBasedDerivatives/SecurityBasedDerivatives/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/InstrumentPricing/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/RegistrationAuthorities/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"/>
@@ -166,48 +169,33 @@
 		<owl:disjointWith rdf:resource="&fibo-der-der-opt;LinearPayoutCommitment"/>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-der-opt;CallOptionBuyer">
-		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;OptionBuyer"/>
-		<rdfs:label xml:lang="en">call option buyer</rdfs:label>
-		<skos:definition xml:lang="en">The Party which is the buyer of the Call Option. This party has the option but not the obligation to transact as the Buyer of the Option Underlying.</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-der-opt;CallOptionContract">
+	<owl:Class rdf:about="&fibo-der-der-opt;CallOption">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;Option"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-der-opt;hasBuyer"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;CallOptionBuyer"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-der-opt;hasOptionType"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;CallOptionType"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;OptionBuyer"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-der-opt;hasSeller"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;CallOptionWritingParty"/>
+				<owl:someValuesFrom>
+					<owl:Class>
+						<owl:unionOf rdf:parseType="Collection">
+							<rdf:Description rdf:about="&fibo-der-der-opt;OptionIssuer">
+							</rdf:Description>
+							<rdf:Description rdf:about="&fibo-der-drc-bsc;ReceivingParty">
+							</rdf:Description>
+						</owl:unionOf>
+					</owl:Class>
+				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">call option contract</rdfs:label>
-		<owl:disjointWith rdf:resource="&fibo-der-der-opt;ChooserOptionContract"/>
-		<owl:disjointWith rdf:resource="&fibo-der-der-opt;PutOptionContract"/>
+		<rdfs:label xml:lang="en">call option</rdfs:label>
 		<skos:definition xml:lang="en">Contracts between a buyer and a seller giving the buyer (holder) the right, but not the obligation, to buy the assets specified at a fixed price or formula, on or before a specified date. The seller of the call option assumes the obligation of delivering the assets specified should the buyer exercise his option.</skos:definition>
 		<skos:editorialNote xml:lang="en">ISO FIBIM has same (ISO CFI-derived) written definition for the &quot;Call&quot; selection entry in the selection list &quot;OptionTypeCode&quot;. Additional modeling Dec 2010: this is now deprecated for the former OTC Call Option. Combine the definition and consnsus from here, and the Simple Fact, befpre de;eting. the formerly OTC term has the required relationship facts.</skos:editorialNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-der-opt;CallOptionType">
-		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;OptionType"/>
-		<rdfs:label xml:lang="en">call option type</rdfs:label>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-der-opt;CallOptionWritingParty">
-		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;OptionWritingParty"/>
-		<rdfs:label xml:lang="en">call option writing party</rdfs:label>
-		<skos:definition xml:lang="en">The Party which is the writer of the Call Option. This party has the obligation to transact as the Seller of the Option Underlying.</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">In the case of a call option, the issuer has the obligation to act as the seller of the option underlier, and the buyer has the option, but not the obligation, to purchase the underlying asset.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-der-opt;CashOrNothingPayoutCommitment">
@@ -216,7 +204,7 @@
 		<skos:definition xml:lang="en">A commitment to pay out on a binary option, as cash or nothing.</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-der-opt;ChooserOptionContract">
+	<owl:Class rdf:about="&fibo-der-der-opt;ChooserOption">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;Option"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
@@ -236,11 +224,10 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-der-opt;hasOptionTypeElectionDate"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;Date"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">chooser option contract</rdfs:label>
-		<owl:disjointWith rdf:resource="&fibo-der-der-opt;PutOptionContract"/>
+		<rdfs:label xml:lang="en">chooser option</rdfs:label>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-der-opt;ConditionalPayoutCommitment">
@@ -265,7 +252,7 @@
 		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;StrikeFormula"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-der-opt;hasExpression"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasExpression"/>
 				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;FixedLookbackStrikeFormulaExpression"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -293,7 +280,7 @@
 		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;LookbackStrikeTerms"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-der-opt;hasFormula"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasFormula"/>
 				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;FixedLookbackStrikeFormula"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -342,7 +329,7 @@
 		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;StrikeFormula"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-der-opt;hasExpression.1"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasExpression"/>
 				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;FloatingLookbackFormulaExpression"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -358,7 +345,7 @@
 		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;LookbackStrikeTerms"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-der-opt;hasFormula.1"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasFormula"/>
 				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;FloatingLookbackStrikeFormula"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -538,22 +525,8 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-der-opt;OptionBuyer">
-		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;OptionParty"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;Counterparty"/>
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-bsc;PayingParty"/>
 		<rdfs:label xml:lang="en">option buyer</rdfs:label>
-		<owl:disjointWith rdf:resource="&fibo-der-der-opt;OptionWritingParty"/>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-der-opt;OptionBuyerCommitment">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-txn-rea;ContractualEconomicCommitment"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-txn-ev;madeBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;OptionUnderlyingBuyer"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">option buyer commitment</rdfs:label>
-		<skos:definition xml:lang="en">Commitments, if any, on the part of the holder (buyer) of the Option.</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Obligations incude: Obligation to inform the seller by a certain time if the holder wishes to exercise. Once the instrument is exercised there are separate obligations in settlement as part of that transactions; that is not covered here. If you want to exercise you have to do it in a certain way - review whether any of this is contractually defined as obligations on the part of the holder.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
@@ -606,9 +579,16 @@
 		<skos:definition xml:lang="en">Types of feature for an option. This itemizes whether the option comes into force (Knock In) or ceases being in force (Knock Out) when the stated event occurs.</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-der-opt;OptionParty">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-bsc;DerivativeContractParty"/>
-		<rdfs:label xml:lang="en">option party</rdfs:label>
+	<owl:Class rdf:about="&fibo-der-der-opt;OptionIssuer">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;Issuer"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;issues"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-fi;Option"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">option issuer</rdfs:label>
+		<skos:definition xml:lang="en">issuer granting the rights defined in the option in exchange for some consideration</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-der-opt;OptionPayoutCommitment">
@@ -616,7 +596,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-der-opt;enteredIntoBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;OptionWritingParty"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;OptionIssuer"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">option payout commitment</rdfs:label>
@@ -638,6 +618,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-der-opt;OptionPremium">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-ip;SecurityPrice"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-der-opt;expressedAs"/>
@@ -736,21 +717,10 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-der-opt;OptionTransactionParty">
-		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;OptionParty"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-txn-rea;TransactionParty"/>
 		<rdfs:label xml:lang="en">option transaction party</rdfs:label>
 		<skos:definition xml:lang="en">The party to an Option transaction.</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">This is identified as also being a party to the contract that underlies that transaction. Definition OriginLSR Draft</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-der-opt;OptionType">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-gao-obj;Strategy"/>
-		<rdfs:label xml:lang="en">option type</rdfs:label>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-der-opt;OptionTypeSelection">
-		<rdfs:label xml:lang="en">OptionTypeSelection</rdfs:label>
-		<skos:definition xml:lang="en">Whether it is a call option (right to purchase a specific underlying asset) or a put option (right to sell a specific underlying asset).</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-der-opt;OptionUnderlyingBuyer">
@@ -780,14 +750,6 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-txn-rea;ContractualEconomicCommitment"/>
 		<rdfs:label xml:lang="en">option writer commitment</rdfs:label>
 		<skos:definition xml:lang="en">Commitment on the part of the writer (issuing party) of the Option.</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-der-opt;OptionWritingParty">
-		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;OptionParty"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractPrincipal"/>
-		<rdfs:label xml:lang="en">option writing party</rdfs:label>
-		<skos:definition xml:lang="en">The writing party of an OTC Option, i.e. the seller of a contract. This is the party that grants the rights defined by this instrument and in return receives a payment for it.</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">See 2000 ISDA definitions Article 11.1 (a). In the case of an option, these rights are the rights to buy or sell the instrument at the stated terms. FpML: &apos;A reference to the party that sells (&quot;writes&quot;) this instrument, i.e. that grants the rights defined by this instrument and in return receives a payment for it. See 2000 ISDA definitions Article 11.1 (a). In the case of FRAs this is the floating rate payer.&apos; Seller; Also known as Short Side.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-der-opt;OptionalUnderlyingTransaction">
@@ -829,7 +791,7 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-der-opt;PremiumPayer">
-		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;OptionParty"/>
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-bsc;PayingParty"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-der-opt;isUsually"/>
@@ -856,7 +818,7 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-der-opt;PremiumReceiver">
-		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;OptionParty"/>
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-bsc;ReceivingParty"/>
 		<rdfs:label xml:lang="en">premium receiver</rdfs:label>
 		<skos:definition xml:lang="en">The party that receives the payments of an Equity Option Premium. FpML: &apos;A reference to the party that receives the payments corresponding to this structure.&apos;</skos:definition>
 	</owl:Class>
@@ -866,44 +828,22 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 		<rdfs:label xml:lang="en">prepaid premium type</rdfs:label>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-der-opt;PutOptionBuyer">
-		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;OptionBuyer"/>
-		<rdfs:label xml:lang="en">put option buyer</rdfs:label>
-		<skos:definition xml:lang="en">The Party which is the buyer of the Put Option. This party has the option but not the obligation to transact as the Seller of the Option Underlying.</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-der-opt;PutOptionContract">
+	<owl:Class rdf:about="&fibo-der-der-opt;PutOption">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;Option"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-der-opt;hasBuyer"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;PutOptionBuyer"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-der-opt;hasOptionType"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;PutOptionType"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;OptionBuyer"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-der-opt;hasSeller"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;PutOptionWritingParty"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;OptionIssuer"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">put option contract</rdfs:label>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-der-opt;PutOptionType">
-		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;OptionType"/>
-		<rdfs:label xml:lang="en">put option type</rdfs:label>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-der-opt;PutOptionWritingParty">
-		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;OptionWritingParty"/>
-		<rdfs:label xml:lang="en">put option writing party</rdfs:label>
-		<skos:definition xml:lang="en">The Party which is the writer of the Put Option. This party has the obligation to transact as the Buyer of the Option Underlying.</skos:definition>
+		<rdfs:label xml:lang="en">put option</rdfs:label>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">In the case of a put option, the issuer has the obligation to purchase the option underlier, and the buyer has the option, but not the obligation, to sell the underlying asset.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-der-opt;ResetableStrikeTerms">
@@ -979,7 +919,7 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;enteredIntoBy">
 		<rdfs:label xml:lang="en">entered into by</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-der-der-opt;OptionPayoutCommitment"/>
-		<rdfs:range rdf:resource="&fibo-der-der-opt;OptionWritingParty"/>
+		<rdfs:range rdf:resource="&fibo-der-der-opt;OptionIssuer"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;expressedAs">
@@ -1007,18 +947,6 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 		<rdfs:range rdf:resource="&fibo-der-der-opt;UpOrDown"/>
 	</owl:ObjectProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;hasExpression">
-		<rdfs:label xml:lang="en">has expression</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-der-opt;FixedLookbackStrikeFormula"/>
-		<rdfs:range rdf:resource="&fibo-der-der-opt;FixedLookbackStrikeFormulaExpression"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;hasExpression.1">
-		<rdfs:label xml:lang="en">has expression</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-der-opt;FloatingLookbackStrikeFormula"/>
-		<rdfs:range rdf:resource="&fibo-der-der-opt;FloatingLookbackFormulaExpression"/>
-	</owl:ObjectProperty>
-	
 	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;hasFeature">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-agr-ctr;hasContractualElement"/>
 		<rdfs:label xml:lang="en">has feature</rdfs:label>
@@ -1026,29 +954,11 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 		<rdfs:range rdf:resource="&fibo-der-der-opt;OptionBarrierFeatureTerms"/>
 	</owl:ObjectProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;hasFormula">
-		<rdfs:label xml:lang="en">has formula</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-der-opt;FixedLookbackStrikeTerms"/>
-		<rdfs:range rdf:resource="&fibo-der-der-opt;FixedLookbackStrikeFormula"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;hasFormula.1">
-		<rdfs:label xml:lang="en">has formula</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-der-opt;FloatingLookbackStrikeTerms"/>
-		<rdfs:range rdf:resource="&fibo-der-der-opt;FloatingLookbackStrikeFormula"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;hasOptionType">
-		<rdfs:label xml:lang="en">has option type</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fbc-fi-fi;Option"/>
-		<rdfs:range rdf:resource="&fibo-der-der-opt;OptionType"/>
-		<skos:definition xml:lang="en">Whether it is a call option (right to purchase a specific underlying asset) or a put option (right to sell a specific underlying asset)</skos:definition>
-	</owl:ObjectProperty>
-	
 	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;hasOptionTypeElectionDate">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasExplicitDate"/>
 		<rdfs:label xml:lang="en">has option type election date</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-der-opt;ChooserOptionContract"/>
-		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Date"/>
+		<rdfs:domain rdf:resource="&fibo-der-der-opt;ChooserOption"/>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
 		<skos:definition xml:lang="en">The date on which the holder of the Chooser option contract determines a choice of either a Call or a Put,</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">FpML: &apos;Date where the holder of a Chooser option contract determines a choice of either a Call or a Put&apos;</fibo-fnd-utl-av:explanatoryNote>
 	</owl:ObjectProperty>
@@ -1102,7 +1012,7 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-agr-ctr;hasPrincipalParty"/>
 		<rdfs:label xml:lang="en">has seller</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fbc-fi-fi;Option"/>
-		<rdfs:range rdf:resource="&fibo-der-der-opt;OptionWritingParty"/>
+		<rdfs:range rdf:resource="&fibo-der-der-opt;OptionIssuer"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;hasStrikeTerms">
@@ -1316,7 +1226,7 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-der-opt;hasSeller"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;OptionWritingParty"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;OptionIssuer"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
