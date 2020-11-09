@@ -105,17 +105,17 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-der-opt;AsianExerciseTerms">
-		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;OptionWriterCommitment"/>
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-ex;EuropeanExerciseTerms"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-ex;hasExerciseWindow"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;DatePeriod"/>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-ex;hasExerciseDate"/>
+				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">asian exercise terms</rdfs:label>
-		<skos:definition xml:lang="en">Commitment to pay out on an option on the basis of a rolling average strike, which the other party may or may not choose to exercise against.</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Definition of Asian Exercise Convention: Exercise convention whereby exercise tracks an underlying on a defined time period, anchored to a given time. The Asian Exercise Convention takes the European Date Exercise Convention but commits to a strike which is determined according to an average (or rolling average) value.</fibo-fnd-utl-av:explanatoryNote>
+		<rdfs:label xml:lang="en">Asian exercise terms</rdfs:label>
+		<skos:definition xml:lang="en">exercise terms whereby the payoff is determined by the average underlying price over some pre-set period of time</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Because of the averaging feature, Asian options reduce the volatility inherent in the option; therefore, Asian options are typically cheaper than European or American options.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-der-opt;AssetMaximumOrMinimumPayoutCommitment">
@@ -263,14 +263,14 @@
 		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;LookbackExpression"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-der-opt;subtracts"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;ObservableBestValue"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasMinuend"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;FixedStrikeAmount"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-der-opt;subtractsFrom"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;FixedStrikeAmount"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasSubtrahend"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;ObservableBestValue"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">fixed lookback strike formula expression</rdfs:label>
@@ -312,14 +312,14 @@
 		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;LookbackExpression"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-der-opt;subtracts.1"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;ObservableBestValue"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasMinuend"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;ObservableFinalValue"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-der-opt;subtractsFrom.1"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;ObservableFinalValue"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasSubtrahend"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;ObservableBestValue"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">floating lookback formula expression</rdfs:label>
@@ -633,14 +633,14 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-der-opt;hasPaymentDate"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;Date"/>
+				<owl:onProperty rdf:resource="&fibo-der-der-opt;hasReceiver"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;PremiumReceiver"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-der-opt;hasReceiver"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;PremiumReceiver"/>
+				<owl:onProperty rdf:resource="&fibo-der-der-opt;hasRelativePaymentDate"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;RelativeDate"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">option premium</rdfs:label>
@@ -649,6 +649,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-der-opt;OptionPremiumExpression">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;Expression"/>
 		<rdfs:label xml:lang="en">option premium expression</rdfs:label>
 		<skos:definition xml:lang="en">The formal expression of the Option Premium.</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">This is a choice between expressing amount of premium paid as either price per option, or percentage of notional amount. FpML: &apos;Choice between expressing amount of premium paid as either price per option, or percentage of notional amount.&apos;</fibo-fnd-utl-av:explanatoryNote>
@@ -702,6 +703,7 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-der-opt;OptionStrikeResetSchedule">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-fd;Schedule"/>
 		<rdfs:label xml:lang="en">option strike reset schedule</rdfs:label>
 	</owl:Class>
 	
@@ -712,8 +714,8 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-der-opt;OptionTerms">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-txn-rea;EconomicContractTermsSet"/>
-		<rdfs:label xml:lang="en">option contract terms</rdfs:label>
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-bsc;DerivativeTransactionTerms"/>
+		<rdfs:label xml:lang="en">option terms</rdfs:label>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-der-opt;OptionTransactionParty">
@@ -774,10 +776,6 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 		<rdfs:subClassOf rdf:resource="&fibo-der-sbd-sbd;SecurityUnderlier"/>
 		<rdfs:label xml:lang="en">payoff assets list</rdfs:label>
 		<skos:definition xml:lang="en">The list of n assets which are used to determine a best or worst value in determining conditinal payoff commitments.</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-der-opt;PayoffCommitmentReferenceAsset">
-		<rdfs:label xml:lang="en">payoff commitment reference asset</rdfs:label>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-der-opt;PercentageStrikePriceSpecification">
@@ -890,12 +888,6 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 		<rdfs:label xml:lang="en">up or down</rdfs:label>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-der-opt;VariablePremiumDeterminationFormula">
-		<rdfs:label xml:lang="en">variable premium determination formula</rdfs:label>
-		<skos:definition xml:lang="en">Formula for agreed determination of the variable premium.</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">This can be defined just as text. One could extend this but there is not need to at this point.</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
-	
 	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;accruesTo">
 		<rdfs:label xml:lang="en">accrues to</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-der-der-opt;SecuritiesTransactionOption"/>
@@ -907,13 +899,6 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 		<rdfs:label xml:lang="en">defines optional</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fbc-fi-fi;Option"/>
 		<rdfs:range rdf:resource="&fibo-der-der-opt;OptionalUnderlyingTransaction"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;effectiveDate">
-		<rdfs:label xml:lang="en">effective date</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-der-opt;OTCOptionContract"/>
-		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Date"/>
-		<skos:definition xml:lang="en">The effective date for the option, that is the date from which the derivative contract is valid,</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;enteredIntoBy">
@@ -969,14 +954,6 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 		<rdfs:range rdf:resource="&fibo-der-der-opt;PremiumPayer"/>
 	</owl:ObjectProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;hasPaymentDate">
-		<rdfs:label xml:lang="en">has payment date</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-der-opt;OptionPremium"/>
-		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Date"/>
-		<skos:definition xml:lang="en">The payment date for the Option Premium.</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">This can be expressed as either an adjustable or relative date. FpML: &apos;The payment date, which can be expressed as either an adjustable or relative date.&apos;</fibo-fnd-utl-av:explanatoryNote>
-	</owl:ObjectProperty>
-	
 	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;hasPremium">
 		<rdfs:label xml:lang="en">has premium</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fbc-fi-fi;Option"/>
@@ -994,6 +971,14 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 		<rdfs:label xml:lang="en">has receiver</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-der-der-opt;OptionPremium"/>
 		<rdfs:range rdf:resource="&fibo-der-der-opt;PremiumReceiver"/>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;hasRelativePaymentDate">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasRelativeDate"/>
+		<rdfs:label xml:lang="en">has relative payment date</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;RelativeDate"/>
+		<skos:definition xml:lang="en">The payment date for the Option Premium.</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">This can be expressed as either an adjustable or relative date. FpML: &apos;The payment date, which can be expressed as either an adjustable or relative date.&apos;</fibo-fnd-utl-av:explanatoryNote>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;hasResetSchedule">
@@ -1163,30 +1148,6 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 		<rdfs:domain rdf:resource="&fibo-der-der-opt;PercentageStrikePriceSpecification"/>
 		<rdfs:range rdf:resource="&fibo-fnd-utl-alx;Percentage"/>
 		<skos:definition xml:lang="en">The price or level expressed as a percentage of the forward starting spot price.</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;subtracts">
-		<rdfs:label xml:lang="en">subtracts</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-der-opt;FixedLookbackStrikeFormulaExpression"/>
-		<rdfs:range rdf:resource="&fibo-der-der-opt;ObservableBestValue"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;subtracts.1">
-		<rdfs:label xml:lang="en">subtracts</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-der-opt;FloatingLookbackFormulaExpression"/>
-		<rdfs:range rdf:resource="&fibo-der-der-opt;ObservableBestValue"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;subtractsFrom">
-		<rdfs:label xml:lang="en">subtracts from</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-der-opt;FixedLookbackStrikeFormulaExpression"/>
-		<rdfs:range rdf:resource="&fibo-der-der-opt;FixedStrikeAmount"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;subtractsFrom.1">
-		<rdfs:label xml:lang="en">subtracts from</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-der-opt;FloatingLookbackFormulaExpression"/>
-		<rdfs:range rdf:resource="&fibo-der-der-opt;ObservableFinalValue"/>
 	</owl:ObjectProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-der-der-opt;threshold">
