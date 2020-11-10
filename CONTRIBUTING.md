@@ -223,10 +223,10 @@ When you cloned your fork to your local repository, you chose a directory in whi
 * Running the initialization command should ensure that your .git environment exists and that it includes the /hooks directory. This does not automatically install or update the two files that you need to have in place for the Serializer to work. These are: 
     * [pre-commit](etc/serialization/pre-commit) (no file extension)
     * [rdf-toolkit.jar](etc/serialization/rdf-toolkit.jar)
-* These files are updated from time to time so it is recommended that you re-download these directly from the links below before proceeding.
-* Copy the file pre-commit to your hooks directory (use right-click on the link and select the save option).  Make sure that the name of the file is just pre-commit; your browser might want to append a suffix like .txt to it. 
+* These files are updated from time to time so it is recommended that you re-download these files before proceeding.
+* Copy the file [pre-commit](etc/serialization/pre-commit) to your hooks directory (use right-click on the link and select the save option).  Make sure that the name of the file is just pre-commit; your browser might want to append a suffix like .txt to it. 
 * Edit this pre-commit file to point to your Java JRE/JDK. To do this, open the pre-commit file in a text editor and search for "JAVA\_HOME". Edit the directory after JAVA\_HOME= to point to the location of your Java 8 (a.k.a version 1.8) or higher JRE/JDK, and save it. 
-* Copy the file rdf-toolkit.jar to your hooks directory by clicking on the link, viewing where the download was saved, and moving or copying it to the .git/hooks directory. 
+* Copy the file [rdf-toolkit.jar](etc/serialization/rdf-toolkit.jar) to your hooks directory by clicking on the link, viewing where the download was saved, and moving or copying it to the .git/hooks directory. 
 
 Once you have installed these two files, every commit you do will re-write your RDF/OWL files in a consistent way that can be compared and merged with work done by other FIBO collaborators. 
 
