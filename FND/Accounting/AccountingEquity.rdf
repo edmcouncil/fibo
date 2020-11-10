@@ -56,7 +56,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Analytics/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20200101/Accounting/AccountingEquity/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20201001/Accounting/AccountingEquity/"/>
 		<skos:changeNote>The http://www.omg.org/spec/FIBO/Foundations/20130601/Accounting/AccountingEquity.owl version of the ontology was revised in advance of the September 2013 New Brunswick, NJ meeting, as follows:
    (1) to use slash style URI/IRIss (also called 303 URIs, vs. hash style) as required to support server side processing 
    (2) to use version-independent IRIs for all definitions internally as opposed to version-specific IRIs
@@ -68,67 +68,43 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20160201/Accounting/AccountingEquity.rdf version of this ontology was modified per the FIBO 2.0 RFC to rework definitions in support of revised Business Entities, Equities and related ontologies.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20180801/Accounting/AccountingEquity.rdf version of this ontology was modified to eliminate deprecated elements.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20190901/Accounting/AccountingEquity.rdf version of this ontology was modified to augment the definition of asset, and add income.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20200101/Accounting/AccountingEquity.rdf version of this ontology was modified to add physical asset and eliminate ambiguity in some definitions.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
-	
-	<owl:Class rdf:about="&fibo-fnd-acc-aeq;Capital">
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-acc-aeq;takesForm"/>
-				<owl:allValuesFrom rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>capital</rdfs:label>
-		<skos:definition>money and other property of a corporation or other enterprise used in transacting its business</skos:definition>
-	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-acc-aeq;CapitalSurplus">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-acc-aeq;PaidInCapital"/>
 		<rdfs:label>capital surplus</rdfs:label>
-		<skos:definition>capital contributed in excess of of the par value (stated value) of the ownership interest issued</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-fnd-acc-aeq;Equity">
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-acc-aeq;takesForm"/>
-				<owl:allValuesFrom rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>equity</rdfs:label>
-		<skos:definition>the excess of asset value over liabilities</skos:definition>
-		<fibo-fnd-utl-av:synonym>net worth</fibo-fnd-utl-av:synonym>
+		<skos:definition>capital contributed in excess of the par value (stated value) of the ownership interest issued</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-acc-aeq;FinancialAsset">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-oac-own;TangibleAsset"/>
 		<rdfs:label>financial asset</rdfs:label>
-		<skos:definition>asset in the form of stocks, bonds, rights, certificates, bank balances, etc., as distinguished from tangible, physical assets or intangible assets such as intellectual property</skos:definition>
+		<skos:definition>non-physical, tangible asset whose value is derived from a contractual claim, such as bank deposits, bonds, stocks, rights, certificates, and bank balances</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Financial assets are typically more liquid than other tangible assets, such as commodities or real estate. Financial assets may not cover all assets that might be included on a balance sheet, and do not include tangible, physical assets or intangible assets such as intellectual property.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-acc-aeq;Income">
 		<rdfs:subClassOf>
-			<owl:Class>
-				<owl:unionOf rdf:parseType="Collection">
-					<rdf:Description rdf:about="&fibo-fnd-acc-cur;AmountOfMoney">
-					</rdf:Description>
-					<rdf:Description rdf:about="&fibo-fnd-acc-aeq;FinancialAsset">
-					</rdf:Description>
-				</owl:unionOf>
-			</owl:Class>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-dt-fd;hasDatePeriod"/>
+				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;DatePeriod"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-dt-fd;hasDatePeriod"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;DatePeriod"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-acc-cur;hasMonetaryAmount"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">income</rdfs:label>
-		<skos:definition>cash or cash equivalent(s) received during a period of time in exchange for labor or services, from the sale of goods or property, or as profit from financial investments</skos:definition>
+		<skos:definition>revenue received during a period of time</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Income includes cash or cash equivalent(s) received during some period of time in exchange for labor or services, from the sale of goods or property, or as receipts from financial investments.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-acc-aeq;OwnersEquity">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-acc-aeq;Equity"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;Expression"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
@@ -150,17 +126,31 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">owners&apos; equity</rdfs:label>
-		<skos:definition>portion of an organization belonging to the owners, represented by capital investments and accumulated earnings less any dividends or other financial obligations</skos:definition>
+		<skos:definition>owners&apos; share in a business plus operating profit</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>Barron&apos;s Dictionary of Banking Terms, Sixth Edition, 2012.</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:explanatoryNote>Owner&apos;s equity is represented by capital investments and accumulated earnings less any dividends or other financial obligations.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:synonym xml:lang="en">capital</fibo-fnd-utl-av:synonym>
+		<fibo-fnd-utl-av:synonym xml:lang="en">contributed capital</fibo-fnd-utl-av:synonym>
+		<fibo-fnd-utl-av:synonym>equity</fibo-fnd-utl-av:synonym>
+		<fibo-fnd-utl-av:synonym>net worth</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-acc-aeq;PaidInCapital">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-acc-aeq;Capital"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-acc-aeq;OwnersEquity"/>
 		<rdfs:label>paid-in capital</rdfs:label>
 		<skos:definition>assets received from investors in exchange for an ownership interest</skos:definition>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-fnd-acc-aeq;PhysicalAsset">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-oac-own;TangibleAsset"/>
+		<rdfs:label>physical asset</rdfs:label>
+		<owl:disjointWith rdf:resource="&fibo-fnd-acc-aeq;FinancialAsset"/>
+		<skos:definition>tangible asset that has a material form, such as property, equipment, and inventory</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Physical (tangible) assets are real items of value that are used to generate revenue for a company.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-fnd-acc-aeq;RetainedEarnings">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-acc-aeq;Equity"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-acc-aeq;OwnersEquity"/>
 		<rdfs:label>retained earnings</rdfs:label>
 		<skos:definition>net profits kept to accumulate in a business after dividends are paid</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote>If the corporation takes a loss, then that loss is retained and called variously retained losses, accumulated losses or accumulated deficit. Retained earnings and losses are cumulative from year to year with losses offsetting earnings.</fibo-fnd-utl-av:explanatoryNote>
@@ -169,18 +159,13 @@
 	<owl:Class rdf:about="&fibo-fnd-acc-aeq;ShareholdersEquity">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-acc-aeq;OwnersEquity"/>
 		<rdfs:label>shareholders&apos; equity</rdfs:label>
-		<skos:definition xml:lang="en">equity that is manifested in the form of one or more shares in an entity, fund or structured product</skos:definition>
+		<skos:definition xml:lang="en">equity that is manifested in the form of shares in an entity, fund or structured product</skos:definition>
 	</owl:Class>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-acc-aeq;representsAnInterestIn">
 		<rdfs:label>represents an interest in</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fnd-acc-aeq;OwnersEquity"/>
-		<skos:definition>indicates the entity, fund, or structured product that the equity represents an interest in</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-fnd-acc-aeq;takesForm">
-		<rdfs:label>takes form</rdfs:label>
-		<skos:definition>the form taken by some amount of money defined according to its purpose, such as capital or equity</skos:definition>
+		<skos:definition>indicates the entity, fund, or structured product in which an owner holds an interest</skos:definition>
 	</owl:ObjectProperty>
 
 </rdf:RDF>

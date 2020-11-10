@@ -1,0 +1,13 @@
+PREFIX owl:   <http://www.w3.org/2002/07/owl#>
+
+
+##
+# banner No ontology may import itself.
+
+SELECT DISTINCT ?error ?ontology 
+WHERE
+{
+    ?ontology owl:imports ?ontology.
+    FILTER (CONTAINS(str(?ontology), "edmcouncil"))
+    BIND (concat ("PRODERROR: ", str(?ontology), " imports itself.") AS ?error)
+}

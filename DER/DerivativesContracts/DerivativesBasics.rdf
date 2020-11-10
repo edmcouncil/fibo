@@ -11,6 +11,7 @@
 	<!ENTITY fibo-fnd-acc-cur "https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/">
 	<!ENTITY fibo-fnd-agr-agr "https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Agreements/">
 	<!ENTITY fibo-fnd-agr-ctr "https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/">
+	<!ENTITY fibo-fnd-arr-doc "https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Documents/">
 	<!ENTITY fibo-fnd-dt-fd "https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/">
 	<!ENTITY fibo-fnd-pas-pas "https://spec.edmcouncil.org/fibo/ontology/FND/ProductsAndServices/ProductsAndServices/">
 	<!ENTITY fibo-fnd-pas-psch "https://spec.edmcouncil.org/fibo/ontology/FND/ProductsAndServices/PaymentsAndSchedules/">
@@ -43,6 +44,7 @@
 	xmlns:fibo-fnd-acc-cur="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"
 	xmlns:fibo-fnd-agr-agr="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Agreements/"
 	xmlns:fibo-fnd-agr-ctr="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"
+	xmlns:fibo-fnd-arr-doc="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Documents/"
 	xmlns:fibo-fnd-dt-fd="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"
 	xmlns:fibo-fnd-pas-pas="https://spec.edmcouncil.org/fibo/ontology/FND/ProductsAndServices/ProductsAndServices/"
 	xmlns:fibo-fnd-pas-psch="https://spec.edmcouncil.org/fibo/ontology/FND/ProductsAndServices/PaymentsAndSchedules/"
@@ -86,6 +88,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Agreements/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Documents/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Parties/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Roles/"/>
@@ -99,8 +102,9 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/Indicators/Indicators/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/Baskets/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/20200401/DerivativesContracts/DerivativesBasics/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/20201101/DerivativesContracts/DerivativesBasics/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20180801/DerivativesContracts/DerivativesBasics.rdf version of this ontology was modified to eliminate duplication with concepts in LCC and eliminate a redundant subclass declaration in observable value.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20200401/DerivativesContracts/DerivativesBasics.rdf version of this ontology was modified to loosen the domain of the hasUnderlier property, which could be either an instrument or leg, refine the definition of Underlier and hasUnderlier based on recent work on swaps, and add the definition of a contract for difference (CFD).</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -128,6 +132,19 @@
 		<rdfs:label>cashflow terms</rdfs:label>
 		<skos:definition>terms setting out a cashflow structure of payments committed to by one party to a contract</skos:definition>
 		<skos:editorialNote>Swap cashflows are known as Swapstreams and are the terms for payment to and from either party. These are defined in swap transaction messages and represent the terms of the contract implied by that transaction. Options (Nordea reviews): Cashflows are defined as Payouts. This is not the same as a model of a cashflow which is a consequence of applying some legal term for payment of interest or principal, but is a commitment expressed in purely cashflow terms. Review this though. Payout terms include: Values - values can only go up or down; Static values are defined for limits and the like. i.e. Constraints (and direction) - this covers caps and floors - these are read upward or downward Conditionality Formula relations (Input and Output): - these are values - these may have a cap or a floor on them also - these also may have Multiplication - there is also fixed margin - may have addition or substraction between these Linearity in covered in the above Timing / expiry Observaton (not terms): Probability Sensitivity</skos:editorialNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-drc-bsc;ContractForDifference">
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-bsc;OTCInstrument"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;DerivativeInstrument"/>
+		<rdfs:label xml:lang="en">contract for difference</rdfs:label>
+		<skos:definition xml:lang="en">cash-settled derivative where the parties agree to exchange on the maturity of the contract the difference between the current value of the underlying asset and the initial value of that asset when the contract is initiated</skos:definition>
+		<skos:example xml:lang="en">For example, suppose the initial price of share XYZ is $100 and a CFD for 1000 shares is exchanged. Both the buyer and seller must post some margin. If the price goes to $105, then the buyer gets $5,000 from the seller. If the price goes to $95, the buyer pays the seller $5,000. This contract avoids ownership of the stock and all the associated transactions issues (like stamp taxes). The contract also allows for leverage (typically 10:1) because the margin that must be posted is only a fraction of the value of the underlying asset.</skos:example>
+		<fibo-fnd-utl-av:abbreviation xml:lang="en">CFD</fibo-fnd-utl-av:abbreviation>
+		<fibo-fnd-utl-av:adaptedFrom>ISO 10962:2019, Securities and related financial instruments - Classification of financial instruments (CFI) code</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.nasdaq.com/glossary/c/contract-for-difference</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">These contracts can also be on the difference of two assets&apos; prices. They can also be on the difference of a single asset of different maturities (like a bond or futures contracts).</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:synonym xml:lang="en">spread trading</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-bsc;DeliverCash">
@@ -286,7 +303,6 @@
 		</rdfs:subClassOf>
 		<rdfs:label>over-the-counter (OTC) transaction</rdfs:label>
 		<skos:definition>an over-the-counter transaction to exchange an instrument for some consideration</skos:definition>
-		<skos:editorialNote>Removed inheritance relationship with Transactions/TransactionsExtended/CoveredTransaction for the sake of expediency.</skos:editorialNote>
 		<skos:editorialNote>This represents a covered transaction, that is, the OTC transaction is transacted under some previously agreed master agreement between the parties.</skos:editorialNote>
 	</owl:Class>
 	
@@ -380,16 +396,17 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>underlier</rdfs:label>
-		<skos:definition>the financial instrument(s), index or parameter, or combination thereof, that form the basis for the derivative instrument</skos:definition>
-		<skos:editorialNote>The underlier breaks down into two separate meanings: The item which determines the value of the contract (the observable), and the item that is deliverable upon expiry or exercise of the contract (if there is one). These are usually the same item but in some cases such as index derivatives the exercise takes a different form. Action: Add &apos;Observable&apos; as a distinct term. Then use Deliverable. Is Underlier the union? In a Call Option the Underlier is the Deliverable and is referred to as the Underlier. With an Fx Call Option, the deliverable is the cash value which you are exchanging for the amount in another currency (so this is no difference as cash is instrument). Then take IR Swap where 3mo LIBOR Rate is the Observable, but the delivery is Cash. Then one would refer to the LIBOR as the Observable. Delivers an amount based on the observable, and the delivered cash is the Deliverable. So what we refer to as Underlier may be the Observable or the Deliverable e.g. Call option on IBM the deliverable is the IBM Stock whereas a Swap leg depending on LIBOR, the Deliverable is Cash but the &apos;Underlier&apos; is the Observable. Would be nore accurate not to refer to the Observable not as an Underlier. Therefore there would be nothing referred to as the &apos;Underlier&apos; as such. However, all derivatives have Underlier. Take an IR Cap, would not not refer to it as having an Underlier - the notion of Underlier becomes fuzzier when you get to higher order derivatives. LIBOR on a list of dates is an &apos;Observable&apos; but is several amounts.</skos:editorialNote>
+		<skos:definition>something that can be assigned a value in the marketplace that forms the basis for a derivative instrument</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.lawinsider.com/dictionary/underlier</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:explanatoryNote>Underlier means any rate (including interest and foreign exchange rates), currency, commodity, security, instrument of indebtedness, index, quantitative measure, occurrence or non-occurrence of an event, or other financial or economic interest, or property of any kind, or any interest therein or based on the value thereof, in or by reference to which any payment or delivery under a transaction is to be made or determined.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-drc-bsc;hasUnderlier">
 		<rdfs:subPropertyOf rdf:resource="&lcc-lr;has"/>
 		<rdfs:label>has underlier</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fbc-fi-fi;DerivativeInstrument"/>
 		<rdfs:range rdf:resource="&fibo-der-drc-bsc;Underlier"/>
-		<skos:definition>relates a derivative to an asset, such as one or more financial instrument(s), index or parameter, or combination thereof on which the contract is based</skos:definition>
+		<skos:definition>relates a derivative to something on which the contract is based</skos:definition>
+		<fibo-fnd-utl-av:usageNote>The domain of this property can be either a derivative instrument or, in the case of a swap contract, one leg of the swap.</fibo-fnd-utl-av:usageNote>
 	</owl:ObjectProperty>
 	
 	<owl:Class rdf:about="&fibo-fbc-fi-fi;DerivativeInstrument">
