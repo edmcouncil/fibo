@@ -3,6 +3,8 @@
 	<!ENTITY dct "http://purl.org/dc/terms/">
 	<!ENTITY fibo-der-der-opt "https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Options/">
 	<!ENTITY fibo-der-der-sp "https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Spots/">
+	<!ENTITY fibo-der-drc-bsc "https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/DerivativesBasics/">
+	<!ENTITY fibo-fbc-fi-fi "https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/">
 	<!ENTITY fibo-fbc-fi-stl "https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/Settlement/">
 	<!ENTITY fibo-fbc-pas-fpas "https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/">
 	<!ENTITY fibo-fnd-acc-cur "https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/">
@@ -21,6 +23,8 @@
 	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fibo-der-der-opt="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Options/"
 	xmlns:fibo-der-der-sp="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Spots/"
+	xmlns:fibo-der-drc-bsc="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/DerivativesBasics/"
+	xmlns:fibo-fbc-fi-fi="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"
 	xmlns:fibo-fbc-fi-stl="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/Settlement/"
 	xmlns:fibo-fbc-pas-fpas="https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/"
 	xmlns:fibo-fnd-acc-cur="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"
@@ -39,7 +43,9 @@
 		<rdfs:label xml:lang="en">Spots</rdfs:label>
 		<dct:abstract>Spot transactions, along with their corresponding or implied contracts. These are not a derivative but rather define simple transactions that are immediately settled by both sides, for a given kind of asset or commodity. These are the concepts common to other variants of spot such as commodities spots.</dct:abstract>
 		<sm:fileAbbreviation>fibo-der-der-sp</sm:fileAbbreviation>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/DerivativesBasics/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Options/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/Settlement/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"/>
@@ -57,20 +63,20 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-der-opt;hasPayer"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-der-sp;SpotPayer"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-drc-bsc;PayingParty"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-der-opt;hasReceiver"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-der-sp;SpotReceiver"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-drc-bsc;ReceivingParty"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">spot cash settlement terms</rdfs:label>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-der-sp;SpotContract">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-txn-rea;EconomicContract"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;FinancialInstrument"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;hasContractualElement"/>
@@ -78,17 +84,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">spot contract</rdfs:label>
-		<skos:definition xml:lang="en">A contract relating to a transaction which is for immediate settlement. Further notes: A spot transaction simply means a transaction in which some goods or currency are exchanged for some other goods or currency, with no future delivery provision. A Spot contract is the usually unwritten contract which by definition underlies that kind of transaction. Spot means for immediate settlement. Immediate here means the minimum number of days that are possible. This includes general retail transactions as well as the specialixed types of spot transactiojn foud in the financial services and treasury trading contexts, such as Fx Spots (a sub type of this) and commodity spot transactions. However the settlement date is still some time in the future. Also given different time zones, the settlement would be at some time in the future anyway Formerly a financial e.g. currency Spot would have been 2 (working) days settlement for example. Canadian v USD would be 1 day. Follows a settlement convention from the relevant market. Action: Add reference to Settlement Convention for the given market.</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-der-sp;SpotPayer">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-psch;Payer"/>
-		<rdfs:label xml:lang="en">spot payer</rdfs:label>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-der-sp;SpotReceiver">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-psch;Payee"/>
-		<rdfs:label xml:lang="en">spot receiver</rdfs:label>
+		<skos:definition xml:lang="en">contract relating to a transaction which is for immediate settlement. Further notes: A spot transaction simply means a transaction in which some goods or currency are exchanged for some other goods or currency, with no future delivery provision. A Spot contract is the usually unwritten contract which by definition underlies that kind of transaction. Spot means for immediate settlement. Immediate here means the minimum number of days that are possible. This includes general retail transactions as well as the specialixed types of spot transactiojn foud in the financial services and treasury trading contexts, such as Fx Spots (a sub type of this) and commodity spot transactions. However the settlement date is still some time in the future. Also given different time zones, the settlement would be at some time in the future anyway Formerly a financial e.g. currency Spot would have been 2 (working) days settlement for example. Canadian v USD would be 1 day. Follows a settlement convention from the relevant market. Action: Add reference to Settlement Convention for the given market.</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-der-sp;SpotTransaction">

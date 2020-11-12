@@ -104,7 +104,7 @@
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/20201101/DerivativesContracts/DerivativesBasics/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20180801/DerivativesContracts/DerivativesBasics.rdf version of this ontology was modified to eliminate duplication with concepts in LCC and eliminate a redundant subclass declaration in observable value.</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20200401/DerivativesContracts/DerivativesBasics.rdf version of this ontology was modified to loosen the domain of the hasUnderlier property, which could be either an instrument or leg, refine the definition of Underlier and hasUnderlier based on recent work on swaps, and add the definition of a contract for difference (CFD).</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20200401/DerivativesContracts/DerivativesBasics.rdf version of this ontology was modified to loosen the domain of the hasUnderlier property, which could be either an instrument or leg, refine the definition of Underlier and hasUnderlier based on recent work on swaps, add the definition of a contract for difference (CFD), and simplify the contract party hierarchy where the subclasses of contract party do not add semantics.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -160,30 +160,6 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;SettlementTerms"/>
 		<rdfs:label>delivery terms</rdfs:label>
 		<skos:definition>settlement terms specifying what (cash, an asset, etc.) is to be delivered when, to whom, under what conditions at the time of settlement</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-drc-bsc;DerivativeContractParty">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractParty"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasIdentity"/>
-				<owl:onClass rdf:resource="&fibo-be-le-lp;LegalPerson"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
-				<owl:someValuesFrom>
-					<owl:Restriction>
-						<owl:onProperty rdf:resource="&fibo-fnd-pty-pty;isAPartyTo"/>
-						<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-fi;DerivativeInstrument"/>
-					</owl:Restriction>
-				</owl:someValuesFrom>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>derivative contract party</rdfs:label>
-		<skos:definition>a party to a derivative instrument</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-bsc;DerivativeTransactionTerms">
@@ -318,7 +294,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;hasContractParty"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-drc-bsc;OTCTransactionParty"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-agr-ctr;ContractParty"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -330,30 +306,6 @@
 		<rdfs:label>over-the-counter (OTC) transaction confirmation</rdfs:label>
 		<skos:definition>a formal confirmation document that codifies the terms and conditions of the transaction between the parties</skos:definition>
 		<skos:editorialNote>This effectively supersedes the (implied) contract that is brought into being by the transaction. It makes reference to the terms and conditions under which the transaction is deemed to have been conducted. The confirmation references the master agreement under which the transaction has been conducted along with any ISDA standard terms referenced (if applicable), and adds terms and conditions specific to the transaction.  The confirmation generally supersedes all terms in the ISDA standard definitions and the master agreement in the event of any inconsistency between them.</skos:editorialNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-drc-bsc;OTCTransactionParty">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractParty"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasIdentity"/>
-				<owl:onClass rdf:resource="&fibo-be-le-lp;LegalPerson"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
-				<owl:someValuesFrom>
-					<owl:Restriction>
-						<owl:onProperty rdf:resource="&fibo-fnd-pty-pty;isAPartyTo"/>
-						<owl:someValuesFrom rdf:resource="&fibo-der-drc-bsc;OTCInstrument"/>
-					</owl:Restriction>
-				</owl:someValuesFrom>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>over-the-counter (OTC) transaction party</rdfs:label>
-		<skos:definition>a party to an over-the-counter agreement</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-bsc;ObservableValue">
@@ -374,6 +326,22 @@
 		</rdfs:subClassOf>
 		<rdfs:label>parametric cashflow terms</rdfs:label>
 		<skos:definition>terms for a set of cashflows defined according to a mathematical formula</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-drc-bsc;PayingParty">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractParty"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-psch;Payer"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-pas;Buyer"/>
+		<rdfs:label>paying party</rdfs:label>
+		<skos:definition>party responsible for making payments in a transaction specified in a contract</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-drc-bsc;ReceivingParty">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractParty"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-psch;Payee"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-pas;Seller"/>
+		<rdfs:label>receiving counterparty</rdfs:label>
+		<skos:definition>party that receives payments in a transaction specified in a contract</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-bsc;Underlier">
