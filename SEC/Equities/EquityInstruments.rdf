@@ -81,7 +81,7 @@
 		<rdfs:label xml:lang="en">Equity Instruments Ontology</rdfs:label>
 		<dct:abstract>Core terms are those fundamental to all equity instruments. This ontology also distinguishes between privately held and publicly traded equity instruments, and defines a number of related concepts, such as voting rights.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
-		<sm:contentLanguage rdf:datatype="&xsd;anyURI">http://www.w3.org/standards/techs/owl#w3c_all</sm:contentLanguage>
+		<sm:contentLanguage rdf:datatype="&xsd;anyURI">http://www.w3.org/2002/07/owl#</sm:contentLanguage>
 		<sm:copyright>Copyright (c) 2013-2020 EDM Council, Inc.</sm:copyright>
 		<sm:copyright>Copyright (c) 2018-2020 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/BE/</sm:dependsOn>
@@ -124,12 +124,12 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesRestrictions/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Countries/CountryRepresentation/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20201001/Equities/EquityInstruments/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20201101/Equities/EquityInstruments/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20180801/Equities/EquityInstruments.rdf version of this ontology was revised to replace &apos;publicly-traded share&apos; with &apos;exchange-specific share&apos;, which is the more commonly used designation and corresponds better with the intended semantics of this concept, to merge in concepts that were formerly in a separate ShareTerms ontology, and eliminate deprecated elements.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20190901/Equities/EquityInstruments.rdf version of this ontology was revised to refine the definition of listed share, update definitions to remove leading articles, add missing properties and restrictions, revise the definition of dividend.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20191201/Equities/EquityInstruments.rdf version of this ontology was revised to refine the definition of share to include a restriction for hasSharesOutstanding, eliminate duplication of concepts in LCC, and add the concept of an equity issuer.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20200301/Equities/EquityInstruments.rdf version of this ontology was revised to incorporate additional features required to map the CFI classification scheme to equity instruments, including features specific to preferred shares.</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20200801/Equities/EquityInstruments.rdf version of this ontology was revised to incorporate a property allowing representation of the share class.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20200801/Equities/EquityInstruments.rdf version of this ontology was revised to incorporate a property allowing representation of the share class, streamline the representation of voting rights, and clean up ambiguous definitions.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -154,19 +154,13 @@
 	
 	<owl:Class rdf:about="&fibo-sec-eq-eq;CommonNonVotingUnrestrictedFullyPaidRegisteredShare">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;CommonShare"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;NonVotingShare"/>
 		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;UnrestrictedShare"/>
 		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-lst;RegisteredSecurity"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-eq-eq;hasSharePaymentStatus"/>
 				<owl:hasValue rdf:resource="&fibo-sec-eq-eq;FullyPaidShareStatus"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;confers"/>
-				<owl:onClass rdf:resource="&fibo-sec-eq-eq;NonVoting"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -197,19 +191,13 @@
 	
 	<owl:Class rdf:about="&fibo-sec-eq-eq;CommonVotingUnrestrictedFullyPaidRegisteredShare">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;CommonShare"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;SingleVotingShare"/>
 		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;UnrestrictedShare"/>
 		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-lst;RegisteredSecurity"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-eq-eq;hasSharePaymentStatus"/>
 				<owl:hasValue rdf:resource="&fibo-sec-eq-eq;FullyPaidShareStatus"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;confers"/>
-				<owl:onClass rdf:resource="&fibo-sec-eq-eq;Voting"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -240,8 +228,8 @@
 	<owl:Class rdf:about="&fibo-sec-eq-eq;CumulativePreferredShare">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;PreferredShare"/>
 		<rdfs:label>cumulative preferred share</rdfs:label>
-		<skos:definition>preferred share whose dividends, if not paid due to insufficient earnings or other reasons, accumulate until paid out</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote>These dividends have precedence over ordinary dividends which cannot be paid until any cumulative dividend obligations have been paid.</fibo-fnd-utl-av:explanatoryNote>
+		<skos:definition>preferred share whose dividends, if not paid on time, accumulate until paid out</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>These dividends have precedence over ordinary dividends which cannot be paid until any cumulative dividend obligations have been paid. Dividends are typically deferred due to insufficient earnings or other business reasons.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-eq-eq;Custodian">
@@ -254,7 +242,9 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>custodian</rdfs:label>
-		<skos:definition xml:lang="en">bank or other financial institution that keeps custody of stock certificates and other assets of a mutual fund, individual, or corporate client</skos:definition>
+		<skos:definition xml:lang="en">financial institution that holds customers&apos; securities for safekeeping</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.investopedia.com/terms/c/custodian.asp</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:explanatoryNote>The custodian may hold stocks or other assets in electronic or physical form for mutual funds, individuals, and organizational clients.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:NamedIndividual rdf:about="&fibo-sec-eq-eq;DistributionByCashPayment">
@@ -266,7 +256,7 @@
 	<owl:NamedIndividual rdf:about="&fibo-sec-eq-eq;DistributionByReinvestment">
 		<rdf:type rdf:resource="&fibo-sec-eq-eq;DividendDistributionMethod"/>
 		<rdfs:label>distribution by reinvestment</rdfs:label>
-		<skos:definition>a distribution method involving automatic reinvestment of shareholders&apos; dividends in additional, potentially fractional, shares in the same equity or fund</skos:definition>
+		<skos:definition>distribution method involving automatic reinvestment of shareholders&apos; dividends in additional, potentially fractional, shares in the same asset</skos:definition>
 	</owl:NamedIndividual>
 	
 	<owl:Class rdf:about="&fibo-sec-eq-eq;Dividend">
@@ -293,14 +283,15 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>dividend</rdfs:label>
-		<skos:definition>commitment to distribute a portion of earnings to shareholders, prorated by class of security, to be paid in the form of money, shares, scrip, or on rare occasion, property</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote>The amount and timing of payment is set by the board of directors, typically quarterly.</fibo-fnd-utl-av:explanatoryNote>
+		<skos:definition>commitment to distribute a portion of earnings to shareholders, prorated by class of security</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>The amount and timing of payment is set by the board of directors, typically quarterly. Dividends may be paid in the form of money, shares, scrip, or on rare occasion, property.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-eq-eq;DividendDistributionMethod">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-bd;Convention"/>
 		<rdfs:label>dividend distribution method</rdfs:label>
-		<skos:definition>convention by which dividends are distributed, i.e., by payment of a monetary amount or by reinvestment, as specified by the board of directors at the time a decision to issue a dividend is made</skos:definition>
+		<skos:definition>convention by which dividends are provided to shareholders</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Distribution may be by payment of a monetary amount or by reinvestment, as specified by the board of directors at the time a decision to issue a dividend is made.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-eq-eq;DividendSchedule">
@@ -310,10 +301,37 @@
 		<skos:definition>payment schedule indicating the dates on which dividends are due to be paid</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-eq-eq;EnhancedVoting">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;VotingRight"/>
-		<rdfs:label>enhanced voting</rdfs:label>
-		<skos:definition>shareholder is entitled to more than one vote per share</skos:definition>
+	<owl:NamedIndividual rdf:about="&fibo-sec-eq-eq;EnhancedVotingRight">
+		<rdf:type rdf:resource="&fibo-sec-eq-eq;VotingRight"/>
+		<rdf:type>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-eq-eq;confersNumberOfVotesPerShare"/>
+				<owl:someValuesFrom>
+					<rdfs:Datatype>
+						<owl:onDatatype rdf:resource="&xsd;decimal"/>
+						<owl:withRestrictions rdf:parseType="Collection">
+							<rdf:Description>
+								<xsd:minExclusive rdf:datatype="&xsd;decimal">1</xsd:minExclusive>
+							</rdf:Description>
+						</owl:withRestrictions>
+					</rdfs:Datatype>
+				</owl:someValuesFrom>
+			</owl:Restriction>
+		</rdf:type>
+		<rdfs:label>enhanced voting right</rdfs:label>
+		<skos:definition>right to more than one vote per share</skos:definition>
+	</owl:NamedIndividual>
+	
+	<owl:Class rdf:about="&fibo-sec-eq-eq;EnhancedVotingShare">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;Share"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;confers"/>
+				<owl:hasValue rdf:resource="&fibo-sec-eq-eq;EnhancedVotingRight"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">restricted voting share</rdfs:label>
+		<skos:definition xml:lang="en">share that confers less than one vote per share</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-eq-eq;EquityConversionTerms">
@@ -371,7 +389,8 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>equity issuer</rdfs:label>
-		<skos:definition>issuer of shares that represent equity ownership in a corporation, or ownership in a mutual fund, or an interest in a general or limited partnership, or ownership in a structured product, such as a real estate investment trust</skos:definition>
+		<skos:definition>issuer of shares that represent an ownership interest in something</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>This includes shares that represent equity ownership in a corporation, or ownership in a mutual fund, or an interest in a general or limited partnership, or ownership in a structured product, such as a real estate investment trust.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-eq-eq;EquityPosition">
@@ -469,12 +488,6 @@
 		<skos:editorialNote>Need to add hasExtensionProvision, once that is moved from Debt</skos:editorialNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-eq-eq;ExtraordinaryVotingRight">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;VotingRight"/>
-		<rdfs:label>extraordinary voting right</rdfs:label>
-		<skos:definition>right to vote at extraordinary meetings, as opposed to being able to vote strictly at annual general meetings</skos:definition>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-sec-eq-eq;FixedRateDividend">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;PreferredDividend"/>
 		<rdfs:subClassOf>
@@ -524,7 +537,7 @@
 	<owl:Class rdf:about="&fibo-sec-eq-eq;LimitedPartnershipUnitRestriction">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-rst;ContractualRestriction"/>
 		<rdfs:label xml:lang="en">limited partnership unit restriction</rdfs:label>
-		<skos:definition xml:lang="en">restriction on ownership or transfer of the units</skos:definition>
+		<skos:definition xml:lang="en">restriction on ownership and transfer of the units</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-eq-eq;ListedShare">
@@ -532,7 +545,7 @@
 		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-lst;ListedSecurity"/>
 		<rdfs:label xml:lang="en">listed share</rdfs:label>
 		<rdfs:seeAlso rdf:resource="https://www.investopedia.com/terms/l/listedsecurity.asp"/>
-		<skos:definition xml:lang="en">share that is listed on one or more platforms or venues</skos:definition>
+		<skos:definition xml:lang="en">share that is listed on at least one platform</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Listing requirements vary by exchange and include minimum stockholder&apos;s equity, a minimum share price and a minimum number of shareholders. Exchanges have listing requirements to ensure that only high quality securities are traded on them and to uphold the exchange&apos;s reputation among investors.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
@@ -559,16 +572,23 @@
 		<skos:definition>preferred share that is not a participating preferred share</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-eq-eq;NonVoting">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;VotingRight"/>
-		<rdfs:label>non-voting</rdfs:label>
-		<owl:equivalentClass>
+	<owl:NamedIndividual rdf:about="&fibo-sec-eq-eq;NonVotingRight">
+		<rdf:type rdf:resource="&fibo-sec-eq-eq;VotingRight"/>
+		<rdfs:label>non-voting right</rdfs:label>
+		<skos:definition>right to zero votes</skos:definition>
+		<fibo-sec-eq-eq:confersNumberOfVotesPerShare rdf:datatype="&xsd;decimal">0</fibo-sec-eq-eq:confersNumberOfVotesPerShare>
+	</owl:NamedIndividual>
+	
+	<owl:Class rdf:about="&fibo-sec-eq-eq;NonVotingShare">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;Share"/>
+		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-eq-eq;confersNumberOfVotesPerShare"/>
-				<owl:hasValue rdf:datatype="&xsd;decimal">0</owl:hasValue>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;confers"/>
+				<owl:hasValue rdf:resource="&fibo-sec-eq-eq;NonVotingRight"/>
 			</owl:Restriction>
-		</owl:equivalentClass>
-		<skos:definition>share has no voting rights</skos:definition>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">non-voting share</rdfs:label>
+		<skos:definition xml:lang="en">share that has no voting right</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-eq-eq;OrdinaryDividend">
@@ -584,12 +604,6 @@
 		<skos:definition>dividend that is paid to shareholders periodically</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote>Most dividends are considered ordinary, unless they are specifically designated as qualified dividends.</fibo-fnd-utl-av:explanatoryNote>
 		<fibo-fnd-utl-av:explanatoryNote>Note that the terms related to ordinary dividend payment are typically specified in the context of a board resolution rather than contractually.</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-sec-eq-eq;OrdinaryVotingRight">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;VotingRight"/>
-		<rdfs:label>ordinary voting right</rdfs:label>
-		<skos:definition>voting right conferred on holders of common shares, as defined by the issuer</skos:definition>
 	</owl:Class>
 	
 	<owl:NamedIndividual rdf:about="&fibo-sec-eq-eq;PartiallyPaidShareStatus">
@@ -642,13 +656,6 @@
 	
 	<owl:Class rdf:about="&fibo-sec-eq-eq;PreferredShare">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;Share"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;confers"/>
-				<owl:onClass rdf:resource="&fibo-sec-eq-eq;ExtraordinaryVotingRight"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-eq-eq;hasDividend"/>
@@ -711,7 +718,7 @@
 	<owl:Class rdf:about="&fibo-sec-eq-eq;QualifiedDividend">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;Dividend"/>
 		<rdfs:label>qualified dividend</rdfs:label>
-		<skos:definition>dividend that falls under capital gains tax rates that are lower than the income tax rates on unqualified, or ordinary, dividends</skos:definition>
+		<skos:definition>dividend that falls under capital gains tax rates that are lower than the income tax rates on unqualified (ordinary) dividends</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-eq-eq;RedeemablePreferredShare">
@@ -733,10 +740,37 @@
 		<skos:definition xml:lang="en">share whose ownership/transfer/sale is subject to special conditions including country-specific restrictions</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-eq-eq;RestrictedVoting">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;VotingRight"/>
-		<rdfs:label>restricted voting</rdfs:label>
-		<skos:definition>shareholder is restricted to less than one vote per share</skos:definition>
+	<owl:NamedIndividual rdf:about="&fibo-sec-eq-eq;RestrictedVotingRight">
+		<rdf:type rdf:resource="&fibo-sec-eq-eq;VotingRight"/>
+		<rdf:type>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-eq-eq;confersNumberOfVotesPerShare"/>
+				<owl:someValuesFrom>
+					<rdfs:Datatype>
+						<owl:onDatatype rdf:resource="&xsd;decimal"/>
+						<owl:withRestrictions rdf:parseType="Collection">
+							<rdf:Description>
+								<xsd:maxExclusive rdf:datatype="&xsd;decimal">1</xsd:maxExclusive>
+							</rdf:Description>
+						</owl:withRestrictions>
+					</rdfs:Datatype>
+				</owl:someValuesFrom>
+			</owl:Restriction>
+		</rdf:type>
+		<rdfs:label>restricted voting right</rdfs:label>
+		<skos:definition>right to less than one vote per share</skos:definition>
+	</owl:NamedIndividual>
+	
+	<owl:Class rdf:about="&fibo-sec-eq-eq;RestrictedVotingShare">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;Share"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;confers"/>
+				<owl:hasValue rdf:resource="&fibo-sec-eq-eq;RestrictedVotingRight"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">restricted voting share</rdfs:label>
+		<skos:definition xml:lang="en">share that confers less than one vote per share</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-eq-eq;Share">
@@ -806,6 +840,25 @@
 		<fibo-fnd-utl-av:synonym xml:lang="en">dividend-price ratio</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
+	<owl:NamedIndividual rdf:about="&fibo-sec-eq-eq;SingleVotingRight">
+		<rdf:type rdf:resource="&fibo-sec-eq-eq;VotingRight"/>
+		<rdfs:label>single voting right</rdfs:label>
+		<skos:definition>right to exactly one vote per share</skos:definition>
+		<fibo-sec-eq-eq:confersNumberOfVotesPerShare rdf:datatype="&xsd;decimal">1</fibo-sec-eq-eq:confersNumberOfVotesPerShare>
+	</owl:NamedIndividual>
+	
+	<owl:Class rdf:about="&fibo-sec-eq-eq;SingleVotingShare">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;Share"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;confers"/>
+				<owl:hasValue rdf:resource="&fibo-sec-eq-eq;SingleVotingRight"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">single voting share</rdfs:label>
+		<skos:definition xml:lang="en">share that has the right to exactly one vote</skos:definition>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-sec-eq-eq;SpecialDividend">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;Dividend"/>
 		<rdfs:label>special dividend</rdfs:label>
@@ -818,18 +871,6 @@
 		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;Share"/>
 		<rdfs:label xml:lang="en">unrestricted share</rdfs:label>
 		<skos:definition xml:lang="en">share whose ownership/transfer/sale is not subject to special conditions including country-specific restrictions</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-sec-eq-eq;Voting">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;VotingRight"/>
-		<rdfs:label>voting</rdfs:label>
-		<owl:equivalentClass>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-eq-eq;confersNumberOfVotesPerShare"/>
-				<owl:hasValue rdf:datatype="&xsd;decimal">1</owl:hasValue>
-			</owl:Restriction>
-		</owl:equivalentClass>
-		<skos:definition>right that confers exactly one vote per share</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-eq-eq;VotingRight">
@@ -872,7 +913,7 @@
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;confers"/>
 		<rdfs:label>confers ownership of</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fnd-agr-ctr;Contract"/>
-		<skos:definition xml:lang="en">grants or bestows ownership via contract</skos:definition>
+		<skos:definition xml:lang="en">grants ownership via contract</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-eq-eq;hasAdjustableDividendRate">
@@ -976,7 +1017,7 @@
 		<rdfs:label>has record date</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-eq-eq;Share"/>
 		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
-		<skos:definition>indicates the date on which the issuer checks to determine whether or not a party was on the company&apos;s books as a shareholder when required (i.e., they must have been on the books prior to the ex-dividend date), to identify who is eligible to receive the next dividend</skos:definition>
+		<skos:definition>indicates the date on which the issuer checks to determine whether a party was on the company&apos;s books as a shareholder when required (i.e., they must have been on the books prior to the ex-dividend date), to identify who is eligible to receive the next dividend</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.investor.gov/introduction-investing/investing-basics/glossary/ex-dividend-dates-when-are-you-entitled-stock-and</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:explanatoryNote>Companies also use this date to determine who is sent proxy statements, financial reports, and other information.</fibo-fnd-utl-av:explanatoryNote>
 		<fibo-fnd-utl-av:synonym>has date of record</fibo-fnd-utl-av:synonym>
