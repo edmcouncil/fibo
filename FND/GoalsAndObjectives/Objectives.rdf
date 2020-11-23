@@ -71,7 +71,7 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-gao-obj;Strategy"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-gao-obj;isDesignedToAchieve"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-gao-obj;hasObjective"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fnd-gao-obj;BusinessObjective"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -88,7 +88,14 @@
 	<owl:Class rdf:about="&fibo-fnd-gao-obj;FinancialObjective">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-gao-obj;Objective"/>
 		<rdfs:label>financial objective</rdfs:label>
-		<skos:definition>objective that reflects the strategic financial goals and direction of a person, organization or system within a time frame and available resources</skos:definition>
+		<skos:definition>objective that reflects the strategic financial goals and direction of a party within a time frame and available resources</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-gao-obj;Goal">
+		<rdfs:label>goal</rdfs:label>
+		<skos:definition>desired result that a party envisions, plans, and to which it commits, in order to achieve a desired state</skos:definition>
+		<fibo-fnd-utl-av:definitionOrigin rdf:datatype="&xsd;anyURI">http://en.wikipedia.org/wiki/Goal</fibo-fnd-utl-av:definitionOrigin>
+		<fibo-fnd-utl-av:explanatoryNote>Many people endeavor to reach goals within a finite time by setting deadlines.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-gao-obj;InvestmentObjective">
@@ -107,31 +114,49 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>objective</rdfs:label>
-		<skos:definition>short-term, quantitative, measurable result that a person, organization, or system seeks to attain in order to achieve its long-term goals</skos:definition>
+		<skos:definition>short-term, quantitative, measurable result that a party seeks to attain in order to achieve its long-term goals</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-gao-obj;Program">
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-gao-obj;hasObjective"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-gao-obj;Objective"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-gao-obj;hasGoal"/>
+				<owl:onClass rdf:resource="&fibo-fnd-gao-obj;Goal"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label>program</rdfs:label>
-		<skos:definition>coordinated set of activities designed to achieve some objective(s)</skos:definition>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-gao-obj;hasObjective"/>
+				<owl:onClass rdf:resource="&fibo-fnd-gao-obj;Objective"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en-US">program</rdfs:label>
+		<rdfs:label xml:lang="en-GB">programme</rdfs:label>
+		<skos:definition>coordinated set of activities designed to obtain benefits not available from managing them individually</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.prince2.com/usa/blog/project-vs-programme</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-gao-obj;SalesStrategy">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-gao-obj;BusinessStrategy"/>
 		<rdfs:label>sales strategy</rdfs:label>
-		<skos:definition>strategy for selling a product or service, including allocating resources to the sales process, reducing costs, and optimizing revenues</skos:definition>
+		<skos:definition>strategy for selling a something, including allocating resources to the sales process, reducing costs, and optimizing revenues</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-gao-obj;Strategy">
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-gao-obj;isDesignedToAchieve"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-gao-obj;Objective"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-gao-obj;hasGoal"/>
+				<owl:onClass rdf:resource="&fibo-fnd-gao-obj;Goal"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-gao-obj;hasObjective"/>
+				<owl:onClass rdf:resource="&fibo-fnd-gao-obj;Objective"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>strategy</rdfs:label>
@@ -139,17 +164,18 @@
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">A strategy may involve activities that are needed in order to achieve specific goals or objectives. It may take into account one or more policies or any number of restrictions and constraints.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-gao-obj;hasGoal">
+		<rdfs:subPropertyOf rdf:resource="&lcc-lr;has"/>
+		<rdfs:label>has goal</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fnd-gao-obj;Goal"/>
+		<skos:definition>relates something to a long-term, desired outcome</skos:definition>
+	</owl:ObjectProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-gao-obj;hasObjective">
 		<rdfs:subPropertyOf rdf:resource="&lcc-lr;has"/>
 		<rdfs:label>has objective</rdfs:label>
 		<rdfs:range rdf:resource="&fibo-fnd-gao-obj;Objective"/>
 		<skos:definition>relates something to a specific objective (result) that it aims to achieve within a time frame and with available resources</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-fnd-gao-obj;isDesignedToAchieve">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;involves"/>
-		<rdfs:label>is designed to achieve</rdfs:label>
-		<skos:definition>relates an approach, method, plan, or strategy to an objective or goal or outcome that is the goal, objective, or intended result</skos:definition>
 	</owl:ObjectProperty>
 
 </rdf:RDF>
