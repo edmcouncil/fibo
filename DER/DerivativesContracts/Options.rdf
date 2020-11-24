@@ -4,6 +4,7 @@
 	<!ENTITY fibo-der-der-fwd "https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Forwards/">
 	<!ENTITY fibo-der-der-opt "https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Options/">
 	<!ENTITY fibo-der-drc-bsc "https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/DerivativesBasics/">
+	<!ENTITY fibo-der-drc-swp "https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Swaps/">
 	<!ENTITY fibo-der-sbd-sbd "https://spec.edmcouncil.org/fibo/ontology/DER/SecurityBasedDerivatives/SecurityBasedDerivatives/">
 	<!ENTITY fibo-fbc-fct-ra "https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/RegistrationAuthorities/">
 	<!ENTITY fibo-fbc-fi-fi "https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/">
@@ -37,6 +38,7 @@
 	xmlns:fibo-der-der-fwd="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Forwards/"
 	xmlns:fibo-der-der-opt="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Options/"
 	xmlns:fibo-der-drc-bsc="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/DerivativesBasics/"
+	xmlns:fibo-der-drc-swp="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Swaps/"
 	xmlns:fibo-der-sbd-sbd="https://spec.edmcouncil.org/fibo/ontology/DER/SecurityBasedDerivatives/SecurityBasedDerivatives/"
 	xmlns:fibo-fbc-fct-ra="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/RegistrationAuthorities/"
 	xmlns:fibo-fbc-fi-fi="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"
@@ -71,6 +73,7 @@
 		<sm:fileAbbreviation>fibo-der-der-opt</sm:fileAbbreviation>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/DerivativesBasics/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Forwards/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Swaps/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/SecurityBasedDerivatives/SecurityBasedDerivatives/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/InstrumentPricing/"/>
@@ -597,6 +600,18 @@
 		<skos:definition xml:lang="en">issuer granting the rights defined in the option in exchange for some consideration</skos:definition>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-der-der-opt;OptionOnFuture">
+		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;OTCOptionContract"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-fi;Future"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">option on future</rdfs:label>
+		<skos:definition xml:lang="en">option that gives the holder the right, but not the obligation, to buy or sell a specific futures contract at a specified price on or before the option&apos;s expiration date</skos:definition>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-der-der-opt;OptionPayoutCommitment">
 		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;OptionWriterCommitment"/>
 		<rdfs:subClassOf>
@@ -624,7 +639,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-der-opt;OptionPremium">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-ip;SecurityPrice"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-ip;MarketPrice"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-acc-cur;CalculatedPrice"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
@@ -649,24 +664,13 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-der-opt;hasPayer"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-drc-bsc;PayingParty"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-der-opt;hasReceiver"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-drc-bsc;ReceivingParty"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-der-opt;hasRelativePaymentDate"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;RelativeDate"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">option premium</rdfs:label>
-		<skos:definition xml:lang="en">price of a premium on the option, if any</skos:definition>
+		<skos:definition xml:lang="en">current market price of an option contract</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">The option premium is the income received by the seller (writer) of an option contract to another party. In-the-money option premiums are composed of two factors: intrinsic and extrinsic value. Out-of-the-money options&apos; premiums consist solely of extrinsic value. For stock options, the premium is quoted as a dollar amount per share, and most contracts represent the commitment of 100 shares.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-der-opt;OptionPremiumFixed">
@@ -870,6 +874,20 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 		<skos:definition xml:lang="en">The strike price for the option is the agreed price for the transaction if this takes place. Applies to all options types. Action: Make sure that&apos;s there for all Options types.</skos:definition>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-der-der-opt;Swaption">
+		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;OTCOptionContract"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-drc-swp;Swap"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">swaption</rdfs:label>
+		<skos:definition xml:lang="en">over-the-counter option that confers the right but not the obligation, to enter into a swap transaction at some time in the future</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">A swaption, also known as a swap option, refers to an option to enter into an interest rate swap or some other type of swap. In exchange for an options premium, the buyer gains the right but not the obligation to enter into a specified swap agreement with the issuer on a specified future date.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:synonym xml:lang="en">swap option</fibo-fnd-utl-av:synonym>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-der-der-opt;UpOrDown">
 		<rdfs:label xml:lang="en">up or down</rdfs:label>
 	</owl:Class>
@@ -1059,7 +1077,7 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-der-opt;hasBuyer"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;OptionHolder"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-pas-pas;Buyer"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -1071,7 +1089,7 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-der-opt;hasSeller"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;OptionIssuer"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-pas-pas;Seller"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
