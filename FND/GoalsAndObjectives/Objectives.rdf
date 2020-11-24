@@ -31,7 +31,7 @@
 		<rdfs:label>Objectives Ontology</rdfs:label>
 		<dct:abstract>This ontology defines the concept of an objective, for use in other FIBO ontology elements. Objectives are defined as being distinct from goals, in that they constitute time limited and measurable targets which some entity may seek to attain in pursuit  of its goals.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
-		<sm:contentLanguage rdf:datatype="&xsd;anyURI">http://www.w3.org/standards/techs/owl#w3c_all</sm:contentLanguage>
+		<sm:contentLanguage rdf:datatype="&xsd;anyURI">https://www.w3.org/TR/owl2-quick-reference/</sm:contentLanguage>
 		<sm:copyright>Copyright (c) 2013-2020 EDM Council, Inc.</sm:copyright>
 		<sm:copyright>Copyright (c) 2013-2020 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/</sm:dependsOn>
@@ -44,7 +44,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20200201/GoalsAndObjectives/Objectives/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20201101/GoalsAndObjectives/Objectives/"/>
 		<skos:changeNote>The http://www.omg.org/spec/FIBO/Foundations/20130601/GoalsAndObjectives/Objectives.owl version of the ontology was revised in advance of the September 2013 New Brunswick, NJ meeting, as follows:
    (1) to use slash style URI/IRIss (also called 303 URIs, vs. hash style) as required to support server side processing 
    (2) to use version-independent IRIs for all definitions internally as opposed to version-specific IRIs
@@ -55,6 +55,7 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20130801/GoalsAndObjectives/Objectives.rdf version of this ontology was modified per the issue resolutions identified in the FIBO FND 1.0 FTF report and in https://spec.edmcouncil.org/fibo/ontology/FND/1.0/AboutFND-1.0/.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20180801/GoalsAndObjectives/Objectives.rdf version of this ontology was modified to integrate concepts such as investment objective, business objective, strategy, and related properties.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20190401/GoalsAndObjectives/Objectives.rdf version of this ontology was modified to integrate concepts such as distribution and sales strategy, and to eliminate duplication of concepts in LCC.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20200201/GoalsAndObjectives/Objectives.rdf version of this ontology was modified to add the concept of a program, required for IND but also to represent compliance, and other kinds of programs.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -70,7 +71,7 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-gao-obj;Strategy"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-gao-obj;isDesignedToAchieve"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-gao-obj;hasObjective"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fnd-gao-obj;BusinessObjective"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -87,7 +88,14 @@
 	<owl:Class rdf:about="&fibo-fnd-gao-obj;FinancialObjective">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-gao-obj;Objective"/>
 		<rdfs:label>financial objective</rdfs:label>
-		<skos:definition>objective that reflects the strategic financial goals and direction of a person, organization or system within a time frame and available resources</skos:definition>
+		<skos:definition>objective that reflects the strategic financial goals and direction of a party within a time frame and available resources</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-gao-obj;Goal">
+		<rdfs:label>goal</rdfs:label>
+		<skos:definition>desired result that a party envisions, plans, and to which it commits, in order to achieve a desired state</skos:definition>
+		<fibo-fnd-utl-av:definitionOrigin rdf:datatype="&xsd;anyURI">http://en.wikipedia.org/wiki/Goal</fibo-fnd-utl-av:definitionOrigin>
+		<fibo-fnd-utl-av:explanatoryNote>Many people endeavor to reach goals within a finite time by setting deadlines.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-gao-obj;InvestmentObjective">
@@ -106,20 +114,49 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>objective</rdfs:label>
-		<skos:definition>short-term, quantitative, measurable result that a person, organization, or system seeks to attain in order to achieve its long-term goals</skos:definition>
+		<skos:definition>short-term, quantitative, measurable result that a party seeks to attain in order to achieve its long-term goals</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-gao-obj;Program">
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-gao-obj;hasGoal"/>
+				<owl:onClass rdf:resource="&fibo-fnd-gao-obj;Goal"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-gao-obj;hasObjective"/>
+				<owl:onClass rdf:resource="&fibo-fnd-gao-obj;Objective"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en-US">program</rdfs:label>
+		<rdfs:label xml:lang="en-GB">programme</rdfs:label>
+		<skos:definition>coordinated set of activities designed to obtain benefits not available from managing them individually</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.prince2.com/usa/blog/project-vs-programme</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-gao-obj;SalesStrategy">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-gao-obj;BusinessStrategy"/>
 		<rdfs:label>sales strategy</rdfs:label>
-		<skos:definition>strategy for selling a product or service, including allocating resources to the sales process, reducing costs, and optimizing revenues</skos:definition>
+		<skos:definition>strategy for selling something, including allocating resources to the sales process, reducing costs, and optimizing revenues</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-gao-obj;Strategy">
 		<rdfs:subClassOf>
 			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-gao-obj;hasGoal"/>
+				<owl:onClass rdf:resource="&fibo-fnd-gao-obj;Goal"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-gao-obj;hasObjective"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-gao-obj;Objective"/>
+				<owl:onClass rdf:resource="&fibo-fnd-gao-obj;Objective"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>strategy</rdfs:label>
@@ -127,17 +164,18 @@
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">A strategy may involve activities that are needed in order to achieve specific goals or objectives. It may take into account one or more policies or any number of restrictions and constraints.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-gao-obj;hasGoal">
+		<rdfs:subPropertyOf rdf:resource="&lcc-lr;has"/>
+		<rdfs:label>has goal</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fnd-gao-obj;Goal"/>
+		<skos:definition>relates something to a long-term, desired outcome</skos:definition>
+	</owl:ObjectProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-gao-obj;hasObjective">
 		<rdfs:subPropertyOf rdf:resource="&lcc-lr;has"/>
 		<rdfs:label>has objective</rdfs:label>
 		<rdfs:range rdf:resource="&fibo-fnd-gao-obj;Objective"/>
 		<skos:definition>relates something to a specific objective (result) that it aims to achieve within a time frame and with available resources</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-fnd-gao-obj;isDesignedToAchieve">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;involves"/>
-		<rdfs:label>is designed to achieve</rdfs:label>
-		<skos:definition>relates an approach, method, plan, or strategy to an objective or goal or outcome that is the goal, objective, or intended result</skos:definition>
 	</owl:ObjectProperty>
 
 </rdf:RDF>
