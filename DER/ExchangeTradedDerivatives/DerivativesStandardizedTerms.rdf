@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE rdf:RDF [
 	<!ENTITY dct "http://purl.org/dc/terms/">
+	<!ENTITY fibo-der-drc-bsc "https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/DerivativesBasics/">
 	<!ENTITY fibo-der-etd-std "https://spec.edmcouncil.org/fibo/ontology/DER/ExchangeTradedDerivatives/DerivativesStandardizedTerms/">
 	<!ENTITY fibo-fnd-gao-obj "https://spec.edmcouncil.org/fibo/ontology/FND/GoalsAndObjectives/Objectives/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
@@ -14,6 +15,7 @@
 ]>
 <rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/ontology/DER/ExchangeTradedDerivatives/DerivativesStandardizedTerms/"
 	xmlns:dct="http://purl.org/dc/terms/"
+	xmlns:fibo-der-drc-bsc="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/DerivativesBasics/"
 	xmlns:fibo-der-etd-std="https://spec.edmcouncil.org/fibo/ontology/DER/ExchangeTradedDerivatives/DerivativesStandardizedTerms/"
 	xmlns:fibo-fnd-gao-obj="https://spec.edmcouncil.org/fibo/ontology/FND/GoalsAndObjectives/Objectives/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
@@ -29,6 +31,7 @@
 		<rdfs:label xml:lang="en">DerivativesStandardizedTerms</rdfs:label>
 		<dct:abstract>Core concepts for standardized terms for exchange traded options and futures, that are common to both. Includes the definition of the derivatives exchange and the listing of a product on that exchange along with price determination methods.</dct:abstract>
 		<sm:fileAbbreviation>fibo-der-etd-std</sm:fileAbbreviation>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/DerivativesBasics/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/GoalsAndObjectives/Objectives/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/MD/DerivativesTemporal/ETOptionsTemporal/"/>
@@ -36,25 +39,6 @@
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/ExchangeTradedDerivatives/DerivativesStandardizedTerms/"/>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Provisional"/>
 	</owl:Ontology>
-	
-	<owl:Class rdf:about="&fibo-der-etd-std;DerivativesClearing">
-		<rdfs:subClassOf rdf:resource="&fibo-der-etd-std;DerivativesListing"/>
-		<rdfs:label xml:lang="en">derivatives clearing</rdfs:label>
-		<skos:definition xml:lang="en">The service... This is correect - this role applies the same to Futures and Options contracts on derivatives exchanges. This is always on a Futures Exchange. There are similar terms / facilities for options traded on a Stock Exchange. Also American v European by implication of the nature of the underlying i.e. whether it&apos;s a stock or a futures contract.</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-etd-std;DerivativesExchange">
-		<rdfs:label xml:lang="en">derivatives exchange</rdfs:label>
-		<skos:definition xml:lang="en">Exchange where futures contracts and options on futures contracts are traded.</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Exchanges may trade commodities, financial derivatives, or a combination of the two, as well as futures and options on indices and equity products.</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-etd-std;DerivativesListing">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-lst;Listing"/>
-		<rdfs:label xml:lang="en">derivatives listing</rdfs:label>
-		<skos:definition xml:lang="en">A listing of an instrument on a derivatives exchange. The listing is a product of the individual exchange.</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">An exchange traded derivative is a product offered by the exchange, whereby the investor chooses to invest in that option and it then becomes a contract between them and the exchange. In this sense this is not the same as an Equity listing, and the facts about equities ot other exchange traded products listings do not apply to a derivatives listing. Update 24 Nov 2010: Later reviews (see notes elsewhere) don&apos;t support this description. In fact the contract is between investors (participants in the exchange).</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-etd-std;DerivativesPriceDeterminationMethod">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-gao-obj;Strategy"/>
@@ -76,14 +60,14 @@
 	
 	<owl:DatatypeProperty rdf:about="&fibo-der-etd-std;evenLotSize">
 		<rdfs:label xml:lang="en">even lot size</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-etd-std;DerivativesExchange"/>
+		<rdfs:domain rdf:resource="&fibo-der-drc-bsc;DesignatedContractMarket"/>
 		<rdfs:range rdf:resource="&xsd;integer"/>
 		<skos:definition xml:lang="en">Unit of trading in a commodity, established by an exchange, and to which official price quotations from that exchange apply.</skos:definition>
 	</owl:DatatypeProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-der-etd-std;openOutcry">
 		<rdfs:label xml:lang="en">open outcry</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-etd-std;DerivativesExchange"/>
+		<rdfs:domain rdf:resource="&fibo-der-drc-bsc;DesignatedContractMarket"/>
 		<rdfs:range rdf:resource="&xsd;boolean"/>
 		<skos:definition xml:lang="en">Whether trading on the exchange is by way of open outcry in the form of physical interaction between participants. No means that trading is carried out electronically.</skos:definition>
 	</owl:DatatypeProperty>
