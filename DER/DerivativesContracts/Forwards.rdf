@@ -206,39 +206,21 @@
 				<owl:someValuesFrom rdf:resource="&fibo-der-der-fwd;ForwardDeliveryCommitment"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;confers"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-der-fwd;ForwardCashSettlementCommitment"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;confers"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-der-fwd;ForwardDeliveryCommitment"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">forward contract</rdfs:label>
+		<rdfs:label xml:lang="en">forward</rdfs:label>
 		<skos:definition xml:lang="en">A cash market transaction in which a seller agrees to deliver a specific cash commodity to a buyer at some point in the future.</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Unlike futures contracts (which occur through a clearing firm), forward contracts are privately negotiated and are not standardized. Further, the two parties must bear each other&apos;s credit risk, which is not the case with a futures contract. Also, since the contracts are not exchange traded, there is no marking to market requirement, which allows a buyer to avoid almost all capital outflow initially (though some counterparties might set collateral requirements). Given the lack of standardization in these contracts, there is very little scope for a secondary market in forwards. The price specified in a forward contract for a specific commodity. The forward price makes the forward contract have no value when the contract is written. However, if the value of the underlying commodity changes, the value of the forward contract becomes positive or negative, depending on the position held. Forwards are priced in a manner similar to futures. Like in the case of a futures contract, the first step in pricing a forward is to add the spot price to the cost of carry (interest forgone, convenience yield, storage costs and interest/dividend received on the underlying). Unlike a futures contract though, the price may also include a premium for counterparty credit risk, and the fact that there is not daily marking to market process to minimize default risk. If there is no allowance for these credit risks, then the forward price will equal the futures price.</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-der-fwd;ForwardCashConditionalDeliveryCommitment">
-		<rdfs:subClassOf rdf:resource="&fibo-der-der-fwd;ForwardCashDeliveryCommitment"/>
-		<rdfs:label xml:lang="en">forward cash conditional delivery commitment</rdfs:label>
-		<skos:definition xml:lang="en">Commitment to deliver agreed amountof cash in the event that the option is exercised.</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-der-fwd;ForwardCashDeliveryCommitment">
-		<rdfs:subClassOf rdf:resource="&fibo-der-der-fwd;ForwardDeliveryCommitment"/>
-		<rdfs:label xml:lang="en">forward cash delivery commitment</rdfs:label>
-		<skos:definition xml:lang="en">commitment to deliver a cash amount at an agreed date in the future</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Not the earliest possible date as in a Spot. FpML exchangedCurrency1 referred to as a &quot;Currency Stream&quot; &apos;This is the first of the two currency flows that define a single leg of a standard foreign exchange transaction.&apos;</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-der-fwd;ForwardCashSettlementCommitment">
 		<rdfs:subClassOf rdf:resource="&fibo-der-drc-bsc;DerivativeTransactionTerms"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;SettlementTerms"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-der-fwd;hasAdditionalCosts"/>
+				<owl:onClass rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">forward cash settlement commitment</rdfs:label>
 		<skos:definition xml:lang="en">commitment to settle a cash amount at an agreed date in the future</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Note the earliest possible date as in a Spot. FpML exchangedCurrency2 referred to as a &quot;Currency Stream&quot; &apos;This is the second of the two currency flows that define a single leg of a standard foreign exchange transaction.&apos;</fibo-fnd-utl-av:explanatoryNote>
@@ -248,14 +230,14 @@
 		<rdfs:subClassOf rdf:resource="&fibo-der-drc-bsc;DeliveryTerms"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-der-fwd;hasForwardUnderlierPrice"/>
+				<owl:onProperty rdf:resource="&fibo-der-der-fwd;hasAdditionalCosts"/>
 				<owl:onClass rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-acc-cur;hasMonetaryAmount"/>
+				<owl:onProperty rdf:resource="&fibo-der-der-fwd;hasForwardUnderlierPrice"/>
 				<owl:onClass rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
@@ -268,10 +250,11 @@
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">forward delivery commitment</rdfs:label>
 		<skos:definition xml:lang="en">commitment to deliver something in the future, at an agreed date or dates and under agreed terms</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">In an Option, there is still a commitment on one side to deliver in the event that the other side chooses to exercise the option.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Typically this is a commitment to deliver cash, but it could also involve some other underlying asset. In an Option, there is still a commitment on one side to deliver in the event that the other side chooses to exercise the option.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-der-fwd;ForwardTransaction">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;SecuritiesTransaction"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;embodies"/>
@@ -287,24 +270,13 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-der-fwd;hasValuationTiming"/>
-				<owl:someValuesFrom>
-					<owl:Class>
-						<owl:unionOf rdf:parseType="Collection">
-							<rdf:Description rdf:about="&fibo-der-der-fwd;MasterConfirmationValuationTimeTermsSet">
-							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-der-der-fwd;ValuationTimeType">
-							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-fnd-dt-fd;DateTime">
-							</rdf:Description>
-						</owl:unionOf>
-					</owl:Class>
-				</owl:someValuesFrom>
+				<owl:someValuesFrom rdf:resource="&fibo-der-der-fwd;ValuationTiming"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-fct-ra;specifies"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-der-fwd;UnderlyingValuation"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-drc-bsc;UnderlyingAssetValuation"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -314,7 +286,8 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">forward valuation terms</rdfs:label>
-		<skos:definition xml:lang="en">contract terms specific to aluation of underlier(s) for a forward contract</skos:definition>
+		<skos:definition xml:lang="en">contract terms specific to valuation of underlier(s) for a forward contract</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Note this includes contractual details regarding the time(s) of day at which valuation can occur, as &quot;As Specified in Master Confirmation&quot;.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-der-fwd;FuturesListing">
@@ -395,12 +368,6 @@
 		<skos:definition xml:lang="en">An Interest Rate Future is a futures contract with an interest-bearing instrument as the underlying asset.</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-der-fwd;MasterConfirmationValuationTimeTermsSet">
-		<rdfs:label xml:lang="en">master confirmation valuation time terms set</rdfs:label>
-		<skos:definition xml:lang="en">Formal terms specifying the time for Valuation of Equity Underlying.</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Note this is referred to in the selection list for times of day at which valuation can occur, as &quot;As Specified in Master Confirmation&quot;. Since that is not a time of day, Master confirmation is added here. Presumably the Master Confirmation (contract / covering agreement) has other terms. REVIEW</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-der-der-fwd;MoneyMarketFuture">
 		<rdfs:subClassOf rdf:resource="&fibo-der-der-fwd;InterestRateFuture"/>
 		<rdfs:subClassOf>
@@ -461,22 +428,29 @@
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Standard symbology for the commodities are standardized by the exchanges as part of their standard contracts, for example trading in standard bushels, commonly defined kinds of oil and so on. These give the units in which lot sizes are described and defined.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-der-fwd;UnderlyingValuation">
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-der-fwd;undertakenBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-drc-bsc;CalculationAgent"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">underlying valuation</rdfs:label>
-		<skos:definition xml:lang="en">The act of valuation of the underlying on some OTC Derivative.</skos:definition>
-		<skos:editorialNote xml:lang="en">Abstracted from FpML term for calculation Agent and Valuation terms as referred to in Equity Forward and presumably other derivatives also.</skos:editorialNote>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-der-der-fwd;ValuationTimeType">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-fd;DateTime"/>
 		<rdfs:label xml:lang="en">valuation time type</rdfs:label>
 		<skos:definition xml:lang="en">The time of day at which the calculation agent values the underlying, for example the official closing time of the exchange.</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-der-fwd;ValuationTiming">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractualElement"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-der-fwd;hasValuationTimeOfDay"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;DateTime"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isCharacterizedBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-der-fwd;ValuationTimeType"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">valuation timing</rdfs:label>
+		<skos:definition xml:lang="en">terms specifying the timing specific to valuation of an underlying asset</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Note this is referred to in the selection list for times of day at which valuation can occur, as &quot;As Specified in Master Confirmation&quot;. Since that is not a time of day, Master confirmation is added here. Presumably the Master Confirmation (contract / covering agreement) has other terms. REVIEW</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-der-fwd;XETRA">
@@ -504,6 +478,13 @@
 		<skos:definition xml:lang="en">The first date at which a delivery notice can be issued.</skos:definition>
 	</owl:ObjectProperty>
 	
+	<owl:ObjectProperty rdf:about="&fibo-der-der-fwd;hasAdditionalCosts">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasMonetaryAmount"/>
+		<rdfs:label xml:lang="en">has additional costs</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
+		<skos:definition xml:lang="en">indicates costs, such as up front costs, brokerage fees and the like, that must be paid on delivery</skos:definition>
+	</owl:ObjectProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-der-der-fwd;hasBuyer">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-agr-ctr;hasCounterparty"/>
 		<rdfs:label xml:lang="en">has buyer</rdfs:label>
@@ -529,7 +510,7 @@
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasPrice"/>
 		<rdfs:label xml:lang="en">has forward underlier price</rdfs:label>
 		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
-		<skos:definition xml:lang="en">indicates the price of the underlier of the forward</skos:definition>
+		<skos:definition xml:lang="en">indicates the price of the underlier of the forward as specified in delivery terms</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-der-fwd;hasLotSize">
@@ -571,25 +552,14 @@
 	<owl:ObjectProperty rdf:about="&fibo-der-der-fwd;hasValuationTimeOfDay">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDateTime"/>
 		<rdfs:label xml:lang="en">has valuation time of day</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-der-fwd;MasterConfirmationValuationTimeTermsSet"/>
+		<rdfs:domain rdf:resource="&fibo-der-der-fwd;ValuationTiming"/>
 		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;DateTime"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-der-fwd;hasValuationTiming">
 		<rdfs:label xml:lang="en">has valuation timing</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-der-der-fwd;ForwardValuationTerms"/>
-		<rdfs:range>
-			<owl:Class>
-				<owl:unionOf rdf:parseType="Collection">
-					<rdf:Description rdf:about="&fibo-der-der-fwd;MasterConfirmationValuationTimeTermsSet">
-					</rdf:Description>
-					<rdf:Description rdf:about="&fibo-der-der-fwd;ValuationTimeType">
-					</rdf:Description>
-					<rdf:Description rdf:about="&fibo-fnd-dt-fd;DateTime">
-					</rdf:Description>
-				</owl:unionOf>
-			</owl:Class>
-		</rdfs:range>
+		<rdfs:range rdf:resource="&fibo-der-der-fwd;ValuationTiming"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-der-fwd;lastDeliveryDate">
@@ -627,19 +597,6 @@
 		<skos:definition xml:lang="en">An amount necessary to cover the purchase of the underlying security since delivery is mandatory, be it physical or cash. Failing to provide a sufficient provision will result in a margin call.</skos:definition>
 	</owl:ObjectProperty>
 	
-	<owl:DatatypeProperty rdf:about="&fibo-der-der-fwd;paymentFeeType">
-		<rdfs:label xml:lang="en">payment fee type</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-der-fwd;ForwardCashSettlementCommitment"/>
-		<rdfs:range rdf:resource="&xsd;string"/>
-		<skos:definition xml:lang="en">The type of fee or additional payment, e.g. brokerage, upfront fee etc.</skos:definition>
-	</owl:DatatypeProperty>
-	
-	<owl:DatatypeProperty rdf:about="&fibo-der-der-fwd;paymentType">
-		<rdfs:label xml:lang="en">payment type</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-der-fwd;ForwardCashDeliveryCommitment"/>
-		<skos:definition xml:lang="en">&apos;A classification of the type of fee or additional payment, e.g. brokerage, upfront fee etc. FpML does not define domain values for this element.&apos;</skos:definition>
-	</owl:DatatypeProperty>
-	
 	<owl:ObjectProperty rdf:about="&fibo-der-der-fwd;settlementAmount">
 		<rdfs:label xml:lang="en">settlement amount</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-der-der-fwd;ForwardCashSettlementCommitment"/>
@@ -666,12 +623,6 @@
 		</rdfs:domain>
 		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
 		<skos:definition xml:lang="en">The minimum value of the upward or downward movement of the contract. This is the contract size multiplied by the tick size.</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-der-der-fwd;undertakenBy">
-		<rdfs:label xml:lang="en">undertaken by</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-der-fwd;UnderlyingValuation"/>
-		<rdfs:range rdf:resource="&fibo-der-drc-bsc;CalculationAgent"/>
 	</owl:ObjectProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-der-der-fwd;unitOfTrading">
