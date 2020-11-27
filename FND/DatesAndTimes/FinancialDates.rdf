@@ -29,7 +29,7 @@
 		<rdfs:label>Financial Dates Ontology</rdfs:label>
 		<dct:abstract>This ontology provides definitions of date and schedule concepts for use in other FIBO ontologies.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
-		<sm:contentLanguage rdf:datatype="&xsd;anyURI">http://www.w3.org/standards/techs/owl#w3c_all</sm:contentLanguage>
+		<sm:contentLanguage rdf:datatype="&xsd;anyURI">https://www.w3.org/TR/owl2-quick-reference/</sm:contentLanguage>
 		<sm:copyright>Copyright (c) 2014-2020 EDM Council, Inc.</sm:copyright>
 		<sm:copyright>Copyright (c) 2014-2020 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Arrangements/</sm:dependsOn>
@@ -40,13 +40,14 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Arrangements/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20200701/DatesAndTimes/FinancialDates/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20201101/DatesAndTimes/FinancialDates/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20141101/DatesAndTimes/FinancialDates/ version of this ontology was revised by the FIBO FND 1.2 RTF in order to introduce the definition of a time interval, which is a location, to ground some of the concepts such as a date period, and duration as well as to support the definition of business recurrence intervals for use in parametric schedules for securities.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20170201/DatesAndTimes/FinancialDates/ version of this ontology was revised by the FIBO 2.0 RFC in order to introduce the definition of a time instant, to eliminate a reasoning issue with relative dates, and remove a circular dependency inadvertently incorporated in the ontology with a FIBO FND 1.2 modification.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20180801/DatesAndTimes/FinancialDates/ version of this ontology was revised to introduce a composite date datatype to allow for cases whereby the representation of a date for certain purposes, such as GLEIF LEI data, is inconsistent, and to facilitate mapping FIBO to multiple data sources in user environments.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20190201/DatesAndTimes/FinancialDates/ version of this ontology was revised to eliminate deprecated elements.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20200201/DatesAndTimes/FinancialDates/ version of this ontology was revised to add the &apos;has date added&apos; property, which is needed for the date a constituent is added to a basket, among other purposes, to add a TimeOfDay class, needed for representing rate reset times, eliminate duplication with concepts in LCC, and make AdHocScheduleEntry a child of DatedCollectionConstituent.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20200301/DatesAndTimes/FinancialDates/ version of this ontology was revised to move dated collection and dated collection constituent as well as hasObservedDateTime and hasAcquisitionDate to financial dates in order to improve usability, simplify reasoning, made definitions ISO 704 compliant, and eliminate redundant restrictions on ad hoc schedule entry.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20200701/DatesAndTimes/FinancialDates/ version of this ontology was revised to add hasOpeningDateTime and hasClosingDateTime for use in defining trading days and sessions.</skos:changeNote>
 		<skos:changeNote>This ontology was added to Foundations in advance of the December 2014 Long Beach meeting in support of the SEC specification.  It is also needed to provide temporal relationships for Ownership and Control.
 
 These three ontologies are designed for use together:
@@ -278,6 +279,13 @@ Similar points apply to other kinds of calendar periods, such as calendar week, 
 		<rdfs:label>dated structured collection</rdfs:label>
 		<skos:definition>structured collection whose elements are required to have a date and time</skos:definition>
 	</owl:Class>
+	
+	<owl:NamedIndividual rdf:about="&fibo-fnd-dt-fd;Day">
+		<rdf:type rdf:resource="&fibo-fnd-dt-fd;ExplicitDuration"/>
+		<rdfs:label xml:lang="en">day</rdfs:label>
+		<skos:definition xml:lang="en">explicit period of 24 hours</skos:definition>
+		<fibo-fnd-dt-fd:hasDurationValue>P1D</fibo-fnd-dt-fd:hasDurationValue>
+	</owl:NamedIndividual>
 	
 	<owl:Class rdf:about="&fibo-fnd-dt-fd;Duration">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-fd;TimeInterval"/>
@@ -624,6 +632,13 @@ The recurrence start date can also be relative to the starting Date of the overa
 		<skos:definition>identifies a period of time used in computing a calendar-specified date, such as a calendar week, calendar month, calendar quarter, or calendar year</skos:definition>
 	</owl:ObjectProperty>
 	
+	<owl:DatatypeProperty rdf:about="&fibo-fnd-dt-fd;hasClosingDateTime">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasObservedDateTime"/>
+		<rdfs:label xml:lang="en">has closing date time</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;CombinedDateTime"/>
+		<skos:definition xml:lang="en">the day and time at which something closes</skos:definition>
+	</owl:DatatypeProperty>
+	
 	<owl:DatatypeProperty rdf:about="&fibo-fnd-dt-fd;hasCount">
 		<rdfs:label>has count</rdfs:label>
 		<rdfs:range rdf:resource="&xsd;positiveInteger"/>
@@ -757,6 +772,13 @@ The recurrence start date can also be relative to the starting Date of the overa
 		<rdfs:label>has observed date and time</rdfs:label>
 		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;CombinedDateTime"/>
 		<skos:definition>indicates a date and time for an event, measurement, or other observation</skos:definition>
+	</owl:DatatypeProperty>
+	
+	<owl:DatatypeProperty rdf:about="&fibo-fnd-dt-fd;hasOpeningDateTime">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasObservedDateTime"/>
+		<rdfs:label xml:lang="en">has opening date time</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;CombinedDateTime"/>
+		<skos:definition xml:lang="en">the day and time at which something opens</skos:definition>
 	</owl:DatatypeProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-fnd-dt-fd;hasOrdinalNumber">

@@ -57,7 +57,7 @@
 		<rdfs:label xml:lang="en">Instrument Pricing Ontology</rdfs:label>
 		<dct:abstract>This ontology provides a basic set of definitions related to pricing, yield, and spread that are extended in other instrument-specific ontologies.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
-		<sm:contentLanguage rdf:datatype="&xsd;anyURI">http://www.w3.org/standards/techs/owl#w3c_all</sm:contentLanguage>
+		<sm:contentLanguage rdf:datatype="&xsd;anyURI">https://www.w3.org/TR/owl2-quick-reference/</sm:contentLanguage>
 		<sm:copyright>Copyright (c) 2020 EDM Council, Inc.</sm:copyright>
 		<sm:copyright>Copyright (c) 2020 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/BE/</sm:dependsOn>
@@ -85,8 +85,9 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Countries/CountryRepresentation/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/20200701/FinancialInstruments/InstrumentPricing/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/20201101/FinancialInstruments/InstrumentPricing/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20200601/FinancialInstruments/InstrumentPricing.rdf version of this ontology was modified to reflect the move of dated collection from arrangements to financial dates.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20200701/FinancialInstruments/InstrumentPricing.rdf version of this ontology was modified to add trading day and trading session, and to address ambiguity in some definitions.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -143,7 +144,8 @@
 	<owl:Class rdf:about="&fibo-fbc-fi-ip;ClosingPriceDeterminationMethod">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-gao-obj;Strategy"/>
 		<rdfs:label xml:lang="en">closing price determination method</rdfs:label>
-		<skos:definition xml:lang="en">strategy for calculating or otherwise determining an official closing price, typically by an exchange or trading venue</skos:definition>
+		<skos:definition xml:lang="en">strategy for calculating or otherwise determining an official closing price</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">The official closing price is typically the final price at which something trades during regular market hours on an exchange or trading venue.  Because of the evolving nature of online trading in a 24 hour world, every exchange has a method of calculating its official closing price, although that methodology changes from time to time.  They may also publish an adjusted closing price, which reflects changes to the price that reflect corporate actions and after hours trading that occur before the opening of the exchange on the following day. Understanding how the closing price is determined is important to ensure price comparability for a given security across exchanges.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-fi-ip;CollectionOfSecurityPrices">
@@ -180,7 +182,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">composite market</rdfs:label>
-		<skos:definition xml:lang="en">group of exchanges or trading venues referenced for pricing purposes</skos:definition>
+		<skos:definition xml:lang="en">group of exchanges and trading venues referenced for pricing purposes</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-fi-ip;HighPrice">
@@ -205,7 +207,7 @@
 	<owl:Class rdf:about="&fibo-fbc-fi-ip;IntraDayPrice">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-ip;MarketPrice"/>
 		<rdfs:label xml:lang="en">intra day price</rdfs:label>
-		<skos:definition xml:lang="en">price for a given security at some point between the opening and official closing price on a given exchange or composite group of exchanges</skos:definition>
+		<skos:definition xml:lang="en">price for a given security at some point between the opening and official closing price on an exchange</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-fi-ip;LowPrice">
@@ -313,8 +315,8 @@
 	<owl:Class rdf:about="&fibo-fbc-fi-ip;OpeningPrice">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-ip;MarketPrice"/>
 		<rdfs:label xml:lang="en">opening price</rdfs:label>
-		<skos:definition xml:lang="en">price at which a security or commodity starts a trading day</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Investors that want to buy or sell as soon as the market opens will put in an order at the opening price.  Depending on how the closing price for the prior day is determined, and if there is no after hours trading (AFT), the opening price will be the same as the prior trading day&apos;s closing price.  Otherwise, the opening price may differ from the prior trading day&apos;s official closing price.</fibo-fnd-utl-av:explanatoryNote>
+		<skos:definition xml:lang="en">price at which something first trades at the start of a trading day</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Investors that want to buy or sell as soon as the market opens will put in an order at the opening price. Depending on how the closing price for the prior day is determined, and if there is no after hours trading (AFT), the opening price will be the same as the prior trading day&apos;s closing price.  Otherwise, the opening price may differ from the prior trading day&apos;s official closing price.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-fi-ip;PriceAnalytic">
@@ -411,7 +413,60 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">security price</rdfs:label>
-		<skos:definition xml:lang="en">monetary price that some party is willing to pay, has recently paid, or would like to be paid for a given financial instrument at some point in time</skos:definition>
+		<skos:definition xml:lang="en">monetary price for a financial instrument at some point in time</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">A security price may be the price that some party is willing to pay, has recently paid, or would like to be paid, depending on the circumstances.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-fi-ip;TradingDay">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-fd;ExplicitDatePeriod"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-dt-fd;hasDuration"/>
+				<owl:hasValue rdf:resource="&fibo-fnd-dt-fd;Day"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-dt-fd;hasClosingDateTime"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+				<owl:onDataRange rdf:resource="&fibo-fnd-dt-fd;CombinedDateTime"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-dt-fd;hasOpeningDateTime"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+				<owl:onDataRange rdf:resource="&fibo-fnd-dt-fd;CombinedDateTime"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">trading day</rdfs:label>
+		<skos:definition xml:lang="en">time span that a particular trading venue is open</skos:definition>
+		<fibo-fnd-utl-av:abbreviation xml:lang="en">RTH</fibo-fnd-utl-av:abbreviation>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.lawinsider.com/dictionary/trading-day</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">In the United States, and with respect to common stock in particular, trading day means any day on which the stock is traded on the principal market, or, if the principal market is not the principal trading market for the common stock, then on the principal securities exchange or securities market on which the common stock is then traded, provided that &apos;Trading Day&apos; shall not include any day on which the common stock is scheduled to trade on such exchange or market for less than 4.5 hours or any day that the common stock is suspended from trading during the final hour of trading on such exchange or market (or if such exchange or market does not designate in advance the closing time of trading on such exchange or market, then during the hour ending at 4:00:00 p.m., New York time) unless such day is otherwise designated as a trading day in writing by the holder.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:synonym xml:lang="en">regular trading hours</fibo-fnd-utl-av:synonym>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-fi-ip;TradingSession">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-fd;ExplicitDatePeriod"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-dt-fd;hasClosingDateTime"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+				<owl:onDataRange rdf:resource="&fibo-fnd-dt-fd;CombinedDateTime"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-dt-fd;hasOpeningDateTime"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+				<owl:onDataRange rdf:resource="&fibo-fnd-dt-fd;CombinedDateTime"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">trading session</rdfs:label>
+		<skos:definition xml:lang="en">window of time within a trading day in which orders may be placed and filled</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://financial-dictionary.thefreedictionary.com/Trading+Sessions</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">An exchange may have several trading sessions during a day. For example, the exchange may be open from 9 a.m. until 10:30 a.m., from 11:30 a.m. until 1 p.m., and from 2 p.m. to 3:30 p.m. Holding several trading sessions gives the market more time to digest information rationally without having to respond immediately.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-fi-ip;VolumeWeightedAveragePrice">
@@ -492,7 +547,7 @@
 		<rdfs:label xml:lang="en">has closing price determination method</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fbc-fi-ip;SecurityPrice"/>
 		<rdfs:range rdf:resource="&fibo-fbc-fi-ip;ClosingPriceDeterminationMethod"/>
-		<skos:definition xml:lang="en">indicates a strategy by which the closing price is determined</skos:definition>
+		<skos:definition xml:lang="en">indicates a strategy by which the official closing price is determined</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">This method itself changes quite frequently i.e. the exchange may change the way it computes closing prices.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:ObjectProperty>
 	
@@ -508,7 +563,8 @@
 		<rdfs:label xml:lang="en">has quote lot size</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fbc-fi-ip;SecurityPrice"/>
 		<rdfs:range rdf:resource="&xsd;positiveInteger"/>
-		<skos:definition xml:lang="en">magnitude of the offering, order or trade to which the quote price refers (i.e., number of shares)</skos:definition>
+		<skos:definition xml:lang="en">magnitude of something to which the quote price refers</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">The quote lot size, referenced in offerings, orders , and trades, typically refers to the number of shares or units.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:DatatypeProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-fi-ip;hasRateOfReturn">
