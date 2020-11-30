@@ -81,7 +81,7 @@
 		<rdfs:label xml:lang="en">Equity Instruments Ontology</rdfs:label>
 		<dct:abstract>Core terms are those fundamental to all equity instruments. This ontology also distinguishes between privately held and publicly traded equity instruments, and defines a number of related concepts, such as voting rights.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
-		<sm:contentLanguage rdf:datatype="&xsd;anyURI">http://www.w3.org/2002/07/owl#</sm:contentLanguage>
+		<sm:contentLanguage rdf:datatype="&xsd;anyURI">https://www.w3.org/TR/owl2-quick-reference/</sm:contentLanguage>
 		<sm:copyright>Copyright (c) 2013-2020 EDM Council, Inc.</sm:copyright>
 		<sm:copyright>Copyright (c) 2018-2020 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/BE/</sm:dependsOn>
@@ -129,7 +129,7 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20190901/Equities/EquityInstruments.rdf version of this ontology was revised to refine the definition of listed share, update definitions to remove leading articles, add missing properties and restrictions, revise the definition of dividend.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20191201/Equities/EquityInstruments.rdf version of this ontology was revised to refine the definition of share to include a restriction for hasSharesOutstanding, eliminate duplication of concepts in LCC, and add the concept of an equity issuer.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20200301/Equities/EquityInstruments.rdf version of this ontology was revised to incorporate additional features required to map the CFI classification scheme to equity instruments, including features specific to preferred shares.</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20200801/Equities/EquityInstruments.rdf version of this ontology was revised to incorporate a property allowing representation of the share class, streamline the representation of voting rights, and clean up ambiguous definitions.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20200801/Equities/EquityInstruments.rdf version of this ontology was revised to incorporate a property allowing representation of the share class, streamline the representation of voting rights and payment form, and clean up ambiguous definitions.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -154,15 +154,10 @@
 	
 	<owl:Class rdf:about="&fibo-sec-eq-eq;CommonNonVotingUnrestrictedFullyPaidRegisteredShare">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;CommonShare"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;FullyPaidShare"/>
 		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;NonVotingShare"/>
 		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;UnrestrictedShare"/>
 		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-lst;RegisteredSecurity"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-eq-eq;hasSharePaymentStatus"/>
-				<owl:hasValue rdf:resource="&fibo-sec-eq-eq;FullyPaidShareStatus"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-sec-iss;isIssuedInForm"/>
@@ -191,15 +186,10 @@
 	
 	<owl:Class rdf:about="&fibo-sec-eq-eq;CommonVotingUnrestrictedFullyPaidRegisteredShare">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;CommonShare"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;FullyPaidShare"/>
 		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;SingleVotingShare"/>
 		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;UnrestrictedShare"/>
 		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-lst;RegisteredSecurity"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-eq-eq;hasSharePaymentStatus"/>
-				<owl:hasValue rdf:resource="&fibo-sec-eq-eq;FullyPaidShareStatus"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-sec-iss;isIssuedInForm"/>
@@ -501,6 +491,18 @@
 		<fibo-fnd-utl-av:explanatoryNote>In other words, the return is not variable depending on whether or not the company makes a profit.  Annual dividends are calculated as a percentage of the par value, which is the price of the preferred stock at the time it was issued. Most preferred shares have fixed rate dividends.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-sec-eq-eq;FullyPaidShare">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;Share"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-eq-eq;hasSharePaymentStatus"/>
+				<owl:hasValue rdf:resource="&fibo-sec-eq-eq;FullyPaidShareStatus"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">fully paid share</rdfs:label>
+		<skos:definition xml:lang="en">share whose payment status indicates that no additional money is owed to the company by shareholders on the value of the shares</skos:definition>
+	</owl:Class>
+	
 	<owl:NamedIndividual rdf:about="&fibo-sec-eq-eq;FullyPaidShareStatus">
 		<rdf:type rdf:resource="&fibo-sec-eq-eq;SharePaymentStatus"/>
 		<rdfs:label>fully paid share status</rdfs:label>
@@ -547,6 +549,18 @@
 		<rdfs:seeAlso rdf:resource="https://www.investopedia.com/terms/l/listedsecurity.asp"/>
 		<skos:definition xml:lang="en">share that is listed on at least one platform</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Listing requirements vary by exchange and include minimum stockholder&apos;s equity, a minimum share price and a minimum number of shareholders. Exchanges have listing requirements to ensure that only high quality securities are traded on them and to uphold the exchange&apos;s reputation among investors.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-eq-eq;NilPaidShare">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;Share"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-eq-eq;hasSharePaymentStatus"/>
+				<owl:hasValue rdf:resource="&fibo-sec-eq-eq;NilPaidShareStatus"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">nil paid share</rdfs:label>
+		<skos:definition xml:lang="en">share whose payment status indicates that none of the market value has been received by the company for the shares</skos:definition>
 	</owl:Class>
 	
 	<owl:NamedIndividual rdf:about="&fibo-sec-eq-eq;NilPaidShareStatus">
@@ -604,6 +618,18 @@
 		<skos:definition>dividend that is paid to shareholders periodically</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote>Most dividends are considered ordinary, unless they are specifically designated as qualified dividends.</fibo-fnd-utl-av:explanatoryNote>
 		<fibo-fnd-utl-av:explanatoryNote>Note that the terms related to ordinary dividend payment are typically specified in the context of a board resolution rather than contractually.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-eq-eq;PartiallyPaidShare">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;Share"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-eq-eq;hasSharePaymentStatus"/>
+				<owl:hasValue rdf:resource="&fibo-sec-eq-eq;PartiallyPaidShareStatus"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">partially paid share</rdfs:label>
+		<skos:definition xml:lang="en">share whose payment status indicates that only a portion of the market value has been received by the company for the shares</skos:definition>
 	</owl:Class>
 	
 	<owl:NamedIndividual rdf:about="&fibo-sec-eq-eq;PartiallyPaidShareStatus">
