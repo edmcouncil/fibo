@@ -21,7 +21,6 @@
 	<!ENTITY fibo-fnd-pas-pas "https://spec.edmcouncil.org/fibo/ontology/FND/ProductsAndServices/ProductsAndServices/">
 	<!ENTITY fibo-fnd-qt-qtu "https://spec.edmcouncil.org/fibo/ontology/FND/Quantities/QuantitiesAndUnits/">
 	<!ENTITY fibo-fnd-rel-rel "https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/">
-	<!ENTITY fibo-fnd-txn-rea "https://spec.edmcouncil.org/fibo/ontology/FND/TransactionsExt/REATransactions/">
 	<!ENTITY fibo-fnd-utl-alx "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Analytics/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
 	<!ENTITY fibo-ind-ind-ind "https://spec.edmcouncil.org/fibo/ontology/IND/Indicators/Indicators/">
@@ -55,7 +54,6 @@
 	xmlns:fibo-fnd-pas-pas="https://spec.edmcouncil.org/fibo/ontology/FND/ProductsAndServices/ProductsAndServices/"
 	xmlns:fibo-fnd-qt-qtu="https://spec.edmcouncil.org/fibo/ontology/FND/Quantities/QuantitiesAndUnits/"
 	xmlns:fibo-fnd-rel-rel="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"
-	xmlns:fibo-fnd-txn-rea="https://spec.edmcouncil.org/fibo/ontology/FND/TransactionsExt/REATransactions/"
 	xmlns:fibo-fnd-utl-alx="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Analytics/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
 	xmlns:fibo-ind-ind-ind="https://spec.edmcouncil.org/fibo/ontology/IND/Indicators/Indicators/"
@@ -100,7 +98,6 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/ProductsAndServices/ProductsAndServices/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Quantities/QuantitiesAndUnits/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/TransactionsExt/REATransactions/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Analytics/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/Indicators/Indicators/"/>
@@ -235,13 +232,13 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;governs"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;refersTo"/>
 				<owl:someValuesFrom>
 					<owl:Class>
 						<owl:unionOf rdf:parseType="Collection">
-							<rdf:Description rdf:about="&fibo-der-der-opt;OptionCallTransaction">
+							<rdf:Description rdf:about="&fibo-der-der-opt;CallOption">
 							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-der-der-opt;OptionPutTransaction">
+							<rdf:Description rdf:about="&fibo-der-der-opt;PutOption">
 							</rdf:Description>
 						</owl:unionOf>
 					</owl:Class>
@@ -538,26 +535,6 @@
 		<skos:definition xml:lang="en">Terms governing a binary payout commitment.</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-der-opt;OptionCallTransaction">
-		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;OptionalUnderlyingTransaction"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-der-opt;receives"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-der-fwd;ForwardDeliveryCommitment"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;refersTo"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-fpas;SettlementTerms"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">option call transaction</rdfs:label>
-		<owl:disjointWith rdf:resource="&fibo-der-der-opt;OptionPutTransaction"/>
-		<skos:definition xml:lang="en">A transaction which is defined in an options contract and which may or may not take place, at the discretion of the holder of the option. If it does take place, this will be a transaction for the purchase of the underlying or some cash equivalent thereof, as defined in the option contract.</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Purchase is by the option beneficiary (holder).</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-der-der-opt;OptionConditionalPayoutTerms">
 		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;OptionPayoutTerms"/>
 		<rdfs:subClassOf>
@@ -711,23 +688,6 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 		<rdfs:label xml:lang="en">option premium variable</rdfs:label>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-der-opt;OptionPutTransaction">
-		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;OptionalUnderlyingTransaction"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-der-opt;receives"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-fpas;SettlementTerms"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;refersTo"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-der-fwd;ForwardDeliveryCommitment"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">option put transaction</rdfs:label>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-der-der-opt;OptionStrikeResetSchedule">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-fd;Schedule"/>
 		<rdfs:label xml:lang="en">option strike reset schedule</rdfs:label>
@@ -750,25 +710,6 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 		<rdfs:label xml:lang="en">option terms</rdfs:label>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-der-opt;OptionTransactionParty">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-txn-rea;TransactionParty"/>
-		<rdfs:label xml:lang="en">option transaction party</rdfs:label>
-		<skos:definition xml:lang="en">The party to an Option transaction.</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">This is identified as also being a party to the contract that underlies that transaction. Definition OriginLSR Draft</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-der-opt;OptionUnderlyingBuyer">
-		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;OptionTransactionParty"/>
-		<rdfs:label xml:lang="en">option underlying buyer</rdfs:label>
-		<skos:definition xml:lang="en">The buyer of the underlying in an Option Transaction.</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">This is the party which buys the underlying in the event that the transaction goes ahead.</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-der-opt;OptionUnderlyingSeller">
-		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;OptionTransactionParty"/>
-		<rdfs:label xml:lang="en">option underlying seller</rdfs:label>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-der-der-opt;OptionValuationTerms">
 		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;OptionTerms"/>
 		<rdfs:subClassOf>
@@ -781,27 +722,9 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-der-opt;OptionWriterCommitment">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-txn-rea;ContractualEconomicCommitment"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractualCommitment"/>
 		<rdfs:label xml:lang="en">option writer commitment</rdfs:label>
 		<skos:definition xml:lang="en">Commitment on the part of the writer (issuing party) of the Option.</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-der-opt;OptionalUnderlyingTransaction">
-		<rdfs:subClassOf rdf:resource="&fibo-der-der-fwd;ForwardTransaction"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isGovernedBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-fi;Option"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-txn-rea;hasTransactionParty"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;OptionTransactionParty"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">optional underlying transaction</rdfs:label>
-		<skos:definition xml:lang="en">A transaction which is defined in an options contract and which may or may not take place, at the discretion of the holder of the option. If it does take place, this will be a transaction for the purchase or sale of the deliverable underlying as defined in the option contract, or some cash equivalent thereof. Further notes: This is not any different from any other kind of derivatives transaction. The Transaction is still defined as the purchase and sale of the underlying even if it is cash settled. It is defined as the swap of the fixed price for the current market price. Would define a reference price for the current market price if it&apos;s not a physical settlement. Would for example define the use of a calculation agent. Scenarios: 1. Agree to cash settle even though the underlying is a deliverable 2. Agree to settle cash because it&apos;s difficult to get hold of the underlying 3. The underlying is by its nature not deliverable 4. Fx where the deliverable is a currency to cash delivery is synonymous with delivery of the underlying asset, so the underlying observable and the underlying deliverable are the same actual thing. How this is modeled: Cash &quot;Settlement&quot; (means cash delivery) is where you take cash instad of delivery of the underlying deliverable. Whatever is going to be delivered there is going to be a reverse transaction at the going market rate. That also covers the use of an index or basket as the underlying. Examples of this: IR Swap - not an Option.</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-der-opt;PayoffAssetsList">
@@ -887,6 +810,19 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 		<skos:definition xml:lang="en">over-the-counter option that confers the right but not the obligation, to enter into a swap transaction at some time in the future</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">A swaption, also known as a swap option, refers to an option to enter into an interest rate swap or some other type of swap. In exchange for an options premium, the buyer gains the right but not the obligation to enter into a specified swap agreement with the issuer on a specified future date.</fibo-fnd-utl-av:explanatoryNote>
 		<fibo-fnd-utl-av:synonym xml:lang="en">swap option</fibo-fnd-utl-av:synonym>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-der-opt;UnderlyingAssetBuyer">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-pas;Buyer"/>
+		<rdfs:label xml:lang="en">underlying asset buyer</rdfs:label>
+		<skos:definition xml:lang="en">buyer of the underlying asset in an option-related transaction</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">This is the party which buys the underlying in the event that the transaction goes ahead.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-der-opt;UnderlyingAssetSeller">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-pas;Seller"/>
+		<rdfs:label xml:lang="en">underlying asset seller</rdfs:label>
+		<skos:definition xml:lang="en">seller of the underlying asset in an option-related transaction</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-der-opt;UpOrDown">
@@ -1096,12 +1032,6 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-der-opt;hasValuationTerms"/>
 				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;OptionValuationTerms"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;governs"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;OptionalUnderlyingTransaction"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
