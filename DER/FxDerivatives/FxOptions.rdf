@@ -7,6 +7,7 @@
 	<!ENTITY fibo-der-fx-opt "https://spec.edmcouncil.org/fibo/ontology/DER/FxDerivatives/FxOptions/">
 	<!ENTITY fibo-fbc-fi-fi "https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/">
 	<!ENTITY fibo-fnd-acc-cur "https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/">
+	<!ENTITY fibo-fnd-agr-ctr "https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/">
 	<!ENTITY fibo-fnd-dt-fd "https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/">
 	<!ENTITY fibo-fnd-rel-rel "https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
@@ -25,6 +26,7 @@
 	xmlns:fibo-der-fx-opt="https://spec.edmcouncil.org/fibo/ontology/DER/FxDerivatives/FxOptions/"
 	xmlns:fibo-fbc-fi-fi="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"
 	xmlns:fibo-fnd-acc-cur="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"
+	xmlns:fibo-fnd-agr-ctr="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"
 	xmlns:fibo-fnd-dt-fd="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"
 	xmlns:fibo-fnd-rel-rel="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
@@ -45,6 +47,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/FxDerivatives/FxContracts/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
@@ -53,6 +56,7 @@
 	</owl:Ontology>
 	
 	<owl:Class rdf:about="&fibo-der-fx-opt;CashCallOption">
+		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;CallOption"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-fx-opt;allowsForOptionOf"/>
@@ -64,9 +68,43 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-fx-opt;CashPutOption">
+		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;PutOption"/>
 		<rdfs:label xml:lang="en">cash put option</rdfs:label>
 		<skos:definition xml:lang="en">Option to sell cash at an agreed rate on an agreed date.</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">In Fx Put and Call refer to the Dealt Ccy, ie. I will put the dealt Ccy&quot; o I will cal the Dealt ccy&quot;. The business does use the terms Put and Call. Put and Call are always from the PoV of the option beneficiary, always specifieds the side the bene will put or call. Have to know the Dealt Ccy and that it&apos;s to the Beneficiary not the granter of the option. The beneficiary gets to put the dealt ccy. Put X and Call Y in the same contract can also be stated in order to disambiguate, but you don&apos;t have to because the DC is already defined.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-fx-opt;CurrencyOption">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;Option"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-fx-opt;hasBuyingCurrency"/>
+				<owl:onClass rdf:resource="&fibo-fnd-acc-cur;Currency"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-fx-opt;hasSellingCurrency"/>
+				<owl:onClass rdf:resource="&fibo-fnd-acc-cur;Currency"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">currency option</rdfs:label>
+		<skos:definition xml:lang="en">A contract that grants the holder the right, but not the obligation, to buy or sell currency at a specified exchange rate during a specified period of time.</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">For this right, a premium is paid to the broker, which will vary depending on the number of contracts purchased. Currency options are one of the best ways for corporations or individuals to hedge against adverse movements in exchange rates. Investors can hedge against foreign currency risk by purchasing a currency option put or call. For example, assume that an investor believes that the USD/EUR rate is going to increase from 0.80 to 0.90 (meaning that it will become more expensive for a European investor to buy U.S dollars). In this case, the investor would want to buy a call option on USD/EUR so that he or she could stand to gain from an increase in the exchange rate (or the USD rise).</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-fx-opt;ForeignExchangeCallOptionContract">
+		<rdfs:subClassOf rdf:resource="&fibo-der-fx-opt;CashCallOption"/>
+		<rdfs:subClassOf rdf:resource="&fibo-der-fx-opt;ForeignExchangeOption"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;hasContractualElement"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-der-fwd;ForwardDeliveryCommitment"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">foreign exchange call option contract</rdfs:label>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-fx-opt;ForeignExchangeOption">
@@ -74,147 +112,38 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;Option"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-fx-opt;buyer"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-fx-opt;ForeignExchangeOptionBuyer"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-fx-opt;hasSeller"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-fx-opt;ForeignExchangeOptionSeller"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;embodies"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-fx-opt;ForeignExchangeOptionTransaction"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">foreign exchange (FX) option</rdfs:label>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-fx-opt;ForeignExchangeOptionBuyer">
-		<rdfs:label xml:lang="en">fx option buyer</rdfs:label>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-fx-opt;ForeignExchangeOptionLeg">
-		<rdfs:label xml:lang="en">fx option leg</rdfs:label>
-		<skos:definition xml:lang="en">A standard FX OTC option (European or American) which may be a complete trade in its own right or part of a trade strategy. FpML A type that is used for describing a standard FX OTC option (European or American) which may be a complete trade in its own right or part of a trade strategy.</skos:definition>
-	</owl:Class>
-	
-	<owl:ObjectProperty rdf:about="&fibo-der-fx-opt;ForeignExchangeOptionPremium">
-		<rdfs:label xml:lang="en">fx option premium</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-fx-opt;ForeignExchangeOption"/>
-		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
-		<skos:definition xml:lang="en">FpML &apos;Premium amount or premium installment amount for an option.&apos;</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:Class rdf:about="&fibo-der-fx-opt;ForeignExchangeOptionSeller">
-		<rdfs:label xml:lang="en">fx option seller</rdfs:label>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-fx-opt;ForeignExchangeOptionTransaction">
-		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;OptionalUnderlyingTransaction"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-fx-opt;buyerIsParty"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-fx-opt;ForeignExchangeOptionBuyer"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-fx-opt;hasCorrespondingContract"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-fx-opt;ForeignExchangeOption"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-fx-opt;hasLeg"/>
 				<owl:someValuesFrom rdf:resource="&fibo-der-fx-opt;ForeignExchangeOptionLeg"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-fx-opt;seller"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-fx-opt;ForeignExchangeOptionSeller"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">fx option transaction</rdfs:label>
-		<skos:definition xml:lang="en">Define option as a wrapper. Done on a spot txn, but could logically be others. Adds the right whether or not to go into that.</skos:definition>
+		<rdfs:label xml:lang="en">foreign exchange option</rdfs:label>
+		<fibo-fnd-utl-av:abbreviation xml:lang="en">FX option</fibo-fnd-utl-av:abbreviation>
+		<fibo-fnd-utl-av:synonym xml:lang="en">forex option</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-fx-opt;FxCallOptionContract">
-		<rdfs:subClassOf rdf:resource="&fibo-der-fx-opt;ForeignExchangeOption"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-fx-opt;establishes"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-fx-opt;CashCallOption"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-fx-opt;establishes.1"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-der-fwd;ForwardDeliveryCommitment"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">fx call option contract</rdfs:label>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-fx-opt;FxPutOptionContract">
-		<rdfs:subClassOf rdf:resource="&fibo-der-fx-opt;ForeignExchangeOption"/>
-		<rdfs:label xml:lang="en">fx put option contract</rdfs:label>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-fx-opt;FxVolatilityOption">
-		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;OTCOptionContract"/>
+	<owl:Class rdf:about="&fibo-der-fx-opt;ForeignExchangeOptionLeg">
 		<rdfs:subClassOf rdf:resource="&fibo-der-fx-ctr;ForeignExchangeDerivative"/>
-		<rdfs:label xml:lang="en">fx volatility option</rdfs:label>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;Option"/>
+		<rdfs:label xml:lang="en">foreign exchange option leg</rdfs:label>
+		<skos:definition xml:lang="en">A standard FX OTC option (European or American) which may be a complete trade in its own right or part of a trade strategy. FpML A type that is used for describing a standard FX OTC option (European or American) which may be a complete trade in its own right or part of a trade strategy.</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-fx-opt;ForeignExchangePutOptionContract">
+		<rdfs:subClassOf rdf:resource="&fibo-der-fx-opt;CashPutOption"/>
+		<rdfs:subClassOf rdf:resource="&fibo-der-fx-opt;ForeignExchangeOption"/>
+		<rdfs:label xml:lang="en">foreign exchange put option contract</rdfs:label>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-fx-opt;ForeignExchangeVolatilityOption">
+		<rdfs:subClassOf rdf:resource="&fibo-der-fx-opt;ForeignExchangeOption"/>
+		<rdfs:label xml:lang="en">foreign exchange volatility option</rdfs:label>
 		<skos:definition xml:lang="en">An option on the volatility of an FX rate. Further Note: Not found in FpML product definitions or taxonomy.</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-fx-opt;OTCCurrencyOption">
-		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;OTCOptionContract"/>
-		<rdfs:subClassOf rdf:resource="&fibo-der-fx-ctr;ForeignExchangeDerivative"/>
-		<rdfs:label xml:lang="en">o t c currency option</rdfs:label>
-		<skos:definition xml:lang="en">A contract that grants the holder the right, but not the obligation, to buy or sell currency at a specified exchange rate during a specified period of time.</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">For this right, a premium is paid to the broker, which will vary depending on the number of contracts purchased. Currency options are one of the best ways for corporations or individuals to hedge against adverse movements in exchange rates. Investors can hedge against foreign currency risk by purchasing a currency option put or call. For example, assume that an investor believes that the USD/EUR rate is going to increase from 0.80 to 0.90 (meaning that it will become more expensive for a European investor to buy U.S dollars). In this case, the investor would want to buy a call option on USD/EUR so that he or she could stand to gain from an increase in the exchange rate (or the USD rise).</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-fx-opt;allowsForOptionOf">
 		<rdfs:label xml:lang="en">allows for option of</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-der-fx-opt;CashCallOption"/>
 		<rdfs:range rdf:resource="&fibo-der-der-fwd;ForwardCashSettlementCommitment"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-der-fx-opt;buyer">
-		<rdfs:label xml:lang="en">buyer</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-fx-opt;ForeignExchangeOption"/>
-		<rdfs:range rdf:resource="&fibo-der-fx-opt;ForeignExchangeOptionBuyer"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-der-fx-opt;buyerIsParty">
-		<rdfs:label xml:lang="en">buyer is party</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-fx-opt;ForeignExchangeOptionTransaction"/>
-		<rdfs:range rdf:resource="&fibo-der-fx-opt;ForeignExchangeOptionBuyer"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-der-fx-opt;buyingCurrency">
-		<rdfs:label xml:lang="en">buying currency</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-fx-opt;OTCCurrencyOption"/>
-		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;Currency"/>
-		<skos:definition xml:lang="en">The currency in which the option is bought.</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-der-fx-opt;establishes">
-		<rdfs:label xml:lang="en">establishes</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-fx-opt;FxCallOptionContract"/>
-		<rdfs:range rdf:resource="&fibo-der-fx-opt;CashCallOption"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-der-fx-opt;establishes.1">
-		<rdfs:label xml:lang="en">establishes</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-fx-opt;FxCallOptionContract"/>
-		<rdfs:range rdf:resource="&fibo-der-der-fwd;ForwardDeliveryCommitment"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-fx-opt;expiry">
@@ -224,33 +153,24 @@
 		<skos:definition xml:lang="en">FpML &apos;The date and time in a location of the option expiry. In the case of american options this is the latest possible expiry date and time.&apos;</skos:definition>
 	</owl:ObjectProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-der-fx-opt;hasCorrespondingContract">
-		<rdfs:label xml:lang="en">has corresponding contract</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-fx-opt;ForeignExchangeOptionTransaction"/>
-		<rdfs:range rdf:resource="&fibo-der-fx-opt;ForeignExchangeOption"/>
+	<owl:ObjectProperty rdf:about="&fibo-der-fx-opt;hasBuyingCurrency">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasCurrency"/>
+		<rdfs:label xml:lang="en">has buying currency</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-der-fx-opt;CurrencyOption"/>
+		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;Currency"/>
+		<skos:definition xml:lang="en">The currency in which the option is bought.</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-fx-opt;hasLeg">
 		<rdfs:label xml:lang="en">has leg</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-fx-opt;ForeignExchangeOptionTransaction"/>
+		<rdfs:domain rdf:resource="&fibo-der-fx-opt;ForeignExchangeOption"/>
 		<rdfs:range rdf:resource="&fibo-der-fx-opt;ForeignExchangeOptionLeg"/>
 	</owl:ObjectProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-der-fx-opt;hasSeller">
-		<rdfs:label xml:lang="en">has seller</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-fx-opt;ForeignExchangeOption"/>
-		<rdfs:range rdf:resource="&fibo-der-fx-opt;ForeignExchangeOptionSeller"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-der-fx-opt;seller">
-		<rdfs:label xml:lang="en">seller</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-fx-opt;ForeignExchangeOptionTransaction"/>
-		<rdfs:range rdf:resource="&fibo-der-fx-opt;ForeignExchangeOptionSeller"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-der-fx-opt;sellingCurrency">
-		<rdfs:label xml:lang="en">selling currency</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-fx-opt;OTCCurrencyOption"/>
+	<owl:ObjectProperty rdf:about="&fibo-der-fx-opt;hasSellingCurrency">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasCurrency"/>
+		<rdfs:label xml:lang="en">has selling currency</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-der-fx-opt;CurrencyOption"/>
 		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;Currency"/>
 		<skos:definition xml:lang="en">The currency in which the Option is sold.</skos:definition>
 	</owl:ObjectProperty>
