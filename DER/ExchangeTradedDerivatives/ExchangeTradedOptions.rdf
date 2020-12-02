@@ -4,6 +4,7 @@
 	<!ENTITY fibo-be-fct-pub "https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/Publishers/">
 	<!ENTITY fibo-be-le-lp "https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/">
 	<!ENTITY fibo-der-com-ctr "https://spec.edmcouncil.org/fibo/ontology/DER/CommoditiesDerivatives/CommoditiesContracts/">
+	<!ENTITY fibo-der-der-fwd "https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Forwards/">
 	<!ENTITY fibo-der-der-opt "https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Options/">
 	<!ENTITY fibo-der-drc-bsc "https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/DerivativesBasics/">
 	<!ENTITY fibo-der-etd-eto "https://spec.edmcouncil.org/fibo/ontology/DER/ExchangeTradedDerivatives/ExchangeTradedOptions/">
@@ -38,6 +39,7 @@
 	xmlns:fibo-be-fct-pub="https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/Publishers/"
 	xmlns:fibo-be-le-lp="https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/"
 	xmlns:fibo-der-com-ctr="https://spec.edmcouncil.org/fibo/ontology/DER/CommoditiesDerivatives/CommoditiesContracts/"
+	xmlns:fibo-der-der-fwd="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Forwards/"
 	xmlns:fibo-der-der-opt="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Options/"
 	xmlns:fibo-der-drc-bsc="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/DerivativesBasics/"
 	xmlns:fibo-der-etd-eto="https://spec.edmcouncil.org/fibo/ontology/DER/ExchangeTradedDerivatives/ExchangeTradedOptions/"
@@ -80,6 +82,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/CommoditiesDerivatives/CommoditiesContracts/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/DerivativesBasics/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Forwards/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Options/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/FxDerivatives/FxContracts/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/RateDerivatives/RateDerivatives/"/>
@@ -109,15 +112,12 @@
 	</owl:Ontology>
 	
 	<owl:Class rdf:about="&fibo-der-der-opt;OptionOnFuture">
-		<rdfs:subClassOf rdf:resource="&fibo-der-etd-eto;ExchangeTradedOptionContract"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-ex;hasExerciseTerms"/>
 				<owl:someValuesFrom rdf:resource="&fibo-der-etd-eto;FutureOptionsExerciseTerms"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">option contract on futures</rdfs:label>
-		<skos:definition xml:lang="en">Future options are the most common type of equity derivative. They provide the right, but not the obligation to trade a quantity of futures instruments at a set price at a future time.</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-etd-eto;BondOption">
@@ -140,18 +140,11 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-etd-eto;CommoditiesOptionUnderlying"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-der-fwd;CommodityFuture"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">commodities option</rdfs:label>
 		<skos:definition xml:lang="en">An option to buy or sell the future on some underlying commodity. The exercise is always to buy the underlying asset i.e. the future instrument NOT the underlying goods.</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-etd-eto;CommoditiesOptionUnderlying">
-		<rdfs:subClassOf rdf:resource="&fibo-der-etd-eto;OptionOnFuturesUnderlying"/>
-		<rdfs:label xml:lang="en">commodities option underlying</rdfs:label>
-		<skos:definition xml:lang="en">The underlying on a Commodities Option, which is the corresponding Commodity Future contract on the same exchange.</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">This is the underlying in the sense that when the option is exercised the investor takes delivery of the corresponding futures contract.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-etd-eto;CurrencyOptionExerciseTerms">
@@ -272,12 +265,6 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;governs"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-etd-eto;ExchangeTradedOptionTransaction"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-ex;hasExerciseTerms"/>
 				<owl:someValuesFrom rdf:resource="&fibo-der-etd-eto;OptionInstrumentExerciseTerms"/>
 			</owl:Restriction>
@@ -286,14 +273,9 @@
 		<owl:disjointWith rdf:resource="&fibo-der-der-opt;OTCOptionContract"/>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-etd-eto;ExchangeTradedOptionTransaction">
-		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;OptionalUnderlyingTransaction"/>
-		<rdfs:label xml:lang="en">exchange traded option transaction</rdfs:label>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-der-etd-eto;ForeignCurrencyOption">
 		<rdfs:subClassOf rdf:resource="&fibo-der-etd-eto;ExchangeTradedOptionContract"/>
-		<rdfs:subClassOf rdf:resource="&fibo-der-fx-ctr;ForeignExchangeDerivativeContract"/>
+		<rdfs:subClassOf rdf:resource="&fibo-der-fx-ctr;ForeignExchangeDerivative"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>

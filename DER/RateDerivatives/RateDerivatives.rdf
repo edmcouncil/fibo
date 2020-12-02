@@ -7,6 +7,7 @@
 	<!ENTITY fibo-fnd-rel-rel "https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
 	<!ENTITY fibo-ind-ei-ei "https://spec.edmcouncil.org/fibo/ontology/IND/EconomicIndicators/EconomicIndicators/">
+	<!ENTITY fibo-ind-fx-fx "https://spec.edmcouncil.org/fibo/ontology/IND/ForeignExchange/ForeignExchange/">
 	<!ENTITY fibo-ind-ind-ind "https://spec.edmcouncil.org/fibo/ontology/IND/Indicators/Indicators/">
 	<!ENTITY fibo-ind-ir-ir "https://spec.edmcouncil.org/fibo/ontology/IND/InterestRates/InterestRates/">
 	<!ENTITY fibo-sec-sec-bsk "https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/Baskets/">
@@ -25,6 +26,7 @@
 	xmlns:fibo-fnd-rel-rel="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
 	xmlns:fibo-ind-ei-ei="https://spec.edmcouncil.org/fibo/ontology/IND/EconomicIndicators/EconomicIndicators/"
+	xmlns:fibo-ind-fx-fx="https://spec.edmcouncil.org/fibo/ontology/IND/ForeignExchange/ForeignExchange/"
 	xmlns:fibo-ind-ind-ind="https://spec.edmcouncil.org/fibo/ontology/IND/Indicators/Indicators/"
 	xmlns:fibo-ind-ir-ir="https://spec.edmcouncil.org/fibo/ontology/IND/InterestRates/InterestRates/"
 	xmlns:fibo-sec-sec-bsk="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/Baskets/"
@@ -39,9 +41,9 @@
 		<rdfs:label>Rate Derivatives Ontology</rdfs:label>
 		<dct:abstract>This ontology defines concepts that are common to derivatives based on variation in some defined variable, such as an economic rate, an interest rate or an index value.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
-		<sm:contentLanguage rdf:resource="http://www.w3.org/standards/techs/owl#w3c_all"/>
-		<sm:copyright>Copyright (c) 2016-2018 EDM Council, Inc.</sm:copyright>
-		<sm:copyright>Copyright (c) 2016-2018 Object Management Group, Inc.</sm:copyright>
+		<sm:contentLanguage rdf:resource="https://www.w3.org/TR/owl2-quick-reference/"/>
+		<sm:copyright>Copyright (c) 2016-2020 EDM Council, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2016-2020 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/DerivativesBasics/"/>
 		<sm:dependsOn rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/"/>
 		<sm:dependsOn rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/"/>
@@ -55,10 +57,12 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/EconomicIndicators/EconomicIndicators/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/ForeignExchange/ForeignExchange/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/Indicators/Indicators/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/InterestRates/InterestRates/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/Baskets/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/20180801/RateDerivatives/RateDerivatives/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/20201201/RateDerivatives/RateDerivatives/"/>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20180801/RateDerivatives/RateDerivatives.rdf version of this ontology was extended to include foreign exchange rates, forward rate agreements, and revise definitions to be unambiguous and ISO 704 compliant.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -71,7 +75,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>economic rate-based derivative instrument</rdfs:label>
-		<skos:definition>a rate-based derivative whose underlier is an economic indicator</skos:definition>
+		<skos:definition>rate-based derivative whose underlier is an economic indicator</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-rtd-rtd;EconomicRateObservable">
@@ -84,7 +88,27 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">economic rate observable</rdfs:label>
-		<skos:definition>a rate-based observable that is specifically an economic indicator</skos:definition>
+		<skos:definition>rate-based observable that is specifically an economic indicator</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-rtd-rtd;ForeignExchangeRateObservable">
+		<rdfs:subClassOf rdf:resource="&fibo-der-rtd-rtd;RateBasedObservable"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasIdentity"/>
+				<owl:someValuesFrom rdf:resource="&fibo-ind-fx-fx;QuotedExchangeRate"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">foreign exchange rate observable</rdfs:label>
+		<skos:definition>rate-based observable that is an exchange rate, typically a quoted exchange rate</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-rtd-rtd;ForwardRateAgreement">
+		<rdfs:subClassOf rdf:resource="&fibo-der-rtd-rtd;InterestRateDerivativeInstrument"/>
+		<rdfs:label xml:lang="en">forward rate agreement</rdfs:label>
+		<skos:definition xml:lang="en">agreement to exchange an interest rate commitment on a notional amount</skos:definition>
+		<fibo-fnd-utl-av:abbreviation xml:lang="en">FRA</fibo-fnd-utl-av:abbreviation>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">The FRA determines the rates to be used along with the termination date and notional value. FRAs are cash-settled with the payment based on the net difference between the interest rate of the contract and the floating rate in the market called the reference rate. The notional amount is not exchanged, but rather a cash amount based on the rate differentials and the notional value of the contract.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-rtd-rtd;InterestRateDerivativeInstrument">
@@ -96,7 +120,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>interest rate derivative instrument</rdfs:label>
-		<skos:definition>a rate-based derivative whose underlier is an interest rate</skos:definition>
+		<skos:definition>rate-based derivative whose underlier is an interest rate</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-rtd-rtd;InterestRateObservable">
@@ -104,12 +128,11 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasIdentity"/>
-				<owl:onClass rdf:resource="&fibo-ind-ir-ir;ReferenceInterestRate"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+				<owl:someValuesFrom rdf:resource="&fibo-ind-ir-ir;ReferenceInterestRate"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>interest rate observable</rdfs:label>
-		<skos:definition>a rate-based observable that is specifically an interest rate</skos:definition>
+		<skos:definition>rate-based observable that is an interest rate, typically a well-known reference interest rate</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-rtd-rtd;RateBasedDerivativeInstrument">
@@ -121,7 +144,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>rate-based derivative instrument</rdfs:label>
-		<skos:definition>a derivative instrument whose underlier is a non-physical observable rate</skos:definition>
+		<skos:definition>derivative instrument whose underlier is a non-physical observable rate</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-rtd-rtd;RateBasedObservable">
@@ -130,7 +153,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasIdentity"/>
-				<owl:onClass>
+				<owl:someValuesFrom>
 					<owl:Class>
 						<owl:unionOf rdf:parseType="Collection">
 							<rdf:Description rdf:about="&fibo-sec-sec-bsk;BasketOfIndices">
@@ -139,14 +162,16 @@
 							</rdf:Description>
 							<rdf:Description rdf:about="&fibo-ind-ei-ei;EconomicIndicator">
 							</rdf:Description>
+							<rdf:Description rdf:about="&fibo-ind-fx-fx;QuotedExchangeRate">
+							</rdf:Description>
 						</owl:unionOf>
 					</owl:Class>
-				</owl:onClass>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>rate-based observable</rdfs:label>
-		<skos:definition>a non-physical observable value, such as an interest rate, market rate, economic indicator, statistical measure calculated over some collection of indices, or some other rate that is readily observable in the world</skos:definition>
+		<skos:definition>non-physical observable value, such as an interest rate, market rate, economic indicator, statistical measure calculated over some collection of indices, or some other rate that is readily observable in the world</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Rate-based observables interest rates, market rate, economic indicators, statistical measure calculated over some collection of indices, foreign exchange rates and others that are readily observable in the world</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 
 </rdf:RDF>
