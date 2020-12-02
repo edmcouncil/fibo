@@ -71,7 +71,7 @@
 		<rdfs:label>Derivatives Basics Ontology</rdfs:label>
 		<dct:abstract>This ontology defines basic terminology common to derivative and over-the-counter (OTC) contracts.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
-		<sm:contentLanguage rdf:resource="http://www.w3.org/standards/techs/owl#w3c_all"/>
+		<sm:contentLanguage rdf:resource="https://www.w3.org/TR/owl2-quick-reference/"/>
 		<sm:copyright>Copyright (c) 2015-2020 EDM Council, Inc.</sm:copyright>
 		<sm:copyright>Copyright (c) 2015-2020 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/"/>
@@ -105,9 +105,9 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/Indicators/Indicators/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/Baskets/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/20201101/DerivativesContracts/DerivativesBasics/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/20201201/DerivativesContracts/DerivativesBasics/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20180801/DerivativesContracts/DerivativesBasics.rdf version of this ontology was modified to eliminate duplication with concepts in LCC and eliminate a redundant subclass declaration in observable value.</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20200401/DerivativesContracts/DerivativesBasics.rdf version of this ontology was modified to loosen the domain of the hasUnderlier property, which could be either an instrument or leg, refine the definition of Underlier and hasUnderlier based on recent work on swaps, add the definition of a contract for difference (CFD), simplify the contract party hierarchy where the subclasses of contract party do not add semantics, and add the concepts of underlying asset valuation and calculation agent, which are needed for various derivatives (moved from forwards).</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20200401/DerivativesContracts/DerivativesBasics.rdf version of this ontology was modified to loosen the domain of the hasUnderlier property, which could be either an instrument or leg, refine the definition of Underlier and hasUnderlier based on recent work on swaps, add the definition of a contract for difference (CFD), simplify the contract party hierarchy where the subclasses of contract party do not add semantics, add the concepts of underlying asset valuation and calculation agent, which are needed for various derivatives (moved from forwards) and eliminate the language related to transactions as well as the distinction between an OTC contract and exchange-traded contract, given how blurry the lines are today, across derivatives.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -147,7 +147,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-bsc;CashflowTerms">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-bsc;DerivativeTransactionTerms"/>
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-bsc;DerivativeTerms"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;DebtTerms"/>
 		<rdfs:label>cashflow terms</rdfs:label>
 		<skos:definition>terms setting out a cashflow structure of payments committed to by one party to a contract</skos:definition>
@@ -168,16 +168,16 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-bsc;DeliveryTerms">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-bsc;DerivativeTransactionTerms"/>
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-bsc;DerivativeTerms"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;SettlementTerms"/>
 		<rdfs:label>delivery terms</rdfs:label>
 		<skos:definition>settlement terms specifying what (cash, an asset, etc.) is to be delivered when, to whom, under what conditions at the time of settlement</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-drc-bsc;DerivativeTransactionTerms">
+	<owl:Class rdf:about="&fibo-der-drc-bsc;DerivativeTerms">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractualCommitment"/>
-		<rdfs:label>derivative transaction terms</rdfs:label>
-		<skos:definition>contract terms for a derivative transaction, including terms related to payments and delivery between parties</skos:definition>
+		<rdfs:label>derivative terms</rdfs:label>
+		<skos:definition>contractual terms specific to derivative contracts, including terms related to payments and delivery between parties</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-bsc;DerivativesClearingOrganization">
@@ -233,40 +233,6 @@
 		<rdfs:label>non-physical underlier</rdfs:label>
 		<skos:definition>an underlier that does not represent a deliverable asset</skos:definition>
 		<fibo-fnd-utl-av:synonym>observable underlier</fibo-fnd-utl-av:synonym>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-drc-bsc;OTCContractSettlementTerms">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;SettlementTerms"/>
-		<rdfs:label>over-the-counter (OTC) settlement terms</rdfs:label>
-		<skos:definition>settlement terms specific to an over-the-counter agreement</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-drc-bsc;OTCDerivativeContract">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-bsc;OTCInstrument"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;DerivativeInstrument"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;governs"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-drc-bsc;OTCDerivativeTransaction"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>over-the-counter (OTC) derivative contract</rdfs:label>
-		<skos:definition>an over-the-counter agreement that is also a derivative instrument</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote>Not all derivatives are sold over-the-counter, and not all OTC agreements are derivatives.</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-drc-bsc;OTCDerivativeTransaction">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-bsc;OTCTransaction"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;embodies"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-drc-bsc;OTCDerivativeContract"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>OTC derivative transaction</rdfs:label>
-		<skos:definition>a derivative transaction that is struck over the counter between two parties</skos:definition>
-		<skos:editorialNote>eliminated a parent of CoveredTransaction for the sake of expediency</skos:editorialNote>
-		<fibo-fnd-utl-av:explanatoryNote>This is both a derivative transaction and a covered transaction, that is, the OTC transaction is covered under some previously agreed Master Agreement between the two parties.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-bsc;OTCInstrument">
@@ -428,7 +394,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;hasContractualElement"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-drc-bsc;DerivativeTransactionTerms"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-drc-bsc;DerivativeTerms"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
