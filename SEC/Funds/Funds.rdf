@@ -11,6 +11,7 @@
 	<!ENTITY fibo-fnd-arr-arr "https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Arrangements/">
 	<!ENTITY fibo-fnd-dt-fd "https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/">
 	<!ENTITY fibo-fnd-gao-obj "https://spec.edmcouncil.org/fibo/ontology/FND/GoalsAndObjectives/Objectives/">
+	<!ENTITY fibo-fnd-law-lcap "https://spec.edmcouncil.org/fibo/ontology/FND/Law/LegalCapacity/">
 	<!ENTITY fibo-fnd-rel-rel "https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
 	<!ENTITY fibo-sec-eq-eq "https://spec.edmcouncil.org/fibo/ontology/SEC/Equities/EquityInstruments/">
@@ -37,6 +38,7 @@
 	xmlns:fibo-fnd-arr-arr="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Arrangements/"
 	xmlns:fibo-fnd-dt-fd="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"
 	xmlns:fibo-fnd-gao-obj="https://spec.edmcouncil.org/fibo/ontology/FND/GoalsAndObjectives/Objectives/"
+	xmlns:fibo-fnd-law-lcap="https://spec.edmcouncil.org/fibo/ontology/FND/Law/LegalCapacity/"
 	xmlns:fibo-fnd-rel-rel="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
 	xmlns:fibo-sec-eq-eq="https://spec.edmcouncil.org/fibo/ontology/SEC/Equities/EquityInstruments/"
@@ -78,6 +80,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Arrangements/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/GoalsAndObjectives/Objectives/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Law/LegalCapacity/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Equities/EquityInstruments/"/>
@@ -88,21 +91,25 @@
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Provisional"/>
 	</owl:Ontology>
 	
+	<owl:Class rdf:about="&fibo-sec-fnd-fnd;ClosedEndInvestment">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-pls;ManagedInvestment"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-fnd-fnd;isOpenEnded"/>
+				<owl:hasValue rdf:datatype="&xsd;boolean">false</owl:hasValue>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">closed-end investment</rdfs:label>
+		<skos:definition xml:lang="en">investment fund that has a fixed number of shares offered by an investment company through an initial public offering</skos:definition>
+		<fibo-fnd-utl-av:synonym xml:lang="en">closed-end fund</fibo-fnd-utl-av:synonym>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-sec-fnd-fnd;CollectiveInvestmentVehicle">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-pls;PooledFund"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-fnd-fnd;hasLegalStructure"/>
-				<owl:someValuesFrom>
-					<owl:Class>
-						<owl:unionOf rdf:parseType="Collection">
-							<rdf:Description rdf:about="&fibo-be-le-lp;LegalEntity">
-							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-sec-fnd-fnd;FundContract">
-							</rdf:Description>
-						</owl:unionOf>
-					</owl:Class>
-				</owl:someValuesFrom>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-fnd-fnd;LegalFundStructure"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">collective investment vehicle</rdfs:label>
@@ -112,7 +119,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-fnd-fnd;ExchangeTradedFund">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-fnd-fnd;CollectiveInvestmentVehicle"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-fnd-fnd;OpenEndInvestment"/>
 		<rdfs:label xml:lang="en">exchange-traded fund</rdfs:label>
 		<skos:definition xml:lang="en">investment fund whose fund units are traded on an exchange, much like stocks</skos:definition>
 		<fibo-fnd-utl-av:abbreviation xml:lang="en">ETF</fibo-fnd-utl-av:abbreviation>
@@ -127,7 +134,13 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-fnd-fnd;FundOfFunds">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-fnd-fnd;CollectiveInvestmentVehicle"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-pls;ManagedInvestment"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-fnd-fnd;hasSubFund"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-fnd-fnd;CollectiveInvestmentVehicle"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">fund of funds</rdfs:label>
 		<skos:definition xml:lang="en">investment fund that invests directly in other investment funds rather than investing in stocks, bonds, and other securities</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom xml:lang="en">ISO 10962:2019 Securities and related financial instruments - Classification of financial instruments (CFI) code, Fourth edition, October 2019</fibo-fnd-utl-av:adaptedFrom>
@@ -153,19 +166,48 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-fnd-fnd;HedgeFund">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-pls;ManagedInvestment"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-fnd-fnd;OpenEndInvestment"/>
 		<rdfs:label xml:lang="en">hedge fund</rdfs:label>
 		<skos:definition xml:lang="en">investment fund that pursues a total return and is usually open to qualified investors only</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom xml:lang="en">ISO 10962:2019 Securities and related financial instruments - Classification of financial instruments (CFI) code, Fourth edition, October 2019</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-fnd-fnd;InvestmentFund">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-fnd-fnd;CollectiveInvestmentVehicle"/>
-		<rdfs:label xml:lang="en">investment fund</rdfs:label>
-		<skos:definition xml:lang="en">investment vehicle that consists of a pool of funds collected from many different investors for the purpose of investing in securities such as stocks, bonds, money market instruments and similar assets</skos:definition>
+	<owl:Class rdf:about="&fibo-sec-fnd-fnd;LegalFundStructure">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-law-lcap;LegalConstruct"/>
+		<rdfs:label xml:lang="en">legal fund structure</rdfs:label>
+		<owl:equivalentClass>
+			<owl:Class>
+				<owl:unionOf rdf:parseType="Collection">
+					<rdf:Description rdf:about="&fibo-be-le-lp;LegalEntity">
+					</rdf:Description>
+					<rdf:Description rdf:about="&fibo-sec-fnd-fnd;FundContract">
+					</rdf:Description>
+				</owl:unionOf>
+			</owl:Class>
+		</owl:equivalentClass>
+		<skos:definition xml:lang="en">structure of a fund with respect to its legal formation in some jurisdiction</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-fnd-fnd;MutualFund">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-fnd-fnd;OpenEndInvestment"/>
+		<rdfs:label xml:lang="en">mutual fund</rdfs:label>
+		<skos:definition xml:lang="en">open-end professionally managed investment fund established for the purpose of investing in securities such as stocks, bonds, money market instruments and similar assets</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom xml:lang="en">ISO 10962:2019 Securities and related financial instruments - Classification of financial instruments (CFI) code, Fourth edition, October 2019</fibo-fnd-utl-av:adaptedFrom>
-		<fibo-fnd-utl-av:synonym xml:lang="en">mutual fund</fibo-fnd-utl-av:synonym>
 		<fibo-fnd-utl-av:synonym xml:lang="en">standard (vanilla) investment fund</fibo-fnd-utl-av:synonym>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-fnd-fnd;OpenEndInvestment">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-pls;ManagedInvestment"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-fnd-fnd;isOpenEnded"/>
+				<owl:hasValue rdf:datatype="&xsd;boolean">true</owl:hasValue>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">open-end investment</rdfs:label>
+		<owl:disjointWith rdf:resource="&fibo-sec-fnd-fnd;ClosedEndInvestment"/>
+		<skos:definition xml:lang="en">investment fund that offered through a fund company that sells shares directly to investors</skos:definition>
+		<fibo-fnd-utl-av:synonym xml:lang="en">open-end fund</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-fnd-fnd;PensionFund">
@@ -220,17 +262,15 @@
 	<owl:ObjectProperty rdf:about="&fibo-sec-fnd-fnd;hasLegalStructure">
 		<rdfs:label xml:lang="en">has legal structure</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-sec-pls;PooledFund"/>
-		<rdfs:range>
-			<owl:Class>
-				<owl:unionOf rdf:parseType="Collection">
-					<rdf:Description rdf:about="&fibo-be-le-lp;LegalEntity">
-					</rdf:Description>
-					<rdf:Description rdf:about="&fibo-sec-fnd-fnd;FundContract">
-					</rdf:Description>
-				</owl:unionOf>
-			</owl:Class>
-		</rdfs:range>
+		<rdfs:range rdf:resource="&fibo-sec-fnd-fnd;LegalFundStructure"/>
 		<skos:definition xml:lang="en">indicates the legal form that the fund takes</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-sec-fnd-fnd;hasSubFund">
+		<rdfs:subPropertyOf rdf:resource="&lcc-cr;hasPart"/>
+		<rdfs:label xml:lang="en">has sub-fund</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-sec-sec-pls;PooledFund"/>
+		<rdfs:range rdf:resource="&fibo-sec-sec-pls;PooledFund"/>
 	</owl:ObjectProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-sec-fnd-fnd;isOpenEnded">
@@ -240,8 +280,25 @@
 		<skos:definition xml:lang="en">indicates whether the fund is open ended/closed</skos:definition>
 	</owl:DatatypeProperty>
 	
+	<owl:ObjectProperty rdf:about="&fibo-sec-fnd-fnd;isSubFundOf">
+		<rdfs:subPropertyOf rdf:resource="&lcc-cr;isPartOf"/>
+		<rdfs:label xml:lang="en">is sub-fund of</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-sec-sec-pls;PooledFund"/>
+		<rdfs:range rdf:resource="&fibo-sec-sec-pls;PooledFund"/>
+		<owl:inverseOf rdf:resource="&fibo-sec-fnd-fnd;hasSubFund"/>
+	</owl:ObjectProperty>
+	
 	<owl:Class rdf:about="&fibo-sec-sec-pls;ManagedInvestment">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-fnd-fnd;CollectiveInvestmentVehicle"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-fnd-fnd;isOpenEnded"/>
+				<owl:someValuesFrom rdf:resource="&xsd;boolean"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<fibo-fnd-utl-av:adaptedFrom xml:lang="en">ISO 10962:2019 Securities and related financial instruments - Classification of financial instruments (CFI) code, Fourth edition, October 2019</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">A managed investment is an investment vehicle that consists of a pool of funds collected from many different investors run by a management company.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:synonym xml:lang="en">investment fund</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-pls;PooledFund">
