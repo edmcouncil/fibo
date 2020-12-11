@@ -51,14 +51,14 @@
 		<rdfs:label>Securities Identification Ontology</rdfs:label>
 		<dct:abstract>This ontology defines concepts required to identify securities, including a number of well-known securities identifiers and related schemes, registries, and registration authorities.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
-		<sm:contentLanguage rdf:datatype="&xsd;anyURI">http://www.w3.org/standards/techs/owl#w3c_all</sm:contentLanguage>
+		<sm:contentLanguage rdf:datatype="&xsd;anyURI">https://www.w3.org/TR/owl2-quick-reference</sm:contentLanguage>
 		<sm:copyright>Copyright (c) 2016-2020 EDM Council, Inc.</sm:copyright>
 		<sm:copyright>Copyright (c) 2018-2020 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/BE/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FBC/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesListings/</sm:dependsOn>
-		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/</sm:dependsOn>
+		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://www.omg.org/spec/LCC/</sm:dependsOn>
 		<sm:fileAbbreviation>fibo-sec-sec-id</sm:fileAbbreviation>
 		<sm:filename>SecuritiesIdentification.rdf</sm:filename>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/FunctionalEntities/"/>
@@ -75,13 +75,14 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesListings/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Countries/CountryRepresentation/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20200901/Securities/SecuritiesIdentification/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20201201/Securities/SecuritiesIdentification/"/>
 		<skos:changeNote>The http://www.omg.org/spec/EDMC-FIBO/FND/20180801/Securities/SecuritiesIdentification.rdf version of this ontology was modified to use the hasCoverageArea property rather than hasJurisdiction for coverage of national numbering agencies, and eliminate redundant subclass relationships for two of the schemes defined herein.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20181101/Securities/SecuritiesIdentification/ version of this ontology was modified to correct several logic issues.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20190601/Securities/SecuritiesIdentification/ version of this ontology was modified to add the concept of a ticker symbol and rename (migrate) the hasDefinition property to isDefinedIn to clarify intent.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20190701/Securities/SecuritiesIdentification/ version of this ontology was modified to restructure the concept of a listing and augment it with a number of relevant characteristics.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20191201/Securities/SecuritiesIdentification/ version of this ontology was modified to correct the target of a ticker symbol, which identifies a listing not a listed security, refine the restriction on financial instrument identifier to say that it identifies an instrument or listing, normalize definitions to be ISO 704 compliant, eliminate duplication of concepts in LCC, and merge countries with locations in FND.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20200401/Securities/SecuritiesIdentification/ version of this ontology was modified to make a ticker symbol reassignable and address circular or ambiguous definitions.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20200901/Securities/SecuritiesIdentification.rdf version of this ontology was revised to eliminate confusion between listed security and listing (which caused reasoning issues).</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -89,16 +90,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&lcc-lr;identifies"/>
-				<owl:someValuesFrom>
-					<owl:Class>
-						<owl:unionOf rdf:parseType="Collection">
-							<rdf:Description rdf:about="&fibo-fbc-fi-fi;FinancialInstrument">
-							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-sec-sec-lst;Listing">
-							</rdf:Description>
-						</owl:unionOf>
-					</owl:Class>
-				</owl:someValuesFrom>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-fi;FinancialInstrument"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 	</owl:Class>
@@ -167,7 +159,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&lcc-lr;identifies"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-lst;Listing"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-lst;ListedSecurity"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>listed security identifier</rdfs:label>
@@ -225,19 +217,13 @@
 				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-id;InternationalSecuritiesIdentificationNumber"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&lcc-lr;identifies"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-fi;Security"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label>National Securities Identifying Number</rdfs:label>
 		<skos:definition>generic, nine-digit alpha numeric code which identifies a fungible security, assigned by a national numbering agency under the ISO 6166 standard</skos:definition>
 		<fibo-fnd-utl-av:abbreviation>NSIN</fibo-fnd-utl-av:abbreviation>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-id;NationalSecuritiesIdentifyingNumberRegistry">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-ra;Registry"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-id;SecurityRegistry"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isCharacterizedBy"/>
@@ -263,13 +249,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-id;NationalSecuritiesIdentifyingNumberRegistryEntry">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-ra;RegistryEntry"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-fi;Security"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-id;SecurityRegistryEntry"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;comprises"/>
@@ -333,12 +313,6 @@
 				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-id;ProprietarySecurityIdentificationScheme"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&lcc-lr;identifies"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-fi;Security"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label>proprietary security identifier</rdfs:label>
 		<skos:definition>identifier supplied by a commercial entity</skos:definition>
 	</owl:Class>
@@ -367,16 +341,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&lcc-lr;identifies"/>
-				<owl:someValuesFrom>
-					<owl:Class>
-						<owl:unionOf rdf:parseType="Collection">
-							<rdf:Description rdf:about="&fibo-fbc-fi-fi;Security">
-							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-sec-sec-lst;Listing">
-							</rdf:Description>
-						</owl:unionOf>
-					</owl:Class>
-				</owl:someValuesFrom>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-fi;Security"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>security identifier</rdfs:label>
@@ -401,7 +366,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isManagedBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-fct-mkt;Exchange"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-fct-ra;RegistrationAuthority"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>security registry</rdfs:label>
@@ -414,17 +379,17 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-lst;ListedSecurity"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-lst;RegisteredSecurity"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;comprises"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-id;ListedSecurityIdentifier"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-id;SecurityIdentifier"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>security registry entry</rdfs:label>
-		<skos:definition>record for a listed security in a securities repository</skos:definition>
+		<skos:definition>record for a security in a securities repository</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-id;TickerSymbol">
@@ -433,7 +398,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&lcc-lr;identifies"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-lst;Listing"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-lst;ListedSecurity"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>ticker symbol</rdfs:label>
