@@ -86,15 +86,6 @@
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
-	<owl:Class rdf:about="&fibo-fbc-fi-fi;FinancialInstrumentIdentifier">
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&lcc-lr;identifies"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-fi;FinancialInstrument"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-sec-sec-id;FinancialInstrumentIdentificationScheme">
 		<rdfs:subClassOf rdf:resource="&lcc-lr;IdentificationScheme"/>
 		<rdfs:subClassOf>
@@ -279,19 +270,6 @@
 		<fibo-fnd-utl-av:explanatoryNote>generally incorporated into the ISIN scheme as well</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-sec-id;PreferredListedSecurityIdentifier">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-id;ListedSecurityIdentifier"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-sec-id;isPreferredByExchange"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-fct-mkt;Exchange"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>preferred listed identification scheme</rdfs:label>
-		<skos:definition>listed security identifier for a given security that is preferred by some exchange</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote>This is the preferred security ID if a security has more than one identifier on a specific exchange.</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-sec-sec-id;ProprietarySecurityIdentificationScheme">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-id;SecurityIdentificationScheme"/>
 		<rdfs:subClassOf>
@@ -394,34 +372,26 @@
 	
 	<owl:Class rdf:about="&fibo-sec-sec-id;TickerSymbol">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-id;ReassignableIdentifier"/>
-		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-id;ListedSecurityIdentifier"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&lcc-lr;identifies"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-lst;ListedSecurity"/>
+				<owl:someValuesFrom>
+					<owl:Class>
+						<owl:unionOf rdf:parseType="Collection">
+							<rdf:Description rdf:about="&fibo-sec-sec-lst;ListedSecurity">
+							</rdf:Description>
+							<rdf:Description rdf:about="&fibo-sec-sec-lst;Listing">
+							</rdf:Description>
+						</owl:unionOf>
+					</owl:Class>
+				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>ticker symbol</rdfs:label>
 		<rdfs:seeAlso rdf:resource="https://www.investopedia.com/terms/t/tickersymbol.asp"/>
-		<skos:definition>exchange-specific identifier for a particular security</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote>Every listed security has a unique ticker symbol, facilitating the vast array of trade orders that flow through the financial markets every day.</fibo-fnd-utl-av:explanatoryNote>
+		<skos:definition>exchange-specific identifier for a particular security or listing for that security, depending on the country</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Every listed security has at least one unique ticker symbol, facilitating the vast array of trade orders that flow through the financial markets every day. However, in some countries this relationship may be indirect, through the listing, rather than direct, as is the case in the United States.  In the US, the relationship between a ticker symbol and the listed security is one-to-one.  This is not, however, the case in Singapore, where there may be unique ticker symbols for the same security based on the lot size.</fibo-fnd-utl-av:explanatoryNote>
 		<fibo-fnd-utl-av:usageNote>Ticker symbols are reusable, assigned to a given instrument by an exchange for some period of time.</fibo-fnd-utl-av:usageNote>
-	</owl:Class>
-	
-	<owl:ObjectProperty rdf:about="&fibo-sec-sec-id;isPreferredByExchange">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
-		<rdfs:label>is preferred by exchange</rdfs:label>
-		<rdfs:range rdf:resource="&fibo-fbc-fct-mkt;Exchange"/>
-		<skos:definition>indicates the exchange that prefers a specific identifier for a security</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:Class rdf:about="&fibo-sec-sec-lst;ListedSecurity">
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&lcc-lr;isIdentifiedBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-id;TickerSymbol"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-lst;Listing">
