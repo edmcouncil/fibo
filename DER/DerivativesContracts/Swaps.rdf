@@ -88,11 +88,11 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/MarketIndices/BasketIndices/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/20201001/DerivativesContracts/Swaps/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/20201201/DerivativesContracts/Swaps/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20180801/DerivativesContracts/Swaps/ version of this ontology was modified to refine the concept of a unique swap identifier (USI).</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20190201/DerivativesContracts/Swaps/ version of this ontology was modified to eliminate duplication of concepts in LCC.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20200201/DerivativesContracts/Swaps/ version of this ontology was modified to eliminate the property &apos;hasPaymentSchedule&apos; from this ontology in favor of the equivalent property with the same name from FND, adding concepts related to statistical swaps, and revising definitions to be ISO 704 compliant.</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20200901/DerivativesContracts/Swaps/ version of this ontology was modified to integrate return swaps and connect swap legs to the swap they comprise, as appropriate, and to simplify the contract party hierarchy.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20200901/DerivativesContracts/Swaps/ version of this ontology was modified to integrate return swaps and connect swap legs to the swap they comprise, as appropriate, simplify the contract party hierarchy, add basic fixed and floating legs as higher level concepts common to many swaps, and eliminate ambiguity in definitions.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -160,19 +160,49 @@
 		<fibo-fnd-utl-av:adaptedFrom xml:lang="en">ISDA Disclosure Annex for Commodity Derivative Transactions. See https://globalmarkets.bnpparibas.com/gm/features/docs/dfdisclosures/ISDA_Commodity_Derivatives_Disclosure_Annex_04_2013.pdf</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-der-drc-swp;FixedLeg">
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-swp;SwapLeg"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-pas-psch;hasPaymentSchedule"/>
+				<owl:onClass rdf:resource="&fibo-fnd-pas-psch;PaymentSchedule"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>fixed leg</rdfs:label>
+		<skos:definition>swap leg whose paying party is obligated to make payments from time to time over the term of a swap calculated by reference to a fixed annual rate or consisting of at least one payment of a fixed amount</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom xml:lang="en">2006 ISDA Definitions</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:adaptedFrom xml:lang="en">ISDA Disclosure Annex for Commodity Derivative Transactions. See https://globalmarkets.bnpparibas.com/gm/features/docs/dfdisclosures/ISDA_Commodity_Derivatives_Disclosure_Annex_04_2013.pdf</fibo-fnd-utl-av:adaptedFrom>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-der-drc-swp;FixedPaymentLeg">
 		<rdfs:subClassOf rdf:resource="&fibo-der-drc-swp;SwapLeg"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-pas-psch;hasPaymentSchedule"/>
-				<owl:allValuesFrom rdf:resource="&fibo-fnd-pas-psch;PaymentSchedule"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-pas-psch;PaymentSchedule"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>fixed payment leg</rdfs:label>
-		<skos:definition>swap leg that specifies contractual terms associated with a schedule of payments for any swap that has a fixed leg, including, for example, a single stock swap</skos:definition>
+		<skos:definition>swap leg that specifies contractual terms associated with a schedule of payments for any swap calculated by reference to a fixed annual rate</skos:definition>
 		<fibo-fnd-utl-av:synonym>fixed payment stream terms</fibo-fnd-utl-av:synonym>
 		<fibo-fnd-utl-av:synonym>funding leg</fibo-fnd-utl-av:synonym>
 		<fibo-fnd-utl-av:usageNote>Payments may be fixed or variable, which is independent from the function of the leg (payments, return etc.). The schedule may be expressed in one of two ways: as an explicit schedule of dates or as a formula for determining payment dates in advance (taking into account for example roll rules for non working days).</fibo-fnd-utl-av:usageNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-drc-swp;FloatingLeg">
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-swp;SwapLeg"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-pas-psch;hasPaymentSchedule"/>
+				<owl:onClass rdf:resource="&fibo-fnd-pas-psch;PaymentSchedule"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>floating leg</rdfs:label>
+		<skos:definition>swap leg whose paying party is obligated to make payments from time to time over the term of a swap calculated by reference to some variable rate, calculated based on the change in value of some underlying asset, or consisting of at least one payment of some floating amount</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom xml:lang="en">2006 ISDA Definitions</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:adaptedFrom xml:lang="en">ISDA Disclosure Annex for Commodity Derivative Transactions. See https://globalmarkets.bnpparibas.com/gm/features/docs/dfdisclosures/ISDA_Commodity_Derivatives_Disclosure_Annex_04_2013.pdf</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-swp;IndexReturnSwap">
@@ -193,7 +223,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-swp;PerformanceBasedVariableLeg">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-swp;SwapLeg"/>
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-swp;FloatingLeg"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-drc-swp;isLegOf"/>
@@ -212,7 +242,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-swp;ReturnLeg">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-swp;SwapLeg"/>
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-swp;FloatingLeg"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
@@ -269,7 +299,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-drc-swp;hasLeg"/>
-				<owl:onClass rdf:resource="&fibo-der-drc-swp;StrikeLeg"/>
+				<owl:onClass rdf:resource="&fibo-der-drc-swp;FixedLeg"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -284,10 +314,10 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-swp;StrikeLeg">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-swp;SwapLeg"/>
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-swp;FixedLeg"/>
 		<rdfs:label xml:lang="en">strike leg</rdfs:label>
-		<skos:definition xml:lang="en">swap leg that specifies a fixed amount, &apos;the strike&apos;, of some variable or a monetary amount quoted at the time of execution</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">The realization of a strike leg is not a cashflow per se, but a netting out against the terms defined in the other leg of a statistical swap.</fibo-fnd-utl-av:explanatoryNote>
+		<skos:definition xml:lang="en">swap leg that specifies a fixed amount, &apos;the strike&apos;, quoted at the time of execution</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">The fixed amount may be with respect to some variable or a monetary amount.  The realization of a strike leg is not a cashflow per se, but a netting out against the terms defined in the other leg of a statistical swap.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-swp;Swap">
