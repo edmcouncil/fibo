@@ -53,11 +53,12 @@
 		<rdfs:label>Securities Listings Ontology</rdfs:label>
 		<dct:abstract>This ontology defines the fundamental concepts for listing securities, such as registered, listed, and exchange-traded security, the notion of a securities exchange, and related services.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
-		<sm:contentLanguage rdf:datatype="&xsd;anyURI">http://www.w3.org/standards/techs/owl#w3c_all</sm:contentLanguage>
+		<sm:contentLanguage rdf:datatype="&xsd;anyURI">https://www.w3.org/TR/owl2-quick-reference/</sm:contentLanguage>
 		<sm:copyright>Copyright (c) 2016-2020 EDM Council, Inc.</sm:copyright>
 		<sm:copyright>Copyright (c) 2018-2020 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FBC/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/</sm:dependsOn>
+		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesIssuance/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://www.omg.org/spec/LCC/</sm:dependsOn>
 		<sm:fileAbbreviation>fibo-sec-sec-lst</sm:fileAbbreviation>
 		<sm:filename>SecuritiesListings.rdf</sm:filename>
@@ -78,13 +79,14 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesIssuance/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20200401/Securities/SecuritiesListings/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20201201/Securities/SecuritiesListings/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20180801/Securities/SecuritiesListings.rdf version of this ontology was revised to reuse the composite date value datatype and add disjointness between registered security and exempt security.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20190401/Securities/SecuritiesListings.rdf version of this ontology was revised to eliminate an extraneous subclass axiom.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20190701/Securities/SecuritiesListings.rdf version of this ontology was revised to rename isIssuedIn to isIssuedOn, which is more natural to most securities SMEs, generalized certain references to securities exchanges, and eliminate deprecated elements.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20190901/Securities/SecuritiesListings.rdf version of this ontology was revised to restructure the concept of a listing and augment it with a number of relevant characteristics.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20191201/Securities/SecuritiesListings.rdf version of this ontology was revised to eliminate duplication of concepts in LCC and to eliminate the redundancy between hasIssue and lists.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20200301/Securities/SecuritiesListings.rdf version of this ontology was revised to incorporate the form of registration and loosen the restriction on the number of possible registration authorities for a registered security.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20200401/Securities/SecuritiesListings.rdf version of this ontology was revised to eliminate confusion between listed security and listing (which caused reasoning issues) and adjust definitions to eliminate ambiguity.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -125,7 +127,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-lst;ListedSecurity">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;Security"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-lst;RegisteredSecurity"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-sec-lst;hasHomeExchange"/>
@@ -147,7 +149,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>listed security</rdfs:label>
-		<skos:definition>registered security listed on one or more exchanges</skos:definition>
+		<skos:definition>registered security listed on at least one exchange</skos:definition>
 		<fibo-fnd-utl-av:synonym>exchange-traded security</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
@@ -207,25 +209,13 @@
 				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-cur;Currency"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-sec-lst;isTradedOn"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-fct-mkt;Exchange"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">listing</rdfs:label>
-		<skos:definition>registry entry for a security that provides information regarding the eligibility for making that security available for trading</skos:definition>
+		<skos:definition>registry entry for a security that is managed by an exchange and that documents that the security meets the requirements for making that security available for trading on that exchange</skos:definition>
 		<fibo-fnd-utl-av:synonym xml:lang="en">market listing</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-lst;RegisteredSecurity">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;Security"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;mayBeTradedIn"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-fct-mkt;Exchange"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-fct-ra;hasRegistrationDate"/>
@@ -246,7 +236,7 @@
 		</rdfs:subClassOf>
 		<rdfs:label>registered security</rdfs:label>
 		<owl:disjointWith rdf:resource="&fibo-fbc-fi-fi;ExemptSecurity"/>
-		<skos:definition>security that is registered with some registration authority and that may be traded in some trading venue (market) or over the counter</skos:definition>
+		<skos:definition>security that is registered with some registration authority</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-lst;RegisteredSecurityForm">
@@ -277,8 +267,10 @@
 		<rdfs:subPropertyOf rdf:resource="&lcc-lr;has"/>
 		<rdfs:label>has home exchange</rdfs:label>
 		<rdfs:range rdf:resource="&fibo-fbc-fct-mkt;Exchange"/>
-		<skos:definition>indicates the current exchange that is considered the primary trading venue for a security</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote>A security may have been originally listed on the Frankfort exchange, but its current home is the London Stock Exchange, for example.</fibo-fnd-utl-av:explanatoryNote>
+		<skos:definition>indicates the exchange that is considered the primary market for a security; typically, but not always, in the country in which the security was originally issued</skos:definition>
+		<skos:example>A security may have been originally listed on the Frankfurt exchange, but its current home is the London Stock Exchange, for example.</skos:example>
+		<fibo-fnd-utl-av:explanatoryNote>A primary market is one that issues new securities on an exchange for companies, governments, and other groups to obtain financing through debt-based or equity-based securities.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:synonym>has primary market</fibo-fnd-utl-av:synonym>
 		<fibo-fnd-utl-av:synonym>has primary trading market</fibo-fnd-utl-av:synonym>
 	</owl:ObjectProperty>
 	
@@ -306,7 +298,7 @@
 		<rdfs:label xml:lang="en">has tick size</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-sec-lst;Listing"/>
 		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
-		<skos:definition xml:lang="en">specifies a minimum price movement for the contract or security with respect to an exchange</skos:definition>
+		<skos:definition xml:lang="en">specifies a minimum price movement for the security with respect to an exchange</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-sec-lst;isListedVia">
@@ -321,12 +313,13 @@
 		<rdfs:label>is seasoned</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-sec-lst;ListedSecurity"/>
 		<rdfs:range rdf:resource="&xsd;boolean"/>
-		<skos:definition>indicates that the security has been publicly traded long enough to eliminate any short-term price or trading volume volatility from its initial public offering</skos:definition>
+		<skos:definition>indicates that the security has been publicly traded long enough to eliminate any short-term volume volatility from its initial public offering</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Short-term volatility may be with respect to price or trading volume.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:DatatypeProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-sec-lst;isTradedOn">
 		<rdfs:label>is traded on</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-sec-lst;Listing"/>
+		<rdfs:domain rdf:resource="&fibo-sec-sec-lst;ListedSecurity"/>
 		<rdfs:range rdf:resource="&fibo-fbc-fct-mkt;Exchange"/>
 		<skos:definition>identifies the trading facility on which the security is traded</skos:definition>
 	</owl:ObjectProperty>
