@@ -61,12 +61,13 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Organizations/FormalOrganizations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/20200201/LegalEntities/CorporateBodies/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/20201201/LegalEntities/CorporateBodies/"/>
 		<skos:changeNote>The http://www.omg.org/spec/EDMC-FIBO/BE/20160201/LegalEntities/CorporateBodies.rdf version of this ontology was modified per the FIBO 2.0 RFC to address issues including elimination of missing labels and comments, integration with LCC, and replacing min 1 QCRs with someValuesFrom.</skos:changeNote>
 		<skos:changeNote>The http://www.omg.org/spec/EDMC-FIBO/BE/20180801/LegalEntities/CorporateBodies.rdf version of this ontology was modified to simplify / merge the legal person and formal organization class hierarchies.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20131101/LegalEntities/CorporateBodies.rdf version of this ontology was modified per the issue resolutions identified in the FIBO BE 1.0 FTF report.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20181101/LegalEntities/CorporateBodies.rdf version of this ontology was modified to reflect the move of hasObjective to FND to enable higher level reuse and eliminate deprecated elements.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20190901/LegalEntities/CorporateBodies.rdf version of this ontology was modified to eliminate a now duplicate and overly constrained restriction on isDomiciledIn.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20200201/LegalEntities/CorporateBodies.rdf version of this ontology was modified to eliminate &apos;body incorporated with guarantee&apos;, it&apos;s child, and &apos;body incorporated by agreement&apos;, which either don&apos;t exist or duplicate other kinds of organizations, such as private companies with limited liability.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -79,34 +80,6 @@
 		<fibo-fnd-utl-av:explanatoryNote>This is a US-specific type of non-profit corporation defined in recent legislation in a number of states. In California, for example, benefit corporations may be defined as public benefit or mutual benefit corporations, depending on their purpose.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-be-le-cb;BodyIncorporatedThroughAgreement">
-		<rdfs:subClassOf rdf:resource="&fibo-be-le-cb;Corporation"/>
-		<rdfs:label>body incorporated through agreement</rdfs:label>
-		<skos:definition>A body with legal personhood, incorporated through some agreement among the principals, and without equity or guarantee instruments which would isolate the principals from liability.</skos:definition>
-		<skos:editorialNote>An LLP (in the UK) is an example of this, and is also a partnership. There, the LLP Document is the legal document which effectively constitutes the Partnership.</skos:editorialNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-be-le-cb;BodyIncorporatedWithGuarantee">
-		<rdfs:subClassOf rdf:resource="&fibo-be-le-cb;Corporation"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isGovernedBy"/>
-				<owl:onClass rdf:resource="&fibo-be-le-cb;BodyLimitedByGuaranteePrincipalsAgreement"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>body incorporated with guarantee</rdfs:label>
-		<owl:disjointWith rdf:resource="&fibo-be-le-cb;BodyIncorporatedThroughAgreement"/>
-		<skos:definition>Incorporated entity without share capital, and in which the liability of its members is limited to the amount each one of them undertakes to contribute at the time the firm is wound up.</skos:definition>
-		<skos:editorialNote>The profit motive is not the prime objective of the organization.</skos:editorialNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-be-le-cb;BodyLimitedByGuaranteePrincipalsAgreement">
-		<rdfs:subClassOf rdf:resource="&fibo-be-le-fbo;OrganizationCoveringAgreement"/>
-		<rdfs:label>body limited by guarantee principals agreement</rdfs:label>
-		<skos:definition>The formal agreement between the principals of a body limited by guarantee.</skos:definition>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-be-le-cb;CommonInterestDevelopmentCorporation">
 		<rdfs:subClassOf rdf:resource="&fibo-be-le-cb;NotForProfitCorporation"/>
 		<rdfs:label>common interest development corporation</rdfs:label>
@@ -114,21 +87,6 @@
 		<skos:example rdf:datatype="&xsd;anyURI">http://www.dre.ca.gov/files/pdf/re39.pdf</skos:example>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.nolo.com/dictionary/common-interest-development-term.html</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:explanatoryNote>A common interest development is typically a type of housing, composed of individually owned units, such as condominiums, townhouses, or single-family homes, that share ownership of common areas, such as swimming pools, landscaping, and parking. Common interest developments (also known as community interest developments or CIDs) are managed by homeowners&apos; associations.</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-be-le-cb;CompanyIncorporatedByGuarantee">
-		<rdfs:subClassOf rdf:resource="&fibo-be-le-cb;BodyIncorporatedWithGuarantee"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isGovernedBy"/>
-				<owl:onClass rdf:resource="&fibo-be-le-cb;BodyLimitedByGuaranteePrincipalsAgreement"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>company incorporated by guarantee</rdfs:label>
-		<skos:definition>a body limited by guarantee whose principals agreement&apos; includes statements indicating how much money each principal will contribute to the company if it becomes insolvent</skos:definition>
-		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.investorguide.com/definition/guarantee.html</fibo-fnd-utl-av:adaptedFrom>
-		<fibo-fnd-utl-av:synonym>company limited by guarantee</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-le-cb;Corporation">
@@ -222,8 +180,6 @@
 	<owl:Class rdf:about="&fibo-be-le-cb;StockCorporation">
 		<rdfs:subClassOf rdf:resource="&fibo-be-le-cb;Corporation"/>
 		<rdfs:label xml:lang="en">stock corporation</rdfs:label>
-		<owl:disjointWith rdf:resource="&fibo-be-le-cb;BodyIncorporatedThroughAgreement"/>
-		<owl:disjointWith rdf:resource="&fibo-be-le-cb;BodyIncorporatedWithGuarantee"/>
 		<skos:definition>a corporation that has shareholders (stockholders), each of whom receives a portion of the ownership of the corporation through shares of stock</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://biztaxlaw.about.com/od/glossarys/g/stockcorp.htm</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.oecd.org/daf/ca/CorporateGovernanceFactbook.pdf</fibo-fnd-utl-av:adaptedFrom>
