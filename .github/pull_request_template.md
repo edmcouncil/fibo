@@ -7,8 +7,8 @@ Fixes: #ISSUE_NUMBER
 
 ## Checklist:
 
-- [ ] I'm familiar with the [FIBO developer quide](../CONTRIBUTING.md#contributing-to-the-fibo-code). My contribution meets all the requirements described there.
-- [ ] My contribution follows the [principles of best practices for FIBO](../ONTOLOGY_GUIDE.md).
+- [ ] I'm familiar with the [FIBO developer quide](https://github.com/edmcouncil/fibo/blob/master/CONTRIBUTING.md#contributing-to-the-fibo-code). My contribution meets all the requirements described there.
+- [ ] My contribution follows the [principles of best practices for FIBO](https://github.com/edmcouncil/fibo/blob/master/ONTOLOGY_GUIDE.md).
 - [ ] My changes have been reconciled with latest master and no merge conflicts remain.
 - [ ] This PR is related to exactly one issue. The issue is referenced by using a GitHub keyword such as "fixes", "closes", or "resolves".
 - [ ] Hygiene tests have been applied by a PR with "(WIP)" in title.
