@@ -4,18 +4,18 @@ prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
 prefix skos: <http://www.w3.org/2004/02/skos/core#>
 
 ##
-# banner Definitions shouldn't be circular.
+# banner Definitions shouldn't be circular - this finds direct circularities therein.
 
 SELECT DISTINCT ?error ?definition ?label
 WHERE {
   ?s rdfs:label ?label .
   ?s skos:definition ?definition .
   FILTER NOT EXISTS {?s a owl:NamedIndividual} .
-  FILTER (CONTAINS(?definition, ?label))
+  FILTER (REGEX(?definition, "\\W"+?label+"\\W"))
   FILTER (CONTAINS(str(?s), "edmcouncil"))
 
   BIND (
-    concat ("WARN: Definition of ", str(?s), " is circular ")
+    concat ("WARN: Definition of ", str(?s), " is immediately circular ")
       AS ?error
     )
 }
