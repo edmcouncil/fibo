@@ -5,6 +5,7 @@
 	<!ENTITY fibo-fbc-fct-mkt "https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/Markets/">
 	<!ENTITY fibo-fbc-fct-ra "https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/RegistrationAuthorities/">
 	<!ENTITY fibo-fbc-fi-fi "https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/">
+	<!ENTITY fibo-fbc-fi-ip "https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/InstrumentPricing/">
 	<!ENTITY fibo-fbc-pas-fpas "https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/">
 	<!ENTITY fibo-fnd-aap-agt "https://spec.edmcouncil.org/fibo/ontology/FND/AgentsAndPeople/Agents/">
 	<!ENTITY fibo-fnd-acc-cur "https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/">
@@ -30,6 +31,7 @@
 	xmlns:fibo-fbc-fct-mkt="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/Markets/"
 	xmlns:fibo-fbc-fct-ra="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/RegistrationAuthorities/"
 	xmlns:fibo-fbc-fi-fi="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"
+	xmlns:fibo-fbc-fi-ip="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/InstrumentPricing/"
 	xmlns:fibo-fbc-pas-fpas="https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/"
 	xmlns:fibo-fnd-aap-agt="https://spec.edmcouncil.org/fibo/ontology/FND/AgentsAndPeople/Agents/"
 	xmlns:fibo-fnd-acc-cur="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"
@@ -63,6 +65,7 @@
 		<sm:fileAbbreviation>fibo-sec-sec-lst</sm:fileAbbreviation>
 		<sm:filename>SecuritiesListings.rdf</sm:filename>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/InstrumentPricing/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/BusinessRegistries/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/Markets/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/RegistrationAuthorities/"/>
@@ -86,7 +89,7 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20190901/Securities/SecuritiesListings.rdf version of this ontology was revised to restructure the concept of a listing and augment it with a number of relevant characteristics.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20191201/Securities/SecuritiesListings.rdf version of this ontology was revised to eliminate duplication of concepts in LCC and to eliminate the redundancy between hasIssue and lists.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20200301/Securities/SecuritiesListings.rdf version of this ontology was revised to incorporate the form of registration and loosen the restriction on the number of possible registration authorities for a registered security.</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20200401/Securities/SecuritiesListings.rdf version of this ontology was revised to eliminate confusion between listed security and listing (which caused reasoning issues) and adjust definitions to eliminate ambiguity.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20200401/Securities/SecuritiesListings.rdf version of this ontology was revised to eliminate confusion between listed security and listing (which caused reasoning issues), adjust definitions to eliminate ambiguity and add a property for lot size on listing.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -151,6 +154,7 @@
 		<rdfs:label>listed security</rdfs:label>
 		<skos:definition>registered security listed on at least one exchange</skos:definition>
 		<fibo-fnd-utl-av:synonym>exchange-traded security</fibo-fnd-utl-av:synonym>
+		<fibo-fnd-utl-av:usageNote>One can, as appropriate, multiply classify a share as being a common share and listed share, and, in the case whereby multiple securities are issued in different currencies (i.e., there are multiple listed shares corresponding to a given common share that have different identifiers, including more than one ISIN, CUSIP, share class FIGI), multiply classify the listed share individuals as individuals of the same common share.</fibo-fnd-utl-av:usageNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-lst;Listing">
@@ -180,6 +184,13 @@
 				<owl:onProperty rdf:resource="&fibo-sec-sec-lst;hasDelistingDate"/>
 				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-fi-ip;hasLotSize"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+				<owl:onDataRange rdf:resource="&xsd;positiveInteger"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
