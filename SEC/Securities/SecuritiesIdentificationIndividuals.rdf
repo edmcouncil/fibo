@@ -95,7 +95,7 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20190701/Securities/SecuritiesIdentificationIndividuals/ version of this ontology was modified to restructure the concept of a listing and augment it with a number of relevant characteristics.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20191201/Securities/SecuritiesIdentificationIndividuals/ version of this ontology was modified to eliminate duplication of concepts with LCC and eliminate punning in individual definitions.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20200301/Securities/SecuritiesIdentificationIndividuals/ version of this ontology was modified to replace &apos;characterizes&apos; with &apos;describes&apos;, which more accurately expresses the intent.</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20200701/Securities/SecuritiesIdentificationIndividuals.rdf version of this ontology was revised to eliminate confusion between listed security and listing (which caused reasoning issues).</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20200701/Securities/SecuritiesIdentificationIndividuals.rdf version of this ontology was revised to eliminate confusion between listed security and listing (which caused reasoning issues) and add the Telekurs Id (now retired) and Valoren as securities identifiers.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -115,6 +115,11 @@
 	
 	<owl:NamedIndividual rdf:about="&fibo-fbc-fct-eufseind;LondonStockExchange">
 		<rdf:type rdf:resource="&fibo-fbc-fct-ra;RegistrationAuthority"/>
+		<rdf:type rdf:resource="&fibo-ind-ind-ind;FinancialInformationPublisher"/>
+		<rdf:type rdf:resource="&fibo-sec-sec-id;NationalNumberingAgency"/>
+	</owl:NamedIndividual>
+	
+	<owl:NamedIndividual rdf:about="&fibo-fbc-fct-eufseind;SIXFinancialInformation">
 		<rdf:type rdf:resource="&fibo-ind-ind-ind;FinancialInformationPublisher"/>
 		<rdf:type rdf:resource="&fibo-sec-sec-id;NationalNumberingAgency"/>
 	</owl:NamedIndividual>
@@ -544,11 +549,80 @@
 		<fibo-fnd-utl-av:abbreviation>SEDOL scheme</fibo-fnd-utl-av:abbreviation>
 	</owl:NamedIndividual>
 	
+	<owl:Class rdf:about="&fibo-sec-sec-idind;TelekursId">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-id;ProprietarySecurityIdentifier"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-fct-ra;isRegisteredBy"/>
+				<owl:hasValue rdf:resource="&fibo-fbc-fct-eufseind;SIXFinancialInformation"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isIssuedBy"/>
+				<owl:hasValue rdf:resource="&fibo-fbc-fct-eufseind;SIXFinancialInformation"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isDefinedIn"/>
+				<owl:hasValue rdf:resource="&fibo-sec-sec-idind;TelekursSecurityIdentifierScheme"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>Telekurs Id</rdfs:label>
+		<skos:definition>identifier used to identify financial instruments owned, managed, and distributed by SIX Financial Information (formerly Telekurs AG and subsequently SIX Telekurs Ltd.)</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>The Telekurs Id was phased out in favor of the Valoren (Valor Nummer in Swiss German) in 2013.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
 	<owl:NamedIndividual rdf:about="&fibo-sec-sec-idind;TelekursSecurityIdentifierScheme">
 		<rdf:type rdf:resource="&fibo-sec-sec-id;ProprietarySecurityIdentificationScheme"/>
 		<rdfs:label>Telekurs security identifier scheme</rdfs:label>
-		<skos:definition>proprietary identification scheme for securities identifiers managed by SIX Telekurs Ltd, a subsidiary of the SIX Group (Swiss Infrastructure and eXchange)</skos:definition>
+		<skos:definition>proprietary identification scheme for securities identifiers formerly managed by SIX Telekurs Ltd, a subsidiary of the SIX Group (Swiss Infrastructure and eXchange), now SIX Financial Information AG</skos:definition>
 		<fibo-fnd-utl-av:abbreviation>Telekurs security ID scheme</fibo-fnd-utl-av:abbreviation>
+	</owl:NamedIndividual>
+	
+	<owl:Class rdf:about="&fibo-sec-sec-idind;Valoren">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-id;ListedSecurityIdentifier"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-id;NationalSecuritiesIdentifyingNumber"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-id;ProprietarySecurityIdentifier"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-fct-ra;isRegisteredBy"/>
+				<owl:hasValue rdf:resource="&fibo-fbc-fct-eufseind;SIXFinancialInformation"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isIssuedBy"/>
+				<owl:hasValue rdf:resource="&fibo-fbc-fct-eufseind;SIXFinancialInformation"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isDefinedIn"/>
+				<owl:hasValue rdf:resource="&fibo-sec-sec-idind;ValorenScheme"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>Valoren</rdfs:label>
+		<rdfs:seeAlso rdf:resource="https://www.six-group.com/en/products-services/financial-information.html"/>
+		<skos:definition>identification number assigned to financial instruments in Switzerland, Liechtenstein and Belgium, issued by SIX Financial Information, that is the National Securities Identifying Number (NSIN) for securities issued in those countries and is also part of the ISIN for the security it identifies</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.isin.net/valoren/</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:explanatoryNote>A VALOR code is between six and nine characters in length and like other securities identification codes (like ISIN, CUSIPs etc). A VALOR is utilized for identification purposes as well as clearing and settlement - similar to an ISIN code – and identifies debt and equity securities.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:synonym xml:lang="de">Valor</fibo-fnd-utl-av:synonym>
+		<fibo-fnd-utl-av:synonym xml:lang="en">Valor</fibo-fnd-utl-av:synonym>
+		<fibo-fnd-utl-av:synonym xml:lang="en">Valor Code</fibo-fnd-utl-av:synonym>
+		<fibo-fnd-utl-av:synonym xml:lang="de">Valor Nummer</fibo-fnd-utl-av:synonym>
+		<fibo-fnd-utl-av:synonym xml:lang="en">Valoren Code</fibo-fnd-utl-av:synonym>
+		<fibo-fnd-utl-av:synonym xml:lang="en">Valoren Number</fibo-fnd-utl-av:synonym>
+	</owl:Class>
+	
+	<owl:NamedIndividual rdf:about="&fibo-sec-sec-idind;ValorenScheme">
+		<rdf:type rdf:resource="&fibo-sec-sec-id;NationalSecurityIdentificationScheme"/>
+		<rdf:type rdf:resource="&fibo-sec-sec-id;ProprietarySecurityIdentificationScheme"/>
+		<rdf:type rdf:resource="&fibo-sec-sec-id;SecurityIdentificationScheme"/>
+		<rdfs:label>Valoren scheme</rdfs:label>
+		<skos:definition>national security identification scheme used to identify equity and debt securities in Switzerland, Liechtenstein and Belgium for the purposes of facilitating clearing and settlement of trades</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>The VALOR number is a numeric code that intrinsically has no meaning. When a new VALOR is needed, the next one from the list is simply allocated. An instrument&apos;s number indicates nothing about the instrument itself.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:NamedIndividual>
 
 </rdf:RDF>
