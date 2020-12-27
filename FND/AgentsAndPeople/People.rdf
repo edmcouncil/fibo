@@ -45,7 +45,7 @@
 		<rdfs:label>People Ontology</rdfs:label>
 		<dct:abstract>This ontology defines concepts for people and human related terms, for use in other FIBO ontology elements. People as defined here are human persons only. This ontology sets out a number of basic properties which are held by people or are definitive of a small number of specific types of people such as minors or adults. Primary use cases for determining the set of personal information definitions included are the common elements required to (1) open a bank account, (2) identify a sophisticated investor, and (3) establish foreign account ownership for money laundering purposes.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
-		<sm:contentLanguage rdf:datatype="&xsd;anyURI">http://www.w3.org/standards/techs/owl#w3c_all</sm:contentLanguage>
+		<sm:contentLanguage rdf:datatype="&xsd;anyURI">https://www.w3.org/TR/owl2-quick-reference/</sm:contentLanguage>
 		<sm:copyright>Copyright (c) 2013-2020 EDM Council, Inc.</sm:copyright>
 		<sm:copyright>Copyright (c) 2013-2020 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/AgentsAndPeople/Agents/</sm:dependsOn>
@@ -71,7 +71,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Countries/CountryRepresentation/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20200201/AgentsAndPeople/People/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20201201/AgentsAndPeople/People/"/>
 		<skos:changeNote>The http://spec.edmcouncil.org/fibo/ontology/FND/20130801/AgentsAndPeople/People.rdf version of the ontology was was modified per the issue resolutions identified in the FIBO FND 1.0 FTF report and in https://spec.edmcouncil.org/fibo/ontology/FND/1.0/AboutFND-1.0/. It was further revised in the FTF in advance of the Long Beach meeting, resulting in https://spec.edmcouncil.org/fibo/ontology/FND/20141101/AgentsAndPeople/People/.</skos:changeNote>
 		<skos:changeNote>The http://spec.edmcouncil.org/fibo/ontology/FND/20141101/AgentsAndPeople/People.rdf version of the ontology was was modified per the issue resolutions identified in the FIBO FND 1.1 RTF report, primarily to use the hasAddress property in addresses, and change PostalAddress to PhysicalAddress in a restriction on Person. Also revised the identifiesAddress property in favor of verifiesAddress, and revised hasDateofBirth with respect to an identity document to be verifiesDateOfBirth, which was determined to be more appropriate by the RTF.</skos:changeNote>
 		<skos:changeNote>The http://www.omg.org/spec/EDMC-FIBO/FND/20160201/AgentsAndPeople/People.rdf version of the ontology was was modified per the FIBO 2.0 RFC, including integration of LCC.</skos:changeNote>
@@ -87,6 +87,7 @@
 		<skos:changeNote>The https://www.omg.org/spec/EDMC-FIBO/FND/20180801/AgentsAndPeople/People.rdf version of the ontology was modified to deprecate legally capable person in favor of natural person (defined in Business Entities).</skos:changeNote>
 		<skos:changeNote>The https://www.omg.org/spec/EDMC-FIBO/FND/20190501/AgentsAndPeople/People.rdf version of the ontology was modified to eliminate deprecated elements.</skos:changeNote>
 		<skos:changeNote>The https://www.omg.org/spec/EDMC-FIBO/FND/20190901/AgentsAndPeople/People.rdf version of the ontology was modified to eliminate duplication with concepts in LCC and correct a bug in a restriction on identity document.</skos:changeNote>
+		<skos:changeNote>The https://www.omg.org/spec/EDMC-FIBO/FND/20200201/AgentsAndPeople/People.rdf version of the ontology was modified to add explicit DateOfBirth and DateOfDeath, added DeathCertificate and related concepts, streamlined related properties and restrictions.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -99,6 +100,7 @@
 	
 	<owl:Class rdf:about="&fibo-fnd-aap-ppl;BirthCertificate">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-aap-ppl;IdentityDocument"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-doc;Certificate"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&lcc-lr;isIdentifiedBy"/>
@@ -117,7 +119,7 @@
 		<rdfs:subClassOf rdf:resource="&lcc-lr;IdentificationScheme"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&lcc-lr;hasMember"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;defines"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fnd-aap-ppl;BirthCertificateIdentifier"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -142,16 +144,73 @@
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&lcc-lr;isMemberOf"/>
-				<owl:onClass rdf:resource="&fibo-fnd-aap-ppl;BirthCertificateIdentificationScheme"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label>birth certificate identifier</rdfs:label>
 		<skos:definition>identifier associated with a vital record documenting the birth of a child</skos:definition>
 		<fibo-fnd-utl-av:synonym>birth certificate number</fibo-fnd-utl-av:synonym>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-aap-ppl;DateOfBirth">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
+		<rdfs:label>date of birth</rdfs:label>
+		<skos:definition>explicit date, i.e., the day, month and year, on which an individual was born</skos:definition>
+		<fibo-fnd-utl-av:synonym>birth date</fibo-fnd-utl-av:synonym>
+		<fibo-fnd-utl-av:synonym>birthday</fibo-fnd-utl-av:synonym>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-aap-ppl;DateOfDeath">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
+		<rdfs:label>date of death</rdfs:label>
+		<skos:definition>explicit date, i.e., the day, month and year, on which an individual died</skos:definition>
+		<fibo-fnd-utl-av:synonym>death date</fibo-fnd-utl-av:synonym>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-aap-ppl;DeathCertificate">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-aap-ppl;IdentityDocument"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-doc;Certificate"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&lcc-lr;isIdentifiedBy"/>
+				<owl:onClass rdf:resource="&fibo-fnd-aap-ppl;DeathCertificateIdentifier"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>death certificate</rdfs:label>
+		<skos:definition>original document certifying the circumstances of the death (such as how and when it occurred), or a certified copy of or representation of the ensuing registration of that death</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>A death certificate is a vital record documenting information (including age, occupation, place of birth, place of residence, and often identifying the parents and possibly spouse of the deceased) relating to a dead person and including a doctor&apos;s certification of the cause of death.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-aap-ppl;DeathCertificateIdentificationScheme">
+		<rdfs:subClassOf rdf:resource="&lcc-lr;IdentificationScheme"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;defines"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-aap-ppl;DeathCertificateIdentifier"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>death certificate identification scheme</rdfs:label>
+		<skos:definition>system for allocating identifiers to death certificates</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Schemes for death certificate identification are typically regionally defined, and there may be jurisdiction-specific scope required as an additional restriction on a specific scheme.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-aap-ppl;DeathCertificateIdentifier">
+		<rdfs:subClassOf rdf:resource="&lcc-lr;Identifier"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&lcc-lr;identifies"/>
+				<owl:onClass rdf:resource="&fibo-fnd-aap-ppl;DeathCertificate"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isDefinedIn"/>
+				<owl:onClass rdf:resource="&fibo-fnd-aap-ppl;DeathCertificateIdentificationScheme"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>death certificate identifier</rdfs:label>
+		<skos:definition>identifier associated with a vital record documenting the death of an individual</skos:definition>
+		<fibo-fnd-utl-av:synonym>death certificate number</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-aap-ppl;DriversLicense">
@@ -173,7 +232,7 @@
 		<rdfs:subClassOf rdf:resource="&lcc-lr;IdentificationScheme"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&lcc-lr;hasMember"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;defines"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fnd-aap-ppl;DriversLicenseIdentifier"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -198,13 +257,6 @@
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&lcc-lr;isMemberOf"/>
-				<owl:onClass rdf:resource="&fibo-fnd-aap-ppl;DriversLicenseIdentificationScheme"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label>driver&apos;s license identifier</rdfs:label>
 		<skos:definition>identifier associated with a drivers&apos; or operating license for operating a motor vehicle or non-driver identification card</skos:definition>
 		<fibo-fnd-utl-av:synonym>driver&apos;s license number</fibo-fnd-utl-av:synonym>
@@ -220,13 +272,6 @@
 	
 	<owl:Class rdf:about="&fibo-fnd-aap-ppl;IdentityDocument">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-doc;LegalDocument"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-aap-ppl;verifiesAddress"/>
-				<owl:onClass rdf:resource="&fibo-fnd-plc-adr;PhysicalAddress"/>
-				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-arr-doc;hasDateOfIssuance"/>
@@ -245,20 +290,6 @@
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&lcc-lr;isIdentifiedBy"/>
 				<owl:onClass rdf:resource="&lcc-lr;Identifier"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-aap-ppl;verifiesDateOfBirth"/>
-				<owl:onDataRange rdf:resource="&xsd;string"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-aap-ppl;verifiesPlaceOfBirth"/>
-				<owl:onDataRange rdf:resource="&xsd;string"/>
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -391,6 +422,13 @@ Many countries issued such numbers ostensibly for a singular purpose, but over t
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-aap-agt;AutonomousAgent"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-aap-ppl;hasDateOfDeath"/>
+				<owl:onClass rdf:resource="&fibo-fnd-aap-ppl;DateOfDeath"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-plc-adr;hasAddress"/>
 				<owl:onClass rdf:resource="&fibo-fnd-plc-adr;PhysicalAddress"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
@@ -406,14 +444,14 @@ Many countries issued such numbers ostensibly for a singular purpose, but over t
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-aap-ppl;hasDateOfBirth"/>
-				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;Date"/>
+				<owl:onClass rdf:resource="&fibo-fnd-aap-ppl;DateOfBirth"/>
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-aap-ppl;hasPlaceOfBirth"/>
-				<owl:onClass rdf:resource="&fibo-fnd-plc-loc;PhysicalLocation"/>
+				<owl:onClass rdf:resource="&fibo-fnd-aap-ppl;PlaceOfBirth"/>
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -425,8 +463,15 @@ Many countries issued such numbers ostensibly for a singular purpose, but over t
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">person</rdfs:label>
-		<skos:definition>a person; any member of the species homo sapiens</skos:definition>
+		<skos:definition>individual human being, with consciousness of self</skos:definition>
 		<fibo-fnd-utl-av:synonym>natural person</fibo-fnd-utl-av:synonym>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-aap-ppl;PlaceOfBirth">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-plc-loc;PhysicalLocation"/>
+		<rdfs:label>place of birth</rdfs:label>
+		<skos:definition>physical location, including country, region, and municipality where an individual was born</skos:definition>
+		<fibo-fnd-utl-av:synonym>birth place</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-aap-ppl;hasCitizenship">
@@ -439,11 +484,20 @@ Many countries issued such numbers ostensibly for a singular purpose, but over t
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-aap-ppl;hasDateOfBirth">
 		<rdf:type rdf:resource="&owl;FunctionalProperty"/>
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDate"/>
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasExplicitDate"/>
 		<rdfs:label>has date of birth</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fnd-aap-ppl;Person"/>
-		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Date"/>
-		<skos:definition>links a person with their date of birth</skos:definition>
+		<rdfs:range rdf:resource="&fibo-fnd-aap-ppl;DateOfBirth"/>
+		<skos:definition>identifies the date on which an individual was born</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-aap-ppl;hasDateOfDeath">
+		<rdf:type rdf:resource="&owl;FunctionalProperty"/>
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasExplicitDate"/>
+		<rdfs:label>has date of death</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fnd-aap-ppl;Person"/>
+		<rdfs:range rdf:resource="&fibo-fnd-aap-ppl;DateOfDeath"/>
+		<skos:definition>identifies the date on which an individual died</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-fnd-aap-ppl;hasFamilyName">
@@ -526,8 +580,8 @@ Many countries issued such numbers ostensibly for a singular purpose, but over t
 		<rdfs:subPropertyOf rdf:resource="&lcc-lr;has"/>
 		<rdfs:label>has place of birth</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fnd-aap-ppl;Person"/>
-		<rdfs:range rdf:resource="&fibo-fnd-plc-loc;PhysicalLocation"/>
-		<skos:definition>links a person with their place of birth</skos:definition>
+		<rdfs:range rdf:resource="&fibo-fnd-aap-ppl;PlaceOfBirth"/>
+		<skos:definition>identifies the location where an individual was born</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-fnd-aap-ppl;hasSurname">
@@ -536,28 +590,6 @@ Many countries issued such numbers ostensibly for a singular purpose, but over t
 		<rdfs:domain rdf:resource="&fibo-fnd-aap-ppl;Person"/>
 		<rdfs:range rdf:resource="&xsd;string"/>
 		<skos:definition>the patronymic or family name of a person</skos:definition>
-	</owl:DatatypeProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-fnd-aap-ppl;verifiesAddress">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-plc-adr;hasAddress"/>
-		<rdfs:label>verifies address</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-aap-ppl;IdentityDocument"/>
-		<rdfs:range rdf:resource="&fibo-fnd-plc-adr;PhysicalAddress"/>
-		<skos:definition>verifies a person&apos;s address as recorded in an identity document</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:DatatypeProperty rdf:about="&fibo-fnd-aap-ppl;verifiesDateOfBirth">
-		<rdfs:label>verifies date of birth</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-aap-ppl;IdentityDocument"/>
-		<rdfs:range rdf:resource="&xsd;string"/>
-		<skos:definition>verifies the person&apos;s date of birth</skos:definition>
-	</owl:DatatypeProperty>
-	
-	<owl:DatatypeProperty rdf:about="&fibo-fnd-aap-ppl;verifiesPlaceOfBirth">
-		<rdfs:label>verifies place of birth</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-aap-ppl;IdentityDocument"/>
-		<rdfs:range rdf:resource="&xsd;string"/>
-		<skos:definition>verifies the person&apos;s place of birth</skos:definition>
 	</owl:DatatypeProperty>
 
 </rdf:RDF>
