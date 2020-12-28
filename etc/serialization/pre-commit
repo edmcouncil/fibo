@@ -43,11 +43,11 @@ function findJava() {
   if [ "${JAVA_HOME}" != "" ] ; then
     java_home="${JAVA_HOME}"
   fi
-  if [ "${java_home}" == "" ] ; then
-      log_error A-$JAVA_HOME
-    log_error "Please set RDF_TOOLKIT_JAVA_HOME or JAVA_HOME to point to a Java 7 or later installation."
-    return 1
-  fi
+  # if [ "${java_home}" == "" ] ; then
+  #     log_error A-$JAVA_HOME
+  #   log_error "Please set RDF_TOOLKIT_JAVA_HOME or JAVA_HOME to point to a Java 7 or later installation."
+  #   return 1
+  # fi
   java_home=${java_home/C:\\/\/c\/}
   java_home=${java_home//\\/\/}
   log "java_home =" ${java_home}
@@ -60,7 +60,7 @@ function findJava() {
     return 1
   fi
   log "whichJava =" $whichJava
-
+  "$whichJava" -version 2>&1
   local versionJava=$( "$whichJava" -version 2>&1 | head -n 1 | cut -d \"  -f 2 )
   log "versionJava = " $versionJava
 
@@ -69,12 +69,15 @@ function findJava() {
   local java_major=$1
   local java_minor=$2
 
-  if [ $java_major -eq 1 -a $java_minor -gt 7 ] ; then
-  	:
-  else
-    log_error "You are using Java $java_major.$java_minor whereas the Sesame serializer requires Java 1.7 or higher"
-    return 2
-  fi
+  log "java_major=$java_major"
+  log "java_minor=$java_minor"
+
+  # if [ $java_major -eq 1 -a $java_minor -gt 7 ] ; then
+  # 	:
+  # else
+  #   log_error "You are using Java $java_major.$java_minor whereas the Sesame serializer requires Java 1.7 or higher"
+  #   return 2
+  # fi
 
   java_exe="${whichJava}"
 
