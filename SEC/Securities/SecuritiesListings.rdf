@@ -89,7 +89,7 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20190901/Securities/SecuritiesListings.rdf version of this ontology was revised to restructure the concept of a listing and augment it with a number of relevant characteristics.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20191201/Securities/SecuritiesListings.rdf version of this ontology was revised to eliminate duplication of concepts in LCC and to eliminate the redundancy between hasIssue and lists.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20200301/Securities/SecuritiesListings.rdf version of this ontology was revised to incorporate the form of registration and loosen the restriction on the number of possible registration authorities for a registered security.</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20200401/Securities/SecuritiesListings.rdf version of this ontology was revised to eliminate confusion between listed security and listing (which caused reasoning issues), adjust definitions to eliminate ambiguity and add a property for lot size on listing.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20200401/Securities/SecuritiesListings.rdf version of this ontology was revised to eliminate confusion between listed security and listing (which caused reasoning issues), adjust definitions to eliminate ambiguity, add a property for lot size on listing, and eliminate the now redundant and confusing registered security form class.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -181,13 +181,6 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-sec-lst;hasDelistingDate"/>
-				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-fi-ip;hasLotSize"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 				<owl:onDataRange rdf:resource="&xsd;positiveInteger"/>
@@ -195,15 +188,15 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-sec-lst;lists"/>
-				<owl:onClass rdf:resource="&fibo-fbc-fi-fi;Security"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+				<owl:onProperty rdf:resource="&fibo-sec-sec-lst;hasDelistingDate"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+				<owl:onDataRange rdf:resource="&fibo-fnd-dt-fd;CombinedDateTime"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isProvidedBy"/>
-				<owl:onClass rdf:resource="&fibo-fbc-fct-mkt;Exchange"/>
+				<owl:onProperty rdf:resource="&fibo-sec-sec-lst;lists"/>
+				<owl:onClass rdf:resource="&fibo-fbc-fi-fi;Security"/>
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -236,7 +229,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-sec-iss;isIssuedInForm"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-lst;RegisteredSecurityForm"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-iss;RegisteredForm"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -250,29 +243,11 @@
 		<skos:definition>security that is registered with some registration authority</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-sec-lst;RegisteredSecurityForm">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-iss;SecurityForm"/>
-		<rdfs:label>registered security form</rdfs:label>
-		<owl:equivalentClass>
-			<owl:Class>
-				<owl:oneOf rdf:parseType="Collection">
-					<rdf:Description rdf:about="&fibo-sec-sec-iss;BearerAndRegisteredForm">
-					</rdf:Description>
-					<rdf:Description rdf:about="&fibo-sec-sec-iss;RegisteredForm">
-					</rdf:Description>
-				</owl:oneOf>
-			</owl:Class>
-		</owl:equivalentClass>
-		<skos:definition>form that a registered security can take</skos:definition>
-	</owl:Class>
-	
-	<owl:ObjectProperty rdf:about="&fibo-sec-sec-lst;hasDelistingDate">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasExplicitDate"/>
+	<owl:DatatypeProperty rdf:about="&fibo-sec-sec-lst;hasDelistingDate">
 		<rdfs:label>has delisting date</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-sec-lst;Listing"/>
-		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;CombinedDateTime"/>
 		<skos:definition>specifies the date set by the exchange for delisting a security</skos:definition>
-	</owl:ObjectProperty>
+	</owl:DatatypeProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-sec-lst;hasHomeExchange">
 		<rdfs:subPropertyOf rdf:resource="&lcc-lr;has"/>
@@ -306,6 +281,7 @@
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-sec-lst;hasTickSize">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasMonetaryAmount"/>
 		<rdfs:label xml:lang="en">has tick size</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-sec-lst;Listing"/>
 		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
@@ -329,6 +305,7 @@
 	</owl:DatatypeProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-sec-lst;isTradedOn">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;isProvidedBy"/>
 		<rdfs:label>is traded on</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-sec-lst;ListedSecurity"/>
 		<rdfs:range rdf:resource="&fibo-fbc-fct-mkt;Exchange"/>

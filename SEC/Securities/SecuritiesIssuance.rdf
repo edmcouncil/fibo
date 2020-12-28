@@ -65,7 +65,7 @@
 		<rdfs:label>Securities Issuance Ontology</rdfs:label>
 		<dct:abstract>This ontology defines the fundamental concepts for issuing securities, including securities offering, offering document, offering statement, securities underwriter, prospectus, and so forth.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
-		<sm:contentLanguage rdf:datatype="&xsd;anyURI">http://www.w3.org/standards/techs/owl#w3c_all</sm:contentLanguage>
+		<sm:contentLanguage rdf:datatype="&xsd;anyURI">https://www.w3.org/TR/owl2-quick-reference/</sm:contentLanguage>
 		<sm:copyright>Copyright (c) 2016-2020 EDM Council, Inc.</sm:copyright>
 		<sm:copyright>Copyright (c) 2018-2020 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/BE/</sm:dependsOn>
@@ -99,11 +99,12 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20200801/Securities/SecuritiesIssuance/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20201201/Securities/SecuritiesIssuance/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20180801/Securities/SecuritiesIssuance/ version of this ontology was modified to refine the concept of a securities underwriter.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20181201/Securities/SecuritiesIssuance/ version of this ontology was modified to eliminate duplication of concepts in LCC.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20200201/Securities/SecuritiesIssuance/ version of this ontology was modified to add the concept of the form the security is issued in, namely bearer or registered.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20200401/Securities/SecuritiesIssuance/ version of this ontology was modified to refactor conversion terms as a child of redemption provision, move redemption provision to financial instruments, and eliminate the unnecessary securities contract terms class.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20200801/Securities/SecuritiesIssuance/ version of this ontology was modified to add book entry form as a kind of registered security, make registered security a class with two individuals, namely book entry and &apos;bearer and registered&apos;, and clean up definitions to eliminate ambiguity where possible and conform to ISO 704.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -146,7 +147,7 @@
 	
 	<owl:NamedIndividual rdf:about="&fibo-sec-sec-iss;BearerAndRegisteredForm">
 		<rdf:type rdf:resource="&fibo-fnd-arr-doc;Certificate"/>
-		<rdf:type rdf:resource="&fibo-sec-sec-iss;SecurityForm"/>
+		<rdf:type rdf:resource="&fibo-sec-sec-iss;RegisteredForm"/>
 		<rdfs:label>bearer and registered form</rdfs:label>
 		<skos:definition>form of a security that may be issued in both bearer and registered form but with the same identification number</skos:definition>
 	</owl:NamedIndividual>
@@ -162,10 +163,17 @@
 	<owl:Class rdf:about="&fibo-sec-sec-iss;BestEffortsOffering">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-iss;SecuritiesOffering"/>
 		<rdfs:label>best efforts offering</rdfs:label>
-		<skos:definition>a securities offering that is sold on a best efforts, rather than firm commitment, basis, whereby investment bankers commit to doing their best to sell the securities offered, but do not assume the full risk of an underwriter</skos:definition>
+		<skos:definition>securities offering whereby investment bankers commit to doing their best to sell the securities offered, but do not assume the full risk of an underwriter</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom>Barron&apos;s Dictionary of Finance and Investment Terms, Ninth Edition, 2014.</fibo-fnd-utl-av:adaptedFrom>
-		<fibo-fnd-utl-av:explanatoryNote>In a best efforts offering, the agreement is strictly an agency arrangement, with no obligation on the part of the agent to purchase the securities.  They act as a broker, in other words.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:explanatoryNote>In a best efforts offering, the agreement is strictly an agency arrangement, with no obligation on the part of the agent to purchase the securities. They act as a broker, in other words.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
+	
+	<owl:NamedIndividual rdf:about="&fibo-sec-sec-iss;BookEntryForm">
+		<rdf:type rdf:resource="&fibo-sec-sec-iss;RegisteredForm"/>
+		<rdfs:label>book entry form</rdfs:label>
+		<skos:definition>form of a security in which ownership is recorded electronically by a central depository</skos:definition>
+		<fibo-fnd-utl-av:synonym>registered form</fibo-fnd-utl-av:synonym>
+	</owl:NamedIndividual>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-iss;ConversionTerms">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;RedemptionProvision"/>
@@ -194,7 +202,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>convertible security</rdfs:label>
-		<skos:definition>a security that can be converted into another security</skos:definition>
+		<skos:definition>security that can be converted into another security</skos:definition>
 		<skos:example>Convertible securities may be convertible bonds or preferred stocks that pay regular interest and can be converted into shares of common stock (sometimes conditioned on the stock price appreciating to a predetermined level).</skos:example>
 		<skos:example>Warrants are equity convertible securities. They give the owner the option to buy newly issued shares at a determined exercise price and date.</skos:example>
 	</owl:Class>
@@ -202,7 +210,7 @@
 	<owl:Class rdf:about="&fibo-sec-sec-iss;ExemptIssuer">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;Issuer"/>
 		<rdfs:label>exempt issuer</rdfs:label>
-		<skos:definition>a securities issuer that issues securities that are exempt from certain regulatory reporting requirements</skos:definition>
+		<skos:definition>issuer that issues securities that are excused from certain regulatory reporting requirements</skos:definition>
 		<skos:example>In general, these include governments and issuers of tax exempt securities such as municipalities, banks and depository institutions, and authorized insurance companies, railroads and public utilities, and certain non-profit organizations.</skos:example>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.investopedia.com/exam-guide/series-66/regulation-of-securities/exempt-securities.asp</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
@@ -224,15 +232,16 @@
 			</owl:Class>
 		</rdfs:subClassOf>
 		<rdfs:label>exempt offering</rdfs:label>
-		<skos:definition>a public offering involving securities that are exempt from certain regulatory reporting requirements, either because the issuer is exempt or the transaction specific to the offering is exempt</skos:definition>
+		<skos:definition>public offering involving securities that are excused from certain regulatory reporting requirements</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom>Barron&apos;s Dictionary of Finance and Investment Terms, Ninth Edition, 2014.</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.investopedia.com/exam-guide/series-66/regulation-of-securities/exempt-securities.asp</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:explanatoryNote>Such an offering may be considered exempt either because the issuer is exempt or the transaction specific to the offering is exempt.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-iss;ExemptTransaction">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;SecuritiesTransaction"/>
 		<rdfs:label>exempt transaction</rdfs:label>
-		<skos:definition>a securities transaction for which there is no requirement to register the transaction with a regulatory agency</skos:definition>
+		<skos:definition>securities transaction for which there is no requirement to register the transaction with a regulatory agency</skos:definition>
 		<skos:example>Examples include non-issuer transactions in outstanding securities, other isolated non-issuer transactions, certain unsolicited  / de minimis transactions, fiduciary transactions, transactions with financial institutions, private placement transactions that meet certain conditions, and so forth.</skos:example>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.investopedia.com/terms/e/exempttransaction.asp</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
@@ -254,7 +263,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>financial instrument short name</rdfs:label>
-		<skos:definition>an identifier that is a short name for any kind of financial instrument within a defined structure as specified in ISO 18774</skos:definition>
+		<skos:definition>abbreviated name for a financial instrument within a defined structure as specified in ISO 18774</skos:definition>
 		<fibo-fnd-utl-av:abbreviation>FISN</fibo-fnd-utl-av:abbreviation>
 		<fibo-fnd-utl-av:adaptedFrom>ISO 18774:2015(E), Securities and related financial instruments - Financial Instrument Short Name (FISN)</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
@@ -263,14 +272,15 @@
 		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-iss;SecuritiesOffering"/>
 		<rdfs:label>firm commitment offering</rdfs:label>
 		<owl:disjointWith rdf:resource="&fibo-sec-sec-iss;BestEffortsOffering"/>
-		<skos:definition>a securities offering whereby the underwriter purchases the securities outright for their own account</skos:definition>
+		<skos:definition>securities offering whereby the underwriter purchases the securities outright for their own account</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom>Barron&apos;s Dictionary of Finance and Investment Terms, Ninth Edition, 2014.</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
 	
 	<owl:NamedIndividual rdf:about="&fibo-sec-sec-iss;MiscellaneousForm">
 		<rdf:type rdf:resource="&fibo-sec-sec-iss;SecurityForm"/>
 		<rdfs:label>miscellaneous form</rdfs:label>
-		<skos:definition>form of a security that is not identified as registered or bearer</skos:definition>
+		<skos:definition>form of a security that is not categorized</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Miscellaneous form is used to describe securities wherein the form is not stated as being bearer or registered.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:NamedIndividual>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-iss;OfferingDocument">
@@ -304,7 +314,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>offering document</rdfs:label>
-		<skos:definition>a legal document that states the objectives, risks and terms of an investment</skos:definition>
+		<skos:definition>legal document that states the objectives, risks and terms of an investment</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom>EDM Council</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:explanatoryNote>There are many variations, including offering memorandum, which is typically used in the context of a private placement, offering statement, which has slightly different meanings depending on the context (for securities, for bonds, etc.) and so forth.  This concept is intended to act as a more abstract parent for these more nuanced concepts.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
@@ -312,7 +322,7 @@
 	<owl:Class rdf:about="&fibo-sec-sec-iss;OfferingStatement">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-iss;OfferingDocument"/>
 		<rdfs:label>offering statement</rdfs:label>
-		<skos:definition>an offering memorandum that conforms to Regulation A, Offering Statement, of the Securities Act of 1933</skos:definition>
+		<skos:definition>offering memorandum that conforms to Regulation A, Offering Statement, of the Securities Act of 1933</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote>See https://www.sec.gov/about/forms/form1-a.pdf for the actual form detail</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
@@ -325,7 +335,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>private offering</rdfs:label>
-		<skos:definition>an offering of securities made privately to a limited number of qualified potential investors</skos:definition>
+		<skos:definition>offering of securities made privately to a limited number of qualified potential investors</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom>EDM Council / Quarule</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:explanatoryNote>Unlike a public offering, a private placement does not have to be registered with a regulatory agency if the securities are purchased for investment rather than resale.</fibo-fnd-utl-av:explanatoryNote>
 		<fibo-fnd-utl-av:synonym>private placement</fibo-fnd-utl-av:synonym>
@@ -334,7 +344,7 @@
 	<owl:Class rdf:about="&fibo-sec-sec-iss;PrivatePlacementMemorandum">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-iss;OfferingDocument"/>
 		<rdfs:label>private placement memorandum</rdfs:label>
-		<skos:definition>a legal document stating the objectives, risks and terms of investment involved with a private placement</skos:definition>
+		<skos:definition>legal document stating the objectives, risks and terms of investment involved with a private placement</skos:definition>
 		<fibo-fnd-utl-av:abbreviation>PPM</fibo-fnd-utl-av:abbreviation>
 		<fibo-fnd-utl-av:adaptedFrom>Barron&apos;s Dictionary of Finance and Investment Terms, Ninth Edition, 2014.</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.investopedia.com/terms/o/offeringmemorandum.asp</fibo-fnd-utl-av:adaptedFrom>
@@ -346,7 +356,7 @@
 		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-iss;OfferingDocument"/>
 		<rdfs:label>prospectus</rdfs:label>
 		<rdfs:seeAlso rdf:datatype="&xsd;anyURI">http://www.investopedia.com/terms/p/prospectus.asp</rdfs:seeAlso>
-		<skos:definition>a formal, written offering document to sell securities that provides the facts an investor needs to make an informed investment decision</skos:definition>
+		<skos:definition>formal, written offering document to sell securities that provides the facts an investor needs to make an informed investment decision</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom>Barron&apos;s Dictionary of Finance and Investment Terms, Ninth Edition, 2014.</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:adaptedFrom>The Securities Act of 1933, as amended 5 April 2012, see http://www.sec.gov/about/laws/sa33.pdf</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:explanatoryNote>A prospectus may specify the facts about an offering of securities, mutual funds, or limited partnerships for investments in oil, gas, equipment leasing, or other kinds of limited partnerships.</fibo-fnd-utl-av:explanatoryNote>
@@ -362,18 +372,18 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>public offering</rdfs:label>
-		<skos:definition>an offering of securities for sale to the investment public, after compliance with registration requirements of the relevant regulatory authorities</skos:definition>
+		<skos:definition>offering of securities for sale to the investment public, after compliance with registration requirements of the relevant regulatory authorities</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom>Barron&apos;s Dictionary of Finance and Investment Terms, Ninth Edition, 2014.</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.nasdaq.com/investing/glossary/p/http%3a%2f%2fwww.nasdaq.com%2finvesting%2fglossary%2fp%2fpublic-offering</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:explanatoryNote>In the US, public offerings generally require approval of the Securities Exchange Commission and/or relevant state regulators, unless the issuer is an exempt issuer, and are usually conducted by an investment banker or a syndicate made up of several investment bankers, at a price agreed upon between the issuer and the investment bankers.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:NamedIndividual rdf:about="&fibo-sec-sec-iss;RegisteredForm">
-		<rdf:type rdf:resource="&fibo-sec-sec-iss;SecurityForm"/>
+	<owl:Class rdf:about="&fibo-sec-sec-iss;RegisteredForm">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-iss;SecurityForm"/>
 		<rdfs:label>registered form</rdfs:label>
 		<skos:definition>form of a security whereby ownership is recorded in the name of the owner on the books of the issuer or the issuer&apos;s registrar and can only be transferred to another owner when endorsed by the registered owner</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote>With registered securities, a ledger is kept by the issuing company or agent which records the owners of all the securities. Transfer of ownership can only occur when names are changed in the ledger.</fibo-fnd-utl-av:explanatoryNote>
-	</owl:NamedIndividual>
+	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-iss;SecuritiesOffering">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;Offering"/>
@@ -433,8 +443,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>securities offering</rdfs:label>
-		<skos:definition>an offering of a security (or securities) for sale</skos:definition>
-		<skos:editorialNote>This term is defined as the common concept which brings together MBS deals, Bond With Warrant issues, MTN issues and so on, along with issues of more than one class of share in an equities issue. Many detailed terms have been provided for specific types of issue, most notably Municipal bond issues (from DTCC) and MBS issues from the MBS PoC project.</skos:editorialNote>
+		<skos:definition>offering of a security (or securities) for sale</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom>Barron&apos;s Dictionary of Finance and Investment Terms, Ninth Edition, 2014.</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.investopedia.com/</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:explanatoryNote>If the offering is public, then it can only be made after regulatory registration requirements have been met. The securities may be new or a secondary offering of a previously issued security, and may include stock, multiple classes of equity shares, municipal or other government bonds, and so forth. Offerings, especially to the investment public, are typically made by an investment banker, or syndicate of investment bankers.</fibo-fnd-utl-av:explanatoryNote>
@@ -455,8 +464,8 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>security form</rdfs:label>
-		<skos:definition>contract document and certificate that is evidence for ownership of a security and that may be digital or physical</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote>Securities are typically issued in one of two forms, registered or bearer. Most securities issued today are in registered form, which enables the issuing firm or registrar to keep records of a security&apos;s owner and mail them any dividend, coupon, or other payments.</fibo-fnd-utl-av:explanatoryNote>
+		<skos:definition>the form that evidence of ownership of a security takes</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Securities are typically issued in one of two forms, registered or bearer. Most securities issued today are in registered form, which enables the issuing firm or registrar to keep records of a security&apos;s owner and mail them any dividend, coupon, or other payments. Registered securities may be issued in book entry (digital only) or certificate (physical) form, but most today are entirely digital.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<rdfs:Datatype rdf:about="&fibo-sec-sec-iss;SecurityOfferingDistributionType">
@@ -506,7 +515,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>security underwriter</rdfs:label>
-		<skos:definition>a party that has purchased from an issuer with a view to, or sells for an issuer in connection with, the distribution of any security, or participates or has a direct or indirect participation in any such undertaking, or participates or has a participation in the direct or indirect underwriting of any such undertaking</skos:definition>
+		<skos:definition>party that has purchased from an issuer with a view to, or sells for an issuer in connection with, the distribution of any security, or participates or has a direct or indirect participation in any such undertaking, or participates or has a participation in the direct or indirect underwriting of any such undertaking</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom>Section 3a of the Investment Company Act of 1940 as amended in January, 2012, https://www.sec.gov/about/laws/ica40.pdf</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
 	
@@ -519,15 +528,16 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>security underwriting arrangement</rdfs:label>
-		<skos:definition>an underwriting arrangement between an organization (typically an investment bank) and a securities issuer that commits the underwriter to assuming risk involved in buying a new issue of securities from an issuing corporation or government entity and reselling it to the public, either directly or through dealers</skos:definition>
+		<skos:definition>underwriting agreement between an organization (typically an investment bank) and a securities issuer that commits the underwriter to assuming risk involved in buying a new issue of securities and reselling it to the public</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom>Barron&apos;s Dictionary of Business and Economics Terms, Fifth Edition, 2012</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:explanatoryNote>Sales may be made either directly or through third-party dealers.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-sec-iss;hasActualClosingDate">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDate"/>
 		<rdfs:label>has actual closing date</rdfs:label>
 		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
-		<skos:definition>indicates the date on which an offering or transaction officially closes, in contrast with an intended or planned closing date</skos:definition>
+		<skos:definition>indicates the date on which an offering or transaction officially closes, in contrast with an intended closing date</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-sec-iss;hasAnnouncementDate">
@@ -617,6 +627,7 @@
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-sec-iss;isIssuedInForm">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fbc-pas-caa;isRealizedBy"/>
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-agr-ctr;isEvidencedBy"/>
 		<rdfs:label>is issued in form</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fbc-fi-fi;Security"/>
 		<rdfs:range rdf:resource="&fibo-sec-sec-iss;SecurityForm"/>
@@ -641,7 +652,7 @@
 		<rdfs:label>is underwritten by</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-sec-iss;SecuritiesOffering"/>
 		<rdfs:range rdf:resource="&fibo-fbc-fct-fse;Underwriter"/>
-		<skos:definition>relates an offering to one or more underwriters involved in raising capital for or distributing the instruments that are the subject of the offering</skos:definition>
+		<skos:definition>relates an offering to an underwriter involved in raising capital for or distributing the instruments that are the subject of the offering</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-sec-iss;specifiesConversionInto">
