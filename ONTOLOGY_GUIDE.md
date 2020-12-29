@@ -315,31 +315,27 @@ Typically in FIBO we start by supporting requirements from a particular use case
 
 We have minimized the use of disjointness relations in FIBO to cases that are very clearly disjoint, and that should not cause issues for FIBO users mapping to back-end data stores.  Having said this, disjoint relations are very useful in identifying issues in the logic, and there are cases that clearly call for disjoint relations that humans can easily point out even if they are tough to identify through automation. 
 
-### T8. Missing domain or range in properties
-
-Our policy for FIBO is that relationships should be as reusable as possible, and only include domain or range declarations at the highest appropriate levels.  There are situations in which the relation is very general, and the range should be the most general concept “Thing” or "Resource" for data properties.  However, in other cases, the relations are more specific and it could be a good practice to specify a domain and/or range.  Most data properties should have a defined datatype in their range.  We have limited the use of xsd:string in some parts of FIBO due to the desire to allow for language-specific strings, but are planning to include our own datatype to cover this case in the future.  For dates and times, there are cases where, due to our policy of being OWL DL compliant, we have not used xsd:date as an explicit datatype.  The CombinedDateTime datatype declared in the FinancialDates ontology provides a higher-level datatype for use in certain cases that we have found quite useful when we believe we might need to map that property to various representations for dates or dates and times in external data sources.  
-
-### T9. Missing equivalent properties
+### T8. Missing equivalent properties
 
 Due to our approach to unique names in FIBO, there are very few cases when we need to deal with equivalences with respect to ontology imports or mapping.  However, users will notice that we have created some equivalences to similar terms in the OMG's Languages, Countries, and Codes (LCC) ontologies.  For extensions to FIBO, and for mappings to other ontologies that users request, classes should be mapped to one another, either through equivalence relations or subclass relations with appropriate restrictions.  These sorts of equivalences may be identified through running reasoners and seeing that the equivalence (or more likely, subclass) relationships are inferred.  When reviewing FIBO extensions, the leadership team will be looking for these kinds of cases, even if automation is not feasible.
 
-### T10. Missing inverse relationships   
+### T9. Missing inverse relationships   
 
 This issue appears when a relationship (aside from symmetric properties) does not have a defined inverse relationship. Aside from cases where a given property is describing a feature or characteristic of something, inverses are often appropriate and should be included in the ontology where the "other half"/source relationship is defined.
 
-### T11. Defining wrong inverse relationships
+### T10. Defining wrong inverse relationships
 
 This issue involves declaring two relationships as inverse relations when they are not necessarily.  For example, something is sold or something is bought; in this case, the relationships “isSoldIn” and “isBoughtIn” are not inverse.
 
-### T12.  Use of qualified vs. unqualified restrictions
+### T11.  Use of qualified vs. unqualified restrictions
 
 For the most part in FIBO, we have used qualified cardinality restrictions, which help with understanding as well as with identifying data quality issues in mapped back-end resources.  Extensions to FIBO should use qualified cardinalities wherever possible, and use of unqualified cardinalities must be justified when the additions are under review.
 
-### T13.  Use of "min 1" cardinality restrictions
+### T12.  Use of "min 1" cardinality restrictions
 
 In most cases, a "min 1" cardinality restriction is logically equivalent to a "some values from" restriction.  Because the existential restriction is far less costly from a reasoning perspective than the corresponding cardinality restriction, we have been careful to use "some values from" as much as possible in FIBO.  Use of "min 1" cardinality restrictions must be justified when the additions are under review.
 
-### T14.  Use of "min 0" cardinality restrictions
+### T13.  Use of "min 0" cardinality restrictions
 
 FIBO users may notice that we frequently use "min 0" cardinality restrictions.  The intent here is to identify properties that typically have a value for a given concept, although there are situations in which they would be undefined.  This minimizes the overhead and number of reasoning errors that might occur in mapping to back-end or reference data but identifies for users things that they might expect to see as a restriction on that concept.
 
