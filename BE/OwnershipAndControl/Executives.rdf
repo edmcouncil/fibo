@@ -57,7 +57,7 @@
 		<rdfs:label>Executives Ontology</rdfs:label>
 		<dct:abstract>This ontology defines concepts relating to executives and their formal capacities. The concepts defined in this ontology cover types of corporate officers, board members and the like, along with the capacities in terms of which those party roles are defined, and the kinds of entity (principally natural persons) that are able to perform in those roles.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
-		<sm:contentLanguage rdf:datatype="&xsd;anyURI">http://www.w3.org/standards/techs/owl#w3c_all</sm:contentLanguage>
+		<sm:contentLanguage rdf:datatype="&xsd;anyURI">https://www.w3.org/TR/owl2-quick-reference/</sm:contentLanguage>
 		<sm:copyright>Copyright (c) 2013-2020 EDM Council, Inc.</sm:copyright>
 		<sm:copyright>Copyright (c) 2013-2020 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/BE/Corporations/Corporations/</sm:dependsOn>
@@ -86,7 +86,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/20200701/OwnershipAndControl/Executives/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/20201201/OwnershipAndControl/Executives/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20131101/OwnershipAndControl/Executives.rdf version of this ontology was modified per the issue resolutions identified in the FIBO BE 1.0 FTF report.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20160801/OwnershipAndControl/Executives.rdf version of this ontology was modified per the FIBO 2.0 RFC to fix reasoning issues.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20180801/OwnershipAndControl/Executives.rdf version of this ontology was modified to clarify the definition of responsible party.</skos:changeNote>
@@ -94,6 +94,7 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20190501/OwnershipAndControl/Executives.rdf version of this ontology was modified to eliminate duplication with concepts in LCC.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20200201/OwnershipAndControl/Executives.rdf version of this ontology was modified to integrate concepts related to authorization, including board membership and the concept of a signatory (moved from legal persons) to improve semantics; simplify the ontology, and normalize definitions to be ISO 704 compliant.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20200601/OwnershipAndControl/Executives.rdf version of this ontology was modified to correct the label on hasAuthorizedParty.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20200701/OwnershipAndControl/Executives.rdf version of this ontology was modified to add PrincipalParty as the parent of CEO and others.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -363,6 +364,7 @@
 	<owl:Class rdf:about="&fibo-be-oac-exec;ChiefExecutiveOfficer">
 		<rdfs:subClassOf rdf:resource="&fibo-be-oac-exec;CorporateOfficer"/>
 		<rdfs:subClassOf rdf:resource="&fibo-be-oac-exec;ExecutiveBoardMember"/>
+		<rdfs:subClassOf rdf:resource="&fibo-be-oac-exec;PrincipalParty"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
@@ -455,6 +457,13 @@
 		<rdfs:label>non-executive board member</rdfs:label>
 		<skos:definition>member of the board of directors of an organization that has no executive responsibilities towards the running of that organization</skos:definition>
 		<fibo-fnd-utl-av:synonym>outside director</fibo-fnd-utl-av:synonym>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-be-oac-exec;PrincipalParty">
+		<rdfs:subClassOf rdf:resource="&fibo-be-oac-exec;Signatory"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-pty-pty;OrganizationMember"/>
+		<rdfs:label>principal party</rdfs:label>
+		<skos:definition>controlling party that is responsible for the management of daily business operations of an organization</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-oac-exec;ResponsibleParty">
@@ -560,7 +569,7 @@
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-be-oac-exec;hasCorporateOfficer">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-pty-pty;isAffectedBy"/>
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-oac-ctl;hasControllingParty"/>
 		<rdfs:label>has corporate officer</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-be-oac-cpty;ControlledParty"/>
 		<rdfs:range rdf:resource="&fibo-be-oac-exec;CorporateOfficer"/>
@@ -574,11 +583,20 @@
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-be-oac-exec;hasDirector">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-pty-pty;isAffectedBy"/>
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-oac-ctl;hasControllingParty"/>
 		<rdfs:label>has director</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-be-oac-cpty;ControlledParty"/>
 		<rdfs:range rdf:resource="&fibo-be-oac-exec;BoardMember"/>
 		<skos:definition>indicates a member of the board of directors of the organization</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-be-oac-exec;hasPrincipalManagingParty">
+		<rdfs:subPropertyOf rdf:resource="&fibo-be-oac-cpty;hasControllingOrganizationMember"/>
+		<rdfs:label>has principal managing party</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-be-oac-cpty;ControlledParty"/>
+		<rdfs:range rdf:resource="&fibo-be-oac-exec;PrincipalParty"/>
+		<owl:inverseOf rdf:resource="&fibo-be-oac-exec;isPrincipalPartyOf"/>
+		<skos:definition>indicates a controlling party that is responsible for the management of daily business operations</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-be-oac-exec;hasResponsibility">
@@ -632,7 +650,7 @@
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-be-oac-exec;isDirectorOf">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-pty-pty;actsOn"/>
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-oac-ctl;isPartyControlling"/>
 		<rdfs:label>is director of</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-be-oac-exec;BoardMember"/>
 		<rdfs:range rdf:resource="&fibo-be-oac-cpty;ControlledParty"/>
@@ -641,12 +659,20 @@
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-be-oac-exec;isOfficerOf">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-pty-pty;actsOn"/>
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-oac-ctl;isPartyControlling"/>
 		<rdfs:label>is officer of</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-be-oac-exec;CorporateOfficer"/>
 		<rdfs:range rdf:resource="&fibo-be-oac-cpty;ControlledParty"/>
 		<owl:inverseOf rdf:resource="&fibo-be-oac-exec;hasCorporateOfficer"/>
 		<skos:definition>indicates the organization that the person has some authority over and managerial responsibility for</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-be-oac-exec;isPrincipalPartyOf">
+		<rdfs:subPropertyOf rdf:resource="&fibo-be-oac-cpty;isControllingMemberOf"/>
+		<rdfs:label>is principal party of</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-be-oac-exec;PrincipalParty"/>
+		<rdfs:range rdf:resource="&fibo-be-oac-cpty;ControlledParty"/>
+		<skos:definition>identifies a legal entity (controlled party) over which a principal has some measure of control</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-be-oac-exec;nominates">
