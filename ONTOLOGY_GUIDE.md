@@ -307,35 +307,31 @@ This issue involves classes that refer to multiple distinct concepts. An example
 
 In addition to the basic label and definition, in many cases, additional annotation properties are needed to improve understanding and usability from a user point of view.  We do not currently have a specific test for this, but are reviewing the ontologies to determine whether or not we can identify patterns that can be used to suggest candidates for review by the leadership team.  Wherever possible, we should, for example, identify the sources used for our definitions (e.g., adaptedFrom, definitionOrigin, or dct:source).  We have a relatively recent policy to minimize the number of definitions we source from copyrighted materials to strictly adhere to fair use policies, but we should cite definitions from ISO sources, from other standards, from government glossaries, from publicly available, reputable, and reliable sources to the degree possible.  Explanatory notes and examples are very helpful to FIBO users, and we need to add more of these whenever possible to aid in usability.
 
-### T6. Partial modeling
-
-Typically in FIBO we start by supporting requirements from a particular use case.  Further analysis may determine that some concepts or relationships have been incompletely modeled, though.  There are cases when we've modeled some concept with only a single subclass, for example.  This often means that the model is incomplete, or that the subclass is not necessary.  There are situations when we know that a subordinate ontology will bring in additional subclasses, in which case the singleton is ok.  In other cases, relationships such as "startsIn", representing the starting location for something are defined without the corresponding "endsIn".  Again, this is a case where the model appears to be incomplete.  The singleton subclass cases are easier to identify than missing corresponding relationships from an automation perspective but are things to look for when evaluating an ontology or set of terms for inclusion.  
-
-### T7. Missing disjointness
+### T6. Missing disjointness
 
 We have minimized the use of disjointness relations in FIBO to cases that are very clearly disjoint, and that should not cause issues for FIBO users mapping to back-end data stores.  Having said this, disjoint relations are very useful in identifying issues in the logic, and there are cases that clearly call for disjoint relations that humans can easily point out even if they are tough to identify through automation. 
 
-### T8. Missing equivalent properties
+### T7. Missing equivalent properties
 
 Due to our approach to unique names in FIBO, there are very few cases when we need to deal with equivalences with respect to ontology imports or mapping.  However, users will notice that we have created some equivalences to similar terms in the OMG's Languages, Countries, and Codes (LCC) ontologies.  For extensions to FIBO, and for mappings to other ontologies that users request, classes should be mapped to one another, either through equivalence relations or subclass relations with appropriate restrictions.  These sorts of equivalences may be identified through running reasoners and seeing that the equivalence (or more likely, subclass) relationships are inferred.  When reviewing FIBO extensions, the leadership team will be looking for these kinds of cases, even if automation is not feasible.
 
-### T9. Missing inverse relationships   
+### T8. Missing inverse relationships   
 
 This issue appears when a relationship (aside from symmetric properties) does not have a defined inverse relationship. Aside from cases where a given property is describing a feature or characteristic of something, inverses are often appropriate and should be included in the ontology where the "other half"/source relationship is defined.
 
-### T10. Defining wrong inverse relationships
+### T9. Defining wrong inverse relationships
 
 This issue involves declaring two relationships as inverse relations when they are not necessarily.  For example, something is sold or something is bought; in this case, the relationships “isSoldIn” and “isBoughtIn” are not inverse.
 
-### T11.  Use of qualified vs. unqualified restrictions
+### T10.  Use of qualified vs. unqualified restrictions
 
 For the most part in FIBO, we have used qualified cardinality restrictions, which help with understanding as well as with identifying data quality issues in mapped back-end resources.  Extensions to FIBO should use qualified cardinalities wherever possible, and use of unqualified cardinalities must be justified when the additions are under review.
 
-### T12.  Use of "min 1" cardinality restrictions
+### T11.  Use of "min 1" cardinality restrictions
 
 In most cases, a "min 1" cardinality restriction is logically equivalent to a "some values from" restriction.  Because the existential restriction is far less costly from a reasoning perspective than the corresponding cardinality restriction, we have been careful to use "some values from" as much as possible in FIBO.  Use of "min 1" cardinality restrictions must be justified when the additions are under review.
 
-### T13.  Use of "min 0" cardinality restrictions
+### T12.  Use of "min 0" cardinality restrictions
 
 FIBO users may notice that we frequently use "min 0" cardinality restrictions.  The intent here is to identify properties that typically have a value for a given concept, although there are situations in which they would be undefined.  This minimizes the overhead and number of reasoning errors that might occur in mapping to back-end or reference data but identifies for users things that they might expect to see as a restriction on that concept.
 
