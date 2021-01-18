@@ -35,9 +35,9 @@
 		<rdfs:label>Facilities Ontology</rdfs:label>
 		<dct:abstract>This ontology provides scaffolding for use in describing concepts related to facilities, both virtual and physical, including physical sites that provide various facilities.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
-		<sm:contentLanguage rdf:datatype="&xsd;anyURI">http://www.w3.org/standards/techs/owl#w3c_all</sm:contentLanguage>
-		<sm:copyright>Copyright (c) 2013-2019 EDM Council, Inc.</sm:copyright>
-		<sm:copyright>Copyright (c) 2013-2019 Object Management Group, Inc.</sm:copyright>
+		<sm:contentLanguage rdf:datatype="&xsd;anyURI">https://www.w3.org/TR/owl2-quick-reference/</sm:contentLanguage>
+		<sm:copyright>Copyright (c) 2013-2021 EDM Council, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2013-2021 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Roles/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/Places/Addresses/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/Places/Locations/</sm:dependsOn>
@@ -52,9 +52,10 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Countries/CountryRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20190901/Places/Facilities/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20210101/Places/Facilities/"/>
 		<skos:changeNote>The http://www.omg.org/spec/EDMC-FIBO/FND/20141101/Places/Facilities.rdf version of this ontology was modified for the FIBO 2.0 RFC to integrate it with LCC.</skos:changeNote>
 		<skos:changeNote>The http://www.omg.org/spec/EDMC-FIBO/FND/20180801/Places/Facilities.rdf version of this ontology was modified to eliminate deprecated elements.</skos:changeNote>
+		<skos:changeNote>The http://www.omg.org/spec/EDMC-FIBO/FND/20190901/Places/Facilities.rdf version of this ontology was modified to eliminate circular and ambiguous definitions, and simplify the ontology by merging physical site with site.</skos:changeNote>
 		<skos:changeNote>This ontology was added to Foundations in advance of the December 2014 Long Beach meeting in support of the SEC specification.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
@@ -67,7 +68,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>capability</rdfs:label>
-		<skos:definition>A capability represents the ability to perform a particular type of work and may involve people with particular skills and knowledge, intellectual property, defined practices, operating facilities, tools and equipment.</skos:definition>
+		<skos:definition>ability to perform a particular type of work that may involve people with particular skills and knowledge, intellectual property, defined practices, operating facilities, tools and equipment</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom>Value Delivery Modeling Language Specification, http://www.omg.org/spec/VDML/</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
 	
@@ -76,7 +77,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-plc-fac;isSituatedAt"/>
-				<owl:allValuesFrom rdf:resource="&fibo-fnd-plc-fac;Site"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-plc-fac;Site"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -86,32 +87,19 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>facility</rdfs:label>
-		<skos:definition>something that is built, contrived, established, or installed to serve a particular purpose, or make some course of action or operation easier, or provide some capability or service</skos:definition>
+		<skos:definition>something established to serve a particular purpose, make some course of action or operation easier, or provide some capability or service</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote>A facility may be concrete (as in a manufacturing facility) or abstract. Concrete facilities may be permanent, semi-permanent, or temporary structures, providing one or more capabilities at a given site.  A single site may include multiple facilities and a given facility may span multiple sites.</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-fnd-plc-fac;PhysicalSite">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-plc-fac;Site"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasIdentity"/>
-				<owl:onClass rdf:resource="&fibo-fnd-plc-adr;Address"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-plc-loc;isLocatedAt"/>
-				<owl:onClass rdf:resource="&fibo-fnd-plc-loc;PhysicalLocation"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>physical site</rdfs:label>
-		<skos:definition>A physical site is a an actual location that situates something, typically a structure or building, archeological dig, landing location for an aircraft or spacecraft, etc.  From biology, this could also be the site of a wound, and active site, and so forth. A physical site has certain characteristics that contribute to the context it provides, including area, shape, accessibility, and in the case of a geographic site, landforms, soil and ground conditions, climate, and so forth.</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-plc-fac;Site">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-pty-rl;ThingInRole"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-plc-adr;hasAddress"/>
+				<owl:onClass rdf:resource="&fibo-fnd-plc-adr;Address"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-plc-loc;isLocatedAt"/>
@@ -131,7 +119,9 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>site</rdfs:label>
-		<skos:definition>A site is a place, setting, or context in which something is situated.</skos:definition>
+		<skos:definition>place, setting, or context in which something, such as a facility, is situated</skos:definition>
+		<skos:example>Examples include a structure or building, an archeological dig, the landing location for an aircraft or spacecraft, and the site of a wound. A given site may accommodate multiple facilities.</skos:example>
+		<fibo-fnd-utl-av:explanatoryNote>A physical site has certain characteristics that contribute to the context it provides, including area, shape, accessibility, and in the case of a geographic site, landforms, soil and ground conditions, climate, and so forth.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-plc-fac;Venue">
@@ -143,18 +133,19 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>venue</rdfs:label>
-		<skos:definition>A place where something happens, described in the context of the event or activity that occurs there</skos:definition>
+		<skos:definition>site where something happens, described in the context of the event or activity that occurs there</skos:definition>
 	</owl:Class>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-plc-fac;isSituatedAt">
 		<rdfs:label>is situated at</rdfs:label>
-		<skos:definition>indicates that something has been positioned, located or placed at some site, or in some setting, situation, or context</skos:definition>
+		<skos:definition>is placed at</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Something may be situated at some site, or in some setting, situation, or context.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-plc-fac;situates">
 		<rdfs:label>situates</rdfs:label>
 		<owl:inverseOf rdf:resource="&fibo-fnd-plc-fac;isSituatedAt"/>
-		<skos:definition>indicates the place, setting, or context in which something is situated</skos:definition>
+		<skos:definition>indicates the place, setting, or context in which something is placed</skos:definition>
 	</owl:ObjectProperty>
 
 </rdf:RDF>
