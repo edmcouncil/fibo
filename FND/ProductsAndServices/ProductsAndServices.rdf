@@ -47,9 +47,9 @@
 		<rdfs:label>Products and Services Ontology</rdfs:label>
 		<dct:abstract>This ontology defines fundamental concepts for buyers, sellers, clients, customers, products, goods and services for use in other FIBO ontologies.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
-		<sm:contentLanguage rdf:datatype="&xsd;anyURI">http://www.w3.org/standards/techs/owl#w3c_all</sm:contentLanguage>
-		<sm:copyright>Copyright (c) 2013-2020 EDM Council, Inc.</sm:copyright>
-		<sm:copyright>Copyright (c) 2013-2020 Object Management Group, Inc.</sm:copyright>
+		<sm:contentLanguage rdf:datatype="&xsd;anyURI">https://www.w3.org/TR/owl2-quick-reference/</sm:contentLanguage>
+		<sm:copyright>Copyright (c) 2013-2021 EDM Council, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2013-2021 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Documents/</sm:dependsOn>
@@ -76,7 +76,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20200701/ProductsAndServices/ProductsAndServices/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20210101/ProductsAndServices/ProductsAndServices/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20150801/ProductsAndServices/ProductsAndServices.rdf version of this ontology was modified per the issue resolutions identified in the FIBO FND 1.1 RTF report to replace MoneyAmount with AmountOfMoney.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20160201/ProductsAndServices/ProductsAndServices.rdf version of this ontology was modified for the FIBO 2.0 RFC to add NegotiableCommodity and Consumer.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20180801/ProductsAndServices/ProductsAndServices.rdf version of this ontology was modified to include classes to support automated inclusion of all ISO 4217 codes published as of 2018-06-04.</skos:changeNote>
@@ -85,6 +85,7 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20190701/ProductsAndServices/ProductsAndServices.rdf version of this ontology was revised to eliminate deprecated elements.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20190901/ProductsAndServices/ProductsAndServices.rdf version of this ontology was revised to eliminate duplication with concepts in LCC.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20200201/ProductsAndServices/ProductsAndServices.rdf version of this ontology was revised to replace uses of hasTag in Relations with hasTag from LCC, as the more complex union of datatypes in the Relations concept is not needed here.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20200701/ProductsAndServices/ProductsAndServices.rdf version of this ontology was revised to add properties for hasBuyer and hasSeller, integrate properties with the party lattice, and clean-up circular or ambiguous definitions.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -97,9 +98,8 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>buyer</rdfs:label>
-		<skos:definition>a party that acquires, or agrees to acquire, ownership (in case of goods), or benefit or usage (in case of services), in exchange for money or other consideration under a contract of sale</skos:definition>
-		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.businessdictionary.com/definition/buyer.html</fibo-fnd-utl-av:adaptedFrom>
-		<fibo-fnd-utl-av:explanatoryNote>A buyer may or may not be an end user of the product, good, or service.</fibo-fnd-utl-av:explanatoryNote>
+		<skos:definition>party that purchases something in exchange for money or other consideration under a contract of sale</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>A buyer is the party that acquires, or agrees to acquire, ownership (in case of goods), or benefit or usage (in case of rights or services), something in the context of a sale, and may or may not be an end user of the product, good, service, or right.</fibo-fnd-utl-av:explanatoryNote>
 		<fibo-fnd-utl-av:synonym>buyer</fibo-fnd-utl-av:synonym>
 		<fibo-fnd-utl-av:synonym>purchaser</fibo-fnd-utl-av:synonym>
 	</owl:Class>
@@ -118,8 +118,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>client</rdfs:label>
-		<skos:definition>a party that purchases professional services from, or has a formal relationship to purchase services from another party</skos:definition>
-		<fibo-fnd-utl-av:adaptedFrom>Barron&apos;s Dictionary of Business and Economics Terms, Fifth Edition, 2012</fibo-fnd-utl-av:adaptedFrom>
+		<skos:definition>party that purchases professional services from, or has a formal relationship to purchase services from another party</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-pas-pas;ClientIdentifier">
@@ -132,30 +131,28 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>client identifier</rdfs:label>
-		<skos:definition>an identifier for a client</skos:definition>
+		<skos:definition>sequence of characters uniquely identifying a client within the context of some organization</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-pas-pas;Commodity">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-pas;Good"/>
 		<rdfs:label>commodity</rdfs:label>
-		<skos:definition>a basic good used in commerce that is interchangeable with other commodities of the same type</skos:definition>
-		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.investopedia.com/terms/c/commodity.asp</fibo-fnd-utl-av:adaptedFrom>
+		<skos:definition>material resource used in commerce that is interchangeable with other commodities of the same type</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote>Commodities are most often used as inputs in the production of other goods or services. The quality of a given commodity may differ slightly, but it is essentially uniform across producers.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-pas-pas;Consumer">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-pty-pty;PartyInRole"/>
 		<rdfs:label>consumer</rdfs:label>
-		<skos:definition>a party that utilizes economic goods or services</skos:definition>
-		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.businessdictionary.com/definition/consumer.html</fibo-fnd-utl-av:adaptedFrom>
-		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.merriam-webster.com/dictionary/consumes</fibo-fnd-utl-av:adaptedFrom>
+		<rdfs:seeAlso rdf:resource="http://www.oecd.org/sti/consumer/"/>
+		<skos:definition>party that utilizes economic goods or services, typically for personal, family, or household purposes</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote>The general notion of a consumer includes an end user, and is not limited to a purchaser, in the distribution chain of a good or service</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-pas-pas;ContractualProduct">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-pas;Product"/>
 		<rdfs:label>contractual product</rdfs:label>
-		<skos:definition>a product that is realized as a contract</skos:definition>
+		<skos:definition>product that takes the form of an agreement</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote>This represents the case where the product itself is a contract, such as a life insurance policy or financial instrument, rather than a product or service whose terms of use, license to use, or terms of service are specified in a product.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
@@ -163,15 +160,14 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-pas;ContractualProduct"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-pas;OffTheShelfProduct"/>
 		<rdfs:label>contractual template product</rdfs:label>
-		<skos:definition>a contractual product that is finalized through specification of values for parameters defined in a template</skos:definition>
+		<skos:definition>contractual product that is finalized through specification of values for parameters defined in a template</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-pas-pas;CustomProduct">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-pas;Product"/>
 		<rdfs:label>custom product</rdfs:label>
 		<owl:disjointWith rdf:resource="&fibo-fnd-pas-pas;OffTheShelfProduct"/>
-		<skos:definition>a product that is made to an individual&apos;s order, commissioned to a customer&apos;s specifications, or designed to order</skos:definition>
-		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.merriam-webster.com/dictionary/custom-made</fibo-fnd-utl-av:adaptedFrom>
+		<skos:definition>product that is made to order, commissioned based on a customer&apos;s specifications</skos:definition>
 		<fibo-fnd-utl-av:synonym>bespoke product</fibo-fnd-utl-av:synonym>
 		<fibo-fnd-utl-av:synonym>custom-made product</fibo-fnd-utl-av:synonym>
 		<fibo-fnd-utl-av:synonym>made to order product</fibo-fnd-utl-av:synonym>
@@ -186,8 +182,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>customer</rdfs:label>
-		<skos:definition>a buyer that receives or consumes products (goods or services) and has the ability to choose between different products and suppliers</skos:definition>
-		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.businessdictionary.com/definition/customer.html</fibo-fnd-utl-av:adaptedFrom>
+		<skos:definition>party that receives or consumes products (goods or services) and has the ability to choose between different products and suppliers</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-pas-pas;CustomerIdentifier">
@@ -200,30 +195,31 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>customer identifier</rdfs:label>
-		<skos:definition>an identifier for a customer</skos:definition>
+		<skos:definition>sequence of characters uniquely identifying a customer within the context of some organization</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-pas-pas;Good">
 		<rdfs:label>good</rdfs:label>
 		<owl:disjointWith rdf:resource="&fibo-fnd-acc-cur;AmountOfMoney"/>
 		<owl:disjointWith rdf:resource="&fibo-fnd-plc-loc;RealEstate"/>
-		<skos:definition>any tangible thing that is not money or real estate</skos:definition>
-		<fibo-fnd-utl-av:definitionOrigin rdf:datatype="&xsd;anyURI">http://www.businessdictionary.com/definition/good.html</fibo-fnd-utl-av:definitionOrigin>
-		<fibo-fnd-utl-av:explanatoryNote>An inherently useful and relatively scarce tangible item produced from agricultural, construction, manufacturing, or mining activities. According to the UN Convention On Contract For The International Sale Of Goods, the term &apos;good&apos; does not include (1) items bought for personal use, (2) items bought at an auction or foreclosure sale, (3) aircraft or oceangoing vessels.</fibo-fnd-utl-av:explanatoryNote>
+		<skos:definition>physical, produced item over which ownership rights can be established, whose ownership can be passed from one party to another by engaging in transactions, and that is not money or real estate</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://data.oecd.org/trade/trade-in-goods.htm</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.law.cornell.edu/ucc/9/9-102#goods</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:explanatoryNote>An inherently useful and relatively scarce tangible item produced from agricultural, construction, manufacturing, or mining activities. Off-the-shelf products, including off-the-shelf software products and customization of software products, are generally considered to be goods. Energy, such as electricity, is also considered to be a good from a legal perspective, and meets the criteria of being manufactured or produced via some process, including but not limited to a mining process. According to the UN Convention On Contract For The International Sale Of Goods, the term &apos;good&apos; does not include (1) items bought for personal use, (2) items bought at an auction or foreclosure sale, (3) aircraft or ocean-going vessels.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:explanatoryNote>From the Universal Commercial Code (UCC) in the United States, the term &apos;good&apos; includes (i) fixtures, (ii) standing timber that is to be cut and removed under a conveyance or contract for sale, (iii) the unborn young of animals, (iv) crops grown, growing, or to be grown, even if the crops are produced on trees, vines, or bushes, and (v) manufactured homes. The term also includes a computer program embedded in goods and any supporting information provided in connection with a transaction relating to the program if (i) the program is associated with the goods in such a manner that it customarily is considered part of the goods, or (ii) by becoming the owner of the goods, a person acquires a right to use the program in connection with the goods. The term does not include a computer program embedded in goods that consist solely of the medium in which the program is embedded. The term also does not include accounts, chattel paper, commercial tort claims, deposit accounts, documents, general intangibles, instruments, investment property, letter-of-credit rights, letters of credit, money, or oil, gas, or other minerals before extraction.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-pas-pas;NegotiableCommodity">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-pas;Commodity"/>
 		<rdfs:label>negotiable commodity</rdfs:label>
-		<skos:definition>a commodity that can be bought or sold in some marketplace</skos:definition>
+		<skos:definition>commodity that can be bought or sold in some marketplace</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-pas-pas;OffTheShelfProduct">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-pas;Product"/>
 		<rdfs:label>off-the-shelf product</rdfs:label>
-		<skos:definition>a product that is readily available from merchandise in stock, or can be quickly and easily configured to order, not specially designed or custom-made</skos:definition>
+		<skos:definition>product that is readily available from merchandise in stock, or can be quickly and easily configured to order, not specially designed or custom-made</skos:definition>
 		<fibo-fnd-utl-av:abbreviation>COTS product</fibo-fnd-utl-av:abbreviation>
-		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.merriam-webster.com/dictionary/off-the-shelf</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:synonym>commercial off-the-shelf product</fibo-fnd-utl-av:synonym>
 		<fibo-fnd-utl-av:synonym>commercially available off-the-shelf product</fibo-fnd-utl-av:synonym>
 	</owl:Class>
@@ -244,7 +240,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>precious metal</rdfs:label>
-		<skos:definition>a metal that is considered to be rare and/or have a high economic value</skos:definition>
+		<skos:definition>metal that is considered to be rare and/or have a high economic value</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-pas-pas;PreciousMetalIdentifier">
@@ -270,7 +266,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>precious metal identifier</rdfs:label>
-		<skos:definition>the trigraph representing the precious metal</skos:definition>
+		<skos:definition>sequence of characters uniquely identifying the precious metal in some context</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-pas-pas;Producer">
@@ -278,12 +274,11 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;produces"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-pas-pas;Product"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-pas-pas;Good"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>producer</rdfs:label>
-		<skos:definition>the manufacturer of a product, also called maker</skos:definition>
-		<fibo-fnd-utl-av:definitionOrigin rdf:datatype="&xsd;anyURI">http://www.investorwords.com/3872/producer.html</fibo-fnd-utl-av:definitionOrigin>
+		<skos:definition>grower, maker, fabricator, or manufacturer of some product or other good</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-pas-pas;Product">
@@ -297,15 +292,9 @@
 				</owl:unionOf>
 			</owl:Class>
 		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isProducedBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-pas-pas;Producer"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label>product</rdfs:label>
-		<skos:definition>A commercially distributed good that is (1) tangible property, (2) the output or result of a fabrication, manufacturing, or production process, or (3) something that passes through a distribution channel before being consumed or used.</skos:definition>
-		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.businessdictionary.com/definition/product.html</fibo-fnd-utl-av:adaptedFrom>
+		<skos:definition>commercially distributed good that is (1) tangible property, (2) the output or result of a fabrication, manufacturing, or production process, or (3) something that passes through a distribution channel before being consumed or used.</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Financial products may include contracts that are developed via a financial service-specific process, such as a life insurance policy, demand deposit account or financial instrument, for example.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-pas-pas;ProductIdentifier">
@@ -318,7 +307,38 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>product identifier</rdfs:label>
-		<skos:definition>an identifier for a product</skos:definition>
+		<skos:definition>sequence of characters uniquely identifying a product in some context</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-pas-pas;Sale">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-pty-pty;Situation"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-pas;TransactionEvent"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-acc-cur;hasPrice"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-pas-pas;hasBuyer"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-pas-pas;Buyer"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-pas-pas;hasSeller"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-pas-pas;Seller"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-pas-pas;Product"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>sale</rdfs:label>
+		<skos:definition>exchange of goods or services for money</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-pas-pas;Seller">
@@ -330,8 +350,8 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>seller</rdfs:label>
-		<skos:definition>a party that makes, offers or contracts to make a sale to an actual or potential buyer</skos:definition>
-		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.businessdictionary.com/definition/seller.html</fibo-fnd-utl-av:adaptedFrom>
+		<skos:definition>party that makes, offers or contracts to make a sale to an actual or potential buyer</skos:definition>
+		<fibo-fnd-utl-av:synonym>purveyor</fibo-fnd-utl-av:synonym>
 		<fibo-fnd-utl-av:synonym>vendor</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
@@ -339,13 +359,14 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-pas-pas;isProvisionedBy"/>
-				<owl:allValuesFrom rdf:resource="&fibo-fnd-pas-pas;ServiceProvider"/>
+				<owl:onClass rdf:resource="&fibo-fnd-pas-pas;ServiceProvider"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isProvidedBy"/>
-				<owl:allValuesFrom rdf:resource="&fibo-fnd-pas-pas;ServiceProvider"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-pas-pas;ServiceProvider"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -355,10 +376,8 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>service</rdfs:label>
-		<skos:definition>a type of economic activity that is intangible, is not stored and does not result in ownership; a service is consumed at the point of sale</skos:definition>
+		<skos:definition>intangible activity performed by some party for the benefit of another party</skos:definition>
 		<skos:example>Services include intangible products, such as accounting, banking, cleaning, consultancy, education, insurance, expertise, medical treatment, or transportation services.</skos:example>
-		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.businessdictionary.com/definition/services.html</fibo-fnd-utl-av:adaptedFrom>
-		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.investorwords.com/6664/service.html</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:explanatoryNote>Sometimes services are difficult to identify because they are closely associated with a good; such as the combination of a diagnosis with the administration of a medicine. No transfer of possession or ownership takes place when services are sold, and they (1) cannot be stored or transported, (2) are instantly perishable, and (3) come into existence at the time they are bought and consumed.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
@@ -379,8 +398,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>service agreement</rdfs:label>
-		<skos:definition>a written contract between a client and service provider whereby the service provider supplies some service in the form of time, effort, and/or expertise in exchange for compensation</skos:definition>
-		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.businessdictionary.com/definition/service-contract.html</fibo-fnd-utl-av:adaptedFrom>
+		<skos:definition>written contract between a client and service provider whereby the service provider supplies some service in the form of time, effort, and/or expertise in exchange for compensation</skos:definition>
 		<fibo-fnd-utl-av:synonym>service contract</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
@@ -396,7 +414,8 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-pas-pas;provisions"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-pas-pas;Service"/>
+				<owl:onClass rdf:resource="&fibo-fnd-pas-pas;Service"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -406,8 +425,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>service provider</rdfs:label>
-		<skos:definition>a party that provides and typically provisions professional services, such as consulting, financial, legal, real estate, education, communications, storage, or processing services, to other parties, typically defined in a service agreement</skos:definition>
-		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://en.wikipedia.org/wiki/Service_provider</fibo-fnd-utl-av:adaptedFrom>
+		<skos:definition>party that provides and typically provisions professional services, such as consulting, financial, legal, real estate, education, communications, storage, or processing services, to other parties, typically defined in a service agreement</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-pas-pas;Supplier">
@@ -419,8 +437,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>supplier</rdfs:label>
-		<skos:definition>a party that supplies goods or services</skos:definition>
-		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.businessdictionary.com/definition/supplier.html</fibo-fnd-utl-av:adaptedFrom>
+		<skos:definition>party that provides goods or services that some party wants or needs, especially over a long period of time</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote>A supplier may be distinguished from a contractor or subcontractor, who commonly adds specialized input to deliverables.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
@@ -435,7 +452,6 @@
 		</rdfs:subClassOf>
 		<rdfs:label>transaction confirmation</rdfs:label>
 		<skos:definition>written communication from a seller or service provider reciting the relevant details of a transaction</skos:definition>
-		<fibo-fnd-utl-av:adaptedFrom>Barron&apos;s Dictionary of Banking Terms, Sixth Edition, 2012</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-pas-pas;TransactionEvent">
@@ -449,7 +465,6 @@
 		</rdfs:subClassOf>
 		<rdfs:label>transaction event</rdfs:label>
 		<skos:definition>any sale, assignment, lease, license, loan, advance, contribution, or other transfer of any interest in or right to use any property (tangible or intangible) or money, however that transaction is effected, and regardless of whether the terms of the transaction are formally documented</skos:definition>
-		<fibo-fnd-utl-av:adaptedFrom>Barron&apos;s Dictionary of Business and Economics Terms, Fifth Edition, 2012</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-pas-pas;buys">
@@ -460,10 +475,26 @@
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-pas-pas;buysFrom">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-pty-pty;isAffectedBy"/>
 		<rdfs:label>buys from</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fnd-pas-pas;Buyer"/>
 		<rdfs:range rdf:resource="&fibo-fnd-pas-pas;Seller"/>
 		<skos:definition>links a party in the role of purchaser to a party from which they have made or are planning to make a purchase</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-pas-pas;hasBuyer">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-pty-pty;hasPartyInRole"/>
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-pty-pty;hasUndergoer"/>
+		<rdfs:label xml:lang="en">has buyer</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fnd-pas-pas;Buyer"/>
+		<skos:definition>indicates the purchasing party in the context of a sales transaction</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-pas-pas;hasSeller">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-pty-pty;hasActor"/>
+		<rdfs:label xml:lang="en">has seller</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fnd-pas-pas;Seller"/>
+		<skos:definition>indicates the vendor in the context of a sales transaction</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-pas-pas;isProvisionedBy">
@@ -498,6 +529,7 @@
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-pas-pas;sellsTo">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-pty-pty;actsOn"/>
 		<rdfs:label>sells to</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fnd-pas-pas;Seller"/>
 		<rdfs:range rdf:resource="&fibo-fnd-pas-pas;Buyer"/>
