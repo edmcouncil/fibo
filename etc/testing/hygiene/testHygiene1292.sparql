@@ -1,0 +1,17 @@
+prefix owl:   <http://www.w3.org/2002/07/owl#>
+prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+
+##
+# banner Classes should not refer to multiple concepts.
+
+SELECT DISTINCT ?warning ?resource
+WHERE
+{
+    ?resource ?property owl:Class .
+    FILTER regex(str(?resource), "edmcouncil")
+    FILTER (REGEX(str(?resource), "/[^/]+(And|Or)[A-Z0-9][^/]+$") )
+    FILTER (!CONTAINS(str(?resource), "InvestmentOrDepositAccount"))
+    FILTER (!CONTAINS(str(?resource), "LoanOrCreditAccount"))  
+    BIND (concat ("WARN:Resource ", str(?resource), " may refer to multiple concepts.") AS ?warning)
+}
