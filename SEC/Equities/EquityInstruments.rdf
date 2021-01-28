@@ -442,9 +442,14 @@
 	
 	<owl:Class rdf:about="&fibo-sec-eq-eq;ExtendablePreferredShare">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;RedeemablePreferredShare"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;hasExtensionProvision"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-agr-ctr;ExtensionProvision"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label>extendable preferred share</rdfs:label>
 		<skos:definition>redeemable preferred share whose redemption date can be extended</skos:definition>
-		<skos:editorialNote>Need to add hasExtensionProvision, once that is moved from Debt</skos:editorialNote>
 		<fibo-fnd-utl-av:synonym>extendible preferred share</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
@@ -478,6 +483,13 @@
 		<rdfs:label>fully paid share status</rdfs:label>
 		<skos:definition>status indicating that no additional money is owed to the company by shareholders on the value of the shares</skos:definition>
 	</owl:NamedIndividual>
+	
+	<owl:Class rdf:about="&fibo-sec-eq-eq;HardRetractablePreferredShare">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;RetractablePreferredShare"/>
+		<rdfs:label>hard retractable preferred share</rdfs:label>
+		<owl:disjointWith rdf:resource="&fibo-sec-eq-eq;SoftRetractablePreferredShare"/>
+		<skos:definition>retractable preferred share whose retraction value must be paid in cash</skos:definition>
+	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-eq-eq;LimitedPartnershipUnit">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;Share"/>
@@ -698,6 +710,19 @@
 		<skos:definition>preferred share whose dividends will vary with a benchmark, most often a T-bill rate</skos:definition>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-sec-eq-eq;PreferredShareWithFixedMaturityDate">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;PreferredShare"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;hasMaturityDate"/>
+				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>preferred share with fixed maturity date</rdfs:label>
+		<skos:definition>preferred share whose maturity date is set, typically according to the terms of the prospectus</skos:definition>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-sec-eq-eq;PreferredShareWithFixedRateDividend">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;PreferredShare"/>
 		<rdfs:subClassOf>
@@ -734,6 +759,19 @@
 		</rdfs:subClassOf>
 		<rdfs:label>redeemable preferred share</rdfs:label>
 		<skos:definition>preferred share that gives the issuer the right to redeem the stock under specified conditions</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-eq-eq;RedeemablePreferredShareWithExtendableMaturityDate">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;ExtendablePreferredShare"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;PreferredShareWithFixedMaturityDate"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-eq-eq;hasExtendableMaturityDate"/>
+				<owl:hasValue rdf:datatype="&xsd;boolean">true</owl:hasValue>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>redeemable preferred share with extendable maturity date</rdfs:label>
+		<skos:definition>redeemable preferred share with a fixed maturity date whose issuer and/or holders have the option to extend the maturity date</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-eq-eq;RestrictedShare">
@@ -780,13 +818,6 @@
 		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;PreferredShare"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;hasMaturityDate"/>
-				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;hasRedemptionProvision"/>
 				<owl:someValuesFrom rdf:resource="&fibo-sec-eq-eq;EquityRedemptionProvision"/>
 			</owl:Restriction>
@@ -794,6 +825,25 @@
 		<rdfs:label>retractable preferred share</rdfs:label>
 		<skos:definition>preferred share that gives the owner (shareholder) the right to redeem the stock under specified conditions</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote>When retractable preferred shares reach maturity, the shareholder has the right to sell them back to the stock issuer at the price stated on the agreement. In some cases, the issuer can force the shareholder to sell, and may have the option of exchanging retractable preferred shares for common shares instead of cash.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-eq-eq;RetractablePreferredShareWithExtendableMaturityDate">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;PreferredShareWithFixedMaturityDate"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;RetractablePreferredShare"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-eq-eq;hasExtendableMaturityDate"/>
+				<owl:hasValue rdf:datatype="&xsd;boolean">true</owl:hasValue>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;hasExtensionProvision"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-agr-ctr;ExtensionProvision"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>retractable preferred share with extendable maturity date</rdfs:label>
+		<skos:definition>retractable preferred share with a fixed maturity date whose issuer and/or holders have the option to extend the maturity date</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-eq-eq;Share">
@@ -880,6 +930,12 @@
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">single voting share</rdfs:label>
 		<skos:definition xml:lang="en">share that has the right to exactly one vote</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-eq-eq;SoftRetractablePreferredShare">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;RetractablePreferredShare"/>
+		<rdfs:label>soft retractable preferred share</rdfs:label>
+		<skos:definition>retractable preferred share whose retraction value may be paid in cash or in an equal value of common stock of the issuer, at the option of the issuer</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-eq-eq;SpecialDividend">
@@ -1009,6 +1065,13 @@
 		<fibo-fnd-utl-av:synonym>has ex-date</fibo-fnd-utl-av:synonym>
 		<fibo-fnd-utl-av:synonym>has expected dividend date</fibo-fnd-utl-av:synonym>
 	</owl:ObjectProperty>
+	
+	<owl:DatatypeProperty rdf:about="&fibo-sec-eq-eq;hasExtendableMaturityDate">
+		<rdfs:label>has extendable maturity date</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-sec-eq-eq;PreferredShare"/>
+		<rdfs:range rdf:resource="&xsd;boolean"/>
+		<skos:definition>indicates whether the issuer and/or holders of redeemable shares with a fixed maturity date have the option to extend the maturity date</skos:definition>
+	</owl:DatatypeProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-eq-eq;hasFixedDividendRate">
 		<rdfs:subPropertyOf rdf:resource="&lcc-lr;has"/>

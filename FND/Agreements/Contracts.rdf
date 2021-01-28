@@ -90,7 +90,7 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20190901/Agreements/Contracts.rdf version of this ontology was revised to add the concept of a term sheet, revise definitions to be ISO 704 compliant, and eliminate duplication of concepts in LCC.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20200201/Agreements/Contracts.rdf version of this ontology was revised to add the concepts of breach of contract and breach of covenant.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20200901/Agreements/Contracts.rdf version of this ontology was revised to simplify the contract party hierarchy, eliminate ambiguity in definitions where feasible and add restrictions on identity documents to avoid circular dependencies.</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20201201/Agreements/Contracts.rdf version of this ontology was revised to eliminate references to external dictionary sites that no longer resolve.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20201201/Agreements/Contracts.rdf version of this ontology was revised to eliminate references to external dictionary sites that no longer resolve and move the concept of an extension provision from Debt to Contracts to support representation of preferred shares and other extendable contracts.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -315,6 +315,20 @@
 		<fibo-fnd-utl-av:explanatoryNote>The counterparty is usually the party &apos;on the other side&apos; of a contract from the perspective of the issuer or holder. The term &apos;counterparty&apos; can refer to any party to an agreement, depending on context.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-fnd-agr-ctr;ExtensionProvision">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractualCommitment"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;hasExtendablePeriod"/>
+				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;ExplicitDatePeriod"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>extension provision</rdfs:label>
+		<skos:definition>contract terms that specify the conditions under which a contract can be extended</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>In the case of a debt instrument, an extension may include extending the time allowed for repayment of the principal, the maturity date, and so forth.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-fnd-agr-ctr;MutualContractualAgreement">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-agr;MutualAgreement"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;Contract"/>
@@ -468,6 +482,23 @@
 		<rdfs:label>has execution date time stamp</rdfs:label>
 		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;DateTimeStamp"/>
 		<skos:definition>indicates the date and time, including time zone, a contract has been signed by all the necessary parties</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-agr-ctr;hasExtendablePeriod">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDatePeriod"/>
+		<rdfs:label>has extendable period</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fnd-agr-ctr;ExtensionProvision"/>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;ExplicitDatePeriod"/>
+		<skos:definition>indicates the window of time during which an extension is allowed under the terms of the contract</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-agr-ctr;hasExtensionProvision">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-agr-ctr;hasContractualElement"/>
+		<rdfs:label>has extension provision</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fnd-agr-ctr;Contract"/>
+		<rdfs:range rdf:resource="&fibo-fnd-agr-ctr;ExtensionProvision"/>
+		<skos:definition>specifies the details of a contract provision allowing extension of some aspect of the contract</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Typically a contract extension refers to the termination date, coverage period, or, in the case of a security, may refer to extension of repayment or maturity dates.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-agr-ctr;hasGoverningJurisdiction">
