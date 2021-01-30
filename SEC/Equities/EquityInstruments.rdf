@@ -153,6 +153,18 @@
 		<fibo-fnd-utl-av:explanatoryNote>The value of the dividend from the preferred share is set by a predetermined formula to move with rates, and because of this flexibility preferred prices are often more stable then fixed-rate preferred stocks.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-sec-eq-eq;AuctionRateDividend">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;PreferredDividend"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-eq-eq;hasAdjustableDividendRate"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-cur;PercentageMonetaryAmount"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>auction rate dividend</rdfs:label>
+		<skos:definition>preferred share dividend that is periodically re-set through auctions, typically every 7, 14, 28, or 35 days</skos:definition>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-sec-eq-eq;CommonShare">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;Share"/>
 		<rdfs:subClassOf>
@@ -648,6 +660,20 @@
 		<fibo-fnd-utl-av:explanatoryNote>Participating preferred shares are rare, typically only issued when needed to attract investors.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-sec-eq-eq;PerpetualPreferredShare">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;PreferredShare"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;hasMaturityDate"/>
+				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>perpetual preferred share</rdfs:label>
+		<owl:disjointWith rdf:resource="&fibo-sec-eq-eq;PreferredShareWithFixedMaturityDate"/>
+		<skos:definition>preferred share that has no fixed maturity date</skos:definition>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-sec-eq-eq;PrecedenceRight">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-law-lcap;ContractualRight"/>
 		<rdfs:label>precedence right</rdfs:label>
@@ -1045,7 +1071,7 @@
 		<rdfs:label>has adjustable dividend rate</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-eq-eq;PreferredDividend"/>
 		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;PercentageMonetaryAmount"/>
-		<skos:definition>indicates the pre-arranged variable dividend rate, typically specified in the prospectus as a formula based on a benchmark, for a preferred share</skos:definition>
+		<skos:definition>indicates a variable dividend rate, typically specified in the prospectus as a formula based on a benchmark or set at auction</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-eq-eq;hasDistributionMethod">
