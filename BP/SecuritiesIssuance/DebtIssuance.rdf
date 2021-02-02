@@ -54,9 +54,13 @@
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema#">
 	
 	<owl:Ontology rdf:about="https://spec.edmcouncil.org/fibo/ontology/BP/SecuritiesIssuance/DebtIssuance/">
-		<rdfs:label xml:lang="en">DebtIssuance</rdfs:label>
+		<rdfs:label xml:lang="en">Debt Issuance Ontology</rdfs:label>
 		<dct:abstract>General issuance process for issuance of debt instruments. Forms the basis for more detailed issuance processes such as MBS issuance and municipal bonds issue.</dct:abstract>
+		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
+		<sm:contentLanguage rdf:resource="https://www.w3.org/TR/owl2-quick-reference/"/>
+		<sm:copyright>Copyright (c) 2013-2021 EDM Council, Inc.</sm:copyright>
 		<sm:fileAbbreviation>fibo-bp-iss-dbti</sm:fileAbbreviation>
+		<sm:filename>DebtIssuance.rdf</sm:filename>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BP/SecuritiesIssuance/IssuanceProcess/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BP/SecuritiesIssuance/MuniIssuance/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BP/SecuritiesIssuance/PrivateLabelMBSIssuance/"/>
@@ -87,20 +91,20 @@
 	<owl:Class rdf:about="&fibo-bp-iss-dbti;AdvancedRefunding">
 		<rdfs:subClassOf rdf:resource="&fibo-bp-iss-dbti;RefundingPurpose"/>
 		<rdfs:label xml:lang="en">advance refunding</rdfs:label>
-		<skos:definition xml:lang="en">A bond issuance in which new bonds are sold at a lower rate than outstanding ones. The proceeds are then invested, and when the older bonds become callable they are paid off with the invested proceeds.</skos:definition>
-		<fibo-fnd-utl-av:definitionOrigin xml:lang="en">http://www.investopedia.com/terms/a/advancedrefunding.asp#ixzz4K90cVzeN</fibo-fnd-utl-av:definitionOrigin>
+		<skos:definition xml:lang="en">refunding in which bond issuance in which new bonds are sold at a lower rate than outstanding ones</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">The proceeds are then invested, and when the older bonds become callable they are paid off with the invested proceeds.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-bp-iss-dbti;AssetPoolCreationProcess">
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-bp-iss-dbti;followedBy"/>
+				<owl:onProperty rdf:resource="&fibo-fbc-pas-fpas;precedes"/>
 				<owl:someValuesFrom rdf:resource="&fibo-bp-iss-dbti;DebtSecuritizationProcess"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-bp-iss-dbti;isCreationOf"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isProducedBy"/>
 				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-ab-pbs;SecuritizedDebtPool"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -267,7 +271,7 @@
 		<rdfs:subClassOf rdf:resource="&fibo-bp-iss-muni;Registration"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-bp-iss-dbti;isAbout"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-arr-doc;isAbout"/>
 				<owl:someValuesFrom rdf:resource="&fibo-bp-iss-dbti;MediumTermNoteIssuanceProgramme"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -332,6 +336,12 @@
 	
 	<owl:Class rdf:about="&fibo-bp-iss-dbti;PoolBackedSecuritySecuritizationProcessActor">
 		<rdfs:subClassOf rdf:resource="&fibo-bp-iss-dbti;SecuritizationProcessActor"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;evaluates"/>
+				<owl:someValuesFrom rdf:resource="&fibo-bp-iss-prc;IssuanceProcessActivity"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">pool backed security securitization process actor</rdfs:label>
 	</owl:Class>
 	
@@ -351,13 +361,13 @@
 		<rdfs:subClassOf rdf:resource="&fibo-bp-iss-dbti;AssetPoolCreationProcess"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-bp-iss-dbti;followedBy"/>
+				<owl:onProperty rdf:resource="&fibo-fbc-pas-fpas;precedes"/>
 				<owl:someValuesFrom rdf:resource="&fibo-bp-iss-dbti;PoolBackedSecuritySecuritizationProcess"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-bp-iss-dbti;isCreationOf"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isProducedBy"/>
 				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-ab-pbs;PoolOfIndividualDebts"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -381,18 +391,6 @@
 		<skos:definition xml:lang="en">The issue of one or more securities that the announcement pertains to.</skos:definition>
 	</owl:ObjectProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-bp-iss-dbti;assesses">
-		<rdfs:label xml:lang="en">assesses</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-bp-iss-dbti;PoolBackedSecuritySecuritizationProcessActor"/>
-		<rdfs:range rdf:resource="&fibo-bp-iss-prc;IssuanceProcessActivity"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-bp-iss-dbti;followedBy">
-		<rdfs:label xml:lang="en">followed by</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-bp-iss-dbti;AssetPoolCreationProcess"/>
-		<rdfs:range rdf:resource="&fibo-bp-iss-dbti;DebtSecuritizationProcess"/>
-	</owl:ObjectProperty>
-	
 	<owl:ObjectProperty rdf:about="&fibo-bp-iss-dbti;hasDebtIssuancePurpose">
 		<rdfs:label xml:lang="en">has debt issuance purpose</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-bp-iss-dbti;DebtIssuanceProcessInformation"/>
@@ -407,27 +405,11 @@
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">The OID is the difference between the stated redemption price at maturity and the actual issue price.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:ObjectProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-bp-iss-dbti;isAbout">
-		<rdfs:label xml:lang="en">is about</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-bp-iss-dbti;MTNRegistration"/>
-		<rdfs:range rdf:resource="&fibo-bp-iss-dbti;MediumTermNoteIssuanceProgramme"/>
-		<skos:definition xml:lang="en">The registration process for a MTN registers the program ahead of the issue of individual MTN securities.</skos:definition>
-	</owl:ObjectProperty>
-	
 	<owl:DatatypeProperty rdf:about="&fibo-bp-iss-dbti;isBankQualified">
 		<rdfs:label xml:lang="en">is bank qualified</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-bp-iss-dbti;BondOffering"/>
 		<rdfs:range rdf:resource="&xsd;boolean"/>
 		<skos:definition xml:lang="en">designation given to a public purpose bond offering by the issuer if it reasonably expects to issue in the calendar year of such offering no more than $10 million par amount of bonds of the type required to be included in making such calculation under the Internal Revenue Code.  When purchased by a commercial bank for its portfolio, the bank may receive an 80% tax deduction for the interest cost of carry for the issue.  A bond that is bank qualified is also known as a qualified tax-exempt obligation.</skos:definition>
-	</owl:DatatypeProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-bp-iss-dbti;isCreationOf">
-		<rdfs:label xml:lang="en">is creation of</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-bp-iss-dbti;AssetPoolCreationProcess"/>
-	</owl:ObjectProperty>
-	
-	<owl:DatatypeProperty rdf:about="&fibo-bp-iss-dbti;lifecycleState">
-		<rdfs:label xml:lang="en">lifecycle state</rdfs:label>
 	</owl:DatatypeProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-bp-iss-dbti;resultsIn">
