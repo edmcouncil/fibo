@@ -58,8 +58,8 @@
 		<dct:abstract>This ontology provides a basic set of definitions related to pricing, yield, and spread that are extended in other instrument-specific ontologies.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
 		<sm:contentLanguage rdf:datatype="&xsd;anyURI">https://www.w3.org/TR/owl2-quick-reference/</sm:contentLanguage>
-		<sm:copyright>Copyright (c) 2021 EDM Council, Inc.</sm:copyright>
-		<sm:copyright>Copyright (c) 2021 Object Management Group, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2020-2021 EDM Council, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2020-2021 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/BE/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/Markets/</sm:dependsOn>
@@ -85,10 +85,10 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Countries/CountryRepresentation/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/20210101/FinancialInstruments/InstrumentPricing/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/20210201/FinancialInstruments/InstrumentPricing/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20200601/FinancialInstruments/InstrumentPricing.rdf version of this ontology was modified to reflect the move of dated collection from arrangements to financial dates.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20200701/FinancialInstruments/InstrumentPricing.rdf version of this ontology was modified to add trading day and trading session, to address ambiguity in some definitions, to add adjusted price and to create a more general hasLotSize property that can be used in various contexts.</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20201201/FinancialInstruments/InstrumentPricing.rdf version of this ontology was modified to replace a redundant concept, calculation formula with formula.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20201201/FinancialInstruments/InstrumentPricing.rdf version of this ontology was modified to replace a redundant concept, calculation formula with formula and add a restriction on SecurityPrice to point to the security.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -278,12 +278,6 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;refersTo"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-fi;Security"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasApplicableDatePeriod"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;DatePeriod"/>
 			</owl:Restriction>
@@ -340,6 +334,12 @@
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-ip;CollectionOfSecurityPrices"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;refersTo"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-fi;Security"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -427,6 +427,12 @@
 				<owl:onDataRange rdf:resource="&fibo-fnd-dt-fd;CombinedDateTime"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-acc-cur;isPriceFor"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-fi;Security"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">security price</rdfs:label>
 		<skos:definition xml:lang="en">monetary price for a financial instrument at some point in time</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">A security price may be the price that some party is willing to pay, has recently paid, or would like to be paid, depending on the circumstances.</fibo-fnd-utl-av:explanatoryNote>
@@ -487,12 +493,6 @@
 	
 	<owl:Class rdf:about="&fibo-fbc-fi-ip;VolumeWeightedAveragePrice">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-ip;PriceAnalytic"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;refersTo"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-fi;Security"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">volume-weighted average price</rdfs:label>
 		<skos:definition xml:lang="en">average price at which a given security has traded throughout a trading day, determined by multiplying each trade by its volume, adding the results, then dividing by the volume traded for the day</skos:definition>
 		<fibo-fnd-utl-av:abbreviation xml:lang="en">VWAP</fibo-fnd-utl-av:abbreviation>
@@ -500,12 +500,6 @@
 	
 	<owl:Class rdf:about="&fibo-fbc-fi-ip;VolumeWeightedOpenPrice">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-ip;PriceAnalytic"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;refersTo"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-fi;Security"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">volume-weighted open price</rdfs:label>
 		<skos:definition xml:lang="en">price determined by multiplying each trade by its volume, adding the results, then dividing by the volume over a certain period during the trading day (rather than over the course of the entire day)</skos:definition>
 		<fibo-fnd-utl-av:abbreviation xml:lang="en">VWOP</fibo-fnd-utl-av:abbreviation>
