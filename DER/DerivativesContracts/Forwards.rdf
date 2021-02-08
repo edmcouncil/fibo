@@ -268,7 +268,7 @@
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Note this includes contractual details regarding the time(s) of day at which valuation can occur, as &quot;As Specified in Master Confirmation&quot;.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-drc-fwd;FuturesFuture">
+	<owl:Class rdf:about="&fibo-der-drc-fwd;FutureOnFuture">
 		<rdfs:subClassOf rdf:resource="&fibo-der-drc-fwd;FinancialFuture"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
@@ -276,8 +276,34 @@
 				<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-fi;Future"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">futures option</rdfs:label>
+		<rdfs:label xml:lang="en">future on future</rdfs:label>
 		<skos:definition xml:lang="en">futures contract whose underlying asset is at least one (other) futures contract</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom xml:lang="en">ISO 10962, Securities and related financial instruments - Classification of financial instruments (CFI) code, Fourth Edition, October 2019</fibo-fnd-utl-av:adaptedFrom>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-drc-fwd;FutureOnOption">
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-fwd;FinancialFuture"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-fi;Option"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">future on option</rdfs:label>
+		<skos:definition xml:lang="en">futures contract whose underlying asset is at least one option contract</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom xml:lang="en">ISO 10962, Securities and related financial instruments - Classification of financial instruments (CFI) code, Fourth Edition, October 2019</fibo-fnd-utl-av:adaptedFrom>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-drc-fwd;FutureOnSwap">
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-fwd;FinancialFuture"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-drc-swp;Swap"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">future on swap</rdfs:label>
+		<skos:definition xml:lang="en">futures contract whose underlying asset is at least one swap contract</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom xml:lang="en">ISO 10962, Securities and related financial instruments - Classification of financial instruments (CFI) code, Fourth Edition, October 2019</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
 	
@@ -290,40 +316,8 @@
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-drc-fwd;hasMarginProvision"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">futures listing</rdfs:label>
 		<skos:definition xml:lang="en">listing of a futures instrument on a derivatives exchange</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-drc-fwd;FuturesOption">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-fwd;FinancialFuture"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-fi;Option"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">futures option</rdfs:label>
-		<skos:definition xml:lang="en">futures contract whose underlying asset is at least one option contract</skos:definition>
-		<fibo-fnd-utl-av:adaptedFrom xml:lang="en">ISO 10962, Securities and related financial instruments - Classification of financial instruments (CFI) code, Fourth Edition, October 2019</fibo-fnd-utl-av:adaptedFrom>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-drc-fwd;FuturesSwap">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-fwd;FinancialFuture"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-drc-swp;Swap"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">futures option</rdfs:label>
-		<skos:definition xml:lang="en">futures contract whose underlying asset is at least one swap contract</skos:definition>
-		<fibo-fnd-utl-av:adaptedFrom xml:lang="en">ISO 10962, Securities and related financial instruments - Classification of financial instruments (CFI) code, Fourth Edition, October 2019</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-fwd;FuturesTradingAccountProvider">
@@ -404,12 +398,6 @@
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-be-fct-pub;hasPublisher"/>
 				<owl:someValuesFrom rdf:resource="&fibo-der-drc-bsc;DesignatedContractMarket"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-drc-fwd;isMarginCallApplicable"/>
-				<owl:someValuesFrom rdf:resource="&xsd;boolean"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -507,15 +495,6 @@
 		<skos:definition xml:lang="en">specifies the final date on which a delivery notice can be issued</skos:definition>
 	</owl:ObjectProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-der-drc-fwd;hasMarginProvision">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasMonetaryAmount"/>
-		<rdfs:label xml:lang="en">has margin provision</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-drc-fwd;FuturesListing"/>
-		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
-		<skos:definition xml:lang="en">specifies an amount of money necessary to cover the purchase of the underlying security since delivery is mandatory, be it physical or cash</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Failing to provide a sufficient provision will result in a margin call.</fibo-fnd-utl-av:explanatoryNote>
-	</owl:ObjectProperty>
-	
 	<owl:DatatypeProperty rdf:about="&fibo-der-drc-fwd;hasMultiple">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-qt-qtu;hasNumericValue"/>
 		<rdfs:label xml:lang="en">has multiple</rdfs:label>
@@ -576,14 +555,6 @@
 		<rdfs:domain rdf:resource="&fibo-der-drc-fwd;ForwardValuationTerms"/>
 		<rdfs:range rdf:resource="&fibo-der-drc-fwd;ValuationTiming"/>
 	</owl:ObjectProperty>
-	
-	<owl:DatatypeProperty rdf:about="&fibo-der-drc-fwd;isMarginCallApplicable">
-		<rdfs:label xml:lang="en">is margin call applicable</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-drc-fwd;StandardizedFuturesListingTerms"/>
-		<rdfs:range rdf:resource="&xsd;boolean"/>
-		<skos:definition xml:lang="en">indicates whether a margin call applies to the contract or listing</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">A broker&apos;s demand on an investor using margin to deposit additional money or securities so that the margin account is brought up to the minimum maintenance margin. This is sometimes called a &apos;fed call&apos; or &apos;maintenance call&apos;.</fibo-fnd-utl-av:explanatoryNote>
-	</owl:DatatypeProperty>
 	
 	<owl:Class rdf:about="&fibo-fbc-fi-fi;Future">
 		<rdfs:subClassOf>
