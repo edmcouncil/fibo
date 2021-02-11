@@ -3,7 +3,11 @@
 	<!ENTITY dct "http://purl.org/dc/terms/">
 	<!ENTITY fibo-der-com-ctr "https://spec.edmcouncil.org/fibo/ontology/DER/CommoditiesDerivatives/CommoditiesContracts/">
 	<!ENTITY fibo-der-drc-bsc "https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/DerivativesBasics/">
+	<!ENTITY fibo-der-drc-fwd "https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Forwards/">
+	<!ENTITY fibo-der-drc-swp "https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Swaps/">
 	<!ENTITY fibo-fbc-fi-fi "https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/">
+	<!ENTITY fibo-fnd-acc-cur "https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/">
+	<!ENTITY fibo-fnd-agr-ctr "https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/">
 	<!ENTITY fibo-fnd-arr-cls "https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/ClassificationSchemes/">
 	<!ENTITY fibo-fnd-pas-pas "https://spec.edmcouncil.org/fibo/ontology/FND/ProductsAndServices/ProductsAndServices/">
 	<!ENTITY fibo-fnd-qt-qtu "https://spec.edmcouncil.org/fibo/ontology/FND/Quantities/QuantitiesAndUnits/">
@@ -20,7 +24,11 @@
 	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fibo-der-com-ctr="https://spec.edmcouncil.org/fibo/ontology/DER/CommoditiesDerivatives/CommoditiesContracts/"
 	xmlns:fibo-der-drc-bsc="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/DerivativesBasics/"
+	xmlns:fibo-der-drc-fwd="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Forwards/"
+	xmlns:fibo-der-drc-swp="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Swaps/"
 	xmlns:fibo-fbc-fi-fi="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"
+	xmlns:fibo-fnd-acc-cur="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"
+	xmlns:fibo-fnd-agr-ctr="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"
 	xmlns:fibo-fnd-arr-cls="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/ClassificationSchemes/"
 	xmlns:fibo-fnd-pas-pas="https://spec.edmcouncil.org/fibo/ontology/FND/ProductsAndServices/ProductsAndServices/"
 	xmlns:fibo-fnd-qt-qtu="https://spec.edmcouncil.org/fibo/ontology/FND/Quantities/QuantitiesAndUnits/"
@@ -37,14 +45,18 @@
 		<rdfs:label xml:lang="en">Commodities Contracts Ontology</rdfs:label>
 		<dct:abstract>Core concepts for commodities based derivatives contracts and their underliers.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
-		<sm:contentLanguage rdf:resource="http://www.w3.org/standards/techs/owl#w3c_all"/>
-		<sm:copyright>Copyright (c) 2015-2020 EDM Council, Inc.</sm:copyright>
+		<sm:contentLanguage rdf:datatype="&xsd;anyURI">https://www.w3.org/TR/owl2-quick-reference/</sm:contentLanguage>
+		<sm:copyright>Copyright (c) 2015-2021 EDM Council, Inc.</sm:copyright>
 		<sm:dependsOn rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/"/>
 		<sm:dependsOn rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/"/>
 		<sm:fileAbbreviation>fibo-der-com-ctr</sm:fileAbbreviation>
 		<sm:filename>CommoditiesContracts.rdf</sm:filename>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/DerivativesBasics/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Forwards/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Swaps/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/ClassificationSchemes/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/ProductsAndServices/ProductsAndServices/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Quantities/QuantitiesAndUnits/"/>
@@ -54,25 +66,36 @@
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Provisional"/>
 	</owl:Ontology>
 	
-	<owl:Class rdf:about="&fibo-der-com-ctr;AgriculturalProduct">
+	<owl:Class rdf:about="&fibo-der-com-ctr;AgriculturalResource">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-pas;NegotiableCommodity"/>
-		<rdfs:label xml:lang="en">agricultural product</rdfs:label>
-		<skos:definition xml:lang="en">A commodity which is some agrigultural product, including grain, fruit and meat.</skos:definition>
-		<skos:editorialNote xml:lang="en">This term was produced to group known commodity types but it is not known if this grouping is made in practice or if grain, meat products etc. are defined separately, and it is not clear if this is the preferred term for this. However since other derivatives types are so groups, it makes sense to do so here.</skos:editorialNote>
+		<rdfs:label xml:lang="en">agricultural resource</rdfs:label>
+		<skos:definition xml:lang="en">negotiable commodity that is obtained via some agrigultural process, including forestry, fishing, livestock, grain, dairy, corn, cocoa, soybeans, sugar, coffee</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom xml:lang="en">ISO 10962, Securities and related financial instruments - Classification of financial instruments (CFI) code, Fourth Edition, October 2019</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-com-ctr;BaseMetal">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-pas;NegotiableCommodity"/>
-		<rdfs:label xml:lang="en">base metal</rdfs:label>
+	<owl:Class rdf:about="&fibo-der-com-ctr;BaseIndustrialMetal">
+		<rdfs:subClassOf rdf:resource="&fibo-der-com-ctr;Metal"/>
+		<rdfs:label xml:lang="en">base industrial metal</rdfs:label>
 		<owl:disjointWith rdf:resource="&fibo-fnd-pas-pas;PreciousMetal"/>
-		<skos:definition xml:lang="en">any metal that is not defined as precious</skos:definition>
+		<skos:definition xml:lang="en">metal or alloy, other than a precious metal or noble metal, such as copper, lead, zinc, tin, or brass</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-com-ctr;Bullion">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-pas;PreciousMetal"/>
 		<rdfs:label xml:lang="en">bullion</rdfs:label>
-		<skos:definition xml:lang="en">precious metal that is officially recognized as being at least 99.5 percent pure and is in the form of bars or ingots</skos:definition>
+		<skos:definition xml:lang="en">physical precious metal that is officially recognized as being at least 99.5 percent pure, in the form of bars, ingots, or coins</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Includes (exhaustively?): Gold Silver Platinum</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-com-ctr;CashSettledForwardContract">
+		<rdfs:subClassOf rdf:resource="&fibo-der-com-ctr;CommodityForwardContract"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasCalculationAgent"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-drc-bsc;CalculationAgent"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">cash settled forward contract</rdfs:label>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-com-ctr;CommodityDerivative">
@@ -81,14 +104,59 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-com-ctr;CommodityUnderlying"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-com-ctr;CommodityUnderlyingAsset"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>commodity derivative</rdfs:label>
 		<skos:definition xml:lang="en">derivative instrument whose primary underlying notional item is a physical commodity, or the price, or behavior of the price, or any other aspect related to a physical commodity</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-com-ctr;CommodityUnderlying">
+	<owl:Class rdf:about="&fibo-der-com-ctr;CommodityForwardContract">
+		<rdfs:subClassOf rdf:resource="&fibo-der-com-ctr;CommodityDerivative"/>
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-fwd;Forward"/>
+		<rdfs:label xml:lang="en">commodity forward contract</rdfs:label>
+		<skos:definition xml:lang="en">Definition needed.</skos:definition>
+		<skos:editorialNote xml:lang="en">FpML Definition (unusable): Defines a commodity forward product.</skos:editorialNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-com-ctr;CommodityFuture">
+		<rdfs:subClassOf rdf:resource="&fibo-der-com-ctr;CommodityDerivative"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;Future"/>
+		<rdfs:label xml:lang="en">commodity future</rdfs:label>
+		<owl:disjointWith rdf:resource="&fibo-der-drc-fwd;FinancialFuture"/>
+		<skos:definition xml:lang="en">futures contract tied to the movement in pricing of bulk goods</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom xml:lang="en">ISO 10962, Securities and related financial instruments - Classification of financial instruments (CFI) code, Fourth Edition, October 2019</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">This enables contract buyers to buy a specific amount of a commodity at a specific price on a particular date in the future. The price of the contract is determined using the &quot;Open Outcry&quot; system on the floor of a commodity exchange such as the Chicago Board of Trade or the Commodity Exchange in New York. There are commodity futures contracts based on meats such as cattle and pork bellies; grains such as corn, oats, soybeans and wheat; metals such as gold, silver and platinum; and energy products such as heating oil, natural gas and crude oil.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-com-ctr;CommodityReturnLeg">
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-swp;ReturnLeg"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-com-ctr;CommodityUnderlyingAsset"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">commodity return leg</rdfs:label>
+		<skos:definition xml:lang="en">leg of a commodity return swap in which the return is based on a physical commodity, or the price, or behavior of the price, or any other aspect related to a physical commodity</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">The cash flows from a commodity may be negative as you have a cost from holding the commodity but there are no interim cash flows, so it equates to a negative interest rate. So a commodity swap is like a TRS in that it is based on the return on the increase in value.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-com-ctr;CommoditySwap">
+		<rdfs:subClassOf rdf:resource="&fibo-der-com-ctr;CommodityDerivative"/>
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-swp;ReturnSwap"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-drc-swp;hasReturnLeg"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-com-ctr;CommodityReturnLeg"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">commodity swap</rdfs:label>
+		<skos:definition xml:lang="en">commodity derivative that includes, without limitation, any swap for which the primary underlying notional item is a physical commodity, or the price, or behavior of the price, or any other aspect related to a physical commodity</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Commodity swaps typically involve the exchange of a floating commodity price for a set price over an agreed-upon period.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-com-ctr;CommodityUnderlyingAsset">
 		<rdfs:subClassOf rdf:resource="&fibo-der-drc-bsc;Underlier"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
@@ -96,41 +164,80 @@
 				<owl:someValuesFrom rdf:resource="&fibo-fnd-pas-pas;NegotiableCommodity"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label>commodity underlying</rdfs:label>
+		<rdfs:label>commodity underlying asset</rdfs:label>
 		<skos:definition xml:lang="en">underlier of a commodity derivative, including, but not limited to, the negotiable commodity itself</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">The underlying of a commodity swap may include a physical commodity, or the price, or behavior of the price, or any other aspect of a physical commodity.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-com-ctr;ElectricityCommodity">
-		<rdfs:subClassOf rdf:resource="&fibo-der-com-ctr;EnergyCommodity"/>
+		<rdfs:subClassOf rdf:resource="&fibo-der-com-ctr;EnergyResource"/>
+		<rdfs:subClassOf rdf:resource="&fibo-der-com-ctr;GeneratedResource"/>
 		<rdfs:label xml:lang="en">electricity commodity</rdfs:label>
 		<skos:definition xml:lang="en">Electricity as a commodity.</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-com-ctr;EnergyCommodity">
+	<owl:Class rdf:about="&fibo-der-com-ctr;EnergyResource">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-pas;NegotiableCommodity"/>
-		<rdfs:label xml:lang="en">energy commodity</rdfs:label>
-		<skos:definition xml:lang="en">A commodity which relates to the provision or distribution of energy.</skos:definition>
-		<skos:editorialNote xml:lang="en">Further review and refinement required. For example there is a distinction between power and energy (measured according to the basic physics of those commodities, i.e. Watts and Watt Hours).</skos:editorialNote>
+		<rdfs:label xml:lang="en">energy resource</rdfs:label>
+		<skos:definition xml:lang="en">negotiable commodity that is an energy-related product, or a derivative of an energy-related product, including electricity, renewable energy, or any power/energy delivered through a utility network of provider; diesel fuel, fuel oil, gas oil, gasoline, heating oil, jet fuel, kerosene, natural gas, oil (Brent, Tapis, Dubai, WTI)</skos:definition>
+		<skos:scopeNote xml:lang="en">Note that the concept of an energy resource overlaps with generated resource and extraction resource but is not identical to either.</skos:scopeNote>
+		<fibo-fnd-utl-av:adaptedFrom xml:lang="en">ISO 10962, Securities and related financial instruments - Classification of financial instruments (CFI) code, Fourth Edition, October 2019</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-com-ctr;EnergyTransmissionRights">
-		<rdfs:subClassOf rdf:resource="&fibo-der-com-ctr;EnergyCommodity"/>
+		<rdfs:subClassOf rdf:resource="&fibo-der-com-ctr;EnergyResource"/>
+		<rdfs:subClassOf rdf:resource="&fibo-der-com-ctr;GeneratedResource"/>
 		<rdfs:label xml:lang="en">energy transmission rights</rdfs:label>
 		<skos:definition xml:lang="en">Rights to the transmission of power across an electricity distribution network.</skos:definition>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-der-com-ctr;EnvironmentalResource">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-pas;NegotiableCommodity"/>
+		<rdfs:label xml:lang="en">environmental resource</rdfs:label>
+		<skos:definition xml:lang="en">negotiable commodity including carbon-related, emission reduction, and weather</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom xml:lang="en">ISO 10962, Securities and related financial instruments - Classification of financial instruments (CFI) code, Fourth Edition, October 2019</fibo-fnd-utl-av:adaptedFrom>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-com-ctr;ExtractionResource">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-pas;NegotiableCommodity"/>
+		<rdfs:label xml:lang="en">extraction resource</rdfs:label>
+		<skos:definition xml:lang="en">negotiable commodity that is a mineral resource obtained via withdrawl from the natural environment</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom xml:lang="en">ISO 10962, Securities and related financial instruments - Classification of financial instruments (CFI) code, Fourth Edition, October 2019</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">These resources include ores, which contain commercially valuable amounts of metals, such as iron and aluminum, as well as precious metals, such as silver, gold, and platinum; precious stones, such as diamonds; building stones, such as granite; and solid fuels, such as coal and oil shale.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-com-ctr;FertilizerResource">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-pas;NegotiableCommodity"/>
+		<rdfs:label xml:lang="en">fertilizer resource</rdfs:label>
+		<skos:definition xml:lang="en">negotiable commodity that includes ammonia, diammonium phosphate (DAP), potash, sulphur, urea, urea and ammonium nitrate (UAN)</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom xml:lang="en">ISO 10962, Securities and related financial instruments - Classification of financial instruments (CFI) code, Fourth Edition, October 2019</fibo-fnd-utl-av:adaptedFrom>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-com-ctr;FreightResource">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-pas;NegotiableCommodity"/>
+		<rdfs:label xml:lang="en">freight resource</rdfs:label>
+		<skos:definition xml:lang="en">negotiable commodity that is a freight index route</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom xml:lang="en">ISO 10962, Securities and related financial instruments - Classification of financial instruments (CFI) code, Fourth Edition, October 2019</fibo-fnd-utl-av:adaptedFrom>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-der-com-ctr;GasCommodity">
-		<rdfs:subClassOf rdf:resource="&fibo-der-com-ctr;EnergyCommodity"/>
+		<rdfs:subClassOf rdf:resource="&fibo-der-com-ctr;EnergyResource"/>
+		<rdfs:subClassOf rdf:resource="&fibo-der-com-ctr;ExtractionResource"/>
 		<rdfs:label xml:lang="en">gas commodity</rdfs:label>
-		<skos:definition xml:lang="en">Combustible hydrocarbon in gasous phase.</skos:definition>
-		<skos:editorialNote xml:lang="en">Need a precise definition e.g. which gas (ethane, methane) is commonly used and transmitted. Vocabulary note: This is not the American English word Gas, which refers to liquid motor spirit. Review whether we have the right word for US English usage here.</skos:editorialNote>
+		<skos:definition xml:lang="en">extraction resource that is natural gas</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-com-ctr;GeneratedResource">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-pas;NegotiableCommodity"/>
+		<rdfs:label xml:lang="en">generated resource</rdfs:label>
+		<skos:definition xml:lang="en">negotiable commodity obtained via some generation process, including electricity, renewable energy, or any power/energy delivered through a utility network or provider</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom xml:lang="en">ISO 10962, Securities and related financial instruments - Classification of financial instruments (CFI) code, Fourth Edition, October 2019</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-com-ctr;GrainCommodity">
-		<rdfs:subClassOf rdf:resource="&fibo-der-com-ctr;AgriculturalProduct"/>
+		<rdfs:subClassOf rdf:resource="&fibo-der-com-ctr;AgriculturalResource"/>
 		<rdfs:label xml:lang="en">grain commodity</rdfs:label>
-		<skos:definition xml:lang="en">A commodity which is a kind of grain, such as wheat.</skos:definition>
+		<skos:definition xml:lang="en">agricultural resource that is a small, hard seed, of a food plant, especially of a cereal plant, such as wheat, corn, rye, oats, rice, and millet</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-com-ctr;ImperialWeightMeasurementUnit">
@@ -138,10 +245,23 @@
 		<rdfs:label xml:lang="en">imperial weight measurement unit</rdfs:label>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-der-com-ctr;IndustrialResource">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-pas;NegotiableCommodity"/>
+		<rdfs:label xml:lang="en">industrial resource</rdfs:label>
+		<skos:definition xml:lang="en">negotiable commodity that is obtained via some industrial process, including construction and manufacturing</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom xml:lang="en">ISO 10962, Securities and related financial instruments - Classification of financial instruments (CFI) code, Fourth Edition, October 2019</fibo-fnd-utl-av:adaptedFrom>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-der-com-ctr;MeatCommodity">
-		<rdfs:subClassOf rdf:resource="&fibo-der-com-ctr;AgriculturalProduct"/>
+		<rdfs:subClassOf rdf:resource="&fibo-der-com-ctr;AgriculturalResource"/>
 		<rdfs:label xml:lang="en">meat commodity</rdfs:label>
-		<skos:definition xml:lang="en">A commodity which is a kind of meat, such as pork bellies.</skos:definition>
+		<skos:definition xml:lang="en">agricultural resource derived from the flesh of an animal (especially a mammal), such as pork bellies</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-com-ctr;Metal">
+		<rdfs:subClassOf rdf:resource="&fibo-der-com-ctr;ExtractionResource"/>
+		<rdfs:label xml:lang="en">metal</rdfs:label>
+		<skos:definition xml:lang="en">chemical resource with high electrical conductivity, luster, and malleability that readily loses electrons to form ions (cations)</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-com-ctr;MetricWeightMeasurementUnit">
@@ -150,16 +270,42 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-com-ctr;OilCommodity">
-		<rdfs:subClassOf rdf:resource="&fibo-der-com-ctr;EnergyCommodity"/>
+		<rdfs:subClassOf rdf:resource="&fibo-der-com-ctr;GeneratedResource"/>
 		<rdfs:label xml:lang="en">oil commodity</rdfs:label>
-		<skos:definition xml:lang="en">Oil as a commodity.</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">This has detailed grades and is measured in barrels.</fibo-fnd-utl-av:explanatoryNote>
+		<skos:definition xml:lang="en">generated resource that is a viscous liquid derived from petrolium, especially for use as fuel or as a lubricant</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-com-ctr;OilGrade">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-cls;Classifier"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-com-ctr;hasGrade"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-com-ctr;OilGrade"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">oil grade</rdfs:label>
-		<skos:definition xml:lang="en">The grade of oil which is defined as this oil commodity.</skos:definition>
+		<skos:definition xml:lang="en">measure of the viscosity of oil during operation</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-com-ctr;PaperResource">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-pas;NegotiableCommodity"/>
+		<rdfs:label xml:lang="en">paper resource</rdfs:label>
+		<skos:definition xml:lang="en">negotiable commodity that is a paper product, including containerboard, newsprint, pulp, recovered paper</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom xml:lang="en">ISO 10962, Securities and related financial instruments - Classification of financial instruments (CFI) code, Fourth Edition, October 2019</fibo-fnd-utl-av:adaptedFrom>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-com-ctr;PolypropyleneResource">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-pas;NegotiableCommodity"/>
+		<rdfs:label xml:lang="en">polypropylene resource</rdfs:label>
+		<skos:definition xml:lang="en">negotiable commodity including plastics</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom xml:lang="en">ISO 10962, Securities and related financial instruments - Classification of financial instruments (CFI) code, Fourth Edition, October 2019</fibo-fnd-utl-av:adaptedFrom>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-com-ctr;ServiceResource">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-pas;NegotiableCommodity"/>
+		<rdfs:label xml:lang="en">service resource</rdfs:label>
+		<skos:definition xml:lang="en">negotiable commodity involving services such as transportation, communications, and trade</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom xml:lang="en">ISO 10962, Securities and related financial instruments - Classification of financial instruments (CFI) code, Fourth Edition, October 2019</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-com-ctr;TroyOunces">
@@ -178,5 +324,16 @@
 		<rdfs:range rdf:resource="&fibo-der-com-ctr;OilGrade"/>
 		<skos:definition xml:lang="en">The grade of oil e.g. Brent Crude.</skos:definition>
 	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-der-com-ctr;referenceRate">
+		<rdfs:label xml:lang="en">reference rate</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-der-com-ctr;CommodityForwardContract"/>
+		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
+		<skos:definition xml:lang="en">Is actually a price of something.</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:Class rdf:about="&fibo-fnd-pas-pas;PreciousMetal">
+		<rdfs:subClassOf rdf:resource="&fibo-der-com-ctr;Metal"/>
+	</owl:Class>
 
 </rdf:RDF>
