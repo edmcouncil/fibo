@@ -55,9 +55,9 @@
 		<rdfs:label>Securities Listings Ontology</rdfs:label>
 		<dct:abstract>This ontology defines the fundamental concepts for listing securities, such as registered, listed, and exchange-traded security, the notion of a securities exchange, and related services.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
-		<sm:contentLanguage rdf:datatype="&xsd;anyURI">https://www.w3.org/TR/owl2-quick-reference/</sm:contentLanguage>
-		<sm:copyright>Copyright (c) 2016-2020 EDM Council, Inc.</sm:copyright>
-		<sm:copyright>Copyright (c) 2018-2020 Object Management Group, Inc.</sm:copyright>
+		<sm:contentLanguage rdf:resource="https://www.w3.org/TR/owl2-quick-reference/"/>
+		<sm:copyright>Copyright (c) 2016-2021 EDM Council, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2018-2021 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FBC/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesIssuance/</sm:dependsOn>
@@ -82,7 +82,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesIssuance/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20201201/Securities/SecuritiesListings/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20210201/Securities/SecuritiesListings/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20180801/Securities/SecuritiesListings.rdf version of this ontology was revised to reuse the composite date value datatype and add disjointness between registered security and exempt security.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20190401/Securities/SecuritiesListings.rdf version of this ontology was revised to eliminate an extraneous subclass axiom.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20190701/Securities/SecuritiesListings.rdf version of this ontology was revised to rename isIssuedIn to isIssuedOn, which is more natural to most securities SMEs, generalized certain references to securities exchanges, and eliminate deprecated elements.</skos:changeNote>
@@ -90,6 +90,7 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20191201/Securities/SecuritiesListings.rdf version of this ontology was revised to eliminate duplication of concepts in LCC and to eliminate the redundancy between hasIssue and lists.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20200301/Securities/SecuritiesListings.rdf version of this ontology was revised to incorporate the form of registration and loosen the restriction on the number of possible registration authorities for a registered security.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20200401/Securities/SecuritiesListings.rdf version of this ontology was revised to eliminate confusion between listed security and listing (which caused reasoning issues), adjust definitions to eliminate ambiguity, add a property for lot size on listing, and eliminate the now redundant and confusing registered security form class.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20201201/Securities/SecuritiesListings.rdf version of this ontology was revised to eliminate a false positive hygiene testing issue due to a concept whose name included &apos;and&apos; but that actually was a singular concept.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -97,36 +98,9 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;provides"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-lst;ExchangeAndListingService"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-lst;ListingService"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-sec-sec-lst;ExchangeAndListingService">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;FinancialService"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-pas-pas;isProvisionedBy"/>
-				<owl:onClass rdf:resource="&fibo-fbc-fct-mkt;Exchange"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isProvidedBy"/>
-				<owl:onClass rdf:resource="&fibo-fbc-fct-mkt;Exchange"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;provides"/>
-				<owl:onClass rdf:resource="&fibo-sec-sec-lst;Listing"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>exchange and listing service</rdfs:label>
-		<skos:definition>trading and (optionally) listing service for the purposes of securities trading</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-lst;ListedSecurity">
@@ -216,6 +190,33 @@
 		<rdfs:label xml:lang="en">listing</rdfs:label>
 		<skos:definition>registry entry for a security that is managed by an exchange and that documents that the security meets the requirements for making that security available for trading on that exchange</skos:definition>
 		<fibo-fnd-utl-av:synonym xml:lang="en">market listing</fibo-fnd-utl-av:synonym>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-sec-lst;ListingService">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;FinancialService"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-pas-pas;isProvisionedBy"/>
+				<owl:onClass rdf:resource="&fibo-fbc-fct-mkt;Exchange"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isProvidedBy"/>
+				<owl:onClass rdf:resource="&fibo-fbc-fct-mkt;Exchange"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;provides"/>
+				<owl:onClass rdf:resource="&fibo-sec-sec-lst;Listing"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>listing service</rdfs:label>
+		<skos:definition>service provided by an exchange to facilitate securities trading</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-lst;RegisteredSecurity">
