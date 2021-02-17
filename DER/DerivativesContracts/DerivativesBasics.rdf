@@ -76,8 +76,8 @@
 		<dct:abstract>This ontology defines basic terminology common to derivative and over-the-counter (OTC) contracts.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
 		<sm:contentLanguage rdf:resource="https://www.w3.org/TR/owl2-quick-reference/"/>
-		<sm:copyright>Copyright (c) 2015-2020 EDM Council, Inc.</sm:copyright>
-		<sm:copyright>Copyright (c) 2015-2020 Object Management Group, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2015-2021 EDM Council, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2015-2021 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/"/>
 		<sm:dependsOn rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/"/>
 		<sm:dependsOn rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/"/>
@@ -111,9 +111,10 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/Baskets/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesListings/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/20201201/DerivativesContracts/DerivativesBasics/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/20210201/DerivativesContracts/DerivativesBasics/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20180801/DerivativesContracts/DerivativesBasics.rdf version of this ontology was modified to eliminate duplication with concepts in LCC and eliminate a redundant subclass declaration in observable value.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20200401/DerivativesContracts/DerivativesBasics.rdf version of this ontology was modified to loosen the domain of the hasUnderlier property, which could be either an instrument or leg, refine the definition of Underlier and hasUnderlier based on recent work on swaps, add the definition of a contract for difference (CFD), simplify the contract party hierarchy where the subclasses of contract party do not add semantics, add the concepts of underlying asset valuation and calculation agent, which are needed for various derivatives (moved from forwards) and eliminate the language related to transactions as well as the distinction between an OTC contract and exchange-traded contract / listed security, given how blurry the lines are today, across derivatives.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20201201/DerivativesContracts/DerivativesBasics.rdf version of this ontology was modified to eliminate hasThirdParty as a superproperty of hasCalculationAgent, which led to unintended reasoning consequences.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -121,23 +122,13 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;ThirdPartyAgent"/>
 		<rdfs:label xml:lang="en">calculation agent</rdfs:label>
 		<skos:definition xml:lang="en">party that is responsible for determining the value of a derivative and in some cases, determines how much the parties owe one another</skos:definition>
-		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://investinganswers.com/dictionary/c/calculation-agent</fibo-fnd-utl-av:adaptedFrom>
-		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.investopedia.com/terms/c/calculationagent.asp</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">The calculation agent can also establish the price for a structured product and may act as its guarantor and issuer. If the counterparty in a derivative transaction is a broker-dealer, then they will often act as the calculation agent.</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-drc-bsc;CashDeliveryTerms">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-bsc;DeliveryTerms"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-psch;PaymentObligation"/>
-		<rdfs:label>cash delivery terms</rdfs:label>
-		<skos:definition>commitment to deliver cash at the earliest available date as per settlement convention</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote>This is the same date as a settlement date when the corresponding cash is made available in the other currency, in settlement for this amount.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-bsc;CashflowExpression">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;Expression"/>
 		<rdfs:label>cashflow expression</rdfs:label>
-		<skos:definition>an expression that specifies a calculation of a cash flow as a component of a cashflow formula</skos:definition>
+		<skos:definition>expression that specifies a calculation of a cash flow as a component of a cashflow formula</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-bsc;CashflowFormula">
@@ -149,7 +140,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>cashflow formula</rdfs:label>
-		<skos:definition>a formula for determining cashflows for a derivative instrument</skos:definition>
+		<skos:definition>formula for determining cashflows for a derivative instrument</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-bsc;CashflowTerms">
@@ -175,8 +166,22 @@
 	<owl:Class rdf:about="&fibo-der-drc-bsc;DeliveryTerms">
 		<rdfs:subClassOf rdf:resource="&fibo-der-drc-bsc;DerivativeTerms"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;SettlementTerms"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasAdditionalCosts"/>
+				<owl:onClass rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlyingAssetPrice"/>
+				<owl:onClass rdf:resource="&fibo-fnd-acc-cur;MonetaryPrice"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label>delivery terms</rdfs:label>
-		<skos:definition>settlement terms specifying what (cash, an asset, etc.) is to be delivered when, to whom, under what conditions at the time of settlement</skos:definition>
+		<skos:definition>settlement terms specifying additional details with respect to what is to be delivered when, to whom, under what conditions at the time of settlement</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-bsc;DerivativeTerms">
@@ -257,7 +262,6 @@
 		<owl:disjointWith rdf:resource="&fibo-sec-sec-lst;ListedSecurity"/>
 		<skos:definition>financial instrument and bilateral contract that is not listed on an organized exchange</skos:definition>
 		<fibo-fnd-utl-av:abbreviation>OTC instrument</fibo-fnd-utl-av:abbreviation>
-		<fibo-fnd-utl-av:adaptedFrom>Barron&apos;s Dictionary of Finance and Investment Terms, Ninth Edition, 2014</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-bsc;ParametricCashflowTerms">
@@ -309,7 +313,6 @@
 		</rdfs:subClassOf>
 		<rdfs:label>underlier</rdfs:label>
 		<skos:definition>something that can be assigned a value in the marketplace that forms the basis for a derivative instrument</skos:definition>
-		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.lawinsider.com/dictionary/underlier</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:explanatoryNote>Underlier means any rate (including interest and foreign exchange rates), currency, commodity, security, instrument of indebtedness, index, quantitative measure, occurrence or non-occurrence of an event, or other financial or economic interest, or property of any kind, or any interest therein or based on the value thereof, in or by reference to which any payment or delivery under a transaction is to be made or determined.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
@@ -331,8 +334,14 @@
 		<skos:definition xml:lang="en">assessment activity to estimate the value of an underlying asset of a derivative</skos:definition>
 	</owl:Class>
 	
+	<owl:ObjectProperty rdf:about="&fibo-der-drc-bsc;hasAdditionalCosts">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasMonetaryAmount"/>
+		<rdfs:label xml:lang="en">has additional costs</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
+		<skos:definition xml:lang="en">indicates costs, such as up front costs, brokerage fees and the like, that must be paid on delivery</skos:definition>
+	</owl:ObjectProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-der-drc-bsc;hasCalculationAgent">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-agr-ctr;hasThirdParty"/>
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;isProvidedBy"/>
 		<rdfs:label xml:lang="en">has calculation agent</rdfs:label>
 		<rdfs:range rdf:resource="&fibo-der-drc-bsc;CalculationAgent"/>
@@ -345,6 +354,13 @@
 		<rdfs:range rdf:resource="&fibo-der-drc-bsc;Underlier"/>
 		<skos:definition>relates a derivative to something on which the contract is based</skos:definition>
 		<fibo-fnd-utl-av:usageNote>The domain of this property can be either a derivative instrument or, in the case of a swap contract, one leg of the swap.</fibo-fnd-utl-av:usageNote>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-der-drc-bsc;hasUnderlyingAssetPrice">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasPrice"/>
+		<rdfs:label>has underlying asset price</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryPrice"/>
+		<skos:definition>specifies a price for something on which the contract is based, as specified in delivery terms</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:Class rdf:about="&fibo-fbc-fi-fi;DerivativeInstrument">
