@@ -33,9 +33,9 @@
 		<rdfs:label>Parametric Schedules Ontology</rdfs:label>
 		<dct:abstract>This ontology defines concepts related to parametric schedules, including how to represent individual schedules as well as related date periods, explicit dates, and other concepts needed for parametric schedule representation.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
-		<sm:contentLanguage rdf:datatype="&xsd;anyURI">http://www.w3.org/standards/techs/owl#w3c_all</sm:contentLanguage>
-		<sm:copyright>Copyright (c) 2016-2019 EDM Council, Inc.</sm:copyright>
-		<sm:copyright>Copyright (c) 2018-2019 Object Management Group, Inc.</sm:copyright>
+		<sm:contentLanguage rdf:resource="https://www.w3.org/TR/owl2-quick-reference/"/>
+		<sm:copyright>Copyright (c) 2016-2021 EDM Council, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2018-2021 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/</sm:dependsOn>
 		<sm:fileAbbreviation>fibo-sec-sec-sch</sm:fileAbbreviation>
 		<sm:filename>ParametricSchedules.rdf</sm:filename>
@@ -44,8 +44,9 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/Occurrences/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20190701/Securities/ParametricSchedules/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20210201/Securities/ParametricSchedules/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20180801/Securities/ParametricSchedules.rdf version of this ontology was modified to rename (migrate) the hasDefinition property to isDefinedIn to clarify intent.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20190701/Securities/ParametricSchedules.rdf version of this ontology was modified to eliminate circular definitions.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -79,8 +80,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>calculation period</rdfs:label>
-		<skos:definition>a date period defined as the number of days from the start of the calculation period to the scheduled end date of the period</skos:definition>
-		<skos:editorialNote>This need not be the same as the length given by the Calculation Period Length (Frequency in FpML) in the parametric schedule.</skos:editorialNote>
+		<skos:definition>date period defined as the number of days from the start to the scheduled end of the computation window</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-sch;CalculationPeriodLength">
@@ -125,14 +125,12 @@
 		<rdfs:label>floating-rate note date</rdfs:label>
 		<skos:definition>a calculated date associated with a floating-rate note, also known as a floater or FRN, which is a debt instrument with a variable interest rate</skos:definition>
 		<fibo-fnd-utl-av:abbreviation>FRN date</fibo-fnd-utl-av:abbreviation>
-		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.investopedia.com/terms/f/frn.asp</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-sch;FloatingRateNoteDateRule">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-bd;BusinessDayAdjustment"/>
 		<rdfs:label>floating-rate note date rule</rdfs:label>
 		<skos:definition>a business day adjustment rule applied to floating-rate note instruments</skos:definition>
-		<skos:editorialNote>FpML definition: &quot;Per 2000 ISDA Definitions, Section 4.11, FRN Convention, Eurodollar Convention.&quot; The above definition is from FpML and does not give the meaning or nature of this rule. FpML notes that this is not strictly a Date Roll Rule (but it may be selected in place of one). On inspection of the ISDA 2000 definition text, this may be because the FRN rule contains within it a specification of the Modified Following date roll rule (Date following rule modified by Modification rule). This rule appears in FpML both in the BusinessDayConventionEnum and the RollConventionEnum (for date roll rules and for scheduled event dates respectively). From FpML definition for BusinessDayConventionEnum: &quot;... Note that FRN is included here as a type of business day convention although it does not strictly fall within ISDA&apos;s definition of a Business Day Convention and does not conform to the simple definition given above.&quot; Note that this FRN rule is also included in the FpML enumeration for &quot;RollConventionEnum&quot;. This is the enumeration of possible Calculation Period End Dates and uses the word &quot;Roll&quot; in a completely different sense (the date that the application of some calculation to some amount is rolled over from one rate to the next). Full definition from ISDA 2000 Section 4.11: Section 4.11. FRN Convention; Eurodollar Convention. &quot;FRN Convention&quot; or &quot;Eurodollar Convention&quot; means, in respect of either Payment Dates or Period End Dates for a Swap Transaction and a party, that the Payment Dates or Period End Dates of that party will be each day during the Term of the Swap Transaction that numerically corresponds to the preceding applicable Payment Date or Period End Date, as the case may be, of that party in the calendar month that is the specified number of months after the month in which the preceding applicable Payment Date or Period End Date occurred (or, in the case of the first applicable Payment Date or the Period End Date, the day that numerically corresponds to the Effective Date in the calendar month that is the specified number of months after the month in which the Effective Date occurred), except that (a) if there is not any such numerically corresponding day in the calendar month in which a Payment Date or Period End Date, as the case may be, of that party should occur, then the Payment Date or Period End Date will be the last day that is a Business Day in that month, (b) if a Payment Date or Period End Date, as the case may be, of the party would otherwise fall on a day that is not a Business Day, then the Payment Date or Period End Date will be the first following day that is a Business Day unless that day falls in the next calendar month, in which case the Payment Date or Period End Date will be the first preceding day that is a Business Day and (c) if the preceding applicable Payment Date or Period End Date, as the case may be, of that party occurred on the last day in a calendar month that was a Business Day, then all subsequent applicable Payment Dates or Period End Dates, as the case may be, of that party prior to the Termination Date will be the last day that is a Business Day in the month that is the specified number of months after the month in which the preceding applicable Payment Date or Period End Date occurred.</skos:editorialNote>
 		<fibo-fnd-utl-av:abbreviation>FRN date rule</fibo-fnd-utl-av:abbreviation>
 	</owl:Class>
 	
@@ -170,7 +168,6 @@
 		<rdfs:label>International Money Market (IMM) settlement date rule</rdfs:label>
 		<skos:definition>a settlement date rule as defined in the International Money Market (IMM) settlement dates calendar</skos:definition>
 		<fibo-fnd-utl-av:abbreviation>IMM settlement date rule</fibo-fnd-utl-av:abbreviation>
-		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.investopedia.com/terms/i/imm.asp</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:explanatoryNote>The International Money Market (IMM) is a division of the Chicago Mercantile Exchange (CME) that deals with the trading of currency and interest rate futures and options.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
