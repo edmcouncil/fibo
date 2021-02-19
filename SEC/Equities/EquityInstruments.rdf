@@ -124,13 +124,13 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesRestrictions/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Countries/CountryRepresentation/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20210101/Equities/EquityInstruments/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20210201/Equities/EquityInstruments/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20180801/Equities/EquityInstruments.rdf version of this ontology was revised to replace &apos;publicly-traded share&apos; with &apos;exchange-specific share&apos;, which is the more commonly used designation and corresponds better with the intended semantics of this concept, to merge in concepts that were formerly in a separate ShareTerms ontology, and eliminate deprecated elements.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20190901/Equities/EquityInstruments.rdf version of this ontology was revised to refine the definition of listed share, update definitions to remove leading articles, add missing properties and restrictions, revise the definition of dividend.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20191201/Equities/EquityInstruments.rdf version of this ontology was revised to refine the definition of share to include a restriction for hasSharesOutstanding, eliminate duplication of concepts in LCC, and add the concept of an equity issuer.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20200301/Equities/EquityInstruments.rdf version of this ontology was revised to incorporate additional features required to map the CFI classification scheme to equity instruments, including features specific to preferred shares.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20200801/Equities/EquityInstruments.rdf version of this ontology was revised to incorporate a property allowing representation of the share class, streamline the representation of voting rights and payment form, clean up ambiguous definitions, and eliminate redundant restrictions related to security form.</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20201201/Equities/EquityInstruments.rdf version of this ontology was revised to add concepts covering additional features of preferred shares and move the two exhaustive CFI-specific classes to the Equity CFI individuals ontology.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20201201/Equities/EquityInstruments.rdf version of this ontology was revised to add concepts covering additional features of preferred shares and move the two exhaustive CFI-specific classes to the Equity CFI individuals ontology, and add a property for the number of authorized shares.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -357,6 +357,12 @@
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;issues"/>
 				<owl:someValuesFrom rdf:resource="&fibo-sec-eq-eq;Share"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-eq-eq;hasSharesAuthorized"/>
+				<owl:someValuesFrom rdf:resource="&xsd;nonNegativeInteger"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>equity issuer</rdfs:label>
@@ -1224,12 +1230,21 @@
 		<skos:definition xml:lang="en">indicates the payment status for shares issued</skos:definition>
 	</owl:ObjectProperty>
 	
+	<owl:DatatypeProperty rdf:about="&fibo-sec-eq-eq;hasSharesAuthorized">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasAmount"/>
+		<rdfs:label xml:lang="en">has shares authorized</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-sec-eq-eq;EquityIssuer"/>
+		<rdfs:range rdf:resource="&xsd;nonNegativeInteger"/>
+		<skos:definition xml:lang="en">indicates the maximum number of shares that are permitted to be issued, as established by the board of directors</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">An initial number of authorized shares is typically established at the time of incorporation, and is documented in articles of incorporation.  The number of shares authorized may be extended from time to time by the board of directors as needed, and articles of incorporation and other legal documentation will be amended accordingly.  It includes shares that are available, but not yet issued, for sale to generate capital, and shares available for distribution to insiders as part of their compensation packages.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:DatatypeProperty>
+	
 	<owl:DatatypeProperty rdf:about="&fibo-sec-eq-eq;hasSharesIssued">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasAmount"/>
 		<rdfs:label xml:lang="en">has shares issued</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-eq-eq;EquityIssuer"/>
 		<rdfs:range rdf:resource="&xsd;nonNegativeInteger"/>
-		<skos:definition xml:lang="en">indicates the number of shares authorized for sale by the board of directors, including shares sold to and held by shareholders as well as shares that are available for sale to generate capital, and shares available for distribution to insiders as part of their compensation packages</skos:definition>
+		<skos:definition xml:lang="en">indicates the actual number of shares held by shareholders (i.e., shares outstanding) and treasury shares</skos:definition>
 	</owl:DatatypeProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-sec-eq-eq;hasSharesOutstanding">
