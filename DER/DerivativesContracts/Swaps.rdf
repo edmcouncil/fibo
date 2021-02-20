@@ -88,12 +88,12 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/MarketIndices/BasketIndices/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/20210101/DerivativesContracts/Swaps/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/20210201/DerivativesContracts/Swaps/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20180801/DerivativesContracts/Swaps/ version of this ontology was modified to refine the concept of a unique swap identifier (USI).</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20190201/DerivativesContracts/Swaps/ version of this ontology was modified to eliminate duplication of concepts in LCC.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20200201/DerivativesContracts/Swaps/ version of this ontology was modified to eliminate the property &apos;hasPaymentSchedule&apos; from this ontology in favor of the equivalent property with the same name from FND, adding concepts related to statistical swaps, and revising definitions to be ISO 704 compliant.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20200901/DerivativesContracts/Swaps/ version of this ontology was modified to integrate return swaps and connect swap legs to the swap they comprise, as appropriate, simplify the contract party hierarchy, add basic fixed and floating legs as higher level concepts common to many swaps, and eliminate ambiguity in definitions.</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20201201/DerivativesContracts/Swaps/ version of this ontology was modified to move the property &apos;exchanges&apos; to FND given that it could be applied more generally than with respect to swaps only.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20201201/DerivativesContracts/Swaps/ version of this ontology was modified to move the property &apos;exchanges&apos; to FND given that it could be applied more generally than with respect to swaps only, and facilitate the elimination of the property &apos;mayBeTradedIn&apos;, which was only used in one place and was redundant with the concept of a ListedSecurity / Listing in SEC.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -326,13 +326,6 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;DerivativeInstrument"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;mayBeTradedIn"/>
-				<owl:onClass rdf:resource="&fibo-der-drc-swp;SwapExecutionFacility"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
 				<owl:onProperty rdf:resource="&lcc-lr;isIdentifiedBy"/>
 				<owl:onClass rdf:resource="&fibo-der-drc-swp;UniqueSwapIdentifier"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
@@ -361,7 +354,6 @@
 		<rdfs:label>swap</rdfs:label>
 		<skos:definition>derivative instrument whereby two counterparties agree to exchange periodic streams of cash flows with each other</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom>ISO 10962:2019 Securities and related financial instruments - Classification of financial instruments (CFI) code</fibo-fnd-utl-av:adaptedFrom>
-		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.investopedia.com/terms/s/swap.asp</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:explanatoryNote>The underlying instruments can be almost anything, representing various asset classes, but most swaps involve cash flows (streams of payments or other commitments over time) based on a notional principal amount that both parties agree to.</fibo-fnd-utl-av:explanatoryNote>
 		<fibo-fnd-utl-av:explanatoryNote>Usually, the principal does not change hands. Each cash flow comprises one leg of the swap. One cash flow is generally fixed, while the other is variable, that is, based on a a benchmark interest rate, floating currency exchange rate or index price.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
@@ -406,9 +398,8 @@
 	<owl:Class rdf:about="&fibo-der-drc-swp;SwapExecutionFacility">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-mkt;Exchange"/>
 		<rdfs:label>swap execution facility</rdfs:label>
-		<skos:definition>exchange that enables many participants to execute and trade swaps</skos:definition>
+		<skos:definition>exchange that enables participants to execute and trade swaps</skos:definition>
 		<fibo-fnd-utl-av:abbreviation>SEF</fibo-fnd-utl-av:abbreviation>
-		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.investopedia.com/terms/s/swap-execution-facility-sef.asp</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:explanatoryNote>Swap execution facilities, including trading systems and other platforms, allow for greater transparency and represent a significant shift in the way derivative trading has been done. The Dodd-Frank Act lays the foundation for this change of derivative execution.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
@@ -459,7 +450,6 @@
 		<rdfs:label>swap leg</rdfs:label>
 		<skos:definition>terms defining and the commitment to fulfill cashflow requirements (e.g., interest payments, coupon payments, etc.) for one side of a swap</skos:definition>
 		<skos:editorialNote>For some swaps this may be a commitment to net up the difference between a strike and an outcome, rather than to make a series of cashflows over time. For credit default swaps there are conditional commitments, contingent on the occurrence of a credit event.</skos:editorialNote>
-		<fibo-fnd-utl-av:adaptedFrom>http://www.investopedia.com/terms/i/interestrateswap.asp</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:synonym>swap stream terms</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
@@ -589,7 +579,6 @@
 		<skos:definition>identifier for a swap that is used in recordkeeping and swap data reporting</skos:definition>
 		<fibo-fnd-utl-av:abbreviation>USI</fibo-fnd-utl-av:abbreviation>
 		<fibo-fnd-utl-av:adaptedFrom>CFTC Data Management Branch &apos;Unique Swap Identifier (USI) Data Standard&apos;, October 1, 2012, usidatastandards100112.pdf</fibo-fnd-utl-av:adaptedFrom>
-		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.law.cornell.edu/cfr/text/17/45.5</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-drc-swp;hasFundingLeg">
