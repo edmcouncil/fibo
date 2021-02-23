@@ -5,7 +5,7 @@ prefix owl:   <http://www.w3.org/2002/07/owl#>
 ##
 # banner All classes should be rooted in FND, LCC or FBC domain.
 
-SELECT DISTINCT ?warning ?class ?domainIdentifier
+SELECT DISTINCT ?error ?class ?domainIdentifier
 WHERE 
 {
     ?class a owl:Class .
@@ -13,6 +13,6 @@ WHERE
     FILTER (CONTAINS(str(?class), "edmcouncil"))
     BIND (STRBEFORE(STRAFTER(str(?class),"https://spec.edmcouncil.org/fibo/ontology/"),"/") As ?domainIdentifier)
     FILTER (?domainIdentifier NOT IN ('FND', 'LCC', 'FBC'))
-    BIND (concat ("WARN: Class ", str(?class), " is a top-level class outside FIBO foundations.") AS ?warning)
+    BIND (concat ("PRODERROR: Class ", str(?class), " is a top-level class outside FIBO foundations.") AS ?error)
 }
 ORDER BY ?domainIdentifier
