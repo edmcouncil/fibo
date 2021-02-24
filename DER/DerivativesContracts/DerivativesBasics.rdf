@@ -114,7 +114,7 @@
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/20210201/DerivativesContracts/DerivativesBasics/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20180801/DerivativesContracts/DerivativesBasics.rdf version of this ontology was modified to eliminate duplication with concepts in LCC and eliminate a redundant subclass declaration in observable value.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20200401/DerivativesContracts/DerivativesBasics.rdf version of this ontology was modified to loosen the domain of the hasUnderlier property, which could be either an instrument or leg, refine the definition of Underlier and hasUnderlier based on recent work on swaps, add the definition of a contract for difference (CFD), simplify the contract party hierarchy where the subclasses of contract party do not add semantics, add the concepts of underlying asset valuation and calculation agent, which are needed for various derivatives (moved from forwards) and eliminate the language related to transactions as well as the distinction between an OTC contract and exchange-traded contract / listed security, given how blurry the lines are today, across derivatives.</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20201201/DerivativesContracts/DerivativesBasics.rdf version of this ontology was modified to eliminate hasThirdParty as a superproperty of hasCalculationAgent, which led to unintended reasoning consequences.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20201201/DerivativesContracts/DerivativesBasics.rdf version of this ontology was modified to eliminate hasThirdParty as a superproperty of hasCalculationAgent, which led to unintended reasoning consequences, and added concepts and properties specific to settlement and valuation required for futures, forwards, and options.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -163,7 +163,7 @@
 		<fibo-fnd-utl-av:synonym xml:lang="en">spread trading</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-drc-bsc;DeliveryTerms">
+	<owl:Class rdf:about="&fibo-der-drc-bsc;DerivativeSettlementTerms">
 		<rdfs:subClassOf rdf:resource="&fibo-der-drc-bsc;DerivativeTerms"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;SettlementTerms"/>
 		<rdfs:subClassOf>
@@ -180,7 +180,7 @@
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label>delivery terms</rdfs:label>
+		<rdfs:label>derivative settlement terms</rdfs:label>
 		<skos:definition>settlement terms specifying additional details with respect to what is to be delivered when, to whom, under what conditions at the time of settlement</skos:definition>
 	</owl:Class>
 	
@@ -321,7 +321,8 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasCalculationAgent"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-drc-bsc;CalculationAgent"/>
+				<owl:onClass rdf:resource="&fibo-der-drc-bsc;CalculationAgent"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -332,6 +333,24 @@
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">underlying asset valuation</rdfs:label>
 		<skos:definition xml:lang="en">assessment activity to estimate the value of an underlying asset of a derivative</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-drc-bsc;ValuationTerms">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractualElement"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-arr-asmt;hasDateOfAssessment"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;involves"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-drc-bsc;UnderlyingAssetValuation"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>valuation terms</rdfs:label>
+		<skos:definition>contract terms specific to valuation of the underlying asset(s)</skos:definition>
 	</owl:Class>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-drc-bsc;hasAdditionalCosts">
@@ -348,6 +367,14 @@
 		<skos:definition>indicates the party that is responsible for determining the value of a derivative</skos:definition>
 	</owl:ObjectProperty>
 	
+	<owl:ObjectProperty rdf:about="&fibo-der-drc-bsc;hasSettlementTerms">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-agr-ctr;hasContractualElement"/>
+		<rdfs:label xml:lang="en">has settlement terms</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fbc-fi-fi;DerivativeInstrument"/>
+		<rdfs:range rdf:resource="&fibo-fbc-pas-fpas;SettlementTerms"/>
+		<skos:definition>relates a derivative to contractual terms specific to the settlement process</skos:definition>
+	</owl:ObjectProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-der-drc-bsc;hasUnderlier">
 		<rdfs:subPropertyOf rdf:resource="&lcc-lr;has"/>
 		<rdfs:label>has underlier</rdfs:label>
@@ -360,10 +387,24 @@
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasPrice"/>
 		<rdfs:label>has underlying asset price</rdfs:label>
 		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryPrice"/>
-		<skos:definition>specifies a price for something on which the contract is based, as specified in delivery terms</skos:definition>
+		<skos:definition>specifies a price for something on which the contract is based</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-der-drc-bsc;hasValuationTerms">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-agr-ctr;hasContractualElement"/>
+		<rdfs:label xml:lang="en">has valuation terms</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fbc-fi-fi;DerivativeInstrument"/>
+		<rdfs:range rdf:resource="&fibo-der-drc-bsc;ValuationTerms"/>
+		<skos:definition>relates a derivative to contractual terms specific to valuation of the underlying asset(s)</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:Class rdf:about="&fibo-fbc-fi-fi;DerivativeInstrument">
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasSettlementTerms"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-fpas;SettlementTerms"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
@@ -372,14 +413,14 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;hasContractualElement"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-drc-bsc;DerivativeTerms"/>
+				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasValuationTerms"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-drc-bsc;ValuationTerms"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;hasContractualElement"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-fpas;SettlementTerms"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-drc-bsc;DerivativeTerms"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 	</owl:Class>
