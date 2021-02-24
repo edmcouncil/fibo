@@ -88,7 +88,7 @@
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/20210201/FinancialInstruments/InstrumentPricing/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20200601/FinancialInstruments/InstrumentPricing.rdf version of this ontology was modified to reflect the move of dated collection from arrangements to financial dates.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20200701/FinancialInstruments/InstrumentPricing.rdf version of this ontology was modified to add trading day and trading session, to address ambiguity in some definitions, to add adjusted price and to create a more general hasLotSize property that can be used in various contexts.</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20201201/FinancialInstruments/InstrumentPricing.rdf version of this ontology was modified to replace a redundant concept, calculation formula with formula and add a restriction on SecurityPrice to point to the security.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20201201/FinancialInstruments/InstrumentPricing.rdf version of this ontology was modified to replace a redundant concept, calculation formula with formula, add a general price determination class needed for options, and add a restriction on SecurityPrice to point to the security.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -156,7 +156,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-fi-ip;ClosingPriceDeterminationMethod">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-gao-obj;Strategy"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-ip;PriceDeterminationMethod"/>
 		<rdfs:label xml:lang="en">closing price determination method</rdfs:label>
 		<skos:definition xml:lang="en">strategy for calculating or otherwise determining an official closing price</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">The official closing price is typically the final price at which something trades during regular market hours on an exchange or trading venue.  Because of the evolving nature of online trading in a 24 hour world, every exchange has a method of calculating its official closing price, although that methodology changes from time to time.  They may also publish an adjusted closing price, which reflects changes to the price that reflect corporate actions and after hours trading that occur before the opening of the exchange on the following day. Understanding how the closing price is determined is important to ensure price comparability for a given security across exchanges.</fibo-fnd-utl-av:explanatoryNote>
@@ -262,6 +262,7 @@
 	</owl:Class>
 	
 	<owl:NamedIndividual rdf:about="&fibo-fbc-fi-ip;MeanPriceDetermination">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-ip;PriceDeterminationMethod"/>
 		<rdfs:label xml:lang="en">mean price determination</rdfs:label>
 		<skos:definition xml:lang="en">method for determining a closing price that represents the arithmetic mean of some set of prices consolidated across sources</skos:definition>
 	</owl:NamedIndividual>
@@ -350,6 +351,12 @@
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">price analytic</rdfs:label>
 		<skos:definition xml:lang="en">statistical measure involving security prices</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-fi-ip;PriceDeterminationMethod">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-gao-obj;Strategy"/>
+		<rdfs:label xml:lang="en">price determination method</rdfs:label>
+		<skos:definition xml:lang="en">strategy for calculating or otherwise establishing a price for something</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-fi-ip;PriceSpread">
@@ -554,8 +561,8 @@
 	</owl:DatatypeProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-fi-ip;hasClosingPriceDeterminationMethod">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fbc-fi-ip;hasPriceDeterminationMethod"/>
 		<rdfs:label xml:lang="en">has closing price determination method</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fbc-fi-ip;SecurityPrice"/>
 		<rdfs:range rdf:resource="&fibo-fbc-fi-ip;ClosingPriceDeterminationMethod"/>
 		<skos:definition xml:lang="en">indicates a strategy by which the official closing price is determined</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">This method itself changes quite frequently i.e. the exchange may change the way it computes closing prices.</fibo-fnd-utl-av:explanatoryNote>
@@ -568,6 +575,12 @@
 		<skos:definition xml:lang="en">magnitude of an item (i.e., total quantity)</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">The lot size, referenced in offerings, listings, orders, and trades, typically refers to the number of shares or units. In options trading, lot size represents the total number of contracts contained in one derivative security.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:DatatypeProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fbc-fi-ip;hasPriceDeterminationMethod">
+		<rdfs:label xml:lang="en">has price determination method</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fbc-fi-ip;PriceDeterminationMethod"/>
+		<skos:definition xml:lang="en">indicates a strategy by which a given price is determined</skos:definition>
+	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-fi-ip;hasPricingSource">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;refersTo"/>
