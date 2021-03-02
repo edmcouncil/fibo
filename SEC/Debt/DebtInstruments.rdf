@@ -83,13 +83,13 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/EconomicIndicators/EconomicIndicators/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/InterestRates/InterestRates/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesIssuance/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20210201/Debt/DebtInstruments/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20210301/Debt/DebtInstruments/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20180801/Debt/DebtInstruments.rdf version of this ontology was modified to reflect use of actualExpression as an annotation rather than datatype property, to deprecate maturity-related properties which have been moved to financial instruments more generally, and to simplify restrictions on tradable debt instrument.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20190501/Debt/DebtInstruments.rdf version of this ontology was modified to eliminate deprecated elements.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20190501/Debt/DebtInstruments.rdf version of this ontology was modified to support integration of the bonds ontology.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20190901/Debt/DebtInstruments.rdf version of this ontology was modified to correct the declaration of the property &apos;has estate or death put feature&apos; to remove an erroneous subproperty relationship and integrate the instrument pricing ontology.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20200401/Debt/DebtInstruments.rdf version of this ontology was modified to reflect a change to make redemption provision a child of contractual commitment and move it to financial instruments, as such provisions apply to preferred shares and other instruments in addition to debt, and eliminate non-tradable and tradable debt instrument redemption provisions, which are synonymous, and adjust the hierarchy for call feature, notification provision, and put feature accordingly.</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20200801/Debt/DebtInstruments.rdf version of this ontology was modified to move the property, hasMaturityDate, to Financial Instruments, since a maturity date can apply to a preferred share in addition to a debt instrument or offering rename &apos;mayBeSubordinatedTo&apos;, which violates the policy related to masquerading properties, and eliminate a circular definition and unnecessary references to external sources.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20200801/Debt/DebtInstruments.rdf version of this ontology was modified to move the property, hasMaturityDate, to Financial Instruments, since a maturity date can apply to a preferred share in addition to a debt instrument or offering rename &apos;mayBeSubordinatedTo&apos;, which violates the policy related to masquerading properties, eliminate a circular definition and unnecessary references to external sources, and eliminate call price and put price, which are overreaching and confusing, in favor of monetary price.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -201,14 +201,6 @@
 		<skos:definition>the price over par paid by an issuer to redeem securities when exercising a call provision</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-dbt-dbti;CallPrice">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-ip;SecurityPrice"/>
-		<rdfs:label>call price</rdfs:label>
-		<skos:definition>price at which an asset is redeemed in the event of a call</skos:definition>
-		<fibo-fnd-utl-alx:actualExpression>par value + call premium</fibo-fnd-utl-alx:actualExpression>
-		<fibo-fnd-utl-av:synonym>redemption price</fibo-fnd-utl-av:synonym>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-sec-dbt-dbti;CallSchedule">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-fd;Schedule"/>
 		<rdfs:subClassOf>
@@ -225,7 +217,7 @@
 						<owl:unionOf rdf:parseType="Collection">
 							<rdf:Description rdf:about="&fibo-sec-dbt-dbti;CallPremium">
 							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-sec-dbt-dbti;CallPrice">
+							<rdf:Description rdf:about="&fibo-fnd-acc-cur;MonetaryPrice">
 							</rdf:Description>
 						</owl:unionOf>
 					</owl:Class>
@@ -445,13 +437,6 @@
 		<skos:definition>an amount over par that a debt instrument holder must pay to sell the security early</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-dbt-dbti;PutPrice">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-ip;SecurityPrice"/>
-		<rdfs:label>put price</rdfs:label>
-		<skos:definition>price at which a debt instrument with a put feature may be sold by the holder</skos:definition>
-		<fibo-fnd-utl-alx:actualExpression>par value + put premium</fibo-fnd-utl-alx:actualExpression>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-sec-dbt-dbti;PutSchedule">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-fd;Schedule"/>
 		<rdfs:subClassOf>
@@ -468,7 +453,7 @@
 						<owl:unionOf rdf:parseType="Collection">
 							<rdf:Description rdf:about="&fibo-sec-dbt-dbti;PutPremium">
 							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-sec-dbt-dbti;PutPrice">
+							<rdf:Description rdf:about="&fibo-fnd-acc-cur;MonetaryPrice">
 							</rdf:Description>
 						</owl:unionOf>
 					</owl:Class>
