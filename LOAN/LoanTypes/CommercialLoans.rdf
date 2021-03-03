@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE rdf:RDF [
 	<!ENTITY dct "http://purl.org/dc/terms/">
-	<!ENTITY fibo-be-le-cb "https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/CorporateBodies/">
-	<!ENTITY fibo-be-le-lp "https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/">
 	<!ENTITY fibo-fbc-dae-dbt "https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/">
+	<!ENTITY fibo-fnd-org-fm "https://spec.edmcouncil.org/fibo/ontology/FND/Organizations/FormalOrganizations/">
 	<!ENTITY fibo-fnd-rel-rel "https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
-	<!ENTITY fibo-loan-loan-loan "https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoanBasicTerms/">
+	<!ENTITY fibo-loan-ln-ln "https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanCore/">
 	<!ENTITY fibo-loan-typ-com "https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanTypes/CommercialLoans/">
 	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
 	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
@@ -17,12 +16,11 @@
 ]>
 <rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanTypes/CommercialLoans/"
 	xmlns:dct="http://purl.org/dc/terms/"
-	xmlns:fibo-be-le-cb="https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/CorporateBodies/"
-	xmlns:fibo-be-le-lp="https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/"
 	xmlns:fibo-fbc-dae-dbt="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"
+	xmlns:fibo-fnd-org-fm="https://spec.edmcouncil.org/fibo/ontology/FND/Organizations/FormalOrganizations/"
 	xmlns:fibo-fnd-rel-rel="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
-	xmlns:fibo-loan-loan-loan="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoanBasicTerms/"
+	xmlns:fibo-loan-ln-ln="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanCore/"
 	xmlns:fibo-loan-typ-com="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanTypes/CommercialLoans/"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -35,22 +33,20 @@
 		<rdfs:label xml:lang="en">CommercialLoans</rdfs:label>
 		<dct:abstract>Commercial loans are loans where the loan purpose is some commercial purpose. Note that these are distinguished by the loan purpose not by the borrower type - borrowers may be corporate or personal, though in the majority of cases they would also be corporate loans that is loans with a corporate borrower.</dct:abstract>
 		<sm:fileAbbreviation>fibo-loan-typ-com</sm:fileAbbreviation>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/CorporateBodies/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Parties/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Organizations/FormalOrganizations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoanBasicTerms/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanCore/"/>
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanTypes/CommercialLoans/"/>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Provisional"/>
 	</owl:Ontology>
 	
 	<owl:Class rdf:about="&fibo-loan-typ-com;CommercialLoan">
-		<rdfs:subClassOf rdf:resource="&fibo-loan-loan-loan;LoanDrawdown"/>
+		<rdfs:subClassOf rdf:resource="&fibo-loan-ln-ln;Loan"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-loan-loan-loan;drawnDownBy"/>
+				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;hasBorrower"/>
 				<owl:someValuesFrom rdf:resource="&fibo-loan-typ-com;CommercialLoanBorrower"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -63,34 +59,11 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasIdentity"/>
-				<owl:someValuesFrom>
-					<owl:Class>
-						<owl:unionOf rdf:parseType="Collection">
-							<rdf:Description rdf:about="&fibo-be-le-lp;LegalEntity">
-							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-be-le-lp;LegallyCompetentNaturalPerson">
-							</rdf:Description>
-						</owl:unionOf>
-					</owl:Class>
-				</owl:someValuesFrom>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-org-fm;FormalOrganization"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">commercial loan borrower</rdfs:label>
 		<skos:definition xml:lang="en">The borrower of a Commercial Loan</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">This may be a Corporation, or one or more adult human beings. This is because a commercial loan may be extended to sole trader or partnership.</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-loan-typ-com;CorporateBorrower">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;Borrower"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasIdentity"/>
-				<owl:someValuesFrom rdf:resource="&fibo-be-le-cb;Corporation"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">corporate borrower</rdfs:label>
-		<skos:definition xml:lang="en">A borrower which is a Corporation.</skos:definition>
-		<skos:editorialNote xml:lang="en">Classifying loans by the type of borrower is less common than classifying it by things like collaterial (mortgagees) and so on. So the kind of borrower is not usually the main feature by which we try to classify the loan. So this exists but is not so often referred to.</skos:editorialNote>
 	</owl:Class>
 
 </rdf:RDF>

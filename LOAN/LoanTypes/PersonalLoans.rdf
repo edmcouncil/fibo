@@ -7,7 +7,6 @@
 	<!ENTITY fibo-fnd-rel-rel "https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
 	<!ENTITY fibo-loan-ln-ln "https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanCore/">
-	<!ENTITY fibo-loan-loan-loan "https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoanBasicTerms/">
 	<!ENTITY fibo-loan-typ-per "https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanTypes/PersonalLoans/">
 	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
 	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
@@ -24,7 +23,6 @@
 	xmlns:fibo-fnd-rel-rel="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
 	xmlns:fibo-loan-ln-ln="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanCore/"
-	xmlns:fibo-loan-loan-loan="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoanBasicTerms/"
 	xmlns:fibo-loan-typ-per="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanTypes/PersonalLoans/"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -44,17 +42,15 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanCore/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanTypes/CommercialLoans/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoanBasicTerms/"/>
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanTypes/PersonalLoans/"/>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Provisional"/>
 	</owl:Ontology>
 	
 	<owl:Class rdf:about="&fibo-loan-typ-per;PersonalLoan">
-		<rdfs:subClassOf rdf:resource="&fibo-loan-loan-loan;LoanDrawdown"/>
+		<rdfs:subClassOf rdf:resource="&fibo-loan-ln-ln;Loan"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-loan-loan-loan;drawnDownBy"/>
+				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;hasBorrower"/>
 				<owl:someValuesFrom rdf:resource="&fibo-loan-typ-per;PersonalLoanBorrower"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -71,25 +67,6 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">personal loan borrower</rdfs:label>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-loan-typ-per;PersonalLoanContract">
-		<rdfs:subClassOf rdf:resource="&fibo-loan-ln-ln;Loan"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;hasBorrower"/>
-				<owl:someValuesFrom rdf:resource="&fibo-loan-typ-per;PersonalLoanBorrower"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;definesTermsFor"/>
-				<owl:someValuesFrom rdf:resource="&fibo-loan-typ-per;PersonalLoan"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">personal loan contract</rdfs:label>
-		<skos:definition xml:lang="en">The contract for a loan which is advanced to an individual human beings or two more individual human beings in their personal capacities.</skos:definition>
-		<skos:editorialNote xml:lang="en">This originates from the terms in the PoC Semantic Data Model, which did not distinguish between personal and business loans, but for which a good number of the terms defined for &quot;Loan&quot; apply uniquely to personal loans and not to corporate loans, i.e. information about the borrower which can only be information about an individual. Therefore a separate class of Personal Loan Contract, and Personal Loan, have been defined here so that these facts may be applied at the level at which they are meaningful and relevant. In the case of loans to more than one individual, there is a &quot;Co-borrower&quot;. It should be assumed that the two or more parties are jointly and severally liable for any liabillities incurred under the terms of this Contract.</skos:editorialNote>
 	</owl:Class>
 
 </rdf:RDF>
