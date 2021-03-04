@@ -14,7 +14,6 @@
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
 	<!ENTITY fibo-loan-ln-ev "https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanEvents/">
 	<!ENTITY fibo-loan-ln-ln "https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanCore/">
-	<!ENTITY fibo-loan-loan-loan "https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoanBasicTerms/">
 	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
 	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
 	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
@@ -37,7 +36,6 @@
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
 	xmlns:fibo-loan-ln-ev="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanEvents/"
 	xmlns:fibo-loan-ln-ln="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanCore/"
-	xmlns:fibo-loan-loan-loan="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoanBasicTerms/"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
@@ -66,7 +64,6 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanCore/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/Loans/LoanBasicTerms/"/>
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanEvents/"/>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Provisional"/>
 	</owl:Ontology>
@@ -105,25 +102,6 @@
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">court judgment</rdfs:label>
 		<skos:definition xml:lang="en">decision by a court or other tribunal that resolves a controversy and determines the rights and obligations of the parties</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-loan-ln-ev;DelinquentLoan">
-		<rdfs:subClassOf rdf:resource="&fibo-loan-ln-ev;DisbursedLoan"/>
-		<rdfs:label xml:lang="en">delinquent loan</rdfs:label>
-		<skos:definition xml:lang="en">A loan which is an active loan (in Repayment phase), which is in default.</skos:definition>
-		<skos:editorialNote xml:lang="en">Possible outcomes including settlement where the loan is not paid off in full but a settlement is arrived at in which this is considered to be closed. Legal Proceedings may undertaken be in relation to Loan Defaults. Default versus Arrears? There are states within the space of being in arrears where it is not yet in default unless the borrower has not paid within a given period of time. For instance a decision is made after e.g. 3 months, when it is decided they are in default - a &quot;Notice of Default&quot; is then served, leading into the set of legal events we see in the Loan Default Proceedings.</skos:editorialNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-loan-ln-ev;DisbursedLoan">
-		<rdfs:subClassOf rdf:resource="&fibo-loan-loan-loan;LoanDrawdown"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-loan-ln-ev;hasLoanPhase"/>
-				<owl:someValuesFrom rdf:resource="&fibo-loan-ln-ev;RepaymentPhase"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">disbursed loan</rdfs:label>
-		<owl:disjointWith rdf:resource="&fibo-loan-ln-ev;RepaidLoan"/>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-ln-ev;LegalProceeding">
@@ -170,17 +148,6 @@
 		<rdfs:label xml:lang="en">prepayment</rdfs:label>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-loan-ln-ev;RepaidLoan">
-		<rdfs:subClassOf rdf:resource="&fibo-loan-loan-loan;LoanDrawdown"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-loan-ln-ev;hasLoanPhase"/>
-				<owl:someValuesFrom rdf:resource="&fibo-loan-ln-ev;LoanPaidInFull"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">repaid loan</rdfs:label>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-loan-ln-ev;RepaymentPhase">
 		<rdfs:subClassOf rdf:resource="&fibo-loan-ln-ev;LoanPhase"/>
 		<rdfs:label xml:lang="en">repayment phase</rdfs:label>
@@ -195,7 +162,7 @@
 	<owl:ObjectProperty rdf:about="&fibo-loan-ln-ev;hasDisbursementDate">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasExplicitDate"/>
 		<rdfs:label xml:lang="en">disbursement date</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-ln-ev;DisbursedLoan"/>
+		<rdfs:domain rdf:resource="&fibo-loan-ln-ln;Loan"/>
 		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
 	</owl:ObjectProperty>
 	
@@ -209,13 +176,13 @@
 	
 	<owl:ObjectProperty rdf:about="&fibo-loan-ln-ev;hasLoanPhase">
 		<rdfs:label xml:lang="en">has loan phase</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-loan-loan;LoanDrawdown"/>
+		<rdfs:domain rdf:resource="&fibo-loan-ln-ln;Loan"/>
 		<rdfs:range rdf:resource="&fibo-loan-ln-ev;LoanPhase"/>
 	</owl:ObjectProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-loan-ln-ev;inDefault">
 		<rdfs:label xml:lang="en">in default</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-ln-ev;DisbursedLoan"/>
+		<rdfs:domain rdf:resource="&fibo-loan-ln-ln;Loan"/>
 		<rdfs:range rdf:resource="&xsd;boolean"/>
 		<skos:definition xml:lang="en">Whether the loan is in default.</skos:definition>
 	</owl:DatatypeProperty>
@@ -228,7 +195,7 @@
 	
 	<owl:DatatypeProperty rdf:about="&fibo-loan-ln-ev;isDeferred">
 		<rdfs:label xml:lang="en">is deferred</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-ln-ev;DisbursedLoan"/>
+		<rdfs:domain rdf:resource="&fibo-loan-ln-ln;Loan"/>
 		<rdfs:range rdf:resource="&xsd;boolean"/>
 	</owl:DatatypeProperty>
 	
@@ -237,13 +204,6 @@
 		<rdfs:domain rdf:resource="&fibo-loan-ln-ev;LoanDefaultProceeding"/>
 		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
 		<skos:definition xml:lang="en">Undefined PoC SDM Notes: Default or Foreclosure amount - Total default amount before the application of sale proceeds and recoveries.&amp;nbsp; (AO 146, RR 135) Loan Default Proceeding_cd= (1) Default amount &lt;/p&gt; &lt;p&gt; Sale price - Price achieved on sale of property ( AO 147, RR 137 )&amp;nbsp; Loan Default Proceeding_cd= (2) Property Sale &lt;/p&gt; &lt;p&gt; Loss on Sale&amp;nbsp;&amp;nbsp; Total loss net of fees, accrued interest etc. after application of sale proceeds (excluding prepayment charge if subordinate to principal recoveries). Show any gain on sale as a negative number (AO 148, RR 138 )&amp;nbsp; Loan Default Proceeding_cd = (3) Loss amount &lt;/p&gt; &lt;p&gt; Cumulative Reocveries - ony relevant for cases with losses&amp;nbsp; ( AO 149, RR 139 )&amp;nbsp; Loan Default Proceeding_cd =&amp;nbsp; (4) Recoveries &lt;/p&gt; &lt;p&gt; Professional Negligence Recoveries - Any amounts received in settlement or as a result of professional negligence claims against surveyors, solicitors etc. net of any fees / costs ( AO 150, RR 140 )&amp;nbsp; Loan Default Proceeding_cd = (5) Professional Negligence &lt;/p&gt;&lt;br /&gt;</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-loan-ln-ev;repaymentDate">
-		<rdfs:label xml:lang="en">repayment date</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-ln-ev;RepaidLoan"/>
-		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Date"/>
-		<skos:definition xml:lang="en">The date the loan was deemed to be repaid.</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-loan-ln-ev;takesPlaceUnder">
