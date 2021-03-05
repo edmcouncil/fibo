@@ -128,7 +128,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>card account</rdfs:label>
-		<skos:definition>account associated with a payment card</skos:definition>
+		<skos:definition>account that is evidenced by a payment card</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-crd;CardAuthenticationValue">
@@ -332,7 +332,6 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-crd;CreditCardAccount">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;CreditFacility"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-crd;CardAccount"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-caa;LoanOrCreditAccount"/>
 		<rdfs:subClassOf>
@@ -345,6 +344,52 @@
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-pas-caa;realizes"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-crd;CreditCardProduct"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasRepresentation"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-crd;CreditCard"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isDefinedIn"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-crd;CreditCardAgreement"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>credit card account</rdfs:label>
+		<skos:definition>card account that is represented by a one or more credit cards</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-pas-crd;CreditCardAgreement">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;CommittedCreditFacility"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-caa;AccountSpecificServiceAgreement"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;hasBorrower"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-crd;Cardholder"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;hasLender"/>
+				<owl:someValuesFrom>
+					<owl:Class>
+						<owl:unionOf rdf:parseType="Collection">
+							<rdf:Description rdf:about="&fibo-fbc-fi-fi;Issuer">
+							</rdf:Description>
+							<rdf:Description rdf:about="&fibo-fbc-pas-fpas;FinancialServiceProvider">
+							</rdf:Description>
+						</owl:unionOf>
+					</owl:Class>
+				</owl:someValuesFrom>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-crd;CreditCardAccount"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -543,6 +588,25 @@
 		<fibo-fnd-utl-av:explanatoryNote>Some debit cards may also be used as credit cards.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-fbc-pas-crd;PaymentCardAgreement">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;CreditAgreement"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-caa;AccountSpecificServiceAgreement"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;isNegotiable"/>
+				<owl:hasValue rdf:datatype="&xsd;boolean">false</owl:hasValue>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;isAssignable"/>
+				<owl:hasValue rdf:datatype="&xsd;boolean">false</owl:hasValue>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>payment card agreement</rdfs:label>
+		<skos:definition>debt instrument in the form of a rectangular piece of plastic or metal issued by a financial services that enables the cardholder to withdraw or borrow funds</skos:definition>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-fbc-pas-crd;PrimaryCardAccountNumber">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-caa;AccountIdentifier"/>
 		<rdfs:subClassOf>
@@ -571,6 +635,14 @@
 		<rdfs:label>Visa network</rdfs:label>
 		<skos:definition>credit card network that oversees the Visa Signature benefits associated with certain credit cards, such as premium rental car privileges and hotel perks</skos:definition>
 	</owl:NamedIndividual>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fbc-pas-crd;hasCardIssuer">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;isIssuedBy"/>
+		<rdfs:label>has credit card network</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fbc-pas-crd;CreditCardNetwork"/>
+		<rdfs:range rdf:resource="&fibo-fbc-pas-crd;CreditCardNetwork"/>
+		<skos:definition>indicates the underlying network for credit card product</skos:definition>
+	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-pas-crd;hasCardVerificationCode">
 		<rdfs:label>has card verification code</rdfs:label>
