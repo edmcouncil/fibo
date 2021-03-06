@@ -99,14 +99,15 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-caa;CustomerAccount"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-pas-caa;hasPrimaryAccountHolder"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-crd;Cardholder"/>
+				<owl:onProperty rdf:resource="&fibo-fbc-pas-caa;isLinkedToAccount"/>
+				<owl:onClass rdf:resource="&fibo-fbc-pas-caa;CustomerAccount"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-pas-caa;isLinkedToAccount"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-caa;CustomerAccount"/>
+				<owl:onProperty rdf:resource="&fibo-fbc-pas-caa;hasPrimaryAccountHolder"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-crd;Cardholder"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -123,12 +124,18 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isDefinedIn"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-crd;PaymentCardAgreement"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
 				<owl:onProperty rdf:resource="&lcc-lr;isIdentifiedBy"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-crd;PrimaryCardAccountNumber"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>card account</rdfs:label>
-		<skos:definition>account that is evidenced by a payment card</skos:definition>
+		<skos:definition>account whose terms and conditions are defined in a card agreement that is represented by a payment card</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-crd;CardAuthenticationValue">
@@ -191,8 +198,14 @@
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-pas-caa;isRealizedBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-crd;CardAccount"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label>card product</rdfs:label>
-		<skos:definition>financial product involving the issuance of credit and debit cards</skos:definition>
+		<skos:definition>financial product involving the issuance of payment cards</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-crd;CardSecurityCode">
@@ -294,30 +307,9 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-crd;PaymentCard"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;represents"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;isEvidenceFor"/>
 				<owl:onClass rdf:resource="&fibo-fbc-pas-crd;CreditCardAccount"/>
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;hasBorrower"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-crd;Cardholder"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;hasLender"/>
-				<owl:someValuesFrom>
-					<owl:Class>
-						<owl:unionOf rdf:parseType="Collection">
-							<rdf:Description rdf:about="&fibo-fbc-fi-fi;Issuer">
-							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-fbc-pas-fpas;FinancialServiceProvider">
-							</rdf:Description>
-						</owl:unionOf>
-					</owl:Class>
-				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -359,12 +351,12 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>credit card account</rdfs:label>
-		<skos:definition>card account that is represented by a one or more credit cards</skos:definition>
+		<skos:definition>card account whose terms and conditions are defined in a credit card agreement that is represented by a credit card</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-crd;CreditCardAgreement">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;CardAgreement"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;CommittedCreditFacility"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-caa;AccountSpecificServiceAgreement"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;hasBorrower"/>
@@ -388,18 +380,18 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-crd;CreditCardAccount"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;isEvidencedBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-crd;CreditCard"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasRepresentation"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-crd;CreditCard"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-crd;CreditCardAccount"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label>credit card account</rdfs:label>
-		<skos:definition>card account that is represented by a one or more credit cards</skos:definition>
+		<rdfs:label>credit card agreement</rdfs:label>
+		<skos:definition>account-specific credit facility that specifies the terms and conditions under which the credit card is offered to the cardholder by the issuer</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-crd;CreditCardNetwork">
@@ -450,7 +442,7 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-crd;PaymentCard"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;represents"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;isEvidenceFor"/>
 				<owl:onClass rdf:resource="&fibo-fbc-pas-crd;DebitCardAccount"/>
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
@@ -528,19 +520,7 @@
 	</owl:NamedIndividual>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-crd;PaymentCard">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;DebtInstrument"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;isNegotiable"/>
-				<owl:hasValue rdf:datatype="&xsd;boolean">false</owl:hasValue>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;isAssignable"/>
-				<owl:hasValue rdf:datatype="&xsd;boolean">false</owl:hasValue>
-			</owl:Restriction>
-		</rdfs:subClassOf>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-doc;LegalDocument"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-arr-doc;hasExpirationDate"/>
@@ -564,27 +544,12 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-pas-caa;isRealizedBy"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;isEvidenceFor"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-crd;CardAccount"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isIssuedBy"/>
-				<owl:someValuesFrom>
-					<owl:Class>
-						<owl:unionOf rdf:parseType="Collection">
-							<rdf:Description rdf:about="&fibo-fbc-fi-fi;Issuer">
-							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-fbc-pas-fpas;FinancialServiceProvider">
-							</rdf:Description>
-						</owl:unionOf>
-					</owl:Class>
-				</owl:someValuesFrom>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label>payment card</rdfs:label>
-		<skos:definition>debt instrument in the form of a rectangular piece of plastic or metal issued by a financial services that enables the cardholder to withdraw or borrow funds</skos:definition>
+		<skos:definition>legal document issued by a financial services provider that enables the cardholder to access the funds in the customer&apos;s designated bank accounts, or through a credit account and make payments by electronic funds transfer and access automated teller machines (ATMs)</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote>Some debit cards may also be used as credit cards.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
@@ -593,18 +558,30 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-caa;AccountSpecificServiceAgreement"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;isNegotiable"/>
-				<owl:hasValue rdf:datatype="&xsd;boolean">false</owl:hasValue>
+				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;hasContractParty"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-fi;Issuer"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;isAssignable"/>
-				<owl:hasValue rdf:datatype="&xsd;boolean">false</owl:hasValue>
+				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;hasContractParty"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-crd;Cardholder"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;isEvidencedBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-crd;PaymentCard"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-crd;CardAccount"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>payment card agreement</rdfs:label>
-		<skos:definition>debt instrument in the form of a rectangular piece of plastic or metal issued by a financial services that enables the cardholder to withdraw or borrow funds</skos:definition>
+		<skos:definition>account-specific credit agreement that specifies the terms and conditions under which the payment card is offered to the cardholder by the issuer</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-crd;PrimaryCardAccountNumber">
