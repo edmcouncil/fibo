@@ -355,8 +355,8 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-crd;CreditCardAgreement">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;CardAgreement"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;CommittedCreditFacility"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-crd;PaymentCardAgreement"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;hasBorrower"/>
@@ -366,16 +366,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;hasLender"/>
-				<owl:someValuesFrom>
-					<owl:Class>
-						<owl:unionOf rdf:parseType="Collection">
-							<rdf:Description rdf:about="&fibo-fbc-fi-fi;Issuer">
-							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-fbc-pas-fpas;FinancialServiceProvider">
-							</rdf:Description>
-						</owl:unionOf>
-					</owl:Class>
-				</owl:someValuesFrom>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-crd;IssuingFinancialInstitution"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -499,6 +490,15 @@
 		<skos:definition>credit card network and card issuer offering benefits like secondary rental car collision insurance</skos:definition>
 	</owl:NamedIndividual>
 	
+	<owl:Class rdf:about="&fibo-fbc-pas-crd;IssuingFinancialInstitution">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;Issuer"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;FinancialServiceProvider"/>
+		<rdfs:label>issuing financial institution</rdfs:label>
+		<skos:definition>issuer and financial services provider that issues payment cards or performs, facilitates, or supports issuing services including but not limited to issuing banks and issuing processors</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.pcisecuritystandards.org/pci_security/glossary</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:synonym>issuing bank</fibo-fnd-utl-av:synonym>
+	</owl:Class>
+	
 	<owl:NamedIndividual rdf:about="&fibo-fbc-pas-crd;JCBNetwork">
 		<rdf:type rdf:resource="&fibo-fbc-pas-crd;CreditCardNetwork"/>
 		<rdfs:label>JCB network</rdfs:label>
@@ -549,8 +549,10 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>payment card</rdfs:label>
+		<rdfs:seeAlso rdf:resource="https://www.irs.gov/payments/payment-card-transactions-faqs"/>
 		<skos:definition>legal document issued by a financial services provider that enables the cardholder to access the funds in the customer&apos;s designated bank accounts, or through a credit account and make payments by electronic funds transfer and access automated teller machines (ATMs)</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote>Some debit cards may also be used as credit cards.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:explanatoryNote>For purposes of Payment Card Industry Data Security Standard (PCI DSS), a payment card is any payment card/device that bears the logo of the founding members of PCI SSC, which are American Express, Discover Financial Services, JCB International, MasterCard, or Visa, Inc.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:explanatoryNote>The term payment card includes credit cards, debit cards, and stored-value cards, as well as payment through any distinctive marks of a payment card (such as a credit card number).  A payment card is issued under an agreement that provides standards and mechanisms for settling the transactions between a merchant acquiring bank or similar entity and the providers who accept the cards as payment.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-crd;PaymentCardAgreement">
@@ -559,13 +561,13 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;hasContractParty"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-fi;Issuer"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-crd;Cardholder"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;hasContractParty"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-crd;Cardholder"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-crd;IssuingFinancialInstitution"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -600,6 +602,14 @@
 		<fibo-fnd-utl-av:synonym>primary account number</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-fbc-pas-crd;SmartCard">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-crd;PaymentCard"/>
+		<rdfs:label>smart card</rdfs:label>
+		<skos:definition>payment card that has integrated circuits embedded within it</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.pcisecuritystandards.org/pci_security/glossary</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:explanatoryNote>The circuits, also referred to as the &apos;chip,&apos; contain payment card data including but not limited to data equivalent to the magnetic-stripe data.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-fbc-pas-crd;ThreeDigitVerificationCodeOrValue">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-crd;CardVerificationCodeOrValue"/>
 		<rdfs:label>three-digit verification code or value</rdfs:label>
@@ -612,14 +622,6 @@
 		<rdfs:label>Visa network</rdfs:label>
 		<skos:definition>credit card network that oversees the Visa Signature benefits associated with certain credit cards, such as premium rental car privileges and hotel perks</skos:definition>
 	</owl:NamedIndividual>
-	
-	<owl:ObjectProperty rdf:about="&fibo-fbc-pas-crd;hasCardIssuer">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;isIssuedBy"/>
-		<rdfs:label>has credit card network</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fbc-pas-crd;CreditCardNetwork"/>
-		<rdfs:range rdf:resource="&fibo-fbc-pas-crd;CreditCardNetwork"/>
-		<skos:definition>indicates the underlying network for credit card product</skos:definition>
-	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-pas-crd;hasCardVerificationCode">
 		<rdfs:label>has card verification code</rdfs:label>
