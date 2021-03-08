@@ -62,15 +62,15 @@
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
-	<owl:Class rdf:about="&fibo-fnd-arr-rep;Applicant">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-rep;Requester"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-rep;Submitter"/>
-		<rdfs:label xml:lang="en">applicant</rdfs:label>
-		<skos:definition xml:lang="en">party that makes a formal application for something</skos:definition>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-fnd-arr-rep;Application">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-doc;Document"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-dt-fd;hasDateReceived"/>
+				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-arr-rep;hasApplicationDate"/>
@@ -81,17 +81,11 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-arr-rep;isSubmittedBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-arr-rep;Applicant"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-dt-fd;hasDateReceived"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-arr-rep;Requester"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>application</rdfs:label>
-		<skos:definition>request submitted by an applicant to receive something (e.g. a licence, a loan, a membership) accompanied by documentation of pertinent information to determine whether the request should be granted</skos:definition>
+		<skos:definition>document submitted by an applicant (e.g. a licence, a loan, a membership), including pertinent information to determine whether the request should be granted</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-arr-rep;Report">
@@ -112,15 +106,23 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-arr-rep;isSubmittedTo"/>
-				<owl:onClass rdf:resource="&fibo-fnd-pty-pty;PartyInRole"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-arr-rep;hasReportDateTime"/>
+				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;DateTime"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-arr-doc;hasDateOfIssuance"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;Date"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-arr-rep;hasReportDate"/>
+				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-arr-rep;isSubmittedTo"/>
+				<owl:onClass rdf:resource="&fibo-fnd-pty-pty;PartyInRole"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -136,7 +138,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>report</rdfs:label>
-		<skos:definition>document organized in a narrative, graphic, or tabular form, prepared on ad hoc, periodic, recurring, regular, or as required basis</skos:definition>
+		<skos:definition>document that provides a structured description of something, prepared on ad hoc, periodic, recurring, regular, or as required basis</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote>Reports may refer to specific periods, events, occurrences, or subjects, and may be communicated or presented in oral, electronic, or written form.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
@@ -223,8 +225,24 @@
 	<owl:ObjectProperty rdf:about="&fibo-fnd-arr-rep;hasApplicationDate">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-arr-rep;hasRequestDate"/>
 		<rdfs:label xml:lang="en">has application date</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fnd-arr-rep;Application"/>
 		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
-		<skos:definition xml:lang="en">date on which an an application was completed and submitted</skos:definition>
+		<skos:definition xml:lang="en">date on which an application was signed and submitted</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-arr-rep;hasReportDate">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-arr-doc;hasDateOfIssuance"/>
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasExplicitDate"/>
+		<rdfs:label xml:lang="en">has report date</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
+		<skos:definition xml:lang="en">date on which a report was issued</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-arr-rep;hasReportDateTime">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDateTime"/>
+		<rdfs:label xml:lang="en">has report date time</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;DateTime"/>
+		<skos:definition xml:lang="en">date and time at which a report was issued</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-arr-rep;hasRequestDate">
