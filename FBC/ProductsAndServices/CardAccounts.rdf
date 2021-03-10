@@ -57,9 +57,9 @@
 		<rdfs:label>Card Accounts Ontology</rdfs:label>
 		<dct:abstract>This ontology defines account-related concepts that are specific to credit and debit cards.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
-		<sm:contentLanguage rdf:datatype="&xsd;anyURI">http://www.w3.org/standards/techs/owl#w3c_all</sm:contentLanguage>
-		<sm:copyright>Copyright (c) 2020 EDM Council, Inc.</sm:copyright>
-		<sm:copyright>Copyright (c) 2020 Object Management Group, Inc.</sm:copyright>
+		<sm:contentLanguage rdf:datatype="&xsd;anyURI">https://www.w3.org/TR/owl2-quick-reference/</sm:contentLanguage>
+		<sm:copyright>Copyright (c) 2020-2021 EDM Council, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2020-2021 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"/>
 		<sm:dependsOn rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"/>
 		<sm:dependsOn rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/ClientsAndAccounts/"/>
@@ -99,14 +99,15 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-caa;CustomerAccount"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-pas-caa;hasPrimaryAccountHolder"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-crd;Cardholder"/>
+				<owl:onProperty rdf:resource="&fibo-fbc-pas-caa;isLinkedToAccount"/>
+				<owl:onClass rdf:resource="&fibo-fbc-pas-caa;CustomerAccount"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-pas-caa;isLinkedToAccount"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-caa;CustomerAccount"/>
+				<owl:onProperty rdf:resource="&fibo-fbc-pas-caa;hasPrimaryAccountHolder"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-crd;Cardholder"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -123,29 +124,35 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isDefinedIn"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-crd;PaymentCardAgreement"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
 				<owl:onProperty rdf:resource="&lcc-lr;isIdentifiedBy"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-crd;PrimaryCardAccountNumber"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>card account</rdfs:label>
-		<skos:definition>account associated with a payment card</skos:definition>
+		<skos:definition>account whose terms and conditions are defined in a card agreement that is represented by a payment card</skos:definition>
 	</owl:Class>
 	
-	<owl:NamedIndividual rdf:about="&fibo-fbc-pas-crd;CardAuthenticationValue">
-		<rdf:type rdf:resource="&fibo-fbc-pas-crd;MagneticStripeVerificationCodeOrValue"/>
+	<owl:Class rdf:about="&fibo-fbc-pas-crd;CardAuthenticationValue">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-crd;MagneticStripeVerificationCodeOrValue"/>
 		<rdfs:label>card authentication value</rdfs:label>
 		<skos:definition>card verification value specifically for JCB payment cards</skos:definition>
 		<fibo-fnd-utl-av:abbreviation>CAV</fibo-fnd-utl-av:abbreviation>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.pcisecuritystandards.org/pci_security/glossary</fibo-fnd-utl-av:adaptedFrom>
-	</owl:NamedIndividual>
+	</owl:Class>
 	
-	<owl:NamedIndividual rdf:about="&fibo-fbc-pas-crd;CardAuthenticationValue2">
-		<rdf:type rdf:resource="&fibo-fbc-pas-crd;ThreeDigitVerificationCodeOrValue"/>
+	<owl:Class rdf:about="&fibo-fbc-pas-crd;CardAuthenticationValue2">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-crd;ThreeDigitVerificationCodeOrValue"/>
 		<rdfs:label>card authentication value 2</rdfs:label>
 		<skos:definition>card verification value specifically for JCB payment cards</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.pcisecuritystandards.org/pci_security/glossary</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:synonym>CAV2</fibo-fnd-utl-av:synonym>
-	</owl:NamedIndividual>
+	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-crd;CardExpirationDate">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
@@ -153,13 +160,13 @@
 		<skos:definition>date on which a given payment card expires</skos:definition>
 	</owl:Class>
 	
-	<owl:NamedIndividual rdf:about="&fibo-fbc-pas-crd;CardIdentificationNumber">
-		<rdf:type rdf:resource="&fibo-fbc-pas-crd;ThreeDigitVerificationCodeOrValue"/>
+	<owl:Class rdf:about="&fibo-fbc-pas-crd;CardIdentificationNumber">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-crd;ThreeDigitVerificationCodeOrValue"/>
 		<rdfs:label>card identification number</rdfs:label>
 		<skos:definition>card verification value specifically for American Express and Discover payment cards</skos:definition>
 		<fibo-fnd-utl-av:abbreviation>CID</fibo-fnd-utl-av:abbreviation>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.pcisecuritystandards.org/pci_security/glossary</fibo-fnd-utl-av:adaptedFrom>
-	</owl:NamedIndividual>
+	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-crd;CardProduct">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;FinancialProduct"/>
@@ -191,33 +198,39 @@
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-pas-caa;isRealizedBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-crd;CardAccount"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label>card product</rdfs:label>
-		<skos:definition>financial product involving the issuance of credit and debit cards</skos:definition>
+		<skos:definition>financial product involving the issuance of payment cards</skos:definition>
 	</owl:Class>
 	
-	<owl:NamedIndividual rdf:about="&fibo-fbc-pas-crd;CardSecurityCode">
-		<rdf:type rdf:resource="&fibo-fbc-pas-crd;MagneticStripeVerificationCodeOrValue"/>
+	<owl:Class rdf:about="&fibo-fbc-pas-crd;CardSecurityCode">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-crd;MagneticStripeVerificationCodeOrValue"/>
 		<rdfs:label>card security code</rdfs:label>
 		<skos:definition>card verification value specifically for American Express payment cards</skos:definition>
 		<fibo-fnd-utl-av:abbreviation>CSC</fibo-fnd-utl-av:abbreviation>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.pcisecuritystandards.org/pci_security/glossary</fibo-fnd-utl-av:adaptedFrom>
-	</owl:NamedIndividual>
+	</owl:Class>
 	
-	<owl:NamedIndividual rdf:about="&fibo-fbc-pas-crd;CardValidationCode">
-		<rdf:type rdf:resource="&fibo-fbc-pas-crd;MagneticStripeVerificationCodeOrValue"/>
+	<owl:Class rdf:about="&fibo-fbc-pas-crd;CardValidationCode">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-crd;MagneticStripeVerificationCodeOrValue"/>
 		<rdfs:label>card validation code</rdfs:label>
 		<skos:definition>card verification code specifically for Mastercard payment cards</skos:definition>
 		<fibo-fnd-utl-av:abbreviation>PAN CVC</fibo-fnd-utl-av:abbreviation>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.pcisecuritystandards.org/pci_security/glossary</fibo-fnd-utl-av:adaptedFrom>
-	</owl:NamedIndividual>
+	</owl:Class>
 	
-	<owl:NamedIndividual rdf:about="&fibo-fbc-pas-crd;CardValidationCode2">
-		<rdf:type rdf:resource="&fibo-fbc-pas-crd;ThreeDigitVerificationCodeOrValue"/>
+	<owl:Class rdf:about="&fibo-fbc-pas-crd;CardValidationCode2">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-crd;ThreeDigitVerificationCodeOrValue"/>
 		<rdfs:label>card validation code 2</rdfs:label>
 		<skos:definition>card verification value specifically for Mastercard payment cards</skos:definition>
 		<fibo-fnd-utl-av:abbreviation>PAN CVC2</fibo-fnd-utl-av:abbreviation>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.pcisecuritystandards.org/pci_security/glossary</fibo-fnd-utl-av:adaptedFrom>
-	</owl:NamedIndividual>
+	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-crd;CardVerificationCodeOrValue">
 		<rdfs:subClassOf rdf:resource="&lcc-lr;CodeElement"/>
@@ -239,21 +252,21 @@
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.pcisecuritystandards.org/pci_security/glossary</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
 	
-	<owl:NamedIndividual rdf:about="&fibo-fbc-pas-crd;CardVerificationValue">
-		<rdf:type rdf:resource="&fibo-fbc-pas-crd;MagneticStripeVerificationCodeOrValue"/>
+	<owl:Class rdf:about="&fibo-fbc-pas-crd;CardVerificationValue">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-crd;MagneticStripeVerificationCodeOrValue"/>
 		<rdfs:label>card verification value</rdfs:label>
 		<skos:definition>card verification value specifically for Visa and Discover payment cards</skos:definition>
 		<fibo-fnd-utl-av:abbreviation>CVV</fibo-fnd-utl-av:abbreviation>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.pcisecuritystandards.org/pci_security/glossary</fibo-fnd-utl-av:adaptedFrom>
-	</owl:NamedIndividual>
+	</owl:Class>
 	
-	<owl:NamedIndividual rdf:about="&fibo-fbc-pas-crd;CardVerificationValue2">
-		<rdf:type rdf:resource="&fibo-fbc-pas-crd;ThreeDigitVerificationCodeOrValue"/>
+	<owl:Class rdf:about="&fibo-fbc-pas-crd;CardVerificationValue2">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-crd;ThreeDigitVerificationCodeOrValue"/>
 		<rdfs:label>card verification value 2</rdfs:label>
 		<skos:definition>card verification value specifically for Visa payment cards</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.pcisecuritystandards.org/pci_security/glossary</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:synonym>CVV2</fibo-fnd-utl-av:synonym>
-	</owl:NamedIndividual>
+	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-crd;Cardholder">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-caa;AccountHolder"/>
@@ -294,30 +307,9 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-crd;PaymentCard"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;represents"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;isEvidenceFor"/>
 				<owl:onClass rdf:resource="&fibo-fbc-pas-crd;CreditCardAccount"/>
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;hasBorrower"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-crd;Cardholder"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;hasLender"/>
-				<owl:someValuesFrom>
-					<owl:Class>
-						<owl:unionOf rdf:parseType="Collection">
-							<rdf:Description rdf:about="&fibo-fbc-fi-fi;Issuer">
-							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-fbc-pas-fpas;FinancialServiceProvider">
-							</rdf:Description>
-						</owl:unionOf>
-					</owl:Class>
-				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -352,8 +344,45 @@
 				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-crd;CreditCard"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isDefinedIn"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-crd;CreditCardAgreement"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label>credit card account</rdfs:label>
-		<skos:definition>card account that is represented by a one or more credit cards</skos:definition>
+		<skos:definition>card account whose terms and conditions are defined in a credit card agreement that is represented by a credit card</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-pas-crd;CreditCardAgreement">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;CommittedCreditFacility"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-crd;PaymentCardAgreement"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;hasBorrower"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-crd;Cardholder"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;hasLender"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-crd;IssuingFinancialInstitution"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;isEvidencedBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-crd;CreditCard"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-crd;CreditCardAccount"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>credit card agreement</rdfs:label>
+		<skos:definition>account-specific credit facility that specifies the terms and conditions under which the credit card is offered to the cardholder by the issuer</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-crd;CreditCardNetwork">
@@ -404,7 +433,7 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-crd;PaymentCard"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;represents"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;isEvidenceFor"/>
 				<owl:onClass rdf:resource="&fibo-fbc-pas-crd;DebitCardAccount"/>
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
@@ -461,10 +490,20 @@
 		<skos:definition>credit card network and card issuer offering benefits like secondary rental car collision insurance</skos:definition>
 	</owl:NamedIndividual>
 	
+	<owl:Class rdf:about="&fibo-fbc-pas-crd;IssuingFinancialInstitution">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;Issuer"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;FinancialServiceProvider"/>
+		<rdfs:label>issuing financial institution</rdfs:label>
+		<skos:definition>issuer and financial services provider that issues payment cards or performs, facilitates, or supports issuing services including but not limited to issuing banks and issuing processors</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.pcisecuritystandards.org/pci_security/glossary</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:synonym>issuing bank</fibo-fnd-utl-av:synonym>
+	</owl:Class>
+	
 	<owl:NamedIndividual rdf:about="&fibo-fbc-pas-crd;JCBNetwork">
 		<rdf:type rdf:resource="&fibo-fbc-pas-crd;CreditCardNetwork"/>
 		<rdfs:label>JCB network</rdfs:label>
 		<skos:definition>credit card network based in Japan, with coverage throughout Asia, with strategic partners worldwide</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>JCB Co., Ltd., (formerly Japan Credit Bureau) is a credit card company based in Tokyo, Japan. As of 2020, it operates in 23 countries with over 130 million customers. In the United States, it is not a primary credit card network but has an association with the Discover Network to enable use of JCB cards.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:NamedIndividual>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-crd;MagneticStripeVerificationCodeOrValue">
@@ -481,19 +520,7 @@
 	</owl:NamedIndividual>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-crd;PaymentCard">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;DebtInstrument"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;isNegotiable"/>
-				<owl:hasValue rdf:datatype="&xsd;boolean">false</owl:hasValue>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;isAssignable"/>
-				<owl:hasValue rdf:datatype="&xsd;boolean">false</owl:hasValue>
-			</owl:Restriction>
-		</rdfs:subClassOf>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-doc;LegalDocument"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-arr-doc;hasExpirationDate"/>
@@ -517,28 +544,46 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-pas-caa;isRealizedBy"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;isEvidenceFor"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-crd;CardAccount"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>payment card</rdfs:label>
+		<rdfs:seeAlso rdf:resource="https://www.irs.gov/payments/payment-card-transactions-faqs"/>
+		<skos:definition>legal document issued by a financial services provider that enables the cardholder to access the funds in the customer&apos;s designated bank accounts, or through a credit account and make payments by electronic funds transfer and access automated teller machines (ATMs)</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>For purposes of Payment Card Industry Data Security Standard (PCI DSS), a payment card is any payment card/device that bears the logo of the founding members of PCI SSC, which are American Express, Discover Financial Services, JCB International, MasterCard, or Visa, Inc.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:explanatoryNote>The term payment card includes credit cards, debit cards, and stored-value cards, as well as payment through any distinctive marks of a payment card (such as a credit card number).  A payment card is issued under an agreement that provides standards and mechanisms for settling the transactions between a merchant acquiring bank or similar entity and the providers who accept the cards as payment.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-pas-crd;PaymentCardAgreement">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;CreditAgreement"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-caa;AccountSpecificServiceAgreement"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;hasContractParty"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-crd;Cardholder"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isIssuedBy"/>
-				<owl:someValuesFrom>
-					<owl:Class>
-						<owl:unionOf rdf:parseType="Collection">
-							<rdf:Description rdf:about="&fibo-fbc-fi-fi;Issuer">
-							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-fbc-pas-fpas;FinancialServiceProvider">
-							</rdf:Description>
-						</owl:unionOf>
-					</owl:Class>
-				</owl:someValuesFrom>
+				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;hasContractParty"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-crd;IssuingFinancialInstitution"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label>payment card</rdfs:label>
-		<skos:definition>debt instrument in the form of a rectangular piece of plastic or metal issued by a financial services that enables the cardholder to withdraw or borrow funds</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote>Some debit cards may also be used as credit cards.</fibo-fnd-utl-av:explanatoryNote>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;isEvidencedBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-crd;PaymentCard"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-crd;CardAccount"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>payment card agreement</rdfs:label>
+		<skos:definition>account-specific credit agreement that specifies the terms and conditions under which the payment card is offered to the cardholder by the issuer</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-crd;PrimaryCardAccountNumber">
@@ -555,6 +600,14 @@
 		<fibo-fnd-utl-av:abbreviation>PAN</fibo-fnd-utl-av:abbreviation>
 		<fibo-fnd-utl-av:explanatoryNote>The PAN identifies the issuer of the card and the account including part of the account number, and contains a check digit that verifies the authenticity of the embossed account number.</fibo-fnd-utl-av:explanatoryNote>
 		<fibo-fnd-utl-av:synonym>primary account number</fibo-fnd-utl-av:synonym>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-pas-crd;SmartCard">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-crd;PaymentCard"/>
+		<rdfs:label>smart card</rdfs:label>
+		<skos:definition>payment card that has integrated circuits embedded within it</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.pcisecuritystandards.org/pci_security/glossary</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:explanatoryNote>The circuits, also referred to as the &apos;chip,&apos; contain payment card data including but not limited to data equivalent to the magnetic-stripe data.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-crd;ThreeDigitVerificationCodeOrValue">
