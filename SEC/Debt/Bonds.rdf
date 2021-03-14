@@ -144,9 +144,33 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20190901/Securities/Debt/Bonds.rdf version of this ontology was revised to reflect the refactored definition of a listing and improve the definition of corporate bond.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20191201/Securities/Debt/Bonds.rdf version of this ontology was revised to eliminate duplication of concepts in LCC and eliminate a redundant superclass from RegularCouponSchedule.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20200401/Securities/Debt/Bonds.rdf version of this ontology was revised to eliminate a duplicate &apos;isBasedOn&apos; property and replace it with the property of the same name in the debt ontology, to revise the inheritance hierarchy for bond conversion terms to reflect changes in the representation of redemption more generally, to reflect the move of redemption provision from debt to financial instruments, and eliminate circular and ambiguous definitions.</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20200901/Securities/Debt/Bonds.rdf version of this ontology was revised to eliminate false positives in hygiene tests due to concept names containing words, such as &apos;and&apos;, which might indicate that the concept actually reflects more than one thing, and replace the use of call price and put price, which are overly constrained, with monetary price.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20200901/Securities/Debt/Bonds.rdf version of this ontology was revised to eliminate false positives in hygiene tests due to concept names containing words, such as &apos;and&apos;, which might indicate that the concept actually reflects more than one thing, including distinguishing zero coupon from original issue discount bonds, and replace the use of call price and put price, which are overly constrained, with monetary price.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
+	
+	<owl:Class rdf:about="&fibo-sec-dbt-bnd;AccrualBondCall">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbti;CallEvent"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-bnd;hasCallRateBasis"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;RateBasisConvention"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>accrual bond call</rdfs:label>
+		<skos:definition>call event associated with a zero coupon or original issue discount bond</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-dbt-bnd;AccrualBondCallTerms">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbti;CallFeature"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;comprises"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;AccrualBondCall"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>accrual bond call terms</rdfs:label>
+		<skos:definition>call feature specific to a zero coupon or original issue discount (OID) bond</skos:definition>
+	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-bnd;AmortizingBond">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;Bond"/>
@@ -714,6 +738,34 @@
 		<fibo-fnd-utl-av:explanatoryNote>In many cases, the trustee also acts as custodian, paying agent, registrar and/or transfer agent for the bonds.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-sec-dbt-bnd;OriginalIssueDiscountBond">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;Bond"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbti;hasRelativePriceAtMaturity"/>
+				<owl:hasValue rdf:resource="&fibo-sec-dbt-dbti;ParValue"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-bnd;hasOriginalIssueDiscountAmount"/>
+				<owl:onClass rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbti;hasCallFeature"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;AccrualBondCallTerms"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>original issue discount bond</rdfs:label>
+		<skos:definition>interest-bearing bond issued at a deep discount to face value</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>An original issue discount (OID) is the discount in price from a bond&apos;s face value at the time a bond or other debt instrument is first issued. The OID is the amount of discount or the difference between the original face value and the price paid for the bond.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:explanatoryNote>The principal amount accretes over time at a constant accrual rate and is redeemed at full face value at maturity.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:synonym>OID bond</fibo-fnd-utl-av:synonym>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-sec-dbt-bnd;PartialCall">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbti;CallEvent"/>
 		<rdfs:label>partial call</rdfs:label>
@@ -1130,19 +1182,6 @@
 		<fibo-fnd-utl-av:explanatoryNote>The principal on variable principal bonds adjusts line with an index such as inflation or GDP. For example, for a bond linked to the CPI, if inflation rises two percent the principal increases by 2 percent. The coupon rate is typically fixed. The best-known example is TIPS or Treasury Inflation Protected Bonds, which are linked to the CPI. TIPs offer a real or inflation adjusted rate of return.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-dbt-bnd;ZeroCouponAndOriginalIssueDiscountBondCallTerms">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbti;CallFeature"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;comprises"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;ZeroCouponBondCall"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>zero coupon and original issue discount bond call terms</rdfs:label>
-		<skos:definition>call feature specific to a zero coupon or original issue discount (OID) bond</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote>Fannie Mae also issues zero-coupon callable debt securities. Zero-coupon notes are debt securities on which no coupon interest is paid to the investor. Rather, the security is purchased at a discounted dollar price and matures at par. If the option on a callable zero-coupon security is exercised, it is redeemed at a higher dollar price than the original issue price. The yield for a callable zero-coupon security is based on the difference between the original discounted price and the principal payment at the call date.</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-sec-dbt-bnd;ZeroCouponBond">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;Bond"/>
 		<rdfs:subClassOf>
@@ -1161,7 +1200,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbti;hasCallFeature"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;ZeroCouponAndOriginalIssueDiscountBondCallTerms"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;AccrualBondCallTerms"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -1171,22 +1210,10 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>zero coupon bond</rdfs:label>
-		<skos:definition>bond issued with a coupon rate of zero and at a deep discount to face value</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote>A zero coupon bond carries a carries a coupon rate of zero and is issued at a steep discount to face value. At maturity it is redeemed at full face value. Over time the outstanding principal amount accretes at a constant accrual rate. In effect, the accrual rate is the coupon rate or yield which is added to the outstanding principal rather than being paid out to investors.</fibo-fnd-utl-av:explanatoryNote>
-		<fibo-fnd-utl-av:explanatoryNote>The principal amount accretes over time at a constant accrual rate and is redeemed at full face value at maturity.</fibo-fnd-utl-av:explanatoryNote>
+		<skos:definition>bond issued with a coupon rate of zero and that trades at a deep discount to face value</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Fannie Mae also issues zero-coupon callable debt securities. Zero-coupon notes are debt securities on which no coupon interest is paid to the investor. Rather, the security is purchased at a discounted dollar price and matures at par. If the option on a callable zero-coupon security is exercised, it is redeemed at a higher dollar price than the original issue price. The yield for a callable zero-coupon security is based on the difference between the original discounted price and the principal payment at the call date.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:explanatoryNote>The principal amount accretes over time at a constant accrual rate and is redeemed at full face value at maturity. In effect, the accrual rate is the coupon rate or yield which is added to the outstanding principal rather than being paid out to investors.</fibo-fnd-utl-av:explanatoryNote>
 		<fibo-fnd-utl-av:synonym>z-bond</fibo-fnd-utl-av:synonym>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-sec-dbt-bnd;ZeroCouponBondCall">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbti;CallEvent"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-bnd;hasCallRateBasis"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;RateBasisConvention"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>zero coupon bond call</rdfs:label>
-		<skos:definition>call event associated with a zero coupon bond</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-bnd;ZeroCouponTerms">
@@ -1230,7 +1257,7 @@
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bnd;hasCallRateBasis">
 		<rdfs:label>has call rate basis</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;ZeroCouponBondCall"/>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;AccrualBondCall"/>
 		<rdfs:range rdf:resource="&fibo-sec-dbt-bnd;RateBasisConvention"/>
 		<skos:definition>for each call event on the schedule, indicates whether the rate is expressed as a percentage of Par or percentage of CAV</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote>Zero coupon bonds and OID bonds are callable at an accreted value.</fibo-fnd-utl-av:explanatoryNote>
@@ -1392,7 +1419,7 @@
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bnd;hasOriginalIssueDiscountAmount">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasMonetaryAmount"/>
 		<rdfs:label>has original issue discount amount</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;ZeroCouponBond"/>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-bnd;Bond"/>
 		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
 		<skos:definition>indicates the difference between the stated redemption price at maturity and the issue price</skos:definition>
 	</owl:ObjectProperty>
