@@ -37,6 +37,7 @@
 	<!ENTITY fibo-sec-dbt-bnd "https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/Bonds/">
 	<!ENTITY fibo-sec-dbt-ex "https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/ExerciseConventions/">
 	<!ENTITY fibo-sec-eq-eq "https://spec.edmcouncil.org/fibo/ontology/SEC/Equities/EquityInstruments/">
+	<!ENTITY fibo-sec-sec-bsk "https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/Baskets/">
 	<!ENTITY fibo-sec-sec-lst "https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesListings/">
 	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
 	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
@@ -83,6 +84,7 @@
 	xmlns:fibo-sec-dbt-bnd="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/Bonds/"
 	xmlns:fibo-sec-dbt-ex="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/ExerciseConventions/"
 	xmlns:fibo-sec-eq-eq="https://spec.edmcouncil.org/fibo/ontology/SEC/Equities/EquityInstruments/"
+	xmlns:fibo-sec-sec-bsk="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/Baskets/"
 	xmlns:fibo-sec-sec-lst="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesListings/"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -139,6 +141,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/Bonds/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/ExerciseConventions/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Equities/EquityInstruments/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/Baskets/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesListings/"/>
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Options/"/>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Provisional"/>
@@ -174,6 +177,18 @@
 		<owl:disjointWith rdf:resource="&fibo-der-der-opt;CashOrNothingPayoutCommitment"/>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-der-der-opt;BasketOption">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;Option"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-bsk;MixedBasket"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">basket option</rdfs:label>
+		<skos:definition xml:lang="en">option whose underlying asset is a basket of securities and/or indices</skos:definition>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-der-der-opt;BestOfAssetsPlusCashPayoutCommitment">
 		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;ConditionalPayoutCommitment"/>
 		<rdfs:subClassOf>
@@ -207,8 +222,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-der-opt;BondOption">
-		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;OptionOnFuture"/>
-		<rdfs:subClassOf rdf:resource="&fibo-der-sbd-sbd;DebtInstrumentDerivative"/>
+		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;DebtInstrumentOption"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
@@ -216,8 +230,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">bond option</rdfs:label>
-		<skos:definition xml:lang="en">option on a futures contract whose underlying asset is a bond</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">When exercised, the holder exercises the right to buy the future on a Bond, s/he does not exercise the right to buy a bond. For example an option on a Treasury Bill is an option on a T Bill Future, not on a T Bill itself. Hence these are defined as a kind of futures option.</fibo-fnd-utl-av:explanatoryNote>
+		<skos:definition xml:lang="en">option giving the buyer (holder) the right, but not the obligation, to buy or sell (depending on whether it is a call or a put) a bond at a certain price on or before a specified date</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-der-opt;CalculatedPayoutCommitment">
@@ -301,15 +314,9 @@
 	
 	<owl:Class rdf:about="&fibo-der-der-opt;CommodityOption">
 		<rdfs:subClassOf rdf:resource="&fibo-der-com-ctr;CommodityDerivative"/>
-		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;OptionOnFuture"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-com-ctr;CommodityFuture"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;Option"/>
 		<rdfs:label xml:lang="en">commodity option</rdfs:label>
-		<skos:definition xml:lang="en">option giving buyer (holder) the right, but not the obligation, to buy or sell a futures contract for a stated commodity at a given strike price on or before the exercise date</skos:definition>
+		<skos:definition xml:lang="en">option whose underlying asset is at least one commodity, commodity index, and/or commodity-specific contract</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-der-opt;ConditionalPayoutCommitment">
@@ -329,6 +336,13 @@
 		<rdfs:label xml:lang="en">currency option exercise terms</rdfs:label>
 		<skos:definition xml:lang="en">Contractual terms defining when or under what circumstances an currency option is to be exercised.</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Also includes terms defining delivery when the contract is exercised. Delivery for currency options is by way of cash.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-der-opt;DebtInstrumentOption">
+		<rdfs:subClassOf rdf:resource="&fibo-der-sbd-sbd;DebtInstrumentDerivative"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;Option"/>
+		<rdfs:label xml:lang="en">debt instrument option</rdfs:label>
+		<skos:definition xml:lang="en">option whose underlying asset is a debt observable</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-der-opt;DefinedConditionsPayoutCommitment">
