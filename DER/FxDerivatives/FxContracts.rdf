@@ -77,6 +77,21 @@
 	
 	<owl:Class rdf:about="&fibo-der-fx-ctr;CurrencyDerivative">
 		<rdfs:subClassOf rdf:resource="&fibo-der-rtd-rtd;RateBasedDerivativeInstrument"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;CurrencyInstrument"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-fx-ctr;hasBuyingCurrency"/>
+				<owl:onClass rdf:resource="&fibo-fnd-acc-cur;Currency"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-fx-ctr;hasSellingCurrency"/>
+				<owl:onClass rdf:resource="&fibo-fnd-acc-cur;Currency"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
@@ -89,119 +104,105 @@
 		<fibo-fnd-utl-av:synonym xml:lang="en">forex derivative</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-fx-ctr;ForeignExchangeForward">
+	<owl:Class rdf:about="&fibo-der-fx-ctr;CurrencyForward">
 		<rdfs:subClassOf rdf:resource="&fibo-der-drc-ff;Forward"/>
 		<rdfs:subClassOf rdf:resource="&fibo-der-fx-ctr;CurrencyDerivative"/>
-		<rdfs:label xml:lang="en">foreign exchange forward</rdfs:label>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-fx-ctr;hasForwardExchangeRate"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-cur;ExchangeRate"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">currency forward</rdfs:label>
 		<skos:definition xml:lang="en">agreement to deliver and settle a given amount of currency in one currency, in exchange for a given amount in another currency, at an agreed date in the future and at an agreed rate of exchange</skos:definition>
+		<fibo-fnd-utl-av:synonym xml:lang="en">foreign exchange forward</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-fx-ctr;ForeignExchangeForwardOutright">
-		<rdfs:subClassOf rdf:resource="&fibo-der-fx-ctr;ForeignExchangeForward"/>
+	<owl:Class rdf:about="&fibo-der-fx-ctr;CurrencyForwardOutright">
+		<rdfs:subClassOf rdf:resource="&fibo-der-fx-ctr;CurrencyForward"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&lcc-cr;hasPart"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-fx-ctr;ForeignExchangeSpotContract"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-fx-ctr;CurrencySpotContract"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&lcc-cr;hasPart"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-fx-ctr;ForeignExchangeSwap"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-fx-ctr;CurrencySwap"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">foreign exchange forward outright</rdfs:label>
-		<skos:definition xml:lang="en">forward contract in the forex market that locks in the price at which an entity can buy or sell a currency on a future date. Also known as &quot;outright forward currency transaction&quot;, &quot;forward outright&quot; or &quot;FX forward&quot;.</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">In currency forward contracts, the contract holders are obligated to buy or sell the currency at a specified price, at a specified quantity and on a specified future date. These contracts cannot be transferred. Jan 10 Review Notes Outright Forward is the term for the professional markets. Spot + Swap where Swap is 2 simultaneous transactions.</fibo-fnd-utl-av:explanatoryNote>
+		<rdfs:label xml:lang="en">currency forward outright</rdfs:label>
+		<skos:definition xml:lang="en">forward contract in the forex market that locks in the price at which an entity can buy or sell a currency on a future date</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">The holders of a currency forward are obligated to buy or sell the currency at a specified price, at a specified quantity and on a specified future date. These contracts cannot be transferred. Jan 10 Review Notes Outright Forward is the term for the professional markets. Spot + Swap where Swap is 2 simultaneous transactions.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:synonym xml:lang="en">FX forward</fibo-fnd-utl-av:synonym>
+		<fibo-fnd-utl-av:synonym xml:lang="en">forward outright</fibo-fnd-utl-av:synonym>
+		<fibo-fnd-utl-av:synonym xml:lang="en">outright forward currency transaction</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-fx-ctr;ForeignExchangeSpotContract">
+	<owl:Class rdf:about="&fibo-der-fx-ctr;CurrencySpotContract">
 		<rdfs:subClassOf rdf:resource="&fibo-der-der-sp;SpotContract"/>
 		<rdfs:subClassOf rdf:resource="&fibo-der-fx-ctr;CurrencyDerivative"/>
-		<rdfs:label xml:lang="en">foreign exchange spot contract</rdfs:label>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-fx-ctr;hasSpotExchangeRate"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-cur;ExchangeRate"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">currency spot contract</rdfs:label>
 		<skos:definition xml:lang="en">The rate of a foreign-exchange contract for immediate delivery. Also known as &quot;benchmark rates&quot;, &quot;straightforward rates&quot; or &quot;outright rates&quot;, spot rates represent the price that a buyer expects to pay for a foreign currency in another currency.</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Though the spot exchange rate is said to be settled immediately, the globally accepted settlement cycle for foreign-exchange contracts is two days. Foreign-exchange contracts are therefore settled on the second day after the day the deal is made.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:synonym xml:lang="en">foreign exchange spot contract</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-fx-ctr;ForeignExchangeSwap">
+	<owl:Class rdf:about="&fibo-der-fx-ctr;CurrencySwap">
 		<rdfs:subClassOf rdf:resource="&fibo-der-drc-swp;Swap"/>
 		<rdfs:subClassOf rdf:resource="&fibo-der-fx-ctr;CurrencyDerivative"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-drc-swp;hasLeg"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-fx-ctr;ForeignExchangeForward"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-fx-ctr;CurrencyForward"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-drc-swp;hasLeg"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-fx-ctr;ForeignExchangeSpotContract"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-fx-ctr;CurrencySpotContract"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">foreign exchange swap</rdfs:label>
+		<rdfs:label xml:lang="en">currency swap</rdfs:label>
 	</owl:Class>
 	
-	<owl:ObjectProperty rdf:about="&fibo-der-fx-ctr;hasBuyerCurrency">
+	<owl:ObjectProperty rdf:about="&fibo-der-fx-ctr;hasBuyingCurrency">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasDealtCurrency"/>
-		<rdfs:label xml:lang="en">has buyer currency</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-fx-ctr;ForeignExchangeSpotContract"/>
+		<rdfs:label xml:lang="en">has buying currency</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-der-fx-ctr;CurrencyDerivative"/>
 		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;Currency"/>
-		<skos:definition xml:lang="en">The buyer&apos;s currency as specified in the contract.</skos:definition>
+		<skos:definition xml:lang="en">indicates the currency in which the option is bought</skos:definition>
 	</owl:ObjectProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-der-fx-ctr;hasExchangedCurrencyOne">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasCurrency"/>
-		<rdfs:label xml:lang="en">has exchanged currency one</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-fx-ctr;ForeignExchangeForward"/>
-		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;Currency"/>
-		<skos:definition xml:lang="en">FpML has a term exchangedCurrency1 but this refers to the currency flow not the currency as in USD, CDN etc. FpML definition for exchangedCurrency1: &apos;This is the first of the two currency flows that define a single leg of a standard foreign exchange transaction.&apos;</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-der-fx-ctr;hasExchangedCurrencyTwo">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasCurrency"/>
-		<rdfs:label xml:lang="en">has exchanged currency two</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-fx-ctr;ForeignExchangeForward"/>
-		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;Currency"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-der-fx-ctr;hasForeignExchangeForwardRate">
+	<owl:ObjectProperty rdf:about="&fibo-der-fx-ctr;hasForwardExchangeRate">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-qt-qtu;hasQuantityValue"/>
-		<rdfs:label xml:lang="en">has foreign exchange forward rate</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-fx-ctr;ForeignExchangeForwardOutright"/>
+		<rdfs:label xml:lang="en">has forward exchange rate</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-der-fx-ctr;CurrencyForward"/>
 		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;ExchangeRate"/>
-		<skos:definition xml:lang="en">The rate at which the seller currency is purchased in the buyer currency.</skos:definition>
+		<skos:definition xml:lang="en">rate of exchange between two currencies as specified in a forward contract</skos:definition>
 	</owl:ObjectProperty>
 	
-	<owl:DatatypeProperty rdf:about="&fibo-der-fx-ctr;hasForeignExchangeForwardRateValue">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasRateValue"/>
-		<rdfs:label xml:lang="en">has foreign exchange forward rate value</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-fx-ctr;ForeignExchangeForward"/>
-		<rdfs:range rdf:resource="&xsd;decimal"/>
-		<skos:definition xml:lang="en">&apos;The rate of exchange between the two currencies.&apos;</skos:definition>
-	</owl:DatatypeProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-der-fx-ctr;hasForeignExchangeSpotRate">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-qt-qtu;hasQuantityValue"/>
-		<rdfs:label xml:lang="en">has foreign exchange spot rate</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-fx-ctr;ForeignExchangeSpotContract"/>
-		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;ExchangeRate"/>
-		<skos:definition xml:lang="en">The rate at which the seller currency is purchased in the buyer currency.</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:DatatypeProperty rdf:about="&fibo-der-fx-ctr;hasForeignExchangeSpotRateValue">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasRateValue"/>
-		<rdfs:label xml:lang="en">has foreign exchange spot rate</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-fx-ctr;ForeignExchangeSpotContract"/>
-		<rdfs:range rdf:resource="&xsd;decimal"/>
-		<skos:definition xml:lang="en">&apos;The rate of exchange between the two currencies.&apos;</skos:definition>
-	</owl:DatatypeProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-der-fx-ctr;hasSellerCurrency">
+	<owl:ObjectProperty rdf:about="&fibo-der-fx-ctr;hasSellingCurrency">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasBaseCurrency"/>
-		<rdfs:label xml:lang="en">has seller currency</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-fx-ctr;ForeignExchangeSpotContract"/>
+		<rdfs:label xml:lang="en">has selling currency</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-der-fx-ctr;CurrencyDerivative"/>
 		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;Currency"/>
-		<skos:definition xml:lang="en">The seller&apos;s currency as specified in the contract.</skos:definition>
+		<skos:definition xml:lang="en">indicates the currency in which the option is sold</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-der-fx-ctr;hasSpotExchangeRate">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-qt-qtu;hasQuantityValue"/>
+		<rdfs:label xml:lang="en">has spot exchange rate</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-der-fx-ctr;CurrencySpotContract"/>
+		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;ExchangeRate"/>
+		<skos:definition xml:lang="en">rate of exchange between two currencies as specified in a spot contract</skos:definition>
 	</owl:ObjectProperty>
 
 </rdf:RDF>

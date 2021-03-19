@@ -114,7 +114,7 @@
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/20210301/DerivativesContracts/DerivativesBasics/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20180801/DerivativesContracts/DerivativesBasics.rdf version of this ontology was modified to eliminate duplication with concepts in LCC and eliminate a redundant subclass declaration in observable value.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20200401/DerivativesContracts/DerivativesBasics.rdf version of this ontology was modified to loosen the domain of the hasUnderlier property, which could be either an instrument or leg, refine the definition of Underlier and hasUnderlier based on recent work on swaps, add the definition of a contract for difference (CFD), simplify the contract party hierarchy where the subclasses of contract party do not add semantics, add the concepts of underlying asset valuation and calculation agent, which are needed for various derivatives (moved from forwards) and eliminate the language related to transactions as well as the distinction between an OTC contract and exchange-traded contract / listed security, given how blurry the lines are today, across derivatives.</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20201201/DerivativesContracts/DerivativesBasics.rdf version of this ontology was modified to eliminate hasThirdParty as a superproperty of hasCalculationAgent, which led to unintended reasoning consequences, added concepts and properties specific to settlement and valuation required for futures, forwards, and options, and moved general properties from forwards up to derivatives basics.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20201201/DerivativesContracts/DerivativesBasics.rdf version of this ontology was modified to eliminate hasThirdParty as a superproperty of hasCalculationAgent, which led to unintended reasoning consequences, added concepts and properties specific to settlement and valuation required for futures, forwards, and options, and moved general properties from forwards and swaps up to derivatives basics.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -243,7 +243,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>non-physical underlier</rdfs:label>
-		<skos:definition>an underlier that does not represent a deliverable asset</skos:definition>
+		<skos:definition>underlier that does not represent a deliverable asset</skos:definition>
 		<fibo-fnd-utl-av:synonym>observable underlier</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
@@ -251,7 +251,7 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
 		<rdfs:label>observable value</rdfs:label>
 		<rdfs:seeAlso rdf:resource="https://en.wikipedia.org/wiki/Fair_value"/>
-		<skos:definition>a value for something that can be observed in the marketplace</skos:definition>
+		<skos:definition>value for something that can be observed in the marketplace</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote>Derivatives, such as certain exotics, can be based on values ascribed to virtually anything, including weather.  Typically, however, an observable value refers to something that can be readily observed in the marketplace, such as a quoted rate (e.g., interest rate, exchange rate), index value, commodity price, stock price, economic indicator, or something similar as of some point in time.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
@@ -410,6 +410,20 @@
 		<rdfs:domain rdf:resource="&fibo-fbc-pas-fpas;SettlementTerms"/>
 		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
 		<skos:definition xml:lang="en">specifies the final date on which a delivery notice can be issued</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-der-drc-bsc;hasPayingParty">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-pty-pty;hasPartyInRole"/>
+		<rdfs:label>has paying party</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-der-drc-bsc;PayingParty"/>
+		<skos:definition>defines the payer party for some aspect of a derivative, such as for a funding leg of a swap</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-der-drc-bsc;hasReceivingParty">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-pty-pty;hasPartyInRole"/>
+		<rdfs:label>has receiving party</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-der-drc-bsc;ReceivingParty"/>
+		<skos:definition>defines the recipient for some aspect of a derivative, such as for a funding leg of a swap</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-drc-bsc;hasSettlementTerms">

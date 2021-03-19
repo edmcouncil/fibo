@@ -206,7 +206,7 @@
 		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;ConditionalPayoutCommitment"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-der-opt;references"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;refersTo"/>
 				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;PayoffAssetsList"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -330,20 +330,6 @@
 		<rdfs:subClassOf rdf:resource="&fibo-der-fx-ctr;CurrencyDerivative"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-der-opt;hasBuyingCurrency"/>
-				<owl:onClass rdf:resource="&fibo-fnd-acc-cur;Currency"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-der-opt;hasSellingCurrency"/>
-				<owl:onClass rdf:resource="&fibo-fnd-acc-cur;Currency"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
 				<owl:onClass rdf:resource="&fibo-ind-fx-fx;CurrencySpotBuyRate"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
@@ -410,12 +396,6 @@
 				<owl:someValuesFrom rdf:resource="&fibo-der-sbd-sbd;EquityObservable"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-ex;hasExerciseTerms"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;StockOptionExerciseTerms"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">equity option</rdfs:label>
 		<skos:definition xml:lang="en">Equity options are the most common type of equity derivative. They provide the right, but not the obligation to trade a quantity of stock at a set price at a future time.</skos:definition>
 	</owl:Class>
@@ -427,12 +407,6 @@
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
 				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;EquityIndexOptionUnderlying"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-ex;hasExerciseTerms"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;IndexOptionExerciseTerms"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">exchange traded equity index option</rdfs:label>
@@ -594,32 +568,6 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">floating lookback strike terms</rdfs:label>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-der-opt;FutureOptionsExerciseTerms">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-ex;AmericanExerciseTerms"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-der-opt;delivery"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-fi;Future"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">future options exercise terms</rdfs:label>
-		<skos:definition xml:lang="en">Contractual terms defining when or under what circumstances an options instrument may be exercised.</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Also includes terms defining delivery when the contract is exercised.</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-der-opt;IndexOptionExerciseTerms">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-ex;ExerciseTerms"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-der-opt;delivery"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-cur;AmountOfMoney"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">index option exercise terms</rdfs:label>
-		<skos:definition xml:lang="en">Contractual terms defining when or under what circumstances an options instrument may be exercised.</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Also includes terms defining delivery when the contract is exercised. Delivery for index options is by way of cash.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-der-opt;InterestRateOption">
@@ -920,7 +868,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-ex;hasExerciseTerms"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;FutureOptionsExerciseTerms"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-ex;AmericanExerciseTerms"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">option on future</rdfs:label>
@@ -1175,19 +1123,6 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Such terms may relate to the underlying instruments, exercise price, expiration date, and contract size, for example.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-der-opt;StockOptionExerciseTerms">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-ex;ExerciseTerms"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-der-opt;delivery"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-eq-eq;ListedShare"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">stock option exercise terms</rdfs:label>
-		<skos:definition xml:lang="en">Contractual terms defining when or under what circumstances a single stock options instrument may be exercised.</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Delivery when the contract is exercised is by delivery of the underlying stock. ADD: Delivery dates, as being distinct from exercise dates.</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-der-der-opt;StrikeFormula">
 		<rdfs:subClassOf rdf:resource="&fibo-der-drc-bsc;CashflowFormula"/>
 		<rdfs:label xml:lang="en">strike formula</rdfs:label>
@@ -1237,18 +1172,12 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 	<owl:Class rdf:about="&fibo-der-der-opt;UnderlyingAssetSeller">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-pas;Seller"/>
 		<rdfs:label xml:lang="en">underlying asset seller</rdfs:label>
-		<skos:definition xml:lang="en">seller of the underlying asset in an option-related transaction</skos:definition>
+		<skos:definition xml:lang="en">seller of the underlying asset in an option transaction</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-der-opt;UpOrDown">
 		<rdfs:label xml:lang="en">up or down</rdfs:label>
 	</owl:Class>
-	
-	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;delivery">
-		<rdfs:label xml:lang="en">delivery</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-ex;ExerciseTerms"/>
-		<rdfs:range rdf:resource="&fibo-fbc-fi-fi;FinancialInstrument"/>
-	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;enteredIntoBy">
 		<rdfs:label xml:lang="en">entered into by</rdfs:label>
@@ -1261,14 +1190,6 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 		<rdfs:domain rdf:resource="&fibo-der-der-opt;FixedStrikeAmount"/>
 		<rdfs:range rdf:resource="&xsd;decimal"/>
 	</owl:DatatypeProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;hasBuyingCurrency">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasCurrency"/>
-		<rdfs:label xml:lang="en">has buying currency</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-der-opt;CurrencyOption"/>
-		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;Currency"/>
-		<skos:definition xml:lang="en">indicates the currency in which the option is bought</skos:definition>
-	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;hasDirection">
 		<rdfs:label xml:lang="en">has direction</rdfs:label>
@@ -1293,11 +1214,6 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">FpML: &apos;Date where the holder of a Chooser option contract determines a choice of either a Call or a Put&apos;</fibo-fnd-utl-av:explanatoryNote>
 	</owl:ObjectProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;hasPayer">
-		<rdfs:label xml:lang="en">has payer</rdfs:label>
-		<rdfs:range rdf:resource="&fibo-der-drc-bsc;PayingParty"/>
-	</owl:ObjectProperty>
-	
 	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;hasPremium">
 		<rdfs:label xml:lang="en">has premium</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fbc-fi-fi;Option"/>
@@ -1309,11 +1225,6 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 		<rdfs:domain rdf:resource="&fibo-der-der-opt;OptionPremium"/>
 		<rdfs:range rdf:resource="&fibo-der-der-opt;OptionPremiumPaymentArrangement"/>
 		<skos:definition xml:lang="en">The type of premium payment. FpML: &apos;Premium type for a forward starting equity option.&apos;</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;hasReceiver">
-		<rdfs:label xml:lang="en">has receiver</rdfs:label>
-		<rdfs:range rdf:resource="&fibo-der-drc-bsc;ReceivingParty"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;hasRelativePaymentDate">
@@ -1334,14 +1245,6 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 		<rdfs:label xml:lang="en">has schedule</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-der-der-opt;LookbackStrikeTerms"/>
 		<rdfs:range rdf:resource="&fibo-der-der-opt;FloatingLookbackStrikeSchedule"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;hasSellingCurrency">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasCurrency"/>
-		<rdfs:label xml:lang="en">has selling currency</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-der-opt;CurrencyOption"/>
-		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;Currency"/>
-		<skos:definition xml:lang="en">indicates the currency in which the option is sold</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;hasStrikePercentageAmount">
@@ -1390,17 +1293,6 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 		<rdfs:range rdf:resource="&xsd;boolean"/>
 		<skos:definition xml:lang="en">Whether trading on the exchange is by way of open outcry in the form of physical interaction between participants. No means that trading is carried out electronically.</skos:definition>
 	</owl:DatatypeProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;receives">
-		<rdfs:label xml:lang="en">receives</rdfs:label>
-		<rdfs:range rdf:resource="&fibo-fnd-agr-ctr;ContractualCommitment"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;references">
-		<rdfs:label xml:lang="en">references</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-der-opt;BetterOrWorseOfAssetsPayoutCommitment"/>
-		<rdfs:range rdf:resource="&fibo-der-der-opt;PayoffAssetsList"/>
-	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;strikeDeterminationDate">
 		<rdfs:label xml:lang="en">strike determination date</rdfs:label>
