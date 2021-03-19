@@ -325,17 +325,54 @@
 		<owl:disjointWith rdf:resource="&fibo-der-der-opt;LinearPayoutCommitment"/>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-der-opt;CurrencyOptionExerciseTerms">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-ex;ExerciseTerms"/>
+	<owl:Class rdf:about="&fibo-der-der-opt;CurrencyOption">
+		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;ExchangeTradedOption"/>
+		<rdfs:subClassOf rdf:resource="&fibo-der-fx-ctr;ForeignExchangeDerivative"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-der-opt;delivery"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-cur;AmountOfMoney"/>
+				<owl:onProperty rdf:resource="&fibo-der-der-opt;hasBuyingCurrency"/>
+				<owl:onClass rdf:resource="&fibo-fnd-acc-cur;Currency"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">currency option exercise terms</rdfs:label>
-		<skos:definition xml:lang="en">Contractual terms defining when or under what circumstances an currency option is to be exercised.</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Also includes terms defining delivery when the contract is exercised. Delivery for currency options is by way of cash.</fibo-fnd-utl-av:explanatoryNote>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-der-opt;hasSellingCurrency"/>
+				<owl:onClass rdf:resource="&fibo-fnd-acc-cur;Currency"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
+				<owl:onClass rdf:resource="&fibo-ind-fx-fx;CurrencySpotBuyRate"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-der-opt;hasStrikeRate"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-cur;ExchangeRate"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">currency option</rdfs:label>
+		<skos:definition xml:lang="en">option giving the buyer (holder) the right, but not the obligation, to buy or sell currency at a specified exchange rate during a specified period of time.</skos:definition>
+		<fibo-fnd-utl-av:abbreviation xml:lang="en">FX option</fibo-fnd-utl-av:abbreviation>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">For this right, a premium is paid to the broker, which will vary depending on the number of contracts purchased. Currency options are one of the best ways for corporations or individuals to hedge against adverse movements in exchange rates. Investors can hedge against foreign currency risk by purchasing a currency option put or call. For example, assume that an investor believes that the USD/EUR rate is going to increase from 0.80 to 0.90 (meaning that it will become more expensive for a European investor to buy U.S dollars). In this case, the investor would want to buy a call option on USD/EUR so that he or she could stand to gain from an increase in the exchange rate (or the USD rise).</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:synonym xml:lang="en">foreign exchange option</fibo-fnd-utl-av:synonym>
+		<fibo-fnd-utl-av:synonym xml:lang="en">forex option</fibo-fnd-utl-av:synonym>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-der-opt;CurrencyVolatilityOption">
+		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;CurrencyOption"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
+				<owl:someValuesFrom rdf:resource="&fibo-ind-fx-fx;FxSpotVolatility"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">currency volatility option</rdfs:label>
+		<skos:definition xml:lang="en">currency option whose underlying asset is based on the volatility of a foreign exchange rate</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-der-opt;DebtInstrumentOption">
@@ -414,12 +451,6 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasContractSize"/>
-				<owl:someValuesFrom rdf:resource="&xsd;integer"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-dae-gty;hasGuarantor"/>
 				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;OptionGuarantor"/>
 			</owl:Restriction>
@@ -455,12 +486,6 @@
 						</owl:intersectionOf>
 					</owl:Class>
 				</owl:someValuesFrom>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-ex;hasExerciseTerms"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-ex;ExerciseTerms"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">exchange-traded option</rdfs:label>
@@ -571,26 +596,6 @@
 		<rdfs:label xml:lang="en">floating lookback strike terms</rdfs:label>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-der-opt;ForeignCurrencyOption">
-		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;ExchangeTradedOption"/>
-		<rdfs:subClassOf rdf:resource="&fibo-der-fx-ctr;ForeignExchangeDerivative"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;FxOptionUnderlying"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-ex;hasExerciseTerms"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;CurrencyOptionExerciseTerms"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">foreign currency option</rdfs:label>
-		<skos:definition xml:lang="en">An option on a currency, based on the spot exchange rate of that currency to the currency of the security itself.</skos:definition>
-		<skos:editorialNote xml:lang="en">Definition needed - this is just a place holder. Actually, this would also have a Currency Future as the Underlying Action: change this. Definition:Review</skos:editorialNote>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-der-der-opt;FutureOptionsExerciseTerms">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-ex;AmericanExerciseTerms"/>
 		<rdfs:subClassOf>
@@ -602,18 +607,6 @@
 		<rdfs:label xml:lang="en">future options exercise terms</rdfs:label>
 		<skos:definition xml:lang="en">Contractual terms defining when or under what circumstances an options instrument may be exercised.</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Also includes terms defining delivery when the contract is exercised.</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-der-opt;FxOptionUnderlying">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-bsc;Underlier"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasIdentity"/>
-				<owl:someValuesFrom rdf:resource="&fibo-ind-fx-fx;CurrencySpotBuyRate"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">fx option underlying</rdfs:label>
-		<skos:definition xml:lang="en">The underlying of the foreign currency option is a currency spot rate.</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-der-opt;IndexOptionExerciseTerms">
@@ -1269,6 +1262,14 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 		<rdfs:range rdf:resource="&xsd;decimal"/>
 	</owl:DatatypeProperty>
 	
+	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;hasBuyingCurrency">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasCurrency"/>
+		<rdfs:label xml:lang="en">has buying currency</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-der-der-opt;CurrencyOption"/>
+		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;Currency"/>
+		<skos:definition xml:lang="en">indicates the currency in which the option is bought</skos:definition>
+	</owl:ObjectProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;hasDirection">
 		<rdfs:label xml:lang="en">has direction</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-der-der-opt;OptionBarrierFeatureEvent"/>
@@ -1335,11 +1336,26 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 		<rdfs:range rdf:resource="&fibo-der-der-opt;FloatingLookbackStrikeSchedule"/>
 	</owl:ObjectProperty>
 	
+	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;hasSellingCurrency">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasCurrency"/>
+		<rdfs:label xml:lang="en">has selling currency</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-der-der-opt;CurrencyOption"/>
+		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;Currency"/>
+		<skos:definition xml:lang="en">indicates the currency in which the option is sold</skos:definition>
+	</owl:ObjectProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;hasStrikePercentageAmount">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasPrice"/>
 		<rdfs:label xml:lang="en">has strike percentage amount</rdfs:label>
 		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;PercentageMonetaryAmount"/>
 		<skos:definition xml:lang="en">strike price or level expressed as a percentage of the value of the underlying asset</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;hasStrikeRate">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-qt-qtu;hasQuantityValue"/>
+		<rdfs:label xml:lang="en">has strike rate</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;ExchangeRate"/>
+		<skos:definition xml:lang="en">rate of exchange between two currencies as compared with the value of the underlying rate at which the contract may be exercised</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;hasStrikeTerms">
@@ -1406,6 +1422,12 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 				<owl:onProperty rdf:resource="&fibo-der-der-opt;hasPremium"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;OptionPremium"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasContractSize"/>
+				<owl:someValuesFrom rdf:resource="&xsd;integer"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
