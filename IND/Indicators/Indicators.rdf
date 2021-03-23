@@ -41,9 +41,9 @@
 		<rdfs:label>Indicators Ontology</rdfs:label>
 		<dct:abstract>This ontology provides the concepts common to all market rates, indices and indicators; that is concepts descriptive of the numeric parameters themselves. These are modeled independently of the values they may take over time.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
-		<sm:contentLanguage rdf:datatype="&xsd;anyURI">http://www.w3.org/standards/techs/owl#w3c_all</sm:contentLanguage>
-		<sm:copyright>Copyright (c) 2014-2020 EDM Council, Inc.</sm:copyright>
-		<sm:copyright>Copyright (c) 2014-2020 Object Management Group, Inc.</sm:copyright>
+		<sm:contentLanguage rdf:datatype="&xsd;anyURI">https://www.w3.org/TR/owl2-quick-reference/</sm:contentLanguage>
+		<sm:copyright>Copyright (c) 2014-2021 EDM Council, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2014-2021 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/"/>
 		<sm:dependsOn rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/"/>
 		<sm:fileAbbreviation>fibo-ind-ind-ind</sm:fileAbbreviation>
@@ -57,13 +57,14 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Analytics/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/20200701/Indicators/Indicators/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/20210301/Indicators/Indicators/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20140601/Indicators/Indicators.rdf version of this ontology was modified per the issue resolutions identified in the FIBO IND 1.0 FTF 1 report.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20160801/Indicators/Indicators.rdf version of this ontology was modified per the FIBO 2.0 RFC, namely, to integrate concepts recently added to the FND domain including Rate, ExchangeRate, InterestRate and StructuredCollection and revise definitions of TermStructure and Volatility to better support concepts such as yield curves and analysis of market rates generally.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20180801/Indicators/Indicators.rdf version of this ontology was modified to integrate the composite date value and reflect migration of statistical measures to Analytics.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20190501/Indicators/Indicators.rdf version of this ontology was modified to eliminate deprecated elements.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20190901/Indicators/Indicators.rdf version of this ontology was modified to eliminate a redundant superclass declaration on MarketSpread, introduced by refactoring of FND analytics.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20200401/Indicators/Indicators.rdf version of this ontology was modified to reflect the move of dated collection from arrangements to financial dates.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20200701/Indicators/Indicators.rdf version of this ontology was modified to add definitions for historical and implied volatility, and differentiate price volatility accordingly.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -111,6 +112,35 @@
 		</rdfs:subClassOf>
 		<rdfs:label>financial information publisher</rdfs:label>
 		<skos:definition>a formal organization acting as a publisher or provider of information related to the financial markets or of interest to financial market participants such as information on economies</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-ind-ind-ind;HistoricalPriceVolatility">
+		<rdfs:subClassOf rdf:resource="&fibo-ind-ind-ind;HistoricalVolatility"/>
+		<rdfs:subClassOf rdf:resource="&fibo-ind-ind-ind;PriceVolatility"/>
+		<rdfs:label>historical price volatility</rdfs:label>
+		<skos:definition>historical volatility measure of past trading ranges of prices of underlying securities and indexes</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Calculations for historical volatility are generally based on the change from one closing price to the next.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-ind-ind-ind;HistoricalVolatility">
+		<rdfs:subClassOf rdf:resource="&fibo-ind-ind-ind;Volatility"/>
+		<rdfs:label>historical volatility</rdfs:label>
+		<skos:definition>measure of volatility that uses actual values for pricing, rates, and other measurements calculated over some prior period</skos:definition>
+		<fibo-fnd-utl-av:synonym>realized volatility</fibo-fnd-utl-av:synonym>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-ind-ind-ind;ImpliedPriceVolatility">
+		<rdfs:subClassOf rdf:resource="&fibo-ind-ind-ind;ImpliedVolatility"/>
+		<rdfs:subClassOf rdf:resource="&fibo-ind-ind-ind;PriceVolatility"/>
+		<rdfs:label>implied price volatility</rdfs:label>
+		<skos:definition>measure of volatility that represents the expected fluctuations of an underlying stock or index over a specific time frame</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-ind-ind-ind;ImpliedVolatility">
+		<rdfs:subClassOf rdf:resource="&fibo-ind-ind-ind;Volatility"/>
+		<rdfs:label>implied volatility</rdfs:label>
+		<skos:definition>measure of volatility that is a forward-looking metric used to calculate probability</skos:definition>
+		<fibo-fnd-utl-av:synonym>projected volatility</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ind-ind-ind;MarketRate">
@@ -180,7 +210,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>price volatility</rdfs:label>
-		<skos:definition>a statistical measure of the rate of change in pricing for a given security or market index</skos:definition>
+		<skos:definition>statistical measure of the rate of change in pricing for a given security or market index</skos:definition>
 		<skos:editorialNote>Volatility is modeled here using a structured collection, comprised of a series of individual prices of something (a security, index, etc., typically quoted prices), dates, and the source for those prices for some overall period of time</skos:editorialNote>
 		<fibo-fnd-utl-av:explanatoryNote>Volatility can be determined using the standard deviation or variance among prices for the security or market index over some period of time. For a specific security, volatility may measure the amount and frequency in rapid price fluctuation. It is computed as the annualized standard deviation of the percentage change in a security&apos;s daily price.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
@@ -220,11 +250,8 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>term structure</rdfs:label>
-		<skos:definition>a structured collection of rates, such as interest rates, or bond yields with different terms to maturity, such that a yield curve may be constructed for the structure</skos:definition>
-		<skos:editorialNote>Term structure refers to a set of discrete points; elements are ordered by time. Restrictions on the rate (see above) and a point in time, paired together, and then ordered in a structured collection is how this should ultimately be modeled.  Then the concept of yield curve would be a child of term structure, for calculation of net present value, for example.</skos:editorialNote>
-		<skos:scopeNote>Term Structure has been modeled with reference to MarketRate generally, which incorporates more kinds of rate than would normally be included in a term structure. Term structures consist of two or more of something with some time to maturity, typically debt instruments or interest rates. Currency exchange rates may in principle be grouped in a term structure as forward rates. For this specification, debt instruments are not in scope, so these are not included in the current scope of this TermStructure concept.</skos:scopeNote>
-		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.investopedia.com/terms/t/termstructure.asp</fibo-fnd-utl-av:adaptedFrom>
-		<fibo-fnd-utl-av:explanatoryNote>The term structure reflects expectations of market participants about future changes in interest rates and their assessment of monetary policy conditions.</fibo-fnd-utl-av:explanatoryNote>
+		<skos:definition>structured collection of rates, such as interest rates, or bond yields with different terms to maturity, such that a yield curve may be constructed for the structure</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Term structure refers to a set of discrete points; elements are ordered by time. Restrictions on the rate (see above) and a point in time, paired together, and then ordered in a structured collection is how this should ultimately be modeled.  Then the concept of yield curve would be a child of term structure, for calculation of net present value, for example. Term structures consist of two or more observed or projected values, typically related to debt instruments or interest rates. assessment of monetary policy conditions, and so forth.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ind-ind-ind;Volatility">
@@ -252,7 +279,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>volatility</rdfs:label>
-		<skos:definition>a statistical measure of the dispersion around the average of some random variable over some period of time</skos:definition>
+		<skos:definition>statistical measure of the dispersion around the average of some random variable over some period of time</skos:definition>
 	</owl:Class>
 	
 	<owl:ObjectProperty rdf:about="&fibo-ind-ind-ind;hasQuotationDate">
