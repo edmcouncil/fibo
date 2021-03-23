@@ -7,6 +7,7 @@
 	<!ENTITY fibo-fnd-dt-bd "https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/BusinessDates/">
 	<!ENTITY fibo-fnd-dt-fd "https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/">
 	<!ENTITY fibo-fnd-org-org "https://spec.edmcouncil.org/fibo/ontology/FND/Organizations/Organizations/">
+	<!ENTITY fibo-fnd-plc-adr "https://spec.edmcouncil.org/fibo/ontology/FND/Places/Addresses/">
 	<!ENTITY fibo-fnd-pty-pty "https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Parties/">
 	<!ENTITY fibo-fnd-pty-rl "https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Roles/">
 	<!ENTITY fibo-fnd-rel-rel "https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/">
@@ -27,6 +28,7 @@
 	xmlns:fibo-fnd-dt-bd="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/BusinessDates/"
 	xmlns:fibo-fnd-dt-fd="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"
 	xmlns:fibo-fnd-org-org="https://spec.edmcouncil.org/fibo/ontology/FND/Organizations/Organizations/"
+	xmlns:fibo-fnd-plc-adr="https://spec.edmcouncil.org/fibo/ontology/FND/Places/Addresses/"
 	xmlns:fibo-fnd-pty-pty="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Parties/"
 	xmlns:fibo-fnd-pty-rl="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Roles/"
 	xmlns:fibo-fnd-rel-rel="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"
@@ -53,6 +55,7 @@
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/Organizations/Organizations/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Roles/</sm:dependsOn>
+		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/Places/Addresses/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://www.omg.org/spec/LCC/</sm:dependsOn>
@@ -65,6 +68,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Organizations/Organizations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Roles/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Places/Addresses/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
@@ -86,7 +90,7 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20200601/Parties/Parties.rdf version of this ontology was extended to rename &apos;hasPrimaryParty&apos; to &apos;hasActiveParty&apos; to be more consistent.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20200701/Parties/Parties.rdf version of this ontology was extended to align the properties holds and isHeldBy with the lattice to improve ownership-related reasoning.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20200901/Parties/Parties.rdf version of this ontology was extended to add the concepts of tax identifier and tax identification scheme.</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20201101/Parties/Parties.rdf version of this ontology was revised to make hasRelatedPartyInRole symmetric.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20201101/Parties/Parties.rdf version of this ontology was revised to make hasRelatedPartyInRole symmetric and move hasMailingAddress from people to this ontology.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -338,6 +342,14 @@
 		<rdfs:domain rdf:resource="&fibo-fnd-pty-pty;PartyInRole"/>
 		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Date"/>
 		<skos:definition>the date a party relationship comes into force</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-pty-pty;hasMailingAddress">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-plc-adr;hasAddress"/>
+		<rdfs:label>has mailing address</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fnd-pty-pty;IndependentParty"/>
+		<rdfs:range rdf:resource="&fibo-fnd-plc-adr;PhysicalAddress"/>
+		<skos:definition>identifies a physical address where an independent party can receive communications, including letters and packages</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-pty-pty;hasParty">
