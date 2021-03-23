@@ -117,7 +117,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/Indicators/Indicators/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Countries/CountryRepresentation/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/20210201/EconomicIndicators/EconomicIndicators/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/20210301/EconomicIndicators/EconomicIndicators/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20140601/EconomicIndicators/EconomicIndicators.rdf version of this ontology was modified per the issue resolutions identified in the FIBO IND 1.0 FTF 1 report.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20150501/EconomicIndicators/EconomicIndicators.rdf version of this ontology was modified per the issue resolutions identified in the FIBO IND 1.0 FTF 3 report.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20160801/EconomicIndicators/EconomicIndicators.rdf version of this ontology was modified per the FIBO 2.0 RFC. Primary changes include the addition of a number of statistical measures (mean, total, etc.) and their use in existing and new indicators, and the addition of several more economic indicators.</skos:changeNote>
@@ -127,7 +127,7 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20190901/EconomicIndicators/EconomicIndicators.rdf version of this ontology was modified to eliminate duplicatation with concepts in LCC and merge countries with locations in FND.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20200301/EconomicIndicators/EconomicIndicators.rdf version of this ontology was modified to reflect the change in name and definition of numeric index to numeric index value in FND.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20200401/EconomicIndicators/EconomicIndicators.rdf version of this ontology was modified to add definitions for alternative unemployment calculations and correct a circular property definition.</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20200901/EconomicIndicators/EconomicIndicators.rdf version of this ontology was modified to eliminate references to external dictionary sites that no longer resolve, added a synonym to fixed basket and revised the name of the &apos;goods or services population&apos; to &apos;goods population&apos; to eliminate a hygiene issue and reflect the synonym of &apos;basket of goods&apos;.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20200901/EconomicIndicators/EconomicIndicators.rdf version of this ontology was modified to eliminate references to external dictionary sites that no longer resolve, added a synonym to fixed basket and eliminated the restriction with respect to date period, which is not the primary concern of a fixed basket, and revised the name of the &apos;goods or services population&apos; to &apos;goods population&apos; to eliminate a hygiene issue and reflect the synonym of &apos;basket of goods&apos;.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -395,13 +395,13 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasArgument"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-fpas;Basket"/>
+				<owl:someValuesFrom rdf:resource="&fibo-ind-ei-ei;CivilianNonInstitutionalPopulation"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasArgument"/>
-				<owl:someValuesFrom rdf:resource="&fibo-ind-ei-ei;CivilianNonInstitutionalPopulation"/>
+				<owl:someValuesFrom rdf:resource="&fibo-ind-ei-ei;FixedBasket"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -700,16 +700,11 @@ Excluded are directors of incorporated enterprises and members of shareholders c
 	
 	<owl:Class rdf:about="&fibo-ind-ei-ei;FixedBasket">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;Basket"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-fd;DatedStructuredCollection"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-arr-arr;hasConstituent"/>
 				<owl:someValuesFrom rdf:resource="&fibo-ind-ei-ei;FixedBasketConstituent"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-dt-fd;hasDatePeriod"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;DatePeriod"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>fixed basket</rdfs:label>
@@ -720,6 +715,7 @@ Excluded are directors of incorporated enterprises and members of shareholders c
 	
 	<owl:Class rdf:about="&fibo-ind-ei-ei;FixedBasketConstituent">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;BasketConstituent"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-fd;DatedCollectionConstituent"/>
 		<rdfs:subClassOf>
 			<owl:Class>
 				<owl:unionOf rdf:parseType="Collection">
