@@ -62,8 +62,8 @@
 		<dct:abstract>This ontology defines market indices as hypothetical portfolios of investment holdings that correspond to some segment of the financial market, whose value is determined by the prices of the underlying holdings.  Coverage includes credit indices, security-based indices, economic indicator based indices, and combinations thereof.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">https://opensource.org/licenses/MIT</dct:license>
 		<sm:contentLanguage rdf:datatype="&xsd;anyURI">https://www.w3.org/TR/owl2-quick-reference/</sm:contentLanguage>
-		<sm:copyright>Copyright (c) 2014-2020 EDM Council, Inc.</sm:copyright>
-		<sm:copyright>Copyright (c) 2014-2020 Object Management Group, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2014-2021 EDM Council, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2014-2021 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FBC/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/IND/Indicators/Indicators/</sm:dependsOn>
@@ -90,7 +90,8 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/Baskets/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesClassification/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Countries/CountryRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/20200901/MarketIndices/BasketIndices/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/20210301/MarketIndices/BasketIndices/"/>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20200901/MarketIndices/BasketIndices.rdf version of this ontology was revised to add the details needed to calculate market cap for a capitalization-based weighting function.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -133,6 +134,12 @@
 	
 	<owl:Class rdf:about="&fibo-ind-mkt-bas;CapitalizationBasedWeightingFunction">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;WeightingFunction"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasArgument"/>
+				<owl:someValuesFrom rdf:resource="&fibo-ind-mkt-bas;MarketCapitalization"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">capitalization-based weighting function</rdfs:label>
 		<skos:definition xml:lang="en">weighting function derived from the relative market capitalization (share price times the number of shares outstanding) of the companies tracked by an index</skos:definition>
 	</owl:Class>
@@ -185,6 +192,44 @@
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">equity index</rdfs:label>
 		<skos:definition xml:lang="en">benchmark whose constituents are exclusively equity instruments</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-ind-mkt-bas;MarketCapitalization">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;Expression"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-dt-fd;hasObservedDateTime"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;CombinedDateTime"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-eq-eq;ShareIssuer"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasArgument"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-eq-eq;PricePerShare"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-ind-mkt-bas;hasMarketCapitalizationValue"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-ind-mkt-bas;hasSharesOutstandingForIssuer"/>
+				<owl:someValuesFrom rdf:resource="&xsd;nonNegativeInteger"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">market capitalization</rdfs:label>
+		<skos:definition xml:lang="en">expression representing the perceived value of a company as determined by the stock market at a specific point in time</skos:definition>
+		<fibo-fnd-utl-alx:actualExpression xml:lang="en">number of shares outstanding x price per share</fibo-fnd-utl-alx:actualExpression>
+		<fibo-fnd-utl-av:synonym xml:lang="en">market cap</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ind-mkt-bas;ReferenceIndex">
@@ -289,6 +334,21 @@
 		<skos:definition>specifies the value of a given index as of the release date</skos:definition>
 	</owl:DatatypeProperty>
 	
+	<owl:ObjectProperty rdf:about="&fibo-ind-mkt-bas;hasMarketCapitalization">
+		<rdfs:label xml:lang="en">has market capitalization</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-sec-eq-eq;ShareIssuer"/>
+		<rdfs:range rdf:resource="&fibo-ind-mkt-bas;MarketCapitalization"/>
+		<skos:definition xml:lang="en">indicates the market capitalization of some issuer as of some date</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-ind-mkt-bas;hasMarketCapitalizationValue">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasMonetaryAmount"/>
+		<rdfs:label xml:lang="en">has market capitalization value</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-ind-mkt-bas;MarketCapitalization"/>
+		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
+		<skos:definition xml:lang="en">indicates the monetary amount representing the market capitalization of some issuer as of some date</skos:definition>
+	</owl:ObjectProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-ind-mkt-bas;hasOriginalNotionalValue">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasNotionalAmount"/>
 		<rdfs:label xml:lang="en">has original notional value</rdfs:label>
@@ -303,6 +363,17 @@
 		<rdfs:domain rdf:resource="&fibo-ind-mkt-bas;CreditIndex"/>
 		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
 		<skos:definition xml:lang="en">indicates a premium payable for a contract based on the index</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-ind-mkt-bas;hasSharesOutstandingForIssuer">
+		<rdfs:label>has shares outstanding for issuer</rdfs:label>
+		<owl:propertyChainAxiom rdf:parseType="Collection">
+			<rdf:Description rdf:about="&fibo-fnd-rel-rel;appliesTo">
+			</rdf:Description>
+			<rdf:Description rdf:about="&fibo-sec-eq-eq;hasSharesOutstanding">
+			</rdf:Description>
+		</owl:propertyChainAxiom>
+		<skos:definition>relates a value for market capitalization for a given company to the number of shares they have outstanding</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-ind-mkt-bas;hasSpreadRange">
