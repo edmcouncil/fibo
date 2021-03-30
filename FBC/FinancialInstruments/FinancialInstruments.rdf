@@ -96,7 +96,7 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20190901/FinancialInstruments/FinancialInstruments/ version of this ontology was modified to change the restriction on financial instrument identifier from some values to min 0, to allow for cases when an instrument identifier identifies a listing, eliminate duplication of concepts in LCC, and simplify addresses.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20200301/FinancialInstruments/FinancialInstruments/ version of this ontology was modified to move redemption provision from debt to financial instruments, given that it is a broader concept needed for equities.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20200801/FinancialInstruments/FinancialInstruments/ version of this ontology was modified to add a property indicating the currency that an instrument is issued in, simplify the contract party hierarchy and add properties relating financial instruments to shareholders.</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20201201/FinancialInstruments/FinancialInstruments/ version of this ontology was modified to incorporate a hasMaturityDate property given that it can apply to debt instruments and preferred shares, as well as to other financial instruments, eliminated the redundant hasScheduledMaturityDate property, cleaned up circular definitions, eliminated the property &apos;mayBeTradedIn&apos;, which was only used in one place and was redundant with the concept of a ListedSecurity / Listing in SEC, added a synonym and additional explanatory note to packaged financial product, and added back restrictions on debt instrument for hasMaturityDate (min 0 to account for rare instruments (e.g., consul) that have no maturity date), hasDurationToMaturity and hasTimeToMaturity.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20201201/FinancialInstruments/FinancialInstruments/ version of this ontology was modified to incorporate a hasMaturityDate property given that it can apply to debt instruments and preferred shares, as well as to other financial instruments, eliminated the redundant hasScheduledMaturityDate property, cleaned up circular definitions, eliminated the property &apos;mayBeTradedIn&apos;, which was only used in one place and was redundant with the concept of a ListedSecurity / Listing in SEC, added a synonym and additional explanatory note to packaged financial product, added hasNominalValue, which was a gap, and added back restrictions on debt instrument for hasMaturityDate (min 0 to account for rare instruments (e.g., consul) that have no maturity date), hasDurationToMaturity and hasTimeToMaturity.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -192,6 +192,13 @@
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&lcc-lr;isIdentifiedBy"/>
 				<owl:onClass rdf:resource="&fibo-fbc-fi-fi;FinancialInstrumentIdentifier"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;hasNominalValue"/>
+				<owl:onClass rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -424,6 +431,15 @@
 		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
 		<skos:definition>indicates the date on which the principal amount of an instrument is due to be repaid to the investor and interest or coupon payments stop, and/or the date on which the instrument may be redeemed</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote>Maturity dates typically apply to debt instruments, such as notes, drafts, bonds, and other loans, but may also apply to preferred shares and other financial instruments.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fbc-fi-fi;hasNominalValue">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasMonetaryAmount"/>
+		<rdfs:label>has nominal value</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
+		<skos:definition>indicates the face value of something</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Nominal value of a security is its redemption price and will vary from its market value. A preferred stock&apos;s nominal (par) value is important in that it is used to calculate its dividend while the nominal value of common stock is an arbitrary value assigned for balance sheet purposes.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:synonym>face value</fibo-fnd-utl-av:synonym>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-fi-fi;hasPrincipalExecutiveOfficeAddress">
