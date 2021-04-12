@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE rdf:RDF [
 	<!ENTITY dct "http://purl.org/dc/terms/">
+	<!ENTITY fibo-fbc-fct-fse "https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/FinancialServicesEntities/">
 	<!ENTITY fibo-fbc-fi-fi "https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/">
 	<!ENTITY fibo-fnd-law-jur "https://spec.edmcouncil.org/fibo/ontology/FND/Law/Jurisdiction/">
 	<!ENTITY fibo-fnd-rel-rel "https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/">
@@ -17,6 +18,7 @@
 ]>
 <rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/ontology/SEC/Equities/DepositaryReceipts/"
 	xmlns:dct="http://purl.org/dc/terms/"
+	xmlns:fibo-fbc-fct-fse="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/FinancialServicesEntities/"
 	xmlns:fibo-fbc-fi-fi="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"
 	xmlns:fibo-fnd-law-jur="https://spec.edmcouncil.org/fibo/ontology/FND/Law/Jurisdiction/"
 	xmlns:fibo-fnd-rel-rel="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"
@@ -32,8 +34,16 @@
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema#">
 	
 	<owl:Ontology rdf:about="https://spec.edmcouncil.org/fibo/ontology/SEC/Equities/DepositaryReceipts/">
-		<rdfs:label xml:lang="en">DepositaryReceipts</rdfs:label>
+		<rdfs:label xml:lang="en">Depositary Receipts</rdfs:label>
 		<dct:abstract>Depositary receipts are certificates which represent ownership of some underlying equity instruments. These are issued by a bank and give the holder the ability to participate in the returns of an equity instruments they may not be able to hold directly.</dct:abstract>
+		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
+		<sm:contentLanguage rdf:datatype="&xsd;anyURI">https://www.w3.org/TR/owl2-quick-reference/</sm:contentLanguage>
+		<sm:copyright>Copyright (c) 2013-2021 EDM Council, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2018-2021 Object Management Group, Inc.</sm:copyright>
+		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FBC/</sm:dependsOn>
+		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/</sm:dependsOn>
+		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/SEC/Equities/EquityInstruments/</sm:dependsOn>
+		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesListings/</sm:dependsOn>
 		<sm:fileAbbreviation>fibo-sec-eq-dr</sm:fileAbbreviation>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/FinancialServicesEntities/"/>
@@ -48,74 +58,39 @@
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Provisional"/>
 	</owl:Ontology>
 	
-	<owl:Class rdf:about="&fibo-sec-eq-dr;DepositaryBank">
-		<rdfs:subClassOf rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/FinancialServicesEntities/Bank"/>
-		<rdfs:label xml:lang="en">depositary bank</rdfs:label>
-		<skos:definition xml:lang="en">A bank which is set up and authorized to issue Depositary Receipts.</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-sec-eq-dr;DepositaryReceiptIssuer">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;Issuer"/>
-		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-dr;DepositaryBank"/>
-		<rdfs:label xml:lang="en">depositary receipt issuer</rdfs:label>
-		<skos:definition xml:lang="en">The party which is the issuer of a Depository Receipt in some jurisdiciton.</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-sec-eq-dr;InternationalDepositaryReceipt">
+	<owl:Class rdf:about="&fibo-sec-eq-dr;DepositaryReceipt">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;EquityInstrument"/>
-		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-lst;ListedSecurity"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isIssuedBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-eq-dr;DepositaryReceiptIssuer"/>
+				<owl:onProperty rdf:resource="&fibo-sec-eq-dr;hasTradedShare"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-eq-eq;Share"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-eq-dr;authorizedUnder"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-law-jur;Jurisdiction"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-eq-dr;hasUnderlying"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-eq-eq;ListedShare"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">international depositary receipt</rdfs:label>
-		<skos:definition xml:lang="en">Certificate which represent ownership of an underlying Equity.</skos:definition>
-		<skos:editorialNote xml:lang="en">Additional facts which are not shown as they do not define the instrument as such. but could be added, uinclude the fact that the underlying is a security which has a restriction on owner domicile. These may also funge back after the restriction period. This could be shown but does not need to be.</skos:editorialNote>
+		<rdfs:label xml:lang="en">depositary receipt</rdfs:label>
+		<skos:definition xml:lang="en">negotiable financial instrument issued by a trust company, security depositary, or bank that is evidence of the deposit of publicly traded securities</skos:definition>
+		<fibo-fnd-utl-av:abbreviation xml:lang="en">DR</fibo-fnd-utl-av:abbreviation>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Depositary receipts enable domestic investors to buy securities of foreign companies without the accompanying risks or inconveniences of cross-border and cross-currency transactions.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:synonym xml:lang="en">depositary receipt</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
-	<owl:ObjectProperty rdf:about="&fibo-sec-eq-dr;authorizedUnder">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fbc-fi-fi;isLegallyRecordedIn"/>
-		<rdfs:label xml:lang="en">authorized under</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-eq-dr;InternationalDepositaryReceipt"/>
-		<rdfs:range rdf:resource="&fibo-fnd-law-jur;Jurisdiction"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-sec-eq-dr;hasUnderlying">
-		<rdfs:label xml:lang="en">has underlying</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-eq-dr;InternationalDepositaryReceipt"/>
-		<rdfs:range rdf:resource="&fibo-sec-eq-eq;ListedShare"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-sec-eq-dr;identifiedAs">
-		<rdfs:label xml:lang="en">identified as</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-eq-dr;DepositaryReceiptIssuer"/>
-		<rdfs:range rdf:resource="&fibo-sec-eq-dr;DepositaryBank"/>
+	<owl:ObjectProperty rdf:about="&fibo-sec-eq-dr;hasTradedShare">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;represents"/>
+		<rdfs:label xml:lang="en">has traded share</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-sec-eq-dr;DepositaryReceipt"/>
+		<rdfs:range rdf:resource="&fibo-sec-eq-eq;Share"/>
+		<skos:definition xml:lang="en">links a depositary receipt to the instrument (equity or exchange-traded fund) that it represents</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-sec-eq-dr;multiplier">
 		<rdfs:label xml:lang="en">multiplier</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-eq-dr;InternationalDepositaryReceipt"/>
+		<rdfs:domain rdf:resource="&fibo-sec-eq-dr;DepositaryReceipt"/>
 		<rdfs:range rdf:resource="&xsd;integer"/>
 		<skos:definition xml:lang="en">The number of underlying shares (whether multiple or fractional) represented by a single Depositary Receipt.</skos:definition>
 	</owl:DatatypeProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-sec-eq-dr;numberOfCertificatesIssued">
 		<rdfs:label xml:lang="en">number of certificates issued</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-eq-dr;InternationalDepositaryReceipt"/>
+		<rdfs:domain rdf:resource="&fibo-sec-eq-dr;DepositaryReceipt"/>
 		<rdfs:range rdf:resource="&xsd;integer"/>
 		<skos:definition xml:lang="en">The number of certificates issued to the general public.</skos:definition>
 	</owl:DatatypeProperty>
