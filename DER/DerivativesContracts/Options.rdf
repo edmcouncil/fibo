@@ -151,8 +151,8 @@
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">For options, the derivatives clearing organization is responsible for clearing transactions for put and call options on common stocks and other equity issues, stock indexes, foreign currencies, interest rate composites and single-stock futures. e.g. Options Clearing Corporation (US). In Canada the equivalent is In the US, the Options Clearing Corporation defines defaults e.g. lot sizes. This applies to equity options, index options, flex options, yield based options and short dated options. It does not apply to other types of option. Its roles are: 1. Clearing 2. Advocate for sound business practice. Similar to regulator though not officially one. Has a role in risk management Full list from OCC website: OCC clears transactions for put and call options on common stocks and other equity issues, stock indexes, foreign currencies, interest rate composites and single-stock futures</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-der-opt;AsianExerciseTerms">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-ex;ExerciseTerms"/>
+	<owl:Class rdf:about="&fibo-der-der-opt;AsianOption">
+		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;ExoticOption"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-ex;hasExerciseDate"/>
@@ -160,8 +160,8 @@
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">Asian exercise terms</rdfs:label>
-		<skos:definition xml:lang="en">exercise terms whereby the payoff is determined by the average underlying price over some pre-set period of time</skos:definition>
+		<rdfs:label xml:lang="en">Asian option</rdfs:label>
+		<skos:definition xml:lang="en">option whose exercise terms involve a payoff that is determined by the average underlying price over some pre-set period of time</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Because of the averaging feature, Asian options reduce the volatility inherent in the option; therefore, Asian options are typically cheaper than European or American options.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
@@ -464,6 +464,14 @@
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">exchange-traded option</rdfs:label>
 		<skos:definition xml:lang="en">standardized option giving the buyer (holder) the right, but not the obligation, to buy (via a call option) or sell (via a put option) the underlying assets specified at a pre-determined price (i.e., the strike price, fixed or calculated), on or before a specified date (the expiration date)</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-der-opt;ExoticOption">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;Option"/>
+		<rdfs:label xml:lang="en">exotic option</rdfs:label>
+		<skos:definition xml:lang="en">option that has a non-standard payout structure or other feature</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom xml:lang="en">Commodity Futures Trading Commission (CFTC) glossary, https://www.cftc.gov/LearnAndProtect/EducationCenter/CFTCGlossary/glossary_e.html</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Exotic options include Asian options and lookback options, and are mostly traded in the over-the-counter market.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-der-opt;FixedLookbackStrikeFormula">
@@ -1205,6 +1213,13 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 		<fibo-fnd-utl-av:synonym xml:lang="en">has strike price</fibo-fnd-utl-av:synonym>
 	</owl:ObjectProperty>
 	
+	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;hasExerciseSchedule">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasSchedule"/>
+		<rdfs:label xml:lang="en">has exercise schedule</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fbc-fi-fi;Option"/>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Schedule"/>
+	</owl:ObjectProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;hasOptionTypeElectionDate">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasExplicitDate"/>
 		<rdfs:label xml:lang="en">has option type election date</rdfs:label>
@@ -1330,6 +1345,12 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-der-opt;hasExerciseSchedule"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;Schedule"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-der-opt;hasStrikeTerms"/>
 				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;OptionStrikeTerms"/>
 			</owl:Restriction>
@@ -1344,12 +1365,6 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-pas-pas;hasSeller"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fnd-pas-pas;Seller"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-ex;hasExerciseTerms"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-ex;ExerciseTerms"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 	</owl:Class>
