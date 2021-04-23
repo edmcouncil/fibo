@@ -57,7 +57,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Analytics/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/20210301/Indicators/Indicators/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/20210401/Indicators/Indicators/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20140601/Indicators/Indicators.rdf version of this ontology was modified per the issue resolutions identified in the FIBO IND 1.0 FTF 1 report.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20160801/Indicators/Indicators.rdf version of this ontology was modified per the FIBO 2.0 RFC, namely, to integrate concepts recently added to the FND domain including Rate, ExchangeRate, InterestRate and StructuredCollection and revise definitions of TermStructure and Volatility to better support concepts such as yield curves and analysis of market rates generally.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20180801/Indicators/Indicators.rdf version of this ontology was modified to integrate the composite date value and reflect migration of statistical measures to Analytics.</skos:changeNote>
@@ -65,6 +65,7 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20190901/Indicators/Indicators.rdf version of this ontology was modified to eliminate a redundant superclass declaration on MarketSpread, introduced by refactoring of FND analytics.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20200401/Indicators/Indicators.rdf version of this ontology was modified to reflect the move of dated collection from arrangements to financial dates.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20200701/Indicators/Indicators.rdf version of this ontology was modified to add definitions for historical and implied volatility, and differentiate price volatility accordingly.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20210301/Indicators/Indicators.rdf version of this ontology was modified to a restriction on isValueOf to MarketRate and eliminate its dependence on PublishedFinancialInformation.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -145,7 +146,13 @@
 	
 	<owl:Class rdf:about="&fibo-ind-ind-ind;MarketRate">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;RatioValue"/>
-		<rdfs:subClassOf rdf:resource="&fibo-ind-ind-ind;PublishedFinancialInformation"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;isValueOf"/>
+				<owl:onClass rdf:resource="&fibo-fnd-utl-alx;ScopedMeasure"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-ind-ind-ind;hasQuotationDateTime"/>
@@ -161,7 +168,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>market rate</rdfs:label>
-		<skos:definition>a rate that measures market trends for a set of instruments (S&amp;P500, NASDAQ composite, 30 day CD) or that describes the economic climate for an industry (Dow Jones Industrial Average (DJIA), H&amp;Q Growth Technologies) and/or political region (LIBOR, Prime)</skos:definition>
+		<skos:definition>rate that measures market trends for a set of instruments (S&amp;P500, NASDAQ composite, 30 day CD) or that describes the economic climate for an industry (Dow Jones Industrial Average (DJIA), H&amp;Q Growth Technologies) and/or political region (LIBOR, Prime)</skos:definition>
 		<skos:example>Financial market rates include, but are not limited to reference rates, foreign exchange rates, lending rates, bankers&apos; acceptance rates, and so forth.</skos:example>
 		<skos:scopeNote>Market rates include but may not be limited to the following:
 (1) Index: Statistical composite that measures changes in the economy or in financial markets, often expressed in percentage changes from a base year or from the previous month
