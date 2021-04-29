@@ -292,4 +292,4 @@ Because we believe that it is important to ensure at least some minimal level of
           
 ## Candidate Tests for Quality Compliance
 
-We anticipate identifying more and more quality assurance compliance criteria as time goes on, and have a backlog of other things we are considering, but the list provided above should give developers some ideas of the kinds of things we will look for in the review process and likely kick back prior to accepting extensions.
+We anticipate identifying more and more quality assurance compliance criteria as time goes on, and have a backlog of other things we are considering.
