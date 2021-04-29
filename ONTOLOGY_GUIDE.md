@@ -292,4 +292,4 @@ Because we believe that it is important to ensure at least some minimal level of
           
 ## Candidate Tests for Quality Compliance
 
-We anticipate identifying more and more quality assurance compliance criteria as time goes on, and have a backlog of other things we are considering.
+We anticipate identifying more and more quality assurance compliance criteria as time goes on and maintain here a backlog of other things we are considering.
