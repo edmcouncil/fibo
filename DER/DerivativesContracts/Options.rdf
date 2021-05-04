@@ -263,22 +263,16 @@
 		<skos:definition xml:lang="en">option whose underlying asset is a debt observable</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-der-opt;EquityIndexOptionUnderlying">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-bsc;Underlier"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasIdentity"/>
-				<owl:someValuesFrom rdf:resource="&fibo-ind-mkt-bas;EquityIndex"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">equity index option underlying</rdfs:label>
-		<skos:definition xml:lang="en">The inderlying of the equity index option, which is a reference index consisting of shares.</skos:definition>
-		<skos:editorialNote xml:lang="en">Review session note 16 Dec 2009: Nature of the &quot;Underlying&quot; as a class here: Somebody takes a defined Pf of those at that time. Modeling response: this describes a different sort of equity option, one based on a locally defined basket of equities. This has not been modeled. An equity index as defined here and in the Indices and Indicators part of the model is a published figure, out out by an index publisher. The composition of the basiet underkying that index is a matter for the publisher and not for the Options Contract. It sounds as though a locally defined basket may be used as another kind of Underlying, and may be loosely referred to as an index option, however that&apos;s not the term modeled here.</skos:editorialNote>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-der-der-opt;EquityOption">
 		<rdfs:subClassOf rdf:resource="&fibo-der-sbd-sbd;EquityDerivative"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;Option"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-der-opt;hasOptionMultiplier"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+				<owl:onDataRange rdf:resource="&xsd;decimal"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
@@ -287,20 +281,6 @@
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">equity option</rdfs:label>
 		<skos:definition xml:lang="en">Equity options are the most common type of equity derivative. They provide the right, but not the obligation to trade a quantity of stock at a set price at a future time.</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-der-opt;ExchangeTradedEquityIndexOption">
-		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;ExchangeTradedOption"/>
-		<rdfs:subClassOf rdf:resource="&fibo-der-sbd-sbd;EquityDerivative"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;EquityIndexOptionUnderlying"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">exchange traded equity index option</rdfs:label>
-		<skos:definition xml:lang="en">Equity Index options offer the investor an opportunity to either capitalize on an expected market move or to protect holdings in the underlying instruments. The difference is that the underlying instruments are indexes.</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">These indexes can reflect the characteristics of either the broad equity market as a whole or specific industry sectors within the marketplace.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-der-opt;ExchangeTradedOption">
@@ -581,8 +561,19 @@
 	
 	<owl:Class rdf:about="&fibo-der-der-opt;SingleStockOption">
 		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;EquityOption"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
+				<owl:someValuesFrom>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasIdentity"/>
+						<owl:someValuesFrom rdf:resource="&fibo-sec-eq-eq;ListedShare"/>
+					</owl:Restriction>
+				</owl:someValuesFrom>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">single stock option</rdfs:label>
-		<skos:definition xml:lang="en">Option instrument based on a single equity security (share) underlying.</skos:definition>
+		<skos:definition xml:lang="en">equity option whose underlier is a specific equity instrument</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-der-opt;StandardizedExerciseTerms">
@@ -694,6 +685,14 @@
 		<rdfs:domain rdf:resource="&fibo-fbc-fi-fi;Option"/>
 		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Schedule"/>
 	</owl:ObjectProperty>
+	
+	<owl:DatatypeProperty rdf:about="&fibo-der-der-opt;hasOptionMultiplier">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-qt-qtu;hasNumericValue"/>
+		<rdfs:label xml:lang="en">has option multiplier</rdfs:label>
+		<rdfs:range rdf:resource="&xsd;decimal"/>
+		<skos:definition xml:lang="en">numeric multiplying factor associated with an option underlier</skos:definition>
+		<skos:example xml:lang="en">In exchange-traded equity options (index and single-stock) the standard multiplier is 100. A single option represents 100 shares of stock.</skos:example>
+	</owl:DatatypeProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;hasPremium">
 		<rdfs:label xml:lang="en">has premium</rdfs:label>
