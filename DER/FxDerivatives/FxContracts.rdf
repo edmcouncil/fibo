@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE rdf:RDF [
 	<!ENTITY dct "http://purl.org/dc/terms/">
+	<!ENTITY fibo-der-der-opt "https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Options/">
 	<!ENTITY fibo-der-der-sp "https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Spots/">
 	<!ENTITY fibo-der-drc-bsc "https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/DerivativesBasics/">
 	<!ENTITY fibo-der-drc-ff "https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/FuturesAndForwards/">
@@ -26,6 +27,7 @@
 ]>
 <rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/ontology/DER/FxDerivatives/FxContracts/"
 	xmlns:dct="http://purl.org/dc/terms/"
+	xmlns:fibo-der-der-opt="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Options/"
 	xmlns:fibo-der-der-sp="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Spots/"
 	xmlns:fibo-der-drc-bsc="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/DerivativesBasics/"
 	xmlns:fibo-der-drc-ff="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/FuturesAndForwards/"
@@ -58,6 +60,7 @@
 		<sm:fileAbbreviation>fibo-der-fx-ctr</sm:fileAbbreviation>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/DerivativesBasics/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/FuturesAndForwards/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Options/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Spots/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Swaps/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/RateDerivatives/RateDerivatives/"/>
@@ -140,6 +143,30 @@
 		<fibo-fnd-utl-av:synonym xml:lang="en">outright forward currency transaction</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-der-fx-ctr;CurrencyOption">
+		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;ExchangeTradedOption"/>
+		<rdfs:subClassOf rdf:resource="&fibo-der-fx-ctr;CurrencyDerivative"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
+				<owl:onClass rdf:resource="&fibo-ind-fx-fx;CurrencySpotBuyRate"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-der-opt;hasStrikeRate"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-cur;ExchangeRate"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">currency option</rdfs:label>
+		<skos:definition xml:lang="en">option giving the buyer (holder) the right, but not the obligation, to buy or sell currency at a specified exchange rate during a specified period of time.</skos:definition>
+		<fibo-fnd-utl-av:abbreviation xml:lang="en">FX option</fibo-fnd-utl-av:abbreviation>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">For this right, a premium is paid to the broker, which will vary depending on the number of contracts purchased. Currency options are one of the best ways for corporations or individuals to hedge against adverse movements in exchange rates. Investors can hedge against foreign currency risk by purchasing a currency option put or call. For example, assume that an investor believes that the USD/EUR rate is going to increase from 0.80 to 0.90 (meaning that it will become more expensive for a European investor to buy U.S dollars). In this case, the investor would want to buy a call option on USD/EUR so that he or she could stand to gain from an increase in the exchange rate (or the USD rise).</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:synonym xml:lang="en">foreign exchange option</fibo-fnd-utl-av:synonym>
+		<fibo-fnd-utl-av:synonym xml:lang="en">forex option</fibo-fnd-utl-av:synonym>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-der-fx-ctr;CurrencySpotContract">
 		<rdfs:subClassOf rdf:resource="&fibo-der-der-sp;SpotContract"/>
 		<rdfs:subClassOf rdf:resource="&fibo-der-fx-ctr;CurrencyDerivative"/>
@@ -171,6 +198,18 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">currency swap</rdfs:label>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-fx-ctr;CurrencyVolatilityOption">
+		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;CurrencyOption"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
+				<owl:someValuesFrom rdf:resource="&fibo-ind-fx-fx;CurrencySpotVolatility"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">currency volatility option</rdfs:label>
+		<skos:definition xml:lang="en">currency option whose underlying asset is based on the volatility of a foreign exchange rate</skos:definition>
 	</owl:Class>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-fx-ctr;hasBuyingCurrency">
