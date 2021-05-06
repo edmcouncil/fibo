@@ -177,13 +177,6 @@
 	<owl:Class rdf:about="&fibo-der-der-opt;EquityOption">
 		<rdfs:subClassOf rdf:resource="&fibo-der-sbd-sbd;EquityDerivative"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;Option"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-der-opt;hasOptionMultiplier"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
-				<owl:onDataRange rdf:resource="&xsd;decimal"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">equity option</rdfs:label>
 		<skos:definition xml:lang="en">option giving the buyer (holder) the buyer (holder) the right, but not the obligation, to buy (via a call option) or sell (via a put option)the underlying equity assets specified at a pre-determined price (i.e., the strike price, fixed or calculated), on or before a specified date (the expiration date)</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom xml:lang="en">ISO 10962, Securities and related financial instruments - Classification of financial instruments (CFI) code, Fourth Edition, 2019.</fibo-fnd-utl-av:adaptedFrom>
@@ -556,11 +549,20 @@
 		<skos:definition xml:lang="en">seller of the underlying asset in an option transaction</skos:definition>
 	</owl:Class>
 	
+	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;hasCalculatedMarketValue">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasPrice"/>
+		<rdfs:label xml:lang="en">has calculated market value</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fbc-fi-fi;Option"/>
+		<rdfs:range rdf:resource="&fibo-der-der-opt;OptionPremium"/>
+		<skos:definition xml:lang="en">indicates a calculated price as of some relative date considered the market value of the option at that point in time</skos:definition>
+		<fibo-fnd-utl-av:synonym xml:lang="en">has premium</fibo-fnd-utl-av:synonym>
+	</owl:ObjectProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;hasExercisePrice">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasPrice"/>
 		<rdfs:label xml:lang="en">has exercise price</rdfs:label>
 		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryPrice"/>
-		<skos:definition xml:lang="en">predetermined price at which the holder commits to buy or sell an underlying asset</skos:definition>
+		<skos:definition xml:lang="en">specifies a predetermined price at which the holder commits to buy or sell an underlying asset</skos:definition>
 		<fibo-fnd-utl-av:synonym xml:lang="en">has strike price</fibo-fnd-utl-av:synonym>
 	</owl:ObjectProperty>
 	
@@ -569,20 +571,6 @@
 		<rdfs:label xml:lang="en">has exercise schedule</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fbc-fi-fi;Option"/>
 		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Schedule"/>
-	</owl:ObjectProperty>
-	
-	<owl:DatatypeProperty rdf:about="&fibo-der-der-opt;hasOptionMultiplier">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-qt-qtu;hasNumericValue"/>
-		<rdfs:label xml:lang="en">has option multiplier</rdfs:label>
-		<rdfs:range rdf:resource="&xsd;decimal"/>
-		<skos:definition xml:lang="en">numeric multiplying factor associated with an option underlier</skos:definition>
-		<skos:example xml:lang="en">In exchange-traded equity options (index and single-stock) the standard multiplier is 100. A single option represents 100 shares of stock.</skos:example>
-	</owl:DatatypeProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;hasPremium">
-		<rdfs:label xml:lang="en">has premium</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fbc-fi-fi;Option"/>
-		<rdfs:range rdf:resource="&fibo-der-der-opt;OptionPremium"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;hasRelativePaymentDate">
@@ -603,7 +591,7 @@
 	<owl:Class rdf:about="&fibo-fbc-fi-fi;Option">
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-der-opt;hasPremium"/>
+				<owl:onProperty rdf:resource="&fibo-der-der-opt;hasCalculatedMarketValue"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;OptionPremium"/>
 			</owl:Restriction>
@@ -611,7 +599,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasContractSize"/>
-				<owl:someValuesFrom rdf:resource="&xsd;integer"/>
+				<owl:someValuesFrom rdf:resource="&xsd;decimal"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
