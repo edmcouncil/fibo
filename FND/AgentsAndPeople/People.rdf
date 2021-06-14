@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE rdf:RDF [
 	<!ENTITY dct "http://purl.org/dc/terms/">
+	<!ENTITY fibo-fnd-aap-agt "https://spec.edmcouncil.org/fibo/ontology/FND/AgentsAndPeople/Agents/">
 	<!ENTITY fibo-fnd-aap-ppl "https://spec.edmcouncil.org/fibo/ontology/FND/AgentsAndPeople/People/">
 	<!ENTITY fibo-fnd-arr-doc "https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Documents/">
 	<!ENTITY fibo-fnd-arr-id "https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/IdentifiersAndIndices/">
@@ -21,6 +22,7 @@
 ]>
 <rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/ontology/FND/AgentsAndPeople/People/"
 	xmlns:dct="http://purl.org/dc/terms/"
+	xmlns:fibo-fnd-aap-agt="https://spec.edmcouncil.org/fibo/ontology/FND/AgentsAndPeople/Agents/"
 	xmlns:fibo-fnd-aap-ppl="https://spec.edmcouncil.org/fibo/ontology/FND/AgentsAndPeople/People/"
 	xmlns:fibo-fnd-arr-doc="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Documents/"
 	xmlns:fibo-fnd-arr-id="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/IdentifiersAndIndices/"
@@ -46,6 +48,7 @@
 		<sm:contentLanguage rdf:datatype="&xsd;anyURI">https://www.w3.org/TR/owl2-quick-reference/</sm:contentLanguage>
 		<sm:copyright>Copyright (c) 2013-2021 EDM Council, Inc.</sm:copyright>
 		<sm:copyright>Copyright (c) 2013-2021 Object Management Group, Inc.</sm:copyright>
+		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/AgentsAndPeople/Agents/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Documents/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/IdentifiersAndIndices/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/</sm:dependsOn>
@@ -57,6 +60,7 @@
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://www.omg.org/spec/LCC/</sm:dependsOn>
 		<sm:fileAbbreviation>fibo-fnd-aap-ppl</sm:fileAbbreviation>
 		<sm:filename>People.rdf</sm:filename>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/AgentsAndPeople/Agents/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Documents/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/IdentifiersAndIndices/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"/>
@@ -85,7 +89,7 @@
 		<skos:changeNote>The https://www.omg.org/spec/EDMC-FIBO/FND/20190901/AgentsAndPeople/People.rdf version of the ontology was modified to eliminate duplication with concepts in LCC and correct a bug in a restriction on identity document.</skos:changeNote>
 		<skos:changeNote>The https://www.omg.org/spec/EDMC-FIBO/FND/20200201/AgentsAndPeople/People.rdf version of the ontology was modified to add explicit DateOfBirth and DateOfDeath, added DeathCertificate and related concepts, streamlined related properties and restrictions.</skos:changeNote>
 		<skos:changeNote>The https://www.omg.org/spec/EDMC-FIBO/FND/20201201/AgentsAndPeople/People.rdf version of the ontology was modified to add hasResidence, hasMailingAddress, and hasPrimaryResidence properties and a restriction on person with respect to residence accordingly, then to move hasMailingAddress to Parties.</skos:changeNote>
-		<skos:changeNote>The https://www.omg.org/spec/EDMC-FIBO/FND/20210301/AgentsAndPeople/People.rdf version of the ontology was modified to allow the People ontology to import Parties, rather than the other way around, to simplify the class hierarchy for ease of use in data mapping and alignment.</skos:changeNote>
+		<skos:changeNote>The https://www.omg.org/spec/EDMC-FIBO/FND/20210301/AgentsAndPeople/People.rdf version of the ontology was modified to allow the People ontology to import Parties, rather than the other way around, to simplify the class hierarchy for ease of use in data mapping and alignment, and to add person name as a first class concept, revising property definitions to allow for structured names by loosening constraints.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -427,6 +431,13 @@ Many countries issued such numbers ostensibly for a singular purpose, but over t
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-aap-agt;hasStructuredName"/>
+				<owl:onClass rdf:resource="&fibo-fnd-aap-ppl;PersonName"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-aap-ppl;hasResidence"/>
 				<owl:onClass rdf:resource="&fibo-fnd-plc-adr;ConventionalStreetAddress"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
@@ -465,6 +476,47 @@ Many countries issued such numbers ostensibly for a singular purpose, but over t
 		<fibo-fnd-utl-av:synonym>natural person</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-fnd-aap-ppl;PersonName">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-pty-pty;ContextualName"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-aap-agt;isStructuredNameOf"/>
+				<owl:onClass rdf:resource="&fibo-fnd-aap-ppl;Person"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-aap-ppl;hasFullLegalName"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+				<owl:onDataRange rdf:resource="&fibo-fnd-aap-agt;Text"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-aap-ppl;hasNamePrefix"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+				<owl:onDataRange rdf:resource="&fibo-fnd-aap-agt;Text"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-aap-ppl;hasNameSuffix"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+				<owl:onDataRange rdf:resource="&fibo-fnd-aap-agt;Text"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-aap-ppl;hasSurname"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+				<owl:onDataRange rdf:resource="&fibo-fnd-aap-agt;Text"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>person name</rdfs:label>
+		<skos:definition>designation by which someone is known in some context</skos:definition>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-fnd-aap-ppl;PlaceOfBirth">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-plc-loc;PhysicalLocation"/>
 		<rdfs:label>place of birth</rdfs:label>
@@ -501,28 +553,27 @@ Many countries issued such numbers ostensibly for a singular purpose, but over t
 	<owl:DatatypeProperty rdf:about="&fibo-fnd-aap-ppl;hasFamilyName">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-aap-ppl;hasPersonName"/>
 		<rdfs:label>has family name</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-aap-ppl;Person"/>
-		<rdfs:range rdf:resource="&xsd;string"/>
+		<rdfs:range rdf:resource="&fibo-fnd-aap-agt;Text"/>
 		<owl:equivalentProperty rdf:resource="&fibo-fnd-aap-ppl;hasLastName"/>
 		<owl:equivalentProperty rdf:resource="&fibo-fnd-aap-ppl;hasSurname"/>
-		<skos:definition>the patronymic or family name of a person</skos:definition>
+		<skos:definition>indicates the name shared in common to identify the members of a family, as distinguished from each member&apos;s given name</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>&apos;Family name&apos; is more commonly used in the United Kingdom than in the United States to refer to someone&apos;s surname.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:DatatypeProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-fnd-aap-ppl;hasFirstName">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-aap-ppl;hasPersonName"/>
 		<rdfs:label>has first name</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-aap-ppl;Person"/>
-		<rdfs:range rdf:resource="&xsd;string"/>
+		<rdfs:range rdf:resource="&fibo-fnd-aap-agt;Text"/>
 		<owl:equivalentProperty rdf:resource="&fibo-fnd-aap-ppl;hasGivenName"/>
-		<skos:definition>the given name or first name of a person, that is the name chosen for them at birth or changed by them subsequently from the name given at birth</skos:definition>
+		<skos:definition>indicates the given name or first name of a person, that is, the name chosen for them at birth or changed by them subsequently from the name given at birth</skos:definition>
 	</owl:DatatypeProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-fnd-aap-ppl;hasFullLegalName">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-aap-ppl;hasPersonName"/>
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;hasLegalName"/>
 		<rdfs:label>has full legal name</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-aap-ppl;Person"/>
-		<rdfs:range rdf:resource="&xsd;string"/>
-		<skos:definition>the legally complete name of a person, as used in formal dealings of a legal or contractual nature</skos:definition>
+		<rdfs:range rdf:resource="&fibo-fnd-aap-agt;Text"/>
+		<skos:definition>indicates the complete name of a person, typically used in formal situations including those of a legal or contractual nature</skos:definition>
 	</owl:DatatypeProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-fnd-aap-ppl;hasGender">
@@ -536,42 +587,53 @@ Many countries issued such numbers ostensibly for a singular purpose, but over t
 	<owl:DatatypeProperty rdf:about="&fibo-fnd-aap-ppl;hasGivenName">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-aap-ppl;hasPersonName"/>
 		<rdfs:label>has given name</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-aap-ppl;Person"/>
-		<rdfs:range rdf:resource="&xsd;string"/>
-		<skos:definition>the given name or first name of a person, that is the name chosen for them at birth or changed by them subsequently from the name given at birth</skos:definition>
+		<rdfs:range rdf:resource="&fibo-fnd-aap-agt;Text"/>
+		<skos:definition>indicates the given name or first name of a person, that is, the name chosen for them at birth or changed by them subsequently from the name given at birth</skos:definition>
 	</owl:DatatypeProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-fnd-aap-ppl;hasLastName">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-aap-ppl;hasPersonName"/>
 		<rdfs:label>has last name</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-aap-ppl;Person"/>
-		<rdfs:range rdf:resource="&xsd;string"/>
+		<rdfs:range rdf:resource="&fibo-fnd-aap-agt;Text"/>
 		<owl:equivalentProperty rdf:resource="&fibo-fnd-aap-ppl;hasSurname"/>
-		<skos:definition>the patronymic or family name of a person</skos:definition>
+		<skos:definition>indicates the name shared in common to identify the members of a family, as distinguished from each member&apos;s given name</skos:definition>
 	</owl:DatatypeProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-fnd-aap-ppl;hasMaidenName">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-aap-ppl;hasPersonName"/>
 		<rdfs:label>has maiden name</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-aap-ppl;Person"/>
-		<rdfs:range rdf:resource="&xsd;string"/>
-		<skos:definition>the patronymic or family name which a person was born with and which predates any changes of name due to marriage</skos:definition>
+		<rdfs:range rdf:resource="&fibo-fnd-aap-agt;Text"/>
+		<skos:definition>indicates the name shared in common to identify the members of a family, that predates any changes of name due to marriage</skos:definition>
 	</owl:DatatypeProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-fnd-aap-ppl;hasMiddleNameOrInitial">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-aap-ppl;hasPersonName"/>
 		<rdfs:label>has middle name or initial</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-aap-ppl;Person"/>
-		<rdfs:range rdf:resource="&xsd;string"/>
+		<rdfs:range rdf:resource="&fibo-fnd-aap-agt;Text"/>
 		<skos:definition>one or more additional names or initial letters for names that occur between a person&apos;s first and last name</skos:definition>
 	</owl:DatatypeProperty>
 	
+	<owl:DatatypeProperty rdf:about="&fibo-fnd-aap-ppl;hasNamePrefix">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-aap-agt;hasTextValue"/>
+		<rdfs:label>has name prefix</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fnd-aap-agt;Text"/>
+		<skos:definition>indicates a character or sequence of characters, preceding a person&apos;s name, that provides additional information about the person, such as a form of address representing a title, honorific, or military rank</skos:definition>
+	</owl:DatatypeProperty>
+	
+	<owl:DatatypeProperty rdf:about="&fibo-fnd-aap-ppl;hasNameSuffix">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-aap-agt;hasTextValue"/>
+		<rdfs:label>has name suffix</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fnd-aap-agt;Text"/>
+		<skos:definition>indicates a character or sequence of characters, following a person&apos;s name, that provides additional information about the person, such as their position, educational degree, accreditation, office, or honor</skos:definition>
+	</owl:DatatypeProperty>
+	
 	<owl:DatatypeProperty rdf:about="&fibo-fnd-aap-ppl;hasPersonName">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-aap-agt;hasTextValue"/>
 		<rdfs:subPropertyOf rdf:resource="&lcc-lr;hasName"/>
 		<rdfs:label>has person name</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-aap-ppl;Person"/>
-		<rdfs:range rdf:resource="&xsd;string"/>
-		<skos:definition>links any sort of name to an individual person</skos:definition>
+		<rdfs:range rdf:resource="&fibo-fnd-aap-agt;Text"/>
+		<skos:definition>links a name to an individual</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Note that the concept of a person name may include symbology as long as the symbols are properly encoded.  Because person name is a class, other iconography or symbology that cannot be encoded in UTF-8 can, alternatively, be linked or attached as a separate image or in another form.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:DatatypeProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-aap-ppl;hasPlaceOfBirth">
@@ -602,9 +664,8 @@ Many countries issued such numbers ostensibly for a singular purpose, but over t
 	<owl:DatatypeProperty rdf:about="&fibo-fnd-aap-ppl;hasSurname">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-aap-ppl;hasPersonName"/>
 		<rdfs:label>has surname</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fnd-aap-ppl;Person"/>
-		<rdfs:range rdf:resource="&xsd;string"/>
-		<skos:definition>the patronymic or family name of a person</skos:definition>
+		<rdfs:range rdf:resource="&fibo-fnd-aap-agt;Text"/>
+		<skos:definition>indicates the name shared in common to identify the members of a family, as distinguished from each member&apos;s given name</skos:definition>
 	</owl:DatatypeProperty>
 
 </rdf:RDF>

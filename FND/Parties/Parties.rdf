@@ -64,7 +64,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20210401/Parties/Parties/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20210601/Parties/Parties/"/>
 		<skos:changeNote>The http://www.omg.org/spec/EDMC-FIBO/FND/20130801/Parties/Parties.rdf version of the ontology was was modified per the issue resolutions identified in the FIBO FND 1.0 FTF report and in https://spec.edmcouncil.org/fibo/ontology/FND/1.0/AboutFND-1.0/.</skos:changeNote>
 		<skos:changeNote>The http://www.omg.org/spec/EDMC-FIBO/FND/20141101/Parties/Parties.rdf version of this ontology was revised as a part of the issue resolutions identified in the FIBO FND 1.1 RTF report to add a parent of hasDate to date properties.</skos:changeNote>
 		<skos:changeNote>The http://www.omg.org/spec/EDMC-FIBO/FND/20160201/Parties/Parties.rdf version of this ontology was revised as a part of the FIBO 2.0 RFC to introduce disjointness axioms to aid users in understanding.</skos:changeNote>
@@ -83,7 +83,7 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20200701/Parties/Parties.rdf version of this ontology was extended to align the properties holds and isHeldBy with the lattice to improve ownership-related reasoning.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20200901/Parties/Parties.rdf version of this ontology was extended to add the concepts of tax identifier and tax identification scheme.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20201101/Parties/Parties.rdf version of this ontology was revised to make hasRelatedPartyInRole symmetric and move hasMailingAddress from people to this ontology.</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20210301/Parties/Parties.rdf version of this ontology was revised to add the two remaining property chains to complete the lattice, from independent party to thing via the situation, and to simplify the class hierarchy for improved understanding, data mapping and alignment.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20210301/Parties/Parties.rdf version of this ontology was revised to add the two remaining property chains to complete the lattice, from independent party to thing via the situation, to simplify the class hierarchy for improved understanding, data mapping and alignment, and to add the notion of a contextual name (i.e., a name for someone, some place or something that applies for some period of time in some context).</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -92,6 +92,29 @@
 		<rdfs:label>actor</rdfs:label>
 		<skos:definition>party that is the primary performer in a relationship between parties, i.e., the party that does something, causes something to happen, or otherwise plays an agentive role in the relationship</skos:definition>
 		<skos:example>Examples include owner, controlling party, beneficiary, guarantor, partner in a partnership, shareholder, etc.</skos:example>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-pty-pty;ContextualName">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-aap-agt;Name"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-dt-bd;holdsDuring"/>
+				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;DatePeriod"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-aap-agt;isStructuredNameOf"/>
+				<owl:onClass rdf:resource="&fibo-fnd-pty-pty;IndependentParty"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>contextual name</rdfs:label>
+		<skos:definition>designation by which someone, some place, or something is known in some context</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Names of people, places, and organizations often change over time, and may be used in a particular context, such as a DBA name for a business or legal name for a person.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:usageNote>Names for people may be considered to be personally identifying information (PII), especially when other details are also available.  Specifying names as string values attached directly to an individual makes name reconciliation and management, including from a privacy perspective, more challenging.</fibo-fnd-utl-av:usageNote>
+		<fibo-fnd-utl-av:usageNote>This class is designed to be extended to include provenance details regarding the source for a particular name as well as links to the various contexts in which it is used.</fibo-fnd-utl-av:usageNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-pty-pty;IndependentParty">
