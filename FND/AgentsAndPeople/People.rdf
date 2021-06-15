@@ -71,7 +71,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Countries/CountryRepresentation/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20210401/AgentsAndPeople/People/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20210601/AgentsAndPeople/People/"/>
 		<skos:changeNote>The http://spec.edmcouncil.org/fibo/ontology/FND/20130801/AgentsAndPeople/People.rdf version of the ontology was was modified per the issue resolutions identified in the FIBO FND 1.0 FTF report and in https://spec.edmcouncil.org/fibo/ontology/FND/1.0/AboutFND-1.0/. It was further revised in the FTF in advance of the Long Beach meeting, resulting in https://spec.edmcouncil.org/fibo/ontology/FND/20141101/AgentsAndPeople/People/.</skos:changeNote>
 		<skos:changeNote>The http://spec.edmcouncil.org/fibo/ontology/FND/20141101/AgentsAndPeople/People.rdf version of the ontology was was modified per the issue resolutions identified in the FIBO FND 1.1 RTF report, primarily to use the hasAddress property in addresses, and change PostalAddress to PhysicalAddress in a restriction on Person. Also revised the identifiesAddress property in favor of verifiesAddress, and revised hasDateofBirth with respect to an identity document to be verifiesDateOfBirth, which was determined to be more appropriate by the RTF.</skos:changeNote>
 		<skos:changeNote>The http://www.omg.org/spec/EDMC-FIBO/FND/20160201/AgentsAndPeople/People.rdf version of the ontology was was modified per the FIBO 2.0 RFC, including integration of LCC.</skos:changeNote>
@@ -90,14 +90,28 @@
 		<skos:changeNote>The https://www.omg.org/spec/EDMC-FIBO/FND/20200201/AgentsAndPeople/People.rdf version of the ontology was modified to add explicit DateOfBirth and DateOfDeath, added DeathCertificate and related concepts, streamlined related properties and restrictions.</skos:changeNote>
 		<skos:changeNote>The https://www.omg.org/spec/EDMC-FIBO/FND/20201201/AgentsAndPeople/People.rdf version of the ontology was modified to add hasResidence, hasMailingAddress, and hasPrimaryResidence properties and a restriction on person with respect to residence accordingly, then to move hasMailingAddress to Parties.</skos:changeNote>
 		<skos:changeNote>The https://www.omg.org/spec/EDMC-FIBO/FND/20210301/AgentsAndPeople/People.rdf version of the ontology was modified to allow the People ontology to import Parties, rather than the other way around, to simplify the class hierarchy for ease of use in data mapping and alignment, and to add person name as a first class concept, revising property definitions to allow for structured names by loosening constraints.</skos:changeNote>
+		<skos:changeNote>The https://www.omg.org/spec/EDMC-FIBO/FND/20210401/AgentsAndPeople/People.rdf version of the ontology was modified to add concepts specific to legal age, age of majority, legal working age and legal working age person.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
 	<owl:Class rdf:about="&fibo-fnd-aap-ppl;Adult">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-aap-ppl;Person"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-aap-ppl;hasAgeOfMajority"/>
+				<owl:onClass rdf:resource="&fibo-fnd-aap-ppl;AgeOfMajority"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label>adult</rdfs:label>
-		<skos:definition>a person who has attained the age of majority as defined by given jurisdiction</skos:definition>
+		<skos:definition>person who has attained the age of majority as defined in some jurisdiction</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://en.wikipedia.org/wiki/Adult</fibo-fnd-utl-av:adaptedFrom>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-aap-ppl;AgeOfMajority">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-aap-ppl;LegalAge"/>
+		<rdfs:label>age of majority</rdfs:label>
+		<skos:definition>age at which someone acquires the rights and responsibilities of an adult in some jurisdiction</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-aap-ppl;BirthCertificate">
@@ -317,10 +331,35 @@
 		<fibo-fnd-utl-av:explanatoryNote>Individuals may have an inherent physical condition which prevents them from achieving the normal levels of performance expected from persons of comparable age, or their inability to match current levels of performance may be caused by contracting an illness. Whatever the cause, if the resulting condition is such that individuals cannot care for themselves, or may act in ways that are against their interests, those persons are vulnerable through dependency and require the protection of the state against the risks of abuse or exploitation. Hence, any agreements that were made are voidable, and a court may declare that person a ward of the state and grant power of attorney to an appointed legal guardian.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-fnd-aap-ppl;LegalAge">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-fd;Age"/>
+		<rdfs:label>legal age</rdfs:label>
+		<skos:definition>age at which someone acquires the capacity to do something that they were prohibited from doing before under the law in some jurisdiction</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-aap-ppl;LegalWorkingAge">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-aap-ppl;LegalAge"/>
+		<rdfs:label>legal working age</rdfs:label>
+		<skos:definition>age at which someone acquires the capacity to work legally in some jurisdiction</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-aap-ppl;LegalWorkingAgePerson">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-aap-ppl;Person"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-aap-ppl;hasMinimumLegalWorkingAge"/>
+				<owl:onClass rdf:resource="&fibo-fnd-aap-ppl;LegalWorkingAge"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>legal working age person</rdfs:label>
+		<skos:definition>person whose age is greater than the minimum legal working age specified in a jurisdiction in which they work</skos:definition>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-fnd-aap-ppl;LegallyCapableAdult">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-aap-ppl;Adult"/>
 		<rdfs:label>legally capable adult</rdfs:label>
-		<skos:definition>a person who has attained the age of majority as defined by given jurisdiction and is allowed to conduct a business or any other occupation on his or her own behalf or for their own account</skos:definition>
+		<skos:definition>person who has attained the age of majority as defined in some jurisdiction and who is allowed to conduct a business or any other occupation on his or her own behalf or for their own account</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-aap-ppl;Minor">
@@ -438,6 +477,13 @@ Many countries issued such numbers ostensibly for a singular purpose, but over t
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-dt-fd;hasAge"/>
+				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;Age"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-aap-ppl;hasResidence"/>
 				<owl:onClass rdf:resource="&fibo-fnd-plc-adr;ConventionalStreetAddress"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
@@ -523,6 +569,13 @@ Many countries issued such numbers ostensibly for a singular purpose, but over t
 		<skos:definition>physical location, including country, region, and municipality where an individual was born</skos:definition>
 		<fibo-fnd-utl-av:synonym>birth place</fibo-fnd-utl-av:synonym>
 	</owl:Class>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-aap-ppl;hasAgeOfMajority">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasAge"/>
+		<rdfs:label>has age of majority</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fnd-aap-ppl;AgeOfMajority"/>
+		<skos:definition>relates someone to the age required to attain the capacity to engage in certain transactions or be treated legally as an adult in some jurisdiction</skos:definition>
+	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-aap-ppl;hasCitizenship">
 		<rdfs:subPropertyOf rdf:resource="&lcc-lr;has"/>
@@ -612,6 +665,13 @@ Many countries issued such numbers ostensibly for a singular purpose, but over t
 		<rdfs:range rdf:resource="&fibo-fnd-aap-agt;Text"/>
 		<skos:definition>one or more additional names or initial letters for names that occur between a person&apos;s first and last name</skos:definition>
 	</owl:DatatypeProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-aap-ppl;hasMinimumLegalWorkingAge">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasAge"/>
+		<rdfs:label>has minimum legal working age</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fnd-aap-ppl;LegalWorkingAge"/>
+		<skos:definition>relates someone to the minimum legal working age for the jurisdiction in which they reside</skos:definition>
+	</owl:ObjectProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-fnd-aap-ppl;hasNamePrefix">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-aap-agt;hasTextValue"/>
