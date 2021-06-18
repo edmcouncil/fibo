@@ -4,7 +4,6 @@
 	<!ENTITY fibo-be-fct-pub "https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/Publishers/">
 	<!ENTITY fibo-der-der-opt "https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Options/">
 	<!ENTITY fibo-der-drc-bsc "https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/DerivativesBasics/">
-	<!ENTITY fibo-der-drc-swp "https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Swaps/">
 	<!ENTITY fibo-der-sbd-sbd "https://spec.edmcouncil.org/fibo/ontology/DER/SecurityBasedDerivatives/SecurityBasedDerivatives/">
 	<!ENTITY fibo-fbc-dae-gty "https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Guaranty/">
 	<!ENTITY fibo-fbc-fct-mkt "https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/Markets/">
@@ -40,7 +39,6 @@
 	xmlns:fibo-be-fct-pub="https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/Publishers/"
 	xmlns:fibo-der-der-opt="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Options/"
 	xmlns:fibo-der-drc-bsc="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/DerivativesBasics/"
-	xmlns:fibo-der-drc-swp="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Swaps/"
 	xmlns:fibo-der-sbd-sbd="https://spec.edmcouncil.org/fibo/ontology/DER/SecurityBasedDerivatives/SecurityBasedDerivatives/"
 	xmlns:fibo-fbc-dae-gty="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Guaranty/"
 	xmlns:fibo-fbc-fct-mkt="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/Markets/"
@@ -87,7 +85,6 @@
 		<sm:filename>Options.rdf</sm:filename>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/Publishers/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/DerivativesBasics/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Swaps/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/SecurityBasedDerivatives/SecurityBasedDerivatives/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Guaranty/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"/>
@@ -128,7 +125,7 @@
 	</owl:NamedIndividual>
 	
 	<owl:Class rdf:about="&fibo-der-der-opt;BasketOption">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;Option"/>
+		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;VanillaOption"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
@@ -136,7 +133,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">basket option</rdfs:label>
-		<skos:definition xml:lang="en">option whose underlying asset is a basket of securities and/or indices</skos:definition>
+		<skos:definition xml:lang="en">option whose underlying asset is a group, or basket, of commodities, securities, indices, or currencies</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-der-opt;BondOption">
@@ -189,57 +186,26 @@
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">The seller (issuer) of the call option assumes the obligation of delivering the assets specified should the buyer exercise the option. The buyer has the option, but not the obligation, to purchase the underlying asset.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-der-opt;EquityOption">
-		<rdfs:subClassOf rdf:resource="&fibo-der-sbd-sbd;EquityDerivative"/>
+	<owl:Class rdf:about="&fibo-der-der-opt;CombinationOption">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;Option"/>
-		<rdfs:label xml:lang="en">equity option</rdfs:label>
-		<skos:definition xml:lang="en">option giving the buyer (holder) the buyer (holder) the right, but not the obligation, to buy (via a call option) or sell (via a put option)the underlying equity assets specified at a pre-determined price (i.e., the strike price, fixed or calculated), on or before a specified date (the expiration date)</skos:definition>
-		<fibo-fnd-utl-av:adaptedFrom xml:lang="en">ISO 10962, Securities and related financial instruments - Classification of financial instruments (CFI) code, Fourth Edition, 2019.</fibo-fnd-utl-av:adaptedFrom>
+		<rdfs:label xml:lang="en">combination option</rdfs:label>
+		<skos:definition xml:lang="en">option constructed from more than one option type, strike price, or expiration date on the same underlying asset</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Simple combinations include option spread trades such as vertical spreads, calendar (or horizontal) spreads, and diagonal spreads. More involved combinations include trades such as Condor or Butterfly spreads which are actually combinations of two vertical spreads.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-der-opt;ExchangeTradedOption">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;Option"/>
+	<owl:Class rdf:about="&fibo-der-der-opt;EquityOption">
+		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;VanillaOption"/>
+		<rdfs:subClassOf rdf:resource="&fibo-der-sbd-sbd;EquityDerivative"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-dae-gty;hasGuarantor"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;OptionGuarantor"/>
+				<owl:onProperty rdf:resource="&fibo-der-der-opt;hasExerciseStyle"/>
+				<owl:hasValue rdf:resource="&fibo-sec-dbt-ex;AmericanExerciseConvention"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-fi-ip;hasPriceDeterminationMethod"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-ip;PriceDeterminationMethod"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;hasContractDuration"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;ExplicitDuration"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;hasCounterparty"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;TradedOptionsCounterparty"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-pas-pas;hasSeller"/>
-				<owl:someValuesFrom>
-					<owl:Class>
-						<owl:intersectionOf rdf:parseType="Collection">
-							<rdf:Description rdf:about="&fibo-der-der-opt;OptionIssuer">
-							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-der-der-opt;OptionsExchangeParticipant">
-							</rdf:Description>
-						</owl:intersectionOf>
-					</owl:Class>
-				</owl:someValuesFrom>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">exchange-traded option</rdfs:label>
-		<skos:definition xml:lang="en">standardized option giving the buyer (holder) the right, but not the obligation, to buy (via a call option) or sell (via a put option) the underlying assets specified at a pre-determined price (i.e., the strike price, fixed or calculated), on or before a specified date (the expiration date)</skos:definition>
+		<rdfs:label xml:lang="en">equity option</rdfs:label>
+		<skos:definition xml:lang="en">option giving the buyer (holder) the right, but not the obligation, to buy (via a call option) or sell (via a put option) the underlying equity assets specified at a pre-determined price (i.e., the strike price, fixed or calculated), on or before a specified date (the expiration date)</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom xml:lang="en">ISO 10962, Securities and related financial instruments - Classification of financial instruments (CFI) code, Fourth Edition, 2019.</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">For an Equity Option, one contract represents 100 shares of stock.  Equity options settle in &apos;American style&apos;.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-der-opt;ExtrinsicValue">
@@ -251,11 +217,12 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-der-opt;FixedIncomeOption">
+		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;VanillaOption"/>
 		<rdfs:subClassOf rdf:resource="&fibo-der-sbd-sbd;DebtInstrumentDerivative"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;Option"/>
 		<rdfs:label xml:lang="en">fixed income option</rdfs:label>
-		<skos:definition xml:lang="en">option giving the buyer (holder) the buyer (holder) the right, but not the obligation, to buy (via a call option) or sell (via a put option)the underlying fixed income assets specified at a pre-determined price (i.e., the strike price, fixed or calculated), on or before a specified date (the expiration date)</skos:definition>
+		<skos:definition xml:lang="en">option giving the buyer (holder) the right, but not the obligation, to buy (via a call option) or sell (via a put option) the underlying fixed income assets specified at a pre-determined price (i.e., the strike price, fixed or calculated), on or before a specified date (the expiration date)</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom xml:lang="en">ISO 10962, Securities and related financial instruments - Classification of financial instruments (CFI) code, Fourth Edition, 2019.</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Fixed income options, or debt options, are derivatives contracts that use bonds or other fixed-income securities as their underlying asset.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:NamedIndividual rdf:about="&fibo-der-der-opt;InTheMoney">
@@ -313,38 +280,6 @@
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Moneyness describes the intrinsic value of an option in its current state. The term moneyness is most commonly used with put and call options and is an indicator as to whether the option would make money if it were exercised immediately. Moneyness can be measured with respect to the underlying stock or other asset&apos;s current/spot price or its future price.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-der-opt;NovatedOptionContract">
-		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;ExchangeTradedOption"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-pas-pas;hasSeller"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;NovatedOptionContractPrincipal"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">novated option contract</rdfs:label>
-		<skos:definition xml:lang="en">An Option Contract after the stage where a Derivatives Exchange has novated this contract and become the principal to it, for purposes of clearing and settlement. The Clearing House novates both contract. So when you are on the floor (as a Broker), you trade with another Broker. Then you take it to th eRing, and present it to the Ring. So you write a contract and give it to the ringleader, who then books it. So the party you dealt with deals with the exahcnge, and you deal with the exchange. THen there are two contracts for one deal. So the answer here is that there are two novated contracts for one Options deal. Difference: If not open outcry? In OO the deal is done and given to the ringleader, who represents the Cleaing house. When it&apos;s not open outcry, the clearing house gets the deal, books the deal, and margins it. So you don&apos;t know as much about the deal and process. This eliminiates stickiness of a market that has credit. Similar to what occurs in share markets, where clearing takes place, e.g. when someone defaults on delivery. Clearing House simply closes out the contract.</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-der-opt;NovatedOptionContractPrincipal">
-		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;TradedOptionPrincipal"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasIdentity"/>
-				<owl:someValuesFrom>
-					<owl:Class>
-						<owl:unionOf rdf:parseType="Collection">
-							<rdf:Description rdf:about="&fibo-der-drc-bsc;DesignatedContractMarket">
-							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-der-drc-bsc;DerivativesClearingOrganization">
-							</rdf:Description>
-						</owl:unionOf>
-					</owl:Class>
-				</owl:someValuesFrom>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">novated option contract principal</rdfs:label>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-der-der-opt;OptionGuarantor">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-gty;Guarantor"/>
 		<rdfs:subClassOf>
@@ -398,7 +333,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-der-opt;OptionOnFuture">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;Option"/>
+		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;CombinationOption"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
@@ -441,11 +376,6 @@
 		<rdfs:label xml:lang="en">option premium</rdfs:label>
 		<skos:definition xml:lang="en">current market price of an option contract</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">The option premium is the income received by the seller (writer) of an option contract to another party. In-the-money option premiums are composed of two factors: intrinsic and extrinsic value. Out-of-the-money options&apos; premiums consist solely of extrinsic value. For stock options, the premium is quoted as a dollar amount per share, and most contracts represent the commitment of 100 shares.</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-der-opt;OptionsExchangeParticipant">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-pty-pty;PartyInRole"/>
-		<rdfs:label xml:lang="en">options exchange participant</rdfs:label>
 	</owl:Class>
 	
 	<owl:NamedIndividual rdf:about="&fibo-der-der-opt;OutOfTheMoney">
@@ -550,7 +480,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;ExchangeTradedOption"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;VanillaOption"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">standardized options terms</rdfs:label>
@@ -565,24 +495,9 @@
 		<skos:definition xml:lang="en">The strike price for the option is the agreed price for the transaction if this takes place. Applies to all options types. Action: Make sure that&apos;s there for all Options types.</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-der-opt;Swaption">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-bsc;OverTheCounterInstrument"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;Option"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-drc-swp;Swap"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">swaption</rdfs:label>
-		<skos:definition xml:lang="en">over-the-counter option that confers the right but not the obligation, to enter into a swap transaction at some time in the future</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">A swaption, also known as a swap option, refers to an option to enter into an interest rate swap or some other type of swap. In exchange for an options premium, the buyer gains the right but not the obligation to enter into a specified swap agreement with the issuer on a specified future date.</fibo-fnd-utl-av:explanatoryNote>
-		<fibo-fnd-utl-av:synonym xml:lang="en">swap option</fibo-fnd-utl-av:synonym>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-der-der-opt;TradedOptionPrincipal">
 		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;OptionIssuer"/>
-		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;OptionsExchangeParticipant"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-mkt;ExchangeParticipant"/>
 		<rdfs:label xml:lang="en">traded option principal</rdfs:label>
 		<owl:disjointWith rdf:resource="&fibo-der-der-opt;TradedOptionsCounterparty"/>
 		<skos:definition xml:lang="en">The principal to the Traded Option contract. THis is the party which gives the other party the right to take up the obligation, and which is obliged to honor that transaction if that option is taken up.</skos:definition>
@@ -590,7 +505,7 @@
 	
 	<owl:Class rdf:about="&fibo-der-der-opt;TradedOptionsCounterparty">
 		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;OptionHolder"/>
-		<rdfs:subClassOf rdf:resource="&fibo-der-der-opt;OptionsExchangeParticipant"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-mkt;ExchangeParticipant"/>
 		<rdfs:label xml:lang="en">traded options counterparty</rdfs:label>
 	</owl:Class>
 	
@@ -605,6 +520,52 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-pas;Seller"/>
 		<rdfs:label xml:lang="en">underlying asset seller</rdfs:label>
 		<skos:definition xml:lang="en">seller of the underlying asset in an option transaction</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-der-opt;VanillaOption">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;Option"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-dae-gty;hasGuarantor"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;OptionGuarantor"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-fi-ip;hasPriceDeterminationMethod"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-ip;PriceDeterminationMethod"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;hasContractDuration"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;ExplicitDuration"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;hasCounterparty"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-der-opt;TradedOptionsCounterparty"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-pas-pas;hasSeller"/>
+				<owl:someValuesFrom>
+					<owl:Class>
+						<owl:unionOf rdf:parseType="Collection">
+							<rdf:Description rdf:about="&fibo-der-der-opt;OptionIssuer">
+							</rdf:Description>
+							<rdf:Description rdf:about="&fibo-fbc-fct-mkt;ExchangeParticipant">
+							</rdf:Description>
+						</owl:unionOf>
+					</owl:Class>
+				</owl:someValuesFrom>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">vanilla option</rdfs:label>
+		<skos:definition xml:lang="en">common option giving the buyer (holder) the right, but not the obligation, to buy (via a call option) or sell (via a put option) the underlying assets specified at a pre-determined price (i.e., the strike price, fixed or calculated), on or before a specified date (the expiration date)</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Vanilla options include call or put options that have no special or unusual features, and are typically exchange traded.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;hasCalculatedMarketValue">
@@ -631,6 +592,14 @@
 		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Schedule"/>
 		<skos:definition xml:lang="en">links an option to the schedule specified in the contract that constrains when it may be exercised</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">An exercise schedule may be as simple as a single date or date period. However, in more complex cases, it may be an ad hoc schedule of individual dates, or a regular schedule of periodic exercise dates.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;hasExerciseStyle">
+		<rdfs:subPropertyOf rdf:resource="&lcc-cr;isClassifiedBy"/>
+		<rdfs:label>has exercise style</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fbc-fi-fi;Option"/>
+		<rdfs:range rdf:resource="&fibo-sec-dbt-ex;ExerciseConvention"/>
+		<skos:definition>indicates the exercise convention specified for the option</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-der-opt;hasRelativePaymentDate">
@@ -666,6 +635,12 @@
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-der-opt;hasExerciseSchedule"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;Schedule"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-der-opt;hasExerciseStyle"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-ex;ExerciseConvention"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
