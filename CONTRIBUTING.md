@@ -216,7 +216,7 @@ When you cloned your fork to your local repository, you chose a directory in whi
 * In your FIBO installation directory, there is a directory called ".git", and a folder in there called "hooks".  This folder should have been created for you when you cloned the repository; if not, you can initialize your repository from the Git command line by changing directory to your fibo installation directory and typing: git init
 * The Git command line can be run from within the SourceTree tool by selecting "Open in terminal" from the Actions menu. Alternatively, you may set up a Git shell environment – see separate page 'Setting up the Git Shell' for details.
 * Running the initialization command should ensure that your .git environment exists and that it includes the /hooks directory. This does not automatically install or update the two files that you need to have in place for the Serializer to work. These are: 
-    * [pre-commit](https://github.com/edmcouncil/rdf-toolkit/blob/master/etc/git-hook/pre-commit) (no file extension)
+    * [pre-commit](https://github.com/edmcouncil/rdf-toolkit/raw/master/etc/git-hook/pre-commit (no file extension)
     * [rdf-toolkit.jar](https://jenkins.edmcouncil.org/view/rdf-toolkit/job/rdf-toolkit-build/lastSuccessfulBuild/artifact/target/rdf-toolkit.jar)
 * These files are updated from time to time so it is recommended that you re-download these directly from the links below before proceeding.
 * Copy the file pre-commit to your hooks directory (use right-click on the link and select the save option).  Make sure that the name of the file is just pre-commit; your browser might want to append a suffix like .txt to it. 
