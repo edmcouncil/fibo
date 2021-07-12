@@ -97,7 +97,7 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20200301/FinancialInstruments/FinancialInstruments/ version of this ontology was modified to move redemption provision from debt to financial instruments, given that it is a broader concept needed for equities.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20200801/FinancialInstruments/FinancialInstruments/ version of this ontology was modified to add a property indicating the currency that an instrument is issued in, simplify the contract party hierarchy and add properties relating financial instruments to shareholders.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20201201/FinancialInstruments/FinancialInstruments/ version of this ontology was modified to incorporate a hasMaturityDate property given that it can apply to debt instruments and preferred shares, as well as to other financial instruments, eliminated the redundant hasScheduledMaturityDate property, cleaned up circular definitions, eliminated the property &apos;mayBeTradedIn&apos;, which was only used in one place and was redundant with the concept of a ListedSecurity / Listing in SEC, added a synonym and additional explanatory note to packaged financial product, added hasNominalValue, which was a gap, and added back restrictions on debt instrument for hasMaturityDate (min 0 to account for rare instruments (e.g., consul) that have no maturity date), hasDurationToMaturity and hasTimeToMaturity.</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20210301/FinancialInstruments/FinancialInstruments/ version of this ontology was modified to add the concept of a spot contract.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20210301/FinancialInstruments/FinancialInstruments/ version of this ontology was modified to add the concept of a spot contract and clarify the definition of time to maturity, as well as add a property for days to maturity.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -144,6 +144,13 @@
 				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;hasTimeToMaturity"/>
 				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;ExplicitDuration"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;hasDaysToMaturity"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+				<owl:onDataRange rdf:resource="&xsd;integer"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>debt instrument</rdfs:label>
@@ -405,6 +412,13 @@
 		<skos:example>Each exchange has a set of terms they apply to membership agreements and with respect to the instrments that may be traded on that exchange. For example, there is a set expiration date that exchanges will publish for exchange-traded options - in the US it is the Saturday following the third Friday of every month. Similarly, there are set incremental dates for strike for exchange traded options. Contract sizes are also stipulated, for example in the US these are standardized by the OPRA Convention (Options Pricing Reporting Authority).</skos:example>
 	</owl:Class>
 	
+	<owl:DatatypeProperty rdf:about="&fibo-fbc-fi-fi;hasDaysToMaturity">
+		<rdfs:label>has days to maturity</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fbc-fi-fi;FinancialInstrument"/>
+		<rdfs:range rdf:resource="&xsd;integer"/>
+		<skos:definition>indicates the number of calendar days remaining from the present date to the scheduled maturity date of an instrument</skos:definition>
+	</owl:DatatypeProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-fi-fi;hasDurationToMaturity">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fbc-fi-fi;hasTerm"/>
 		<rdfs:label>has duration to maturity</rdfs:label>
@@ -495,7 +509,8 @@
 			</owl:Class>
 		</rdfs:domain>
 		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;ExplicitDuration"/>
-		<skos:definition>indicates the interval between the present date and the scheduled maturity date of an instrument or offering</skos:definition>
+		<skos:definition>indicates the interval during which the owner will receive interest, from the start of interest payments to the scheduled maturity date of an instrument or offering</skos:definition>
+		<fibo-fnd-utl-av:synonym>has term to maturity</fibo-fnd-utl-av:synonym>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-fi-fi;hasValueExpressedIn">
