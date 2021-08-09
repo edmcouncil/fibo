@@ -13,7 +13,6 @@
 	<!ENTITY fibo-loan-typ-prod "https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanTypes/LoanProducts/">
 	<!ENTITY fibo-sec-dbt-ab-abs "https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/AssetBackedSecurities/AssetBackedSecurities/">
 	<!ENTITY fibo-sec-dbt-ab-cdo "https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/AssetBackedSecurities/CDOs/">
-	<!ENTITY fibo-sec-dbt-ab-mbs "https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/AssetBackedSecurities/MortgageBackedSecurities/">
 	<!ENTITY fibo-sec-dbt-ab-pbs "https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/AssetBackedSecurities/PoolBackedSecurities/">
 	<!ENTITY fibo-sec-dbt-bnd "https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/Bonds/">
 	<!ENTITY fibo-sec-dbt-dbti "https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtInstruments/">
@@ -39,7 +38,6 @@
 	xmlns:fibo-loan-typ-prod="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanTypes/LoanProducts/"
 	xmlns:fibo-sec-dbt-ab-abs="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/AssetBackedSecurities/AssetBackedSecurities/"
 	xmlns:fibo-sec-dbt-ab-cdo="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/AssetBackedSecurities/CDOs/"
-	xmlns:fibo-sec-dbt-ab-mbs="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/AssetBackedSecurities/MortgageBackedSecurities/"
 	xmlns:fibo-sec-dbt-ab-pbs="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/AssetBackedSecurities/PoolBackedSecurities/"
 	xmlns:fibo-sec-dbt-bnd="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/Bonds/"
 	xmlns:fibo-sec-dbt-dbti="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtInstruments/"
@@ -67,7 +65,6 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/InterestRates/InterestRates/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanTypes/LoanProducts/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/AssetBackedSecurities/CDOs/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/AssetBackedSecurities/MortgageBackedSecurities/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/AssetBackedSecurities/PoolBackedSecurities/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/Bonds/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtInstruments/"/>
@@ -165,19 +162,12 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-ab-pbs;hasTrancheType"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-ab-mbs;TrancheType"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-ab-pbs;issuedBy"/>
 				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-ab-abs;ABSIssuer"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">cash asset backed security instrument</rdfs:label>
 		<owl:disjointWith rdf:resource="&fibo-sec-dbt-ab-cdo;CashCDOTranche"/>
-		<owl:disjointWith rdf:resource="&fibo-sec-dbt-ab-mbs;MortgageBackedSecurityInstrument"/>
 		<skos:definition xml:lang="en">An asset-backed security is a type of bond or note that is based on pools of assets, or collateralized by the cash flows from a specified pool of underlying assets. Assets are pooled to make otherwise minor and uneconomical investments worthwhile, while also reducing risk by diversifying the underlying assets.</skos:definition>
 		<skos:editorialNote xml:lang="en">Definition of ABS is one with any kind of asset underlying which is not a mortgage, e.g. a loan, credit card etc. Asset Backed Securities, for example home equity loans (HEL), credit cards, etc. These are securities backed by receivables [payments] that are either secured (HEL) or unsecured (credit card), tranched on the basis of prepayment and default risks. Action: Determine where mobile home and second mortgage based securities fit in, and add to the relevant definition. Outcome: these would be specialised kinds of pools of loans and are therefore reflected by specific typs of Cash ABS, in the same way as Auto Loan ABS are defined. Note also that an issue of ABS certificates (contracts) may have different tranches which relate to these different kinds of loan, and other as yet undefined types of loan. These are capable of extension into indefinite numbers of loan types / pool types, so it would not be practical to include all the possibilities in the standard terms other than as selectable types of loan in the loan type selection data range.</skos:editorialNote>
 	</owl:Class>
@@ -251,7 +241,6 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">home equity line of credit pool</rdfs:label>
-		<owl:disjointWith rdf:resource="&fibo-sec-dbt-ab-mbs;MortgagePool"/>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-ab-abs;HomeEquityLineOfCreditPoolConstituent">
@@ -454,17 +443,6 @@
 		<rdfs:label xml:lang="en">balance at inclusion date</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-dbt-ab-abs;LoanPoolConstituent"/>
 		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-ab-abs;category">
-		<rdfs:label xml:lang="en">category</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-ab-abs;AutoLoanABS"/>
-		<rdfs:range rdf:resource="&fibo-sec-dbt-ab-cdo;CreditworthinessSelection"/>
-		<skos:definition xml:lang="en">Auto-loans ABS are classified into three categories: prime, non-prime, and sub-prime.</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-ab-abs;definesTermsFor">
-		<rdfs:label>defines terms for</rdfs:label>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-ab-abs;describedAs">
