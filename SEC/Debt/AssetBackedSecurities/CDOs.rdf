@@ -10,7 +10,6 @@
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
 	<!ENTITY fibo-sec-dbt-ab-abs "https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/AssetBackedSecurities/AssetBackedSecurities/">
 	<!ENTITY fibo-sec-dbt-ab-cdo "https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/AssetBackedSecurities/CDOs/">
-	<!ENTITY fibo-sec-dbt-ab-clo "https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/AssetBackedSecurities/CLOs/">
 	<!ENTITY fibo-sec-dbt-ab-cmo "https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/AssetBackedSecurities/CMOs/">
 	<!ENTITY fibo-sec-dbt-ab-mbs "https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/AssetBackedSecurities/MortgageBackedSecurities/">
 	<!ENTITY fibo-sec-dbt-ab-pbs "https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/AssetBackedSecurities/PoolBackedSecurities/">
@@ -37,7 +36,6 @@
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
 	xmlns:fibo-sec-dbt-ab-abs="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/AssetBackedSecurities/AssetBackedSecurities/"
 	xmlns:fibo-sec-dbt-ab-cdo="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/AssetBackedSecurities/CDOs/"
-	xmlns:fibo-sec-dbt-ab-clo="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/AssetBackedSecurities/CLOs/"
 	xmlns:fibo-sec-dbt-ab-cmo="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/AssetBackedSecurities/CMOs/"
 	xmlns:fibo-sec-dbt-ab-mbs="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/AssetBackedSecurities/MortgageBackedSecurities/"
 	xmlns:fibo-sec-dbt-ab-pbs="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/AssetBackedSecurities/PoolBackedSecurities/"
@@ -69,7 +67,6 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/AssetBackedSecurities/AssetBackedSecurities/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/AssetBackedSecurities/CLOs/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/AssetBackedSecurities/CMOs/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/AssetBackedSecurities/MortgageBackedSecurities/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/AssetBackedSecurities/PoolBackedSecurities/"/>
@@ -398,8 +395,14 @@
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-ab-cdo;CollateralizedBondObligation">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-ab-cdo;CashCDOTranche"/>
-		<rdfs:label xml:lang="en">collateralized bond obligation instrument</rdfs:label>
-		<owl:disjointWith rdf:resource="&fibo-sec-dbt-ab-clo;CLO"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;refersTo"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-ab-cdo;BondPool"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">collateralized bond obligation</rdfs:label>
+		<owl:disjointWith rdf:resource="&fibo-sec-dbt-ab-cdo;CollateralizedLoanObligation"/>
 		<owl:disjointWith rdf:resource="&fibo-sec-dbt-ab-cmo;AgencyCMO"/>
 		<skos:definition xml:lang="en">structured debt security that has investment-grade bonds as its underlying assets backed by the receivables on high-yield or junk bonds</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">A multitranche debt structure similar in some respects to a collateralized mortgage obligation (CMO) structure. Typically low-rated bonds rather than mortgages serve as the collateral. The organization creating and promoting the structure usually holds the underlying equity and may also collect a fee. Junk bonds are typically not investment grade, but because they pool several types of credit quality bonds together, they offer enough diversification to be &quot;investment grade.&quot; For example high yield [emerging market] CBO which consists of a portfolio of different high yield [emerging market] bonds. Investopedia: Similar in structure to a collateralized mortgage obligation (CMO), but different in that CBOs represent different levels of credit risk, not different maturities. Defoinition Origin:Investopedia</fibo-fnd-utl-av:explanatoryNote>
@@ -409,6 +412,24 @@
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-ab-pbs;CollateralizedObligationDeal"/>
 		<rdfs:label xml:lang="en">collateralized bond obligation deal</rdfs:label>
 		<skos:definition xml:lang="en">An issue of Collateralized Bond Obligation notes.</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-dbt-ab-cdo;CollateralizedLoanObligation">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-ab-pbs;CollateralizedObligationInstrument"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;refersTo"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-ab-abs;LoanPool"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">collateralized loan obligation</rdfs:label>
+		<owl:disjointWith rdf:resource="&fibo-sec-dbt-ab-cmo;AgencyCMO"/>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-dbt-ab-cdo;CollateralizedLoanObligationDeal">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-ab-pbs;CollateralizedObligationDeal"/>
+		<rdfs:label xml:lang="en">collateralized loan obligation deal</rdfs:label>
+		<skos:definition xml:lang="en">An issue of Collateralized Loan Obligations.</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-ab-cdo;Creditworthiness">
