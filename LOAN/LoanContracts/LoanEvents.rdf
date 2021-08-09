@@ -7,6 +7,7 @@
 	<!ENTITY fibo-fnd-arr-asmt "https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Assessments/">
 	<!ENTITY fibo-fnd-arr-lif "https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Lifecycles/">
 	<!ENTITY fibo-fnd-dt-fd "https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/">
+	<!ENTITY fibo-fnd-dt-oc "https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/Occurrences/">
 	<!ENTITY fibo-fnd-law-cor "https://spec.edmcouncil.org/fibo/ontology/FND/Law/LegalCore/">
 	<!ENTITY fibo-fnd-law-jur "https://spec.edmcouncil.org/fibo/ontology/FND/Law/Jurisdiction/">
 	<!ENTITY fibo-fnd-pas-psch "https://spec.edmcouncil.org/fibo/ontology/FND/ProductsAndServices/PaymentsAndSchedules/">
@@ -29,6 +30,7 @@
 	xmlns:fibo-fnd-arr-asmt="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Assessments/"
 	xmlns:fibo-fnd-arr-lif="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Lifecycles/"
 	xmlns:fibo-fnd-dt-fd="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"
+	xmlns:fibo-fnd-dt-oc="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/Occurrences/"
 	xmlns:fibo-fnd-law-cor="https://spec.edmcouncil.org/fibo/ontology/FND/Law/LegalCore/"
 	xmlns:fibo-fnd-law-jur="https://spec.edmcouncil.org/fibo/ontology/FND/Law/Jurisdiction/"
 	xmlns:fibo-fnd-pas-psch="https://spec.edmcouncil.org/fibo/ontology/FND/ProductsAndServices/PaymentsAndSchedules/"
@@ -47,9 +49,9 @@
 		<rdfs:label xml:lang="en">LoanEvents</rdfs:label>
 		<dct:abstract>This ontology defines a wide range of events relating to loans. These include legal proceedings, prepayments, and so forth.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
-		<sm:contentLanguage rdf:datatype="&xsd;anyURI">http://www.w3.org/standards/techs/owl#w3c_all</sm:contentLanguage>
-		<sm:copyright>Copyright (c) 2015-2020 EDM Council, Inc.</sm:copyright>
-		<sm:copyright>Copyright (c) 2015-2020 Object Management Group, Inc.</sm:copyright>
+		<sm:contentLanguage rdf:resource="https://www.w3.org/TR/owl2-quick-reference/"/>
+		<sm:copyright>Copyright (c) 2015-2021 EDM Council, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2015-2021 Object Management Group, Inc.</sm:copyright>
 		<sm:fileAbbreviation>fibo-loan-ln-ev</sm:fileAbbreviation>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"/>
@@ -57,6 +59,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Assessments/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Lifecycles/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/Occurrences/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Law/Jurisdiction/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Law/LegalCore/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Parties/"/>
@@ -90,14 +93,15 @@
 		<rdfs:subClassOf rdf:resource="&fibo-loan-ln-ev;LegalProceeding"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-loan-ln-ev;deliveredBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-law-cor;CourtOfLaw"/>
+				<owl:onProperty rdf:resource="&fibo-loan-ln-ev;hasJudgementAmount"/>
+				<owl:onClass rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-loan-ln-ev;hasJudgementAmount"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
+				<owl:onProperty rdf:resource="&fibo-loan-ln-ev;isDeliveredBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-law-cor;CourtOfLaw"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">court judgment</rdfs:label>
@@ -105,22 +109,17 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-ln-ev;LegalProceeding">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-oc;Occurrence"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-dt-fd;hasExplicitDate"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isGovernedBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-law-jur;Jurisdiction"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-loan-ln-ev;isAgainst"/>
 				<owl:someValuesFrom rdf:resource="&fibo-be-le-lp;LegalPerson"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-loan-ln-ev;takesPlaceUnder"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-law-jur;Jurisdiction"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">legal proceeding</rdfs:label>
@@ -153,10 +152,13 @@
 		<rdfs:label xml:lang="en">repayment phase</rdfs:label>
 	</owl:Class>
 	
-	<owl:ObjectProperty rdf:about="&fibo-loan-ln-ev;deliveredBy">
-		<rdfs:label xml:lang="en">delivered by</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-ln-ev;CourtJudgment"/>
-		<rdfs:range rdf:resource="&fibo-fnd-law-cor;CourtOfLaw"/>
+	<owl:ObjectProperty rdf:about="&fibo-loan-ln-ev;hasDefaultAmount">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasMonetaryAmount"/>
+		<rdfs:label xml:lang="en">has default amount</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-loan-ln-ev;LoanDefaultProceeding"/>
+		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
+		<skos:definition xml:lang="en">amount before the application of sale proceeds and recoveries</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Undefined PoC SDM Notes: Default or Foreclosure amount - Total default amount before the application of sale proceeds and recoveries.&amp;nbsp; (AO 146, RR 135) Loan Default Proceeding_cd= (1) Default amount &lt;/p&gt; &lt;p&gt; Sale price - Price achieved on sale of property ( AO 147, RR 137 )&amp;nbsp; Loan Default Proceeding_cd= (2) Property Sale &lt;/p&gt; &lt;p&gt; Loss on Sale&amp;nbsp;&amp;nbsp; Total loss net of fees, accrued interest etc. after application of sale proceeds (excluding prepayment charge if subordinate to principal recoveries). Show any gain on sale as a negative number (AO 148, RR 138 )&amp;nbsp; Loan Default Proceeding_cd = (3) Loss amount &lt;/p&gt; &lt;p&gt; Cumulative Reocveries - ony relevant for cases with losses&amp;nbsp; ( AO 149, RR 139 )&amp;nbsp; Loan Default Proceeding_cd =&amp;nbsp; (4) Recoveries &lt;/p&gt; &lt;p&gt; Professional Negligence Recoveries - Any amounts received in settlement or as a result of professional negligence claims against surveyors, solicitors etc. net of any fees / costs ( AO 150, RR 140 )&amp;nbsp; Loan Default Proceeding_cd = (5) Professional Negligence &lt;/p&gt;&lt;br /&gt;</fibo-fnd-utl-av:explanatoryNote>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-loan-ln-ev;hasDisbursementDate">
@@ -167,17 +169,11 @@
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-loan-ln-ev;hasJudgementAmount">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasAmount"/>
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasMonetaryAmount"/>
 		<rdfs:label xml:lang="en">has judgement amount</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-loan-ln-ev;CourtJudgment"/>
 		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
 		<skos:definition xml:lang="en">Undefined PoC SDM Notes: Total value of CCJs or equivalent recorded against the primary borrower that were satisfied / unsatsified (at time of underwriting ) is computed by selecting the satisfaction code value of interest and aggregating against all borrower CC Judgements &amp;lt;/p&amp;gt;</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-loan-ln-ev;hasLoanPhase">
-		<rdfs:label xml:lang="en">has loan phase</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-ln-ln;Loan"/>
-		<rdfs:range rdf:resource="&fibo-loan-ln-ev;LoanPhase"/>
 	</owl:ObjectProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-loan-ln-ev;inDefault">
@@ -199,17 +195,10 @@
 		<rdfs:range rdf:resource="&xsd;boolean"/>
 	</owl:DatatypeProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-loan-ln-ev;loanDefaultProceedingAmount">
-		<rdfs:label xml:lang="en">loan default proceeding amount</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-ln-ev;LoanDefaultProceeding"/>
-		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
-		<skos:definition xml:lang="en">Undefined PoC SDM Notes: Default or Foreclosure amount - Total default amount before the application of sale proceeds and recoveries.&amp;nbsp; (AO 146, RR 135) Loan Default Proceeding_cd= (1) Default amount &lt;/p&gt; &lt;p&gt; Sale price - Price achieved on sale of property ( AO 147, RR 137 )&amp;nbsp; Loan Default Proceeding_cd= (2) Property Sale &lt;/p&gt; &lt;p&gt; Loss on Sale&amp;nbsp;&amp;nbsp; Total loss net of fees, accrued interest etc. after application of sale proceeds (excluding prepayment charge if subordinate to principal recoveries). Show any gain on sale as a negative number (AO 148, RR 138 )&amp;nbsp; Loan Default Proceeding_cd = (3) Loss amount &lt;/p&gt; &lt;p&gt; Cumulative Reocveries - ony relevant for cases with losses&amp;nbsp; ( AO 149, RR 139 )&amp;nbsp; Loan Default Proceeding_cd =&amp;nbsp; (4) Recoveries &lt;/p&gt; &lt;p&gt; Professional Negligence Recoveries - Any amounts received in settlement or as a result of professional negligence claims against surveyors, solicitors etc. net of any fees / costs ( AO 150, RR 140 )&amp;nbsp; Loan Default Proceeding_cd = (5) Professional Negligence &lt;/p&gt;&lt;br /&gt;</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-loan-ln-ev;takesPlaceUnder">
-		<rdfs:label xml:lang="en">takes place under</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-loan-ln-ev;LegalProceeding"/>
-		<rdfs:range rdf:resource="&fibo-fnd-law-jur;Jurisdiction"/>
+	<owl:ObjectProperty rdf:about="&fibo-loan-ln-ev;isDeliveredBy">
+		<rdfs:label xml:lang="en">is delivered by</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-loan-ln-ev;CourtJudgment"/>
+		<rdfs:range rdf:resource="&fibo-fnd-law-cor;CourtOfLaw"/>
 	</owl:ObjectProperty>
 
 </rdf:RDF>
