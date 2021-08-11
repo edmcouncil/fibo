@@ -114,12 +114,12 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/Baskets/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesListings/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/20210701/DerivativesContracts/DerivativesBasics/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/20210801/DerivativesContracts/DerivativesBasics/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20180801/DerivativesContracts/DerivativesBasics.rdf version of this ontology was modified to eliminate duplication with concepts in LCC and eliminate a redundant subclass declaration in observable value.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20200401/DerivativesContracts/DerivativesBasics.rdf version of this ontology was modified to loosen the domain of the hasUnderlier property, which could be either an instrument or leg, refine the definition of Underlier and hasUnderlier based on recent work on swaps, add the definition of a contract for difference (CFD), simplify the contract party hierarchy where the subclasses of contract party do not add semantics, add the concepts of underlying asset valuation and calculation agent, which are needed for various derivatives (moved from forwards) and eliminate the language related to transactions as well as the distinction between an OTC contract and exchange-traded contract / listed security, given how blurry the lines are today, across derivatives.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20201201/DerivativesContracts/DerivativesBasics.rdf version of this ontology was modified to eliminate hasThirdParty as a superproperty of hasCalculationAgent, which led to unintended reasoning consequences, added concepts and properties specific to settlement and valuation required for futures, forwards, and options, and moved general properties from forwards and swaps up to derivatives basics.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20210301/DerivativesContracts/DerivativesBasics.rdf version of this ontology was modified to replace hasContractSize with hasLotSize.</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20210501/DerivativesContracts/DerivativesBasics.rdf version of this ontology was modified to move designated contract market to the markets ontology in FBC.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20210501/DerivativesContracts/DerivativesBasics.rdf version of this ontology was modified to move designated contract market to the markets ontology in FBC and eliminate the notion of NonPhysicalUnderlier, which was determined to add unnecessary overhead.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -214,36 +214,6 @@
 		<fibo-fnd-utl-av:explanatoryNote>Introducing brokers do not accept money, securities, or property (or extend credit in lieu thereof) to margin, guarantee, or secure any trades or contracts that result or may result.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-drc-bsc;NonPhysicalUnderlier">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-bsc;Underlier"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;comprises"/>
-				<owl:someValuesFrom>
-					<owl:Class>
-						<owl:unionOf rdf:parseType="Collection">
-							<rdf:Description rdf:about="&fibo-fnd-pas-pas;Commodity">
-							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-fbc-pas-fpas;Basket">
-							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-ind-ind-ind;MarketRate">
-							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-ind-ei-ei;EconomicIndicator">
-							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-der-drc-bsc;ObservableValue">
-							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-ind-fx-fx;QuotedExchangeRate">
-							</rdf:Description>
-						</owl:unionOf>
-					</owl:Class>
-				</owl:someValuesFrom>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>non-physical underlier</rdfs:label>
-		<skos:definition>underlier that does not represent a deliverable asset</skos:definition>
-		<fibo-fnd-utl-av:synonym>observable underlier</fibo-fnd-utl-av:synonym>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-der-drc-bsc;ObservableValue">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
 		<rdfs:label>observable value</rdfs:label>
@@ -299,9 +269,17 @@
 						<owl:unionOf rdf:parseType="Collection">
 							<rdf:Description rdf:about="&fibo-fbc-fi-fi;FinancialInstrument">
 							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-sec-sec-bsk;BasketOfSecurities">
+							<rdf:Description rdf:about="&fibo-fnd-pas-pas;Commodity">
 							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-der-drc-bsc;NonPhysicalUnderlier">
+							<rdf:Description rdf:about="&fibo-fbc-pas-fpas;Basket">
+							</rdf:Description>
+							<rdf:Description rdf:about="&fibo-ind-ind-ind;MarketRate">
+							</rdf:Description>
+							<rdf:Description rdf:about="&fibo-ind-ei-ei;EconomicIndicator">
+							</rdf:Description>
+							<rdf:Description rdf:about="&fibo-der-drc-bsc;ObservableValue">
+							</rdf:Description>
+							<rdf:Description rdf:about="&fibo-ind-fx-fx;QuotedExchangeRate">
 							</rdf:Description>
 						</owl:unionOf>
 					</owl:Class>
