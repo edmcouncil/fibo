@@ -5,6 +5,7 @@
 	<!ENTITY fibo-fbc-fi-fi "https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/">
 	<!ENTITY fibo-fnd-acc-aeq "https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/AccountingEquity/">
 	<!ENTITY fibo-fnd-agr-ctr "https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/">
+	<!ENTITY fibo-fnd-arr-arr "https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Arrangements/">
 	<!ENTITY fibo-fnd-rel-rel "https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
 	<!ENTITY fibo-sec-dbt-ab-pbs "https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/AssetBackedSecurities/PoolBackedSecurities/">
@@ -25,6 +26,7 @@
 	xmlns:fibo-fbc-fi-fi="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"
 	xmlns:fibo-fnd-acc-aeq="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/AccountingEquity/"
 	xmlns:fibo-fnd-agr-ctr="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"
+	xmlns:fibo-fnd-arr-arr="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Arrangements/"
 	xmlns:fibo-fnd-rel-rel="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
 	xmlns:fibo-sec-dbt-ab-pbs="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/AssetBackedSecurities/PoolBackedSecurities/"
@@ -48,6 +50,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/AccountingEquity/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Arrangements/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/Bonds/"/>
@@ -60,7 +63,6 @@
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-ab-pbs;CashStructuredFinanceInstrument">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-ab-pbs;StructuredFinanceInstrument"/>
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;Bond"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-ab-pbs;isTrancheOf"/>
@@ -73,7 +75,7 @@
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-ab-pbs;CashStructuredFinanceInstrumentPool">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-ab-pbs;StructuredFinanceInstrumentPool"/>
-		<rdfs:label xml:lang="en">cash structured finance instrument pool</rdfs:label>
+		<rdfs:label xml:lang="en">cash-structured finance instrument pool</rdfs:label>
 		<skos:definition xml:lang="en">A pool investment consisting of a collection of cash structured finance instruments.</skos:definition>
 	</owl:Class>
 	
@@ -89,15 +91,9 @@
 		<skos:definition xml:lang="en">Debt issued under some Security, with some Collateral.</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-dbt-ab-pbs;CollateralizedObligationDeal">
+	<owl:Class rdf:about="&fibo-sec-dbt-ab-pbs;CollateralizedObligationOffering">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbti;DebtOffering"/>
-		<rdfs:label xml:lang="en">collateralized obligation deal</rdfs:label>
-		<owl:disjointWith rdf:resource="&fibo-sec-dbt-ab-pbs;PoolBackedSecuritiesDeal"/>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-sec-dbt-ab-pbs;CollateralizedObligationInstrument">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-ab-pbs;StructuredFinanceInstrument"/>
-		<rdfs:label xml:lang="en">collateralized obligation instrument</rdfs:label>
+		<rdfs:label xml:lang="en">collateralized obligation</rdfs:label>
 		<skos:definition xml:lang="en">Pending further investigation. At present: CDO = issued against pool of securities MBS = issued against pool of individual debts (base loans) Action: identify if this is the case. Option 1: Model as it was; Option 2: Add a level of detail in between, whereby there is a pool of pools or some other such thing Option 3: this is a terminological thing only in that CDOs are never referred to as a parent of CMO for purely teerminological reasons as per ABS v MBS in which case we would add in a terminological layer.</skos:definition>
 	</owl:Class>
 	
@@ -107,21 +103,27 @@
 		<skos:definition xml:lang="en">Prospectus describing the terms of the issue and each of the instruments included in the pool backed security issue. Term origin:SMER</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-dbt-ab-pbs;PoolBackedSecuritiesDeal">
+	<owl:Class rdf:about="&fibo-sec-dbt-ab-pbs;PoolBackedSecuritiesOffering">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbti;DebtOffering"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-ab-pbs;PoolBackedSecurity"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;refersTo"/>
 				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-ab-pbs;SecuritizedDebtPool"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">pool backed securities deal</rdfs:label>
+		<rdfs:label xml:lang="en">pool-backed securities offering</rdfs:label>
 		<skos:definition xml:lang="en">The issue of a series of Pool Backed Security certificates. These are (at least in this context) securities issued backed by a pool of individual loans, mortgages or other individual loan products.</skos:definition>
 		<skos:editorialNote xml:lang="en">This term makes the distinction, perhaps artificial, between deals backed by pools of individual debt (this term), and deals backed by pools of securities (collateralized deals). This structure of relations between kinds of deals may prove to be a little artificial, but it reflects the structure of relations between kinds of securities, arrived at in earlier SME reviews. That is, Pool Backed Security (which breaks down into ABS and MBS) has a pool of individual loan products (a sub type of which is mortgage loans). The terms reflect the fact that in common parlance the term &quot;ABS&quot; is taken to mean something which is explicitly NOT a MBS but can be any other type of loan or credit based security, hence the creation of the non standard term &quot;Pool Backed Security&quot;. The naming of deals simply attempts to reflect that. Terms to be included in Deal (per PoC conversations): Underwriters Issuer Deal Number Series number Deal Value Different collateral pools that support the deal. Review existing terms and make sure all covered.</skos:editorialNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-ab-pbs;PoolBackedSecurity">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-ab-pbs;CashStructuredFinanceInstrument"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-ab-pbs;StructuredFinanceInstrument"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;definesTermsFor"/>
@@ -135,17 +137,16 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">pool-backed security</rdfs:label>
-		<skos:definition xml:lang="en">A type of bond or note which derives its cashflow from some underlying pool of debt in which loans or mortgage advanced to borrowers are pooled together for the purposes of creating this type of security. Further notes: This is distinguished from CDO instruments which have an underlying pool of debt securities, as distinct from an underlying pool of loan products such as mortgages, credit cards or loans.</skos:definition>
+		<skos:definition xml:lang="en">bond or note that derives its cashflow from some underlying pool of debt in which loans or mortgage advanced to borrowers are pooled together for the purposes of creating this type of security</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-ab-pbs;SecuritizedDebtPool">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-pls;DebtPool"/>
 		<rdfs:label xml:lang="en">securitized debt pool</rdfs:label>
-		<skos:definition xml:lang="en">pool of individual debt instruments (such as loans or mortgages) which is securitized as part of the issue of some security</skos:definition>
+		<skos:definition xml:lang="en">pool of individual debt instruments (such as loans or mortgages) that is securitized as part of the issue of some security</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-ab-pbs;StructuredFinanceInstrument">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;NonNegotiableSecurity"/>
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbti;TradableDebtInstrument"/>
 		<rdfs:label xml:lang="en">structured finance instrument</rdfs:label>
 		<skos:definition xml:lang="en">debt instrument that has periodic principal payments with the amount of principal that is paid being dictated by a published factor</skos:definition>
@@ -154,8 +155,15 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-ab-pbs;StructuredFinanceInstrumentPool">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-pls;InstrumentPool"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-arr-arr;hasConstituent"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-ab-pbs;StructuredFinanceInstrument"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">structured finance instrument pool</rdfs:label>
-		<skos:definition xml:lang="en">A pool investment consisting of a collection of structured finance instruments.</skos:definition>
+		<skos:definition xml:lang="en">pool consisting of a collection of structured finance instruments</skos:definition>
 	</owl:Class>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-ab-pbs;backs">
