@@ -7,8 +7,10 @@
 	<!ENTITY fibo-der-drc-opt "https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Options/">
 	<!ENTITY fibo-der-drc-swp "https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Swaps/">
 	<!ENTITY fibo-fbc-fi-fi "https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/">
+	<!ENTITY fibo-fbc-pas-fpas "https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/">
 	<!ENTITY fibo-fnd-acc-cur "https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/">
 	<!ENTITY fibo-fnd-agr-ctr "https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/">
+	<!ENTITY fibo-fnd-arr-arr "https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Arrangements/">
 	<!ENTITY fibo-fnd-arr-cls "https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/ClassificationSchemes/">
 	<!ENTITY fibo-fnd-pas-pas "https://spec.edmcouncil.org/fibo/ontology/FND/ProductsAndServices/ProductsAndServices/">
 	<!ENTITY fibo-fnd-rel-rel "https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/">
@@ -28,8 +30,10 @@
 	xmlns:fibo-der-drc-opt="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Options/"
 	xmlns:fibo-der-drc-swp="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Swaps/"
 	xmlns:fibo-fbc-fi-fi="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"
+	xmlns:fibo-fbc-pas-fpas="https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/"
 	xmlns:fibo-fnd-acc-cur="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"
 	xmlns:fibo-fnd-agr-ctr="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"
+	xmlns:fibo-fnd-arr-arr="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Arrangements/"
 	xmlns:fibo-fnd-arr-cls="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/ClassificationSchemes/"
 	xmlns:fibo-fnd-pas-pas="https://spec.edmcouncil.org/fibo/ontology/FND/ProductsAndServices/ProductsAndServices/"
 	xmlns:fibo-fnd-rel-rel="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"
@@ -56,8 +60,10 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Options/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Swaps/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Arrangements/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/ClassificationSchemes/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/ProductsAndServices/ProductsAndServices/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
@@ -81,10 +87,36 @@
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Base metals or alloys include metals other than precious metals, such as copper, lead, zinc, tin, or brass. Note that iron and steel are included under metal and metal products in some classification schemes - see https://fred.stlouisfed.org/series/WPU101 for example.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-der-drc-comm;BasketOfCommodities">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;WeightedBasket"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-arr-arr;hasConstituent"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-drc-comm;CommodityBasketConstituent"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>basket of commodities</rdfs:label>
+		<skos:definition>custom basket whose constituents consist of one or more negotiable commodities</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom xml:lang="en">ISO 10962, Securities and related financial instruments - Classification of financial instruments (CFI) code, Fourth Edition, October 2019</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">A commodity basket may contain constituents from one of the potential underlying assets or from multiple underlying assets.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-der-drc-comm;Bullion">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-pas;PreciousMetal"/>
 		<rdfs:label xml:lang="en">bullion</rdfs:label>
 		<skos:definition xml:lang="en">physical precious metal that is officially recognized as being at least 99.5 percent pure, in the form of bars, ingots, or coins</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-drc-comm;CommodityBasketConstituent">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;WeightedBasketConstituent"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;comprises"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-pas-pas;NegotiableCommodity"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>commodity basket constituent</rdfs:label>
+		<skos:definition>component of a custom commodity basket whose relative importance with respect to other basket constituents is known</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-comm;CommodityDerivative">
@@ -185,13 +217,6 @@
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">The underlying of a commodity swap may include a physical commodity, or the price, or behavior of the price, or any other aspect of a physical commodity.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-drc-comm;ElectricityCommodity">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-comm;EnergyResource"/>
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-comm;GeneratedResource"/>
-		<rdfs:label xml:lang="en">electricity commodity</rdfs:label>
-		<skos:definition xml:lang="en">electricity as a commodity</skos:definition>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-der-drc-comm;EnergyResource">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-pas;NegotiableCommodity"/>
 		<rdfs:label xml:lang="en">energy resource</rdfs:label>
@@ -202,7 +227,6 @@
 	
 	<owl:Class rdf:about="&fibo-der-drc-comm;EnergyTransmissionRights">
 		<rdfs:subClassOf rdf:resource="&fibo-der-drc-comm;EnergyResource"/>
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-comm;GeneratedResource"/>
 		<rdfs:label xml:lang="en">energy transmission rights</rdfs:label>
 		<skos:definition xml:lang="en">rights to the transmission of power across an electricity distribution network</skos:definition>
 	</owl:Class>
@@ -287,7 +311,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">oil commodity</rdfs:label>
-		<skos:definition xml:lang="en">generated resource that is a viscous liquid derived from petrolium, especially for use as fuel or as a lubricant</skos:definition>
+		<skos:definition xml:lang="en">generated resource that is a viscous liquid derived from petroleum, including for use as fuel, or as a lubricant, and the manufacture of many types of paints, plastics, and other materials</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-comm;OilGrade">
