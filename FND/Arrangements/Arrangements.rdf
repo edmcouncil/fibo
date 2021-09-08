@@ -29,9 +29,9 @@
 		<rdfs:label>Arrangements Ontology</rdfs:label>
 		<dct:abstract>This ontology defines abstract structural concepts, including arrangement and collection, for use in other FIBO ontology elements. These abstract concepts are further refined to support definition of identifiers, codes, quantities, and schemata that organize and classify such identifiers and codes.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
-		<sm:contentLanguage rdf:datatype="&xsd;anyURI">http://www.w3.org/standards/techs/owl#w3c_all</sm:contentLanguage>
-		<sm:copyright>Copyright (c) 2014-2020 EDM Council, Inc.</sm:copyright>
-		<sm:copyright>Copyright (c) 2014-2020 Object Management Group, Inc.</sm:copyright>
+		<sm:contentLanguage rdf:datatype="&xsd;anyURI">https://www.w3.org/TR/owl2-quick-reference/</sm:contentLanguage>
+		<sm:copyright>Copyright (c) 2014-2021 EDM Council, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2014-2021 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/</sm:dependsOn>
@@ -40,7 +40,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20200701/Arrangements/Arrangements/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20210901/Arrangements/Arrangements/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20140801/Arrangements/Arrangements.rdf version of this ontology was introduced as a part of the issue resolutions identified in the FIBO FND 1.0 FTF report and in https://spec.edmcouncil.org/fibo/ontology/FND/1.0/AboutFND-1.0/.  It was further revised in the FTF in advance of the Long Beach meeting to promote Collection to the top level in the hierarchy, resulting in https://spec.edmcouncil.org/fibo/ontology/FND/20141101/Arrangements/Arrangements/.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20141101/Arrangements/Arrangements.rdf version of this ontology was revised as a part of the issue resolutions identified in the FIBO FND 1.2 RTF report to add a definition for a structured collection.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20170201/Arrangements/Arrangements.rdf version of this ontology was revised for the FIBO 2.0 RFC report to add a general definition for scheme, add dated collection, and add mappings to LCC.</skos:changeNote>
@@ -48,6 +48,7 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20190201/Arrangements/Arrangements.rdf version of this ontology was revised to loosen the restriction on hasObservedDateTime so that it can be used with the new CombinedDateTime datatype (in FinancialDates, which is not imported herein to avoid circular dependencies), with finer granularity than seconds as appropriate for trades, for example.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20190401/Arrangements/Arrangements.rdf version of this ontology was revised to eliminate duplication with concepts in LCC for classes including arrangement, collection, code element, code set, etc to simplify the hierarchy and usage for FIBO users.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20200201/Arrangements/Arrangements.rdf version of this ontology was revised to move the concepts of a dated collection and dated collection constituent to Financial Dates in order to improve usability and simplify reasoning and make definitions ISO 704 compliant.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20200701/Arrangements/Arrangements.rdf version of this ontology was revised to add a restriction to structured collection pointing to the arrangement used to organize that collection, and to revise the definition accordingly.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -76,8 +77,15 @@
 	
 	<owl:Class rdf:about="&fibo-fnd-arr-arr;StructuredCollection">
 		<rdfs:subClassOf rdf:resource="&lcc-lr;Collection"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isCharacterizedBy"/>
+				<owl:onClass rdf:resource="&fibo-fnd-arr-arr;Scheme"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label>structured collection</rdfs:label>
-		<skos:definition>collection that has a clearly defined structure or organization</skos:definition>
+		<skos:definition>collection that has a clearly defined structure according to a specified scheme</skos:definition>
 	</owl:Class>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-fnd-arr-arr;hasCollectionSize">
