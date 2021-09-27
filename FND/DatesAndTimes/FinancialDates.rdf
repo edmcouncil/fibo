@@ -40,7 +40,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Arrangements/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20210601/DatesAndTimes/FinancialDates/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20210901/DatesAndTimes/FinancialDates/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20141101/DatesAndTimes/FinancialDates/ version of this ontology was revised by the FIBO FND 1.2 RTF in order to introduce the definition of a time interval, which is a location, to ground some of the concepts such as a date period, and duration as well as to support the definition of business recurrence intervals for use in parametric schedules for securities.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20170201/DatesAndTimes/FinancialDates/ version of this ontology was revised by the FIBO 2.0 RFC in order to introduce the definition of a time instant, to eliminate a reasoning issue with relative dates, and remove a circular dependency inadvertently incorporated in the ontology with a FIBO FND 1.2 modification.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20180801/DatesAndTimes/FinancialDates/ version of this ontology was revised to introduce a composite date datatype to allow for cases whereby the representation of a date for certain purposes, such as GLEIF LEI data, is inconsistent, and to facilitate mapping FIBO to multiple data sources in user environments.</skos:changeNote>
@@ -49,6 +49,7 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20200301/DatesAndTimes/FinancialDates/ version of this ontology was revised to move dated collection and dated collection constituent as well as hasObservedDateTime and hasAcquisitionDate to financial dates in order to improve usability, simplify reasoning, made definitions ISO 704 compliant, and eliminate redundant restrictions on ad hoc schedule entry.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20200701/DatesAndTimes/FinancialDates/ version of this ontology was revised to add hasOpeningDateTime and hasClosingDateTime for use in defining trading days and sessions and eliminated the functional property declaration on hasExplicitDate.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20201201/DatesAndTimes/FinancialDates/ version of this ontology was revised to add the concept of age and a corresponding property that supports its use.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20210601/DatesAndTimes/FinancialDates.rdf version of this ontology was modified to add notes on the custom CombinedDateTime datatype indicating that it is outside the RL profile and that if someone wants to use this ontology with OWL 2 RL rules they might want to comment this out / eliminate it where it is used.</skos:changeNote>
 		<skos:changeNote>This ontology was added to Foundations in advance of the December 2014 Long Beach meeting in support of the SEC specification.  It is also needed to provide temporal relationships for Ownership and Control.
 
 These three ontologies are designed for use together:
@@ -193,6 +194,7 @@ Similar points apply to other kinds of calendar periods, such as calendar week, 
 		</owl:equivalentClass>
 		<skos:definition>datatype that maps to several base types for dates and times</skos:definition>
 		<skos:scopeNote>There are many cases where the representation of a date may or may not include a time, and where the underlying data representation varies.  This composite datatype should only be used in cases where a standard representation using one of the options in the union for date or date and time value specification does not work.</skos:scopeNote>
+		<fibo-fnd-utl-av:usageNote>The use of custom datatypes is outside the OWL 2 RL profile and so users should consider commenting this and its usage here, and in other ontologies out, or replacing it with rdfs:Literal out in applications that are constrained to OWL 2 RL.</fibo-fnd-utl-av:usageNote>
 		<fibo-fnd-utl-av:usageNote>Valid values must use the ISO 8601 representation for a date, or the corresponding XML Schema Datatypes representation for a date and time, or date and time including the time zone.</fibo-fnd-utl-av:usageNote>
 	</rdfs:Datatype>
 	
@@ -279,6 +281,7 @@ Similar points apply to other kinds of calendar periods, such as calendar week, 
 		<rdfs:label>dated collection constituent</rdfs:label>
 		<skos:definition>element of a collection that is associated with a date and time</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote>Note that the use of several options for the representation of a date and time stamp enables extensions for milliseconds, nanoseconds using an xsd:string that has the format of an xsd:dateTime datatype but extends the level of granularity consistently.  An example of where this is required is to represent prices that change multiple times in a given day.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:usageNote>The use of custom datatypes is outside the OWL 2 RL profile and so users should consider commenting out the restriction on hasObservedDateTime altogether or change the data range to rdfs:Literal in applications that are constrained to OWL 2 RL.</fibo-fnd-utl-av:usageNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-dt-fd;DatedStructuredCollection">
@@ -629,6 +632,7 @@ The recurrence start date can also be relative to the starting Date of the overa
 		<rdfs:label>has acquisition date</rdfs:label>
 		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;CombinedDateTime"/>
 		<skos:definition>links an asset or owner/controller/controllee to the date or date and time of purchase</skos:definition>
+		<fibo-fnd-utl-av:usageNote>The use of custom datatypes is outside the OWL 2 RL profile and so users should consider commenting out the range restriction or change the range to rdfs:Literal in applications that are constrained to OWL 2 RL.</fibo-fnd-utl-av:usageNote>
 	</owl:DatatypeProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-dt-fd;hasAge">
@@ -657,6 +661,7 @@ The recurrence start date can also be relative to the starting Date of the overa
 		<rdfs:label xml:lang="en">has closing date time</rdfs:label>
 		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;CombinedDateTime"/>
 		<skos:definition xml:lang="en">the day and time at which something closes</skos:definition>
+		<fibo-fnd-utl-av:usageNote>The use of custom datatypes is outside the OWL 2 RL profile and so users should consider commenting out the range restriction or change the range to rdfs:Literal in applications that are constrained to OWL 2 RL.</fibo-fnd-utl-av:usageNote>
 	</owl:DatatypeProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-fnd-dt-fd;hasCount">
@@ -791,6 +796,7 @@ The recurrence start date can also be relative to the starting Date of the overa
 		<rdfs:label>has observed date and time</rdfs:label>
 		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;CombinedDateTime"/>
 		<skos:definition>indicates a date and time for an event, measurement, or other observation</skos:definition>
+		<fibo-fnd-utl-av:usageNote>The use of custom datatypes is outside the OWL 2 RL profile and so users should consider commenting out the range restriction or change the range to rdfs:Literal in applications that are constrained to OWL 2 RL.</fibo-fnd-utl-av:usageNote>
 	</owl:DatatypeProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-fnd-dt-fd;hasOpeningDateTime">
@@ -798,6 +804,7 @@ The recurrence start date can also be relative to the starting Date of the overa
 		<rdfs:label xml:lang="en">has opening date time</rdfs:label>
 		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;CombinedDateTime"/>
 		<skos:definition xml:lang="en">the day and time at which something opens</skos:definition>
+		<fibo-fnd-utl-av:usageNote>The use of custom datatypes is outside the OWL 2 RL profile and so users should consider commenting out the range restriction or change the range to rdfs:Literal in applications that are constrained to OWL 2 RL.</fibo-fnd-utl-av:usageNote>
 	</owl:DatatypeProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-fnd-dt-fd;hasOrdinalNumber">
