@@ -63,7 +63,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Countries/CountryRepresentation/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20210601/Organizations/Organizations/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20211001/Organizations/Organizations/"/>
 		<skos:changeNote>The http://www.omg.org/spec/EDMC-FIBO/FND/20160201/Organizations/Organizations.rdf version of this ontology was modified per the FIBO 2.0 RFC, to revise the definition of Organization per ISO 6523.</skos:changeNote>
 		<skos:changeNote>The http://www.omg.org/spec/FIBO/Foundations/20130601/Organizations/Organizations.owl version of the ontology was revised in advance of the September 2013 New Brunswick, NJ meeting, as follows:
    (1) to use slash style URI/IRIss (also called 303 URIs, vs. hash style) as required to support server side processing 
@@ -76,6 +76,7 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20180801/Organizations/Organizations.rdf version of this ontology was modified to revise the definition of Organization to broaden its scope to individuals that may or may not be people and eliminate duplication with concepts in LCC.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20200201/Organizations/Organizations.rdf version of this ontology was modified to reflect the merge of Goals and Objectives.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20201101/Organizations/Organizations.rdf version of this ontology was modified to allow the Organizations ontology to import Parties, rather than the other way around, to simplify the class hierarchy for ease of use in data mapping and alignment, including moving OrganizationMember from Parties to Organizations, and to add the basis for structured organization name representation.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20210601/Organizations/Organizations.rdf version of this ontology was modified to to move basic organization sub-unit and identifier definitions to FND from BE due to their fundamental nature and reusability.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -111,6 +112,34 @@
 		<skos:example>This may be a business entity, government, international organization, not-for-profit, academic institution, or other unincorporated and/or informal social organization.</skos:example>
 		<fibo-fnd-utl-av:adaptedFrom>https://www.iso.org/obp/ui/#iso:std:iso-iec:6523:-1:ed-1:v1:en</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:adaptedFrom>https://www.w3.org/TR/vocab-org/#class-organization</fibo-fnd-utl-av:adaptedFrom>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-org-org;OrganizationIdentificationScheme">
+		<rdfs:subClassOf rdf:resource="&lcc-lr;IdentificationScheme"/>
+		<rdfs:label>organization identification scheme</rdfs:label>
+		<skos:definition>identification scheme dedicated to the unique identification of organizations</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.iso.org/obp/ui/#iso:std:iso-iec:6523:-1:ed-1:v1:en</fibo-fnd-utl-av:adaptedFrom>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-org-org;OrganizationIdentifier">
+		<rdfs:subClassOf rdf:resource="&lcc-lr;Identifier"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&lcc-lr;identifies"/>
+				<owl:onClass rdf:resource="&fibo-fnd-org-org;Organization"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&lcc-lr;isMemberOf"/>
+				<owl:onClass rdf:resource="&fibo-fnd-org-org;OrganizationIdentificationScheme"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>organization identifier</rdfs:label>
+		<skos:definition>identifier assigned to an organization within an organization identification scheme, and unique within that scheme</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.iso.org/obp/ui/#iso:std:iso-iec:6523:-1:ed-1:v1:en</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-org-org;OrganizationMember">
@@ -149,5 +178,53 @@
 		<rdfs:label>organization name</rdfs:label>
 		<skos:definition>designation by which some organization is known in some context</skos:definition>
 	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-org-org;OrganizationPartIdentifier">
+		<rdfs:subClassOf rdf:resource="&lcc-lr;Identifier"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&lcc-lr;identifies"/>
+				<owl:onClass rdf:resource="&fibo-fnd-org-org;OrganizationalSubUnit"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>organization part identifier</rdfs:label>
+		<skos:definition>identifier allocated to a particular organizational sub-unit</skos:definition>
+		<fibo-fnd-utl-av:abbreviation>OPI</fibo-fnd-utl-av:abbreviation>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.iso.org/obp/ui/#iso:std:iso-iec:6523:-1:ed-1:v1:en</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:synonym>organization sub-unit identifier</fibo-fnd-utl-av:synonym>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-org-org;OrganizationalSubUnit">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-org-org;Organization"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&lcc-cr;isPartOf"/>
+				<owl:allValuesFrom rdf:resource="&fibo-fnd-org-org;Organization"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>organizational sub-unit</rdfs:label>
+		<skos:definition>any department, service, and other entity within a larger organization that only has full recognition within the context of that organization, but requires identification for some purpose</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.iso.org/obp/ui/#iso:std:iso-iec:6523:-1:ed-1:v1:en</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:explanatoryNote>In other words, it is not a legal entity in its own right.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:synonym>organization part</fibo-fnd-utl-av:synonym>
+	</owl:Class>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-org-org;hasSubUnit">
+		<rdfs:subPropertyOf rdf:resource="&lcc-cr;hasPart"/>
+		<rdfs:label>has sub-unit</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fnd-org-org;Organization"/>
+		<rdfs:range rdf:resource="&fibo-fnd-org-org;OrganizationalSubUnit"/>
+		<owl:inverseOf rdf:resource="&fibo-fnd-org-org;isSubUnitOf"/>
+		<skos:definition>relates a formally constituted organization to a part of that organization</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-org-org;isSubUnitOf">
+		<rdfs:subPropertyOf rdf:resource="&lcc-cr;isPartOf"/>
+		<rdfs:label>is sub-unit of</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fnd-org-org;OrganizationalSubUnit"/>
+		<rdfs:range rdf:resource="&fibo-fnd-org-org;Organization"/>
+		<skos:definition>relates a part of an organization to the larger entity</skos:definition>
+	</owl:ObjectProperty>
 
 </rdf:RDF>
