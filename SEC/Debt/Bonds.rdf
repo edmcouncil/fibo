@@ -136,12 +136,13 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesIssuance/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesListings/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20210501/Debt/Bonds/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20211001/Debt/Bonds/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20190901/Securities/Debt/Bonds.rdf version of this ontology was revised to reflect the refactored definition of a listing and improve the definition of corporate bond.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20191201/Securities/Debt/Bonds.rdf version of this ontology was revised to eliminate duplication of concepts in LCC and eliminate a redundant superclass from RegularCouponSchedule.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20200401/Securities/Debt/Bonds.rdf version of this ontology was revised to eliminate a duplicate &apos;isBasedOn&apos; property and replace it with the property of the same name in the debt ontology, to revise the inheritance hierarchy for bond conversion terms to reflect changes in the representation of redemption more generally, to reflect the move of redemption provision from debt to financial instruments, and eliminate circular and ambiguous definitions.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20200901/Securities/Debt/Bonds.rdf version of this ontology was revised to eliminate false positives in hygiene tests due to concept names containing words, such as &apos;and&apos;, which might indicate that the concept actually reflects more than one thing, including distinguishing zero coupon from original issue discount bonds, and replace the use of call price and put price, which are overly constrained, with monetary price.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20210301/Securities/Debt/Bonds.rdf version of this ontology was revised to eliminate references to the exercise conventions ontology, which are not needed for bonds.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20210501/Securities/Debt/Bonds.rdf version of this ontology was revised to allow for variation in index-linked bonds, such as those whose interest payments vary with an index in addition to those that have a variable principal linked to an index.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -543,8 +544,8 @@
 		<fibo-fnd-utl-av:synonym>implicit full faith and credit bond</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-dbt-bnd;IndexLinkedSecurity">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;VariablePrincipalBond"/>
+	<owl:Class rdf:about="&fibo-sec-dbt-bnd;IndexLinkedBond">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;VariableIncomeBond"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;isBasedOn"/>
@@ -560,21 +561,22 @@
 				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label>index linked security</rdfs:label>
-		<skos:definition>bond in which payment of income on the principal is related to a specific index, such as the Consumer Price Index</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote>This feature provides protection to investors by shielding them from changes in the underlying index. The bond&apos;s cash flows are adjusted to ensure that the holder of the bond receives a known real rate of return. Notes 04 May: There may also be a kind of security where the coupon payments fluctuate according to an &quot;Index&quot; in the sense of non Interest rate e.g. inflation rate, GDP. But more commonly the term Index Linked refers to principal.</fibo-fnd-utl-av:explanatoryNote>
+		<rdfs:label>index-linked bond</rdfs:label>
+		<skos:definition>bond whose income may vary over time, because either the coupon rate or principal amount is related to a specific index, such as the Consumer Price Index</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-dbt-bnd;InflationBond">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;IndexLinkedSecurity"/>
+	<owl:Class rdf:about="&fibo-sec-dbt-bnd;InflationLinkedBond">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;IndexLinkedBond"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;isBasedOn"/>
 				<owl:someValuesFrom rdf:resource="&fibo-ind-ei-ei;InflationRate"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label>inflation bond</rdfs:label>
-		<skos:definition>bond whose principal amount is linked to an inflation rate index</skos:definition>
+		<rdfs:label>inflation-linked bond</rdfs:label>
+		<skos:definition>bond indexed to inflation so that the principal or interest payments rise and fall with the rate of inflation</skos:definition>
+		<fibo-fnd-utl-av:abbreviation>ILB</fibo-fnd-utl-av:abbreviation>
+		<fibo-fnd-utl-av:explanatoryNote>Inflation-linked bonds are primarily issued by sovereign governments, such as the U.S. and the UK.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-bnd;LastRegularCouponDate">
