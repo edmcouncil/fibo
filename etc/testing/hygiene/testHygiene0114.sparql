@@ -9,13 +9,17 @@ prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
 
 SELECT ?error
 WHERE {
-  ?s ?p ?o
+  ?s ?p ?o .
+  OPTIONAL
+     {
+         ?s owl:deprecated ?deprecated .
+         FILTER (str(?deprecated) != "true")
+     }
   FILTER (DATATYPE(?o)=xsd:string)
   FILTER (REGEX (xsd:string (?s), "edmcouncil")) 
   BIND (afn:localname (?p) AS ?prop)
   BIND ("[ÁáÇçÉéÍíÕõÖöäÄèÈμΜσΣa-zA-Z\\\\;'?@$%#&:/\"<*>,._+÷=)(\\[\\]{}0-9\n\t -]" AS ?reg)
   BIND (REPLACE (xsd:string (?o), ?reg, "")  AS ?bads)
-#  FILTER (!REGEX (?o, (CONCAT ("^", ?reg, "*$"))))
   FILTER (?bads != "")
   BIND (concat ("PRODERROR:", xsd:string(?o), " has a bad character |", ?bads, "|")
 	  AS ?error)
