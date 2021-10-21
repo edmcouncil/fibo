@@ -23,11 +23,16 @@ prefix fibo-fnd-utl-av: <https://spec.edmcouncil.org/fibo/ontology/FND/Utilities
 SELECT DISTINCT ?error
 WHERE {
   ?ont a owl:Ontology .
+  OPTIONAL
+     {
+         ?ont owl:deprecated ?deprecated .
+         FILTER (str(?deprecated) != "true")
+     }
   FILTER (REGEX (xsd:string (?ont), "edmcouncil"))	
-  FILTER NOT EXISTS {?ont rdfs:label ?l  ;
-#               skos:definition ?def ;
-	       sm:copyright ?cr ;
-	       dct:license ?lic ;
-	       dct:abstract ?abs .}
+  FILTER NOT EXISTS {
+	?ont rdfs:label ?l  ;
+	sm:copyright ?cr ;
+	dct:license ?lic ;
+	dct:abstract ?abs .}
 BIND (concat ("PRODERROR: ", xsd:string(?ont), " has to have appropriate metadata.") AS ?error)
 }

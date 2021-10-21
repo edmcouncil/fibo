@@ -9,6 +9,11 @@ prefix skos: <http://www.w3.org/2004/02/skos/core#>
 SELECT DISTINCT ?error ?definition ?label
 WHERE {
   ?s rdfs:label ?label .
+  OPTIONAL
+     {
+         ?s owl:deprecated ?deprecated .
+         FILTER (str(?deprecated) != "true")
+     }
   ?s skos:definition ?definition .
   FILTER NOT EXISTS {?s a owl:NamedIndividual} .
   FILTER (REGEX(?definition, "\\W"+?label+"\\W"))

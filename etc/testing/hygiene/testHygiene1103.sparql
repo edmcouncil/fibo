@@ -13,5 +13,15 @@ WHERE {
   FILTER (REGEX(str(?class2), "edmcouncil"))
   FILTER NOT EXISTS {?class2 owl:deprecated "true"^^xsd:boolean}
   ?class1 owl:equivalentClass ?class2 .
+  OPTIONAL
+     {
+         ?class1 owl:deprecated ?deprecated .
+         FILTER (str(?deprecated) != "true")
+     }
+  OPTIONAL
+     {
+         ?class2 owl:deprecated ?deprecated .
+         FILTER (str(?deprecated) != "true")
+     }
   BIND (concat ("PRODERROR: Class ", str(?class1), " is modeled as equivalent to ", str(?class2), " - this may indicate polysemy management that is not complient with FIBO.") AS ?error)
 }

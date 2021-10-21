@@ -8,6 +8,11 @@ SELECT DISTINCT ?error ?ontology
 WHERE
 {
     ?ontology owl:imports ?ontology.
+    OPTIONAL
+     {
+         ?ontology owl:deprecated ?deprecated .
+         FILTER (str(?deprecated) != "true")
+     }
     FILTER (CONTAINS(str(?ontology), "edmcouncil"))
     BIND (concat ("PRODERROR: ", str(?ontology), " imports itself.") AS ?error)
 }

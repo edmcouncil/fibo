@@ -9,6 +9,11 @@ SELECT DISTINCT ?error ?resource
 WHERE
 {
     ?resource ?property owl:Class .
+    OPTIONAL
+       {
+           ?resource owl:deprecated ?deprecated .
+           FILTER (str(?deprecated) != "true")
+       }
     FILTER regex(str(?resource), "edmcouncil")
     FILTER (REGEX(str(?resource), "/[^/]+(And|Or)[A-Z0-9][^/]+$") )
     FILTER (!CONTAINS(str(?resource), "InvestmentOrDepositAccount"))
