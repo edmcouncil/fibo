@@ -76,9 +76,45 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20180801/Organizations/Organizations.rdf version of this ontology was modified to revise the definition of Organization to broaden its scope to individuals that may or may not be people and eliminate duplication with concepts in LCC.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20200201/Organizations/Organizations.rdf version of this ontology was modified to reflect the merge of Goals and Objectives.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20201101/Organizations/Organizations.rdf version of this ontology was modified to allow the Organizations ontology to import Parties, rather than the other way around, to simplify the class hierarchy for ease of use in data mapping and alignment, including moving OrganizationMember from Parties to Organizations, and to add the basis for structured organization name representation.</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20210601/Organizations/Organizations.rdf version of this ontology was modified to to move basic organization sub-unit and identifier definitions to FND from BE due to their fundamental nature and reusability.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20210601/Organizations/Organizations.rdf version of this ontology was modified to to move basic organization sub-unit and identifier definitions to FND from BE due to their fundamental nature and reusability and add links to the W3C organization ontology to provide hints as to which classes in this ontology map to the W3C ontology. Note that mappings are approximate and thus we used seeAlso rather than OWL equivalence relations.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
+	
+	<owl:Class rdf:about="&fibo-fnd-org-org;MemberBearingOrganization">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-pty-pty;PartyInRole"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
+				<owl:someValuesFrom>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&lcc-lr;hasMember"/>
+						<owl:someValuesFrom rdf:resource="&fibo-fnd-pty-pty;IndependentParty"/>
+					</owl:Restriction>
+				</owl:someValuesFrom>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>member-bearing organization</rdfs:label>
+		<skos:definition>role of a group or organization that has members that are people or other organizations</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-org-org;Membership">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-pty-pty;Situation"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-org-org;hasMembership"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-org-org;MemberBearingOrganization"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-org-org;hasOrganizationMember"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-org-org;OrganizationMember"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">membership</rdfs:label>
+		<rdfs:seeAlso rdf:resource="https://www.w3.org/TR/vocab-org/#class-membership"/>
+		<skos:definition>situation, corresponding to an n-ary relation, in which some group or organization has at least one member (person or organization) for some period of time</skos:definition>
+	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-org-org;Organization">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-pty-pty;IndependentParty"/>
@@ -108,10 +144,10 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">organization</rdfs:label>
+		<rdfs:seeAlso rdf:resource="https://www.w3.org/TR/vocab-org/#org:Organization"/>
 		<skos:definition>collection of one or more people, or groups of people formed together into a community or other social, commercial or political structure to act, or that is designated to act, towards some purpose, such as to meet a need or pursue collective goals on a continuing basis</skos:definition>
 		<skos:example>This may be a business entity, government, international organization, not-for-profit, academic institution, or other unincorporated and/or informal social organization.</skos:example>
 		<fibo-fnd-utl-av:adaptedFrom>https://www.iso.org/obp/ui/#iso:std:iso-iec:6523:-1:ed-1:v1:en</fibo-fnd-utl-av:adaptedFrom>
-		<fibo-fnd-utl-av:adaptedFrom>https://www.w3.org/TR/vocab-org/#class-organization</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-org-org;OrganizationIdentificationScheme">
@@ -156,7 +192,8 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>organization member</rdfs:label>
-		<skos:definition>identifies an organization or someone that plays a membership role in some organization</skos:definition>
+		<rdfs:seeAlso rdf:resource="https://www.w3.org/TR/vocab-org/#org:Role"/>
+		<skos:definition>party (person or organization) that has a membership role with respect to some organization</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-org-org;OrganizationName">
@@ -204,19 +241,58 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>organizational sub-unit</rdfs:label>
+		<rdfs:seeAlso rdf:resource="https://www.w3.org/TR/vocab-org/#org:OrganizationalUnit"/>
 		<skos:definition>any department, service, and other entity within a larger organization that only has full recognition within the context of that organization, but requires identification for some purpose</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.iso.org/obp/ui/#iso:std:iso-iec:6523:-1:ed-1:v1:en</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:explanatoryNote>In other words, it is not a legal entity in its own right.</fibo-fnd-utl-av:explanatoryNote>
 		<fibo-fnd-utl-av:synonym>organization part</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-org-org;hasMembership">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-pty-pty;hasActor"/>
+		<rdfs:label>has membership role</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fnd-org-org;Membership"/>
+		<rdfs:range rdf:resource="&fibo-fnd-org-org;MemberBearingOrganization"/>
+		<rdfs:seeAlso rdf:resource="https://www.w3.org/TR/vocab-org/#org:organization"/>
+		<owl:inverseOf rdf:resource="&fibo-fnd-org-org;isMembershipPartyIn"/>
+		<skos:definition>identifies the organization acting in the role of having members in an organizational membership situation</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-org-org;hasOrganizationMember">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-pty-pty;hasUndergoer"/>
+		<rdfs:label>has organization member</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fnd-org-org;Membership"/>
+		<rdfs:range rdf:resource="&fibo-fnd-org-org;OrganizationMember"/>
+		<rdfs:seeAlso rdf:resource="https://www.w3.org/TR/vocab-org/#org:member"/>
+		<owl:inverseOf rdf:resource="&fibo-fnd-org-org;isOrganizationMember"/>
+		<skos:definition>indicates the party that is the member in an organizational membership situation</skos:definition>
+	</owl:ObjectProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-org-org;hasSubUnit">
 		<rdfs:subPropertyOf rdf:resource="&lcc-cr;hasPart"/>
 		<rdfs:label>has sub-unit</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fnd-org-org;Organization"/>
 		<rdfs:range rdf:resource="&fibo-fnd-org-org;OrganizationalSubUnit"/>
+		<rdfs:seeAlso rdf:resource="https://www.w3.org/TR/vocab-org/#org:hasSubOrganization"/>
 		<owl:inverseOf rdf:resource="&fibo-fnd-org-org;isSubUnitOf"/>
-		<skos:definition>relates a formally constituted organization to a part of that organization</skos:definition>
+		<skos:definition>relates an organization to a part of that organization</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-org-org;isMembershipPartyIn">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-pty-pty;actsIn"/>
+		<rdfs:label>is membership party in</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fnd-org-org;MemberBearingOrganization"/>
+		<rdfs:range rdf:resource="&fibo-fnd-org-org;Membership"/>
+		<skos:definition>indicates the context of membership in which the party plays the role of having members</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-org-org;isOrganizationMember">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-pty-pty;undergoes"/>
+		<rdfs:label>is organization member</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fnd-org-org;OrganizationMember"/>
+		<rdfs:range rdf:resource="&fibo-fnd-org-org;Membership"/>
+		<rdfs:seeAlso rdf:resource="https://www.w3.org/TR/vocab-org/#org:role"/>
+		<skos:definition>indicates the context of membership in which some party is an organization member</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-org-org;isSubUnitOf">
@@ -224,6 +300,7 @@
 		<rdfs:label>is sub-unit of</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fnd-org-org;OrganizationalSubUnit"/>
 		<rdfs:range rdf:resource="&fibo-fnd-org-org;Organization"/>
+		<rdfs:seeAlso rdf:resource="https://www.w3.org/TR/vocab-org/#org:subOrganizationOf"/>
 		<skos:definition>relates a part of an organization to the larger entity</skos:definition>
 	</owl:ObjectProperty>
 
