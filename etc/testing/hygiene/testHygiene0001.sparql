@@ -14,11 +14,7 @@ prefix lcc-cr: <https://www.omg.org/spec/LCC/Countries/CountryRepresentation/>
 SELECT DISTINCT ?error
 WHERE {
   ?s ?p ?o .
-  OPTIONAL
-    {
-       ?o owl:deprecated ?deprecated .
-       FILTER (str(?deprecated) != "true")
-    }
+  FILTER NOT EXISTS {?o owl:deprecated "true"^^xsd:boolean} .
   FILTER (ISIRI (?o))
   FILTER (REGEX (xsd:string (?o), "edmcouncil"))
   FILTER NOT EXISTS {?o a []}

@@ -23,15 +23,7 @@ WHERE {
   ?p1 rdfs:subPropertyOf ?p2 .
   ?p2 rdfs:range ?D2 .
   ?D2 rdfs:subClassOf+ ?D1 .
-  OPTIONAL
-     {
-         ?p1 owl:deprecated ?deprecated .
-         FILTER (str(?deprecated) != "true")
-     }
-  OPTIONAL
-     {
-         ?p2 owl:deprecated ?deprecated .
-         FILTER (str(?deprecated) != "true")
-     }
+  FILTER NOT EXISTS {?p1 owl:deprecated "true"^^xsd:boolean} .
+  FILTER NOT EXISTS {?p2 owl:deprecated "true"^^xsd:boolean} .
    BIND (concat ("PRODERROR: Crossed ranges. ", afn:localname(?p1), " < ", afn:localname (?p2), " but the range ", afn:localname (?D1), " is a superclass of ", afn:localname (?D2)) AS ?error)
 }
