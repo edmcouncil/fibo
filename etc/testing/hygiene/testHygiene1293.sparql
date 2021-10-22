@@ -1,6 +1,7 @@
 prefix owl:   <http://www.w3.org/2002/07/owl#>
 prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+prefix xsd:   <http://www.w3.org/2001/XMLSchema#>
 
 ##
 # banner "min 1" cardinality restrictions should be avoided because of performance considerations.
@@ -10,11 +11,7 @@ WHERE {
   ?restriction  rdf:type owl:Restriction.
   {{?restriction owl:minQualifiedCardinality ?cardinality} UNION {?restriction owl:minCardinality ?cardinality}}.
   ?class rdfs:subClassOf ?restriction .
-  OPTIONAL
-       {
-           ?class owl:deprecated ?deprecated .
-           FILTER (str(?deprecated) != "true")
-       }
+  FILTER NOT EXISTS {?class owl:deprecated "true"^^xsd:boolean} .
   FILTER (CONTAINS(str(?class), "edmcouncil"))
   FILTER (?cardinality = 1)
   BIND (concat ("ERROR: OWL class", str(?class), " is a subclass of a restriction of type owl:minCardinality or owl:minQualifiedCardinality equal to 1") AS ?error)

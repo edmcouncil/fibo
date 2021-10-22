@@ -10,11 +10,7 @@ prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
 SELECT ?error
 WHERE {
   ?s ?p ?o .
-  OPTIONAL
-     {
-         ?s owl:deprecated ?deprecated .
-         FILTER (str(?deprecated) != "true")
-     }
+  FILTER NOT EXISTS {?o owl:deprecated "true"^^xsd:boolean} .
   FILTER (DATATYPE(?o)=xsd:string)
   FILTER (REGEX (xsd:string (?s), "edmcouncil")) 
   BIND (afn:localname (?p) AS ?prop)
