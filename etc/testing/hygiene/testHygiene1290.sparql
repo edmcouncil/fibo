@@ -9,6 +9,11 @@ SELECT DISTINCT ?error ?class ?domainIdentifier
 WHERE 
 {
     ?class a owl:Class .
+    OPTIONAL
+       {
+           ?class owl:deprecated ?deprecated .
+           FILTER (str(?deprecated) != "true")
+       }
     FILTER NOT EXISTS {?class rdfs:subClassOf ?classParent}
     FILTER (CONTAINS(str(?class), "edmcouncil"))
     BIND (STRBEFORE(STRAFTER(str(?class),"https://spec.edmcouncil.org/fibo/ontology/"),"/") As ?domainIdentifier)

@@ -12,6 +12,11 @@ WHERE
     UNION
     {?resource rdf:type/rdfs:subClassOf* rdfs:Class .}
     ?resource rdf:type ?resourceType .
+    OPTIONAL
+       {
+           ?resource owl:deprecated ?deprecated .
+           FILTER (str(?deprecated) != "true")
+       }
     FILTER (CONTAINS(str(?resource), "edmcouncil"))
     FILTER (CONTAINS(STRAFTER(str(?resource),"https://spec.edmcouncil.org/fibo/ontology/"), "."))
     BIND (concat ("PRODERROR: Resource ", str(?resource), " has the dot in its local name. ") AS ?error) 
