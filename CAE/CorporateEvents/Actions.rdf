@@ -98,7 +98,7 @@
 	</owl:Ontology>
 	
 	<owl:Class rdf:about="&fibo-cae-ce-act;Action">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-oc;OccurrenceKind"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-oc;Occurrence"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
@@ -143,10 +143,11 @@
 		</rdfs:subClassOf>
 		<rdfs:label>action classification scheme</rdfs:label>
 		<skos:definition>scheme for classifying the kinds of actions and events that may be announced, initiated or carried out by an organization that affects a legal entity or the securities it issues</skos:definition>
+		<fibo-fnd-utl-av:usageNote>The set of corporate actions and income events included herein are a subset of those specified in ISO 15022 Securities - Scheme for Messages (Data Field Dictionary). Other schemes that are specific to a custodian, depository, or regulatory agency may also be important, and should take a similar approach with respect to classification.</fibo-fnd-utl-av:usageNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-cae-ce-act;ActionClassifier">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-cls;Classifier"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-oc;OccurrenceKind"/>
 		<rdfs:subClassOf rdf:resource="&lcc-lr;CodeElement"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
@@ -182,6 +183,7 @@
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">action classifier</rdfs:label>
 		<skos:definition xml:lang="en">classifier that distinguishes the kinds of actions and events that may be announced, initiated or carried out by an organization that affects a legal entity or the securities it issues, such as income-oriented events</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">ISO 15022 classifies events as impacting income vs. others.  Other classification schemes distinguish between actions that return profits to shareholders, actions that are designed to influence the share price, and actions involving a change in structure to the issuer organization.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-cae-ce-act;BondDefaultAction">
@@ -198,7 +200,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-cae-ce-act;BusinessStrategyOrientedAction">
-		<rdfs:subClassOf rdf:resource="&fibo-cae-ce-act;CorporateActionClassifier"/>
+		<rdfs:subClassOf rdf:resource="&fibo-cae-ce-act;ActionClassifier"/>
 		<rdfs:label xml:lang="en">business strategy-oriented action</rdfs:label>
 		<skos:definition xml:lang="en">classifier of corporate actions that involves improving liquidity or changing the overall structure of the organization through diversification, combining and closing parts of the business, etc, to increase long-term profitability</skos:definition>
 	</owl:Class>
@@ -258,73 +260,9 @@
 	
 	<owl:Class rdf:about="&fibo-cae-ce-act;CorporateAction">
 		<rdfs:subClassOf rdf:resource="&fibo-cae-ce-act;Action"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&lcc-cr;isClassifiedBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-cae-ce-act;CorporateActionClassifier"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">corporate action</rdfs:label>
 		<skos:definition xml:lang="en">event carried out by a legal entity that affects the securities it issues and may have a material impact on its stakeholders, such as shareholders and creditors</skos:definition>
 		<skos:example xml:lang="en">Examples of corporate actions include stock splits, dividends, mergers and acquisitions, rights issues, and spin-offs.</skos:example>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-cae-ce-act;CorporateActionClassificationScheme">
-		<rdfs:subClassOf rdf:resource="&fibo-cae-ce-act;ActionClassificationScheme"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&lcc-lr;hasMember"/>
-				<owl:allValuesFrom rdf:resource="&fibo-cae-ce-act;CorporateActionClassifier"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;defines"/>
-				<owl:someValuesFrom rdf:resource="&fibo-cae-ce-act;CorporateActionClassifier"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>corporate action classification scheme</rdfs:label>
-		<skos:definition>scheme for classifying corporate actions</skos:definition>
-		<fibo-fnd-utl-av:usageNote>The set of corporate actions and income events included herein are a subset of those specified in ISO 15022 Securities - Scheme for Messages (Data Field Dictionary). Other schemes that are specific to a custodian, depository, or regulatory agency may also be important, and should take a similar approach with respect to classification.</fibo-fnd-utl-av:usageNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-cae-ce-act;CorporateActionClassifier">
-		<rdfs:subClassOf rdf:resource="&fibo-cae-ce-act;ActionClassifier"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isDefinedIn"/>
-				<owl:onClass rdf:resource="&fibo-cae-ce-act;CorporateActionClassificationScheme"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&lcc-lr;isMemberOf"/>
-				<owl:onClass rdf:resource="&fibo-cae-ce-act;CorporateActionClassificationScheme"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&lcc-cr;classifies"/>
-				<owl:someValuesFrom rdf:resource="&fibo-cae-ce-act;CorporateAction"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&lcc-lr;denotes"/>
-				<owl:someValuesFrom rdf:resource="&fibo-cae-ce-act;CorporateAction"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&lcc-lr;hasTag"/>
-				<owl:someValuesFrom rdf:resource="&xsd;string"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">corporate action classifier</rdfs:label>
-		<skos:definition xml:lang="en">classifier that distinguishes income-oriented events from other corporate actions</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">ISO 15022 classifies events as impacting income vs. others.  Other classification schemes distinguish between actions that return profits to shareholders, actions that are designed to influence the share price, and actions involving a change in structure to the issuer organization.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-cae-ce-act;CorporateActionObligation">
@@ -449,7 +387,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-cae-ce-act;IncomeOrientedAction">
-		<rdfs:subClassOf rdf:resource="&fibo-cae-ce-act;CorporateActionClassifier"/>
+		<rdfs:subClassOf rdf:resource="&fibo-cae-ce-act;ActionClassifier"/>
 		<rdfs:label xml:lang="en">income-oriented action</rdfs:label>
 		<skos:definition xml:lang="en">classifier of corporate actions that impacts income to shareholders</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Cash dividends are a classic example where a public company declares a dividend to be paid on each outstanding share. Bonus is another case where the shareholder is rewarded. In a stricter sense, the bonus issue should not impact the share price but in reality, in rare cases, it does and results in an overall increase in value.</fibo-fnd-utl-av:explanatoryNote>
