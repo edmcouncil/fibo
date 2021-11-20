@@ -71,7 +71,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Countries/CountryRepresentation/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20210601/AgentsAndPeople/People/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20211101/AgentsAndPeople/People/"/>
 		<skos:changeNote>The http://spec.edmcouncil.org/fibo/ontology/FND/20130801/AgentsAndPeople/People.rdf version of the ontology was was modified per the issue resolutions identified in the FIBO FND 1.0 FTF report and in https://spec.edmcouncil.org/fibo/ontology/FND/1.0/AboutFND-1.0/. It was further revised in the FTF in advance of the Long Beach meeting, resulting in https://spec.edmcouncil.org/fibo/ontology/FND/20141101/AgentsAndPeople/People/.</skos:changeNote>
 		<skos:changeNote>The http://spec.edmcouncil.org/fibo/ontology/FND/20141101/AgentsAndPeople/People.rdf version of the ontology was was modified per the issue resolutions identified in the FIBO FND 1.1 RTF report, primarily to use the hasAddress property in addresses, and change PostalAddress to PhysicalAddress in a restriction on Person. Also revised the identifiesAddress property in favor of verifiesAddress, and revised hasDateofBirth with respect to an identity document to be verifiesDateOfBirth, which was determined to be more appropriate by the RTF.</skos:changeNote>
 		<skos:changeNote>The http://www.omg.org/spec/EDMC-FIBO/FND/20160201/AgentsAndPeople/People.rdf version of the ontology was was modified per the FIBO 2.0 RFC, including integration of LCC.</skos:changeNote>
@@ -91,6 +91,7 @@
 		<skos:changeNote>The https://www.omg.org/spec/EDMC-FIBO/FND/20201201/AgentsAndPeople/People.rdf version of the ontology was modified to add hasResidence, hasMailingAddress, and hasPrimaryResidence properties and a restriction on person with respect to residence accordingly, then to move hasMailingAddress to Parties.</skos:changeNote>
 		<skos:changeNote>The https://www.omg.org/spec/EDMC-FIBO/FND/20210301/AgentsAndPeople/People.rdf version of the ontology was modified to allow the People ontology to import Parties, rather than the other way around, to simplify the class hierarchy for ease of use in data mapping and alignment, and to add person name as a first class concept, revising property definitions to allow for structured names by loosening constraints.</skos:changeNote>
 		<skos:changeNote>The https://www.omg.org/spec/EDMC-FIBO/FND/20210401/AgentsAndPeople/People.rdf version of the ontology was modified to add concepts specific to legal age, age of majority, legal working age and legal working age person.</skos:changeNote>
+		<skos:changeNote>The https://www.omg.org/spec/EDMC-FIBO/FND/20210601/AgentsAndPeople/People.rdf version of the ontology was modified to revise the definition of passport number as a national identification number and eliminate restrictions that would cause people to be inferred to be passports.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -387,8 +388,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>national identification number</rdfs:label>
-		<skos:altLabel>national insurance number</skos:altLabel>
-		<skos:definition>a number or text which appears on an identity document issued by a country or jurisdiction</skos:definition>
+		<skos:definition>number or text which appears on an identity document issued by a country or jurisdiction</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://en.wikipedia.org/wiki/National_identification_number</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:explanatoryNote>A national identification number, national identity number, or national insurance number is used by the governments of many countries as a means of tracking their citizens, permanent residents, and temporary residents for the purposes of work, taxation, government benefits, health care, and other governmentally-related functions. The number will appear on an identity document issued by a country.
 
@@ -415,26 +415,19 @@ Many countries issued such numbers ostensibly for a singular purpose, but over t
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-aap-ppl;IdentityDocument"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&lcc-lr;isIdentifiedBy"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;comprises"/>
 				<owl:onClass rdf:resource="&fibo-fnd-aap-ppl;PassportNumber"/>
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>passport</rdfs:label>
-		<skos:definition>a document, issued by a national government, which certifies the identity and nationality of its holder for the purpose of international travel</skos:definition>
+		<skos:definition>formal identity document, issued by a national government, which certifies the identity and nationality of its holder for the purpose of international travel</skos:definition>
 		<fibo-fnd-utl-av:definitionOrigin rdf:datatype="&xsd;anyURI">https://en.wikipedia.org/wiki/Passport</fibo-fnd-utl-av:definitionOrigin>
 		<fibo-fnd-utl-av:explanatoryNote>The elements of identity contained in all standardized passports include information about the holder, including name, date of birth, gender and place of birth.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-aap-ppl;PassportNumber">
-		<rdfs:subClassOf rdf:resource="&lcc-lr;Identifier"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&lcc-lr;identifies"/>
-				<owl:onClass rdf:resource="&fibo-fnd-aap-ppl;Passport"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-aap-ppl;NationalIdentificationNumber"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isDefinedIn"/>
@@ -443,7 +436,7 @@ Many countries issued such numbers ostensibly for a singular purpose, but over t
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>passport number</rdfs:label>
-		<skos:definition>identifier associated with a passport</skos:definition>
+		<skos:definition>national identification number associated with a passport</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-aap-ppl;PassportNumberIdentificationScheme">
