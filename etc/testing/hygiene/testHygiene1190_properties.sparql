@@ -1,4 +1,6 @@
 prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+prefix owl:   <http://www.w3.org/2002/07/owl#>
+prefix xsd:   <http://www.w3.org/2001/XMLSchema#>
 
 ##
 # banner Property subPropertyOf hierarchy shouldn't be circular.
@@ -7,7 +9,8 @@ SELECT DISTINCT ?error ?property
 WHERE 
 {
   FILTER (CONTAINS(str(?property), "edmcouncil"))
-  ?property rdfs:subPropertyOf+ ?property
+  ?property rdfs:subPropertyOf+ ?property .
+  FILTER NOT EXISTS {?property owl:deprecated "true"^^xsd:boolean} .
 
   BIND (concat ("PRODERROR: There is a hierarchy cycle around property ", str(?property)) AS ?error)
 }

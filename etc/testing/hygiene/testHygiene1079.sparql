@@ -1,4 +1,6 @@
 prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+prefix owl:   <http://www.w3.org/2002/07/owl#>
+prefix xsd:   <http://www.w3.org/2001/XMLSchema#>
 
 ##
 # banner rdfs:comment shouldn't be used for FIBO annotation.
@@ -6,7 +8,8 @@ prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
 SELECT DISTINCT ?error
 WHERE 
 {
-  ?s rdfs:comment ?o 
+  ?s rdfs:comment ?o .
+  FILTER NOT EXISTS {?s owl:deprecated "true"^^xsd:boolean} .
   FILTER (CONTAINS(str(?s), "edmcouncil"))
   BIND (concat ("PRODERROR: ", str(?s), " has an rdfs:comment annotation: ", str(?o)) AS ?error)
 }

@@ -89,11 +89,12 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/EconomicIndicators/EconomicIndicators/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/InterestRates/InterestRates/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/ParametricSchedules/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/20210101/RateDerivatives/IRSwaps/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/20211001/RateDerivatives/IRSwaps/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20180801/RateDerivatives/IRSwaps.rdf version of this ontology was modified to use the generic statistical measures and measurements now in FND.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20190501/RateDerivatives/IRSwaps/ version of this ontology was modified to eliminate the property &apos;hasPaymentSchedule&apos; from the Swaps ontology in favor of the equivalent property with the same name from FND.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20200701/RateDerivatives/IRSwaps/ version of this ontology was modified take advantage of basic fixed and floating legs as higher level concepts common to many swaps, and to refine definitions to eliminate ambiguity and conform with ISO 704.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20201201/RateDerivatives/IRSwaps/ version of this ontology was modified to move the property &apos;exchanges&apos; to FND given that it could be applied more generally than with respect to swaps only.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20210101/RateDerivatives/IRSwaps/ version of this ontology was modified to enable representation of plain vanilla interest rate swaps as a separate concept.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -171,7 +172,6 @@
 		</owl:equivalentClass>
 		<skos:definition>interest rate swap in which fixed interest payments on the notional are exchanged for floating interest payments</skos:definition>
 		<fibo-fnd-utl-av:synonym>fixed-float interest rate swap</fibo-fnd-utl-av:synonym>
-		<fibo-fnd-utl-av:synonym>vanilla interest rate swap</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-rtd-irswp;FixedFloatSingleCurrencyInterestRateSwap">
@@ -496,6 +496,43 @@
 		</rdfs:subClassOf>
 		<rdfs:label>notional step schedule</rdfs:label>
 		<skos:definition>schedule of changes in the notional amount on which interest is paid, comprising the regular sequence of step events</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-rtd-irswp;PlainVanillaInterestRateSwap">
+		<rdfs:subClassOf rdf:resource="&fibo-der-rtd-irswp;FixedFloatSingleCurrencyInterestRateSwap"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-acc-cur;hasNotionalAmount"/>
+				<owl:onClass rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-drc-swp;hasLeg"/>
+				<owl:someValuesFrom>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&fibo-fbc-fct-ra;specifies"/>
+						<owl:onClass rdf:resource="&fibo-der-rtd-irswp;NotionalStepChangeEvent"/>
+						<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:qualifiedCardinality>
+					</owl:Restriction>
+				</owl:someValuesFrom>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-drc-swp;hasLeg"/>
+				<owl:someValuesFrom>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&fibo-der-rtd-irswp;hasNotionalStepSchedule"/>
+						<owl:onClass rdf:resource="&fibo-der-rtd-irswp;NotionalStepSchedule"/>
+						<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:qualifiedCardinality>
+					</owl:Restriction>
+				</owl:someValuesFrom>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>plain vanilla interest rate swap</rdfs:label>
+		<skos:definition>fixed-float single currency interest rate swap in which interest payments are netted, the notional principal does not change, and there are no embedded options</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-rtd-irswp;SingleCurrencyInterestRateSwap">
