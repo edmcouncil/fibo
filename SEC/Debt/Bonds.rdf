@@ -136,12 +136,13 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesIssuance/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesListings/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20210501/Debt/Bonds/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20211001/Debt/Bonds/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20190901/Securities/Debt/Bonds.rdf version of this ontology was revised to reflect the refactored definition of a listing and improve the definition of corporate bond.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20191201/Securities/Debt/Bonds.rdf version of this ontology was revised to eliminate duplication of concepts in LCC and eliminate a redundant superclass from RegularCouponSchedule.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20200401/Securities/Debt/Bonds.rdf version of this ontology was revised to eliminate a duplicate &apos;isBasedOn&apos; property and replace it with the property of the same name in the debt ontology, to revise the inheritance hierarchy for bond conversion terms to reflect changes in the representation of redemption more generally, to reflect the move of redemption provision from debt to financial instruments, and eliminate circular and ambiguous definitions.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20200901/Securities/Debt/Bonds.rdf version of this ontology was revised to eliminate false positives in hygiene tests due to concept names containing words, such as &apos;and&apos;, which might indicate that the concept actually reflects more than one thing, including distinguishing zero coupon from original issue discount bonds, and replace the use of call price and put price, which are overly constrained, with monetary price.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20210301/Securities/Debt/Bonds.rdf version of this ontology was revised to eliminate references to the exercise conventions ontology, which are not needed for bonds.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20210501/Securities/Debt/Bonds.rdf version of this ontology was revised to allow for variation in index-linked bonds, such as those whose interest payments vary with an index in addition to those that have a variable principal linked to an index and to make a number of corrections to the class hierarchy.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -159,7 +160,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-bnd;Bond">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbti;FixedIncomeSecurity"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbti;TradableDebtInstrument"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbti;hasInterestPaymentTerms"/>
@@ -173,7 +174,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>bond</rdfs:label>
-		<skos:definition>fixed-income security representing a loan in which the issuer owes the holder(s) a debt</skos:definition>
+		<skos:definition>tradable debt instrument representing a loan in which the issuer owes the holder(s) a debt</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote>Depending on the terms of the contract, the issuer is obliged to pay interest (the coupon) and/or to repay the principal at maturity.  The most common bonds are corporate or governmental, typically used to finance specific projects or operations.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
@@ -339,14 +340,26 @@
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;MunicipalSecurity"/>
 		<rdfs:label>certificate of obligation</rdfs:label>
 		<skos:definition>municipal security available to governing councils in case of emergency, such as a natural disaster, that needs immediate action without time for voter referendum</skos:definition>
+		<fibo-fnd-utl-av:abbreviation>CO</fibo-fnd-utl-av:abbreviation>
+		<fibo-fnd-utl-av:explanatoryNote>CO&apos;s are similar to GO bonds, except that they do not require voter approval before they are issued. The CO&apos;s are also guaranteed by the City&apos;s taxation power and are counted in the calculation of the tax rate that is needed to support debt payments.</fibo-fnd-utl-av:explanatoryNote>
 		<fibo-fnd-utl-av:explanatoryNote>For example, when a hurricane destroys the police and emergency services building, there is no time to go through the process of voter referendum. The local council must be able to borrow the money to set up provisional buildings and necessary equipment for police and emergency services so that the community is served in continuity.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-bnd;CertificateOfParticipation">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;MunicipalSecurity"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;DebtInstrument"/>
 		<rdfs:label>certificate of participation</rdfs:label>
-		<skos:definition>municipal security evidencing a pro rata share in a specific pledged revenue stream, usually lease payments by the issuer that are typically subject to annual appropriation</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote>The certificate generally entitles the holder to receive a share, or participation, in the payments from a particular project. The payments are passed through the lessor to the certificate holders. The lessor typically assigns the lease and the payments to a trustee, which then distributes the payments to the certificate holders.</fibo-fnd-utl-av:explanatoryNote>
+		<skos:definition>debt instrument evidencing a pro rata share in a specific pledged revenue stream, usually lease payments by the issuer that are typically subject to annual appropriation</skos:definition>
+		<fibo-fnd-utl-av:abbreviation>COP</fibo-fnd-utl-av:abbreviation>
+		<fibo-fnd-utl-av:explanatoryNote>A certificate of participation (COP) is a type of financing where an investor purchases a share of the lease revenues of a program rather than the bond being secured by those revenues. The certificate generally entitles the holder to receive a share, or participation, in the payments from a particular project. The payments are passed through the lessor to the certificate holders. The lessor typically assigns the lease and the payments to a trustee, which then distributes the payments to the certificate holders.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-dbt-bnd;ConventionalGilt">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;FixedCouponBond"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;UKGovernmentSecurity"/>
+		<rdfs:label>conventional gilt</rdfs:label>
+		<rdfs:seeAlso rdf:resource="https://www.dmo.gov.uk/responsibilities/gilt-market/about-gilts/"/>
+		<skos:definition>fixed coupon bond issued by HM Treasury that guarantees to pay the holder of the gilt a fixed cash payment (coupon) every six months until the maturity date, at which point the holder receives the final coupon payment and the return of the principal</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Conventional gilts are the simplest form of government bond and constitute around 75 percent of the gilt portfolio.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-bnd;ConvertibleBond">
@@ -449,6 +462,7 @@
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-bnd;FixedCouponBond">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;Bond"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbti;FixedIncomeSecurity"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbti;hasInterestPaymentTerms"/>
@@ -512,7 +526,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-bnd;GovernmentIssuedDebtSecurity">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbti;FixedIncomeSecurity"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;DebtInstrument"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isIssuedBy"/>
@@ -543,8 +557,8 @@
 		<fibo-fnd-utl-av:synonym>implicit full faith and credit bond</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-dbt-bnd;IndexLinkedSecurity">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;VariablePrincipalBond"/>
+	<owl:Class rdf:about="&fibo-sec-dbt-bnd;IndexLinkedBond">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;VariableIncomeBond"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;isBasedOn"/>
@@ -560,21 +574,23 @@
 				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label>index linked security</rdfs:label>
-		<skos:definition>bond in which payment of income on the principal is related to a specific index, such as the Consumer Price Index</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote>This feature provides protection to investors by shielding them from changes in the underlying index. The bond&apos;s cash flows are adjusted to ensure that the holder of the bond receives a known real rate of return. Notes 04 May: There may also be a kind of security where the coupon payments fluctuate according to an &quot;Index&quot; in the sense of non Interest rate e.g. inflation rate, GDP. But more commonly the term Index Linked refers to principal.</fibo-fnd-utl-av:explanatoryNote>
+		<rdfs:label>index-linked bond</rdfs:label>
+		<skos:definition>bond whose income may vary over time, because either the coupon rate or principal amount is related to a specific index, such as the Consumer Price Index</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-dbt-bnd;InflationBond">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;IndexLinkedSecurity"/>
+	<owl:Class rdf:about="&fibo-sec-dbt-bnd;InflationLinkedBond">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;IndexLinkedBond"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;isBasedOn"/>
 				<owl:someValuesFrom rdf:resource="&fibo-ind-ei-ei;InflationRate"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label>inflation bond</rdfs:label>
-		<skos:definition>bond whose principal amount is linked to an inflation rate index</skos:definition>
+		<rdfs:label>inflation-linked bond</rdfs:label>
+		<skos:definition>bond indexed to inflation so that the principal or interest payments rise and fall with the rate of inflation</skos:definition>
+		<fibo-fnd-utl-av:abbreviation>ILB</fibo-fnd-utl-av:abbreviation>
+		<fibo-fnd-utl-av:explanatoryNote>Inflation-linked bonds are primarily issued by sovereign governments, such as the U.S. and the UK.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:synonym>inflation-indexed bond</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-bnd;LastRegularCouponDate">
@@ -948,6 +964,7 @@
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-bnd;StepUpBond">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;Bond"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbti;FixedIncomeSecurity"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbti;hasInterestPaymentTerms"/>
@@ -956,7 +973,8 @@
 		</rdfs:subClassOf>
 		<rdfs:label>step up bond</rdfs:label>
 		<skos:definition>bond with a coupon that increases (steps up) while the bond is outstanding</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote>The step up may be one time, or occur according to a schedule or at regular intervals.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:explanatoryNote>The step change may be one time, or occur according to a schedule or at regular intervals.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:synonym>step down bond</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-bnd;SteppedCouponTerms">
@@ -993,7 +1011,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-bnd;TreasuryBill">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;TreasurySecurity"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;USTreasurySecurity"/>
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-tstd;MoneyMarketInstrument"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
@@ -1020,21 +1038,43 @@
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-bnd;TreasuryBond">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;SovereignBond"/>
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;TreasurySecurity"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;USTreasurySecurity"/>
 		<rdfs:label>treasury bond</rdfs:label>
 		<skos:definition>long term term coupon bearing treasury obligation with original maturity over ten years, with 30 years being most common</skos:definition>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-sec-dbt-bnd;TreasuryInflationProtectedSecurity">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;InflationLinkedBond"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;USTreasurySecurity"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;VariablePrincipalBond"/>
+		<rdfs:label>treasury inflation-protected security</rdfs:label>
+		<rdfs:seeAlso rdf:resource="https://www.treasurydirect.gov/indiv/products/prod_tips_glance.htm"/>
+		<skos:definition>variable income bond whose principal is indexed to inflation or deflation and thus changes over the life of the security</skos:definition>
+		<fibo-fnd-utl-av:abbreviation>TIPS</fibo-fnd-utl-av:abbreviation>
+		<fibo-fnd-utl-av:explanatoryNote>Treasury Inflation-Protected Securities, or TIPS, provide protection against inflation. The principal of a TIPS increases with inflation and decreases with deflation, as measured by the Consumer Price Index. When a TIPS matures, you are paid the adjusted principal or original principal, whichever is greater.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-sec-dbt-bnd;TreasuryNote">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;MediumTermNote"/>
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;TreasurySecurity"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;USTreasurySecurity"/>
 		<rdfs:label>treasury note</rdfs:label>
 		<skos:definition>medium term coupon bearing treasury obligation with original maturity ranging from two to ten years</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-dbt-bnd;TreasurySecurity">
+	<owl:Class rdf:about="&fibo-sec-dbt-bnd;UKGovernmentSecurity">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;SovereignDebtInstrument"/>
-		<rdfs:label>treasury security</rdfs:label>
+		<rdfs:label>U.K. Government security</rdfs:label>
+		<rdfs:seeAlso rdf:resource="https://www.dmo.gov.uk/responsibilities/gilt-market/buying-selling/"/>
+		<skos:definition>debt instrument issued by HM Treasury and listed on the London Stock Exchange</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>If a private investor wishes to purchase gilts the secondary market can be accessed through a stockbroker, bank or the DMO&apos;s Purchase and Sale Service.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:explanatoryNote>The term &apos;gilt&apos; or &apos;gilt-edged security&apos; is a reference to the primary characteristic of gilts as an investment: their security. This is a reflection of the fact that the British Government has never failed to make interest or principal payments on gilts as they fall due.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:synonym>gilt</fibo-fnd-utl-av:synonym>
+		<fibo-fnd-utl-av:synonym>gilt-edged security</fibo-fnd-utl-av:synonym>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-dbt-bnd;USTreasurySecurity">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;SovereignDebtInstrument"/>
+		<rdfs:label>U.S. Treasury security</rdfs:label>
 		<skos:definition>debt instrument issued by the United States Department of the Treasury that carries a full faith and credit guarantee</skos:definition>
 	</owl:Class>
 	
@@ -1099,6 +1139,7 @@
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-bnd;VariableIncomeBond">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;Bond"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbti;VariableIncomeSecurity"/>
 		<rdfs:label>variable income bond</rdfs:label>
 		<skos:definition>bond whose income may vary over time, because either the coupon rate or principal amount changes in line with an index or schedule over the life of the security</skos:definition>
 	</owl:Class>
@@ -1151,6 +1192,7 @@
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-bnd;ZeroCouponBond">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;Bond"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbti;FixedIncomeSecurity"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbti;hasRelativePriceAtMaturity"/>
@@ -1455,6 +1497,15 @@
 		<rdfs:range rdf:resource="&xsd;boolean"/>
 		<skos:definition>indicates whether a legal opinion exists for a given municipal bond</skos:definition>
 	</owl:DatatypeProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-bnd;isLinkedToFallback">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;refersTo"/>
+		<rdfs:label>is linked to fallback</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fbc-fi-fi;FinancialInstrument"/>
+		<rdfs:range rdf:resource="&fibo-sec-dbt-bnd;GovernmentBond"/>
+		<skos:definition>relates an index-linked instrument to a government bond that may be selected by a calculation agent</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Fallback Bond means, in relation to an Inflation Index applicable to an Inflation Linked Note, a bond selected by the Calculation Agent and issued by the government or one of the governments (but not any government agency) of the country (or countries) to whose level of inflation the Inflation Index relates and which pays a coupon and/or redemption amount which is calculated by reference to the Inflation Index, with a maturity date which falls on the same day as the Maturity Date of the Inflation Linked Notes, or such other date as the Calculation Agent shall select if there is no such bond maturing on the Maturity Date of the Inflation Linked Notes. If any bond so selected is redeemed, the Calculation Agent will select a new Fallback Bond on the same basis, but selected from all eligible bonds in issue at the time the original Fallback Bond is redeemed (including any bond for which the redeemed bond is exchanged).  Note the rate of the fallback bond is used as a substitute for the inflation index if, for example, it is no longer published.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:ObjectProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-sec-dbt-bnd;isMandatory">
 		<rdfs:label>is mandatory</rdfs:label>
