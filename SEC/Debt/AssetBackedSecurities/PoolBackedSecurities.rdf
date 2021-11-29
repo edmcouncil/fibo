@@ -84,7 +84,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">cash asset-backed security</rdfs:label>
-		<skos:definition xml:lang="en">debt instrument backed by receivables other than those arising out of real estate, loans or mortgages</skos:definition>
+		<skos:definition xml:lang="en">debt instrument backed by receivables other than those arising out of real estate loans or mortgages</skos:definition>
 		<fibo-fnd-utl-av:abbreviation xml:lang="en">ABS</fibo-fnd-utl-av:abbreviation>
 		<fibo-fnd-utl-av:adaptedFrom>ISO 10962, Securities and related financial instruments - Classification of Financial Instruments (CFI code), Fourth edition, 2019-10-01.</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
@@ -107,18 +107,6 @@
 		<skos:definition xml:lang="en">A pool investment consisting of a collection of cash structured finance instruments.</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-dbt-ab-pbs;CollateralizedDebt">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbti;PubliclyIssuedDebt"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;isCollateralizedBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-aeq;FinancialAsset"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">collateralized debt</rdfs:label>
-		<skos:definition xml:lang="en">Debt issued under some Security, with some Collateral.</skos:definition>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-sec-dbt-ab-pbs;CollateralizedObligationOffering">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbti;DebtOffering"/>
 		<rdfs:label xml:lang="en">collateralized obligation</rdfs:label>
@@ -135,12 +123,6 @@
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">loan pool</rdfs:label>
 		<skos:definition xml:lang="en">debt pool whose consituents are loans</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-sec-dbt-ab-pbs;PoolBackedDealProspectus">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-iss;Prospectus"/>
-		<rdfs:label xml:lang="en">pool backed deal prospectus</rdfs:label>
-		<skos:definition xml:lang="en">Prospectus describing the terms of the issue and each of the instruments included in the pool backed security issue. Term origin:SMER</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-ab-pbs;PoolBackedSecuritiesOffering">
@@ -163,27 +145,30 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-ab-pbs;PoolBackedSecurity">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-ab-pbs;StructuredFinanceInstrument"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbti;TradableDebtInstrument"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;definesTermsFor"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-ab-pbs;CollateralizedDebt"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;represents"/>
+				<owl:onClass rdf:resource="&fibo-sec-dbt-ab-pbs;Tranche"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-ab-pbs;isTrancheOf"/>
+				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;isBasedOn"/>
 				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-pls;DebtPool"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">pool-backed security</rdfs:label>
-		<skos:definition xml:lang="en">bond or note that derives its cashflow from some underlying pool of debt in which loans or mortgage advanced to borrowers are pooled together for the purposes of creating this type of security</skos:definition>
+		<skos:definition xml:lang="en">debt instrument that derives its cashflow from an underlying pool of mortgage loans or other receivables</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Typically a pool is segmented into various classes, or tranches, each of which provides cash flows to hedge particular risks, or that offset other gains by time to maturity or other factors.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-ab-pbs;SecuritizedDebtPool">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-pls;DebtPool"/>
 		<rdfs:label xml:lang="en">securitized debt pool</rdfs:label>
-		<skos:definition xml:lang="en">pool of individual debt instruments (such as loans or mortgages) that is securitized as part of the issue of some security</skos:definition>
+		<skos:definition xml:lang="en">pool of individual debt instruments (such as loans or mortgages) that that have been securitized through the issue of some security</skos:definition>
+		<skos:editorialNote xml:lang="en">We may not need this, but if we keep it we need to link it to the instruments that depend on it (see property &apos;backs&apos;, below).</skos:editorialNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-ab-pbs;StructuredFinanceInstrument">
@@ -206,18 +191,42 @@
 		<skos:definition xml:lang="en">pool consisting of a collection of structured finance instruments</skos:definition>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-sec-dbt-ab-pbs;Tranche">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-pls;InstrumentPool"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-ab-pbs;isTrancheOf"/>
+				<owl:onClass rdf:resource="&fibo-sec-sec-pls;DebtPool"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">tranche</rdfs:label>
+		<rdfs:seeAlso rdf:resource="https://www.investopedia.com/terms/t/tranches.asp"/>
+		<skos:definition xml:lang="en">segment of a pool of securities, typically debt instruments</skos:definition>
+		<skos:editorialNote xml:lang="en">Need to add some sort of delimiting factor used to create the tranche, either as a text description or as an Aspect that the tranche is characterized by.</skos:editorialNote>
+	</owl:Class>
+	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-ab-pbs;backs">
 		<rdfs:label xml:lang="en">backs</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-dbt-ab-pbs;SecuritizedDebtPool"/>
 		<rdfs:range rdf:resource="&fibo-sec-dbt-ab-pbs;CashStructuredFinanceInstrument"/>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-ab-pbs;hasTranche">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-arr-arr;hasConstituent"/>
+		<rdfs:label xml:lang="en">has tranche</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-sec-sec-pls;InstrumentPool"/>
+		<rdfs:range rdf:resource="&fibo-sec-dbt-ab-pbs;Tranche"/>
 		<owl:inverseOf rdf:resource="&fibo-sec-dbt-ab-pbs;isTrancheOf"/>
+		<skos:definition xml:lang="en">indicates a segment of an asset pool</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-ab-pbs;isTrancheOf">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-arr-arr;isConstituentOf"/>
 		<rdfs:label xml:lang="en">is tranche of</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-ab-pbs;CashStructuredFinanceInstrument"/>
-		<rdfs:range rdf:resource="&fibo-sec-dbt-ab-pbs;SecuritizedDebtPool"/>
-		<skos:definition xml:lang="en">The asset pool which is the underlying of a traditional or cash structured finance instrument. This is a real pool of real assets, as distinct from synthetic pools.</skos:definition>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-ab-pbs;Tranche"/>
+		<rdfs:range rdf:resource="&fibo-sec-sec-pls;InstrumentPool"/>
+		<skos:definition xml:lang="en">specifies the asset pool from which a given segment, or tranche, is derived</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-sec-dbt-ab-pbs;passThrough">
@@ -230,8 +239,8 @@
 	<owl:Class rdf:about="&fibo-sec-sec-pls;DebtPool">
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-ab-pbs;backs"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-ab-pbs;PoolBackedSecurity"/>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-ab-pbs;hasTranche"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-ab-pbs;Tranche"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 	</owl:Class>
