@@ -26,6 +26,7 @@
 	<!ENTITY fibo-sec-dbt-dbti "https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtInstruments/">
 	<!ENTITY fibo-sec-fund-fund "https://spec.edmcouncil.org/fibo/ontology/SEC/Funds/Funds/">
 	<!ENTITY fibo-sec-sec-iss "https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesIssuance/">
+	<!ENTITY fibo-sec-sec-pls "https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/Pools/">
 	<!ENTITY lcc-cr "https://www.omg.org/spec/LCC/Countries/CountryRepresentation/">
 	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
 	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
@@ -61,6 +62,7 @@
 	xmlns:fibo-sec-dbt-dbti="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtInstruments/"
 	xmlns:fibo-sec-fund-fund="https://spec.edmcouncil.org/fibo/ontology/SEC/Funds/Funds/"
 	xmlns:fibo-sec-sec-iss="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesIssuance/"
+	xmlns:fibo-sec-sec-pls="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/Pools/"
 	xmlns:lcc-cr="https://www.omg.org/spec/LCC/Countries/CountryRepresentation/"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -113,6 +115,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/AssetBackedSecurities/PoolBackedSecurities/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtInstruments/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Funds/Funds/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/Pools/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesIssuance/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Countries/CountryRepresentation/"/>
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/AssetBackedSecurities/MortgageBackedSecurities/"/>
@@ -266,7 +269,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-ab-mbs;MBSPool">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-ab-pbs;StructuredFinanceInstrumentPool"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-pls;DebtPool"/>
 		<rdfs:label xml:lang="en">m b s pool</rdfs:label>
 		<skos:definition xml:lang="en">A pool investment consisting of a collection of MBS instruments.</skos:definition>
 	</owl:Class>
@@ -294,6 +297,12 @@
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-ab-pbs;PoolBackedSecurity"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-arr-arr;isConstituentOf"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-ab-mbs;MortgagePool"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isCharacterizedBy"/>
 				<owl:someValuesFrom rdf:resource="&fibo-md-dbtx-aly;MortgageInstrumentWeightedAverageRemainingMaturity"/>
 			</owl:Restriction>
@@ -302,12 +311,6 @@
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isIssuedBy"/>
 				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-ab-mbs;MBSIssuer"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-ab-pbs;isTrancheOf"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-ab-mbs;MortgagePool"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">mortgage-backed security</rdfs:label>
@@ -336,7 +339,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-ab-mbs;MortgagePool">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-ab-pbs;LoanPool"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-pls;DebtPool"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-arr-arr;hasConstituent"/>
