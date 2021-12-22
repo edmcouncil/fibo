@@ -26,6 +26,7 @@
 	<!ENTITY fibo-sec-dbt-dbti "https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtInstruments/">
 	<!ENTITY fibo-sec-fund-fund "https://spec.edmcouncil.org/fibo/ontology/SEC/Funds/Funds/">
 	<!ENTITY fibo-sec-sec-iss "https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesIssuance/">
+	<!ENTITY fibo-sec-sec-pls "https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/Pools/">
 	<!ENTITY lcc-cr "https://www.omg.org/spec/LCC/Countries/CountryRepresentation/">
 	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
 	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
@@ -61,6 +62,7 @@
 	xmlns:fibo-sec-dbt-dbti="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtInstruments/"
 	xmlns:fibo-sec-fund-fund="https://spec.edmcouncil.org/fibo/ontology/SEC/Funds/Funds/"
 	xmlns:fibo-sec-sec-iss="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesIssuance/"
+	xmlns:fibo-sec-sec-pls="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/Pools/"
 	xmlns:lcc-cr="https://www.omg.org/spec/LCC/Countries/CountryRepresentation/"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -113,6 +115,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/AssetBackedSecurities/PoolBackedSecurities/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtInstruments/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Funds/Funds/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/Pools/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesIssuance/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Countries/CountryRepresentation/"/>
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/AssetBackedSecurities/MortgageBackedSecurities/"/>
@@ -266,7 +269,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-ab-mbs;MBSPool">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-ab-pbs;CashStructuredFinanceInstrumentPool"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-pls;DebtPool"/>
 		<rdfs:label xml:lang="en">m b s pool</rdfs:label>
 		<skos:definition xml:lang="en">A pool investment consisting of a collection of MBS instruments.</skos:definition>
 	</owl:Class>
@@ -304,12 +307,6 @@
 				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-ab-mbs;MBSIssuer"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-ab-pbs;isTrancheOf"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-ab-mbs;MortgagePool"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">mortgage-backed security</rdfs:label>
 		<skos:definition xml:lang="en">debt obligations that represent claims to the cash flows from pools of mortgage loans, most commonly on residential property</skos:definition>
 		<fibo-fnd-utl-av:abbreviation xml:lang="en">MBS</fibo-fnd-utl-av:abbreviation>
@@ -330,13 +327,13 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-ab-mbs;MortgageBackedSecurityOfferingProspectus">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-ab-pbs;PoolBackedDealProspectus"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-iss;Prospectus"/>
 		<rdfs:label xml:lang="en">mortgage-backed security offering prospectus</rdfs:label>
 		<skos:definition xml:lang="en">Prospectus describing the terms of the issue and each of the instruments included in the mortgage backed security issue. Term origin:SMER</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-ab-mbs;MortgagePool">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-ab-pbs;LoanPool"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-pls;DebtPool"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-arr-arr;hasConstituent"/>
@@ -700,42 +697,6 @@ Consensus:Review.</skos:editorialNote>
 		<rdfs:range rdf:resource="&fibo-sec-dbt-ab-mbs;MortgageBackedSecurity"/>
 		<owl:inverseOf rdf:resource="&fibo-sec-dbt-ab-mbs;hasNote"/>
 	</owl:ObjectProperty>
-	
-	<owl:DatatypeProperty rdf:about="&fibo-sec-dbt-ab-mbs;passThrough">
-		<rdfs:label xml:lang="en">pass through</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-ab-mbs;MortgageBackedSecurity"/>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-ab-mbs;MortgageBackedSecurityOffering"/>
-		<rdfs:range rdf:resource="&xsd;boolean"/>
-		<skos:definition xml:lang="en">Whether the cash flows from the underlying asset pool are passed through to the investor by way of redemption payments.</skos:definition>
-	</owl:DatatypeProperty>
-	
-	<owl:DatatypeProperty rdf:about="&fibo-sec-dbt-ab-mbs;passThrough.1">
-		<rdfs:label xml:lang="en">pass through</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-ab-mbs;PassThroughMBSDeal"/>
-		<rdfs:range rdf:resource="&xsd;boolean"/>
-		<skos:definition xml:lang="en">Cash flows from the underlying asset pool are passed through to the investor by way of redemption payments.</skos:definition>
-	</owl:DatatypeProperty>
-	
-	<owl:DatatypeProperty rdf:about="&fibo-sec-dbt-ab-mbs;passThrough.2">
-		<rdfs:label xml:lang="en">pass through</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-ab-mbs;PassThroughMBSInstrument"/>
-		<rdfs:range rdf:resource="&xsd;boolean"/>
-		<skos:definition xml:lang="en">The cash flows from the underlying asset pool are passed through to the holder of this instrument by way of redemption payments.</skos:definition>
-	</owl:DatatypeProperty>
-	
-	<owl:DatatypeProperty rdf:about="&fibo-sec-dbt-ab-mbs;passThrough.3">
-		<rdfs:label xml:lang="en">pass through</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-ab-mbs;TranchedMBSDeal"/>
-		<rdfs:range rdf:resource="&xsd;boolean"/>
-		<skos:definition xml:lang="en">Cash flows from the underlying asset pool are not passed through to the investor by way of redemption payments. Instead a tranched structure is used.</skos:definition>
-	</owl:DatatypeProperty>
-	
-	<owl:DatatypeProperty rdf:about="&fibo-sec-dbt-ab-mbs;passThrough.4">
-		<rdfs:label xml:lang="en">pass through</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-ab-mbs;TranchedMBSInstrument"/>
-		<rdfs:range rdf:resource="&xsd;boolean"/>
-		<skos:definition xml:lang="en">The cash flows from the underlying asset pool are not passed directly through to the investor by way of redemption payments but are used to fund cashflows that are defined specifically for the tranche.</skos:definition>
-	</owl:DatatypeProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-sec-dbt-ab-mbs;prime">
 		<rdfs:label xml:lang="en">prime</rdfs:label>
