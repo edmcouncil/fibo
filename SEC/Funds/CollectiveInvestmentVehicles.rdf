@@ -149,7 +149,6 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/Indicators/Indicators/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Equities/EquityInstruments/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Funds/Funds/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/Pools/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesClassification/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesIdentification/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesIssuance/"/>
@@ -160,6 +159,28 @@
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Funds/CollectiveInvestmentVehicles/"/>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Provisional"/>
 	</owl:Ontology>
+	
+	<owl:Class rdf:about="&fibo-be-le-lp;SpecialPurposeVehicle">
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-fund-civ;holds"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-fund-fund;CollectiveInvestmentVehicle"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-fund-civ;isSetUpFor"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-fund-civ;FundsCreation"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-fund-civ;isSetUpFor"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-fund-civ;SPVPurpose"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">A Special Purpose Vehicle (SPV) set up specifically to issue a security or securities. It is set up by a company or a group of companies for some purpose such as to create instruments that are off the company&apos;s balance sheet or to issue Participation Notes for investors in another jurisdiction. The SPV is formed for a specific reason and exists for a specific period of time and is then disbanded. Further notes: Special Purpose Vehicles are also referred to as bankruptcy remote entities, as they isolate financial risk. For Participation Notes: slightly different purpose but the same kind of vehicle. The only investment made by the SPV is that they buy in the stock. These are the same kind of entity in all of the contexts in which they exist.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-fund-civ;AccumulatingShareClass">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-fund-civ;FundShareClassUnit"/>
@@ -1626,7 +1647,7 @@
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-fund-civ;holds">
 		<rdfs:label xml:lang="en">holds</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-fund-fund;SpecialPurposeVehicle"/>
+		<rdfs:domain rdf:resource="&fibo-be-le-lp;SpecialPurposeVehicle"/>
 		<rdfs:range rdf:resource="&fibo-sec-fund-fund;CollectiveInvestmentVehicle"/>
 		<skos:definition xml:lang="en">The Funds Special Purpose Vehicle holds this Fund.</skos:definition>
 	</owl:ObjectProperty>
@@ -1699,7 +1720,7 @@
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-fund-civ;intendedLiquidationDate">
 		<rdfs:label xml:lang="en">intended liquidation date</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-fund-fund;SpecialPurposeVehicle"/>
+		<rdfs:domain rdf:resource="&fibo-be-le-lp;SpecialPurposeVehicle"/>
 		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Date"/>
 		<skos:definition xml:lang="en">The date on which the SPV is scheduled to be disbanded and wound up.</skos:definition>
 	</owl:ObjectProperty>
@@ -1719,7 +1740,7 @@
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-fund-civ;isSetUpFor">
 		<rdfs:label xml:lang="en">is set up for</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-fund-fund;SpecialPurposeVehicle"/>
+		<rdfs:domain rdf:resource="&fibo-be-le-lp;SpecialPurposeVehicle"/>
 		<rdfs:range rdf:resource="&fibo-sec-fund-civ;SPVPurpose"/>
 	</owl:ObjectProperty>
 	
@@ -2397,28 +2418,6 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">If it is a closed fund, you can still trade the units. You trade back with the fund. Not with a counterparty. Therefore this is a tradable contract, though it may not necessarily be a transferable contract.</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-sec-fund-fund;SpecialPurposeVehicle">
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-fund-civ;holds"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-fund-fund;CollectiveInvestmentVehicle"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-fund-civ;isSetUpFor"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-fund-civ;FundsCreation"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-fund-civ;isSetUpFor"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-fund-civ;SPVPurpose"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">A Special Purpose Vehicle (SPV) set up specifically to issue a security or securities. It is set up by a company or a group of companies for some purpose such as to create instruments that are off the company&apos;s balance sheet or to issue Participation Notes for investors in another jurisdiction. The SPV is formed for a specific reason and exists for a specific period of time and is then disbanded. Further notes: Special Purpose Vehicles are also referred to as bankruptcy remote entities, as they isolate financial risk. For Participation Notes: slightly different purpose but the same kind of vehicle. The only investment made by the SPV is that they buy in the stock. These are the same kind of entity in all of the contexts in which they exist.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 
 </rdf:RDF>
