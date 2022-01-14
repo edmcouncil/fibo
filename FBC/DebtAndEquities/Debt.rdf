@@ -153,6 +153,7 @@
 	<owl:Class rdf:about="&fibo-fbc-dae-dbt;Borrower">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;Debtor"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractParty"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-pas;Customer"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;owes"/>
@@ -315,27 +316,6 @@
 				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;hasMaturityDate"/>
 				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;hasDurationToMaturity"/>
-				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;ExplicitDuration"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;hasTimeToMaturity"/>
-				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;ExplicitDuration"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;hasDaysToMaturity"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
-				<owl:onDataRange rdf:resource="&xsd;integer"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -962,13 +942,6 @@
 		<skos:definition>the frequency at which interest is added to the principal of the debt over the course of the agreement</skos:definition>
 	</owl:ObjectProperty>
 	
-	<owl:DatatypeProperty rdf:about="&fibo-fbc-dae-dbt;hasDaysToMaturity">
-		<rdfs:label>has days to maturity</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fbc-dae-dbt;CreditAgreement"/>
-		<rdfs:range rdf:resource="&xsd;integer"/>
-		<skos:definition>indicates the number of calendar days remaining from the present date to the scheduled maturity date of a credit agreement</skos:definition>
-	</owl:DatatypeProperty>
-	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-dae-dbt;hasDebtAmount">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasMonetaryAmount"/>
 		<rdfs:label>has debt amount</rdfs:label>
@@ -985,23 +958,6 @@
 		<rdfs:isDefinedBy rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"/>
 		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
 		<skos:definition>the face value of currency units, coins, or securities</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-fbc-dae-dbt;hasDurationToMaturity">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-agr-ctr;hasTerm"/>
-		<rdfs:label>has duration to maturity</rdfs:label>
-		<rdfs:domain>
-			<owl:Class>
-				<owl:unionOf rdf:parseType="Collection">
-					<rdf:Description rdf:about="&fibo-fbc-pas-fpas;Offering">
-					</rdf:Description>
-					<rdf:Description rdf:about="&fibo-fbc-dae-dbt;CreditAgreement">
-					</rdf:Description>
-				</owl:unionOf>
-			</owl:Class>
-		</rdfs:domain>
-		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;ExplicitDuration"/>
-		<skos:definition>indicates the lifespan of credit agreement or offering, from the date of issuance to the scheduled maturity date</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-dae-dbt;hasFinalInterestPaymentDate">
@@ -1088,6 +1044,24 @@
 		<fibo-fnd-utl-av:explanatoryNote>Maturity dates typically apply to debt instruments, such as notes, drafts, bonds, and other loans, but may also apply to preferred shares and other financial instruments.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:ObjectProperty>
 	
+	<owl:ObjectProperty rdf:about="&fibo-fbc-dae-dbt;hasOriginalTimeToMaturity">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDuration"/>
+		<rdfs:label>has time to maturity</rdfs:label>
+		<rdfs:domain>
+			<owl:Class>
+				<owl:unionOf rdf:parseType="Collection">
+					<rdf:Description rdf:about="&fibo-fbc-pas-fpas;Offering">
+					</rdf:Description>
+					<rdf:Description rdf:about="&fibo-fbc-dae-dbt;CreditAgreement">
+					</rdf:Description>
+				</owl:unionOf>
+			</owl:Class>
+		</rdfs:domain>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;ExplicitDuration"/>
+		<skos:definition>indicates the lifespan of credit agreement or offering, from the date of issuance to the scheduled maturity date</skos:definition>
+		<fibo-fnd-utl-av:synonym>has term to maturity</fibo-fnd-utl-av:synonym>
+	</owl:ObjectProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-dae-dbt;hasOutstandingAmount">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasMonetaryAmount"/>
 		<rdfs:label>has outstanding amount</rdfs:label>
@@ -1127,24 +1101,6 @@
 		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Date"/>
 		<skos:definition>relates an instrument to the date by which the principal must be repaid in full</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote>Depending on the terms of the instrument (debt security, such as a bond, loan, etc.), this may be the date of a single payment of the debt principal or of the completion of scheduled partial redemption payments.</fibo-fnd-utl-av:explanatoryNote>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-fbc-dae-dbt;hasTimeToMaturity">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDuration"/>
-		<rdfs:label>has time to maturity</rdfs:label>
-		<rdfs:domain>
-			<owl:Class>
-				<owl:unionOf rdf:parseType="Collection">
-					<rdf:Description rdf:about="&fibo-fbc-pas-fpas;Offering">
-					</rdf:Description>
-					<rdf:Description rdf:about="&fibo-fbc-dae-dbt;CreditAgreement">
-					</rdf:Description>
-				</owl:unionOf>
-			</owl:Class>
-		</rdfs:domain>
-		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;ExplicitDuration"/>
-		<skos:definition>indicates the interval during which the owner will receive interest, from the start of interest payments to the scheduled maturity date of an instrument or offering</skos:definition>
-		<fibo-fnd-utl-av:synonym>has term to maturity</fibo-fnd-utl-av:synonym>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-dae-dbt;isAmortizationOf">
