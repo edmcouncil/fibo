@@ -9,7 +9,9 @@ FIBO is a trademark of EDM Council, Inc. It is also standardized by the [Object 
 
 # Introduction
 
-FIBO defines the sets of things that are of interest in financial business applications and the ways that those things can relate to one another. In this way, FIBO can give meaning to any data (e.g., spreadsheets, relational databases, XML documents) that describe the business of finance. 
+The Financial Industry Business Ontology (FIBO) is a formal ontology that provides a common vocabulary for financial contracts and related concepts.  FIBO evolved out of concerns that arose during the 2008 financial crisis among individuals who worked together in data governance and management to address requirements for standardized terminology for regulatory reporting and other analyses.  The resulting ontology has continued to grow and evolve since its initial publication in 2014, with increasing support for use cases related to securities master data management, reporting, and risk analysis and management. 
+
+FIBO is hosted and sponsored by the Enterprise Data Management Council (EDMC) and is standardized by the Object Management Group (OMG) under a shared marketing and trademark agreement.  It is published in a number of human and machine-readable formats for use in business and operational settings, ranging from online glossaries to rich knowledge graph applications. Revisions are made on a continuous basis by several teams addressing specific domain areas (e.g., securities, derivatives, indices, and so forth), available in GitHub, with formal updates published quarterly.
 
 FIBO is developed as an ontology in the Web Ontology Language (OWL). The language is codified by the World Wide Web Consortium (W3C), and it is based on Description Logic. The use of logic ensures that each FIBO concept is framed in a way that is unambiguous and that is readable both by humans and machines.
 
