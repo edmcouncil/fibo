@@ -60,8 +60,8 @@
 		<dct:abstract>This ontology defines concepts relating to executives and their formal capacities. The concepts defined in this ontology cover types of corporate officers, board members and the like, along with the capacities in terms of which those party roles are defined, and the kinds of entity (principally natural persons) that are able to perform in those roles.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
 		<sm:contentLanguage rdf:datatype="&xsd;anyURI">https://www.w3.org/TR/owl2-quick-reference/</sm:contentLanguage>
-		<sm:copyright>Copyright (c) 2013-2021 EDM Council, Inc.</sm:copyright>
-		<sm:copyright>Copyright (c) 2013-2021 Object Management Group, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2013-2022 EDM Council, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2013-2022 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/BE/Corporations/Corporations/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/CorporateBodies/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/</sm:dependsOn>
@@ -89,7 +89,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/20211201/OwnershipAndControl/Executives/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/20220101/OwnershipAndControl/Executives/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20131101/OwnershipAndControl/Executives.rdf version of this ontology was modified per the issue resolutions identified in the FIBO BE 1.0 FTF report.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20160801/OwnershipAndControl/Executives.rdf version of this ontology was modified per the FIBO 2.0 RFC to fix reasoning issues.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20180801/OwnershipAndControl/Executives.rdf version of this ontology was modified to clarify the definition of responsible party.</skos:changeNote>
@@ -101,6 +101,7 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20201201/OwnershipAndControl/Executives.rdf version of this ontology was modified to eliminate references to external dictionary sites that no longer resolve, add the concept of corporate bylaws and restriction on authorized shares (moved from SEC).</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20210301/OwnershipAndControl/Executives.rdf version of the ontology was modified to reflect the move of OrganizationMember from Parties to Organizations in FND and to incorporate the latest insights into how control relations should integrate with the control situation.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20210401/OwnershipAndControl/Executives.rdf version of the ontology was modified to fix spelling errors.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20211201/OwnershipAndControl/Executives.rdf version of the ontology was modified to refine the definition of corporate officer.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -377,7 +378,16 @@
 				<owl:someValuesFrom>
 					<owl:Restriction>
 						<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;manages"/>
-						<owl:someValuesFrom rdf:resource="&fibo-fnd-org-fm;FormalOrganization"/>
+						<owl:someValuesFrom>
+							<owl:Class>
+								<owl:unionOf rdf:parseType="Collection">
+									<rdf:Description rdf:about="&fibo-be-le-lp;LegalEntity">
+									</rdf:Description>
+									<rdf:Description rdf:about="&fibo-fnd-org-fm;FormalOrganization">
+									</rdf:Description>
+								</owl:unionOf>
+							</owl:Class>
+						</owl:someValuesFrom>
 					</owl:Restriction>
 				</owl:someValuesFrom>
 			</owl:Restriction>
@@ -390,7 +400,6 @@
 	
 	<owl:Class rdf:about="&fibo-be-oac-exec;ChiefFinancialOfficer">
 		<rdfs:subClassOf rdf:resource="&fibo-be-oac-exec;CorporateOfficer"/>
-		<rdfs:subClassOf rdf:resource="&fibo-be-oac-exec;Signatory"/>
 		<rdfs:label>chief financial officer</rdfs:label>
 		<skos:definition>senior-most corporate officer responsible for financial control and planning for an organization or project</skos:definition>
 		<fibo-fnd-utl-av:abbreviation>CFO</fibo-fnd-utl-av:abbreviation>
@@ -427,10 +436,13 @@
 	
 	<owl:Class rdf:about="&fibo-be-oac-exec;CorporateOfficer">
 		<rdfs:subClassOf rdf:resource="&fibo-be-oac-exec;Executive"/>
+		<rdfs:subClassOf rdf:resource="&fibo-be-oac-exec;Signatory"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-org-org;OrganizationMember"/>
 		<rdfs:label>corporate officer</rdfs:label>
-		<skos:definition>high-level management executive of a corporation or other organization, hired by the board of directors or the business owner(s), charged with certain operational responsibilities</skos:definition>
+		<skos:definition>high-level management executive of a corporation or other organization, hired by the board of directors or the business owner(s), charged with certain operational responsibilities, and who has the authority to act on behalf of the organization, including the authority to enter into contracts on behalf of the organization</skos:definition>
 		<skos:example>Corporate officers may include a Chief Executive Officer (CEO), Chief Financial Officer (CFO), president, vice president(s), and in some cases a Chief Operating Officer (COO), Chief Compliance Officer (CCO), or other executive responsible for a critical function in the organization.</skos:example>
+		<fibo-fnd-utl-av:explanatoryNote>In banking, corporate officers have the legal capacity to execute some documents and make certain decisions on behalf of the institution due to the nature of the business. The level of authority varies depending on the role the officer plays, however, and based on bank policy. In large institutions, corporate officers may include loan/lending officers, those in certain supervisory roles, and others with varying degrees of authority, and frequently they are given a &apos;vice president&apos; title, particularly if they are customer facing. Hiring and other decisions related to such corporate officers may be delegated to more operational levels, rather than by the board directly, with respect to such personnel.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:explanatoryNote>Note that in most cases in the United States, corporate officers, especially those with signatory capacity and other fiduciary responsibilities must be employees, especially with respect to financial institutions and other highly regulated domains. There are cases, however, when an independent contractor or professional services provider may play the role of a corporate officer, such as a &apos;CFO for hire&apos;, which is a common practice in start-up organizations.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-oac-exec;Executive">
@@ -448,9 +460,9 @@
 	
 	<owl:Class rdf:about="&fibo-be-oac-exec;ExecutiveBoardMember">
 		<rdfs:subClassOf rdf:resource="&fibo-be-oac-exec;BoardMember"/>
-		<rdfs:subClassOf rdf:resource="&fibo-be-oac-exec;Executive"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-org-fm;Employee"/>
 		<rdfs:label>executive board member</rdfs:label>
-		<skos:definition>member of a board of directors that is also a corporate officer of the organization</skos:definition>
+		<skos:definition>member of a board of directors that is also an employee of the organization</skos:definition>
 		<fibo-fnd-utl-av:synonym>inside director</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
@@ -469,6 +481,7 @@
 	<owl:Class rdf:about="&fibo-be-oac-exec;NonExecutiveBoardMember">
 		<rdfs:subClassOf rdf:resource="&fibo-be-oac-exec;BoardMember"/>
 		<rdfs:label>non-executive board member</rdfs:label>
+		<owl:disjointWith rdf:resource="&fibo-be-oac-exec;ExecutiveBoardMember"/>
 		<skos:definition>member of the board of directors of an organization that has no executive responsibilities towards the running of that organization</skos:definition>
 		<fibo-fnd-utl-av:synonym>outside director</fibo-fnd-utl-av:synonym>
 	</owl:Class>
