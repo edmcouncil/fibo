@@ -139,7 +139,7 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20201201/Equities/EquityInstruments.rdf version of this ontology was revised to add concepts covering additional features of preferred shares, move the two exhaustive CFI-specific classes to the Equity CFI individuals ontology, rename EquityIssuer to ShareIssuer to be clearer about the intent, and add the concept of a price per share.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20210301/Equities/EquityInstruments.rdf version of this ontology was revised to rename ownership related properties for consistent alignment with the ownership situational pattern and to move properties / restrictions that define how many shares have been issued from the issuer to the share.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20210601/Equities/EquityInstruments.rdf version of this ontology was revised to revise the definition of dividend to explicitly state that it reflects the announced commitment of a specific dividend rather than a more general policy.</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20210701/Equities/EquityInstruments.rdf version of this ontology was revised to reflect the move of hasMaturityDate from FinancialInstruments to Debt in FBC.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20210701/Equities/EquityInstruments.rdf version of this ontology was revised to reflect the move of hasMaturityDate from FinancialInstruments to Debt in FBC and eliminate named individuals for specifying voting rights, which caused issues for some tools.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -282,8 +282,12 @@
 	</owl:Class>
 	
 	<owl:NamedIndividual rdf:about="&fibo-sec-eq-eq;EnhancedVotingRight">
-		<rdf:type rdf:resource="&fibo-sec-eq-eq;VotingRight"/>
-		<rdf:type>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+	</owl:NamedIndividual>
+	
+	<owl:Class rdf:about="&fibo-sec-eq-eq;EnhancedVotingShare">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;Share"/>
+		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-eq-eq;confersNumberOfVotesPerShare"/>
 				<owl:someValuesFrom>
@@ -296,18 +300,6 @@
 						</owl:withRestrictions>
 					</rdfs:Datatype>
 				</owl:someValuesFrom>
-			</owl:Restriction>
-		</rdf:type>
-		<rdfs:label>enhanced voting right</rdfs:label>
-		<skos:definition>right to more than one vote per share</skos:definition>
-	</owl:NamedIndividual>
-	
-	<owl:Class rdf:about="&fibo-sec-eq-eq;EnhancedVotingShare">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;Share"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;confers"/>
-				<owl:hasValue rdf:resource="&fibo-sec-eq-eq;EnhancedVotingRight"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">enhanced voting share</rdfs:label>
@@ -561,18 +553,15 @@
 	</owl:Class>
 	
 	<owl:NamedIndividual rdf:about="&fibo-sec-eq-eq;NonVotingRight">
-		<rdf:type rdf:resource="&fibo-sec-eq-eq;VotingRight"/>
-		<rdfs:label>non-voting right</rdfs:label>
-		<skos:definition>right to zero votes</skos:definition>
-		<fibo-sec-eq-eq:confersNumberOfVotesPerShare rdf:datatype="&xsd;decimal">0</fibo-sec-eq-eq:confersNumberOfVotesPerShare>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
 	</owl:NamedIndividual>
 	
 	<owl:Class rdf:about="&fibo-sec-eq-eq;NonVotingShare">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;Share"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;confers"/>
-				<owl:hasValue rdf:resource="&fibo-sec-eq-eq;NonVotingRight"/>
+				<owl:onProperty rdf:resource="&fibo-sec-eq-eq;confersNumberOfVotesPerShare"/>
+				<owl:hasValue rdf:datatype="&xsd;decimal">0</owl:hasValue>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">non-voting share</rdfs:label>
@@ -829,8 +818,12 @@
 	</owl:Class>
 	
 	<owl:NamedIndividual rdf:about="&fibo-sec-eq-eq;RestrictedVotingRight">
-		<rdf:type rdf:resource="&fibo-sec-eq-eq;VotingRight"/>
-		<rdf:type>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+	</owl:NamedIndividual>
+	
+	<owl:Class rdf:about="&fibo-sec-eq-eq;RestrictedVotingShare">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;Share"/>
+		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-eq-eq;confersNumberOfVotesPerShare"/>
 				<owl:someValuesFrom>
@@ -843,18 +836,6 @@
 						</owl:withRestrictions>
 					</rdfs:Datatype>
 				</owl:someValuesFrom>
-			</owl:Restriction>
-		</rdf:type>
-		<rdfs:label>restricted voting right</rdfs:label>
-		<skos:definition>right to less than one vote per share</skos:definition>
-	</owl:NamedIndividual>
-	
-	<owl:Class rdf:about="&fibo-sec-eq-eq;RestrictedVotingShare">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;Share"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;confers"/>
-				<owl:hasValue rdf:resource="&fibo-sec-eq-eq;RestrictedVotingRight"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">restricted voting share</rdfs:label>
@@ -951,14 +932,21 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-eq-eq;hasVotingRestriction"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+				<owl:onDataRange rdf:resource="&xsd;string"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-be-corp-corp;hasSharesAuthorized"/>
 				<owl:someValuesFrom rdf:resource="&xsd;nonNegativeInteger"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;confers"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-eq-eq;VotingRight"/>
+				<owl:onProperty rdf:resource="&fibo-sec-eq-eq;confersNumberOfVotesPerShare"/>
+				<owl:someValuesFrom rdf:resource="&xsd;decimal"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -1027,18 +1015,15 @@
 	</owl:Class>
 	
 	<owl:NamedIndividual rdf:about="&fibo-sec-eq-eq;SingleVotingRight">
-		<rdf:type rdf:resource="&fibo-sec-eq-eq;VotingRight"/>
-		<rdfs:label>single voting right</rdfs:label>
-		<skos:definition>right to exactly one vote per share</skos:definition>
-		<fibo-sec-eq-eq:confersNumberOfVotesPerShare rdf:datatype="&xsd;decimal">1</fibo-sec-eq-eq:confersNumberOfVotesPerShare>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
 	</owl:NamedIndividual>
 	
 	<owl:Class rdf:about="&fibo-sec-eq-eq;SingleVotingShare">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;Share"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;confers"/>
-				<owl:hasValue rdf:resource="&fibo-sec-eq-eq;SingleVotingRight"/>
+				<owl:onProperty rdf:resource="&fibo-sec-eq-eq;confersNumberOfVotesPerShare"/>
+				<owl:hasValue rdf:datatype="&xsd;decimal">1</owl:hasValue>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">single voting share</rdfs:label>
@@ -1069,20 +1054,6 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-law-lcap;ContractualRight"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-eq-eq;hasVotingRestriction"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
-				<owl:onDataRange rdf:resource="&xsd;string"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-eq-eq;confersNumberOfVotesPerShare"/>
-				<owl:onDataRange rdf:resource="&xsd;decimal"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isConferredBy"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fnd-agr-ctr;WrittenContract"/>
 			</owl:Restriction>
@@ -1095,10 +1066,9 @@
 	<owl:DatatypeProperty rdf:about="&fibo-sec-eq-eq;confersNumberOfVotesPerShare">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasAmount"/>
 		<rdfs:label xml:lang="en">number of votes per share</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-eq-eq;VotingRight"/>
 		<rdfs:range rdf:resource="&xsd;decimal"/>
 		<skos:definition xml:lang="en">grants the right to vote on a per share basis to the shareholder</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Voting rights may be set at zero, one, or more votes per share, depending on the contract.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">A given share may have zero, fractional, one, or more votes per share, depending on the contract.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:DatatypeProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-eq-eq;confersOwnershipOf">
@@ -1276,7 +1246,7 @@
 	
 	<owl:DatatypeProperty rdf:about="&fibo-sec-eq-eq;hasVotingRestriction">
 		<rdfs:label xml:lang="en">has voting restriction</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-eq-eq;VotingRight"/>
+		<rdfs:domain rdf:resource="&fibo-sec-eq-eq;Share"/>
 		<rdfs:range rdf:resource="&xsd;string"/>
 		<skos:definition>specifies restrictions on voting rights, if any</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote>Such restrictions may apply regardless of the number of votes per share.</fibo-fnd-utl-av:explanatoryNote>
