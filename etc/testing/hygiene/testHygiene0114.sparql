@@ -9,10 +9,10 @@ prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
 
 SELECT ?error
 WHERE {
-  ?s ?p ?o .
+  ?subject ?p ?o .
   FILTER NOT EXISTS {?o owl:deprecated "true"^^xsd:boolean} .
   FILTER (DATATYPE(?o)=xsd:string)
-  FILTER (REGEX (xsd:string (?s), "edmcouncil")) 
+  FILTER regex(str(?subject), "edmcouncil") 
   BIND (afn:localname (?p) AS ?prop)
   BIND ("[ÁáÇçÉéÍíÕõÖöäÄèÈμΜσΣʻa-zA-Z\\\\;'?@$%#&:/\"<*>,._+÷=)(\\[\\]{}0-9\n\t -]" AS ?reg)
   BIND (REPLACE (xsd:string (?o), ?reg, "")  AS ?bads)

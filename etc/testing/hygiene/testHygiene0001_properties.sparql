@@ -13,14 +13,11 @@ prefix lcc-cr: <https://www.omg.org/spec/LCC/Countries/CountryRepresentation/>
 
 SELECT DISTINCT ?error
 WHERE {
-  ?s ?p ?o .
-  FILTER NOT EXISTS {?p owl:deprecated "true"^^xsd:boolean} .
-  FILTER (REGEX (xsd:string (?p), "edmcouncil"))
-  FILTER NOT EXISTS {?p a []}
-  FILTER (! (?p IN (owl:versionIRI, sm:dependsOn , owl:imports , sm:specificationVersionURL,
+  ?s ?property ?o .
+  FILTER NOT EXISTS {?property owl:deprecated "true"^^xsd:boolean} .
+  FILTER regex(str(?property), "edmcouncil")
+  FILTER NOT EXISTS {?property a []}
+  FILTER (! (?property IN (owl:versionIRI, sm:dependsOn , owl:imports , sm:specificationVersionURL,
                     rdfs:seeAlso, dct:isPartOf, lcc-cr:isPartOf, lcc-cr:hasPart, dct:hasPart))) 
-  BIND (
-    concat ("ERROR: Property ", xsd:string (?p), " is used but has no type.")
-	  AS ?error
-	)
+  BIND (concat ("ERROR: Property ", xsd:string (?property), " is used but has no type.") AS ?error)
 }

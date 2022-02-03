@@ -11,13 +11,15 @@ prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
 SELECT DISTINCT ?error
 WHERE {
 
-  ?p1 rdfs:domain ?D1 .
-  ?p1 rdfs:subPropertyOf ?p2 .
-  ?p2 rdfs:domain ?D2 .
-  ?D2 rdfs:subClassOf + ?D1 .
-  FILTER NOT EXISTS {?p1 owl:deprecated "true"^^xsd:boolean} .
-  FILTER NOT EXISTS {?p2 owl:deprecated "true"^^xsd:boolean} .
+  ?property1 rdfs:domain ?D1 .
+  ?property1 rdfs:subPropertyOf ?property2 .
+  ?property2 rdfs:domain ?D2 .
+  ?D2 rdfs:subClassOf+ ?D1 .
+  FILTER NOT EXISTS {?property1 owl:deprecated "true"^^xsd:boolean} .
+  FILTER NOT EXISTS {?property2 owl:deprecated "true"^^xsd:boolean} .
+  FILTER regex(str(?property1), "edmcouncil")
+  FILTER regex(str(?property2), "edmcouncil")
   BIND (
-    concat ("PRODERROR: Crossed domains. ", afn:localname(?p1), " < ", afn:localname (?p2), " but the domain ", afn:localname (?D1), " is a superclass of ", afn:localname (?D2)) AS ?error
+    concat ("PRODERROR: Crossed domains. ", afn:localname(?property1), " < ", afn:localname (?property2), " but the domain ", afn:localname (?D1), " is a superclass of ", afn:localname (?D2)) AS ?error
   )
 }
