@@ -9,15 +9,16 @@ prefix xsd:   <http://www.w3.org/2001/XMLSchema#>
 
 SELECT DISTINCT ?error ?definition ?label
 WHERE {
-  ?s rdfs:label ?label .
-  FILTER NOT EXISTS {?s owl:deprecated "true"^^xsd:boolean} .
-  ?s skos:definition ?definition .
-  FILTER NOT EXISTS {?s a owl:NamedIndividual} .
+  ?subject rdfs:label ?label .
+  FILTER NOT EXISTS {?subject owl:deprecated "true"^^xsd:boolean} .
+  ?subject skos:definition ?definition .
+  FILTER NOT EXISTS {?subject a owl:NamedIndividual} .
   FILTER (REGEX(?definition, "\\W"+?label+"\\W"))
-  FILTER (CONTAINS(str(?s), "edmcouncil"))
+  FILTER regex(str(?subject), "edmcouncil")
+
 
   BIND (
-    concat ("PRODERROR: Definition of ", str(?s), " is immediately circular ")
+    concat ("PRODERROR: Definition of ", str(?subject), " is immediately circular ")
       AS ?error
     )
 }

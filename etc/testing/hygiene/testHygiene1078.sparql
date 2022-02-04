@@ -4,23 +4,23 @@ prefix xsd:   <http://www.w3.org/2001/XMLSchema#>
 ##
 # banner Object properties shouldn't have more than one inverse.
 
-SELECT ?error ?p1 ?p2 
+SELECT ?error ?property1 ?property2 
 WHERE
 {
 {
-?p owl:inverseOf ?p1. 
-?p owl:inverseOf ?p2. 
-FILTER (?p1 != ?p2) 
+?property owl:inverseOf ?property1. 
+?property owl:inverseOf ?property2. 
+FILTER (?property1 != ?property2) 
 } 
 UNION
 {
-?p1 owl:inverseOf ?p. 
-?p2 owl:inverseOf ?p. 
-FILTER (?p1 != ?p2) 
+?property1 owl:inverseOf ?property. 
+?property2 owl:inverseOf ?property. 
+FILTER (?property1 != ?property2) 
 }
-FILTER NOT EXISTS {?p owl:deprecated "true"^^xsd:boolean} .
-FILTER (CONTAINS(str(?p), "edmcouncil"))
-FILTER (CONTAINS(str(?p1), "edmcouncil"))
-FILTER (CONTAINS(str(?p2), "edmcouncil"))
-BIND (concat ("PRODERROR: object property whose iri is ", str(?p), " has more than one inverse object property") AS ?error)
+FILTER NOT EXISTS {?property owl:deprecated "true"^^xsd:boolean} .
+FILTER regex(str(?property), "edmcouncil")
+FILTER regex(str(?property1), "edmcouncil")
+FILTER regex(str(?property2), "edmcouncil")
+BIND (concat ("PRODERROR: object property whose iri is ", str(?property), " has more than one inverse object property") AS ?error)
 } 

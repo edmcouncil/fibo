@@ -13,15 +13,15 @@ prefix lcc-cr: <https://www.omg.org/spec/LCC/Countries/CountryRepresentation/>
 
 SELECT DISTINCT ?error
 WHERE {
-  ?s ?p ?o .
-  FILTER NOT EXISTS {?o owl:deprecated "true"^^xsd:boolean} .
-  FILTER (ISIRI (?o))
-  FILTER (REGEX (xsd:string (?o), "edmcouncil"))
-  FILTER NOT EXISTS {?o a []}
-  FILTER (! (?p IN (owl:versionIRI, sm:dependsOn , owl:imports , sm:specificationVersionURL,
+  ?s ?property ?object .
+  FILTER NOT EXISTS {?object owl:deprecated "true"^^xsd:boolean} .
+  FILTER (ISIRI (?object))
+  FILTER regex(str(?object), "edmcouncil")
+  FILTER NOT EXISTS {?object a []}
+  FILTER (! (?property IN (owl:versionIRI, sm:dependsOn , owl:imports , sm:specificationVersionURL,
                     rdfs:seeAlso, dct:isPartOf, lcc-cr:isPartOf, lcc-cr:hasPart, dct:hasPart))) 
   BIND (
-    concat ("ERROR:", xsd:string (?o), " is referenced by ", afn:localname (?p), " but has no type.")
+    concat ("ERROR:", xsd:string (?object), " is referenced by ", afn:localname (?property), " but has no type.")
 	  AS ?error
 	)
 }

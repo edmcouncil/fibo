@@ -12,17 +12,17 @@ prefix fibo-fnd-utl-av:  <https://spec.edmcouncil.org/fibo/ontology/FND/Utilitie
 
 SELECT DISTINCT ?error
 WHERE {
-  ?e a ?c .
-  FILTER NOT EXISTS {?e owl:deprecated "true"^^xsd:boolean} .
-  FILTER (REGEX (xsd:string (?e), "edmcouncil"))
-  FILTER NOT EXISTS {?e owl:deprecated "true"^^xsd:boolean} .
+  ?subject a ?c .
+  FILTER NOT EXISTS {?subject owl:deprecated "true"^^xsd:boolean} .
+  FILTER regex(str(?subject), "edmcouncil")
+  FILTER NOT EXISTS {?subject owl:deprecated "true"^^xsd:boolean} .
   FILTER (?c in (owl:Class,
           owl:ObjectProperty,
           owl:AnnotationProperty,
           owl:DatatypeProperty))
   FILTER NOT EXISTS {
-    ?e rdfs:label | fibo-fnd-utl-av:abbreviation ?l  ;
+    ?subject rdfs:label | fibo-fnd-utl-av:abbreviation ?l  ;
           skos:definition ?def .
   }
-  BIND (concat ("PRODERROR: ", xsd:string(?e), " has to have label and definition.") AS ?error)
+  BIND (concat ("PRODERROR: ", xsd:string(?subject), " has to have label and definition.") AS ?error)
 }

@@ -12,7 +12,7 @@ WHERE {
   {{?restriction owl:minQualifiedCardinality ?cardinality} UNION {?restriction owl:minCardinality ?cardinality}}.
   ?class rdfs:subClassOf ?restriction .
   FILTER NOT EXISTS {?class owl:deprecated "true"^^xsd:boolean} .
-  FILTER (CONTAINS(str(?class), "edmcouncil"))
+  FILTER regex(str(?class), "edmcouncil")
   FILTER (?cardinality = 1)
   BIND (concat ("ERROR: OWL class", str(?class), " is a subclass of a restriction of type owl:minCardinality or owl:minQualifiedCardinality equal to 1") AS ?error)
 }

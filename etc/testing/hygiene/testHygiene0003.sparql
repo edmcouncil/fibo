@@ -10,11 +10,13 @@ prefix afn: <http://jena.apache.org/ARQ/function#>
 
 SELECT DISTINCT ?error
 WHERE {
-  ?p1 rdfs:range ?D1 . 
-  ?p1 rdfs:subPropertyOf ?p2 .
-  ?p2 rdfs:range ?D2 .
+  ?property1 rdfs:range ?D1 . 
+  ?property1 rdfs:subPropertyOf ?property2 .
+  ?property2 rdfs:range ?D2 .
   ?D2 rdfs:subClassOf+ ?D1 .
-  FILTER NOT EXISTS {?p1 owl:deprecated "true"^^xsd:boolean} .
-  FILTER NOT EXISTS {?p2 owl:deprecated "true"^^xsd:boolean} .
-   BIND (concat ("PRODERROR: Crossed ranges. ", afn:localname(?p1), " < ", afn:localname (?p2), " but the range ", afn:localname (?D1), " is a superclass of ", afn:localname (?D2)) AS ?error)
+  FILTER NOT EXISTS {?property1 owl:deprecated "true"^^xsd:boolean} .
+  FILTER NOT EXISTS {?property2 owl:deprecated "true"^^xsd:boolean} .
+  FILTER regex(str(?property1), "edmcouncil")
+  FILTER regex(str(?property2), "edmcouncil")
+   BIND (concat ("PRODERROR: Crossed ranges. ", afn:localname(?property1), " < ", afn:localname (?property2), " but the range ", afn:localname (?D1), " is a superclass of ", afn:localname (?D2)) AS ?error)
 }
