@@ -1,0 +1,28 @@
+prefix owl:   <http://www.w3.org/2002/07/owl#> 
+prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+prefix xsd:   <http://www.w3.org/2001/XMLSchema#> 
+prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> 
+prefix skos: <http://www.w3.org/2004/02/skos/core#>
+prefix dct: <http://purl.org/dc/terms/>
+prefix owl:   <http://www.w3.org/2002/07/owl#>
+prefix fibo-fnd-utl-av:  <https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/>
+
+##
+# banner Every Class and Property defined in FIBO must have a rdfs:label and skos:definition
+
+SELECT DISTINCT ?error
+WHERE {
+  ?subject a ?c .
+  FILTER NOT EXISTS {?subject owl:deprecated "true"^^xsd:boolean} .
+  FILTER regex(str(?subject), <HYGIENE_TESTS_FILTER_PARAMETER>)
+  FILTER NOT EXISTS {?subject owl:deprecated "true"^^xsd:boolean} .
+  FILTER (?c in (owl:Class,
+          owl:ObjectProperty,
+          owl:AnnotationProperty,
+          owl:DatatypeProperty))
+  FILTER NOT EXISTS {
+    ?subject rdfs:label | fibo-fnd-utl-av:abbreviation ?l  ;
+          skos:definition ?def .
+  }
+  BIND (concat ("PRODERROR: ", xsd:string(?subject), " has to have label and definition.") AS ?error)
+}

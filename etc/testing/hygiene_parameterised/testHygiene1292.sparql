@@ -1,0 +1,19 @@
+prefix owl:   <http://www.w3.org/2002/07/owl#>
+prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+prefix xsd:   <http://www.w3.org/2001/XMLSchema#>
+
+##
+# banner Classes should not refer to multiple concepts.
+
+SELECT DISTINCT ?error ?resource
+WHERE
+{
+    ?resource ?property owl:Class .
+    FILTER NOT EXISTS {?resource owl:deprecated "true"^^xsd:boolean} .
+    FILTER regex(str(?resource), <HYGIENE_TESTS_FILTER_PARAMETER>)
+    FILTER (REGEX(str(?resource), "/[^/]+(And|Or)[A-Z0-9][^/]+$") )
+    FILTER (!CONTAINS(str(?resource), "InvestmentOrDepositAccount"))
+    FILTER (!CONTAINS(str(?resource), "LoanOrCreditAccount"))  
+    BIND (concat ("PRODERROR: Resource ", str(?resource), " may refer to multiple concepts.") AS ?error)
+}

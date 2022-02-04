@@ -1,0 +1,26 @@
+prefix owl:   <http://www.w3.org/2002/07/owl#> 
+prefix xsd:   <http://www.w3.org/2001/XMLSchema#>
+
+##
+# banner Object properties shouldn't have more than one inverse.
+
+SELECT ?error ?property1 ?property2 
+WHERE
+{
+{
+?property owl:inverseOf ?property1. 
+?property owl:inverseOf ?property2. 
+FILTER (?property1 != ?property2) 
+} 
+UNION
+{
+?property1 owl:inverseOf ?property. 
+?property2 owl:inverseOf ?property. 
+FILTER (?property1 != ?property2) 
+}
+FILTER NOT EXISTS {?property owl:deprecated "true"^^xsd:boolean} .
+FILTER regex(str(?property), <HYGIENE_TESTS_FILTER_PARAMETER>)
+FILTER regex(str(?property1), <HYGIENE_TESTS_FILTER_PARAMETER>)
+FILTER regex(str(?property2), <HYGIENE_TESTS_FILTER_PARAMETER>)
+BIND (concat ("PRODERROR: object property whose iri is ", str(?property), " has more than one inverse object property") AS ?error)
+} 

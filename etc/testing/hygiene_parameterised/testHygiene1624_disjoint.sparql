@@ -1,0 +1,23 @@
+prefix owl:   <http://www.w3.org/2002/07/owl#> 
+prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+
+##
+# banner We should avoid punning object and datatype properties
+
+SELECT DISTINCT ?error ?property1 ?property2
+WHERE
+{
+    ?property1 owl:propertyDisjointWith ?property2.
+    FILTER (regex(str(?property1), <HYGIENE_TESTS_FILTER_PARAMETER>) || regex(str(?property2), <HYGIENE_TESTS_FILTER_PARAMETER>))
+    {
+        ?property1 rdfs:subPropertyOf*/rdf:type owl:DatatypeProperty.
+        ?property2 rdfs:subPropertyOf*/rdf:type owl:ObjectProperty.
+    }
+    UNION
+    {
+        ?property2 rdfs:subPropertyOf*/rdf:type owl:DatatypeProperty.
+        ?property1 rdfs:subPropertyOf*/rdf:type owl:ObjectProperty.
+    }
+    BIND (concat ("ERROR: Disjoint property axiom for ", str(?property1), str(?property2), " mixes up object and datatype properties.") AS ?error)
+}

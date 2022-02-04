@@ -1,0 +1,25 @@
+prefix owl:   <http://www.w3.org/2002/07/owl#>
+prefix xsd:   <http://www.w3.org/2001/XMLSchema#>
+prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> 
+
+##
+# banner Deprecated resources should not be used.
+
+SELECT DISTINCT ?warning ?resource
+WHERE
+{
+    ?resource owl:deprecated "true"^^xsd:boolean .
+    FILTER NOT EXISTS {?resource rdf:type/rdf:type/(rdfs:subClassOf*) owl:Class.}
+    FILTER regex(str(?resource), <HYGIENE_TESTS_FILTER_PARAMETER>)
+    {
+        ?resource ?property1 ?object.
+        FILTER (?property1 != owl:equivalentClass && ?property1 != owl:deprecated && ?property1 != rdf:type && ?property1 != owl:equivalentProperty)
+    }
+    UNION
+    {
+        ?subject ?property2 ?resource .
+        FILTER (?property2 != owl:equivalentClass && ?property2 != owl:deprecated && ?property2 != rdf:type && ?property2 != owl:equivalentProperty)
+    }
+    BIND ("WARN: Deprecated resource " + str(?resource) + " is still in use." as ?warning)
+}

@@ -1,0 +1,17 @@
+prefix owl:   <http://www.w3.org/2002/07/owl#> 
+prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+
+##
+# banner We should avoid punning object and datatype properties
+
+
+SELECT DISTINCT ?error ?property
+WHERE
+{
+    ?resource owl:propertyChainAxiom ?axiom.
+    ?axiom rdf:rest*/rdf:first ?property .
+    ?property rdfs:subPropertyOf*/rdf:type owl:DatatypeProperty.
+    FILTER regex(str(?property), <HYGIENE_TESTS_FILTER_PARAMETER>)
+    BIND (concat ("WARN: Datatype property ", str(?property), " occurs in a property chain") AS ?error)
+}
