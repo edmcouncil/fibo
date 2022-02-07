@@ -1,0 +1,25 @@
+prefix owl:   <http://www.w3.org/2002/07/owl#> 
+prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+prefix xsd:   <http://www.w3.org/2001/XMLSchema#> 
+prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> 
+prefix afn: <http://jena.apache.org/ARQ/function#>
+prefix sm: <http://www.omg.org/techprocess/ab/SpecificationMetadata/>
+prefix dct: <http://purl.org/dc/terms/> 
+
+##
+# banner We should not make explicit references to owl:Thing
+
+SELECT DISTINCT ?error
+WHERE {
+ {
+  {?s ?p owl:Thing .}
+  UNION
+  {?s rdfs:subClassOf|owl:equivalentClass [?p owl:Thing]}
+  }
+  FILTER NOT EXISTS {?s owl:deprecated "true"^^xsd:boolean} .
+  FILTER regex(str(?s), <HYGIENE_TESTS_FILTER_PARAMETER>) 
+  FILTER (?p != owl:someValuesFrom)
+  BIND (afn:localname (?p) AS ?prop)
+  BIND (concat ("PRODERROR: ", xsd:string (?s), " has an explicit reference to owl:Thing (", ?prop, ").")
+	  AS ?error)
+ } 

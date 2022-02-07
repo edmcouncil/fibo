@@ -1,0 +1,19 @@
+prefix owl:   <http://www.w3.org/2002/07/owl#>
+prefix xsd: <http://www.w3.org/2001/XMLSchema#> 
+
+##
+# banner Equivalent classes may indicate polysemy spread accross multiple classes
+
+SELECT DISTINCT ?error
+WHERE {
+  FILTER (ISIRI(?class1))
+  FILTER regex(str(?class1), <HYGIENE_TESTS_FILTER_PARAMETER>)
+  FILTER NOT EXISTS {?class1 owl:deprecated "true"^^xsd:boolean}
+  FILTER (ISIRI (?class2))
+  FILTER regex(str(?class2), <HYGIENE_TESTS_FILTER_PARAMETER>)
+  FILTER NOT EXISTS {?class2 owl:deprecated "true"^^xsd:boolean}
+  ?class1 owl:equivalentClass ?class2 .
+  FILTER NOT EXISTS {?class1 owl:deprecated "true"^^xsd:boolean} .
+  FILTER NOT EXISTS {?class2 owl:deprecated "true"^^xsd:boolean} .
+  BIND (concat ("PRODERROR: Class ", str(?class1), " is modeled as equivalent to ", str(?class2), " - this may indicate polysemy management that is not complient with FIBO.") AS ?error)
+}

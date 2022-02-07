@@ -1,0 +1,20 @@
+prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+prefix owl:   <http://www.w3.org/2002/07/owl#>
+prefix xsd:   <http://www.w3.org/2001/XMLSchema#>
+
+##
+# banner Local names of classes and properties shouldn't contain dots.
+
+SELECT DISTINCT ?error ?resource ?resourceType
+WHERE 
+{
+    {?resource rdf:type/rdfs:subClassOf* rdf:Property .}
+    UNION
+    {?resource rdf:type/rdfs:subClassOf* rdfs:Class .}
+    ?resource rdf:type ?resourceType .
+    FILTER NOT EXISTS {?resource owl:deprecated "true"^^xsd:boolean} .
+    FILTER regex(str(?resource), <HYGIENE_TESTS_FILTER_PARAMETER>)
+    FILTER (CONTAINS(STRAFTER(str(?resource),"https://spec.edmcouncil.org/fibo/ontology/"), "."))
+    BIND (concat ("PRODERROR: Resource ", str(?resource), " has the dot in its local name. ") AS ?error) 
+}

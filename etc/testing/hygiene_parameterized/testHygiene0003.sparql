@@ -1,0 +1,22 @@
+prefix owl:   <http://www.w3.org/2002/07/owl#> 
+prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+prefix xsd:   <http://www.w3.org/2001/XMLSchema#> 
+prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> 
+prefix afn: <http://jena.apache.org/ARQ/function#>
+
+
+##
+# banner Subproperties ranges should not cross
+
+SELECT DISTINCT ?error
+WHERE {
+  ?property1 rdfs:range ?D1 . 
+  ?property1 rdfs:subPropertyOf ?property2 .
+  ?property2 rdfs:range ?D2 .
+  ?D2 rdfs:subClassOf+ ?D1 .
+  FILTER NOT EXISTS {?property1 owl:deprecated "true"^^xsd:boolean} .
+  FILTER NOT EXISTS {?property2 owl:deprecated "true"^^xsd:boolean} .
+  FILTER regex(str(?property1), <HYGIENE_TESTS_FILTER_PARAMETER>)
+  FILTER regex(str(?property2), <HYGIENE_TESTS_FILTER_PARAMETER>)
+   BIND (concat ("PRODERROR: Crossed ranges. ", afn:localname(?property1), " < ", afn:localname (?property2), " but the range ", afn:localname (?D1), " is a superclass of ", afn:localname (?D2)) AS ?error)
+}

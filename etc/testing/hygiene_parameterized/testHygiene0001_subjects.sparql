@@ -1,0 +1,26 @@
+prefix ex:    <http://www.example.org/time#>
+prefix sm:    <http://www.omg.org/techprocess/ab/SpecificationMetadata/>
+prefix afn:   <http://jena.apache.org/ARQ/function#>
+prefix dct:   <http://purl.org/dc/terms/>
+prefix owl:   <http://www.w3.org/2002/07/owl#>
+prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix xsd:   <http://www.w3.org/2001/XMLSchema#>
+prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+prefix lcc-cr: <https://www.omg.org/spec/LCC/Countries/CountryRepresentation/>
+
+##
+# banner If we refer to something, it should have a type
+
+SELECT DISTINCT ?error
+WHERE {
+  ?s ?p ?o .
+  FILTER NOT EXISTS {?s owl:deprecated "true"^^xsd:boolean} .
+  FILTER regex(str(?s), <HYGIENE_TESTS_FILTER_PARAMETER>)
+  FILTER NOT EXISTS {?s a []}
+  FILTER (! (?p IN (owl:versionIRI, sm:dependsOn , owl:imports , sm:specificationVersionURL,
+                    rdfs:seeAlso, dct:isPartOf, lcc-cr:isPartOf, lcc-cr:hasPart, dct:hasPart))) 
+  BIND (
+    concat ("ERROR:", xsd:string (?s), " is referenced by ", afn:localname (?p), " but has no type.")
+	  AS ?error
+	)
+}

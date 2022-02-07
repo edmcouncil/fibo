@@ -1,0 +1,24 @@
+prefix owl:   <http://www.w3.org/2002/07/owl#> 
+prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+prefix spin:  <http://spinrdf.org/spin#> 
+prefix xsd:   <http://www.w3.org/2001/XMLSchema#> 
+prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> 
+prefix sm: <http://www.omg.org/techprocess/ab/SpecificationMetadata/>
+prefix skos: <http://www.w3.org/2004/02/skos/core#>
+prefix dct: <http://purl.org/dc/terms/>
+
+##
+# banner Every Ontology defined in FIBO must have a rdfs:label,  sm:copyright, dct:license, dct:abstract
+
+SELECT DISTINCT ?error
+WHERE {
+  ?ont a owl:Ontology .
+  FILTER NOT EXISTS {?ont owl:deprecated "true"^^xsd:boolean} .
+  FILTER regex(str(?ont), <HYGIENE_TESTS_FILTER_PARAMETER>)	
+  FILTER NOT EXISTS {
+	?ont rdfs:label ?l  ;
+	sm:copyright ?cr ;
+	dct:license ?lic ;
+	dct:abstract ?abs .}
+BIND (concat ("PRODERROR: ", xsd:string(?ont), " has to have appropriate metadata.") AS ?error)
+}

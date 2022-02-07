@@ -1,0 +1,14 @@
+prefix owl:   <http://www.w3.org/2002/07/owl#>
+prefix xsd:   <http://www.w3.org/2001/XMLSchema#>
+
+##
+# banner No ontology may import itself.
+
+SELECT DISTINCT ?error ?ontology 
+WHERE
+{
+    ?ontology owl:imports ?ontology.
+    FILTER NOT EXISTS {?ontology owl:deprecated "true"^^xsd:boolean} .
+    FILTER regex(str(?ontology), <HYGIENE_TESTS_FILTER_PARAMETER>)
+    BIND (concat ("PRODERROR: ", str(?ontology), " imports itself.") AS ?error)
+}

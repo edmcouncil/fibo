@@ -1,0 +1,20 @@
+prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+prefix owl:   <http://www.w3.org/2002/07/owl#>
+prefix xsd:   <http://www.w3.org/2001/XMLSchema#>
+
+##
+# banner All classes should be rooted in FND, LCC or FBC domain.
+
+SELECT DISTINCT ?error ?class ?domainIdentifier
+WHERE 
+{
+    ?class a owl:Class .
+    FILTER NOT EXISTS {?class owl:deprecated "true"^^xsd:boolean} .
+    FILTER NOT EXISTS {?class rdfs:subClassOf ?classParent}
+    FILTER regex(str(?class), <HYGIENE_TESTS_FILTER_PARAMETER>)
+    BIND (STRBEFORE(STRAFTER(str(?class),"https://spec.edmcouncil.org/fibo/ontology/"),"/") As ?domainIdentifier)
+    FILTER (?domainIdentifier NOT IN ('FND', 'LCC', 'FBC'))
+    BIND (concat ("PRODERROR: Class ", str(?class), " is a top-level class outside FIBO foundations.") AS ?error)
+}
+ORDER BY ?domainIdentifier

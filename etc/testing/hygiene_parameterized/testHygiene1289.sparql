@@ -1,0 +1,17 @@
+prefix owl:   <http://www.w3.org/2002/07/owl#>
+prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+prefix xsd:   <http://www.w3.org/2001/XMLSchema#>
+
+##
+# banner Object properties should not play the role of the isA relationship.
+
+SELECT ?error ?resource
+WHERE
+{
+    ?resource rdf:type owl:ObjectProperty.
+    FILTER NOT EXISTS {?resource owl:deprecated "true"^^xsd:boolean} .
+    FILTER regex(str(?resource), <HYGIENE_TESTS_FILTER_PARAMETER>)
+    FILTER (REGEX(LCASE(str(?resource)), "/isa$") || REGEX(LCASE(str(?resource)), "/may[^/]*$") || REGEX(LCASE(str(?resource)), "/[^/]*(become|also)[^/]*$") )
+    BIND (concat ("PRODERROR: Property ", str(?resource), " may be an isA impostor.") AS ?error)
+}

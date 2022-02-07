@@ -1,0 +1,15 @@
+prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+prefix owl:   <http://www.w3.org/2002/07/owl#>
+prefix xsd:   <http://www.w3.org/2001/XMLSchema#>
+
+##
+# banner rdfs:comment shouldn't be used for FIBO annotation.
+
+SELECT DISTINCT ?error
+WHERE 
+{
+  ?subject rdfs:comment ?o .
+  FILTER NOT EXISTS {?subject owl:deprecated "true"^^xsd:boolean} .
+  FILTER regex(str(?subject), <HYGIENE_TESTS_FILTER_PARAMETER>)
+  BIND (concat ("PRODERROR: ", str(?subject), " has an rdfs:comment annotation: ", str(?o)) AS ?error)
+}

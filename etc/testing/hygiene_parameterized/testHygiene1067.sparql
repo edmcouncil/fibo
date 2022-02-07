@@ -1,0 +1,25 @@
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl:   <http://www.w3.org/2002/07/owl#>
+prefix xsd:   <http://www.w3.org/2001/XMLSchema#>
+
+##
+# banner Labels should be unique across FIBO for classes and properties.
+
+SELECT  (concat("PRODERROR: '", ?label, "' labels multiple objects.") AS ?error) ?resource ?type
+WHERE
+{ 
+	{ 
+		SELECT DISTINCT  ?label
+		WHERE
+        { 
+			?s  rdfs:label  ?label .
+			{?s a owl:Class} UNION {?s a owl:ObjectProperty} UNION {?s a owl:DatatypeProperty}.
+			FILTER NOT EXISTS {?s owl:deprecated "true"^^xsd:boolean} .
+			FILTER regex(str(?s), <HYGIENE_TESTS_FILTER_PARAMETER>)
+        }
+		GROUP BY ?label
+		HAVING ( COUNT(?label) > 1 )
+    }
+    ?resource  rdfs:label  ?label .
+    ?resource a ?type .
+}
