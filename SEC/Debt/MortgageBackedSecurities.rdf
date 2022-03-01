@@ -13,6 +13,7 @@
 	<!ENTITY fibo-fnd-arr-lif "https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Lifecycles/">
 	<!ENTITY fibo-fnd-dt-bd "https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/BusinessDates/">
 	<!ENTITY fibo-fnd-dt-fd "https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/">
+	<!ENTITY fibo-fnd-oac-own "https://spec.edmcouncil.org/fibo/ontology/FND/OwnershipAndControl/Ownership/">
 	<!ENTITY fibo-fnd-pas-psch "https://spec.edmcouncil.org/fibo/ontology/FND/ProductsAndServices/PaymentsAndSchedules/">
 	<!ENTITY fibo-fnd-pty-pty "https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Parties/">
 	<!ENTITY fibo-fnd-rel-rel "https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/">
@@ -49,6 +50,7 @@
 	xmlns:fibo-fnd-arr-lif="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Lifecycles/"
 	xmlns:fibo-fnd-dt-bd="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/BusinessDates/"
 	xmlns:fibo-fnd-dt-fd="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"
+	xmlns:fibo-fnd-oac-own="https://spec.edmcouncil.org/fibo/ontology/FND/OwnershipAndControl/Ownership/"
 	xmlns:fibo-fnd-pas-psch="https://spec.edmcouncil.org/fibo/ontology/FND/ProductsAndServices/PaymentsAndSchedules/"
 	xmlns:fibo-fnd-pty-pty="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Parties/"
 	xmlns:fibo-fnd-rel-rel="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"
@@ -104,6 +106,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Lifecycles/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/BusinessDates/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/OwnershipAndControl/Ownership/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Parties/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/ProductsAndServices/PaymentsAndSchedules/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
@@ -275,7 +278,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-mbs;MBSTrancheNote">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-mbs;SecurityNote"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;PromissoryNote"/>
 		<rdfs:label xml:lang="en">m b s tranche note</rdfs:label>
 		<skos:definition xml:lang="en">An individual note of a tranche.</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">A Tranche is made up of e.g. $500m in notes and so on. These may be in different notes, with different denominations. Analytics that would apply to the Tranche would by implication apply to each slice of the tranche.</fibo-fnd-utl-av:explanatoryNote>
@@ -471,7 +474,7 @@ Consensus:Review.</skos:editorialNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-mbs;PassThroughMBSInstrumentNote">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-mbs;SecurityNote"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;PromissoryNote"/>
 		<rdfs:label xml:lang="en">pass through m b s instrument note</rdfs:label>
 		<skos:definition xml:lang="en">An individual note of a pass through instrument.</skos:definition>
 	</owl:Class>
@@ -499,6 +502,13 @@ Consensus:Review.</skos:editorialNote>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-mbs;RealEstateMortgageInvestmentConduit">
 		<rdfs:subClassOf rdf:resource="&fibo-be-le-lp;SpecialPurposeVehicle"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-oac-own;owns"/>
+				<owl:onClass rdf:resource="&fibo-sec-dbt-mbs;MortgagePool"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">real estate mortgage investment conduit</rdfs:label>
 		<rdfs:seeAlso rdf:resource="https://www.investopedia.com/terms/r/real-estate-mortgage-investment-conduit-remic.asp"/>
 		<skos:definition xml:lang="en">special purpose vehicle that pools mortgage loans together and issues mortgage-backed securities</skos:definition>
@@ -531,12 +541,6 @@ Consensus:Review.</skos:editorialNote>
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-mbs;MortgagePool"/>
 		<rdfs:label xml:lang="en">SBA pool</rdfs:label>
 		<skos:editorialNote xml:lang="en">Unknown pool type, from Cutter SME reviews; other pool types listed under Agency are from or validated by AdeptAdvisory SME review.</skos:editorialNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-sec-dbt-mbs;SecurityNote">
-		<rdfs:label xml:lang="en">security note</rdfs:label>
-		<skos:definition xml:lang="en">An individually denominated note within a security or tranche of a security, where this is issued in notes of different denominations.</skos:definition>
-		<skos:editorialNote xml:lang="en">Introduced for MBS Proof of Concept, to model MBS tranches where one tranche may have notes of multiple denominations. Other applications of this concept are not known at present. Trivially, all securities could be said to be in &quot;notes&quot; in this sense but the term is not normally referred to.</skos:editorialNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-mbs;SeniorMBSTranche">
@@ -650,7 +654,7 @@ Consensus:Review.</skos:editorialNote>
 		<rdfs:subPropertyOf rdf:resource="&lcc-cr;hasPart"/>
 		<rdfs:label xml:lang="en">has note</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-dbt-mbs;MortgageBackedSecurity"/>
-		<rdfs:range rdf:resource="&fibo-sec-dbt-mbs;SecurityNote"/>
+		<rdfs:range rdf:resource="&fibo-fbc-dae-dbt;PromissoryNote"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-mbs;hasTrancheType">
@@ -674,7 +678,7 @@ Consensus:Review.</skos:editorialNote>
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-mbs;isSliceOf">
 		<rdfs:subPropertyOf rdf:resource="&lcc-cr;isPartOf"/>
 		<rdfs:label xml:lang="en">is slice of</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-mbs;SecurityNote"/>
+		<rdfs:domain rdf:resource="&fibo-fbc-dae-dbt;PromissoryNote"/>
 		<rdfs:range rdf:resource="&fibo-sec-dbt-mbs;MortgageBackedSecurity"/>
 		<owl:inverseOf rdf:resource="&fibo-sec-dbt-mbs;hasNote"/>
 	</owl:ObjectProperty>
