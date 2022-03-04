@@ -252,6 +252,8 @@ To perform local testing, do the following steps:
 
 1. Make sure you can run a Bash shell.  Windows now has a native Bash shell.  One is also available as part of SourceTree. 
 1. Download the FIBO tools: [dev_toolkit](./etc/dev_toolkit).
+1. Create a catalog file by running the shell command ```./createCatalog.sh``` (optional, for use with Protege or CCM only)
+1. Create the About files by running the shell command ```./createAbout.sh``` (this can take a while)
 1. Load [AboutFIBOProd.rdf](AboutFIBOProd.rdf) or [AboutFIBODev.rdf](AboutFIBODev.rdf) to perform local tests. 
 
 Step 3 needs to be done again whenever you create a new file or change the base URI of a file. 
