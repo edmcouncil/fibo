@@ -5,6 +5,7 @@
 	<!ENTITY fibo-cae-ce-act "https://spec.edmcouncil.org/fibo/ontology/CAE/CorporateEvents/CorporateActions/">
 	<!ENTITY fibo-fbc-fi-fi "https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/">
 	<!ENTITY fibo-fnd-arr-cls "https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/ClassificationSchemes/">
+	<!ENTITY fibo-fnd-arr-lif "https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Lifecycles/">
 	<!ENTITY fibo-fnd-dt-oc "https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/Occurrences/">
 	<!ENTITY fibo-fnd-rel-rel "https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
@@ -23,6 +24,7 @@
 	xmlns:fibo-cae-ce-act="https://spec.edmcouncil.org/fibo/ontology/CAE/CorporateEvents/CorporateActions/"
 	xmlns:fibo-fbc-fi-fi="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"
 	xmlns:fibo-fnd-arr-cls="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/ClassificationSchemes/"
+	xmlns:fibo-fnd-arr-lif="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Lifecycles/"
 	xmlns:fibo-fnd-dt-oc="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/Occurrences/"
 	xmlns:fibo-fnd-rel-rel="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
@@ -50,6 +52,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/ClassificationSchemes/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Lifecycles/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/Occurrences/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
@@ -143,23 +146,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-cae-ce-act;ActionStatus">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-cls;Classifier"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-oc;Occurrence"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
-				<owl:someValuesFrom>
-					<owl:Class>
-						<owl:unionOf rdf:parseType="Collection">
-							<rdf:Description rdf:about="&fibo-be-le-lp;LegalEntity">
-							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-fbc-fi-fi;Security">
-							</rdf:Description>
-						</owl:unionOf>
-					</owl:Class>
-				</owl:someValuesFrom>
-			</owl:Restriction>
-		</rdfs:subClassOf>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-lif;LifecycleStatus"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&lcc-cr;classifies"/>
@@ -173,7 +160,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">action status</rdfs:label>
-		<skos:definition xml:lang="en">classifier and/or event that provides information about the state of some action at some point in time</skos:definition>
+		<skos:definition xml:lang="en">state of some action at some point in time</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-cae-ce-act;BusinessStrategyClassifier">
@@ -212,36 +199,15 @@
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Corporate actions are typically approved by a company&apos;s board of directors and authorized by the shareholders.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-cae-ce-act;CorporateActionNotificationEvent">
-		<rdfs:subClassOf rdf:resource="&fibo-cae-ce-act;MandatoryCorporateAction"/>
-		<rdfs:subClassOf rdf:resource="&fibo-cae-ce-act;NotificationEvent"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&lcc-cr;isClassifiedBy"/>
-				<owl:onClass rdf:resource="&fibo-cae-ce-act;ActionStatus"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">corporate action notification event</rdfs:label>
-		<skos:definition xml:lang="en">action that provides information specifically regarding a corporate action</skos:definition>
-		<skos:note xml:lang="en">Certain messages regarding corporate actions provide details that are not included in an original announcement.</skos:note>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-cae-ce-act;CorporateInformationAction">
-		<rdfs:subClassOf rdf:resource="&fibo-cae-ce-act;MandatoryCorporateAction"/>
-		<rdfs:label xml:lang="en">corporate information action</rdfs:label>
-		<skos:definition xml:lang="en">corporate action involving information provided by the issuer having no accounting/financial impact on the holder</skos:definition>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-cae-ce-act;DisclosureAction">
 		<rdfs:subClassOf rdf:resource="&fibo-cae-ce-act;VoluntaryCorporateAction"/>
 		<rdfs:label xml:lang="en">disclosure action</rdfs:label>
-		<skos:definition xml:lang="en">corporate action involving a requirement for holders or beneficial owners to disclose their name, location and holdings of any issue to the issuer</skos:definition>
+		<skos:definition xml:lang="en">corporate action involving a request for holders or beneficial owners to disclose their name, location and holdings of any issue to the issuer</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-cae-ce-act;DivestitureAction">
+	<owl:Class rdf:about="&fibo-cae-ce-act;Divestiture">
 		<rdfs:subClassOf rdf:resource="&fibo-cae-ce-act;MandatoryCorporateAction"/>
-		<rdfs:label xml:lang="en">divestiture action</rdfs:label>
+		<rdfs:label xml:lang="en">divestiture</rdfs:label>
 		<skos:definition xml:lang="en">corporate action involving the sales of subsidiary business interests or investments</skos:definition>
 		<skos:note xml:lang="en">Divestiture is an action or process involving the sale, spinoff, or liquidation of business assets, including product lines, services, subsidiaries, business property, or even an entire business. Companies may pursue a divestment strategy to refocus on their core business, in response to the operating environment in their industry, to raise capital, or to release underperforming assets.</skos:note>
 	</owl:Class>
@@ -254,27 +220,25 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-cae-ce-act;LegalFormChange">
-		<rdfs:subClassOf rdf:resource="&fibo-cae-ce-act;CorporateInformationAction"/>
+		<rdfs:subClassOf rdf:resource="&fibo-cae-ce-act;BusinessStrategyClassifier"/>
 		<rdfs:label xml:lang="en">legal form change</rdfs:label>
-		<skos:definition xml:lang="en">corporate action that informs stakeholders of a modification of the legal form of the organization</skos:definition>
+		<skos:definition xml:lang="en">corporate action indicating a modification of the legal form of the organization</skos:definition>
 		<skos:example xml:lang="en">In the United States it is common for companies established as Subchapter S Corporations (S-Corp), typically early stage companies, to modify their structure to become full-fledged Subchapter C Corporations (C-Corp) to facilitate outside fundraising, mergers, acquisitions, and public offerings.  Other common form changes include migration from sole proprietorships to more formally registered organizations (e.g., LLC, S-Corp, C-Corp, etc.)</skos:example>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-cae-ce-act;LiquidationAction">
-		<rdfs:subClassOf rdf:resource="&fibo-cae-ce-act;DivestitureAction"/>
-		<rdfs:label xml:lang="en">liquidation action</rdfs:label>
-		<skos:definition xml:lang="en">corporate action consisting of distribution of cash, assets, or both</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Debt may be paid in order of priority based on preferred claims to assets specified by a security.</fibo-fnd-utl-av:explanatoryNote>
-		<fibo-fnd-utl-av:synonym xml:lang="en">liquidation dividend</fibo-fnd-utl-av:synonym>
-		<fibo-fnd-utl-av:synonym xml:lang="en">liquidation payment</fibo-fnd-utl-av:synonym>
+	<owl:Class rdf:about="&fibo-cae-ce-act;Liquidation">
+		<rdfs:subClassOf rdf:resource="&fibo-cae-ce-act;Divestiture"/>
+		<rdfs:label xml:lang="en">liquidation</rdfs:label>
+		<skos:definition xml:lang="en">corporate action related to winding up a business, including but not limited to distribution of cash, assets, or both</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Debt may be paid in order of priority based on preferred claims to assets specified by a security, for example.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-cae-ce-act;MandatoryCorporateAction">
 		<rdfs:subClassOf rdf:resource="&fibo-cae-ce-act;CorporateAction"/>
 		<rdfs:label xml:lang="en">mandatory corporate action</rdfs:label>
-		<skos:definition xml:lang="en">event initiated by the board of directors of a corporation that affects all shareholders</skos:definition>
+		<skos:definition xml:lang="en">action initiated by the board of directors of a corporation that affects all shareholders</skos:definition>
 		<skos:example xml:lang="en">Examples of mandatory corporate actions include cash dividends, stock splits, mergers, pre-refunding, return of capital, bonus issue, asset ID change, and spin-offs.</skos:example>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Mandatory means mandatory participation by all shareholders, however the shareholder is not required to do anything. Shareholders are passive beneficiaries of mandatory actions.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Mandatory means mandatory participation by all shareholders, however the shareholder is not required to do anything.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-cae-ce-act;MandatoryWithChoiceCorporateAction">
@@ -297,24 +261,24 @@
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Such consolidation may be accomplished via financial transactions such as mergers, acquisitions, consolidations, tender offers, purchase of assets, and management acquisitions.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-cae-ce-act;NotificationEvent">
-		<rdfs:subClassOf rdf:resource="&fibo-cae-ce-act;Action"/>
-		<rdfs:label xml:lang="en">notification event</rdfs:label>
-		<skos:definition xml:lang="en">action that provides information regarding, for example, a corporate action, or some other activity</skos:definition>
+	<owl:Class rdf:about="&fibo-cae-ce-act;Notification">
+		<rdfs:subClassOf rdf:resource="&fibo-cae-ce-act;MandatoryCorporateAction"/>
+		<rdfs:label xml:lang="en">notification</rdfs:label>
+		<skos:definition xml:lang="en">corporate action involving information provided by the issuer having no accounting/financial impact on the holder</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-cae-ce-act;OrganizationAddressChange">
-		<rdfs:subClassOf rdf:resource="&fibo-cae-ce-act;CorporateInformationAction"/>
+		<rdfs:subClassOf rdf:resource="&fibo-cae-ce-act;Notification"/>
 		<rdfs:label xml:lang="en">organization address change</rdfs:label>
 		<skos:definition xml:lang="en">information action that provides details of address changes for a legal entity</skos:definition>
-		<skos:note xml:lang="en">Address changes may impact customer 360 and/or securities master data management, including but not limited to where shares are registered and by whom.</skos:note>
+		<skos:note xml:lang="en">Address changes may impact securities master data management, including but not limited to where shares are registered and by whom.</skos:note>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-cae-ce-act;OrganizationNameChange">
-		<rdfs:subClassOf rdf:resource="&fibo-cae-ce-act;CorporateInformationAction"/>
+		<rdfs:subClassOf rdf:resource="&fibo-cae-ce-act;Notification"/>
 		<rdfs:label xml:lang="en">organization name change</rdfs:label>
 		<skos:definition xml:lang="en">information action that provides details of name changes for a legal entity</skos:definition>
-		<skos:note xml:lang="en">Name changes may include legal name changes as well as &apos;doing business as&apos;, and other operational names for an organization, some of which may impact customer 360 and/or securities master data management.</skos:note>
+		<skos:note xml:lang="en">Name changes may include legal name changes as well as &apos;doing business as&apos;, and other operational names for an organization.</skos:note>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-cae-ce-act;PriorityIssue">
@@ -330,7 +294,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-cae-ce-act;SpinOff">
-		<rdfs:subClassOf rdf:resource="&fibo-cae-ce-act;DivestitureAction"/>
+		<rdfs:subClassOf rdf:resource="&fibo-cae-ce-act;Divestiture"/>
 		<rdfs:label xml:lang="en">spin off</rdfs:label>
 		<skos:definition xml:lang="en">corporate action involving the distribution of subsidiary stock to the shareholders of the parent company without a surrender of shares</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Spin-off represents a form of divestiture usually resulting in an independent company or in an existing company. Examples include demerger, distribution, and unbundling.</fibo-fnd-utl-av:explanatoryNote>
