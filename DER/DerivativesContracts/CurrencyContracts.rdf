@@ -67,8 +67,8 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/ForeignExchange/ForeignExchange/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Countries/CountryRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/20220201/DerivativesContracts/CurrencyContracts/"/>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/20210701/DerivativesContracts/CurrencyContracts/ version of this ontology was modified to reflect the addition of the concept of a rates swap and the corresponding rate-based leg to the Swaps ontology to facilitate mapping to the CFI standard.</skos:changeNote>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/20220301/DerivativesContracts/CurrencyContracts/"/>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/20210701/DerivativesContracts/CurrencyContracts/ version of this ontology was modified to reflect the addition of the concept of a rates swap and the corresponding rate-based leg to the Swaps ontology, as well as the concept of a spot forward currency swap, to facilitate mapping to the CFI standard.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -177,6 +177,19 @@
 		<fibo-fnd-utl-av:synonym xml:lang="en">foreign exchange spot contract</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-der-drc-cur;CurrencySpotForwardSwap">
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-cur;CurrencySwap"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-drc-swp;hasLeg"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-drc-cur;CurrencySpotContract"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">currency spot forward swap</rdfs:label>
+		<skos:definition xml:lang="en">foreign exchange agreement between two parties involving both an exchange of two currencies on the spot settlement date at a fixed rate that is agreed upon at the inception of the contract covering the exchange; and a reverse exchange of the same two currencies at a later date and at a fixed rate that is agreed upon at the inception of the contract covering the exchange</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom xml:lang="en">ISO 10962, Securities and related financial instruments - Classification of financial instruments (CFI) code, Fourth Edition, 2019.</fibo-fnd-utl-av:adaptedFrom>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-der-drc-cur;CurrencySwap">
 		<rdfs:subClassOf rdf:resource="&fibo-der-drc-cur;CurrencyDerivative"/>
 		<rdfs:subClassOf rdf:resource="&fibo-der-drc-swp;RatesSwap"/>
@@ -186,14 +199,9 @@
 				<owl:someValuesFrom rdf:resource="&fibo-der-drc-cur;CurrencyForward"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-drc-swp;hasLeg"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-drc-cur;CurrencySpotContract"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">currency swap</rdfs:label>
 		<skos:definition xml:lang="en">foreign exchange agreement between two parties to exchange a given amount of one currency for another currency for spot delivery or for forward delivery at an agreed rate after a specified period of time</skos:definition>
+		<skos:note xml:lang="en">In the case of a &apos;forward-forward&apos; swap, both legs will be of type CurrencyFoward.</skos:note>
 		<fibo-fnd-utl-av:adaptedFrom xml:lang="en">ISO 10962, Securities and related financial instruments - Classification of financial instruments (CFI) code, Fourth Edition, 2019.</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
 	
