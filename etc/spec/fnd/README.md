@@ -1,1 +1,0 @@
-The FIBO Foundations specification as a Word document.

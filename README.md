@@ -36,7 +36,7 @@ Since January 2020, FIBO has been developed by an **open community process** wit
 
 In case of experiencing any problem with our development infrastructure (Jenkins, EDMC Jira, or WIKI), please contact the single service point:
 
-- Email: edmc@makolab.com
+- Email: pawel.garbacz@makolab.com
 - Service working hours:
   - working days, from 8:00 to 17:00 CET (from 2:00 to 11:00 EST)
     - response time: 1 h
