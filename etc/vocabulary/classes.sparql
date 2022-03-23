@@ -1,0 +1,35 @@
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX fibo-skos: <https://spec.edmcouncil.org/fibo/vocabulary/>
+prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+
+CONSTRUCT 
+{
+    ?vocClassIRI a skos:Concept ; 
+        ?annotationPropertyForClass ?annotation ;
+        rdfs:isDefinedBy ?classIRI ;
+        skos:prefLabel ?label ;
+        skos:inScheme fibo-skos:ClassConcepts .
+}
+WHERE
+{
+    SELECT DISTINCT *
+    {
+        ?classIRI a owl:Class
+        FILTER (isIRI(?classIRI))
+        FILTER (CONTAINS(str(?classIRI), 'edmcouncil')) .
+
+        BIND (IRI(REPLACE(str(?classIRI), "/ontology/", "/vocabulary/")) as ?vocClassIRI)
+
+        ?classIRI rdfs:label ?label .
+         
+        OPTIONAL 
+        {
+            ?classIRI ?annotationPropertyForClass ?annotation . 
+            ?annotationPropertyForClass rdf:type owl:AnnotationProperty .
+	    ?propertyIRI ?annotationPropertyForClass ?annotation . FILTER (str(?annotationPropertyForClass) != 'http://www.w3.org/2000/01/rdf-schema#label')
+        }
+    }
+}
+

@@ -1,0 +1,49 @@
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX fibo-skos: <https://spec.edmcouncil.org/fibo/vocabulary/>
+prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+
+CONSTRUCT 
+{
+    ?vocPropertyIRI a skos:Concept ; 
+        ?annotationPropertyForProperty ?annotation ;
+        fibo-skos:rangeRelated ?vocRangeIRI ;
+        fibo-skos:domainRelated ?vocDomainIRI ;
+        rdfs:isDefinedBy ?propertyIRI ;
+        skos:inScheme fibo-skos:PropertyConcepts ;
+        skos:prefLabel ?label .
+}
+WHERE
+{
+    SELECT DISTINCT *
+    {
+        ?propertyIRI a owl:ObjectProperty 
+        FILTER (isIRI(?propertyIRI))
+        FILTER (CONTAINS(str(?propertyIRI), 'edmcouncil')).
+        BIND (IRI(REPLACE(str(?propertyIRI), "/ontology/", "/vocabulary/")) as ?vocPropertyIRI)
+
+        ?propertyIRI rdfs:label ?label .
+
+        OPTIONAL 
+        {
+            ?propertyIRI rdfs:range ?rangeIRI
+            FILTER (isIRI(?rangeIRI)) .
+            BIND (IRI(REPLACE(str(?rangeIRI), "/ontology/", "/vocabulary/")) as ?vocRangeIRI)
+        }
+        OPTIONAL 
+        {
+            ?propertyIRI rdfs:domain ?domainIRI
+            FILTER (isIRI(?domainIRI)) .
+            BIND (IRI(REPLACE(str(?domainIRI), "/ontology/", "/vocabulary/")) as ?vocDomainIRI)
+        }
+                
+        OPTIONAL 
+	{ 
+	    ?propertyIRI ?annotationPropertyForProperty ?annotation . 
+	    ?annotationPropertyForProperty rdf:type owl:AnnotationProperty .
+	    FILTER (str(?annotationPropertyForProperty) != 'http://www.w3.org/2000/01/rdf-schema#label')
+	}
+    }
+}
+
