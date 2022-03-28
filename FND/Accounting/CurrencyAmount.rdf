@@ -60,7 +60,7 @@ The definition of currency provided herein is compliant with the definitions giv
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Countries/CountryRepresentation/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20220201/Accounting/CurrencyAmount/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20220301/Accounting/CurrencyAmount/"/>
 		<skos:changeNote>The FIBO FND 1.0 (https://spec.edmcouncil.org/fibo/ontology/FND/20141101/Accounting/CurrencyAmount.rdf) version of this ontology was modified per the additions introduced in the FIBO FBC RFC and related issue resolutions identified in the FIBO FND 1.1 RTF report and https://spec.edmcouncil.org/fibo/ontology/FND/1.0/AboutFND-1.1/, including adding support for ISO 4217 currency codes.</skos:changeNote>
 		<skos:changeNote>The FIBO FND 1.1 (https://spec.edmcouncil.org/fibo/ontology/FND/20160201/Accounting/CurrencyAmount.rdf) version of this ontology was modified per FIBO 2.0 RFC, including the addition of a new hasMonetaryAmount property as a superproperty of others required by various FIBO domain teams and integration with LCC.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20000601/Accounting/CurrencyAmount/ version of this ontology was modified to replace a redundant concept, calculation formula with formula.</skos:changeNote>
@@ -72,6 +72,7 @@ The definition of currency provided herein is compliant with the definitions giv
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20191201/Accounting/CurrencyAmount/ version of this ontology was modified to eliminate duplication with concepts in LCC, dependencies on a couple of ontologies that were unnecessary, eliminate references to external dictionary sites that no longer resolve, clean up ambiguity in definitions, eliminate a redundant property, and add unit price.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20210201/Accounting/CurrencyAmount/ version of this ontology was modified to loosen a restriction on currency to allow for more than one numeric currency code, which was necessitated by the October 2021 update to the ISO currency code definitions.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20220101/Accounting/CurrencyAmount/ version of this ontology was modified to move the definition of precious metal and the corresponding identifier to this ontology from Products and Services to simplify imports in cases where the broader definitions for commodities are not required and deprecated isTenderIn, given that we have used the property isUsedBy for this purpose in the currency codes themselves.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20220201/Accounting/CurrencyAmount/ version of this ontology was modified to add a restriction to indicate the currency on percentage monetary amount, make currency a subclass of unit of measure, and deprecate the notion of monetary measure, which is more about monetary policy and was incorrectly used in a few places, and is out of scope for our current set of use cases.</skos:changeNote>
 		<skos:editorialNote>(1) The present version of the ontology covers the English sections of the ISO 4217 standard only, and (2) UTF-8 character encodings are employed in names in the currency codes ontology to support the broadest number of tools.</skos:editorialNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
@@ -105,6 +106,7 @@ The definition of currency provided herein is compliant with the definitions giv
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-acc-cur;Currency">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-qt-qtu;MeasurementUnit"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-acc-cur;hasMinorUnit"/>
@@ -133,6 +135,8 @@ The definition of currency provided herein is compliant with the definitions giv
 		<rdfs:label>currency</rdfs:label>
 		<skos:definition>medium of exchange value, defined by reference to the geographical location of the monetary authorities responsible for it</skos:definition>
 		<fibo-fnd-utl-av:definitionOrigin>Codes for the representation of currencies and funds, ISO 4217, Eighth edition, 2015-08-01, section 3.2</fibo-fnd-utl-av:definitionOrigin>
+		<fibo-fnd-utl-av:synonym>currency unit</fibo-fnd-utl-av:synonym>
+		<fibo-fnd-utl-av:synonym>monetary unit</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-acc-cur;CurrencyBasket">
@@ -179,12 +183,6 @@ The definition of currency provided herein is compliant with the definitions giv
 	
 	<owl:Class rdf:about="&fibo-fnd-acc-cur;ExchangeRate">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;RatioValue"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-qt-qtu;hasQuantityKind"/>
-				<owl:allValuesFrom rdf:resource="&fibo-fnd-acc-cur;MonetaryMeasure"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-acc-cur;hasBaseCurrency"/>
@@ -253,13 +251,7 @@ The definition of currency provided herein is compliant with the definitions giv
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-acc-cur;InterestRate">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;Percentage"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-qt-qtu;hasQuantityKind"/>
-				<owl:allValuesFrom rdf:resource="&fibo-fnd-acc-cur;MonetaryMeasure"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-acc-cur;PercentageMonetaryAmount"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-acc-cur;hasRateValue"/>
@@ -295,6 +287,7 @@ The definition of currency provided herein is compliant with the definitions giv
 	<owl:Class rdf:about="&fibo-fnd-acc-cur;MonetaryMeasure">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;Measure"/>
 		<rdfs:label>monetary measure</rdfs:label>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
 		<skos:definition>measure of or relating to money</skos:definition>
 		<skos:editorialNote>This may be a measure expressed in terms of decimal plus currency, or it may be a measure expressed in terms of a percentage amount with reference to some other monetary amount or to some Money Amount (actual amount of money).</skos:editorialNote>
 	</owl:Class>
@@ -309,6 +302,13 @@ The definition of currency provided herein is compliant with the definitions giv
 	
 	<owl:Class rdf:about="&fibo-fnd-acc-cur;PercentageMonetaryAmount">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;Percentage"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-acc-cur;hasCurrency"/>
+				<owl:onClass rdf:resource="&fibo-fnd-acc-cur;Currency"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label>percentage monetary amount</rdfs:label>
 		<skos:definition>measure of some amount of money expressed as a percentage of some other amount, some notional amount or some concrete money amount</skos:definition>
 	</owl:Class>
@@ -359,31 +359,12 @@ The definition of currency provided herein is compliant with the definitions giv
 	
 	<owl:Class rdf:about="&fibo-fnd-acc-cur;Price">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-qt-qtu;QuantityValue"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-qt-qtu;hasQuantityKind"/>
-				<owl:allValuesFrom rdf:resource="&fibo-fnd-acc-cur;MonetaryMeasure"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label>price</rdfs:label>
 		<skos:definition>amount of money, goods, or services requested, expected, required, or given in exchange for something else</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-acc-cur;UnitOfAccount">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-acc-cur;MonetaryMeasure"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-acc-cur;hasNumericCode"/>
-				<owl:onDataRange rdf:resource="&xsd;string"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&lcc-lr;hasName"/>
-				<owl:someValuesFrom rdf:resource="&xsd;string"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-acc-cur;Currency"/>
 		<rdfs:label>unit of account</rdfs:label>
 		<skos:definition>nominal monetary unit of measure used to represent the real value (or cost) of any economic item; i.e. goods, services, assets, liabilities, income, expenses</skos:definition>
 	</owl:Class>
