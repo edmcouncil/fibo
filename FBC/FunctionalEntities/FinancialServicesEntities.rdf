@@ -72,8 +72,8 @@
 		<dct:abstract>This ontology defines basic financial service providers, such as holding companies, financial institutions (both depository and non-depository institutions), and clearing houses at a relatively general level. Nuances specific to the institutions located in a specific country are defined in jurisdiction specific dependent ontologies.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
 		<sm:contentLanguage rdf:resource="https://www.w3.org/TR/owl2-quick-reference/"/>
-		<sm:copyright>Copyright (c) 2015-2021 EDM Council, Inc.</sm:copyright>
-		<sm:copyright>Copyright (c) 2015-2021 Object Management Group, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2015-2022 EDM Council, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2015-2022 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/BE/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/RegistrationAuthorities/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/RegulatoryAgencies/</sm:dependsOn>
@@ -106,7 +106,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Countries/CountryRepresentation/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/20211001/FunctionalEntities/FinancialServicesEntities/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/20220401/FunctionalEntities/FinancialServicesEntities/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20150801/FunctionalEntities/FinancialServicesEntities.rdf version of this ontology was modified per the issue resolutions identified in the FIBO FBC 1.0 FTF report.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20160801/FunctionalEntities/FinancialServicesEntities/ version of this ontology was modified per the FIBO 2.0 RFC, including, but not limited to, the addition of trade settlement concepts and generalizing the concept of a credit union.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20180801/FunctionalEntities/FinancialServicesEntities/ version of this ontology was modified to refine the concept of a credit union and generalize the definition of an underwriter.</skos:changeNote>
@@ -117,6 +117,7 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20200901/FunctionalEntities/FinancialServicesEntities.rdf version of this ontology was revised to add missing functional entities and related properties, and eliminate circular or ambiguous definitions where possible.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20201201/FunctionalEntities/FinancialServicesEntities.rdf version of this ontology was revised to eliminate references to external dictionary sites that no longer resolve and address additional circular definitions.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20210101/FunctionalEntities/FinancialServicesEntities.rdf version of this ontology was revised to move the definition of the Bank for International Settlements (BIS) to the EU Regulatory Agencies ontology and build out the individual details there, and to reflect the move of some organization-specific concepts from BE to FND.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20211001/FunctionalEntities/FinancialServicesEntities.rdf version of this ontology was revised to apply the new composite identifier definition to BIC codes.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -178,6 +179,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-fct-fse;BusinessIdentifierCode">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-id;CompositeIdentifier"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-org-org;OrganizationIdentifier"/>
 		<rdfs:subClassOf rdf:resource="&lcc-lr;CodeElement"/>
 		<rdfs:subClassOf>
@@ -217,22 +219,15 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
-				<owl:onClass rdf:resource="&lcc-cr;Country"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
 				<owl:onProperty rdf:resource="&lcc-lr;isMemberOf"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fbc-fct-fse;BusinessIdentifierCodeScheme"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>business identifier code</rdfs:label>
-		<skos:definition>an international identifier for financial and non-financial institutions used to facilitate automated processing of information for financial services</skos:definition>
+		<skos:definition>international identifier for financial and non-financial institutions used to facilitate automated processing of information for financial services</skos:definition>
 		<fibo-fnd-utl-av:abbreviation>BIC</fibo-fnd-utl-av:abbreviation>
 		<fibo-fnd-utl-av:adaptedFrom>ISO 9362:2014 Banking -- Banking telecommunication messages -- Business identifier code (BIC)</fibo-fnd-utl-av:adaptedFrom>
-		<fibo-fnd-utl-av:explanatoryNote>The BIC is used for addressing messages, routing business transactions and identifying business parties.  Note that the use of OrganizationPartIdentifier in FIBO corresponds to the Branch Code in the SWIFT scheme.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:explanatoryNote>The BIC is used for addressing messages, routing business transactions and identifying business parties. Note that the use of OrganizationPartIdentifier in FIBO corresponds to the Branch Code in the SWIFT scheme.</fibo-fnd-utl-av:explanatoryNote>
 		<fibo-fnd-utl-av:synonym>SWIFT ID</fibo-fnd-utl-av:synonym>
 		<fibo-fnd-utl-av:synonym>SWIFT code</fibo-fnd-utl-av:synonym>
 		<fibo-fnd-utl-av:synonym>SWIFT-BIC</fibo-fnd-utl-av:synonym>
