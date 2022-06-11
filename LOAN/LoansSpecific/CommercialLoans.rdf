@@ -6,7 +6,7 @@
 	<!ENTITY fibo-fnd-rel-rel "https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
 	<!ENTITY fibo-loan-ln-ln "https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansGeneral/LoansGeneral/">
-	<!ENTITY fibo-loan-typ-com "https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanTypes/CommercialLoans/">
+	<!ENTITY fibo-loan-spc-com "https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansSpecific/CommercialLoans/">
 	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
 	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
 	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
@@ -14,14 +14,14 @@
 	<!ENTITY sm "http://www.omg.org/techprocess/ab/SpecificationMetadata/">
 	<!ENTITY xsd "http://www.w3.org/2001/XMLSchema#">
 ]>
-<rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanTypes/CommercialLoans/"
+<rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansSpecific/CommercialLoans/"
 	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fibo-fbc-dae-dbt="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"
 	xmlns:fibo-fnd-org-fm="https://spec.edmcouncil.org/fibo/ontology/FND/Organizations/FormalOrganizations/"
 	xmlns:fibo-fnd-rel-rel="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
 	xmlns:fibo-loan-ln-ln="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansGeneral/LoansGeneral/"
-	xmlns:fibo-loan-typ-com="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanTypes/CommercialLoans/"
+	xmlns:fibo-loan-spc-com="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansSpecific/CommercialLoans/"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
@@ -29,41 +29,39 @@
 	xmlns:sm="http://www.omg.org/techprocess/ab/SpecificationMetadata/"
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema#">
 	
-	<owl:Ontology rdf:about="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanTypes/CommercialLoans/">
+	<owl:Ontology rdf:about="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansSpecific/CommercialLoans/">
 		<rdfs:label xml:lang="en">CommercialLoans</rdfs:label>
 		<dct:abstract>Commercial loans are loans where the loan purpose is some commercial purpose. Note that these are distinguished by the loan purpose not by the borrower type - borrowers may be corporate or personal, though in the majority of cases they would also be corporate loans that is loans with a corporate borrower.</dct:abstract>
-		<sm:fileAbbreviation>fibo-loan-typ-com</sm:fileAbbreviation>
+		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
+		<sm:contentLanguage rdf:resource="https://www.w3.org/TR/owl2-quick-reference/"/>
+		<sm:copyright>Copyright (c) 2015-2022 EDM Council, Inc.</sm:copyright>
+		<sm:fileAbbreviation>fibo-loan-spc-com</sm:fileAbbreviation>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Organizations/FormalOrganizations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansGeneral/LoansGeneral/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanTypes/CommercialLoans/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansSpecific/CommercialLoans/"/>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Provisional"/>
 	</owl:Ontology>
 	
-	<owl:Class rdf:about="&fibo-loan-typ-com;CommercialLoan">
+	<owl:Class rdf:about="&fibo-loan-spc-com;CommercialLoan">
 		<rdfs:subClassOf rdf:resource="&fibo-loan-ln-ln;Loan"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;hasBorrower"/>
-				<owl:someValuesFrom rdf:resource="&fibo-loan-typ-com;CommercialLoanBorrower"/>
+				<owl:someValuesFrom>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasIdentity"/>
+						<owl:someValuesFrom rdf:resource="&fibo-fnd-org-fm;FormalOrganization"/>
+					</owl:Restriction>
+				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">commercial loan</rdfs:label>
-		<skos:definition xml:lang="en">Loan extended for a commercial purpose. Further notes: Commercial Loans: Talk about property like office building. Borrower is a small business or corporation. Meanings: Loan extended for a commercial purpose versus Loan extended to a corporate entity Example: Aus: Nature of security e.g. private property versus commercial property being pledged as security, as there are different requirements on these. Also legislation on commercial lending by governments (business strategy etc.).</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-loan-typ-com;CommercialLoanBorrower">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;Borrower"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasIdentity"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-org-fm;FormalOrganization"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">commercial loan borrower</rdfs:label>
-		<skos:definition xml:lang="en">The borrower of a Commercial Loan</skos:definition>
+		<skos:definition xml:lang="en">loan extended to a corporation, commercial enterprise, joint venture, or other organisation as opposed to a consumer</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Such loans may include those that provide working capital, are used to finance the purchase of equipment and/or materials, for facilities and/or improvement of facilities, and so forth, and are typically secured.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:synonym xml:lang="en">commercial and industrial loan</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 
 </rdf:RDF>
