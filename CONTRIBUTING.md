@@ -124,7 +124,7 @@ FIBO maturity levels are indicated on an ontology basis; that is, an ontology ha
 One can see the maturity level for each FIBO ontology, see e.g. 
 
 * [https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/FunctionalEntities/](https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/FunctionalEntities/)
-* [https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanCore/](https://spec.edmcouncil.org/fibo/ontology/LOAN/LoanContracts/LoanCore/)
+* [https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansGeneral/LoansGeneral/](https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansGeneral/LoansGeneral/)
 
 The maturity level of an ontology is indicated in the ontology file itself, with a triple in RDF, e.g., 
 
