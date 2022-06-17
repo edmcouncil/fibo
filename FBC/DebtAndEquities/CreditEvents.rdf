@@ -41,8 +41,8 @@
 		Note: the events defined herein are primarily business rather than consumer oriented, and are specified fairly generally.  Many credit events are jurisdiction-specific, such as Chapter 11 restructuring and Chapter 7 bankruptcy in the United States.  This ontology is designed to facilitate jurisdiction and instrument-specific extensions as needed.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
 		<sm:contentLanguage rdf:datatype="&xsd;anyURI">http://www.w3.org/standards/techs/owl#w3c_all</sm:contentLanguage>
-		<sm:copyright>Copyright (c) 2018-2020 EDM Council, Inc.</sm:copyright>
-		<sm:copyright>Copyright (c) 2020 Object Management Group, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2018-2022 EDM Council, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2020-2022 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/"/>
 		<sm:dependsOn rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"/>
 		<sm:dependsOn rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/"/>
@@ -55,7 +55,8 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/Occurrences/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/20200901/DebtAndEquities/CreditEvents/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/20220401/DebtAndEquities/CreditEvents/"/>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20200901/DebtAndEquities/CreditEvents.rdf version of this ontology was revised to move a restriction involving breach of covenant from credit event, since not all credit events involve breaches, to default event, and loosen the constraint since a breach depends on the contract.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -69,19 +70,19 @@
 	
 	<owl:Class rdf:about="&fibo-fbc-dae-cre;CreditEvent">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-oc;Occurrence"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-dt-oc;exemplifies"/>
-				<owl:onClass rdf:resource="&fibo-fnd-agr-ctr;BreachOfCovenant"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">credit event</rdfs:label>
 		<skos:definition xml:lang="en">event signifying a sudden change in credit standing, such as bankruptcy or a violation of a bond indenture or loan agreement, that raises doubts about the party&apos;s ability to meet current or future obligations</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-dae-cre;DefaultEvent">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-cre;ObligationSpecificCreditEvent"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-dt-oc;exemplifies"/>
+				<owl:onClass rdf:resource="&fibo-fnd-agr-ctr;BreachOfCovenant"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">default event</rdfs:label>
 		<skos:definition xml:lang="en">credit event representing a failure to meet a contractual obligation, such as failure to repay a debt including interest or principal on a loan or security</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">A default can occur when a borrower is unable to make timely payments, misses payments, or avoids or stops making payments, typically with respect to a single transaction. A default has adverse effects on the borrower&apos;s credit and ability to borrow in the future, and allows the creditor to demand immediate repayment of the obligation in full.</fibo-fnd-utl-av:explanatoryNote>
@@ -94,9 +95,10 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-dae-cre;Downgrade">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-cre;ObligationSpecificCreditEvent"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-cre;CreditEvent"/>
 		<rdfs:label xml:lang="en">downgrade</rdfs:label>
 		<skos:definition xml:lang="en">credit event triggered when the credit rating of a party or obligation is lowered</skos:definition>
+		<skos:example xml:lang="en">On October 17, 2013, Dagong Global Credit Rating downgraded the United States from A to A- and maintained a negative outlook on the country&apos;s credit.</skos:example>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-dae-cre;EntitySpecificCreditEvent">
