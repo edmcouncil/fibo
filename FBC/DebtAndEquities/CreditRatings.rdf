@@ -65,7 +65,7 @@
 		These are referenced extensively in the securities models but are also applicable to business entities generally and in the context of lending and account maintenance.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
 		<sm:contentLanguage rdf:datatype="&xsd;anyURI">https://www.w3.org/TR/owl2-quick-reference/</sm:contentLanguage>
-		<sm:copyright>Copyright (c) 2018-2021 EDM Council, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2018-2022 EDM Council, Inc.</sm:copyright>
 		<sm:dependsOn rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"/>
 		<sm:dependsOn rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/"/>
 		<sm:dependsOn rdf:resource="https://www.omg.org/spec/LCC/"/>
@@ -99,6 +99,15 @@
 	<owl:NamedIndividual rdf:about="&fibo-fbc-dae-crt;AlertCreditMessage">
 		<rdf:type rdf:resource="&fibo-fbc-dae-crt;CreditMessageType"/>
 		<rdfs:label>alert credit message</rdfs:label>
+	</owl:NamedIndividual>
+	
+	<owl:NamedIndividual rdf:about="&fibo-fbc-dae-crt;AlternativeAQuality">
+		<rdf:type rdf:resource="&fibo-fbc-dae-crt;CreditQuality"/>
+		<rdfs:label>alternative-A quality</rdfs:label>
+		<skos:definition>classifier for mortgages that are considered to be riskier than prime quality but less risky than subprime quality</skos:definition>
+		<fibo-fnd-utl-av:abbreviation>Alt-A</fibo-fnd-utl-av:abbreviation>
+		<fibo-fnd-utl-av:explanatoryNote>Typically Alt-A mortgages are characterized by borrowers with less than full documentation, average credit scores, higher loan-to-values, and more investment properties and secondary homes.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:synonym>Alternative A-paper</fibo-fnd-utl-av:synonym>
 	</owl:NamedIndividual>
 	
 	<owl:Class rdf:about="&fibo-fbc-dae-crt;CreditInquiry">
@@ -147,6 +156,12 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-cls;Classifier"/>
 		<rdfs:label>credit message type</rdfs:label>
 		<skos:definition>classifier that categorizes credit messages</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-dae-crt;CreditQuality">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-rt;RatingScore"/>
+		<rdfs:label>credit quality</rdfs:label>
+		<skos:definition>classifier for borrowers, rates, or holdings in the lending market with respect to the quality of the credit</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-dae-crt;CreditRating">
@@ -250,7 +265,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;comprises"/>
-				<owl:onClass rdf:resource="&fibo-fbc-dae-crt;CreditTradeLine"/>
+				<owl:onClass rdf:resource="&fibo-fbc-dae-crt;CreditTradeline"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -337,8 +352,8 @@
 		<skos:definition>branded credit report offered in the marketplace</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-fbc-dae-crt;CreditTradeLine">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-doc;Document"/>
+	<owl:Class rdf:about="&fibo-fbc-dae-crt;CreditTradeline">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-rep;Report"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-qt-qtu;isDerivedFrom"/>
@@ -351,8 +366,9 @@
 				<owl:someValuesFrom rdf:resource="&fibo-fbc-dae-crt;CreditReport"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label>credit trade line</rdfs:label>
-		<skos:definition>information derived from the transaction history of a credit account</skos:definition>
+		<rdfs:label>credit tradeline</rdfs:label>
+		<skos:definition>report derived from the transaction history of a credit account</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>A tradeline on a credit report refers to a specific credit account. Tradelines report snapshot details derived from a combination of account features and payment history, and are used by credit reporting agencies as inputs to the analysis process that determines a party&apos;s credit rating.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-dae-crt;CreditWatchDirection">
@@ -404,6 +420,20 @@
 		<skos:definition xml:lang="en">credit rating that provides an opinion of creditworthiness of an investment, including but not limited to an instrument or organization</skos:definition>
 	</owl:Class>
 	
+	<owl:NamedIndividual rdf:about="&fibo-fbc-dae-crt;InvestmentGradeQuality">
+		<rdf:type rdf:resource="&fibo-fbc-dae-crt;CreditQuality"/>
+		<rdfs:label>investment grade quality</rdfs:label>
+		<skos:definition>classifier for debt instruments that are considered to be of high quality and have a low risk of default</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Bond rating firms use different designations, often consisting of the upper- and lower-case letters to identify a bond&apos;s credit quality rating. &apos;AAA&apos; and &apos;AA&apos; (high credit quality) and &apos;A&apos; and &apos;BBB&apos; (medium credit quality) are considered investment grade. Credit ratings for bonds below these designations (&apos;BB,&apos; &apos;B,&apos; &apos;CCC,&apos; etc.) are considered low credit quality, and are commonly referred to as &apos;junk bonds.&apos;</fibo-fnd-utl-av:explanatoryNote>
+	</owl:NamedIndividual>
+	
+	<owl:NamedIndividual rdf:about="&fibo-fbc-dae-crt;NonprimeQuality">
+		<rdf:type rdf:resource="&fibo-fbc-dae-crt;CreditQuality"/>
+		<rdfs:label>nonprime quality</rdfs:label>
+		<skos:definition>classifier for borrowers, rates, or holdings that have poor quality, such as borrowers with poor credit history due to a short sale, bankruptcy, foreclosure and/or other negative credit events within the last several years</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Nonprime loans may be offered to individuals who are unable to qualify for a conventional loan.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:NamedIndividual>
+	
 	<owl:NamedIndividual rdf:about="&fibo-fbc-dae-crt;OnWatchOutlook">
 		<rdf:type rdf:resource="&fibo-fbc-dae-crt;CreditWatchOutlook"/>
 		<rdfs:label xml:lang="en">on watch outlook</rdfs:label>
@@ -421,6 +451,14 @@
 		<skos:definition xml:lang="en">credit rating that provides an opinion of creditworthiness of an organization</skos:definition>
 	</owl:Class>
 	
+	<owl:NamedIndividual rdf:about="&fibo-fbc-dae-crt;PrimeQuality">
+		<rdf:type rdf:resource="&fibo-fbc-dae-crt;CreditQuality"/>
+		<rdfs:label>prime quality</rdfs:label>
+		<skos:definition>classifier for borrowers, rates, or holdings that are considered to be of high quality</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>This classification often refers to loans made to high-quality borrowers that are offered prime or relatively low interest rates. Prime loans have low default risk.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:synonym>A-paper</fibo-fnd-utl-av:synonym>
+	</owl:NamedIndividual>
+	
 	<owl:Class rdf:about="&fibo-fbc-dae-crt;ShortTermCreditRating">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-crt;InvestmentCreditRating"/>
 		<rdfs:label xml:lang="en">short term credit rating</rdfs:label>
@@ -435,6 +473,13 @@
 	<owl:NamedIndividual rdf:about="&fibo-fbc-dae-crt;StableOutlook">
 		<rdf:type rdf:resource="&fibo-fbc-dae-crt;CreditWatchOutlook"/>
 		<rdfs:label xml:lang="en">stable outlook</rdfs:label>
+	</owl:NamedIndividual>
+	
+	<owl:NamedIndividual rdf:about="&fibo-fbc-dae-crt;SubprimeQuality">
+		<rdf:type rdf:resource="&fibo-fbc-dae-crt;CreditQuality"/>
+		<rdfs:label>subprime quality</rdfs:label>
+		<skos:definition>classifier for borrowers, rates, or holdings that are considered below-average quality, such as borrowers with a tarnished or limited credit history, and may be subject to higher than average interest rates</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Subprime refers to borrowers or loans, usually offered at rates well above the prime rate. Subprime lending is higher risk, given the lower credit rating of borrowers.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:NamedIndividual>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-dae-crt;concernsParty">
