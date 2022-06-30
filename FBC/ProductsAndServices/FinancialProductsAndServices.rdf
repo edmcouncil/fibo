@@ -82,8 +82,8 @@
 		<dct:abstract>This ontology defines concepts that extend the Foundations (FND) Products and Services concepts specifically for the financial industry, including financial product, financial service, and financial service provider.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
 		<sm:contentLanguage rdf:datatype="&xsd;anyURI">https://www.w3.org/TR/owl2-quick-reference/</sm:contentLanguage>
-		<sm:copyright>Copyright (c) 2015-2021 EDM Council, Inc.</sm:copyright>
-		<sm:copyright>Copyright (c) 2015-2021 Object Management Group, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2015-2022 EDM Council, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2015-2022 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/BE/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/RegulatoryAgencies/</sm:dependsOn>
 		<sm:dependsOn rdf:datatype="&xsd;anyURI">https://spec.edmcouncil.org/fibo/ontology/FND/</sm:dependsOn>
@@ -132,6 +132,7 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20210301/ProductsAndServices/FinancialProductsAndServices/ version of this ontology was modified to rename ownership related properties for consistent alignment with the ownership situational pattern, add a definition for trading strategy, and loosen the constraint on offeree for offering to be optional.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20210601/ProductsAndServices/FinancialProductsAndServices/ version of this ontology was modified to add a property to describe the criteria for including something in a basket, if that criteria is known, and to point to a party that is responsible for determining that criteria.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20210901/ProductsAndServices/FinancialProductsAndServices/ version of this ontology was modified to fix spelling errors.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20211201/ProductsAndServices/FinancialProductsAndServices/ version of this ontology was modified to revise the definition of a unique transaction identifier to align with ISO 23897.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -773,7 +774,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>trade</rdfs:label>
-		<skos:definition>an agreement between parties participating in a voluntary action of buying and selling goods and services</skos:definition>
+		<skos:definition>agreement between parties participating in a voluntary action of buying and selling goods and services</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom>Deutsche Bank Presentation on the Lifecycle of a Trade, available at http://www.slideshare.net/ahaline/23512555-tradelifecycle</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:explanatoryNote>The advent of money as a medium of exchange has allowed trade to be conducted in a manner that is much simpler and effective compared to earlier forms of trade, such as bartering. In financial markets, trading also can mean performing a transaction that involves the selling and purchasing of a security.</fibo-fnd-utl-av:explanatoryNote>
 		<fibo-fnd-utl-av:explanatoryNote>The seller must deliver the commodity sold to the buyer; the buyer must pay the agreed purchase price, which could be in the form of other goods or services, on the agreed date.</fibo-fnd-utl-av:explanatoryNote>
@@ -785,12 +786,12 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&lcc-lr;identifies"/>
-				<owl:onClass rdf:resource="&fibo-fbc-pas-fpas;Trade"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-fpas;Trade"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>trade identifier</rdfs:label>
-		<skos:definition>an identifier for a trade</skos:definition>
+		<skos:definition>sequence of characters identifying a trade within some context</skos:definition>
+		<skos:note>Note that a given trade may consist of multiple transactions, and thus there may be multiple UTIs associated with a trade.</skos:note>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-fpas;TradeLifecycle">
@@ -985,15 +986,16 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;TradeIdentifier"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-pas-fpas;hasGeneratingEntityIdentifier"/>
-				<owl:someValuesFrom rdf:resource="&fibo-be-le-lei;LegalEntityIdentifier"/>
+				<owl:onProperty rdf:resource="&fibo-fbc-pas-fpas;hasGeneratingEntity"/>
+				<owl:someValuesFrom rdf:resource="&fibo-be-le-lp;LegalEntity"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>unique transaction identifier</rdfs:label>
-		<skos:definition>globally unique identifier for a reportable transaction, whose primary purpose is to uniquely identify individual OTC derivatives transactions in reports to trade repositories</skos:definition>
+		<skos:definition>sequence of characters identifying a financial transaction uniquely whenever useful and agreed by the parties or community involved in the transaction</skos:definition>
 		<fibo-fnd-utl-av:abbreviation>UTI</fibo-fnd-utl-av:abbreviation>
 		<fibo-fnd-utl-av:adaptedFrom>Harmonization of the Unique Transaction Identifier - Technical Guidance, 20 Feb 2017, described in https://www.bis.org/cpmi/publ/d158.pdf</fibo-fnd-utl-av:adaptedFrom>
-		<fibo-fnd-utl-av:explanatoryNote>In particular, a UTI will help to ensure the consistent aggregation of OTC derivatives transactions by minimising the likelihood that the same transaction will be counted more than once (for instance, because it is reported by more than one counterparty to a transaction, or to more than one trade repository (TR)).</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:adaptedFrom>ISO 23897:2020, Financial services - Unique transaction identifier (UTI)</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:explanatoryNote>In particular, a UTI will help to ensure the consistent aggregation of OTC derivatives and other securities transactions by minimising the likelihood that the same transaction will be counted more than once (for instance, because it is reported by more than one counterparty to a transaction, or to more than one trade repository (TR)).</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-fpas;WeightedBasket">

@@ -81,7 +81,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/20220501/FinancialInstruments/FinancialInstruments/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/20220601/FinancialInstruments/FinancialInstruments/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20150801/FinancialInstruments/FinancialInstruments/ version of this ontology was modified to reflect issue resolutions detailed in the FIBO FBC 1.0 FTF report.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20160801/FinancialInstruments/FinancialInstruments/ version of this ontology was modified for the FIBO 2.0 RFC, including minor bug fixes.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20180801/FinancialInstruments/FinancialInstruments/ version of this ontology was modified as a part of organizational hierarchy simplification, to add maturity-related properties, and to add exempt security.</skos:changeNote>
@@ -94,7 +94,7 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20210301/FinancialInstruments/FinancialInstruments/ version of this ontology was modified to add the concept of a spot contract and clarify the definition of time to maturity, as well as add a property for days to maturity.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20210701/FinancialInstruments/FinancialInstruments/ version of this ontology was modified to make Entitlement a subclass of Security and fix spelling.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20211201/FinancialInstruments/FinancialInstruments/ version of this ontology was modified to move properties and restrictions related to maturity to the Debt ontology, on credit agreement, and deprecate them here as well as to restructure the relationship between the two ontologies.</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20220101/FinancialInstruments/FinancialInstruments/ version of this ontology was modified to eliminate deprecated content, i.e., properties related to maturity that are now in the Debt ontology.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20220101/FinancialInstruments/FinancialInstruments/ version of this ontology was modified to eliminate deprecated content, i.e., properties related to maturity that are now in the Debt ontology and revise the definition of a securities transaction identifier to align with ISO 23897.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -358,19 +358,14 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>securities transaction</rdfs:label>
-		<skos:definition>trade that represents the execution of an order to buy or sell a security</skos:definition>
+		<skos:definition>transaction between two or more parties involving the exchange of commonly defined financial products</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>ISO 23897:2020, Financial services - Unique transaction identifier (UTI), clause 3.3</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:synonym>financial transaction</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-fi-fi;SecuritiesTransactionIdentifier">
-		<rdfs:subClassOf rdf:resource="&lcc-lr;Identifier"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&lcc-lr;identifies"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-fi;SecuritiesTransaction"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>securities transaction identifier</rdfs:label>
-		<skos:definition>sequence of characters uniquely identifying a securities transaction for some purpose and within a specified context</skos:definition>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&fibo-fbc-pas-fpas;UniqueTransactionIdentifier"/>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-fi-fi;Security">
@@ -477,5 +472,15 @@
 		<rdfs:range rdf:resource="&xsd;boolean"/>
 		<skos:definition>specifies whether a particular financial instrument is or is not transferable</skos:definition>
 	</owl:DatatypeProperty>
+	
+	<owl:Class rdf:about="&fibo-fbc-pas-fpas;UniqueTransactionIdentifier">
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&lcc-lr;identifies"/>
+				<owl:onClass rdf:resource="&fibo-fbc-fi-fi;SecuritiesTransaction"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+	</owl:Class>
 
 </rdf:RDF>
