@@ -1,0 +1,12 @@
+##
+# banner No literal should contain multiple embedded space(s).
+
+SELECT DISTINCT ?warning ?value
+WHERE 
+{
+	?resource ?property ?value.
+	FILTER (ISLITERAL(?value))
+	FILTER (REGEX(?value, '[^\\s]+[\\u0020\\t][\\u0020\\t]+[^\\s]+'))
+	FILTER regex(str(?resource), <HYGIENE_TESTS_FILTER_PARAMETER>)
+	BIND (concat ("WARN: ", "Resource <", STR(?resource), "> has property <", STR(?property), "> whose value contains multiple embedded spaces:") AS ?warning)
+}
