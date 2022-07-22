@@ -19,6 +19,7 @@
 	<!ENTITY fibo-fnd-utl-alx "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Analytics/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
 	<!ENTITY fibo-sec-dbt-ex "https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/ExerciseConventions/">
+	<!ENTITY fibo-sec-sec-bsk "https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/Baskets/">
 	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
 	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
 	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
@@ -46,6 +47,7 @@
 	xmlns:fibo-fnd-utl-alx="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Analytics/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
 	xmlns:fibo-sec-dbt-ex="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/ExerciseConventions/"
+	xmlns:fibo-sec-sec-bsk="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/Baskets/"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
@@ -81,6 +83,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Analytics/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/ExerciseConventions/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/Baskets/"/>
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/ExoticOptions/"/>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Provisional"/>
 	</owl:Ontology>
@@ -100,62 +103,30 @@
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">These options allow the buyer to purchase (or sell) the underlying asset at the average price instead of the spot price. There are various ways to interpret the word &apos;average,&apos; and that needs to be specified in the options contract. Typically, the average price is a geometric or arithmetic average of the price of the underlying asset at discreet intervals, which are also specified in the options contract. Because of the averaging feature, Asian options reduce the volatility inherent in the option; therefore, Asian options are typically cheaper than European or American options. They are used by traders who are exposed to the underlying asset over some time, such as consumers and suppliers of commodities, etc.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-drc-exo;AssetMaximumOrMinimumPayoutCommitment">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-exo;ConditionalPayoutCommitment"/>
-		<rdfs:label xml:lang="en">asset maximum or minimum payout commitment</rdfs:label>
-		<skos:definition xml:lang="en">A commitment to pay out on the maximum or minimum of a set of assets. Further Notes Maximum of n Assets This rainbow is similar to the best of n assets plus cash we referred to in part a, with the exception that no cash payoff is possible and there is a strike price for this type of option. The payoff of a call and put are given as: Rainbow-Call = max[0, max(S1, S2) - X] Rainbow-Put = max[0, X - max(S1, S2)] Minimum of n Assets The counterpart to a maximum of n assets, this rainbow pays out the value of the underperformer of the n assets. The payoff for minimum of 2 asset rainbow calls and puts are given as: Rainbow-Call = max[0, mainS1, S2) - X] Rainbow-Put = max[0, X - min(S1, S2)]</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-drc-exo;AssetOrNothingPayoutCommitment">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-exo;BinaryPayoutCommitment"/>
-		<rdfs:label xml:lang="en">asset or nothing payout commitment</rdfs:label>
-		<owl:disjointWith rdf:resource="&fibo-der-drc-exo;CashOrNothingPayoutCommitment"/>
+	<owl:Class rdf:about="&fibo-der-drc-exo;BarrierFeatureEvent">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-oc;OccurrenceKind"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;refersTo"/>
+				<owl:someValuesFrom rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/Indicators/Indicators/MarketRate"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">barrier feature event</rdfs:label>
+		<skos:definition xml:lang="en">event that defines when an option feature comes into effect</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-exo;BarrierOption">
 		<rdfs:subClassOf rdf:resource="&fibo-der-drc-opt;ExoticOption"/>
-		<rdfs:label xml:lang="en">barrier option</rdfs:label>
-		<skos:definition xml:lang="en">option whose payoff depends on whether or not the underlying asset has reached or exceeded a predetermined price</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">A barrier option can be a knock-out, meaning it expires worthless if the underlying exceeds a certain price, limiting profits for the holder and limiting losses for the writer. It can also be a knock-in, meaning it has no value until the underlying reaches a certain price. Barrier options can be puts or calls. Barrier options typically have cheaper premiums than traditional vanilla options, primarily because the barrier increases the chances of the option expiring worthless. A trader may choose the cheaper (relative to a comparable vanilla) barrier option if they feel it is quite likely the underlying will hit the barrier.</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-drc-exo;BestOfAssetsPlusCashPayoutCommitment">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-exo;ConditionalPayoutCommitment"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-fct-ra;specifies"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-drc-exo;PayoffAssetsList"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-drc-exo;BarrierFeatureEvent"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">best of assets plus cash payout commitment</rdfs:label>
-		<skos:definition xml:lang="en">A commitment to pay out on the best of a number of assets, plus cash.</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">This type of rainbow effectively has n + 1 payoff possibilities. If we consider a 2 asset &quot;best of plus cash&quot;, the payoff at expiry is a choice between Asset 1, Asset 2, or the predetermined cash amount. There is no strike price and the payoff is given as: Rainbow = max(S1, S2, Cash;T)</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-drc-exo;BetterOrWorseOfAssetsPayoutCommitment">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-exo;ConditionalPayoutCommitment"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;refersTo"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-drc-exo;PayoffAssetsList"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">better or worse of assets payout commitment</rdfs:label>
-		<skos:definition xml:lang="en">A commitment to pay out on the best or worst of a number of assets.</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Better of n Assets This type of rainbow is similar to the best of n assets plus cash but with the exception that there is no possible cash payoff, and X is set to 0. With this in mind, a better of 2 assets rainbow is essentially a two-asset call option, with a payoff being: Rainbow = max[0, max(S1, S2)] Worse of n Assets Essentially the opposite to the better of n assets, with the payoff being on the asset with the lower value. We can give the payoff for this option on 2 assets as: Rainbow = max[0, min(S1, S2)]</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-drc-exo;BinaryPayoutCommitment">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-exo;OptionPayoutCommitment"/>
-		<rdfs:label xml:lang="en">binary payout commitment</rdfs:label>
-		<owl:disjointWith rdf:resource="&fibo-der-drc-exo;ConditionalPayoutCommitment"/>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-drc-exo;CalculatedPayoutCommitment">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-exo;OptionPayoutCommitment"/>
-		<rdfs:label xml:lang="en">calculated payout commitment</rdfs:label>
-		<owl:disjointWith rdf:resource="&fibo-der-drc-exo;ConditionalPayoutCommitment"/>
-		<owl:disjointWith rdf:resource="&fibo-der-drc-exo;LinearPayoutCommitment"/>
+		<rdfs:label xml:lang="en">barrier option</rdfs:label>
+		<skos:definition xml:lang="en">option whose payoff depends on whether or not the underlying asset has reached or exceeded a predetermined price</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">A barrier option can be a knock-out, meaning it expires worthless if the underlying exceeds a certain price, limiting profits for the holder and limiting losses for the writer. It can also be a knock-in, meaning it has no value until the underlying reaches a certain price. Barrier options can be puts or calls. Barrier options typically have cheaper premiums than traditional vanilla options, primarily because the barrier increases the chances of the option expiring worthless. A trader may choose the cheaper (relative to a comparable vanilla) barrier option if they feel it is quite likely the underlying will hit the barrier.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Barrier features include any terms related to exercising the option ahead of the expiry date.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-exo;CapDetermination">
@@ -173,12 +144,6 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-gao-obj;Strategy"/>
 		<rdfs:label xml:lang="en">cap or floor determination</rdfs:label>
 		<skos:definition xml:lang="en">Whether a given thing is treated as a Cap (something goes no higher than this amount) or as a Floor (something goes no lower than this).</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-drc-exo;CashOrNothingPayoutCommitment">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-exo;BinaryPayoutCommitment"/>
-		<rdfs:label xml:lang="en">cash or nothing payout commitment</rdfs:label>
-		<skos:definition xml:lang="en">A commitment to pay out on a binary option, as cash or nothing.</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-exo;ChooserOption">
@@ -238,18 +203,6 @@
 		<skos:definition xml:lang="en">exotic option consisting of a number of digital barrier options that pay a coupon if a pre-determined level of the underlying or basket of underlyings is reached</skos:definition>
 		<skos:example xml:lang="en">A three-year commodore option with annual barriers would have three potential payoffs. The first would pay at the end of the first year and would be dependent on the pre-determined barrier being reached or exceeded. For example, if the underlying or basket of underlyings reached or exceeded 102% of its initial level at the end of year one, a coupon of 6% would be paid. At the end of year two, if the underlying reached or exceeded 104% of its initial level, another 6% coupon would be paid. The coupon in the final year would be 6% if the underlying reached or exceeded 106%. The coupon should exceed the performance level of the underlying, otherwise the investor would achieve the same result by investing directly in the underlying.</skos:example>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Sometimes the digital barrier increases with the number of years since the trade began. All of the options are active from the start of the trade.</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-drc-exo;ConditionalPayoutCommitment">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-exo;OptionPayoutCommitment"/>
-		<rdfs:label xml:lang="en">conditional payout commitment</rdfs:label>
-		<owl:disjointWith rdf:resource="&fibo-der-drc-exo;LinearPayoutCommitment"/>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-drc-exo;DefinedConditionsPayoutCommitment">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-exo;OptionPayoutCommitment"/>
-		<rdfs:label xml:lang="en">defined conditions payout commitment</rdfs:label>
-		<skos:definition xml:lang="en">A commitment which is only made when certain defined conditions are met. Further notes: Like all contractual commitments, the details of the commitment (and in this case, the conditions) are defined in the corresponding Contractual Terms. These set out what the commitment is and what the conditions are under which it is to be met. Term introduced in order to support digital and other exotic options. Note this is similar to but distinct from commitments where the specific nature of the commitment (typically a cashflow) is defined by resolving some mathematical formula i.e. where the commitment to do something is not conditional but the precise monetary amounts (payment, settlement) are.</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-exo;DigitalOption">
@@ -413,9 +366,9 @@
 		<rdfs:subClassOf rdf:resource="&fibo-der-drc-opt;InterestRateOption"/>
 		<rdfs:label xml:lang="en">interest rate cap option</rdfs:label>
 		<owl:disjointWith rdf:resource="&fibo-der-drc-exo;InterestRateFloorOption"/>
-		<skos:definition xml:lang="en">A strip of options in which interest payable in each period is either the Observable (Underlying) rate or the Strike rate, at the holder&apos;s discretion, and in which the Strike rate represents a rate above which the holder can elect not to pay.</skos:definition>
-		<skos:editorialNote xml:lang="en">Definition and editorial note against the property &apos;strike effect&apos; for this class (property is now a restriction): The Strike rate is to be subtracted from the Observable rate on the reset date, to determine the settlement amount. REVIEW SESSION NOTES: This is incorrect. Cap applies to borrower. the Cap is the max amount I will pay to borrow. I take a capped rate. I am the buyer of the option. The market rate this time is higher than the capped rate. You as the seller of the option will pay me thedifference bwteen the capped rate and the market reate. If the market rate is lower than the capped rate no one pays anything because I will not exercise my right to that capped rate. So no money changes hands at settlement. Then: capped Loan: What I would be paying would be interest at the market rate if the market rate is lower, but if the market rate is higher then I would pay interest at the capped rate. This is the difference between a cap as a loan or as a cash settled thing. These represent different kinds of contract: Non loan one: Cap talks of settlement being difference between the market rate and the strike rate. This is cash settled. Name: &quot;Cap&quot; Loan one: Cap talks about a maximum interest rate payable by the holder, so the holder pays an amount each time, up to a maximum which is the Cap rate. Name: &quot;Capped Loan&quot; What manner of thin is this? A loan. Its ancestors are not OTC derivatives contracts thet are Loan.</skos:editorialNote>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">The interest in each period is effectively capped by the Strike rate. That is, the rate of interest may not go above the Strike rate because the Holder is expected to exercise the option to take the Strike as the rate of interest instead.</fibo-fnd-utl-av:explanatoryNote>
+		<skos:definition xml:lang="en">interest rate derivative in which the buyer receives payments at the end of each period in which the interest rate exceeds the agreed strike price</skos:definition>
+		<skos:example xml:lang="en">An example of a cap would be an agreement to receive a payment for each month the LIBOR rate exceeds 2.5%.</skos:example>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">The interest in each period is effectively capped by the strike rate. That is, the rate of interest may not go above the strike rate because the holder is expected to exercise the option to take the strike as the rate of interest instead.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-exo;InterestRateFloorOption">
@@ -423,6 +376,7 @@
 		<rdfs:subClassOf rdf:resource="&fibo-der-drc-opt;InterestRateOption"/>
 		<rdfs:label xml:lang="en">interest rate floor option</rdfs:label>
 		<owl:disjointWith rdf:resource="&fibo-der-drc-exo;InterestRateCapOption"/>
+		<skos:definition xml:lang="en">interest rate derivative in which the buyer receives payments at the end of each period in which the interest rate is below the agreed strike price</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-exo;KnockInOption">
@@ -439,24 +393,6 @@
 		<skos:definition xml:lang="en">barrier option with a built-in mechanism to expire worthless if a specified price level in the underlying asset is reached</skos:definition>
 		<skos:example xml:lang="en">Assume an investor purchases a Knock-Out call option with a down Direction, also called a &apos;Down and Out Option&apos;, on a stock that is trading at $60 with a strike price of $55 and a barrier of $50. Assume the stock trades below $50, at any time, before the call option expires. Therefore, the down-and-out call option promptly ceases to exist.</skos:example>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">A knock-out option sets a cap on the level an option can reach in the holder&apos;s favor. As knock-out options limit the profit potential for the option buyer, they can be purchased for a smaller premium than an equivalent option without a knock-out stipulation.</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-drc-exo;LinearPayoutCommitment">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-exo;OptionPayoutCommitment"/>
-		<rdfs:label xml:lang="en">linear payout commitment</rdfs:label>
-		<skos:definition xml:lang="en">The commitment to pay out on a straight vanilla option.</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-drc-exo;LinearPayoutTerms">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-exo;OptionPayoutTerms"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;definesTermsFor"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-drc-exo;LinearPayoutCommitment"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">linear payout terms</rdfs:label>
-		<skos:definition xml:lang="en">Terms governing the payment commitment on a vanilla option.</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-exo;LookbackExpression">
@@ -486,6 +422,14 @@
 		<rdfs:label xml:lang="en">lookback observable value during lookback period</rdfs:label>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-der-drc-exo;LookbackOption">
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-opt;ExoticOption"/>
+		<rdfs:label xml:lang="en">lookback option</rdfs:label>
+		<skos:definition xml:lang="en">exotic option that allows the holder the advantage of knowing history when determining when to exercise their option</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">As a type of exotic option, the lookback allows the user to &apos;look back,&apos; or review, the prices of an underlying asset over the lifespan of the option after it has been purchased. The holder may then exercise the option based on the most beneficial price of the underlying asset. The holder can take advantage of the widest differential between the strike price and the price of the underlying asset. Lookback options do not trade on major exchanges. Instead, they are unlisted and trade over-the-counter (OTC). This type of option reduces uncertainties associated with the timing of market entry and reduces the chances the option will expire worthlessly. Lookback options are expensive to execute, so these advantages come at a cost.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Lookback options are cash settled options, which means the holder receives a cash settlement at execution based on the most advantageous differential between high and low prices during the purchase period. Sellers of lookback options would price the option at or near the widest expected distance of price differential based on past volatility and demand for the options. The cost to purchase this option would be taken up front. The settlement will equate to the profits they could have made from buying or selling the underlying asset. If the settlement was greater than the initial cost of the option, then the option buyer would have profit at settlement, otherwise loss.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-der-drc-exo;LookbackStrikeObservable">
 		<rdfs:subClassOf rdf:resource="&fibo-der-drc-bsc;Underlier"/>
 		<rdfs:subClassOf>
@@ -511,12 +455,19 @@
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">The payoff may either be the difference between a fixed, pre-agreed Strike Price and the observable, or the difference between the best or worst valuable of the observable and the value of that same observable at maturity of the contract (these are the Fixed and Floating lookback terms respectively). This (per review at Nordea) is not mutually exclusive with the terms for Fixed Strike and Resettable Strike, that is, either of those kinds of strike terms may apply, and Lookback strike terms may also apply.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-drc-exo;LookbacktOption">
+	<owl:Class rdf:about="&fibo-der-drc-exo;MountainRangeOption">
 		<rdfs:subClassOf rdf:resource="&fibo-der-drc-opt;ExoticOption"/>
-		<rdfs:label xml:lang="en">lookback option</rdfs:label>
-		<skos:definition xml:lang="en">exotic option that allows the holder the advantage of knowing history when determining when to exercise their option</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">As a type of exotic option, the lookback allows the user to &apos;look back,&apos; or review, the prices of an underlying asset over the lifespan of the option after it has been purchased. The holder may then exercise the option based on the most beneficial price of the underlying asset. The holder can take advantage of the widest differential between the strike price and the price of the underlying asset. Lookback options do not trade on major exchanges. Instead, they are unlisted and trade over-the-counter (OTC). This type of option reduces uncertainties associated with the timing of market entry and reduces the chances the option will expire worthlessly. Lookback options are expensive to execute, so these advantages come at a cost.</fibo-fnd-utl-av:explanatoryNote>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Lookback options are cash settled options, which means the holder receives a cash settlement at execution based on the most advantageous differential between high and low prices during the purchase period. Sellers of lookback options would price the option at or near the widest expected distance of price differential based on past volatility and demand for the options. The cost to purchase this option would be taken up front. The settlement will equate to the profits they could have made from buying or selling the underlying asset. If the settlement was greater than the initial cost of the option, then the option buyer would have profit at settlement, otherwise loss.</fibo-fnd-utl-av:explanatoryNote>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-bsk;MixedBasket"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">mountain range option</rdfs:label>
+		<skos:definition xml:lang="en">exotic option based on multiple underlying securities</skos:definition>
+		<skos:example xml:lang="en">Mountain range options are named after a series of mountains, each representing a different type of contract. Some of the most common include: (a) Altiplano options: Altiplano options provide investors with the features of both a traditional vanilla option along with a coupon payment, (b) Annapurna options: coupon rates are determined by the performance of the basket&apos;s worst-performing security when it drops under a specified range, (c) Everest options: Everest options place a long-term limit on an investor&apos;s option while offering a payout based on the lagging performers in the basket, (d) Atlas options: this type of option eliminates both the best - and worst - performing stocks in a basket of securities, and (e) Himalayan options: traders receive a payout based on the basket&apos;s best performing stock; payouts are provided on multiple dates.</skos:example>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">The price of a mountain range option is based on multiple variables, the most important of which are the correlations between the individual securities in the basket. Some options have discrete payout levels, such as double the investment or triple the investment, if certain performance metrics are hit by the underlying securities while the option is in effect. Mountain range options cannot be priced with standard closed-form approaches. These exotic instruments instead require Monte Carlo simulation methods. Effects such as volatility skew, which is found in most options, can be even more pronounced within mountain range options.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">These options blend some of the key characteristics of basket-style or rainbow options—both of which have more than one underlying security or asset—and range options with multiyear time ranges. Prices are based on multiple variables - notably the correlations between the individual securities in the basket.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-exo;ObservableBestValue">
@@ -539,100 +490,6 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">observable final value</rdfs:label>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-drc-exo;OptionBarrierFeatureEvent">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-oc;OccurrenceKind"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-drc-exo;hasDirection"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-drc-exo;UpOrDown"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;refersTo"/>
-				<owl:someValuesFrom rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/Indicators/Indicators/MarketRate"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">option barrier feature event</rdfs:label>
-		<skos:definition xml:lang="en">An event which defines when an option feature comes into effect.</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-drc-exo;OptionBarrierFeatureTerms">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-exo;OptionTerms"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-fct-ra;specifies"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-drc-exo;OptionBarrierFeatureEvent"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-fct-ra;specifies"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-drc-exo;OptionFeature"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">option barrier feature terms</rdfs:label>
-		<skos:definition xml:lang="en">Formal terms setting out when and under what circumstances the option contract is deemed to be in force. This takes the form of an event and the relationship between the event and the applicability of the option.</skos:definition>
-		<skos:editorialNote xml:lang="en">After some research it was determined that the nature of the thing normally called &quot;Feature&quot; in an option is a contractual term defining when and under what circumstances the option itself is deemed be in force. Option features in this sense are &quot;Knock In&quot; or &quot;Knock Out&quot;, each relating to a market event (usually a price reaching a given level). A third feature, &quot;Knock In Knock Out&quot; is really two of these and is represented as such in the Option terms i.e. there may be two of this Option Feature Terms term. The term &quot;Barrier Option&quot; applies to both of these, i.e. Knock In and Knock Out are types of Barrier Option. An option contract may or may not have a barrier option. If it does not, none of this applies. Others: knock in a knock out, knock in a digitale, if it exceeds one barrier you get a call; for another you get a put, and so on.</skos:editorialNote>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Barrier features include any terms related to exercising the option ahead of the expiry date.</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-drc-exo;OptionBinaryPayoutTerms">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-exo;OptionPayoutTerms"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;definesTermsFor"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-drc-exo;BinaryPayoutCommitment"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">option binary payout terms</rdfs:label>
-		<skos:definition xml:lang="en">Terms governing a binary payout commitment.</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-drc-exo;OptionConditionalPayoutTerms">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-exo;OptionPayoutTerms"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;definesTermsFor"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-drc-exo;ConditionalPayoutCommitment"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">option conditional payout terms</rdfs:label>
-		<skos:definition xml:lang="en">Terms governing a conditional payment commitment on an option.</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-drc-exo;OptionFeature">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-gao-obj;Strategy"/>
-		<rdfs:label xml:lang="en">option feature</rdfs:label>
-		<skos:definition xml:lang="en">Types of feature for an option. This itemizes whether the option comes into force (Knock In) or ceases being in force (Knock Out) when the stated event occurs.</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-drc-exo;OptionPayoutCommitment">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractualCommitment"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-drc-exo;enteredIntoBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-drc-opt;OptionIssuer"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">option payout commitment</rdfs:label>
-		<skos:definition xml:lang="en">Commitment by the issuer to pay out on an option should the holder choose to exercise this.</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">This commitment is set out in formal Exercise Terms.</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-drc-exo;OptionPayoutTerms">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-bsc;ParametricCashflowTerms"/>
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-exo;OptionTerms"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;definesTermsFor"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-drc-exo;OptionPayoutCommitment"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">option payout terms</rdfs:label>
-		<skos:definition xml:lang="en">Terms governing the payout on an option. These formally define the commitment(s) entered into by the writing party to the option.</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-exo;OptionPremiumFormula">
@@ -696,12 +553,24 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">option terms</rdfs:label>
+		<skos:definition xml:lang="en">derivative terms specific to an option contract, including but not limited to exercise terms</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-drc-exo;PayoffAssetsList">
-		<rdfs:subClassOf rdf:resource="&fibo-der-sbd-sbd;SecurityUnderlier"/>
-		<rdfs:label xml:lang="en">payoff assets list</rdfs:label>
-		<skos:definition xml:lang="en">The list of n assets which are used to determine a best or worst value in determining conditional payoff commitments.</skos:definition>
+	<owl:Class rdf:about="&fibo-der-drc-exo;RainbowOption">
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-opt;ExoticOption"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-bsk;MixedBasket"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">rainbow option</rdfs:label>
+		<skos:definition xml:lang="en">exotic option linked to the performances of two or more underlying assets</skos:definition>
+		<skos:example xml:lang="en">A best of assets plus cash rainbow effectively has n + 1 payoff possibilities. If we consider a 2 asset &quot;best of plus cash&quot;, the payoff at expiry is a choice between Asset 1, Asset 2, or the predetermined cash amount. There is no strike price and the payoff is given as: Rainbow = max(S1, S2, Cash;T)</skos:example>
+		<skos:example xml:lang="en">An asset maximum or minimum payout rainbow is similar to the best of n assets plus cash, with the exception that no cash payoff is possible and there is a strike price for this type of option. The payoff of a call and put are given as: Rainbow-Call = max[0, max(S1, S2) - X] Rainbow-Put = max[0, X - max(S1, S2)] Minimum of n Assets. The counterpart to a maximum of n assets, this rainbow pays out the value of the underperformer of the n assets. The payoff for minimum of 2 asset rainbow calls and puts are given as: Rainbow-Call = max[0, mainS1, S2) - X] Rainbow-Put = max[0, X - min(S1, S2)]</skos:example>
+		<skos:example xml:lang="en">Better of n Assets This type of rainbow is similar to the best of n assets plus cash but with the exception that there is no possible cash payoff, and X is set to 0. With this in mind, a better of 2 assets rainbow is essentially a two-asset call option, with a payoff being: Rainbow = max[0, max(S1, S2)] Worse of n Assets Essentially the opposite to the better of n assets, with the payoff being on the asset with the lower value. We can give the payoff for this option on 2 assets as: Rainbow = max[0, min(S1, S2)]</skos:example>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Rainbbow options can speculate on the best performer in the group or minimum performances of all the underlying assets at one time. Each underlying may be called a color so the sum of all of these factors makes up a rainbow. These structures can be rather exotic and made for institutional clients when referring to financial assets. Rainbow options can be structured in many ways depending on how the performances of each underlying asset are considered. Some pay off based on the best or worst performance among the underlying assets. In other words, it looks at the top or bottom performance and pays off based on that single asset. These are sometimes called &apos;best of&apos; or &apos;worst of&apos; rainbow options.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Rainbow options are usually calls or puts on the best or worst of n underlying assets. Like a basket option, which is written on a group of assets and pays out on a weighted-average gain on the basket as a whole, a rainbow option also considers a group of assets, but usually pays out on the level of one of them. A simple example is a call rainbow option written on FTSE 100, Nikkei and S&amp;P 500 which will pay out the difference between the strike price and the level of the index that has risen by the largest amount of the three.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-exo;ResettableStrikeTerms">
@@ -735,16 +604,6 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 		<fibo-fnd-utl-av:synonym xml:lang="en">swap option</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-drc-exo;UpOrDown">
-		<rdfs:label xml:lang="en">up or down</rdfs:label>
-	</owl:Class>
-	
-	<owl:ObjectProperty rdf:about="&fibo-der-drc-exo;enteredIntoBy">
-		<rdfs:label xml:lang="en">entered into by</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-drc-exo;OptionPayoutCommitment"/>
-		<rdfs:range rdf:resource="&fibo-der-drc-opt;OptionIssuer"/>
-	</owl:ObjectProperty>
-	
 	<owl:ObjectProperty rdf:about="&fibo-der-drc-exo;exerciseDateOffset">
 		<rdfs:label xml:lang="en">exercise date offset</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-der-drc-exo;OptionStripContract"/>
@@ -757,12 +616,6 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 		<rdfs:domain rdf:resource="&fibo-der-drc-exo;FixedStrikeAmount"/>
 		<rdfs:range rdf:resource="&xsd;decimal"/>
 	</owl:DatatypeProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-der-drc-exo;hasDirection">
-		<rdfs:label xml:lang="en">has direction</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-drc-exo;OptionBarrierFeatureEvent"/>
-		<rdfs:range rdf:resource="&fibo-der-drc-exo;UpOrDown"/>
-	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-drc-exo;hasOptionTypeElectionDate">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasExplicitDate"/>
@@ -839,7 +692,7 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 	
 	<owl:DatatypeProperty rdf:about="&fibo-der-drc-exo;threshold">
 		<rdfs:label xml:lang="en">threshold</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-drc-exo;OptionBarrierFeatureEvent"/>
+		<rdfs:domain rdf:resource="&fibo-der-drc-exo;BarrierFeatureEvent"/>
 		<rdfs:range rdf:resource="&xsd;decimal"/>
 		<skos:definition xml:lang="en">The price or other variable (as a number) which has to be met for the event to be deemed to have occurred.</skos:definition>
 	</owl:DatatypeProperty>
