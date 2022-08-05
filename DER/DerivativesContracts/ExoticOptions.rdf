@@ -244,20 +244,6 @@
 		<skos:definition xml:lang="en">cashflow expression specifying the arguments required to calculate the fixed price at which the lookback option is to be exercised</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-drc-exo;FixedStrikeTerms">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-exo;StrikeTerms"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-fct-ra;specifies"/>
-				<owl:onClass rdf:resource="&fibo-der-drc-opt;StrikePrice"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">fixed strike terms</rdfs:label>
-		<owl:disjointWith rdf:resource="&fibo-der-drc-exo;ResettableStrikeTerms"/>
-		<skos:definition xml:lang="en">terms specifying a fixed, pre-agreed price or rate, such as an interest rate, at which the option is to be exercised</skos:definition>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-der-drc-exo;FloatingLookbackStrikeExpression">
 		<rdfs:subClassOf rdf:resource="&fibo-der-drc-bsc;CashflowExpression"/>
 		<rdfs:subClassOf>
@@ -273,7 +259,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">floating lookback strike expression</rdfs:label>
-		<skos:definition xml:lang="en">cashflow expression specifying the arguments required to calculate the variable price at which the lookback option is to be exercised</skos:definition>
+		<skos:definition xml:lang="en">cashflow expression specifying the arguments required to calculate the best projected price at which the lookback option may be exercised</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-exo;ForwardStartOption">
@@ -302,7 +288,6 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-exo;InterestRateCapOption">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-exo;OptionStripContract"/>
 		<rdfs:subClassOf rdf:resource="&fibo-der-drc-opt;InterestRateOption"/>
 		<rdfs:label xml:lang="en">interest rate cap option</rdfs:label>
 		<owl:disjointWith rdf:resource="&fibo-der-drc-exo;InterestRateFloorOption"/>
@@ -312,7 +297,6 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-exo;InterestRateFloorOption">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-exo;OptionStripContract"/>
 		<rdfs:subClassOf rdf:resource="&fibo-der-drc-opt;InterestRateOption"/>
 		<rdfs:label xml:lang="en">interest rate floor option</rdfs:label>
 		<owl:disjointWith rdf:resource="&fibo-der-drc-exo;InterestRateCapOption"/>
@@ -350,7 +334,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-exo;LookbackStrikeTerms">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-exo;StrikeTerms"/>
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-bsc;DerivativeTerms"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasExpression"/>
@@ -378,7 +362,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">lookback strike terms</rdfs:label>
-		<skos:definition xml:lang="en">strike terms specifying the value of the underlying asset based on analysis during a specific period, typically ending in the maturity of the option, whereby the payoff is determined by comparing the strike price with the value of the selected price</skos:definition>
+		<skos:definition xml:lang="en">terms specifying the value of the underlying asset based on analysis during a specific period, typically ending in the maturity of the option, whereby the payoff is determined by comparing the strike price with the value of the selected price</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">In the case of a fixed strike, the terms depend on whether the option is a call or put. If it is a call, the calculated payout reflects the difference between a running maximum value of the observable during the lookback period, and the pre-agreed strike.</fibo-fnd-utl-av:explanatoryNote>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">The payoff may either be the difference between a fixed, pre-agreed Strike Price and the observable, or the difference between the best or worst valuable of the observable and the value of that same observable at maturity of the contract (these are the Fixed and Floating lookback terms respectively). This (per review at Nordea) is not mutually exclusive with the terms for Fixed Strike and Resettable Strike, that is, either of those kinds of strike terms may apply, and Lookback strike terms may also apply.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
@@ -411,49 +395,22 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-exo;OptionPremiumFormula">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;Formula"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;Expression"/>
 		<rdfs:label xml:lang="en">option premium formula</rdfs:label>
-		<skos:definition xml:lang="en">formula used to calculate the premium</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">This is a choice between expressing amount of premium paid as either price per option, or percentage of notional amount. FpML: &apos;Choice between expressing amount of premium paid as either price per option, or percentage of notional amount.&apos;</fibo-fnd-utl-av:explanatoryNote>
+		<skos:definition xml:lang="en">expression used to calculate the premium based either on the price per option or percentage of the notional amount</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-drc-exo;OptionPremiumPaymentArrangement">
+	<owl:Class rdf:about="&fibo-der-drc-exo;OptionStripStrategy">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-gao-obj;Strategy"/>
-		<rdfs:label xml:lang="en">option premium payment arrangement</rdfs:label>
-		<skos:definition xml:lang="en">Premium Type for Forward Start Equity Options.</skos:definition>
-		<skos:editorialNote xml:lang="en">This was originally a selectable list called option premium type selection (option premium type in data models). Note against that element is given below, based on which this has been implemented as two sets of classes (both characterized as kinds of method). 
-
-Earlier SME Review note:
-Further notes: REVIEW THIS - there appear to be two separate semantics in this list; are they mutually exclusive? Answers: You can pay the premium up front or in arrears (pre v pos tpaid) or you can pay it at any agreed time (indeed the time is already defined as terms see Payment Date), so this simply reflects that. Then there are other types of &quot;Participating OptionS&quot; where the anmount you pay depends on something else - so you don&apos;t pay the Premium up front. If it ends up outt of the money then you don&apos;t have to pay as much. So this is &quot;Variable&quot; premium. The alternative to this is &quot;Fixed&quot;. If it&apos;s prepaid it&apos;s firxed If it&apos;s post paid it can bt variable or fixed. SO these are two facts. FpML: Premium Type for Forward Start Equity Option</skos:editorialNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-drc-exo;OptionPremiumPreOrPostType">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-exo;OptionPremiumPaymentArrangement"/>
-		<rdfs:label xml:lang="en">option premium pre or post type</rdfs:label>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-drc-exo;OptionStrikeResetSchedule">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-fd;Schedule"/>
-		<rdfs:label xml:lang="en">option strike reset schedule</rdfs:label>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-drc-exo;OptionStripContract">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;Option"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-drc-exo;hasResetSchedule"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-drc-exo;OptionStripResetSchedule"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-dt-fd;hasSchedule"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;Schedule"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">option strip contract</rdfs:label>
+		<rdfs:label xml:lang="en">option strip strategy</rdfs:label>
 		<skos:definition xml:lang="en">A strip or sequential set of options with periodic reset dates, such that each period between resets behaves like an individual option (known as a Caplet or Floorlet).</skos:definition>
 		<skos:editorialNote xml:lang="en">The defining fact is that it is a set of sequential options. So in principal this is a strip of any kind of option. Can you strip forwards? In principal, but usually you would have a Commodity Swap which would be a strip of Forwards. Other strips? Don&apos;t always buy a string of caplets and floorlets but buy an individual cap or floor. for IR Options These are always Caps or Floors, that is the option settlement takes the form of the difference between the Strike rate and the designated underlying (observable) rate on the stated dates. Review notes: caps and floors are always strips, but there are strips for other assets as well. SO: There are strips besides Options; There are Option Strips besides IR (Cap and Floor) ones. See eg. in France where you may have a strip of options where the strike is set at each rollover. Details to come by email. In this case it would be an asset option, specifically Equity.</skos:editorialNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-drc-exo;OptionStripResetSchedule">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-fd;Schedule"/>
-		<rdfs:label xml:lang="en">option strip reset schedule</rdfs:label>
-		<skos:definition xml:lang="en">Schedule of dates on which the Option Strip rate is determined and reset.</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-exo;ProjectedValueAtMaturity">
@@ -485,23 +442,6 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Rainbow options are usually calls or puts on the best or worst of n underlying assets. Like a basket option, which is written on a group of assets and pays out on a weighted-average gain on the basket as a whole, a rainbow option also considers a group of assets, but usually pays out on the level of one of them. A simple example is a call rainbow option written on FTSE 100, Nikkei and S&amp;P 500 which will pay out the difference between the strike price and the level of the index that has risen by the largest amount of the three.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-drc-exo;ResettableStrikeTerms">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-exo;StrikeTerms"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-drc-exo;hasResetSchedule"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-drc-exo;OptionStrikeResetSchedule"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">resettable strike terms</rdfs:label>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-drc-exo;StrikeTerms">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-bsc;DerivativeTerms"/>
-		<rdfs:label xml:lang="en">strike terms</rdfs:label>
-		<skos:definition xml:lang="en">terms specifying the conditions triggering the option to be exercised, including the price or rate</skos:definition>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-der-drc-exo;Swaption">
 		<rdfs:subClassOf rdf:resource="&fibo-der-drc-opt;ExoticOption"/>
 		<rdfs:subClassOf>
@@ -516,11 +456,20 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 		<fibo-fnd-utl-av:synonym xml:lang="en">swap option</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
-	<owl:ObjectProperty rdf:about="&fibo-der-drc-exo;exerciseDateOffset">
-		<rdfs:label xml:lang="en">exercise date offset</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-drc-exo;OptionStripContract"/>
+	<owl:ObjectProperty rdf:about="&fibo-der-drc-exo;hasExerciseDateOffset">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDuration"/>
+		<rdfs:label xml:lang="en">has exercise date offset</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-der-drc-exo;OptionStripStrategy"/>
 		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Duration"/>
-		<skos:definition xml:lang="en">The period in days between the Reset Date and the date on which the Option may be exercised.</skos:definition>
+		<skos:definition xml:lang="en">indicates the period in days between the reset date and the exercise date</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-der-drc-exo;hasInterestAccrualDateOffset">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDuration"/>
+		<rdfs:label xml:lang="en">has interest accrual date offset</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-der-drc-exo;OptionStripStrategy"/>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Duration"/>
+		<skos:definition xml:lang="en">indicates the period in days between each reset date and the commencement of interest accrual for the next period</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-drc-exo;hasLookbackPeriod">
@@ -536,20 +485,15 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 		<rdfs:label xml:lang="en">has option type election date</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-der-drc-exo;ChooserOption"/>
 		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
-		<skos:definition xml:lang="en">The date on which the holder of the Chooser option contract determines a choice of either a Call or a Put,</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">FpML: &apos;Date where the holder of a Chooser option contract determines a choice of either a Call or a Put&apos;</fibo-fnd-utl-av:explanatoryNote>
+		<skos:definition xml:lang="en">indicates the date on which the holder of the chooser option contract determines a choice of either a call or a put</skos:definition>
 	</owl:ObjectProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-der-drc-exo;hasPremiumType">
-		<rdfs:label xml:lang="en">has premium type</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-drc-opt;OptionPremium"/>
-		<rdfs:range rdf:resource="&fibo-der-drc-exo;OptionPremiumPaymentArrangement"/>
-		<skos:definition xml:lang="en">The type of premium payment. FpML: &apos;Premium type for a forward starting equity option.&apos;</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-der-drc-exo;hasResetSchedule">
-		<rdfs:label xml:lang="en">has reset schedule</rdfs:label>
-		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Schedule"/>
+	<owl:ObjectProperty rdf:about="&fibo-der-drc-exo;hasSettlementDateOffset">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDuration"/>
+		<rdfs:label xml:lang="en">has settlement date offset</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-der-drc-exo;OptionStripStrategy"/>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Duration"/>
+		<skos:definition xml:lang="en">indicats the period in days between each reset date and the corresponding settlement date</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-drc-exo;hasStrikePercentageAmount">
@@ -557,34 +501,6 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 		<rdfs:label xml:lang="en">has strike percentage amount</rdfs:label>
 		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;PercentageMonetaryAmount"/>
 		<skos:definition xml:lang="en">strike price or level expressed as a percentage of the value of the underlying asset</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-der-drc-exo;interestAccrualDateOffset">
-		<rdfs:label xml:lang="en">interest accrual date offset</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-drc-exo;OptionStripContract"/>
-		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Duration"/>
-		<skos:definition xml:lang="en">The period in days between each Reset Date and the commencement of accrual of interest for the next period.</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:DatatypeProperty rdf:about="&fibo-der-drc-exo;openOutcry">
-		<rdfs:label xml:lang="en">open outcry</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fbc-fct-mkt;DesignatedContractMarket"/>
-		<rdfs:range rdf:resource="&xsd;boolean"/>
-		<skos:definition xml:lang="en">Whether trading on the exchange is by way of open outcry in the form of physical interaction between participants. No means that trading is carried out electronically.</skos:definition>
-	</owl:DatatypeProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-der-drc-exo;settlementDateOffset">
-		<rdfs:label xml:lang="en">settlement date offset</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-drc-exo;OptionStripContract"/>
-		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Duration"/>
-		<skos:definition xml:lang="en">The period in days between each Reset Date and the corresponding Settlement Date.</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-der-drc-exo;strikeDeterminationDate">
-		<rdfs:label xml:lang="en">strike determination date</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-drc-exo;FixedStrikeTerms"/>
-		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Date"/>
-		<skos:definition xml:lang="en">The date on which the strike is determined,</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-der-drc-exo;threshold">
@@ -597,7 +513,7 @@ Further notes: REVIEW THIS - there appear to be two separate semantics in this l
 	<owl:Class rdf:about="&fibo-der-drc-opt;OptionPremium">
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasFormula"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasExpression"/>
 				<owl:onClass rdf:resource="&fibo-der-drc-exo;OptionPremiumFormula"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
