@@ -22,6 +22,8 @@
 	<!ENTITY fibo-ind-ind-ind "https://spec.edmcouncil.org/fibo/ontology/IND/Indicators/Indicators/">
 	<!ENTITY fibo-sec-dbt-ex "https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/ExerciseConventions/">
 	<!ENTITY fibo-sec-sec-bsk "https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/Baskets/">
+	<!ENTITY fibo-sec-sec-cls "https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesClassification/">
+	<!ENTITY lcc-cr "https://www.omg.org/spec/LCC/Countries/CountryRepresentation/">
 	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
 	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
 	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
@@ -52,6 +54,8 @@
 	xmlns:fibo-ind-ind-ind="https://spec.edmcouncil.org/fibo/ontology/IND/Indicators/Indicators/"
 	xmlns:fibo-sec-dbt-ex="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/ExerciseConventions/"
 	xmlns:fibo-sec-sec-bsk="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/Baskets/"
+	xmlns:fibo-sec-sec-cls="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesClassification/"
+	xmlns:lcc-cr="https://www.omg.org/spec/LCC/Countries/CountryRepresentation/"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
@@ -80,6 +84,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/RegistrationAuthorities/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/ClassificationSchemes/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/Occurrences/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/GoalsAndObjectives/Objectives/"/>
@@ -90,16 +95,59 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/Indicators/Indicators/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/ExerciseConventions/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/Baskets/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesClassification/"/>
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/ExoticOptions/"/>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Provisional"/>
 	</owl:Ontology>
+	
+	<owl:NamedIndividual rdf:about="&fibo-der-drc-exo;ArithmeticCalculationStrategy">
+		<rdf:type rdf:resource="&fibo-der-drc-exo;AveragingStrategy"/>
+		<rdfs:label>arithmetic calculation strategy</rdfs:label>
+		<rdfs:seeAlso rdf:resource="&fibo-fnd-utl-alx;ArithmeticMean"/>
+		<skos:definition>strategy that uses an arithmetic mean calculation</skos:definition>
+	</owl:NamedIndividual>
 	
 	<owl:Class rdf:about="&fibo-der-drc-exo;AsianOption">
 		<rdfs:subClassOf rdf:resource="&fibo-der-drc-opt;ExoticOption"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
+				<owl:onProperty rdf:resource="&lcc-cr;isClassifiedBy"/>
+				<owl:onClass rdf:resource="&fibo-der-drc-exo;AsianOptionClassifier"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&lcc-cr;isClassifiedBy"/>
+				<owl:onClass rdf:resource="&fibo-der-drc-exo;AveragingStrategy"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-drc-exo;usesCurrencyInAveraging"/>
+				<owl:onClass rdf:resource="&fibo-fnd-acc-cur;Currency"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-drc-exo;hasAsianTailPeriod"/>
+				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;DatePeriod"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-ex;hasExerciseDate"/>
 				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-drc-exo;usesWeightedAverage"/>
+				<owl:onDataRange rdf:resource="&xsd;boolean"/>
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -111,17 +159,40 @@
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">These options allow the buyer to purchase (or sell) the underlying asset at the average price instead of the spot price. There are various ways to interpret the word &apos;average,&apos; and that needs to be specified in the options contract. Typically, the average price is a geometric or arithmetic average of the price of the underlying asset at discreet intervals, which are also specified in the options contract. Because of the averaging feature, Asian options reduce the volatility inherent in the option; therefore, Asian options are typically cheaper than European or American options. They are used by traders who are exposed to the underlying asset over some time, such as consumers and suppliers of commodities, etc.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-drc-exo;BarrierFeatureEvent">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-oc;OccurrenceKind"/>
+	<owl:Class rdf:about="&fibo-der-drc-exo;AsianOptionClassifier">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-cls;FinancialInstrumentClassifier"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;refersTo"/>
-				<owl:onClass rdf:resource="&fibo-ind-ind-ind;MarketRate"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+				<owl:onProperty rdf:resource="&lcc-cr;classifies"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-drc-exo;AsianOption"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">barrier feature event</rdfs:label>
-		<skos:definition xml:lang="en">event that defines when an option feature comes into effect</skos:definition>
+		<rdfs:label>Asian option classifier</rdfs:label>
+		<skos:definition>financial instrument classifier that classifies Asian options based on whether they are rate-based or price based</skos:definition>
+	</owl:Class>
+	
+	<owl:NamedIndividual rdf:about="&fibo-der-drc-exo;AverageRate">
+		<rdf:type rdf:resource="&fibo-der-drc-exo;AsianOptionClassifier"/>
+		<rdfs:label>average rate classification</rdfs:label>
+		<skos:definition>Asian option classifier indicating that the payoff is based on the difference between a fixed strike price and the calculated average price of the underlying</skos:definition>
+	</owl:NamedIndividual>
+	
+	<owl:NamedIndividual rdf:about="&fibo-der-drc-exo;AverageStrike">
+		<rdf:type rdf:resource="&fibo-der-drc-exo;AsianOptionClassifier"/>
+		<rdfs:label>average strike classification</rdfs:label>
+		<skos:definition>Asian option classifier indicating that the payoff is based on the difference between the price of the underlying at expiration and a strike price equal to the calculated average price of the underlying issue</skos:definition>
+	</owl:NamedIndividual>
+	
+	<owl:Class rdf:about="&fibo-der-drc-exo;AveragingStrategy">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-gao-obj;Strategy"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&lcc-cr;classifies"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-drc-exo;AsianOption"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">averaging strategy</rdfs:label>
+		<skos:definition xml:lang="en">method used for calculating the average rate or price</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-exo;BarrierOption">
@@ -142,12 +213,6 @@
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-drc-exo;isAboveStrikePrice"/>
 				<owl:someValuesFrom rdf:resource="&xsd;boolean"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-fct-ra;specifies"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-drc-exo;BarrierFeatureEvent"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">barrier option</rdfs:label>
@@ -336,6 +401,13 @@
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Forward start options typically attempt to keep future strike prices at the money or near the money. In this way, the holder will have the right, but not the obligation, to buy (call) or sell (put) the underlying asset in the future at or near the then-current market price. Knowing where the strike price will be in relation to the underlying&apos;s price makes it easier to come up with the premium (cost) of the option, which is also typically determined and paid at the initiation of the contract prior to the activation date. If, at the expiration date, the underlying trades below the strike price of the option (for a call), then it expires worthless. If the underlying is above the strike (for a call), then the holder exercises it and owns the underlying at the strike price. For a put option, if the underlying is below the strike price, the option has value and will be sold or exercised to realize a gain. If the underlying is above the strike price, the option will expire worthless. Typically, as with most options, the holder may sell the option if it is in the money and take the cash instead of exercising the option. Since it is an exotic option, the seller and buyer of the option may also agree to settle the option with cash instead of delivering the underlying. Once a forward start option becomes active (strike price is set), then the option is valued like a vanilla option.</fibo-fnd-utl-av:explanatoryNote>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">The only unknown for the contract is the strike price. In terms of pricing the contract, the future price of the underlying asset is also unknown. The contract typically stipulates some parameters for where the strike price will be in relation to the underlying asset&apos;s price.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
+	
+	<owl:NamedIndividual rdf:about="&fibo-der-drc-exo;GeometricCalculationStrategy">
+		<rdf:type rdf:resource="&fibo-der-drc-exo;AveragingStrategy"/>
+		<rdfs:label>geometric calculation strategy</rdfs:label>
+		<rdfs:seeAlso rdf:resource="&fibo-fnd-utl-alx;GeometricMean"/>
+		<skos:definition>strategy that uses an geometric mean calculation</skos:definition>
+	</owl:NamedIndividual>
 	
 	<owl:Class rdf:about="&fibo-der-drc-exo;InterestRateCapOption">
 		<rdfs:subClassOf rdf:resource="&fibo-der-drc-opt;InterestRateOption"/>
@@ -533,6 +605,14 @@
 		<fibo-fnd-utl-av:synonym xml:lang="en">swap option</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
+	<owl:ObjectProperty rdf:about="&fibo-der-drc-exo;hasAsianTailPeriod">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDatePeriod"/>
+		<rdfs:label xml:lang="en">has Asian tail period</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-der-drc-exo;AsianOption"/>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;DatePeriod"/>
+		<skos:definition xml:lang="en">window of time during which averaging of the price of the underlying contract is effective</skos:definition>
+	</owl:ObjectProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-der-drc-exo;hasExerciseDateOffset">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDuration"/>
 		<rdfs:label xml:lang="en">has exercise date offset</rdfs:label>
@@ -632,11 +712,18 @@
 		<skos:definition xml:lang="en">indicates whether the barrier is crossed when the price of the underlier is above (or below, if not) the strike price (threshold)</skos:definition>
 	</owl:DatatypeProperty>
 	
-	<owl:DatatypeProperty rdf:about="&fibo-der-drc-exo;threshold">
-		<rdfs:label xml:lang="en">threshold</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-drc-exo;BarrierFeatureEvent"/>
-		<rdfs:range rdf:resource="&xsd;decimal"/>
-		<skos:definition xml:lang="en">The price or other variable (as a number) which has to be met for the event to be deemed to have occurred.</skos:definition>
+	<owl:ObjectProperty rdf:about="&fibo-der-drc-exo;usesCurrencyInAveraging">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasCurrency"/>
+		<rdfs:label xml:lang="en">uses currency in averaging</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;Currency"/>
+		<skos:definition xml:lang="en">indicates the currency used in averaging calculation</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:DatatypeProperty rdf:about="&fibo-der-drc-exo;usesWeightedAverage">
+		<rdfs:label xml:lang="en">uses weighted average</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-der-drc-exo;AsianOption"/>
+		<rdfs:range rdf:resource="&xsd;boolean"/>
+		<skos:definition xml:lang="en">indicates whether a weighted average is being used to calculate the average rate or strike price</skos:definition>
 	</owl:DatatypeProperty>
 	
 	<owl:Class rdf:about="&fibo-der-drc-opt;OptionPremium">
