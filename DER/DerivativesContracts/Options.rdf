@@ -395,6 +395,13 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-ip;MarketPrice"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasExpression"/>
+				<owl:onClass rdf:resource="&fibo-der-drc-opt;OptionPremiumFormula"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-acc-cur;hasMonetaryAmount"/>
 				<owl:onClass rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
@@ -412,6 +419,12 @@
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">The option premium is the income received by the seller (writer) of an option contract to another party. In-the-money option premiums are composed of two factors: intrinsic and extrinsic value. Out-of-the-money options&apos; premiums consist solely of extrinsic value. For stock options, the premium is quoted as a dollar amount per share, and most contracts represent the commitment of 100 shares.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-der-drc-opt;OptionPremiumFormula">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;Expression"/>
+		<rdfs:label xml:lang="en">option premium formula</rdfs:label>
+		<skos:definition xml:lang="en">expression used to calculate the premium based either on the price per option or percentage of the notional amount</skos:definition>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-der-drc-opt;OptionTradingStrategy">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;TradingStrategy"/>
 		<rdfs:subClassOf>
@@ -422,7 +435,7 @@
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">option trading strategy</rdfs:label>
 		<skos:definition xml:lang="en">trading tactic involving more than one option type, strike price, or expiration date on the same underlying asset</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Note that some trading strategies are considered financial instruments in their own right, but others are not. Those that are actual financial instruments are modeled as both strategies and options. The critical differentiators include whether the strategy itself can be traded, whether it has a financial instrument identifier independently from the identifier(s) of the embedded instrument(s), such as a FIGI or ISIN, and so forth.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Note that some trading strategies, such as a protective put, may be considered financial instruments in their own right, but most strategies are not. The critical differentiators include whether the strategy itself can be traded, whether it has a financial instrument identifier independently from the identifier(s) of the embedded instrument(s), such as a FIGI or ISIN, and so forth.</fibo-fnd-utl-av:explanatoryNote>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Option trading strategies refer to buying calls or put options or selling calls or put options or both together for the purpose of limiting losses and/or optimizing profits. Basically, these strategies utilize one or more combinations for the best outcome possible based on defined parameters. Simple combinations include option spread trades such as vertical spreads, calendar (or horizontal) spreads, and diagonal spreads. More involved combinations include trades such as condor or butterfly spreads which are actually combinations of two vertical spreads.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
@@ -526,6 +539,19 @@
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">For call options, the strike price is the price at which the security may be purchased by the option holder; for put options, the strike price is the price at which the security may be sold.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-der-drc-opt;StripStrategy">
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-opt;OptionTradingStrategy"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-dt-fd;hasSchedule"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;Schedule"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">option strip strategy</rdfs:label>
+		<skos:definition xml:lang="en">trading strategy that involves a sequential set of options with periodic reset dates, such that each period between resets behaves like an individual option (known as a Caplet or Floorlet).</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">The period between resets may be called a Caplet or Floorlet.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-der-drc-opt;VanillaOption">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;Option"/>
 		<rdfs:subClassOf>
@@ -562,6 +588,14 @@
 		<skos:definition xml:lang="en">price at which the contract may be exercised</skos:definition>
 	</owl:ObjectProperty>
 	
+	<owl:ObjectProperty rdf:about="&fibo-der-drc-opt;hasExerciseDateOffset">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDuration"/>
+		<rdfs:label xml:lang="en">has exercise date offset</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-der-drc-opt;StripStrategy"/>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Duration"/>
+		<skos:definition xml:lang="en">indicates the period in days between the reset date and the exercise date</skos:definition>
+	</owl:ObjectProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-der-drc-opt;hasExercisePrice">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasPrice"/>
 		<rdfs:label xml:lang="en">has exercise price</rdfs:label>
@@ -587,6 +621,14 @@
 		<skos:definition>indicates the exercise convention specified for the option</skos:definition>
 	</owl:ObjectProperty>
 	
+	<owl:ObjectProperty rdf:about="&fibo-der-drc-opt;hasInterestAccrualDateOffset">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDuration"/>
+		<rdfs:label xml:lang="en">has interest accrual date offset</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-der-drc-opt;StripStrategy"/>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Duration"/>
+		<skos:definition xml:lang="en">indicates the period in days between each reset date and the commencement of interest accrual for the next period</skos:definition>
+	</owl:ObjectProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-der-drc-opt;hasOptionHolder">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-agr-ctr;hasContractParty"/>
 		<rdfs:label>has option holder</rdfs:label>
@@ -602,6 +644,21 @@
 		<rdfs:range rdf:resource="&fibo-der-drc-opt;OptionIssuer"/>
 		<skos:definition>indicates the issuer of the option</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Typically, the option writer collects the premium when the option is initially sold.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-der-drc-opt;hasSettlementDateOffset">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDuration"/>
+		<rdfs:label xml:lang="en">has settlement date offset</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-der-drc-opt;StripStrategy"/>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Duration"/>
+		<skos:definition xml:lang="en">indicats the period in days between each reset date and the corresponding settlement date</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-der-drc-opt;hasStrikePercentageAmount">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasPrice"/>
+		<rdfs:label xml:lang="en">has strike percentage amount</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;PercentageMonetaryAmount"/>
+		<skos:definition xml:lang="en">indicates a strike price or level expressed as a percentage of the value of the underlying asset</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-drc-opt;hasStrikeRate">
