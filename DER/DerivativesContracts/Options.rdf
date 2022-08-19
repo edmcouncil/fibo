@@ -116,11 +116,12 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/Baskets/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesListings/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Countries/CountryRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/20220701/DerivativesContracts/Options/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/20220801/DerivativesContracts/Options/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/DER/20210601/DerivativesContracts/Options.rdf version of this ontology was revised to add an expiration date as an important property of an option.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/DER/20210901/DerivativesContracts/Options.rdf version of this ontology was revised to correct a restriction on an option with respect to an optional option premium which was not well-formed, and modified the definition of interest rate option to reflect a benchmark, and to be a specialization of vanilla option.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/DER/20211201/DerivativesContracts/Options.rdf version of this ontology was revised to make certain values subclasses of MonetaryAmount instead of MonetaryMeasure.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/DER/20220101/DerivativesContracts/Options.rdf version of this ontology was revised to add an explanatory note to basket option and make it a kind of exotic option and added interest rate derivative as the parent of interest rate option; added capped option as a kind of vanilla option.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/DER/20220701/DerivativesContracts/Options.rdf version of this ontology was revised to add the most common options trading strategies.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -158,7 +159,7 @@
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">basket option</rdfs:label>
 		<skos:definition xml:lang="en">option whose underlying asset is a group, or basket, of commodities, securities, indices, or currencies</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">As with other options, a basket option gives the holder the right, but not the obligation, to buy or sell the basket at a specific price, on or before a certain date.  This exotic option has all the characteristics of a standard option, but with the basis of the strike price on the weighted value of its components. Currency baskets are the most popular type of basket option, and they will settle in the holder&apos;s home currency. Because it involves just one transaction, a basket option often costs less than multiple single options as it saves on commissions and fees.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">As with other options, a basket option gives the holder the right, but not the obligation, to buy or sell the basket at a specific price, on or before a certain date. This exotic option has all the characteristics of a standard option, but with the basis of the strike price on the weighted value of its components. Currency baskets are the most popular type of basket option, and they will settle in the holder&apos;s home currency. Because it involves just one transaction, a basket option often costs less than multiple single options as it saves on commissions and fees.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-opt;BondOption">
@@ -171,6 +172,27 @@
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">bond option</rdfs:label>
 		<skos:definition xml:lang="en">option giving the buyer (holder) the right, but not the obligation, to buy or sell (depending on whether it is a call or a put) a bond at a certain price on or before a specified date</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-drc-opt;Butterfly">
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-opt;OptionTradingStrategy"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-drc-opt;hasExercisePrice"/>
+				<owl:onClass rdf:resource="&fibo-der-drc-opt;StrikePrice"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">3</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;comprises"/>
+				<owl:onClass rdf:resource="&fibo-fbc-fi-fi;Option"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">4</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">butterfly</rdfs:label>
+		<skos:definition xml:lang="en">strategy that combines bull and bear spreads with a fixed risk and capped profit</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">These spreads are intended as a market-neutral strategy and pay off the most if the underlying asset does not move prior to option expiration. They involve either four calls, four puts, or a combination of puts and calls with three strike prices. Butterfly spreads pay off the most if the underlying asset price doesn&apos;t change before the option expires. The upper and lower strike prices are equal distance from the middle, or at-the-money, strike price.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-opt;CallOption">
@@ -206,7 +228,7 @@
 		<rdfs:label xml:lang="en">equity option</rdfs:label>
 		<skos:definition xml:lang="en">option giving the buyer (holder) the right, but not the obligation, to buy (via a call option) or sell (via a put option) the underlying equity assets specified at a pre-determined price (i.e., the strike price, fixed or calculated), on or before a specified date (the expiration date)</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom xml:lang="en">ISO 10962, Securities and related financial instruments - Classification of financial instruments (CFI) code, Fourth Edition, 2019.</fibo-fnd-utl-av:adaptedFrom>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">For an Equity Option, one contract represents 100 shares of stock.  Equity options settle in &apos;American style&apos;.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">For an Equity Option, one contract represents 100 shares of stock. Equity options settle in &apos;American style&apos;.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-opt;ExoticOption">
@@ -269,6 +291,28 @@
 		<rdfs:label xml:lang="en">intrinsic value</rdfs:label>
 		<skos:definition xml:lang="en">measure of what an asset is worth, i.e. with respect to its current price</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">This measure is arrived at by means of an objective calculation or complex financial model. In financial analysis this term is used in conjunction with the work of identifying, as nearly as possible, the underlying value of a company and its cash flow. In options pricing it refers to the difference between the strike price of the option and the current price of the underlying asset.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-drc-opt;IronButterfly">
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-opt;OptionTradingStrategy"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;comprises"/>
+				<owl:onClass rdf:resource="&fibo-der-drc-opt;CallOption"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">2</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;comprises"/>
+				<owl:onClass rdf:resource="&fibo-der-drc-opt;PutOption"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">2</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">iron butterfly</rdfs:label>
+		<skos:definition xml:lang="en">butterfly strategy that consists of two call options and two put options, three strike prices and the same expiration date</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">The key to using this trade as part of a successful trading strategy is to forecast a time when option prices are likely to decline in value generally. This usually occurs during periods of sideways movement or a mild upward trend.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:synonym xml:lang="en">iron fly</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-opt;LongTermEquityAnticipationSecurity">
@@ -372,13 +416,14 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;TradingStrategy"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;involves"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;comprises"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-fi;Option"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">option trading strategy</rdfs:label>
 		<skos:definition xml:lang="en">trading tactic involving more than one option type, strike price, or expiration date on the same underlying asset</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Simple combinations include option spread trades such as vertical spreads, calendar (or horizontal) spreads, and diagonal spreads. More involved combinations include trades such as Condor or Butterfly spreads which are actually combinations of two vertical spreads.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Note that some trading strategies are considered financial instruments in their own right, but others are not. Those that are actual financial instruments are modeled as both strategies and options. The critical differentiators include whether the strategy itself can be traded, whether it has a financial instrument identifier independently from the identifier(s) of the embedded instrument(s), such as a FIGI or ISIN, and so forth.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Option trading strategies refer to buying calls or put options or selling calls or put options or both together for the purpose of limiting losses and/or optimizing profits. Basically, these strategies utilize one or more combinations for the best outcome possible based on defined parameters. Simple combinations include option spread trades such as vertical spreads, calendar (or horizontal) spreads, and diagonal spreads. More involved combinations include trades such as condor or butterfly spreads which are actually combinations of two vertical spreads.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:NamedIndividual rdf:about="&fibo-der-drc-opt;OutOfTheMoney">
@@ -430,6 +475,48 @@
 		<skos:definition xml:lang="en">standardized contract terms established by a securities or options exchange or by an options clearing entity</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom xml:lang="en">ISO 10962, Securities and related financial instruments - Classification of financial instruments (CFI) code, Fourth Edition, 2019.</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Such terms may relate to the underlying instruments, exercise price, expiration date, and contract size, for example.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-drc-opt;Stradle">
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-opt;OptionTradingStrategy"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;comprises"/>
+				<owl:onClass rdf:resource="&fibo-der-drc-opt;CallOption"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;comprises"/>
+				<owl:onClass rdf:resource="&fibo-der-drc-opt;PutOption"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">stradle</rdfs:label>
+		<skos:definition xml:lang="en">neutral options strategy that involves simultaneously buying both a put option and a call option for the underlying security with the same strike price and the same expiration date</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">The strategy is profitable only when the value of the underlier varies (rises or falls) from the strike price by more than the total premium paid.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-drc-opt;Strangle">
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-opt;OptionTradingStrategy"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;comprises"/>
+				<owl:onClass rdf:resource="&fibo-der-drc-opt;CallOption"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;comprises"/>
+				<owl:onClass rdf:resource="&fibo-der-drc-opt;PutOption"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">stradle</rdfs:label>
+		<skos:definition xml:lang="en">strategy in which the investor holds a position in both a call and a put option with different strike prices, but with the same expiration date and underlying asset</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">A strangle is a good strategy if you think the underlying security will experience a large price movement in the near future but are unsure of the direction. However, it is profitable mainly if the asset swings sharply in price.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-opt;StrikePrice">
