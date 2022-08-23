@@ -243,6 +243,12 @@
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">There are two types of condor spreads. A long condor seeks to profit from low volatility and little to no movement in the underlying asset. A short condor seeks to profit from high volatility and a sizable move in the underlying asset in either direction. A Condor Spread uses either all calls or all puts.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-der-drc-opt;CoveredCall">
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-opt;CallOption"/>
+		<rdfs:label xml:lang="en">covered call</rdfs:label>
+		<skos:definition xml:lang="en">call option in which the seller (investor) owns an equivalent amount of the underlying security</skos:definition>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-der-drc-opt;EquityOption">
 		<rdfs:subClassOf rdf:resource="&fibo-der-drc-opt;VanillaOption"/>
 		<rdfs:subClassOf rdf:resource="&fibo-der-sbd-sbd;EquityDerivative"/>
@@ -274,6 +280,32 @@
 		<skos:definition xml:lang="en">measure of the difference between the market price of an option, called the premium, and its intrinsic value</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">Extrinsic value is also the portion of the worth that has been assigned to an option by factors other than the underlying asset&apos;s price. The opposite of extrinsic value is intrinsic value, which is the inherent worth of an option.</fibo-fnd-utl-av:explanatoryNote>
 		<fibo-fnd-utl-av:synonym xml:lang="en">option time value</fibo-fnd-utl-av:synonym>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-drc-opt;Fence">
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-opt;OptionTradingStrategy"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;comprises"/>
+				<owl:onClass rdf:resource="&fibo-der-drc-opt;CallOption"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;comprises"/>
+				<owl:onClass rdf:resource="&fibo-der-drc-opt;PutOption"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">2</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">fence</rdfs:label>
+		<skos:definition xml:lang="en">option trading strategy that uses options to limit the range of possible returns on a financial instrument</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">A fence consists of the following elements:
+- long position in a financial instrument (e.g., a share, index or currency)
+- long put (normally with a strike price close to or at the current spot price of the financial instrument)
+- short put (with a strike price lower than the bought put - e.g., 80% of the current spot price)
+- short call (with a strike price higher than the current spot price).</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">The expiration dates of all the options are usually the same. The call strike is normally chosen in such a way that the sum total of the three option premiums is equal to zero. This investment strategy will ensure that the value of the investment at expiry will be between the strike price on the short call and the strike price on the long put. Thus, possible gains and losses (the value of the financial instrument minus the cost of acquiring it) are confined to a specified range. However, if the price of the financial instrument falls below the strike level of the sold put the investor will start participating in any further price declines of the financial instrument.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-opt;FixedIncomeOption">
@@ -502,12 +534,68 @@
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">An OTM call option will have a strike price that is higher than the market price of the underlying asset. Alternatively, an OTM put option has a strike price that is lower than the market price of the underlying asset.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:NamedIndividual>
 	
+	<owl:Class rdf:about="&fibo-der-drc-opt;ProtectiveCollar">
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-opt;Collar"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;comprises"/>
+				<owl:onClass rdf:resource="&fibo-der-drc-opt;CoveredCall"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;comprises"/>
+				<owl:onClass rdf:resource="&fibo-der-drc-opt;ProtectivePut"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">collar</rdfs:label>
+		<skos:definition xml:lang="en">collar that consists of a covered call and protective put</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">A protective collar consists of a long position in the underlying security, a put option purchased to hedge the downside risk on a stock, a call option written on the stock to finance the put purchase.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-drc-opt;ProtectivePut">
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-opt;PutOption"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-drc-opt;hasCalculatedMarketValue"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-drc-opt;OptionPremium"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">protective put</rdfs:label>
+		<skos:definition xml:lang="en">put option giving the buyer (holder) the right, but not the obligation, to sell the assets specified at with a strike price equal or close to the current price of the underlying asset, on or before a specified date</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">A protective put is a risk management and options strategy that involves holding a long position in the underlying asset (e.g., stock). A protective put strategy is analogous to the nature of insurance. The main goal of a protective put is to limit potential losses that may result from an unexpected price drop of the underlying asset</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:synonym xml:lang="en">synthetic call</fibo-fnd-utl-av:synonym>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-der-drc-opt;PutOption">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;Option"/>
 		<rdfs:label xml:lang="en">put option</rdfs:label>
 		<skos:definition xml:lang="en">option giving the buyer (holder) the right, but not the obligation, to sell the assets specified at a fixed price or formula, on or before a specified date</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom xml:lang="en">ISO 10962, Securities and related financial instruments - Classification of financial instruments (CFI) code, Fourth Edition, 2019.</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">The seller of the put option assumes the obligation of buying the assets specified should the buyer exercise the option.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-drc-opt;RiskReversal">
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-opt;OptionTradingStrategy"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;comprises"/>
+				<owl:onClass rdf:resource="&fibo-der-drc-opt;CallOption"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;comprises"/>
+				<owl:onClass rdf:resource="&fibo-der-drc-opt;PutOption"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">risk reversal</rdfs:label>
+		<skos:definition xml:lang="en">option trading strategy that consists of being short (selling) an out of the money put and being long (i.e., buying) an out of the money call, both with the same maturity</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">A risk reversal is a position which simulates profit and loss behavior of owning an underlying security; therefore, it is sometimes called a synthetic long. This is an investment strategy that amounts to both buying and selling out-of-money options simultaneously. In this strategy, the investor will first make a market hunch; if that hunch is bullish, he will want to go long. However, instead of going long on the stock, he will buy an out of the money call option, and simultaneously sell an out of the money put option. Presumably he will use the money from the sale of the put option to purchase the call option. Then as the stock goes up in price, the call option will be worth more, and the put option will be worth less.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-opt;StandardizedOptionsTerms">
@@ -596,6 +684,20 @@
 	
 	<owl:Class rdf:about="&fibo-der-drc-opt;StripStrategy">
 		<rdfs:subClassOf rdf:resource="&fibo-der-drc-opt;OptionTradingStrategy"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;comprises"/>
+				<owl:onClass rdf:resource="&fibo-der-drc-opt;CallOption"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;comprises"/>
+				<owl:onClass rdf:resource="&fibo-der-drc-opt;PutOption"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">2</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-dt-fd;hasSchedule"/>
