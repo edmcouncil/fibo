@@ -2,6 +2,7 @@
 <!DOCTYPE rdf:RDF [
 	<!ENTITY dct "http://purl.org/dc/terms/">
 	<!ENTITY fibo-be-corp-corp "https://spec.edmcouncil.org/fibo/ontology/BE/Corporations/Corporations/">
+	<!ENTITY fibo-be-le-lp "https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/">
 	<!ENTITY fibo-be-oac-cown "https://spec.edmcouncil.org/fibo/ontology/BE/OwnershipAndControl/CorporateOwnership/">
 	<!ENTITY fibo-be-ptr-ptr "https://spec.edmcouncil.org/fibo/ontology/BE/Partnerships/Partnerships/">
 	<!ENTITY fibo-fbc-dae-dbt "https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/">
@@ -42,6 +43,7 @@
 <rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/ontology/SEC/Equities/EquityInstruments/"
 	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fibo-be-corp-corp="https://spec.edmcouncil.org/fibo/ontology/BE/Corporations/Corporations/"
+	xmlns:fibo-be-le-lp="https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/"
 	xmlns:fibo-be-oac-cown="https://spec.edmcouncil.org/fibo/ontology/BE/OwnershipAndControl/CorporateOwnership/"
 	xmlns:fibo-be-ptr-ptr="https://spec.edmcouncil.org/fibo/ontology/BE/Partnerships/Partnerships/"
 	xmlns:fibo-fbc-dae-dbt="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"
@@ -96,8 +98,8 @@
 		<sm:fileAbbreviation>fibo-sec-eq-eq</sm:fileAbbreviation>
 		<sm:filename>EquityInstruments.rdf</sm:filename>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/Corporations/Corporations/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/OwnershipAndControl/CorporateOwnership/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/OwnershipAndControl/OwnershipParties/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/Partnerships/Partnerships/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"/>
@@ -126,7 +128,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesListings/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Countries/CountryRepresentation/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20220801/Equities/EquityInstruments/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20221001/Equities/EquityInstruments/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20180801/Equities/EquityInstruments.rdf version of this ontology was revised to replace &apos;publicly-traded share&apos; with &apos;exchange-specific share&apos;, which is the more commonly used designation and corresponds better with the intended semantics of this concept, to merge in concepts that were formerly in a separate ShareTerms ontology, and eliminate deprecated elements.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20190901/Equities/EquityInstruments.rdf version of this ontology was revised to refine the definition of listed share, update definitions to remove leading articles, add missing properties and restrictions, revise the definition of dividend.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20191201/Equities/EquityInstruments.rdf version of this ontology was revised to refine the definition of share to include a restriction for hasSharesOutstanding, eliminate duplication of concepts in LCC, and add the concept of an equity issuer.</skos:changeNote>
@@ -139,6 +141,7 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20220101/Equities/EquityInstruments.rdf version of this ontology was revised to deprecate the notion of a securities restriction specific to a limited partnership fund unit, which required import of unnecessary content and would not be used in practice.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20220301/Equities/EquityInstruments.rdf version of this ontology was revised to clean up deprecated elements, most of which had been in the ontology for awhile.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20220501/Equities/EquityInstruments.rdf version of this ontology was revised to address text formatting hygiene issues.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20220801/Equities/EquityInstruments.rdf version of this ontology was revised to add the notion of a VIE share.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -1019,6 +1022,25 @@
 		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;Share"/>
 		<rdfs:label xml:lang="en">unrestricted share</rdfs:label>
 		<skos:definition xml:lang="en">share whose ownership/transfer/sale is not subject to special conditions including country-specific restrictions</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-eq-eq;VariableInterestEntityShare">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;Share"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isIssuedBy"/>
+				<owl:someValuesFrom>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
+						<owl:someValuesFrom rdf:resource="&fibo-be-le-lp;VariableInterestEntity"/>
+					</owl:Restriction>
+				</owl:someValuesFrom>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en-US">variable interest entity share</rdfs:label>
+		<skos:definition>share that certifies ownership of a contractual right to a percentage of a company&apos;s profits</skos:definition>
+		<fibo-fnd-utl-av:explanatoryNote>Unlike a traditional stock certificate, the VIE share provides a legal proprietary interest in a completely separate company&apos;s assets, sometimes referred to as a shell company. The contractual right certified by the VIE share is derived from a contract between (1) the company named on the VIE share and (2) the shell company. In other words, VIE shareholders only have a traditional stock certificate in the completely separate shell company, which is entitled to a percentage of the named company&apos;s profits via a private contract.</fibo-fnd-utl-av:explanatoryNote>
+		<fibo-fnd-utl-av:synonym xml:lang="en-GB">VIE share</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-eq-eq;VotingRight">
