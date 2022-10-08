@@ -49,9 +49,9 @@
 		<rdfs:label>Interest Rates Ontology</rdfs:label>
 		<dct:abstract>This ontology provides the basic types of interest rate which are recognized in the financial markets, and the relationships between these where applicable. These include bank base rates, inter-bank offer rates, overnight rates of interest and the US Federal Funds rate which is widely used as a rate of reference. It also includes the concept of a market rate spread between two interest rates.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
-		<sm:contentLanguage rdf:datatype="&xsd;anyURI">http://www.w3.org/standards/techs/owl#w3c_all</sm:contentLanguage>
-		<sm:copyright>Copyright (c) 2014-2020 EDM Council, Inc.</sm:copyright>
-		<sm:copyright>Copyright (c) 2014-2020 Object Management Group, Inc.</sm:copyright>
+		<sm:contentLanguage rdf:datatype="&xsd;anyURI">https://www.w3.org/TR/owl2-quick-reference/</sm:contentLanguage>
+		<sm:copyright>Copyright (c) 2014-2022 EDM Council, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2014-2022 Object Management Group, Inc.</sm:copyright>
 		<sm:dependsOn rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/"/>
 		<sm:dependsOn rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/"/>
 		<sm:dependsOn rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/"/>
@@ -72,12 +72,13 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/Indicators/Indicators/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Countries/CountryRepresentation/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/20200201/InterestRates/InterestRates/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/20221001/InterestRates/InterestRates/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20140601/InterestRates/InterestRates.rdf version of this ontology was modified per the issue resolutions identified in the FIBO IND 1.0 FTF 1 report.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20150501/InterestRates/InterestRates.rdf version of this ontology was modified per the issue resolutions identified in the FIBO IND 1.0 FTF 2 report.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20160801/InterestRates/InterestRates.rdf version of this ontology was modified per the FIBO 2.0 RFC, including adding support for reference rates from FpML.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20180801/InterestRates/InterestRates.rdf version of this ontology was modified to eliminate deprecated elements.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20190901/InterestRates/InterestRates.rdf version of this ontology was modified to add the notion of a classifier for reference rates, so that we can differentiate between kinds of rates and the rates themselves, clean up definitions to conform with ISO 704, merge classes referenced in interest rate publishers to eliminate potential circular references, and eliminate duplication of concepts in LCC.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20200201/InterestRates/InterestRates.rdf version of this ontology was modified to replace &apos;financial information publisher&apos; with publisher for simplification purposes.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -162,8 +163,8 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ind-ir-ir;InterestRateAuthority">
+		<rdfs:subClassOf rdf:resource="&fibo-be-fct-pub;Publisher"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;FinancialServiceProvider"/>
-		<rdfs:subClassOf rdf:resource="&fibo-ind-ind-ind;FinancialInformationPublisher"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;produces"/>
@@ -179,6 +180,20 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-qt-qtu;QuantityKind"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isProvidedBy"/>
+				<owl:onClass rdf:resource="&fibo-be-fct-pub;MarketDataProvider"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isProducedBy"/>
+				<owl:onClass rdf:resource="&fibo-be-fct-pub;Publisher"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-ind-ir-ir;hasRateResetTimeOfDay"/>
 				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;DateTime"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
@@ -188,20 +203,6 @@
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-ind-ir-ir;hasTenor"/>
 				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;Duration"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isProducedBy"/>
-				<owl:onClass rdf:resource="&fibo-ind-ind-ind;FinancialInformationPublisher"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isProvidedBy"/>
-				<owl:onClass rdf:resource="&fibo-ind-ir-ir;MarketDataProvider"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -236,17 +237,8 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-ind-ir-ir;MarketDataProvider">
-		<rdfs:subClassOf rdf:resource="&fibo-ind-ind-ind;FinancialInformationPublisher"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-be-fct-pub;publishes"/>
-				<owl:onClass rdf:resource="&fibo-ind-ind-ind;MarketRate"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>market data provider</rdfs:label>
-		<skos:definition>publisher of data relevant to financial markets</skos:definition>
-		<fibo-fnd-utl-av:explanatoryNote>Market data providers include exchanges and independent data vendors, among others. Market valuation and related control and risk processes typically require explicit documentation of the source for a given market rate, such as an interest rate benchmark, exchange rate, stock prices, and so forth.</fibo-fnd-utl-av:explanatoryNote>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&fibo-be-fct-pub;MarketDataProvider"/>
 	</owl:Class>
 	
 	<owl:NamedIndividual rdf:about="&fibo-ind-ir-ir;NineMonths">
@@ -357,7 +349,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isProvidedBy"/>
-				<owl:onClass rdf:resource="&fibo-ind-ir-ir;MarketDataProvider"/>
+				<owl:onClass rdf:resource="&fibo-be-fct-pub;MarketDataProvider"/>
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
