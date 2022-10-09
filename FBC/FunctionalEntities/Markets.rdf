@@ -8,6 +8,7 @@
 	<!ENTITY fibo-fbc-fct-rga "https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/RegulatoryAgencies/">
 	<!ENTITY fibo-fbc-pas-fpas "https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/">
 	<!ENTITY fibo-fnd-arr-arr "https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Arrangements/">
+	<!ENTITY fibo-fnd-arr-cls "https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/ClassificationSchemes/">
 	<!ENTITY fibo-fnd-arr-lif "https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Lifecycles/">
 	<!ENTITY fibo-fnd-arr-rep "https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Reporting/">
 	<!ENTITY fibo-fnd-law-jur "https://spec.edmcouncil.org/fibo/ontology/FND/Law/Jurisdiction/">
@@ -36,6 +37,7 @@
 	xmlns:fibo-fbc-fct-rga="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/RegulatoryAgencies/"
 	xmlns:fibo-fbc-pas-fpas="https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/"
 	xmlns:fibo-fnd-arr-arr="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Arrangements/"
+	xmlns:fibo-fnd-arr-cls="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/ClassificationSchemes/"
 	xmlns:fibo-fnd-arr-lif="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Lifecycles/"
 	xmlns:fibo-fnd-arr-rep="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Reporting/"
 	xmlns:fibo-fnd-law-jur="https://spec.edmcouncil.org/fibo/ontology/FND/Law/Jurisdiction/"
@@ -75,6 +77,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/RegulatoryAgencies/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Arrangements/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/ClassificationSchemes/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Lifecycles/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Reporting/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Law/Jurisdiction/"/>
@@ -132,11 +135,51 @@
 	<owl:Class rdf:about="&fibo-fbc-fct-mkt;DataReportingServicesProvider">
 		<rdfs:subClassOf rdf:resource="&fibo-be-fct-pub;MarketDataProvider"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-rep;ReportingParty"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-plc-fac;Facility"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&lcc-lr;isIdentifiedBy"/>
+				<owl:onClass rdf:resource="&fibo-fbc-fct-mkt;MarketIdentifier"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&lcc-cr;isClassifiedBy"/>
+				<owl:onClass rdf:resource="&fibo-fbc-fct-mkt;MarketLevelClassifier"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-fct-mkt;hasFacilityAcronym"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+				<owl:onDataRange rdf:resource="&rdfs;Literal"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
 				<owl:onClass rdf:resource="&fibo-be-le-lp;LegalEntity"/>
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-fct-mkt;operatesInCountry"/>
+				<owl:someValuesFrom rdf:resource="&lcc-cr;Alpha2Code"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-fct-mkt;operatesInMunicipality"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-plc-loc;Municipality"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasFormalName"/>
+				<owl:someValuesFrom rdf:resource="&rdfs;Literal"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>data reporting services provider</rdfs:label>
@@ -177,7 +220,21 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-plc-fac;Facility"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-fct-mkt;hasExchangeAcronym"/>
+				<owl:onProperty rdf:resource="&lcc-lr;isIdentifiedBy"/>
+				<owl:onClass rdf:resource="&fibo-fbc-fct-mkt;MarketIdentifier"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&lcc-cr;isClassifiedBy"/>
+				<owl:onClass rdf:resource="&fibo-fbc-fct-mkt;MarketLevelClassifier"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-fct-mkt;hasFacilityAcronym"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 				<owl:onDataRange rdf:resource="&rdfs;Literal"/>
 			</owl:Restriction>
@@ -191,14 +248,8 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-fct-mkt;hasExchangeName"/>
-				<owl:someValuesFrom rdf:resource="&rdfs;Literal"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-fct-mkt;operatesInCountry"/>
-				<owl:someValuesFrom rdf:resource="&lcc-cr;Country"/>
+				<owl:someValuesFrom rdf:resource="&lcc-cr;Alpha2Code"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -209,15 +260,15 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&lcc-lr;isIdentifiedBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-fct-mkt;MarketIdentifier"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasFormalName"/>
+				<owl:someValuesFrom rdf:resource="&rdfs;Literal"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>exchange</rdfs:label>
 		<skos:definition>any organization, association, or group of persons, whether incorporated or unincorporated, which constitutes, maintains, or provides a facility for bringing together purchasers and sellers of financial instruments, commodities, or other products, services, or goods, and includes the market place and facilities maintained by such exchange</skos:definition>
-		<fibo-fnd-utl-av:adaptedFrom>ISO 10383, Securities and related financial instruments - Codes for exchanges and market identification (MIC), Third edition, 2012-10-01</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:adaptedFrom>ISO 10383, Securities and related financial instruments - Codes for exchanges and market identification (MIC), Third edition, 2012-10-01, confirmed 2018-03-29</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:adaptedFrom>Securities Exchange Act of 1934, as amended 12 August 2012</fibo-fnd-utl-av:adaptedFrom>
-		<fibo-fnd-utl-av:explanatoryNote>An exchange is typically a corporation or mutual organization that provides securities trading services, where securities may be bought and sold by third parties. As a facility, an exchange is also a place of trade associated with a particular site, i.e., stock exchange, regulated market such as an Electronic Trading Platform (ECN), or unregulated market, such as an Automated Trading System (ATS) (MIC - ISO 10383). Stock exchanges also provide facilities for the issue and redemption of securities as well as other financial instruments and capital events including the payment of income and dividends.
+		<fibo-fnd-utl-av:explanatoryNote>An exchange is typically a corporation or mutual organization that provides securities trading services, where securities may be bought and sold by third parties. As a facility, an exchange is also a place of trade associated with a particular site, i.e., stock exchange, regulated market such as an Electronic Trading Platform (ECN), or unregulated market, such as an Automated Trading System (ATS), or market data provider. Stock exchanges also provide facilities for the issue and redemption of securities as well as other financial instruments and capital events including the payment of income and dividends.
 
 The securities traded on a stock exchange include: shares issued by companies, unit trusts, derivatives, pooled investment products and bonds. To be able to trade a security on a certain stock exchange, it has to be listed there. Usually there is a central location at least for recordkeeping, but trade is less and less linked to such a physical place, as modern markets are electronic networks, which gives them advantages of speed and cost of transactions. Trade on an exchange is by members only.</fibo-fnd-utl-av:explanatoryNote>
 		<fibo-fnd-utl-av:synonym>market</fibo-fnd-utl-av:synonym>
@@ -253,28 +304,36 @@ The securities traded on a stock exchange include: shares issued by companies, u
 		<skos:definition>registered agent who, in accordance with the rules of an exchange, may trade on or through the exchange and whose name is entered in a list, register or roll kept by the exchange as an agent who may trade on or through the exchange</skos:definition>
 	</owl:Class>
 	
+	<owl:NamedIndividual rdf:about="&fibo-fbc-fct-mkt;ISO10383-ClassificationScheme">
+		<rdf:type rdf:resource="&fibo-fnd-arr-cls;ClassificationScheme"/>
+		<rdfs:label>ISO 10383 classification scheme</rdfs:label>
+		<skos:definition>classification scheme for market categories and related content per the ISO 10383 standard</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.iso20022.org/market-identifier-codes</fibo-fnd-utl-av:adaptedFrom>
+	</owl:NamedIndividual>
+	
 	<owl:Class rdf:about="&fibo-fbc-fct-mkt;MarketIdentifier">
 		<rdfs:subClassOf rdf:resource="&lcc-lr;Identifier"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&lcc-lr;identifies"/>
-				<owl:onClass rdf:resource="&fibo-fbc-fct-mkt;Exchange"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-fct-mkt;hasOperatingOrSegmentIndicator"/>
-				<owl:onDataRange rdf:resource="&xsd;string"/>
+				<owl:onClass>
+					<owl:Class>
+						<owl:unionOf rdf:parseType="Collection">
+							<rdf:Description rdf:about="&fibo-fbc-fct-mkt;Exchange">
+							</rdf:Description>
+							<rdf:Description rdf:about="&fibo-fbc-fct-mkt;DataReportingServicesProvider">
+							</rdf:Description>
+						</owl:unionOf>
+					</owl:Class>
+				</owl:onClass>
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>market identifier</rdfs:label>
-		<skos:definition>an identifier and code that specifies a universal method of identifying exchanges, trading platforms and regulated or non-regulated markets as sources of prices and related information in order to facilitate automated processing, i.e., stock exchanges, regulated markets, e.g., Electronic Trading Platforms (ECN), and unregulated markets, e.g., Automated Trading Systems (ATS)</skos:definition>
+		<skos:definition>identifier that specifies a universal method of identifying exchanges, trading platforms, regulated or non-regulated markets, and data reporting services providers as sources of prices and related information in order to facilitate automated processing</skos:definition>
 		<fibo-fnd-utl-av:abbreviation>MIC</fibo-fnd-utl-av:abbreviation>
 		<fibo-fnd-utl-av:adaptedFrom>ISO 10383, Securities and related financial instruments - Codes for exchanges and market identification (MIC), Third edition, 2012-10-01</fibo-fnd-utl-av:adaptedFrom>
-		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.anna-web.org/standards/mic-iso-10383/</fibo-fnd-utl-av:adaptedFrom>
-		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.iso20022.org/10383/iso-10383-market-identifier-codes</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.iso20022.org/market-identifier-codes</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:explanatoryNote>It is intended for use in any application and communication for identification of places
 - where a financial instrument is listed (place of official listing),
 - where a related trade is executed (place of trade), and
@@ -286,11 +345,62 @@ The securities traded on a stock exchange include: shares issued by companies, u
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-lif;LifecycleStage"/>
 		<rdfs:label>market indicator code status</rdfs:label>
 		<skos:definition>a lifecycle stage indicating the status of the MIC code, as specified by the registration authority</skos:definition>
-		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.iso20022.org/10383/iso-10383-market-identifier-codes</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.iso20022.org/market-identifier-codes</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-fct-mkt;MarketLevelClassifier">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-cls;Classifier"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isDefinedIn"/>
+				<owl:hasValue rdf:resource="&fibo-fbc-fct-mkt;ISO10383-ClassificationScheme"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&lcc-cr;classifies"/>
+				<owl:onClass>
+					<owl:Class>
+						<owl:unionOf rdf:parseType="Collection">
+							<rdf:Description rdf:about="&fibo-fbc-fct-mkt;Exchange">
+							</rdf:Description>
+							<rdf:Description rdf:about="&fibo-fbc-fct-mkt;DataReportingServicesProvider">
+							</rdf:Description>
+						</owl:unionOf>
+					</owl:Class>
+				</owl:onClass>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>market level classifier</rdfs:label>
+		<skos:definition>classifier that indicates whether the exchange or data reporting services provider is an operating level or market segment level facility</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>https://www.iso20022.org/sites/default/files/2021-12/ISO10383_MIC_Release_2_0_Factsheet.pdf</fibo-fnd-utl-av:adaptedFrom>
+	</owl:Class>
+	
+	<owl:NamedIndividual rdf:about="&fibo-fbc-fct-mkt;MarketLevelClassifier-OPRT">
+		<rdf:type rdf:resource="&fibo-fbc-fct-mkt;MarketLevelClassifier"/>
+		<rdfs:label>market-level classifier - OPRT</rdfs:label>
+		<skos:definition>market-level classifier for an operating-level facility</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>https://www.iso20022.org/sites/default/files/2021-12/ISO10383_MIC_Release_2_0_Factsheet.pdf</fibo-fnd-utl-av:adaptedFrom>
+		<lcc-lr:hasTag>OPRT</lcc-lr:hasTag>
+	</owl:NamedIndividual>
+	
+	<owl:NamedIndividual rdf:about="&fibo-fbc-fct-mkt;MarketLevelClassifier-SGMT">
+		<rdf:type rdf:resource="&fibo-fbc-fct-mkt;MarketLevelClassifier"/>
+		<rdfs:label>market-level classifier - SGMT</rdfs:label>
+		<skos:definition>market-level classifier for a segment-level facility</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>https://www.iso20022.org/sites/default/files/2021-12/ISO10383_MIC_Release_2_0_Factsheet.pdf</fibo-fnd-utl-av:adaptedFrom>
+		<lcc-lr:hasTag>SGMT</lcc-lr:hasTag>
+	</owl:NamedIndividual>
 	
 	<owl:Class rdf:about="&fibo-fbc-fct-mkt;MarketSegmentLevelMarket">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-mkt;Exchange"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&lcc-cr;isClassifiedBy"/>
+				<owl:hasValue rdf:resource="&fibo-fbc-fct-mkt;MarketLevelClassifier-SGMT"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&lcc-lr;isIdentifiedBy"/>
@@ -306,21 +416,20 @@ The securities traded on a stock exchange include: shares issued by companies, u
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>market segment-level market</rdfs:label>
-		<skos:definition>an exchange/market/trade reporting facility that specializes in one or more specific instruments or that is regulated uniquely from the operating-level market that manages it</skos:definition>
-		<fibo-fnd-utl-av:adaptedFrom>ISO 10383, Securities and related financial instruments - Codes for exchanges and market identification (MIC), Third edition, 2012-10-01</fibo-fnd-utl-av:adaptedFrom>
+		<skos:definition>section of an exchange/market/trade reporting facility that specialises in one or more specific instruments or that is regulated differently</skos:definition>
+		<skos:example>Dark pool</skos:example>
+		<skos:note>A market segment MIC can only be registered if an operating/exchange MIC already exists.</skos:note>
+		<skos:note>It is not required to have a MIC registered for all segments of a market, only for those segments that need to be identified.</skos:note>
+		<fibo-fnd-utl-av:adaptedFrom>ISO 10383, Securities and related financial instruments - Codes for exchanges and market identification (MIC), Third edition, 2012-10-01, confirmed 2018-03-29, clause 2.2</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:adaptedFrom>https://www.iso20022.org/sites/default/files/2021-12/ISO10383_MIC_Release_2_0_Factsheet.pdf</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-fct-mkt;MarketSegmentLevelMarketIdentifier">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-mkt;MarketIdentifier"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-fct-mkt;hasOperatingOrSegmentIndicator"/>
-				<owl:hasValue>S</owl:hasValue>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label>market segment-level market identifier</rdfs:label>
-		<skos:definition>a market identifier that identifies a section of an exchange/market/trade reporting facility that specializes in one or more specific instruments or that is regulated differently</skos:definition>
-		<fibo-fnd-utl-av:adaptedFrom>ISO 10383, Securities and related financial instruments - Codes for exchanges and market identification (MIC), Third edition, 2012-10-01</fibo-fnd-utl-av:adaptedFrom>
+		<skos:definition>market identifier that identifies a section of an exchange/market/trade reporting facility that specialises in one or more specific instruments or that is regulated differently</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>ISO 10383, Securities and related financial instruments - Codes for exchanges and market identification (MIC), Third edition, 2012-10-01, confirmed 2018-03-29, clause 2.2</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:adaptedFrom>https://www.iso20022.org/sites/default/files/2021-12/ISO10383_MIC_Release_2_0_Factsheet.pdf</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
 	
 	<owl:NamedIndividual rdf:about="&fibo-fbc-fct-mkt;ModifiedMICStatus">
@@ -358,26 +467,28 @@ The securities traded on a stock exchange include: shares issued by companies, u
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-mkt;Exchange"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
+				<owl:onProperty rdf:resource="&lcc-cr;isClassifiedBy"/>
+				<owl:hasValue rdf:resource="&fibo-fbc-fct-mkt;MarketLevelClassifier-OPRT"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
 				<owl:onProperty rdf:resource="&lcc-lr;isIdentifiedBy"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fbc-fct-mkt;OperatingLevelMarketIdentifier"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>operating-level market</rdfs:label>
-		<skos:definition>exchange/market/trade/reporting facility that operates in a specific market/country</skos:definition>
-		<fibo-fnd-utl-av:adaptedFrom>ISO 10383, Securities and related financial instruments - Codes for exchanges and market identification (MIC), Third edition, 2012-10-01</fibo-fnd-utl-av:adaptedFrom>
+		<skos:definition>exchange/market/trade reporting facility in a specific market/country</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>ISO 10383, Securities and related financial instruments - Codes for exchanges and market identification (MIC), Third edition, 2012-10-01, confirmed 2018-03-29, clause 2.1</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:adaptedFrom>https://www.iso20022.org/sites/default/files/2021-12/ISO10383_MIC_Release_2_0_Factsheet.pdf</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-fct-mkt;OperatingLevelMarketIdentifier">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-mkt;MarketIdentifier"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-fct-mkt;hasOperatingOrSegmentIndicator"/>
-				<owl:hasValue>O</owl:hasValue>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label>operating-level market identifier</rdfs:label>
-		<skos:definition>market identifier that identifies an entity operating an exchange/market/trade/reporting facility that operates in a specific market/country</skos:definition>
-		<fibo-fnd-utl-av:adaptedFrom>ISO 10383, Securities and related financial instruments - Codes for exchanges and market identification (MIC), Third edition, 2012-10-01</fibo-fnd-utl-av:adaptedFrom>
+		<skos:definition>market identifier that identifies an exchange/market/trade reporting facility in a specific market/country</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>ISO 10383, Securities and related financial instruments - Codes for exchanges and market identification (MIC), Third edition, 2012-10-01, confirmed 2018-03-29, clause 2.1</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:adaptedFrom>https://www.iso20022.org/sites/default/files/2021-12/ISO10383_MIC_Release_2_0_Factsheet.pdf</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-fct-mkt;OrganizedTradingFacility">
@@ -478,19 +589,21 @@ OTFs are intended to be similar in scope to a swap execution facility (SEF), a t
 	</owl:Class>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-fbc-fct-mkt;hasExchangeAcronym">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;hasAlias"/>
-		<rdfs:label>has exchange acronym</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fbc-fct-mkt;Exchange"/>
-		<skos:definition>indicates an acronym for the exchange / institution</skos:definition>
-		<fibo-fnd-utl-av:adaptedFrom>ISO 10383, Securities and related financial instruments - Codes for exchanges and market identification (MIC), Third edition, 2012-10-01</fibo-fnd-utl-av:adaptedFrom>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentProperty rdf:resource="&fibo-fbc-fct-mkt;hasFacilityAcronym"/>
 	</owl:DatatypeProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-fbc-fct-mkt;hasExchangeName">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;hasFormalName"/>
-		<rdfs:label>has exchange name</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fbc-fct-mkt;Exchange"/>
-		<skos:definition>indicates the name or description of the exchange / institution (which may be different from the name of the legal entity)</skos:definition>
-		<fibo-fnd-utl-av:adaptedFrom>ISO 10383, Securities and related financial instruments - Codes for exchanges and market identification (MIC), Third edition, 2012-10-01</fibo-fnd-utl-av:adaptedFrom>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentProperty rdf:resource="&fibo-fnd-rel-rel;hasFormalName"/>
+	</owl:DatatypeProperty>
+	
+	<owl:DatatypeProperty rdf:about="&fibo-fbc-fct-mkt;hasFacilityAcronym">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;hasAlias"/>
+		<rdfs:label>has facility acronym</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fnd-plc-fac;Facility"/>
+		<skos:definition>indicates a known acronym of the market</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>https://www.iso20022.org/sites/default/files/2021-12/ISO10383_MIC_Release_2_0_Factsheet.pdf</fibo-fnd-utl-av:adaptedFrom>
 	</owl:DatatypeProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-fct-mkt;hasMarketIdentifierCodeStatus">
@@ -501,26 +614,28 @@ OTFs are intended to be similar in scope to a swap execution facility (SEF), a t
 	</owl:ObjectProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-fbc-fct-mkt;hasOperatingOrSegmentIndicator">
-		<rdfs:label>has operating or segment indicator</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fbc-fct-mkt;MarketIdentifier"/>
-		<rdfs:range rdf:resource="&xsd;string"/>
-		<skos:definition>indicates whether the market identifier is for an operating exchange or market segment exchange</skos:definition>
-		<fibo-fnd-utl-av:adaptedFrom>ISO 10383, Securities and related financial instruments - Codes for exchanges and market identification (MIC), Third edition, 2012-10-01</fibo-fnd-utl-av:adaptedFrom>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
 	</owl:DatatypeProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-fct-mkt;operatesInCountry">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-plc-loc;hasCountry"/>
 		<rdfs:label>operates in country</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-fbc-fct-mkt;Exchange"/>
-		<rdfs:range rdf:resource="&lcc-cr;Country"/>
-		<skos:definition>indicates the country in which the exchange is registered and operates</skos:definition>
+		<rdfs:range rdf:resource="&lcc-cr;Alpha2Code"/>
+		<owl:propertyChainAxiom rdf:parseType="Collection">
+			<rdf:Description rdf:about="&fibo-fnd-plc-loc;hasCountry">
+			</rdf:Description>
+			<rdf:Description rdf:about="&lcc-lr;isIdentifiedBy">
+			</rdf:Description>
+		</owl:propertyChainAxiom>
+		<skos:definition>indicates the ISO 3166-1 alpha 2 code for the country in which an exchange or data reporting services provider operates</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>https://www.iso20022.org/sites/default/files/2021-12/ISO10383_MIC_Release_2_0_Factsheet.pdf</fibo-fnd-utl-av:adaptedFrom>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-fct-mkt;operatesInMunicipality">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-plc-loc;hasMunicipality"/>
 		<rdfs:label>operates in municipality</rdfs:label>
 		<rdfs:range rdf:resource="&fibo-fnd-plc-loc;Municipality"/>
-		<skos:definition>indicates the municipality or business center in which the exchange is registered and operates</skos:definition>
+		<skos:definition>indicates the municipality or business center in which in which an exchange or data reporting services provider operates</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>https://www.iso20022.org/sites/default/files/2021-12/ISO10383_MIC_Release_2_0_Factsheet.pdf</fibo-fnd-utl-av:adaptedFrom>
 	</owl:ObjectProperty>
 
 </rdf:RDF>
