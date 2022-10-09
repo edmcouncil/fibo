@@ -107,16 +107,24 @@
 	<owl:NamedIndividual rdf:about="&fibo-fbc-fct-mkt;ActiveMICStatus">
 		<rdf:type rdf:resource="&fibo-fbc-fct-mkt;MarketIdentifierCodeStatus"/>
 		<rdfs:label>active MIC status</rdfs:label>
-		<skos:definition>as of the last report or update, the exchange code was registered and actively in use</skos:definition>
+		<skos:definition>market identifier code status that indicates that as of the last report or update, the code was registered and actively in use</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom>ISO 10383, Securities and related financial instruments - Codes for exchanges and market identification (MIC), Third edition, 2012-10-01</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:adaptedFrom>https://www.iso20022.org/sites/default/files/2021-12/ISO10383_MIC_Release_2_0_Factsheet.pdf</fibo-fnd-utl-av:adaptedFrom>
 		<lcc-lr:hasTag>ACTIVE</lcc-lr:hasTag>
 	</owl:NamedIndividual>
 	
 	<owl:Class rdf:about="&fibo-fbc-fct-mkt;AlternativeTradingSystem">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-mkt;Exchange"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&lcc-cr;isClassifiedBy"/>
+				<owl:hasValue rdf:resource="&fibo-fbc-fct-mkt;MarketCategoryClassifier-ATSS"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label>alternative trading system</rdfs:label>
 		<skos:definition>trading venue that is more loosely regulated than a regulated exchange</skos:definition>
 		<fibo-fnd-utl-av:abbreviation>ATS</fibo-fnd-utl-av:abbreviation>
+		<fibo-fnd-utl-av:adaptedFrom>https://www.iso20022.org/sites/default/files/2021-12/ISO10383_MIC_Release_2_0_Factsheet.pdf</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:explanatoryNote>The SEC formally defines an alternative trading system as any organization, association, person, group of persons, or systems (1) that constitutes, maintains, or provides a market place or facilities for bringing together purchasers and sellers of securities or for otherwise performing with respect to securities the functions commonly performed by a stock exchange within the meaning of Rule 3b-16 under the Exchange Act; and (2) that does not (i) set rules governing the conduct of subscribers other than the conduct of such subscribers&apos; trading on such organization, association, person, group of persons, or system, or (ii) discipline subscribers other than by exclusion from trading.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
@@ -199,10 +207,17 @@
 	
 	<owl:Class rdf:about="&fibo-fbc-fct-mkt;DesignatedContractMarket">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-mkt;Exchange"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&lcc-cr;isClassifiedBy"/>
+				<owl:hasValue rdf:resource="&fibo-fbc-fct-mkt;MarketCategoryClassifier-DCMS"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label>designated contract market</rdfs:label>
 		<skos:definition>exchange, trading system, or platform that enables listing for trading futures or option contracts based on any underlying commodity, index or instrument</skos:definition>
 		<fibo-fnd-utl-av:abbreviation>DCM</fibo-fnd-utl-av:abbreviation>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.cftc.gov/IndustryOversight/TradingOrganizations/DCMs/index.htm</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:adaptedFrom>https://www.iso20022.org/sites/default/files/2021-12/ISO10383_MIC_Release_2_0_Factsheet.pdf</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-fct-mkt;ElectronicCommunicationNetwork">
@@ -309,6 +324,93 @@ The securities traded on a stock exchange include: shares issued by companies, u
 		<rdfs:label>ISO 10383 classification scheme</rdfs:label>
 		<skos:definition>classification scheme for market categories and related content per the ISO 10383 standard</skos:definition>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.iso20022.org/market-identifier-codes</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.iso20022.org/sites/default/files/2021-12/ISO10383_MIC_Release_2_0_Factsheet.pdf</fibo-fnd-utl-av:adaptedFrom>
+	</owl:NamedIndividual>
+	
+	<owl:Class rdf:about="&fibo-fbc-fct-mkt;MarketCategoryClassifier">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-cls;Classifier"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isDefinedIn"/>
+				<owl:hasValue rdf:resource="&fibo-fbc-fct-mkt;ISO10383-ClassificationScheme"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&lcc-cr;classifies"/>
+				<owl:onClass>
+					<owl:Class>
+						<owl:unionOf rdf:parseType="Collection">
+							<rdf:Description rdf:about="&fibo-fbc-fct-mkt;Exchange">
+							</rdf:Description>
+							<rdf:Description rdf:about="&fibo-fbc-fct-mkt;DataReportingServicesProvider">
+							</rdf:Description>
+						</owl:unionOf>
+					</owl:Class>
+				</owl:onClass>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>market category classifier</rdfs:label>
+		<skos:definition>classifier representing the controlled vocabulary that delineates the nature of the exchange or data reporting services provider where possible</skos:definition>
+		<skos:scopeNote>As of October 2022, the controlled vocabulary includes two codes that are not semantically useful, namely &apos;not specified&apos;, or NSPD, and &apos;other&apos;, or OTHR. These are included for the sake of completeness but ignored with respect to how the exchange or market is classified. If something has one of these two codes as a market category, they will be classified either as an operating-level or segment-level marketas appropriate with no other distinction in terms of how they are instantiated.</skos:scopeNote>
+		<fibo-fnd-utl-av:adaptedFrom>https://www.iso20022.org/sites/default/files/2021-12/ISO10383_MIC_Release_2_0_Factsheet.pdf</fibo-fnd-utl-av:adaptedFrom>
+	</owl:Class>
+	
+	<owl:NamedIndividual rdf:about="&fibo-fbc-fct-mkt;MarketCategoryClassifier-ATSS">
+		<rdf:type rdf:resource="&fibo-fbc-fct-mkt;MarketCategoryClassifier"/>
+		<rdfs:label>market category classifier - ATSS</rdfs:label>
+		<skos:definition>market category classifier for an alternative trading system</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>https://www.iso20022.org/sites/default/files/2021-12/ISO10383_MIC_Release_2_0_Factsheet.pdf</fibo-fnd-utl-av:adaptedFrom>
+		<lcc-lr:hasTag>ATSS</lcc-lr:hasTag>
+	</owl:NamedIndividual>
+	
+	<owl:NamedIndividual rdf:about="&fibo-fbc-fct-mkt;MarketCategoryClassifier-DCMS">
+		<rdf:type rdf:resource="&fibo-fbc-fct-mkt;MarketCategoryClassifier"/>
+		<rdfs:label>market category classifier - DCMS</rdfs:label>
+		<skos:definition>market category classifier for a designated contract market</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>https://www.iso20022.org/sites/default/files/2021-12/ISO10383_MIC_Release_2_0_Factsheet.pdf</fibo-fnd-utl-av:adaptedFrom>
+		<lcc-lr:hasTag>DCMS</lcc-lr:hasTag>
+	</owl:NamedIndividual>
+	
+	<owl:NamedIndividual rdf:about="&fibo-fbc-fct-mkt;MarketCategoryClassifier-MLTF">
+		<rdf:type rdf:resource="&fibo-fbc-fct-mkt;MarketCategoryClassifier"/>
+		<rdfs:label>market category classifier - MLTF</rdfs:label>
+		<skos:definition>market category classifier for a multilateral trading facility</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>https://www.iso20022.org/sites/default/files/2021-12/ISO10383_MIC_Release_2_0_Factsheet.pdf</fibo-fnd-utl-av:adaptedFrom>
+		<lcc-lr:hasTag>MLTF</lcc-lr:hasTag>
+	</owl:NamedIndividual>
+	
+	<owl:NamedIndividual rdf:about="&fibo-fbc-fct-mkt;MarketCategoryClassifier-OTFS">
+		<rdf:type rdf:resource="&fibo-fbc-fct-mkt;MarketCategoryClassifier"/>
+		<rdfs:label>market category classifier - OTFS</rdfs:label>
+		<skos:definition>market category classifier for an organized trading facility</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>https://www.iso20022.org/sites/default/files/2021-12/ISO10383_MIC_Release_2_0_Factsheet.pdf</fibo-fnd-utl-av:adaptedFrom>
+		<lcc-lr:hasTag>OTFS</lcc-lr:hasTag>
+	</owl:NamedIndividual>
+	
+	<owl:NamedIndividual rdf:about="&fibo-fbc-fct-mkt;MarketCategoryClassifier-RMKT">
+		<rdf:type rdf:resource="&fibo-fbc-fct-mkt;MarketCategoryClassifier"/>
+		<rdfs:label>market category classifier - RMKT</rdfs:label>
+		<skos:definition>market category classifier for a regulated market</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>https://www.iso20022.org/sites/default/files/2021-12/ISO10383_MIC_Release_2_0_Factsheet.pdf</fibo-fnd-utl-av:adaptedFrom>
+		<lcc-lr:hasTag>RMKT</lcc-lr:hasTag>
+	</owl:NamedIndividual>
+	
+	<owl:NamedIndividual rdf:about="&fibo-fbc-fct-mkt;MarketCategoryClassifier-SEFS">
+		<rdf:type rdf:resource="&fibo-fbc-fct-mkt;MarketCategoryClassifier"/>
+		<rdfs:label>market category classifier - SEFS</rdfs:label>
+		<skos:definition>market category classifier for a swap execution facility</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>https://www.iso20022.org/sites/default/files/2021-12/ISO10383_MIC_Release_2_0_Factsheet.pdf</fibo-fnd-utl-av:adaptedFrom>
+		<lcc-lr:hasTag>SEFS</lcc-lr:hasTag>
+	</owl:NamedIndividual>
+	
+	<owl:NamedIndividual rdf:about="&fibo-fbc-fct-mkt;MarketCategoryClassifier-SINT">
+		<rdf:type rdf:resource="&fibo-fbc-fct-mkt;MarketCategoryClassifier"/>
+		<rdfs:label>market category classifier - SINT</rdfs:label>
+		<skos:definition>market category classifier for systematic internalizer</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>https://www.iso20022.org/sites/default/files/2021-12/ISO10383_MIC_Release_2_0_Factsheet.pdf</fibo-fnd-utl-av:adaptedFrom>
+		<lcc-lr:hasTag>SINT</lcc-lr:hasTag>
 	</owl:NamedIndividual>
 	
 	<owl:Class rdf:about="&fibo-fbc-fct-mkt;MarketIdentifier">
@@ -334,6 +436,7 @@ The securities traded on a stock exchange include: shares issued by companies, u
 		<fibo-fnd-utl-av:abbreviation>MIC</fibo-fnd-utl-av:abbreviation>
 		<fibo-fnd-utl-av:adaptedFrom>ISO 10383, Securities and related financial instruments - Codes for exchanges and market identification (MIC), Third edition, 2012-10-01</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.iso20022.org/market-identifier-codes</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.iso20022.org/sites/default/files/2021-12/ISO10383_MIC_Release_2_0_Factsheet.pdf</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:explanatoryNote>It is intended for use in any application and communication for identification of places
 - where a financial instrument is listed (place of official listing),
 - where a related trade is executed (place of trade), and
@@ -448,10 +551,17 @@ The securities traded on a stock exchange include: shares issued by companies, u
 				<owl:allValuesFrom rdf:resource="&fibo-fbc-pas-fpas;FinancialServiceProvider"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&lcc-cr;isClassifiedBy"/>
+				<owl:hasValue rdf:resource="&fibo-fbc-fct-mkt;MarketCategoryClassifier-MLTF"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label>multilateral trading facility</rdfs:label>
 		<skos:definition>trading system that facilitates the exchange of financial instruments between multiple parties</skos:definition>
 		<fibo-fnd-utl-av:abbreviation>MTF</fibo-fnd-utl-av:abbreviation>
 		<fibo-fnd-utl-av:adaptedFrom>http://www.investopedia.com/terms/m/multilateral_trading_facility.asp</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:adaptedFrom>https://www.iso20022.org/sites/default/files/2021-12/ISO10383_MIC_Release_2_0_Factsheet.pdf</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:explanatoryNote>Multilateral trading facilities allow eligible contract participants to gather and transfer a variety of securities, especially instruments that may not have an official market. These facilities are often electronic systems controlled by approved market operators or larger investment banks. Traders will usually submit orders electronically, where a matching software engine is used to pair buyers with sellers.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
@@ -501,17 +611,25 @@ The securities traded on a stock exchange include: shares issued by companies, u
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
+				<owl:onProperty rdf:resource="&lcc-cr;isClassifiedBy"/>
+				<owl:hasValue rdf:resource="&fibo-fbc-fct-mkt;MarketCategoryClassifier-OTFS"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isGovernedBy"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fnd-law-jur;Jurisdiction"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label>organized trading facility</rdfs:label>
+		<rdfs:label xml:lang="en-UK">organised trading facility</rdfs:label>
+		<rdfs:label xml:lang="en-US">organized trading facility</rdfs:label>
 		<rdfs:seeAlso rdf:resource="https://www.financierworldwide.com/organised-trading-facilities-how-they-differ-from-mtfs"/>
 		<owl:disjointWith rdf:resource="&fibo-fbc-fct-mkt;MultilateralTradingFacility"/>
 		<owl:disjointWith rdf:resource="&fibo-fbc-fct-mkt;RegulatedExchange"/>
 		<skos:definition>multi-lateral system which is not an RM or an MTF and in which multiple third-party buying and selling interests in bonds, structured finance products, emission allowances or derivatives are able to interact in the system in a way that results in a contract in accordance with the provisions of Title II of MiFID II</skos:definition>
 		<fibo-fnd-utl-av:abbreviation>OTF</fibo-fnd-utl-av:abbreviation>
 		<fibo-fnd-utl-av:adaptedFrom>http://www.marketswiki.com/mwiki/Organized_Trading_Facility</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:adaptedFrom>https://www.iso20022.org/sites/default/files/2021-12/ISO10383_MIC_Release_2_0_Factsheet.pdf</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:explanatoryNote>OTFs were introduced by the European Commission as part of MiFID II and are focused on non-equities such as derivatives and cash bond markets.
 
 OTFs are intended to be similar in scope to a swap execution facility (SEF), a type of entity created by the Dodd-Frank Act in the U.S. The goal of SEFs and OTFs is to bring transparency and structure to OTC derivatives trading.</fibo-fnd-utl-av:explanatoryNote>
@@ -554,6 +672,12 @@ OTFs are intended to be similar in scope to a swap execution facility (SEF), a t
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-mkt;Exchange"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
+				<owl:onProperty rdf:resource="&lcc-cr;isClassifiedBy"/>
+				<owl:hasValue rdf:resource="&fibo-fbc-fct-mkt;MarketCategoryClassifier-RMKT"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-fct-rga;isRegulatedBy"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fbc-fct-rga;RegulatoryAgency"/>
 			</owl:Restriction>
@@ -568,24 +692,40 @@ OTFs are intended to be similar in scope to a swap execution facility (SEF), a t
 		<skos:definition>regulated market that is operated by and/or managed by a market operator that brings together or facilitates the bringing together of multiple third-party buying and selling interests in financial instruments</skos:definition>
 		<fibo-fnd-utl-av:abbreviation>RM</fibo-fnd-utl-av:abbreviation>
 		<fibo-fnd-utl-av:adaptedFrom>http://www.investopedia.com/terms/r/regulated-market.asp</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:adaptedFrom>https://www.iso20022.org/sites/default/files/2021-12/ISO10383_MIC_Release_2_0_Factsheet.pdf</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:explanatoryNote>In the financial community in the EU, such an exchange operates in accordance with its non-discretionary rules in a way that results in a contract, in respect of the financial instruments admitted to trading under its rules and/or systems, and which is authorised and functions regularly and in accordance with the provisions of Title III of MiFID II.</fibo-fnd-utl-av:explanatoryNote>
 		<fibo-fnd-utl-av:synonym>regulated market</fibo-fnd-utl-av:synonym>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-fct-mkt;SwapExecutionFacility">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-mkt;Exchange"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&lcc-cr;isClassifiedBy"/>
+				<owl:hasValue rdf:resource="&fibo-fbc-fct-mkt;MarketCategoryClassifier-SEFS"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label>swap execution facility</rdfs:label>
 		<skos:definition>exchange that enables participants to execute and trade swaps</skos:definition>
 		<fibo-fnd-utl-av:abbreviation>SEF</fibo-fnd-utl-av:abbreviation>
+		<fibo-fnd-utl-av:adaptedFrom>https://www.iso20022.org/sites/default/files/2021-12/ISO10383_MIC_Release_2_0_Factsheet.pdf</fibo-fnd-utl-av:adaptedFrom>
 		<fibo-fnd-utl-av:explanatoryNote>Swap execution facilities, including trading systems and other platforms, allow for greater transparency and represent a significant shift in the way derivative trading has been done. The Dodd-Frank Act lays the foundation for this change of derivative execution.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-fct-mkt;SystematicInternaliser">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-mkt;Exchange"/>
-		<rdfs:label>systematic internaliser</rdfs:label>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&lcc-cr;isClassifiedBy"/>
+				<owl:hasValue rdf:resource="&fibo-fbc-fct-mkt;MarketCategoryClassifier-SINT"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en-UK">systematic internaliser</rdfs:label>
+		<rdfs:label xml:lang="en-US">systematic internalizer</rdfs:label>
 		<skos:definition>investment firm that, on an organised, frequent, systematic and substantial basis, deals on its own account by executing client orders outside a regulated exchange, MTF or OTF without operating a multilateral system</skos:definition>
 		<fibo-fnd-utl-av:abbreviation>SI</fibo-fnd-utl-av:abbreviation>
 		<fibo-fnd-utl-av:adaptedFrom>https://www.emissions-euets.com/systematic-internaliser</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:adaptedFrom>https://www.iso20022.org/sites/default/files/2021-12/ISO10383_MIC_Release_2_0_Factsheet.pdf</fibo-fnd-utl-av:adaptedFrom>
 	</owl:Class>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-fbc-fct-mkt;hasExchangeAcronym">
