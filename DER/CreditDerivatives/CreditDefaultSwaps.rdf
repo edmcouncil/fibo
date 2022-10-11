@@ -6,7 +6,9 @@
 	<!ENTITY fibo-der-drc-swp "https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Swaps/">
 	<!ENTITY fibo-der-sbd-sbd "https://spec.edmcouncil.org/fibo/ontology/DER/SecurityBasedDerivatives/SecurityBasedDerivatives/">
 	<!ENTITY fibo-fbc-dae-cre "https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/CreditEvents/">
+	<!ENTITY fibo-fbc-fct-ra "https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/RegistrationAuthorities/">
 	<!ENTITY fibo-fbc-fi-fi "https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/">
+	<!ENTITY fibo-fbc-fi-stl "https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/Settlement/">
 	<!ENTITY fibo-fbc-pas-fpas "https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/">
 	<!ENTITY fibo-fnd-acc-cur "https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/">
 	<!ENTITY fibo-fnd-agr-ctr "https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/">
@@ -34,7 +36,9 @@
 	xmlns:fibo-der-drc-swp="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Swaps/"
 	xmlns:fibo-der-sbd-sbd="https://spec.edmcouncil.org/fibo/ontology/DER/SecurityBasedDerivatives/SecurityBasedDerivatives/"
 	xmlns:fibo-fbc-dae-cre="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/CreditEvents/"
+	xmlns:fibo-fbc-fct-ra="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/RegistrationAuthorities/"
 	xmlns:fibo-fbc-fi-fi="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"
+	xmlns:fibo-fbc-fi-stl="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/Settlement/"
 	xmlns:fibo-fbc-pas-fpas="https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/"
 	xmlns:fibo-fnd-acc-cur="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"
 	xmlns:fibo-fnd-agr-ctr="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"
@@ -68,6 +72,8 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/SecurityBasedDerivatives/SecurityBasedDerivatives/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/CreditEvents/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/Settlement/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/RegistrationAuthorities/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"/>
@@ -85,18 +91,6 @@
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/CreditDerivatives/CreditDefaultSwaps/"/>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Provisional"/>
 	</owl:Ontology>
-	
-	<owl:Class rdf:about="&fibo-der-cr-cds;CDSCashSettlement">
-		<rdfs:subClassOf rdf:resource="&fibo-der-cr-cds;CDSContingentDeliveryTerms"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-cr-cds;specifiesDealer"/>
-				<owl:allValuesFrom rdf:resource="&fibo-der-cr-cds;CDSCashSettlementDealer"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">credit default swap cash settlement</rdfs:label>
-		<owl:disjointWith rdf:resource="&fibo-der-cr-cds;CDSPhysicalSettlement"/>
-	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-cr-cds;CDSCashSettlementDealer">
 		<rdfs:label xml:lang="en">credit default swap cash settlement dealer</rdfs:label>
@@ -175,7 +169,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;embodies"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-cr-cds;CreditDefaultSwapContract"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-cr-cds;CreditDefaultSwap"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">credit default swap contingent transaction</rdfs:label>
@@ -282,25 +276,6 @@
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">The amount can be specified in terms of a known currency amount or as an amount calculated on a formula basis by reference to a per annum fixed rate. The applicable business day convention and business day for adjusting any fixed rate payer payment date if it would otherwise fall on a day that is not a business day are to be specified. Review notes: Note that both of the above possibilities refer to the amount, not the determination of dates. It is assumed that this is always a specification of how to determine the dates (a schedule specification) and not an explicit list of dates and amounts on each date. If the latter is applicable, a term for this needs to be added as a type of &quot;Explicit Schedule&quot;.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-cr-cds;CDSPhysicalSettlement">
-		<rdfs:subClassOf rdf:resource="&fibo-der-cr-cds;CDSContingentDeliveryTerms"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-cr-cds;mayRequire"/>
-				<owl:onClass rdf:resource="&fibo-der-cr-cds;EscrowAgent"/>
-				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-cr-cds;specifies"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-cr-cds;DeliverableObligation"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">credit default swap physical settlement</rdfs:label>
-		<skos:definition xml:lang="en">Physical settlement is where you deliver the reference obligation (e.g.a bond) itself. Deifnition Origin:SMER</skos:definition>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-der-cr-cds;ContingentLeg">
 		<rdfs:subClassOf rdf:resource="&fibo-der-drc-swp;SwapLeg"/>
 		<rdfs:label xml:lang="en">contingent leg</rdfs:label>
@@ -319,23 +294,8 @@
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">This amounts to a legal entity which is the reference entity and a security issued by that entity, as a means of measuring the credit performance of that legal entity.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-cr-cds;CreditDefaultSwapContract">
-		<rdfs:subClassOf rdf:resource="&fibo-der-cr-cds;CreditDerivative"/>
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-swp;Swap"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-pas-pas;hasBuyer"/>
-				<owl:onClass rdf:resource="&fibo-der-drc-swp;SwapPayingParty"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">2</owl:minQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-pas-pas;hasSeller"/>
-				<owl:onClass rdf:resource="&fibo-der-drc-swp;SwapReceivingParty"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">2</owl:minQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
+	<owl:Class rdf:about="&fibo-der-cr-cds;CreditDefaultSwap">
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-bsc;CreditDerivative"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-cr-cds;establishes"/>
@@ -373,8 +333,9 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">credit default swap contract</rdfs:label>
-		<skos:definition xml:lang="en">In a credit default swap one party (the protection seller) agrees to compensate another party (the protection buyer) if a specified company or Sovereign (the reference entity) experiences a credit event, indicating it is or may be unable to service its debts. The protection seller is typically paid a fee and/or premium, expressed as an annualized percent of the notional in basis points, regularly over the life of the transaction or otherwise as agreed by the parties.</skos:definition>
-		<skos:editorialNote xml:lang="en">Earlier draft definition: A swap instrument in which one party underwrites the risk of credit default of the other party or of an identified third party.</skos:editorialNote>
+		<skos:definition xml:lang="en">bilateral contract in which one party (protection seller) agrees to provide payment to the other party (protection buyer) should a credit event occur against the underlying, which could be a specified debt (the reference obligation), a specific debt issuer (reference entity), a basket of reference entities and/or reference obligations, or a credit index (reference index)</skos:definition>
+		<fibo-fnd-utl-av:adaptedFrom>ISO 10962:2019, Securities and related financial instruments - Classification of financial instruments (CFI) code</fibo-fnd-utl-av:adaptedFrom>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">The protection seller is typically paid a fee and/or premium, expressed as an annualized percent of the notional in basis points, regularly over the life of the transaction or otherwise as agreed by the parties.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-cr-cds;CreditDefaultSwapTransaction">
@@ -387,17 +348,6 @@
 		<rdfs:label xml:lang="en">credit default swap transaction</rdfs:label>
 		<skos:definition xml:lang="en">The transaction in which one party pay a fee or fees for credit protection and another commits to enter into the contingent transaction if the credit event takes place.</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">This is embodied in a Fee Leg.</fibo-fnd-utl-av:explanatoryNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-cr-cds;CreditDerivative">
-		<rdfs:subClassOf rdf:resource="&fibo-der-sbd-sbd;DebtInstrumentDerivative"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-cr-cds;CreditEventUnderlying"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">credit derivative</rdfs:label>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-cr-cds;CreditEventNotice">
@@ -445,19 +395,19 @@
 	<owl:Class rdf:about="&fibo-der-cr-cds;CreditProtectionContingentLegTerms">
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-cr-cds;specifies.1"/>
+				<owl:onProperty rdf:resource="&fibo-fbc-fct-ra;specifies"/>
 				<owl:someValuesFrom rdf:resource="&fibo-der-cr-cds;CDSContingentTransaction"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-cr-cds;specifies.2"/>
+				<owl:onProperty rdf:resource="&fibo-fbc-fct-ra;specifies"/>
 				<owl:someValuesFrom rdf:resource="&fibo-der-cr-cds;CDSCreditEvent"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-cr-cds;specifiesObligation"/>
+				<owl:onProperty rdf:resource="&fibo-fbc-fct-ra;specifies"/>
 				<owl:someValuesFrom rdf:resource="&fibo-der-cr-cds;ReferenceObligation"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -559,15 +509,15 @@
 	
 	<owl:DatatypeProperty rdf:about="&fibo-der-cr-cds;accruedInterestApplicable">
 		<rdfs:label xml:lang="en">accrued interest applicable</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-cr-cds;CDSCashSettlement"/>
-		<rdfs:domain rdf:resource="&fibo-der-cr-cds;CDSPhysicalSettlement"/>
+		<rdfs:domain rdf:resource="&fibo-fbc-fi-stl;CashSettlementTerms"/>
+		<rdfs:domain rdf:resource="&fibo-fbc-fi-stl;PhysicalSettlementTerms"/>
 		<rdfs:range rdf:resource="&xsd;boolean"/>
 		<skos:definition xml:lang="en">Whether accrued interest is included.</skos:definition>
 	</owl:DatatypeProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-der-cr-cds;additionalTerm">
 		<rdfs:label xml:lang="en">additional term</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-cr-cds;CreditDefaultSwapContract"/>
+		<rdfs:domain rdf:resource="&fibo-der-cr-cds;CreditDefaultSwap"/>
 		<rdfs:range rdf:resource="&xsd;string"/>
 		<skos:definition xml:lang="en">Information conveying additional contractual terms for the contract.</skos:definition>
 	</owl:DatatypeProperty>
@@ -581,7 +531,7 @@
 	
 	<owl:DatatypeProperty rdf:about="&fibo-der-cr-cds;cashSettlementBusinessDays">
 		<rdfs:label xml:lang="en">cash settlement business days</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-cr-cds;CDSCashSettlement"/>
+		<rdfs:domain rdf:resource="&fibo-fbc-fi-stl;CashSettlementTerms"/>
 		<rdfs:range rdf:resource="&xsd;integer"/>
 		<skos:definition xml:lang="en">The number of business days used in the determination of the cash settlement payment date.</skos:definition>
 	</owl:DatatypeProperty>
@@ -631,14 +581,14 @@
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-cr-cds;effectiveDate">
 		<rdfs:label xml:lang="en">effective date</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-cr-cds;CreditDefaultSwapContract"/>
+		<rdfs:domain rdf:resource="&fibo-der-cr-cds;CreditDefaultSwap"/>
 		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Date"/>
 		<skos:definition xml:lang="en">The effective starting date of the credit protection defined in the contract.</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-der-cr-cds;escrowApplicable">
 		<rdfs:label xml:lang="en">escrow applicable</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-cr-cds;CDSPhysicalSettlement"/>
+		<rdfs:domain rdf:resource="&fibo-fbc-fi-stl;PhysicalSettlementTerms"/>
 		<rdfs:range rdf:resource="&xsd;boolean"/>
 		<skos:definition xml:lang="en">Whether physical settlement must take place through the use of an escrow agent.</skos:definition>
 	</owl:DatatypeProperty>
@@ -646,7 +596,7 @@
 	<owl:ObjectProperty rdf:about="&fibo-der-cr-cds;establishes">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;confers"/>
 		<rdfs:label xml:lang="en">establishes</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-cr-cds;CreditDefaultSwapContract"/>
+		<rdfs:domain rdf:resource="&fibo-der-cr-cds;CreditDefaultSwap"/>
 		<rdfs:range rdf:resource="&fibo-der-cr-cds;ContingentTransactionCommitment"/>
 	</owl:ObjectProperty>
 	
@@ -673,7 +623,7 @@
 	<owl:ObjectProperty rdf:about="&fibo-der-cr-cds;hasReferenceObligation">
 		<rdfs:subPropertyOf rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
 		<rdfs:label xml:lang="en">has reference obligation</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-cr-cds;CreditDefaultSwapContract"/>
+		<rdfs:domain rdf:resource="&fibo-der-cr-cds;CreditDefaultSwap"/>
 		<rdfs:range rdf:resource="&fibo-der-cr-cds;ReferenceObligation"/>
 	</owl:ObjectProperty>
 	
@@ -718,20 +668,20 @@
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-cr-cds;mayRequire">
 		<rdfs:label xml:lang="en">may require</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-cr-cds;CDSPhysicalSettlement"/>
+		<rdfs:domain rdf:resource="&fibo-fbc-fi-stl;PhysicalSettlementTerms"/>
 		<rdfs:range rdf:resource="&fibo-der-cr-cds;EscrowAgent"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-cr-cds;minimumQuotationAmount">
 		<rdfs:label xml:lang="en">minimum quotation amount</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-cr-cds;CDSCashSettlement"/>
+		<rdfs:domain rdf:resource="&fibo-fbc-fi-stl;CashSettlementTerms"/>
 		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
 		<skos:definition xml:lang="en">The minimum intended threshold amount of outstanding principal balance of the reference obligation for which the quote should be obtained.</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-der-cr-cds;modifiedEquityDelivery">
 		<rdfs:label xml:lang="en">modified equity delivery</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-cr-cds;CreditDefaultSwapContract"/>
+		<rdfs:domain rdf:resource="&fibo-der-cr-cds;CreditDefaultSwap"/>
 		<rdfs:range rdf:resource="&xsd;boolean"/>
 		<skos:definition xml:lang="en">no-one knows what this means. Equity? It is not considered a default if the coupon on a Preferred Share is not paid. There are provisions in preference shares, since a company may be legally restrited from paying dividends other than from its reserves (e.g. in Aus law) so therefore this can&apos;t be a default. FpML: &apos;Value of this element set to \&apos;true\&apos; indicates that modified equity delivery is applicable.&apos;</skos:definition>
 	</owl:DatatypeProperty>
@@ -744,7 +694,7 @@
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-cr-cds;notionalAmount">
 		<rdfs:label xml:lang="en">notional amount</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-cr-cds;CreditDefaultSwapContract"/>
+		<rdfs:domain rdf:resource="&fibo-der-cr-cds;CreditDefaultSwap"/>
 		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
 		<skos:definition xml:lang="en">The notional amount is the price at which the protection seller agrees to buy the bond in the event of a default.</skos:definition>
 	</owl:ObjectProperty>
@@ -758,7 +708,7 @@
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-cr-cds;physicalSettlementPeriod">
 		<rdfs:label xml:lang="en">physical settlement period</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-cr-cds;CDSPhysicalSettlement"/>
+		<rdfs:domain rdf:resource="&fibo-fbc-fi-stl;PhysicalSettlementTerms"/>
 		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;ExplicitDuration"/>
 		<skos:definition xml:lang="en">The number of business days used in the determination of the physical settlement date. Further Notes The physical settlement date is this number of business days after all applicable conditions to settlement are satisfied. If a number of business days is not specified fallback provisions apply for determining the number of business days. If Section 8.5/8.6 of the 1999/2003 ISDA Definitions are to apply then it should be flagged that &quot;Business Days Not Specified&quot;. If a specified number of business days are to apply these should be specified. If Section 8.5/8.6 of the 1999/2003 ISDA Definitions are to apply but capped at a maximum number of business days then the maximum number should be specified. ISDA 2003 Term: Physical Settlement Period Note that although this is described as a period, it is not a period of time from one date/time to another, but a duration i.e. a length of time (in business days). FpML: &apos;The number of business days used in the determination of the physical settlement date. The physical settlement date is this number of business days after all applicable conditions to settlement are satisfied. If a number of business days is not specified fallback provisions apply for determining the number of business days. If Section 8.5/8.6 of the 1999/2003 ISDA Definitions are to apply the businessDaysNotSpecified element should be included. If a specified number of business days are to apply these should be specified in the businessDays element. If Section 8.5/8.6 of the 1999/2003 ISDA Definitions are to apply but capped at a maximum number of business days then the maximum number should be specified in the maximumBusinessDays element. ISDA 2003 Term: Physical Settlement Period&apos;</skos:definition>
 	</owl:ObjectProperty>
@@ -772,14 +722,14 @@
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-cr-cds;quotationAmount">
 		<rdfs:label xml:lang="en">quotation amount</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-cr-cds;CDSCashSettlement"/>
+		<rdfs:domain rdf:resource="&fibo-fbc-fi-stl;CashSettlementTerms"/>
 		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
 		<skos:definition xml:lang="en">An amount quoted, which is either an upper limit to the outstanding principal balance of the reference obligation for which the quote should be obtained, or the floating rate payer calculation amount.</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-cr-cds;quotationMethod">
 		<rdfs:label xml:lang="en">quotation method</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-cr-cds;CDSCashSettlement"/>
+		<rdfs:domain rdf:resource="&fibo-fbc-fi-stl;CashSettlementTerms"/>
 		<rdfs:range rdf:resource="&fibo-der-cr-cds;CDSCashSettlementQuotationMethod"/>
 		<skos:definition xml:lang="en">The type of price quotations to be requested from dealers when determining the market value of the reference obligation for purposes of cash settlement.</skos:definition>
 	</owl:ObjectProperty>
@@ -793,7 +743,7 @@
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-cr-cds;scheduledTerminationDate">
 		<rdfs:label xml:lang="en">scheduled termination date</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-cr-cds;CreditDefaultSwapContract"/>
+		<rdfs:domain rdf:resource="&fibo-der-cr-cds;CreditDefaultSwap"/>
 		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Date"/>
 		<skos:definition xml:lang="en">The date at which the contract for credit protection is due to expire as agreed by both parties.</skos:definition>
 	</owl:ObjectProperty>
@@ -806,7 +756,7 @@
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-cr-cds;settlementCurrency">
 		<rdfs:label xml:lang="en">settlement currency</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-cr-cds;CDSCashSettlement"/>
+		<rdfs:domain rdf:resource="&fibo-fbc-fi-stl;CashSettlementTerms"/>
 		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;Currency"/>
 		<skos:definition xml:lang="en">The currency in which the deal is to be settled.</skos:definition>
 	</owl:ObjectProperty>
@@ -820,44 +770,14 @@
 	
 	<owl:DatatypeProperty rdf:about="&fibo-der-cr-cds;sixtyBusinessDaySettlementCap">
 		<rdfs:label xml:lang="en">sixty business day settlement cap</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-cr-cds;CDSPhysicalSettlement"/>
+		<rdfs:domain rdf:resource="&fibo-fbc-fi-stl;PhysicalSettlementTerms"/>
 		<rdfs:range rdf:resource="&xsd;boolean"/>
 		<skos:definition xml:lang="en">Whether the legal terms set forth in the following language are deemed part of the confirmation (the section references are to the 2003 ISDA Credit Derivatives Definitions): &apos;Notwithstanding Section 1.7 or any provisions of Sections 9.9 or 9.10 to the contrary, but without prejudice to Section 9.3 and (where applicable) Sections 9.4, 9.5 and 9.6, if the Termination Date has not occurred on or prior to the date that is 60 Business Days following the Physical Settlement Date, such 60th Business Day shall be deemed to be the Termination Date with respect to this Transaction except in relation to any portion of the Transaction (an &quot;Affected Portion&quot;) in respect of which: (1) a valid notice of Buy-in Price has been delivered that is effective fewer than three Business Days prior to such 60th Business Day, in which case the Termination Date for that Affected Portion shall be the third Business Day following the date on which such notice is effective; or (2) Buyer has purchased but not Delivered Deliverable Obligations validly specified by Seller pursuant to Section 9.10(b), in which case the Termination Date for that Affected Portion shall be the tenth Business Day following the date on which Seller validly specified such Deliverable Obligations to Buyer.&apos;</skos:definition>
 	</owl:DatatypeProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-der-cr-cds;specifies">
-		<rdfs:label xml:lang="en">specifies</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-cr-cds;CDSPhysicalSettlement"/>
-		<rdfs:range rdf:resource="&fibo-der-cr-cds;DeliverableObligation"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-der-cr-cds;specifies.1">
-		<rdfs:label xml:lang="en">specifies</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-cr-cds;CreditProtectionContingentLegTerms"/>
-		<rdfs:range rdf:resource="&fibo-der-cr-cds;CDSContingentTransaction"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-der-cr-cds;specifies.2">
-		<rdfs:label xml:lang="en">specifies</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-cr-cds;CreditProtectionContingentLegTerms"/>
-		<rdfs:range rdf:resource="&fibo-der-cr-cds;CDSCreditEvent"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-der-cr-cds;specifiesDealer">
-		<rdfs:label xml:lang="en">specifies dealer</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-cr-cds;CDSCashSettlement"/>
-		<rdfs:range rdf:resource="&fibo-der-cr-cds;CDSCashSettlementDealer"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-der-cr-cds;specifiesObligation">
-		<rdfs:label xml:lang="en">specifies obligation</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-cr-cds;CreditProtectionContingentLegTerms"/>
-		<rdfs:range rdf:resource="&fibo-der-cr-cds;ReferenceObligation"/>
-	</owl:ObjectProperty>
-	
 	<owl:DatatypeProperty rdf:about="&fibo-der-cr-cds;substitution">
 		<rdfs:label xml:lang="en">substitution</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-cr-cds;CreditDefaultSwapContract"/>
+		<rdfs:domain rdf:resource="&fibo-der-cr-cds;CreditDefaultSwap"/>
 		<rdfs:range rdf:resource="&xsd;boolean"/>
 		<skos:definition xml:lang="en">Whether it is possible to substitute other obligations in place of the specified Deliverable Obligation.</skos:definition>
 	</owl:DatatypeProperty>
@@ -865,14 +785,14 @@
 	<owl:ObjectProperty rdf:about="&fibo-der-cr-cds;valuationDate">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDate"/>
 		<rdfs:label xml:lang="en">valuation date</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-cr-cds;CDSCashSettlement"/>
+		<rdfs:domain rdf:resource="&fibo-fbc-fi-stl;CashSettlementTerms"/>
 		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Date"/>
 		<skos:definition xml:lang="en">The date (however specified) after conditions to settlement have been satisfied, when the calculation agent obtains a price quotation on the Reference Obligation for purposes of cash settlement.</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-cr-cds;valuationMethod">
 		<rdfs:label xml:lang="en">valuation method</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-cr-cds;CDSCashSettlement"/>
+		<rdfs:domain rdf:resource="&fibo-fbc-fi-stl;CashSettlementTerms"/>
 		<rdfs:range rdf:resource="&fibo-der-cr-cds;CDSCashSettlementValuationMethod"/>
 		<skos:definition xml:lang="en">The methodology for determining the final price of the reference obligation for purposes of cash settlement.</skos:definition>
 	</owl:ObjectProperty>
@@ -880,7 +800,7 @@
 	<owl:ObjectProperty rdf:about="&fibo-der-cr-cds;valuationTime">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDateTime"/>
 		<rdfs:label xml:lang="en">valuation time</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-cr-cds;CDSCashSettlement"/>
+		<rdfs:domain rdf:resource="&fibo-fbc-fi-stl;CashSettlementTerms"/>
 		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;DateTime"/>
 		<skos:definition xml:lang="en">The time of day in the specified business center when the calculation agent seeks quotations for an amount of the reference obligation for purposes of cash settlement.</skos:definition>
 	</owl:ObjectProperty>
