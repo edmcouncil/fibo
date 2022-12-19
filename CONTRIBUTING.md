@@ -1,4 +1,4 @@
-<img src="https://spec.edmcouncil.org/fibo/htmlpages/master/latest/img/FIBO_logo.11aeaf9b.jpg" width="300" align="right"/>
+<img src="https://spec.edmcouncil.org/fibo/htmlpages/develop/latest/img/FIBO_logo.11aeaf9b.jpg" width="300" align="right"/>
 
 # How to contribute
 Thanks for your interest in contributing to FIBO! This page will give you a quick overview of how things are organized and, most importantly, how to get involved.
@@ -220,7 +220,7 @@ When you cloned your fork to your local repository, you chose a directory in whi
     * [rdf-toolkit.jar](https://jenkins.edmcouncil.org/view/rdf-toolkit/job/rdf-toolkit-build/lastSuccessfulBuild/artifact/target/rdf-toolkit.jar)
 * These files are updated from time to time so it is recommended that you re-download these directly from the links below before proceeding.
 * Copy the file pre-commit to your hooks directory (use right-click on the link and select the save option).  Make sure that the name of the file is just pre-commit; your browser might want to append a suffix like .txt to it. 
-* Edit this pre-commit file to point to your Java JRE/JDK. To do this, open the pre-commit file in a text editor and search for "JAVA\_HOME". Edit the directory after JAVA\_HOME= to point to the location of your Java 8 (a.k.a version 1.8) or higher JRE/JDK, and save it. 
+* Edit this pre-commit file to point to your Java JRE/JDK. To do this, open the pre-commit file in a text editor and search for "JAVA\_HOME". Edit the directory after JAVA\_HOME= to point to the location of your Java 11 (a.k.a version 1.11) or higher JRE/JDK, and save it. 
 * Copy the file rdf-toolkit.jar to your hooks directory by clicking on the link, viewing where the download was saved, and moving or copying it to the .git/hooks directory. 
 
 Once you have installed these two files, every commit you do will re-write your RDF/OWL files in a consistent way that can be compared and merged with work done by other FIBO collaborators. 
