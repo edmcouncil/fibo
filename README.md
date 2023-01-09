@@ -1,4 +1,4 @@
-<img src="https://spec.edmcouncil.org/fibo/htmlpages/master/latest/img/FIBO_logo.11aeaf9b.jpg" width="200" align="right"/>
+<img src="https://github.com/edmcouncil/html-pages/raw/develop/general/assets/img/FIBO_logo.jpg" width="200" align="right"/>
 
 # Financial Industry Business Ontology
 <img src="https://avatars0.githubusercontent.com/u/6618425?s=400&u=3ed327f38a1d043252af3177e5d6f48eef609e6a&v=4" width="150" align="right"/>
