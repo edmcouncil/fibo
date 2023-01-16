@@ -1,4 +1,4 @@
-<img src="https://spec.edmcouncil.org/fibo/htmlpages/master/latest/img/FIBO_logo.11aeaf9b.jpg" width="300" align="right"/>
+<img src="https://github.com/edmcouncil/html-pages/blob/develop/general/assets/img/FIBO_logo.jpg" width="300" align="right"/>
 
 # Principles of best practices for FIBO
 
