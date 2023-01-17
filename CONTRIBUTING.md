@@ -1,4 +1,4 @@
-<img src="https://spec.edmcouncil.org/fibo/htmlpages/develop/latest/img/FIBO_logo.11aeaf9b.jpg" width="300" align="right"/>
+<img src="https://github.com/edmcouncil/html-pages/blob/develop/general/assets/img/FIBO_logo.jpg" width="300" align="right"/>
 
 # How to contribute
 Thanks for your interest in contributing to FIBO! This page will give you a quick overview of how things are organized and, most importantly, how to get involved.
