@@ -63,16 +63,8 @@
 		<rdfs:label>Swaps Ontology</rdfs:label>
 		<dct:abstract>This ontology defines concepts specific to swap contracts, including relevant trading organizations, data repositories, and intermediaries.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
-		<sm:contentLanguage rdf:resource="https://www.w3.org/TR/owl2-quick-reference/"/>
-		<sm:copyright>Copyright (c) 2016-2022 EDM Council, Inc.</sm:copyright>
-		<sm:copyright>Copyright (c) 2016-2022 Object Management Group, Inc.</sm:copyright>
-		<sm:dependsOn rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/DerivativesBasics/"/>
-		<sm:dependsOn rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/"/>
-		<sm:dependsOn rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/"/>
-		<sm:dependsOn rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/"/>
-		<sm:dependsOn rdf:resource="https://www.omg.org/spec/LCC/"/>
-		<sm:fileAbbreviation>fibo-der-drc-swp</sm:fileAbbreviation>
-		<sm:filename>Swaps.rdf</sm:filename>
+		<sm:copyright>Copyright (c) 2016-2023 EDM Council, Inc.</sm:copyright>
+		<sm:copyright>Copyright (c) 2016-2023 Object Management Group, Inc.</sm:copyright>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/DerivativesBasics/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/RateDerivatives/RateDerivatives/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"/>
@@ -93,7 +85,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/MarketIndices/BasketIndices/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/20221001/DerivativesContracts/Swaps/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/20230201/DerivativesContracts/Swaps/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20180801/DerivativesContracts/Swaps/ version of this ontology was modified to refine the concept of a unique swap identifier (USI).</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20190201/DerivativesContracts/Swaps/ version of this ontology was modified to eliminate duplication of concepts in LCC.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20200201/DerivativesContracts/Swaps/ version of this ontology was modified to eliminate the property &apos;hasPaymentSchedule&apos; from this ontology in favor of the equivalent property with the same name from FND, adding concepts related to statistical swaps, and revising definitions to be ISO 704 compliant.</skos:changeNote>
@@ -103,6 +95,7 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20210701/DerivativesContracts/Swaps/ version of this ontology was modified to add the concept of a rates swap and the corresponding rate-based leg to facilitate mapping to the CFI standard.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20220201/DerivativesContracts/Swaps/ version of this ontology was modified to address text formatting issues identified through hygiene testing.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20220801/DerivativesContracts/Swaps/ version of this ontology was modified to make a total return swap a kind of credit derivative.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20221001/DerivativesContracts/Swaps.rdf version of this ontology was modified to move the definition of an underlier and the related property, has underlier, to financial instruments so that these concepts are also available for use in relation to pool-backed securities.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -249,14 +242,14 @@
 		<rdfs:subClassOf rdf:resource="&fibo-der-drc-swp;SwapLeg"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-rtd-rtd;RateBasedObservable"/>
+				<owl:onProperty rdf:resource="&fibo-der-drc-swp;isLegOf"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-drc-swp;RatesSwap"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-drc-swp;isLegOf"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-drc-swp;RatesSwap"/>
+				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;hasUnderlier"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-rtd-rtd;RateBasedObservable"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">rate-based leg</rdfs:label>
@@ -288,7 +281,13 @@
 		<rdfs:subClassOf rdf:resource="&fibo-der-drc-swp;FloatingLeg"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
+				<owl:onProperty rdf:resource="&fibo-der-drc-swp;isLegOf"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-drc-swp;ReturnSwap"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;hasUnderlier"/>
 				<owl:someValuesFrom>
 					<owl:Class>
 						<owl:unionOf rdf:parseType="Collection">
@@ -299,12 +298,6 @@
 						</owl:unionOf>
 					</owl:Class>
 				</owl:someValuesFrom>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-drc-swp;isLegOf"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-drc-swp;ReturnSwap"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">return leg</rdfs:label>
