@@ -1,0 +1,18 @@
+prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+prefix owl:   <http://www.w3.org/2002/07/owl#>
+prefix xsd:   <http://www.w3.org/2001/XMLSchema#>
+
+##
+# banner For performance reasons we should avoid CGI axioms (with rdfs:subClassOf property)
+
+SELECT DISTINCT ?warning ?class
+WHERE 
+{
+  ?resource rdfs:subClassOf ?class.
+  FILTER (!ISIRI(?resource))
+
+  FILTER regex(str(?resource), <HYGIENE_TESTS_FILTER_PARAMETER>)
+  
+  BIND (concat ("WARN: There exists a CGI subclass axiom  for ", str(?class)) AS ?warning)
+}

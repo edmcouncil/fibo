@@ -1,0 +1,26 @@
+prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+prefix owl:   <http://www.w3.org/2002/07/owl#>
+prefix xsd:   <http://www.w3.org/2001/XMLSchema#>
+
+##
+# banner For performance reasons we should avoid equivalences with complements on one side.
+
+SELECT ?warning ?class
+WHERE 
+{
+  ?resource1 owl:equivalentClass ?resource2.
+  {
+    ?resource1 owl:complementOf ?resource3.
+
+    BIND (?resource1 as ?class)
+  }
+  UNION
+  {
+    ?resource2 owl:complementOf ?resource3
+
+    BIND (?resource2 as ?class)
+  }
+  
+  BIND (concat ("WARN: There exists an equivalence axiom with a complement in one side and ", ?class, " on the other.") AS ?warning)
+}
