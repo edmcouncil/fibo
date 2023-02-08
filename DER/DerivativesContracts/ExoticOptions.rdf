@@ -77,7 +77,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesClassification/"/>
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/20230201/DerivativesContracts/ExoticOptions/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20220801/DerivativesContracts/ExoticOptions/ version of this ontology was modified to rephrase definitions on knock-in and knock-out options.</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20221201/DerivativesContracts/ExoticOptions.rdf version of this ontology was modified to move the definition of an underlier and the related property, has underlier, to financial instruments so that these concepts are also available for use in relation to pool-backed securities.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20221201/DerivativesContracts/ExoticOptions.rdf version of this ontology was modified to add a definition for European options, such as LEPOs, to move the definition of an underlier and the related property, has underlier, to financial instruments so that these concepts are also available for use in relation to pool-backed securities.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 	</owl:Ontology>
 	
@@ -495,6 +495,21 @@
 		<skos:definition xml:lang="en">terms specifying the value of the underlying asset based on analysis during a specific period, typically ending in the maturity of the option, whereby the payoff is determined by comparing the strike price with the value of the selected price</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">In the case of a fixed strike, the terms depend on whether the option is a call or put. If it is a call, the calculated payout reflects the difference between a running maximum value of the observable during the lookback period, and the pre-agreed strike.</fibo-fnd-utl-av:explanatoryNote>
 		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">The payoff may either be the difference between a fixed, pre-agreed Strike Price and the observable, or the difference between the best or worst valuable of the observable and the value of that same observable at maturity of the contract (these are the Fixed and Floating lookback terms respectively). This (per review at Nordea) is not mutually exclusive with the terms for Fixed Strike and Resettable Strike, that is, either of those kinds of strike terms may apply, and Lookback strike terms may also apply.</fibo-fnd-utl-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-drc-exo;LowExercisePriceOption">
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-opt;CallOption"/>
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-opt;ExoticOption"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-drc-opt;hasExerciseStyle"/>
+				<owl:hasValue rdf:resource="&fibo-sec-dbt-ex;EuropeanExerciseConvention"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">low exercise price option</rdfs:label>
+		<skos:definition xml:lang="en">exotic option that is a European-style call option with an exercise price of one cent that mimics a futures contract</skos:definition>
+		<fibo-fnd-utl-av:abbreviation xml:lang="en">LEPO</fibo-fnd-utl-av:abbreviation>
+		<fibo-fnd-utl-av:explanatoryNote xml:lang="en">LEPOs function as deep-in-the-money options similar to the stock itself. Both buyer and seller of a LEPO operate on margin. LEPO options are not available on any U.S. exchanges.  Since the strike price is so close to zero, the investor purchasing the LEPO gains most of the features of owning the share directly with the major exceptions of dividends and voting rights. They are only available with European style expirations.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-exo;MountainRangeOption">
