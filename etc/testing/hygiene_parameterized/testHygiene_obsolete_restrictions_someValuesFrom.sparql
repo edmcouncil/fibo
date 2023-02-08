@@ -1,0 +1,28 @@
+prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+prefix owl:   <http://www.w3.org/2002/07/owl#>
+prefix xsd:   <http://www.w3.org/2001/XMLSchema#>
+prefix afn:   <http://jena.apache.org/ARQ/function#>
+
+##
+# banner We should avoid restrictions that can be inferred from other restrictions.
+
+
+SELECT ?error
+WHERE
+{
+    ?class rdfs:subClassOf ?restriction1.
+    ?class rdfs:subClassOf ?restriction2.
+    ?restriction1 rdf:type owl:Restriction.
+    ?restriction2 rdf:type owl:Restriction.
+    ?restriction1 owl:onProperty ?property1.
+    ?restriction2 owl:onProperty ?property2.
+    ?restriction1 owl:someValuesFrom ?restrictingClass1.
+    ?restriction2 owl:someValuesFrom ?restrictingClass2.
+    {?property1 rdfs:subPropertyOf+ ?property2.} UNION {?property1 rdfs:subPropertyOf* ?property2. FILTER (?property1 = ?property2)}
+    {?restrictingClass1 rdfs:subClassOf+ ?restrictingClass2.} UNION {?restrictingClass1 rdfs:subClassOf* ?restrictingClass2. FILTER (?restrictingClass1 = ?restrictingClass2)}
+    FILTER (?restriction1 != ?restriction2)
+    BIND (CONCAT(STR(afn:localname(?property1)), " someValuesFrom ", STR(afn:localname(?restrictingClass1))) as ?restriction1String)
+    BIND (CONCAT(STR(afn:localname(?property2)), " someValuesFrom ", STR(afn:localname(?restrictingClass2))) as ?restriction2String)
+    BIND(CONCAT("PRODERROR: Class ", STR(?class), " has obsolete restriction <", ?restriction2String, "> because of restriction <", ?restriction1String, ">.") as ?error)
+}
