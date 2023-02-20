@@ -1,0 +1,41 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
+
+name: Python application
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.10"
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install gavel-owl
+        pip install ply
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    - name: Install robot
+      run: |
+        sudo wget --no-verbose -m -nH -nd -P /usr/bin https://raw.githubusercontent.com/ontodev/robot/master/bin/robot
+        sudo wget --no-verbose -m -nH -nd -P /usr/bin https://github.com/ontodev/robot/releases/latest/download/robot.jar
+        sudo chmod +x /usr/bin/robot
+    - name: Merge all FIBO ontologies with robot
+      run: |
+        robot merge --input AboutFIBODev.rdf --output AboutFIBODevMerged.ttl --catalog /home/runner/work/fibo/fibo/catalog-v001.xml
+    - name: Run gavel-owl
+      run: |
+        python -m gavel start-server
+        python -m gavel translate owl tptp /home/runner/work/fibo/fibo/AboutFIBODevMerged.ttl
