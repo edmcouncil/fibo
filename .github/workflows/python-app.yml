@@ -32,10 +32,15 @@ jobs:
         sudo wget --no-verbose -m -nH -nd -P /usr/bin https://raw.githubusercontent.com/ontodev/robot/master/bin/robot
         sudo wget --no-verbose -m -nH -nd -P /usr/bin https://github.com/ontodev/robot/releases/latest/download/robot.jar
         sudo chmod +x /usr/bin/robot
+    - name: Get Vampire
+      run: |
+        sudo wget --no-verbose -m -nH -nd -P https://github.com/vprover/vampire/releases/download/v4.7/vampire4.7.zip
+        unzip /home/runner/work/fibo/fibo/vampire4.7.zip
+        sudo chmod +x /usr/bin/vampire_z3_rel_static_HEAD_6295
     - name: Merge all FIBO ontologies with robot
       run: |
         robot merge --input AboutFIBODev.rdf --output AboutFIBODevMerged.ttl --catalog /home/runner/work/fibo/fibo/catalog-v001.xml
     - name: Run gavel-owl
       run: |
         python -m gavel start-server
-        python -m gavel translate owl tptp /home/runner/work/fibo/fibo/AboutFIBODevMerged.ttl
+        python -m gavel translate owl tptp /home/runner/work/fibo/fibo/AboutFIBODevMerged.ttl > AboutFIBODevMerged.tptp
