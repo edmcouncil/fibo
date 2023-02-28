@@ -1,0 +1,27 @@
+prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+prefix owl:   <http://www.w3.org/2002/07/owl#>
+
+##
+# banner For performance reasons we should avoid defining disjunctions with too many disjuncts.
+
+
+SELECT ?warning ?class
+WHERE
+{
+    ?class rdfs:subClassOf ?resource.
+    FILTER (?numberOfDisjuncts > 7)
+
+    FILTER regex(str(?class), <HYGIENE_TESTS_FILTER_PARAMETER>)
+
+    {
+        SELECT ?resource (COUNT(?item) as ?numberOfDisjuncts)
+        WHERE
+        {
+            ?list rdf:rest*/rdf:first ?item.
+            ?resource owl:unionOf ?list.
+        }
+        GROUP BY ?resource
+    }
+    BIND (concat ("WARN: Class ", str(?class), " is a subclass of disjunct with ", str(?numberOfDisjuncts), " disjuncts.") AS ?warning)
+}

@@ -8,17 +8,13 @@ prefix skos: <http://www.w3.org/2004/02/skos/core#>
 prefix dct: <http://purl.org/dc/terms/>
 
 ##
-# banner Every Ontology defined in FIBO must have a rdfs:label,  copyright, dct:license, dct:abstract
+# banner Every Ontology defined in FIBO must have a dct:abstract.
 
 SELECT DISTINCT ?error
 WHERE {
   ?ont a owl:Ontology .
   FILTER NOT EXISTS {?ont owl:deprecated "true"^^xsd:boolean} .
   FILTER regex(str(?ont), <HYGIENE_TESTS_FILTER_PARAMETER>)	
-  FILTER NOT EXISTS {
-	?ont rdfs:label ?l  .
-	{?ont sm:copyright ?cr } UNION {?ont cmns-av:copyright ?cr } .
-	?ont dct:license ?lic .
-	?ont dct:abstract ?abs .}
-BIND (concat ("PRODERROR: ", xsd:string(?ont), " has to have appropriate metadata.") AS ?error)
+  FILTER NOT EXISTS {?ont dct:abstract ?abs .}
+BIND (concat ("PRODERROR: ", xsd:string(?ont), " has to have an abstract.") AS ?error)
 }

@@ -1,0 +1,18 @@
+prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+prefix owl:   <http://www.w3.org/2002/07/owl#>
+
+##
+# banner For performance reasons we should avoid that a class appears in an equivalent axiom and on the left-hand side of a subclass axiom.
+SELECT ?warning ?class
+WHERE 
+{
+    {?class1 owl:equivalentClass ?class2.}
+    UNION
+    {?class2 owl:equivalentClass ?class1.}
+    ?class1 rdfs:subClassOf ?class3.
+
+    FILTER regex(str(?class), <HYGIENE_TESTS_FILTER_PARAMETER>)
+
+    BIND (concat ("WARN: A class ", str(?class1), " appears in an equivalent axiom and on the left-hand side of a subclass axiom.") AS ?warning)
+}

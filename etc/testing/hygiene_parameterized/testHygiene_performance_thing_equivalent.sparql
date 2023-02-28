@@ -1,0 +1,19 @@
+prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+prefix owl:   <http://www.w3.org/2002/07/owl#>
+prefix xsd:   <http://www.w3.org/2001/XMLSchema#>
+
+##
+# banner For performance reasons we should avoid equivalences with owl:Thing on one side.
+
+SELECT ?warning ?class
+WHERE 
+{
+  {?class owl:equivalentClass owl:Thing.}
+  UNION
+  {owl:Thing owl:equivalentClass ?class.}
+
+  FILTER regex(str(?class), <HYGIENE_TESTS_FILTER_PARAMETER>)
+
+  BIND (concat ("WARN: There exists an equivalence axiom with owl:Thing one side and ", ?class, " on the other.") AS ?warning)
+}
