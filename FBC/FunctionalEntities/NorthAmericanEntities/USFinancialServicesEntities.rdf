@@ -3,6 +3,7 @@
 	<!ENTITY cmns-av "https://www.omg.org/spec/Commons/AnnotationVocabulary/">
 	<!ENTITY cmns-col "https://www.omg.org/spec/Commons/Collections/">
 	<!ENTITY dct "http://purl.org/dc/terms/">
+	<!ENTITY fibo-be-ge-usj "https://spec.edmcouncil.org/fibo/ontology/BE/GovernmentEntities/NorthAmericanJurisdiction/USGovernmentEntitiesAndJurisdictions/">
 	<!ENTITY fibo-be-le-cb "https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/CorporateBodies/">
 	<!ENTITY fibo-be-le-fbo "https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/FormalBusinessOrganizations/">
 	<!ENTITY fibo-fbc-fct-fse "https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/FinancialServicesEntities/">
@@ -23,6 +24,7 @@
 	xmlns:cmns-av="https://www.omg.org/spec/Commons/AnnotationVocabulary/"
 	xmlns:cmns-col="https://www.omg.org/spec/Commons/Collections/"
 	xmlns:dct="http://purl.org/dc/terms/"
+	xmlns:fibo-be-ge-usj="https://spec.edmcouncil.org/fibo/ontology/BE/GovernmentEntities/NorthAmericanJurisdiction/USGovernmentEntitiesAndJurisdictions/"
 	xmlns:fibo-be-le-cb="https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/CorporateBodies/"
 	xmlns:fibo-be-le-fbo="https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/FormalBusinessOrganizations/"
 	xmlns:fibo-fbc-fct-fse="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/FinancialServicesEntities/"
@@ -43,6 +45,7 @@
 		<rdfs:label>US Financial Services Entities Ontology</rdfs:label>
 		<dct:abstract>This ontology extends the primary financial services entities ontology in FBC with additional kinds of entities that are specific to the United States.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/GovernmentEntities/NorthAmericanJurisdiction/USGovernmentEntitiesAndJurisdictions/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/CorporateBodies/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/FormalBusinessOrganizations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/FinancialServicesEntities/"/>
@@ -54,7 +57,7 @@
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Collections/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Countries/ISO3166-1-CountryCodes/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/20230101/FunctionalEntities/NorthAmericanEntities/USFinancialServicesEntities/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/20230301/FunctionalEntities/NorthAmericanEntities/USFinancialServicesEntities/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20150801/FunctionalEntities/NorthAmericanEntities/USFinancialServicesEntities.rdf version of this ontology was modified per the issue resolutions identified in the FIBO FBC 1.0 FTF report.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20160801/FunctionalEntities/NorthAmericanEntities/USFinancialServicesEntities.rdf version of this ontology was modified to generalize the definition of credit union.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20180801/FunctionalEntities/NorthAmericanEntities/USFinancialServicesEntities.rdf version of this ontology was modified to eliminate deprecated elements.</skos:changeNote>
@@ -141,7 +144,7 @@
 	<owl:Class rdf:about="&fibo-fbc-fct-usfse;CooperativeBank">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-usfse;ThriftInstitution"/>
 		<rdfs:label>cooperative bank</rdfs:label>
-		<skos:definition>state-chartered savings association located in Massachusetts, New Hampshire, Rhode Island or Vermont</skos:definition>
+		<skos:definition>state-chartered savings association that is organized and operates according to the laws of the state in which it is chartered or organized, including Massachusetts, New Hampshire, Rhode Island or Vermont</skos:definition>
 		<cmns-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.ffiec.gov/npw/Help/InstitutionTypes</cmns-av:adaptedFrom>
 	</owl:Class>
 	
@@ -170,15 +173,24 @@
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
 				<owl:someValuesFrom>
-					<owl:Restriction>
-						<owl:onProperty rdf:resource="&fibo-fnd-org-fm;isDomiciledIn"/>
-						<owl:hasValue rdf:resource="&lcc-3166-1;UnitedStatesOfAmerica"/>
-					</owl:Restriction>
+					<owl:Class>
+						<owl:intersectionOf rdf:parseType="Collection">
+							<owl:Restriction>
+								<owl:onProperty rdf:resource="&fibo-fnd-org-fm;isDomiciledIn"/>
+								<owl:hasValue rdf:resource="&lcc-3166-1;UnitedStatesOfAmerica"/>
+							</owl:Restriction>
+							<owl:Restriction>
+								<owl:onProperty rdf:resource="&fibo-be-le-cb;isIncorporatedIn"/>
+								<owl:hasValue rdf:resource="&fibo-be-ge-usj;UnitedStatesJurisdiction"/>
+							</owl:Restriction>
+						</owl:intersectionOf>
+					</owl:Class>
 				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>domestic entity other</rdfs:label>
 		<skos:definition>domestic institution that engages in banking activities usually in connection with the business of banking in the United States</skos:definition>
+		<cmns-av:abbreviation>DEO</cmns-av:abbreviation>
 		<cmns-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.ffiec.gov/npw/Help/InstitutionTypes</cmns-av:adaptedFrom>
 		<cmns-av:explanatoryNote>This classification is used primarily to cover organizations acting as financial institutions in the US that are not otherwise classified in the context of the National Information Center (NIC).</cmns-av:explanatoryNote>
 	</owl:Class>
@@ -235,8 +247,15 @@
 	<owl:Class rdf:about="&fibo-fbc-fct-usfse;FarmCreditSystemInstitution">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-usfse;DomesticEntityOther"/>
 		<rdfs:label>farm credit system institution</rdfs:label>
-		<skos:definition>federally-chartered financial institution that is supervised, examined, and regulated by the Farm Credit Administration and operates in accordance with the Farm Credit Act of 1971, as amended, 12 U.S.C. 2001 et seq. All Farm Credit System institutions are federally-chartered instrumentalities of the United States.</skos:definition>
+		<skos:definition>federally-chartered financial institution that is supervised, examined, and regulated by the Farm Credit Administration and operates in accordance with the Farm Credit Act of 1971, as amended, 12 U.S.C. 2001 et seq</skos:definition>
 		<cmns-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.ffiec.gov/npw/Help/InstitutionTypes</cmns-av:adaptedFrom>
+		<cmns-av:explanatoryNote>All Farm Credit System institutions are federally-chartered instrumentalities of the United States.</cmns-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-fct-usfse;FederalCreditUnion">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-usfse;USCreditUnion"/>
+		<rdfs:label>federal credit union</rdfs:label>
+		<skos:definition>credit union that has a federal affiliation</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-fct-usfse;FinancialHoldingCompany">
@@ -245,6 +264,65 @@
 		<skos:definition>financial entity engaged in a broad range of banking-related activities as permitted under the Gramm-Leach-Bliley Act of 1999</skos:definition>
 		<cmns-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.ffiec.gov/npw/Help/InstitutionTypes</cmns-av:adaptedFrom>
 		<cmns-av:explanatoryNote>These activities include: insurance underwriting, securities dealing and underwriting, financial and investment advisory services, merchant banking, issuing or selling securitized interests in bank-eligible assets, and generally engaging in any non-banking activity authorized by the Bank Holding Company Act. The Federal Reserve Board is responsible for supervising the financial condition and activities of financial holding companies. Similarly, any non-bank commercial company that is predominantly engaged in financial activities, earning 85 percent or more of its gross revenues from financial services, may choose to become a financial holding company. These companies are required to sell any non-financial (commercial) businesses within ten years.</cmns-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-fct-usfse;ForeignBank">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-fse;Bank"/>
+		<rdfs:label>foreign bank</rdfs:label>
+		<owl:disjointWith rdf:resource="&fibo-fbc-fct-usfse;USBank"/>
+		<skos:definition>financial institution that is organized under the laws of a foreign country and that engages directly in the business of banking outside the United States</skos:definition>
+		<cmns-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.ffiec.gov/nicpubweb/Content/HELP/Institution%20Type%20Description.htm</cmns-av:adaptedFrom>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-fct-usfse;ForeignBankingOrganization">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;FinancialServiceProvider"/>
+		<rdfs:label>foreign banking organization</rdfs:label>
+		<skos:definition>financial service provder that is headquartered outside the United States and that can acquire or establish freestanding banks or bank holding companies in the United States</skos:definition>
+		<cmns-av:abbreviation>FBO</cmns-av:abbreviation>
+		<cmns-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.ffiec.gov/nicpubweb/Content/HELP/Institution%20Type%20Description.htm</cmns-av:adaptedFrom>
+		<cmns-av:explanatoryNote>These entities are regulated and supervised as domestic institutions.</cmns-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-fct-usfse;ForeignBankingOrganizationAsABankHoldingCompany">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-fse;BankHoldingCompany"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-usfse;ForeignBankingOrganization"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-org-fm;isDomiciledIn"/>
+				<owl:hasValue rdf:resource="&lcc-3166-1;UnitedStatesOfAmerica"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>foreign banking organization as a bank holding company</rdfs:label>
+		<skos:definition>foreign banking organization that is a bank holding company in the United States</skos:definition>
+		<cmns-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.ffiec.gov/nicpubweb/Content/HELP/Institution%20Type%20Description.htm</cmns-av:adaptedFrom>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-fct-usfse;ForeignBankingOrganizationOfABankHoldingCompany">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-usfse;ForeignBankingOrganization"/>
+		<rdfs:label>foreign banking organization of a bank holding company</rdfs:label>
+		<skos:definition>foreign banking organization that is owned or controlled by a bank holding company</skos:definition>
+		<cmns-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.ffiec.gov/nicpubweb/Content/HELP/Institution%20Type%20Description.htm</cmns-av:adaptedFrom>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-fct-usfse;ForeignBranchOfUSBank">
+		<rdfs:subClassOf rdf:resource="&fibo-be-le-fbo;Branch"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-col;isPartOf"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-fct-usfse;USBank"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>foreign branch of US bank</rdfs:label>
+		<owl:disjointWith rdf:resource="&fibo-fbc-fct-usfse;DomesticBranchOfDomesticBank"/>
+		<skos:definition>branch that resides outside of the United States, but has a parent that is located in the United States</skos:definition>
+		<cmns-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.ffiec.gov/npw/Help/InstitutionTypes</cmns-av:adaptedFrom>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-fct-usfse;ForeignEntityOther">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-fse;FinancialInstitution"/>
+		<rdfs:label>foreign entity other</rdfs:label>
+		<skos:definition>foreign institution that engages in banking activities usually in connection with the business of banking in the countries where such foreign institutions are organized or operating</skos:definition>
+		<cmns-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.ffiec.gov/npw/Help/InstitutionTypes</cmns-av:adaptedFrom>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-fct-usfse;IndustrialBank">
@@ -327,8 +405,33 @@
 		<cmns-av:explanatoryNote>State-chartered banks may or may not be members of the Federal Reserve System, but typically belong to the Federal Deposit Insurance Corporation, who may be their primary federal regulator for those that are not FRS members.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-fbc-fct-usfse;StateCreditUnion">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-usfse;USCreditUnion"/>
+		<rdfs:label>state credit union</rdfs:label>
+		<skos:definition>credit union that has a state affiliation</skos:definition>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-fbc-fct-usfse;ThriftInstitution">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-fse;SavingsAssociation"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
+				<owl:someValuesFrom>
+					<owl:Class>
+						<owl:intersectionOf rdf:parseType="Collection">
+							<owl:Restriction>
+								<owl:onProperty rdf:resource="&fibo-fnd-org-fm;isDomiciledIn"/>
+								<owl:hasValue rdf:resource="&lcc-3166-1;UnitedStatesOfAmerica"/>
+							</owl:Restriction>
+							<owl:Restriction>
+								<owl:onProperty rdf:resource="&fibo-be-le-cb;isIncorporatedIn"/>
+								<owl:hasValue rdf:resource="&fibo-be-ge-usj;UnitedStatesJurisdiction"/>
+							</owl:Restriction>
+						</owl:intersectionOf>
+					</owl:Class>
+				</owl:someValuesFrom>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label>thrift institution</rdfs:label>
 		<skos:definition>savings association that primarily accepts savings account deposits and invests most of the proceeds in mortgages</skos:definition>
 		<skos:example>Savings banks and savings and loan associations and credit unions are examples of thrift institutions.</skos:example>
@@ -341,10 +444,18 @@
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
 				<owl:someValuesFrom>
-					<owl:Restriction>
-						<owl:onProperty rdf:resource="&fibo-fnd-org-fm;isDomiciledIn"/>
-						<owl:hasValue rdf:resource="&lcc-3166-1;UnitedStatesOfAmerica"/>
-					</owl:Restriction>
+					<owl:Class>
+						<owl:intersectionOf rdf:parseType="Collection">
+							<owl:Restriction>
+								<owl:onProperty rdf:resource="&fibo-fnd-org-fm;isDomiciledIn"/>
+								<owl:hasValue rdf:resource="&lcc-3166-1;UnitedStatesOfAmerica"/>
+							</owl:Restriction>
+							<owl:Restriction>
+								<owl:onProperty rdf:resource="&fibo-be-le-cb;isIncorporatedIn"/>
+								<owl:hasValue rdf:resource="&fibo-be-ge-usj;UnitedStatesJurisdiction"/>
+							</owl:Restriction>
+						</owl:intersectionOf>
+					</owl:Class>
 				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -368,10 +479,18 @@
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
 				<owl:someValuesFrom>
-					<owl:Restriction>
-						<owl:onProperty rdf:resource="&fibo-fnd-org-fm;isDomiciledIn"/>
-						<owl:hasValue rdf:resource="&lcc-3166-1;UnitedStatesOfAmerica"/>
-					</owl:Restriction>
+					<owl:Class>
+						<owl:intersectionOf rdf:parseType="Collection">
+							<owl:Restriction>
+								<owl:onProperty rdf:resource="&fibo-fnd-org-fm;isDomiciledIn"/>
+								<owl:hasValue rdf:resource="&lcc-3166-1;UnitedStatesOfAmerica"/>
+							</owl:Restriction>
+							<owl:Restriction>
+								<owl:onProperty rdf:resource="&fibo-be-le-cb;isIncorporatedIn"/>
+								<owl:hasValue rdf:resource="&fibo-be-ge-usj;UnitedStatesJurisdiction"/>
+							</owl:Restriction>
+						</owl:intersectionOf>
+					</owl:Class>
 				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -389,17 +508,6 @@
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasIdentity"/>
 				<owl:onClass rdf:resource="&fibo-be-le-cb;NotForProfitCorporation"/>
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
-				<owl:someValuesFrom>
-					<owl:Restriction>
-						<owl:onProperty rdf:resource="&fibo-fnd-org-fm;isDomiciledIn"/>
-						<owl:hasValue rdf:resource="&lcc-3166-1;UnitedStatesOfAmerica"/>
-					</owl:Restriction>
-				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>U.S. credit union</rdfs:label>
