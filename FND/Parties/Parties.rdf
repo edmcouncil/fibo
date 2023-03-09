@@ -2,6 +2,7 @@
 <!DOCTYPE rdf:RDF [
 	<!ENTITY cmns-av "https://www.omg.org/spec/Commons/AnnotationVocabulary/">
 	<!ENTITY cmns-col "https://www.omg.org/spec/Commons/Collections/">
+	<!ENTITY cmns-cxtdsg "https://www.omg.org/spec/Commons/ContextualDesignators/">
 	<!ENTITY cmns-dsg "https://www.omg.org/spec/Commons/Designators/">
 	<!ENTITY cmns-id "https://www.omg.org/spec/Commons/Identifiers/">
 	<!ENTITY dct "http://purl.org/dc/terms/">
@@ -13,7 +14,6 @@
 	<!ENTITY fibo-fnd-pty-rl "https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Roles/">
 	<!ENTITY fibo-fnd-rel-rel "https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
-	<!ENTITY lcc-lr "https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/">
 	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
 	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
 	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
@@ -23,6 +23,7 @@
 <rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Parties/"
 	xmlns:cmns-av="https://www.omg.org/spec/Commons/AnnotationVocabulary/"
 	xmlns:cmns-col="https://www.omg.org/spec/Commons/Collections/"
+	xmlns:cmns-cxtdsg="https://www.omg.org/spec/Commons/ContextualDesignators/"
 	xmlns:cmns-dsg="https://www.omg.org/spec/Commons/Designators/"
 	xmlns:cmns-id="https://www.omg.org/spec/Commons/Identifiers/"
 	xmlns:dct="http://purl.org/dc/terms/"
@@ -34,7 +35,6 @@
 	xmlns:fibo-fnd-pty-rl="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Roles/"
 	xmlns:fibo-fnd-rel-rel="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
-	xmlns:lcc-lr="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
@@ -54,9 +54,9 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Collections/"/>
+		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/ContextualDesignators/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Designators/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Identifiers/"/>
-		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Languages/LanguageRepresentation/"/>
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20230301/Parties/Parties/"/>
 		<skos:changeNote>The http://www.omg.org/spec/EDMC-FIBO/FND/20130801/Parties/Parties.rdf version of the ontology was was modified per the issue resolutions identified in the FIBO FND 1.0 FTF report and in https://spec.edmcouncil.org/fibo/ontology/FND/1.0/AboutFND-1.0/.</skos:changeNote>
 		<skos:changeNote>The http://www.omg.org/spec/EDMC-FIBO/FND/20141101/Parties/Parties.rdf version of this ontology was revised as a part of the issue resolutions identified in the FIBO FND 1.1 RTF report to add a parent of hasDate to date properties.</skos:changeNote>
@@ -93,26 +93,8 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-pty-pty;ContextualName">
-		<rdfs:subClassOf rdf:resource="&cmns-dsg;Name"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-dt-bd;holdsDuring"/>
-				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;DatePeriod"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&cmns-dsg;isNameOf"/>
-				<owl:onClass rdf:resource="&fibo-fnd-pty-pty;IndependentParty"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>contextual name</rdfs:label>
-		<skos:definition>designation by which someone, some place, or something is known in some context</skos:definition>
-		<cmns-av:explanatoryNote>Names of people, places, and organizations often change over time, and may be used in a particular context, such as a DBA name for a business or legal name for a person.</cmns-av:explanatoryNote>
-		<cmns-av:usageNote>Names for people may be considered to be personally identifying information (PII), especially when other details are also available. Specifying names as string values attached directly to an individual makes name reconciliation and management, including from a privacy perspective, more challenging.</cmns-av:usageNote>
-		<cmns-av:usageNote>This class is designed to be extended to include provenance details regarding the source for a particular name as well as links to the various contexts in which it is used.</cmns-av:usageNote>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&cmns-cxtdsg;ContextualName"/>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-pty-pty;IndependentParty">
@@ -370,14 +352,13 @@
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-pty-pty;hasParty">
-		<rdfs:subPropertyOf rdf:resource="&lcc-lr;has"/>
 		<rdfs:label>has party</rdfs:label>
 		<rdfs:range rdf:resource="&fibo-fnd-pty-pty;IndependentParty"/>
 		<skos:definition>identifies an independent party associated with an agreement, contract, policy, regulation, or other business arrangement</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-pty-pty;hasPartyInRole">
-		<rdfs:subPropertyOf rdf:resource="&lcc-lr;has"/>
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-pty-pty;hasThingInRole"/>
 		<rdfs:label>has party in role</rdfs:label>
 		<rdfs:range rdf:resource="&fibo-fnd-pty-pty;PartyInRole"/>
 		<skos:definition>identifies a party acting in a specific role as related to the particular agreement, contract, policy, regulation, or other business relationship</skos:definition>
@@ -385,7 +366,7 @@
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-pty-pty;hasRelatedPartyInRole">
 		<rdf:type rdf:resource="&owl;SymmetricProperty"/>
-		<rdfs:subPropertyOf rdf:resource="&lcc-lr;has"/>
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-pty-pty;hasPartyInRole"/>
 		<rdfs:label>has related party-in-role</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fnd-pty-pty;PartyInRole"/>
 		<rdfs:range rdf:resource="&fibo-fnd-pty-pty;PartyInRole"/>
@@ -394,7 +375,6 @@
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-pty-pty;hasThingInRole">
-		<rdfs:subPropertyOf rdf:resource="&lcc-lr;has"/>
 		<rdfs:label>has thing in role</rdfs:label>
 		<rdfs:range rdf:resource="&fibo-fnd-pty-rl;ThingInRole"/>
 		<skos:definition>identifies something acting in a recipient or target role as related to the particular agreement, contract, policy, regulation, situation, or other business relationship</skos:definition>
@@ -508,5 +488,16 @@
 	<owl:ObjectProperty rdf:about="&fibo-fnd-rel-rel;isHeldBy">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-pty-pty;experiencesWith"/>
 	</owl:ObjectProperty>
+	
+	<owl:Class rdf:about="&cmns-cxtdsg;ContextualName">
+		<rdfs:subClassOf rdf:resource="&cmns-dsg;Name"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-dsg;isNameOf"/>
+				<owl:onClass rdf:resource="&fibo-fnd-pty-pty;IndependentParty"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+	</owl:Class>
 
 </rdf:RDF>
