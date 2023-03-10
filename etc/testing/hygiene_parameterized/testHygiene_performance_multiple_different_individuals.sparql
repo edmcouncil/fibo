@@ -1,0 +1,28 @@
+prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+prefix owl:   <http://www.w3.org/2002/07/owl#>
+
+##
+# banner For performance reasons we should avoid declaring too many different individuals.
+
+
+SELECT DISTINCT ?warning
+WHERE 
+{
+    {?list rdf:type owl:AllDifferent.
+        {
+            SELECT (COUNT(?item) as ?numberOfItems)
+                WHERE
+                {
+                    ?list rdf:rest*/rdf:first ?item.
+                }
+                GROUP BY ?list
+        }
+    FILTER (?numberOfItems > 7)
+    }
+    UNION
+    {
+        ?individual1 owl:differentFrom/owl:differentFrom/owl:differentFrom/owl:differentFrom/owl:differentFrom/owl:differentFrom/owl:differentFrom/owl:differentFrom ?individual2.
+    }
+    BIND (concat ("An ontology contains more than seven different individuals") AS ?warning)
+}

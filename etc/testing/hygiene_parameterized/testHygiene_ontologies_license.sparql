@@ -1,0 +1,20 @@
+prefix owl:   <http://www.w3.org/2002/07/owl#> 
+prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+prefix xsd:   <http://www.w3.org/2001/XMLSchema#> 
+prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> 
+prefix sm: <http://www.omg.org/techprocess/ab/SpecificationMetadata/>
+prefix cmns-av: <https://www.omg.org/spec/Commons/AnnotationVocabulary/>
+prefix skos: <http://www.w3.org/2004/02/skos/core#>
+prefix dct: <http://purl.org/dc/terms/>
+
+##
+# banner Every Ontology defined in FIBO must have a dct:license,.
+
+SELECT DISTINCT ?error
+WHERE {
+  ?ont a owl:Ontology .
+  FILTER NOT EXISTS {?ont owl:deprecated "true"^^xsd:boolean} .
+  FILTER regex(str(?ont), <HYGIENE_TESTS_FILTER_PARAMETER>)	
+  FILTER NOT EXISTS {?ont dct:license ?lic.}
+BIND (concat ("PRODERROR: ", xsd:string(?ont), " has to have a license.") AS ?error)
+}
