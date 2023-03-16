@@ -1,0 +1,23 @@
+prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+prefix owl:   <http://www.w3.org/2002/07/owl#>
+
+
+##
+# banner For performance reasons we should avoid minimal cardinalities greater than 7.
+
+SELECT ?warning ?class ?cardinality
+WHERE 
+{
+  ?class rdfs:subClassOf ?restriction.
+  ?restriction rdf:type owl:Restriction.
+  {?restriction owl:minCardinality ?cardinality.}
+  UNION
+  {?restriction owl:minQualifiedCardinality ?cardinality.}
+  FILTER (?cardinality > 7)
+
+  FILTER regex(str(?class), <HYGIENE_TESTS_FILTER_PARAMETER>)
+
+  BIND (concat ("WARN: There exists a restriction for ", str(?class), " with the minimal cardinality greater than ", str(?cardinality)) AS ?warning)
+}
