@@ -110,7 +110,7 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20210501/DerivativesContracts/DerivativesBasics.rdf version of this ontology was modified to move designated contract market to the markets ontology in FBC and eliminate the notion of NonPhysicalUnderlier, which was determined to add unnecessary overhead.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20210801/DerivativesContracts/DerivativesBasics.rdf version of this ontology was modified to address text formatting issues identified via hygiene testing.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20220801/DerivativesContracts/DerivativesBasics.rdf version of this ontology was modified to add the concept of a credit derivative, modify the notion of an underlying asset valuation to be a kind of value assessment, and modify the concept of valuation terms to be a subclass of derivative terms.</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20221001/DerivativesContracts/DerivativesBasics.rdf version of the ontology was modified to use the Commons Ontology Library (Commons) Annotation Vocabulary rather than the OMG&apos;s Specification Metadata vocabulary.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20221001/DerivativesContracts/DerivativesBasics.rdf version of this ontology was modified to use the Commons Ontology Library (Commons) Annotation Vocabulary rather than the OMG&apos;s Specification Metadata vocabulary, and to move the definition of an underlier and the related property, has underlier, to financial instruments so that these concepts are also available for use in relation to pool-backed securities.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20230201/DerivativesContracts/DerivativesBasics.rdf version of this ontology was modified to use the Commons Ontology Library (Commons) rather than the OMG&apos;s Languages, Countries and Codes (LCC), eliminating redundancies in FIBO as appropriate.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 		<cmns-av:copyright>Copyright (c) 2015-2023 EDM Council, Inc.</cmns-av:copyright>
@@ -262,35 +262,8 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-bsc;Underlier">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-pty-rl;ThingInRole"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasIdentity"/>
-				<owl:someValuesFrom>
-					<owl:Class>
-						<owl:unionOf rdf:parseType="Collection">
-							<rdf:Description rdf:about="&fibo-fbc-fi-fi;FinancialInstrument">
-							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-fnd-pas-pas;Commodity">
-							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-fbc-pas-fpas;Basket">
-							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-ind-ind-ind;MarketRate">
-							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-ind-ei-ei;EconomicIndicator">
-							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-der-drc-bsc;ObservableValue">
-							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-ind-fx-fx;QuotedExchangeRate">
-							</rdf:Description>
-						</owl:unionOf>
-					</owl:Class>
-				</owl:someValuesFrom>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>underlier</rdfs:label>
-		<skos:definition>something that can be assigned a value in the marketplace that forms the basis for a derivative instrument</skos:definition>
-		<cmns-av:explanatoryNote>Underlier means any rate (including interest and foreign exchange rates), currency, commodity, security, instrument of indebtedness, index, quantitative measure, occurrence or non-occurrence of an event, or other financial or economic interest, or property of any kind, or any interest therein or based on the value thereof, in or by reference to which any payment or delivery under a transaction is to be made or determined.</cmns-av:explanatoryNote>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&fibo-fbc-fi-fi;Underlier"/>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-bsc;UnderlyingAssetValuation">
@@ -305,7 +278,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;evaluates"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-drc-bsc;Underlier"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-fi;Underlier"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">underlying asset valuation</rdfs:label>
@@ -397,11 +370,8 @@
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-drc-bsc;hasUnderlier">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-pty-rl;playsRole"/>
-		<rdfs:label>has underlier</rdfs:label>
-		<rdfs:range rdf:resource="&fibo-der-drc-bsc;Underlier"/>
-		<skos:definition>relates a derivative to something on which the contract is based</skos:definition>
-		<cmns-av:usageNote>The domain of this property can be either a derivative instrument or, in the case of a swap contract, one leg of the swap.</cmns-av:usageNote>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentProperty rdf:resource="&fibo-fbc-fi-fi;hasUnderlier"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-drc-bsc;hasUnderlyingAssetPrice">
@@ -428,20 +398,48 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasUnderlier"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-drc-bsc;Underlier"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-drc-bsc;hasValuationTerms"/>
 				<owl:someValuesFrom rdf:resource="&fibo-der-drc-bsc;ValuationTerms"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;hasUnderlier"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-fi;Underlier"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;hasContractualElement"/>
 				<owl:someValuesFrom rdf:resource="&fibo-der-drc-bsc;DerivativeTerms"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-fi-fi;Underlier">
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasIdentity"/>
+				<owl:someValuesFrom>
+					<owl:Class>
+						<owl:unionOf rdf:parseType="Collection">
+							<rdf:Description rdf:about="&fibo-fbc-fi-fi;FinancialInstrument">
+							</rdf:Description>
+							<rdf:Description rdf:about="&fibo-fnd-pas-pas;Commodity">
+							</rdf:Description>
+							<rdf:Description rdf:about="&fibo-fbc-pas-fpas;Basket">
+							</rdf:Description>
+							<rdf:Description rdf:about="&fibo-ind-ind-ind;MarketRate">
+							</rdf:Description>
+							<rdf:Description rdf:about="&fibo-ind-ei-ei;EconomicIndicator">
+							</rdf:Description>
+							<rdf:Description rdf:about="&fibo-der-drc-bsc;ObservableValue">
+							</rdf:Description>
+							<rdf:Description rdf:about="&fibo-ind-fx-fx;QuotedExchangeRate">
+							</rdf:Description>
+						</owl:unionOf>
+					</owl:Class>
+				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 	</owl:Class>

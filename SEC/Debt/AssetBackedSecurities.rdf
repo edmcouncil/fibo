@@ -13,6 +13,7 @@
 	<!ENTITY fibo-ind-ei-ei "https://spec.edmcouncil.org/fibo/ontology/IND/EconomicIndicators/EconomicIndicators/">
 	<!ENTITY fibo-ind-ind-ind "https://spec.edmcouncil.org/fibo/ontology/IND/Indicators/Indicators/">
 	<!ENTITY fibo-loan-spc-cns "https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansSpecific/ConsumerLoans/">
+	<!ENTITY fibo-loan-spc-stu "https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansSpecific/StudentLoans/">
 	<!ENTITY fibo-sec-dbt-abs "https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/AssetBackedSecurities/">
 	<!ENTITY fibo-sec-dbt-bnd "https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/Bonds/">
 	<!ENTITY fibo-sec-dbt-dbti "https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtInstruments/">
@@ -40,6 +41,7 @@
 	xmlns:fibo-ind-ei-ei="https://spec.edmcouncil.org/fibo/ontology/IND/EconomicIndicators/EconomicIndicators/"
 	xmlns:fibo-ind-ind-ind="https://spec.edmcouncil.org/fibo/ontology/IND/Indicators/Indicators/"
 	xmlns:fibo-loan-spc-cns="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansSpecific/ConsumerLoans/"
+	xmlns:fibo-loan-spc-stu="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansSpecific/StudentLoans/"
 	xmlns:fibo-sec-dbt-abs="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/AssetBackedSecurities/"
 	xmlns:fibo-sec-dbt-bnd="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/Bonds/"
 	xmlns:fibo-sec-dbt-dbti="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtInstruments/"
@@ -68,6 +70,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/EconomicIndicators/EconomicIndicators/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/Indicators/Indicators/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansSpecific/ConsumerLoans/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansSpecific/StudentLoans/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/Bonds/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtInstruments/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/PoolBackedSecurities/"/>
@@ -81,20 +84,22 @@
 		<cmns-av:copyright>Copyright (c) 2015-2023 EDM Council, Inc.</cmns-av:copyright>
 	</owl:Ontology>
 	
-	<owl:Class rdf:about="&fibo-sec-dbt-abs;AutoLoanAssetBackedSecurity">
+	<owl:Class rdf:about="&fibo-sec-dbt-abs;AutoAssetBackedSecurity">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-pbs;AssetBackedSecurity"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-abs;hasUnderlyingAssets"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-abs;AutoLoanPool"/>
+				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;hasUnderlier"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-abs;AutoDebtPool"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">auto loan asset-backed security</rdfs:label>
+		<rdfs:label xml:lang="en">auto asset-backed security</rdfs:label>
 		<skos:definition xml:lang="en">asset-backed security issued by an auto finance company that is backed by an underlying pool of auto-related loans or leases</skos:definition>
-		<skos:editorialNote xml:lang="en">Leases not shown at present. Added during later review.</skos:editorialNote>
+		<cmns-av:adaptedFrom>https://content.naic.org/sites/default/files/capital-markets-primer-auto-abs.pdf</cmns-av:adaptedFrom>
+		<cmns-av:explanatoryNote xml:lang="en">Auto asset-backed securities (auto ABS) are typically structured finance securities that are collateralized by auto loans or leases, such as those to prime (good credit standing) and subprime (poor credit standing) borrowers. Loans or leases are bundled into pools and transferred to a special-purpose entity (SPE), which, in turn, transfers the pool to a (bankruptcy remote) trust. Payments on the underlying auto loans and leases are pooled in the trust, and the funds are used to pay note investors their respective principal which, in turn, transfers the pool to a (bankruptcy remote) trust. Payments on the underlying auto loans and leases are pooled in the trust, and the funds are used to pay note investors their respective principal and interest when due. Any leftover funds - known as excess spread, or the net interest margin - are paid to the equity holder (usually the issuer, such as an auto finance company).</cmns-av:explanatoryNote>
+		<cmns-av:explanatoryNote xml:lang="en">If the credit risk of the pool has been decoupled from the institution via an SPV, then an auto asset-backed security is also a structured finance instrument.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-dbt-abs;AutoLoanPool">
+	<owl:Class rdf:about="&fibo-sec-dbt-abs;AutoDebtPool">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-pls;DebtPool"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
@@ -102,8 +107,28 @@
 				<owl:someValuesFrom rdf:resource="&fibo-loan-spc-cns;AutoLoan"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">auto loan pool</rdfs:label>
-		<skos:definition xml:lang="en">A loan pool covering automobile-related loans.</skos:definition>
+		<rdfs:label xml:lang="en">auto debt pool</rdfs:label>
+		<skos:definition xml:lang="en">debt pool of auto-related loans or leases</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-dbt-abs;ConsumerAssetBackedSecurity">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-pbs;AssetBackedSecurity"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-pbs;StructuredFinanceInstrument"/>
+		<rdfs:subClassOf>
+			<owl:Class>
+				<owl:unionOf rdf:parseType="Collection">
+					<rdf:Description rdf:about="&fibo-sec-dbt-abs;AutoAssetBackedSecurity">
+					</rdf:Description>
+					<rdf:Description rdf:about="&fibo-sec-dbt-abs;CreditCardAssetBackedSecurity">
+					</rdf:Description>
+					<rdf:Description rdf:about="&fibo-sec-dbt-abs;StudentLoanAssetBackedSecurity">
+					</rdf:Description>
+				</owl:unionOf>
+			</owl:Class>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">consumer asset-backed security</rdfs:label>
+		<skos:definition xml:lang="en">structured finance securities collateralized by pools of auto loans and leases (auto ABS), credit card receivables (credit card ABS) or student loans (student loan ABS)</skos:definition>
+		<cmns-av:adaptedFrom>https://content.naic.org/sites/default/files/capital-markets-primer-consumer-abs.pdf</cmns-av:adaptedFrom>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-abs;ControlledAmortizationBond">
@@ -117,7 +142,7 @@
 		<rdfs:label>controlled amortization bond</rdfs:label>
 		<skos:definition>bond that is securitized using a controlled amortization structure</skos:definition>
 		<cmns-av:adaptedFrom>http://www.investinginbonds.com/learnmore.asp?catid=11&amp;subcatid=57&amp;id=15</cmns-av:adaptedFrom>
-		<cmns-av:explanatoryNote>Revolving debt (primarily credit card receivables, but also HELOCs, trade receivables, dealer floor-plan loans and some leases) may be securitized using a controlled amortization structure. This is a method of providing investors with a relatively predictable repayment schedule, even though the underlying assets are nonamortizing. Controlled-amortization ABS resemble corporate bonds with a sinking fund. After a predetermined &apos;revolving&apos; period during which only interest payments are made, these securities attempt to return principal to investors in a series of defined periodic payments that usually occur over less than a year. A risk inherent in this kind of ABS is an early amortization event. (See &apos;Early-Amortization Risk&apos;, on page 20.)</cmns-av:explanatoryNote>
+		<cmns-av:explanatoryNote>Revolving debt (primarily credit card receivables, but also HELOCs, trade receivables, dealer floor-plan loans and some leases) may be securitized using a controlled amortization structure. This is a method of providing investors with a relatively predictable repayment schedule, even though the underlying assets are nonamortizing. Controlled-amortization ABS resemble corporate bonds with a sinking fund. After a predetermined &apos;revolving&apos; period during which only interest payments are made, these securities attempt to return principal to investors in a series of defined periodic payments that usually occur over less than a year. A risk inherent in this kind of ABS is an early amortization event.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-abs;ControlledAmortizationStructure">
@@ -130,7 +155,7 @@
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-pbs;AssetBackedSecurity"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-abs;hasUnderlyingAssets"/>
+				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;hasUnderlier"/>
 				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-abs;CreditCardPool"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -146,19 +171,6 @@
 		<skos:definition xml:lang="en">pool of outstanding balances on designated accounts</skos:definition>
 		<cmns-av:adaptedFrom xml:lang="en">Federal Deposit Insurance Corporation (FDIC) Credit Card Securitization Manual, available at https://www.fdic.gov/regulations/examinations/credit_card_securitization/ch2.html</cmns-av:adaptedFrom>
 		<cmns-av:explanatoryNote xml:lang="en">In a credit card securitization transaction only the receivables are sold, not the accounts that generate the receivables. The financial institution retains legal ownership of the credit card accounts and can continue to change the terms on the accounts. Accounts corresponding to securitized loans are typically referred to as the designated accounts (or sometimes trust accounts). The initial outstanding balances on the designated accounts are sold to the trust as are the rights to any new charges on the designated accounts. Subsequently, as cardholder purchase activity generates more receivables on the designated accounts, these new receivables are purchased by the trust from the originating institution/seller/transferor. The trust uses the monthly principal payments received from the cardholders to acquire these new charges or receivables. When the securitization is initially set up, the originating institution/seller adds sufficient receivables to support the principal balance of the certificates plus an additional amount (seller&apos;s interest) that serves to absorb fluctuations in the outstanding balance of the receivables. The originating institution/seller will make subsequent additions to the trust in order to keep the seller&apos;s interest at the required level.</cmns-av:explanatoryNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-sec-dbt-abs;EsotericAssetBackedSecurity">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-pbs;AssetBackedSecurity"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-abs;hasUnderlyingCashflow"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-abs;PromisedCashFlowAsset"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">esoteric asset-backed security</rdfs:label>
-		<skos:definition xml:lang="en">asset-backed security based on some underlying promised future cashflow</skos:definition>
-		<cmns-av:explanatoryNote xml:lang="en">Esoteric asset-backed securities have been built based on cash flows from movie revenues, royalty payments, aircraft landing slots, toll roads, and solar photovoltaics.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-abs;FullyAmortizingBond">
@@ -179,6 +191,21 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">home equity line of credit pool</rdfs:label>
+		<skos:definition xml:lang="en">debt pool consisting of home equity loans</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-dbt-abs;HomeEquityLoanAssetBackedSecurity">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-pbs;AssetBackedSecurity"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;hasUnderlier"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-abs;HomeEquityLineOfCreditPool"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">home equity loan asset-backed security</rdfs:label>
+		<skos:definition xml:lang="en">asset-backed security based on home equity loan receivables</skos:definition>
+		<cmns-av:explanatoryNote xml:lang="en">If the credit risk of the pool has been decoupled from the institution via an SPV, then home equity asset-backed securities are also structured finance instruments.</cmns-av:explanatoryNote>
+		<cmns-av:explanatoryNote xml:lang="en">Similar to mortgages, home equity loans are often taken out by borrowers who have less-than-stellar credit scores or few assets - the reason why they didn’t qualify for a mortgage. These are amortizing loans - that is, payment goes toward satisfying a specific sum and consists of three categories: interest, principal, and prepayments.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-abs;IndexAmortizingBond">
@@ -335,31 +362,36 @@
 		<skos:definition>a formula for calculation of principal payments for certain kinds of bonds</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-dbt-abs;PromisedCashFlowAsset">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-oac-own;Asset"/>
-		<rdfs:label xml:lang="en">promised cash flow asset</rdfs:label>
-		<skos:definition xml:lang="en">An asset which takes the form of some promised future cashflow. This may be securitized.</skos:definition>
-		<cmns-av:explanatoryNote xml:lang="en">For example, exotic Cash ABS instruments may be created where the underlying asset is not a pool of securities or debt but a promised cash flow. People have securitized the cash flows of businesses, artists, mobile phone tower income, airplane leases, lotto receivables, etc.</cmns-av:explanatoryNote>
+	<owl:Class rdf:about="&fibo-sec-dbt-abs;StudentLoanAssetBackedSecurity">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-pbs;AssetBackedSecurity"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;hasUnderlier"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-abs;StudentLoanPool"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">student loan asset-backed security</rdfs:label>
+		<skos:definition xml:lang="en">asset-backed security based on student loan receivables</skos:definition>
+		<cmns-av:explanatoryNote xml:lang="en">If the credit risk of the pool has been decoupled from the institution via an SPV, then student loan asset-backed securities are also structured finance instruments.</cmns-av:explanatoryNote>
+		<cmns-av:explanatoryNote xml:lang="en">The main purpose behind Student Loan ABS is to diversify the risk for lenders across many investors. By pooling and then packaging the loans into securities and selling them to investors, agencies can spread around the default risk, which allows them to give out more loans and larger loans. This way, more students have access to loans, investors have a diversifying investment instrument, and lenders can generate consistent cash flow from their securitization and debt collection services.</cmns-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-dbt-abs;StudentLoanPool">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-pls;DebtPool"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-col;hasConstituent"/>
+				<owl:someValuesFrom rdf:resource="&fibo-loan-spc-stu;StudentLoan"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">student loan pool</rdfs:label>
+		<skos:definition xml:lang="en">debt pool consisting of student loans</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-abs;WACBondCoupon">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;BondVariableCoupon"/>
 		<rdfs:label>w a c bond coupon</rdfs:label>
 	</owl:Class>
-	
-	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-abs;hasUnderlyingAssets">
-		<rdfs:label xml:lang="en">has underlying assets</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-pbs;AssetBackedSecurity"/>
-		<rdfs:range rdf:resource="&fibo-sec-sec-pls;DebtPool"/>
-		<skos:definition xml:lang="en">The ABS has an underlying pool asset which is either a loan pool or a credit card pool. This is actually defined as being any kind of pool asset that is not a mortgage pool, so any other types of pool should be added. This is more satisfactory that modeling it with a &quot;not&quot; relationship to Mortgage Pool, though that may be more correct.</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-abs;hasUnderlyingCashflow">
-		<rdfs:subPropertyOf rdf:resource="&fibo-sec-dbt-abs;hasUnderlyingAssets"/>
-		<rdfs:label xml:lang="en">has underlying cashflow</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-abs;EsotericAssetBackedSecurity"/>
-		<rdfs:range rdf:resource="&fibo-sec-dbt-abs;PromisedCashFlowAsset"/>
-	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-abs;specifiesIndexParameter">
 		<rdfs:label>specifies index parameter</rdfs:label>
