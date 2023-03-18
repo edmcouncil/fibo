@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE rdf:RDF [
 	<!ENTITY cmns-av "https://www.omg.org/spec/Commons/AnnotationVocabulary/">
+	<!ENTITY cmns-cls "https://www.omg.org/spec/Commons/Classifiers/">
 	<!ENTITY cmns-col "https://www.omg.org/spec/Commons/Collections/">
+	<!ENTITY cmns-cxtdsg "https://www.omg.org/spec/Commons/ContextualDesignators/">
+	<!ENTITY cmns-dsg "https://www.omg.org/spec/Commons/Designators/">
 	<!ENTITY dct "http://purl.org/dc/terms/">
 	<!ENTITY fibo-fnd-aap-ppl "https://spec.edmcouncil.org/fibo/ontology/FND/AgentsAndPeople/People/">
 	<!ENTITY fibo-fnd-agr-agr "https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Agreements/">
@@ -23,7 +26,10 @@
 ]>
 <rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"
 	xmlns:cmns-av="https://www.omg.org/spec/Commons/AnnotationVocabulary/"
+	xmlns:cmns-cls="https://www.omg.org/spec/Commons/Classifiers/"
 	xmlns:cmns-col="https://www.omg.org/spec/Commons/Collections/"
+	xmlns:cmns-cxtdsg="https://www.omg.org/spec/Commons/ContextualDesignators/"
+	xmlns:cmns-dsg="https://www.omg.org/spec/Commons/Designators/"
 	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fibo-fnd-aap-ppl="https://spec.edmcouncil.org/fibo/ontology/FND/AgentsAndPeople/People/"
 	xmlns:fibo-fnd-agr-agr="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Agreements/"
@@ -59,7 +65,10 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/AnnotationVocabulary/"/>
+		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Classifiers/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Collections/"/>
+		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/ContextualDesignators/"/>
+		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Designators/"/>
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20230301/Agreements/Contracts/"/>
 		<skos:changeNote>The http://www.omg.org/spec/FIBO/Foundations/20130601/Agreements/Contracts.owl version of the ontology was revised in advance of the September 2013 New Brunswick, NJ meeting, as follows:
 		(1) to use slash style URI/IRIss (also called 303 URIs, vs. hash style) as required to support server side processing 
@@ -150,14 +159,14 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-oc;OccurrenceKind"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-agr-ctr;Contract"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;refersTo"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-agr-ctr;ContractualCommitment"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;refersTo"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-agr-ctr;ContractualCommitment"/>
+				<owl:onProperty rdf:resource="&cmns-cxtdsg;appliesTo"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-agr-ctr;Contract"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">breach of contract</rdfs:label>
@@ -169,14 +178,14 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-oc;OccurrenceKind"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;appliesTo"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-agr-ctr;Contract"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;refersTo"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-agr-ctr;ContractualCommitment"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;refersTo"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-agr-ctr;ContractualCommitment"/>
+				<owl:onProperty rdf:resource="&cmns-cxtdsg;appliesTo"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-agr-ctr;Contract"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">breach of covenant</rdfs:label>
@@ -284,6 +293,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-agr-ctr;ContractualElement">
+		<rdfs:subClassOf rdf:resource="&cmns-col;Constituent"/>
 		<rdfs:label>contractual element</rdfs:label>
 		<skos:definition>element, such as an arrangement, provision, requirement, rule, specification, and standard that forms an integral part of an agreement</skos:definition>
 	</owl:Class>
@@ -464,6 +474,7 @@
 	</owl:Class>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-agr-ctr;definesTermsFor">
+		<rdfs:subPropertyOf rdf:resource="&cmns-dsg;defines"/>
 		<rdfs:label>defines terms for</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fnd-agr-ctr;Contract"/>
 		<skos:definition>relates a contract to something for which the contract defines legally binding terms and conditions</skos:definition>
@@ -612,13 +623,13 @@
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-agr-ctr;isQualifiedBy">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;isCharacterizedBy"/>
+		<rdfs:subPropertyOf rdf:resource="&cmns-cls;isCharacterizedBy"/>
 		<rdfs:label>is qualified by</rdfs:label>
 		<skos:definition>indicates a constraint, limitation or refinement on something</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-agr-ctr;qualifies">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;characterizes"/>
+		<rdfs:subPropertyOf rdf:resource="&cmns-cls;characterizes"/>
 		<rdfs:label>qualifies</rdfs:label>
 		<owl:inverseOf rdf:resource="&fibo-fnd-agr-ctr;isQualifiedBy"/>
 		<skos:definition>limits, constrains or refines</skos:definition>
