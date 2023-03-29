@@ -120,7 +120,7 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20210101/FunctionalEntities/FinancialServicesEntities.rdf version of this ontology was revised to move the definition of the Bank for International Settlements (BIS) to the EU Regulatory Agencies ontology and build out the individual details there, and to reflect the move of some organization-specific concepts from BE to FND.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20211001/FunctionalEntities/FinancialServicesEntities.rdf version of this ontology was revised to apply the new composite identifier definition to BIC codes.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20220401/FunctionalEntities/FinancialServicesEntities.rdf version of this ontology was revised to clean up dead links and address text formatting issues uncovered by hygiene testing.</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20220801/FunctionalEntities/FinancialServicesEntities.rdf version of this ontology was revised to clean up a few definitions to conform with ISO 704, and to use the Commons Ontology Library (Commons) Annotation Vocabulary rather than the OMG&apos;s Specification Metadata vocabulary.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20220801/FunctionalEntities/FinancialServicesEntities.rdf version of this ontology was revised to clean up a few definitions to conform with ISO 704, to use the Commons Ontology Library (Commons) Annotation Vocabulary rather than the OMG&apos;s Specification Metadata vocabulary, and to add the concept of a data processing servicer.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 		<cmns-av:copyright>Copyright (c) 2015-2023 EDM Council, Inc.</cmns-av:copyright>
 		<cmns-av:copyright>Copyright (c) 2015-2023 Object Management Group, Inc.</cmns-av:copyright>
@@ -438,6 +438,27 @@ CCPs benefit both parties in a transaction because they bear most of the credit 
 		<skos:definition>not-for-profit depository institution that makes personal loans and offers other consumer banking services, organized for the purpose of promoting thrift among its members and creating a source of credit for provident or productive purposes</skos:definition>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-fbc-fct-fse;DataProcessingService">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;FinancialService"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isProvidedBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-fct-fse;DataProcessingServicer"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>data processing service</rdfs:label>
+		<skos:definition>financial service offered by an entity primarily engaged in providing infrastructure for hosting or data processing services</skos:definition>
+		<cmns-av:adaptedFrom>https://www.ffiec.gov/npw/Help/InstitutionTypes</cmns-av:adaptedFrom>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-fct-fse;DataProcessingServicer">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;FinancialServiceProvider"/>
+		<rdfs:label>data processing service</rdfs:label>
+		<skos:definition>finance services provider primarily engaged in providing infrastructure for hosting or data processing services</skos:definition>
+		<cmns-av:adaptedFrom>https://www.ffiec.gov/npw/Help/InstitutionTypes</cmns-av:adaptedFrom>
+		<cmns-av:explanatoryNote>These establishments may provide specialized hosting activities, such as web hosting, streaming services or application hosting, provide application service provisioning, or may provide general time-share mainframe facilities to clients. Data processing establishments provide complete processing and specialized reports from data supplied by clients or provide automated data processing and data entry services.</cmns-av:explanatoryNote>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-fbc-fct-fse;DepositoryInstitution">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-fse;FinancialInstitution"/>
 		<rdfs:label>depository institution</rdfs:label>
@@ -751,6 +772,20 @@ A number of insurance companies operate brokerage arms that trade securities on 
 		<rdfs:label>self-regulating organization</rdfs:label>
 		<skos:definition>non-governmental organization that has the power to create and exercise some degree of regulatory authority over an industry or profession in some country or group of countries</skos:definition>
 		<cmns-av:abbreviation>SRO</cmns-av:abbreviation>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-fct-fse;TrustCompany">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-fse;FinancialInstitution"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasIdentity"/>
+				<owl:onClass rdf:resource="&fibo-be-le-cb;Corporation"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>trust company</rdfs:label>
+		<skos:definition>financial institution that acts as a fiduciary, trustee or agent of trusts and agencies</skos:definition>
+		<cmns-av:explanatoryNote>A professional trust company may be independently owned or owned by, for example, a bank or a law firm, and which specializes in being a trustee of various kinds of trusts. The trust company oversees the management of assets covered by the trust agreement. Such companies often are used when a grantor feels the trust company can do an equal or better job managing the assets than an individual person, or if the grantor does not know of anyone else who can act as trustee. Trust companies sometimes act as fiscal agents for corporations by attending to the registration and transfer of their stocks and bonds, serving as a trustee for their bond and mortgage creditors, and transacting general banking and loan business.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-fct-fse;Underwriter">
