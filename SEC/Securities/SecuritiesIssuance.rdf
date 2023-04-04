@@ -2,6 +2,7 @@
 <!DOCTYPE rdf:RDF [
 	<!ENTITY cmns-av "https://www.omg.org/spec/Commons/AnnotationVocabulary/">
 	<!ENTITY cmns-cxtdsg "https://www.omg.org/spec/Commons/ContextualDesignators/">
+	<!ENTITY cmns-dt "https://www.omg.org/spec/Commons/DatesAndTimes/">
 	<!ENTITY cmns-id "https://www.omg.org/spec/Commons/Identifiers/">
 	<!ENTITY dct "http://purl.org/dc/terms/">
 	<!ENTITY fibo-be-fct-pub "https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/Publishers/">
@@ -17,7 +18,6 @@
 	<!ENTITY fibo-fnd-agr-agr "https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Agreements/">
 	<!ENTITY fibo-fnd-agr-ctr "https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/">
 	<!ENTITY fibo-fnd-arr-doc "https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Documents/">
-	<!ENTITY fibo-fnd-dt-fd "https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/">
 	<!ENTITY fibo-fnd-law-jur "https://spec.edmcouncil.org/fibo/ontology/FND/Law/Jurisdiction/">
 	<!ENTITY fibo-fnd-pty-pty "https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Parties/">
 	<!ENTITY fibo-fnd-pty-rl "https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Roles/">
@@ -33,6 +33,7 @@
 <rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesIssuance/"
 	xmlns:cmns-av="https://www.omg.org/spec/Commons/AnnotationVocabulary/"
 	xmlns:cmns-cxtdsg="https://www.omg.org/spec/Commons/ContextualDesignators/"
+	xmlns:cmns-dt="https://www.omg.org/spec/Commons/DatesAndTimes/"
 	xmlns:cmns-id="https://www.omg.org/spec/Commons/Identifiers/"
 	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fibo-be-fct-pub="https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/Publishers/"
@@ -48,7 +49,6 @@
 	xmlns:fibo-fnd-agr-agr="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Agreements/"
 	xmlns:fibo-fnd-agr-ctr="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"
 	xmlns:fibo-fnd-arr-doc="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Documents/"
-	xmlns:fibo-fnd-dt-fd="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"
 	xmlns:fibo-fnd-law-jur="https://spec.edmcouncil.org/fibo/ontology/FND/Law/Jurisdiction/"
 	xmlns:fibo-fnd-pty-pty="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Parties/"
 	xmlns:fibo-fnd-pty-rl="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Roles/"
@@ -80,7 +80,6 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Agreements/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Documents/"/>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Law/Jurisdiction/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Parties/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Roles/"/>
@@ -90,8 +89,9 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/ContextualDesignators/"/>
+		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/DatesAndTimes/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Identifiers/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20230201/Securities/SecuritiesIssuance/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20230301/Securities/SecuritiesIssuance/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20180801/Securities/SecuritiesIssuance/ version of this ontology was modified to refine the concept of a securities underwriter.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20181201/Securities/SecuritiesIssuance/ version of this ontology was modified to eliminate duplication of concepts in LCC.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20200201/Securities/SecuritiesIssuance/ version of this ontology was modified to add the concept of the form the security is issued in, namely bearer or registered.</skos:changeNote>
@@ -286,22 +286,22 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-doc;LegalDocument"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;isEvidenceFor"/>
+				<owl:onClass rdf:resource="&fibo-sec-sec-iss;SecuritiesOffering"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-arr-doc;hasDateOfIssuance"/>
-				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;Date"/>
+				<owl:onClass rdf:resource="&cmns-dt;Date"/>
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-arr-doc;hasExpirationDate"/>
-				<owl:onClass rdf:resource="&fibo-fnd-dt-fd;Date"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;isEvidenceFor"/>
-				<owl:onClass rdf:resource="&fibo-sec-sec-iss;SecuritiesOffering"/>
+				<owl:onClass rdf:resource="&cmns-dt;Date"/>
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -531,16 +531,16 @@
 	</owl:Class>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-sec-iss;hasActualClosingDate">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDate"/>
+		<rdfs:subPropertyOf rdf:resource="&cmns-dt;hasDate"/>
 		<rdfs:label>has actual closing date</rdfs:label>
-		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
+		<rdfs:range rdf:resource="&cmns-dt;ExplicitDate"/>
 		<skos:definition>indicates the date on which an offering or transaction officially closes, in contrast with an intended closing date</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-sec-iss;hasAnnouncementDate">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDate"/>
+		<rdfs:subPropertyOf rdf:resource="&cmns-dt;hasDate"/>
 		<rdfs:label>has announcement date</rdfs:label>
-		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Date"/>
+		<rdfs:range rdf:resource="&cmns-dt;Date"/>
 		<skos:definition>indicates the first day the public will receive information regarding a new security issue</skos:definition>
 		<cmns-av:explanatoryNote>An announcement date may also refer to the release of a corporate event or new financial news, such as interest rate changes or earnings reports.</cmns-av:explanatoryNote>
 	</owl:ObjectProperty>
@@ -555,15 +555,15 @@
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-sec-iss;hasFirstTradeDate">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDate"/>
+		<rdfs:subPropertyOf rdf:resource="&cmns-dt;hasDate"/>
 		<rdfs:label>has first trade date</rdfs:label>
-		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;ExplicitDate"/>
+		<rdfs:range rdf:resource="&cmns-dt;ExplicitDate"/>
 		<skos:definition>indicates the date on which a newly issued security starts trading</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-sec-iss;hasFirstTradeSettlementDate">
 		<rdfs:label>has first trade settlement date</rdfs:label>
-		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Date"/>
+		<rdfs:range rdf:resource="&cmns-dt;Date"/>
 		<skos:definition>indicates the date on which the first trade of a newly issued security is settled</skos:definition>
 	</owl:ObjectProperty>
 	
@@ -616,9 +616,9 @@
 	</owl:DatatypeProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-sec-iss;hasSubscriptionPeriod">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasDatePeriod"/>
+		<rdfs:subPropertyOf rdf:resource="&cmns-dt;hasDatePeriod"/>
 		<rdfs:label>has subscription period</rdfs:label>
-		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;DatePeriod"/>
+		<rdfs:range rdf:resource="&cmns-dt;DatePeriod"/>
 		<skos:definition>indicates a period of time in which investors can commit to purchase shares (or units) to be issued</skos:definition>
 	</owl:ObjectProperty>
 	
