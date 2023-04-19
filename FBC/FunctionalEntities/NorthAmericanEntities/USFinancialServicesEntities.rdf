@@ -115,6 +115,7 @@
 		<skos:definition>place of business of a foreign bank, located in any state, at which credit balances are maintained, checks are paid, money is lent, or, to the extent not prohibited by state or federal law, deposits are accepted from a person or entity that is not a citizen or resident of the United States</skos:definition>
 		<cmns-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.ecfr.gov/current/title-12/chapter-II/subchapter-A/part-211/subpart-B/section-211.21</cmns-av:adaptedFrom>
 		<cmns-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.ffiec.gov/npw/Help/InstitutionTypes</cmns-av:adaptedFrom>
+		<cmns-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.govinfo.gov/content/pkg/COMPS-275/pdf/COMPS-275.pdf</cmns-av:adaptedFrom>
 		<cmns-av:explanatoryNote>Obligations shall not be considered credit balances unless they are: 
 (1) Incidental to, or arise out of the exercise of, other lawful banking powers; 
 (2) To serve a specific purpose; 
@@ -196,6 +197,32 @@
 		<cmns-av:adaptedFrom>https://www.ffiec.gov/nicpubweb/Content/DataDownload/NPW%20Data%20Dictionary.pdf</cmns-av:adaptedFrom>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-fbc-fct-usfse;BranchOfADepositoryInstitution">
+		<rdfs:subClassOf rdf:resource="&fibo-be-le-fbo;Branch"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-col;isPartOf"/>
+				<owl:someValuesFrom>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&fibo-fnd-pty-rl;playsRole"/>
+						<owl:someValuesFrom rdf:resource="&fibo-fbc-fct-fse;DepositoryInstitution"/>
+					</owl:Restriction>
+				</owl:someValuesFrom>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>branch of a depository institution</rdfs:label>
+		<skos:definition>any office or any place of business located in any State of the United States at which deposits are received</skos:definition>
+		<cmns-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.ecfr.gov/current/title-12/chapter-II/subchapter-A/part-211/subpart-B/section-211.21</cmns-av:adaptedFrom>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-fct-usfse;CommercialLendingCompany">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-fse;FinancialInstitution"/>
+		<rdfs:label>commercial lending company</rdfs:label>
+		<owl:disjointWith rdf:resource="&fibo-fbc-fct-fse;Bank"/>
+		<skos:definition>any institution, other than a bank or an organization operating under section 25 of the Federal Reserve Act [12 U.S.C. 601 et seq.], organized under the laws of any State of the United States, or the District of Columbia which maintains credit balances incidental to or arising out of the exercise of banking powers and engages in the business of making commercial loans</skos:definition>
+		<cmns-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.govinfo.gov/content/pkg/USCODE-2021-title12/pdf/USCODE-2021-title12-chap32-sec3101.pdf</cmns-av:adaptedFrom>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-fbc-fct-usfse;CooperativeBank">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-usfse;ThriftInstitution"/>
 		<rdfs:label>cooperative bank</rdfs:label>
@@ -204,7 +231,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-fct-usfse;DomesticBranchOfAForeignBank">
-		<rdfs:subClassOf rdf:resource="&fibo-be-le-fbo;Branch"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-usfse;BranchOfADepositoryInstitution"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-usfse;OfficeOfAForeignBank"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
@@ -236,7 +263,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-fct-usfse;DomesticBranchOfDomesticBank">
-		<rdfs:subClassOf rdf:resource="&fibo-be-le-fbo;Branch"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-usfse;BranchOfADepositoryInstitution"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-org-fm;isDomiciledIn"/>
@@ -409,6 +436,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>foreign bank</rdfs:label>
+		<owl:disjointWith rdf:resource="&fibo-fbc-fct-fse;CentralBank"/>
 		<owl:disjointWith rdf:resource="&fibo-fbc-fct-usfse;USBank"/>
 		<skos:definition>financial institution organized under the laws of a foreign country, a territory of the United States, Puerto Rico, Guam, American Samoa, or the Virgin Islands, which engages in the business of banking, or any subsidiary or affiliate, organized under such laws, of any such institution</skos:definition>
 		<cmns-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.ecfr.gov/current/title-12/chapter-II/subchapter-A/part-211/subpart-B/section-211.21</cmns-av:adaptedFrom>
@@ -476,7 +504,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-fct-usfse;ForeignBranchOfUSBank">
-		<rdfs:subClassOf rdf:resource="&fibo-be-le-fbo;Branch"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-usfse;BranchOfADepositoryInstitution"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&cmns-col;isPartOf"/>
@@ -514,26 +542,10 @@
 		<cmns-av:explanatoryNote>Often called Morris Plan banks or industrial loan companies, industrial banks are distinguished from commercial loan companies because industrial banks accept deposits in addition to making consumer loans. Industrial banks differ from commercial banks because they do not offer demand deposit (checking) accounts. Industrial banks are not regulated by the Federal Reserve.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-fbc-fct-usfse;InsuredFederalAgencyOfForeignBankingOrganization">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-usfse;FederalAgencyOfForeignBankingOrganization"/>
-		<rdfs:label>insured federal agency of foreign banking organization</rdfs:label>
-		<skos:definition>agency of a foreign bank established and operating under section 3102 of CFR Title 12, Chapter 32 and section 4 of the International Banking Act of 1978 that is insured and regulated by the Federal Deposit Insurance Corporation (FDIC)</skos:definition>
-		<cmns-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.ffiec.gov/npw/Help/InstitutionTypes</cmns-av:adaptedFrom>
-		<cmns-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.govinfo.gov/content/pkg/COMPS-275/pdf/COMPS-275.pdf</cmns-av:adaptedFrom>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-fbc-fct-usfse;InsuredFederalBranchOfForeignBankingOrganization">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-usfse;FederalBranchOfForeignBankingOrganization"/>
 		<rdfs:label>insured federal branch of foreign banking organization</rdfs:label>
 		<skos:definition>any office or any place of business of a foreign bank located in any State of the United States at which deposits are received established and operating under section 4 of the International Banking Act of 1978 that is insured and regulated by the Federal Deposit Insurance Corporation (FDIC)</skos:definition>
-		<cmns-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.ffiec.gov/npw/Help/InstitutionTypes</cmns-av:adaptedFrom>
-		<cmns-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.govinfo.gov/content/pkg/COMPS-275/pdf/COMPS-275.pdf</cmns-av:adaptedFrom>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-fbc-fct-usfse;InsuredStateAgencyOfForeignBankingOrganization">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-usfse;StateAgencyOfForeignBankingOrganization"/>
-		<rdfs:label>insured state agency of foreign banking organization</rdfs:label>
-		<skos:definition>agency of a foreign bank established and operating under the laws of any state that is insured and regulated by the Federal Deposit Insurance Corporation (FDIC)</skos:definition>
 		<cmns-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.ffiec.gov/npw/Help/InstitutionTypes</cmns-av:adaptedFrom>
 		<cmns-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.govinfo.gov/content/pkg/COMPS-275/pdf/COMPS-275.pdf</cmns-av:adaptedFrom>
 	</owl:Class>
@@ -583,7 +595,7 @@
 	<owl:Class rdf:about="&fibo-fbc-fct-usfse;LimitedBranchOfAForeignBank">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-usfse;DomesticBranchOfAForeignBank"/>
 		<rdfs:label>limited branch of a foreign bank</rdfs:label>
-		<skos:definition>branch of a foreign bank that receives only such deposits as would be permitted for a corporation organized under section 25A of the Federal Reserve Act (12 U.S.C 611-631)</skos:definition>
+		<skos:definition>branch of a foreign bank that receives only such deposits as would be permitted for a corporation organized under section 25A of the Federal Reserve Act (12 U.S.C. 611-631)</skos:definition>
 		<cmns-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.ecfr.gov/current/title-12/chapter-II/subchapter-A/part-211/subpart-B/section-211.21</cmns-av:adaptedFrom>
 	</owl:Class>
 	
@@ -601,6 +613,15 @@
 		<skos:definition>commercial bank whose charter is approved by the Office of the Comptroller of the Currency (OCC) rather than by a state banking agency</skos:definition>
 		<cmns-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.ffiec.gov/npw/Help/InstitutionTypes#non-mem-banks</cmns-av:adaptedFrom>
 		<cmns-av:explanatoryNote>National Banks are required to be members of the Federal Reserve System and belong to the Federal Deposit Insurance Corporation.</cmns-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-fct-usfse;NewYorkArticleXIIInvestmentCompany">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-fse;NonDepositoryInstitution"/>
+		<rdfs:label>New York Article XII investment company</rdfs:label>
+		<owl:disjointWith rdf:resource="&fibo-fbc-fct-fse;InvestmentCompany"/>
+		<skos:definition>specialized non-depository lending institution that has broad borrowing and lending powers and may invest in stocks and bonds</skos:definition>
+		<cmns-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.dfs.ny.gov/institution_definition</cmns-av:adaptedFrom>
+		<cmns-av:explanatoryNote>An Article XII Investment Company is not an &apos;investment company&apos; subject to registration under the Investment Company Act of 1940. An Article XII Investment Company may accept credit balances in New York that are incidental to the exercise of its other powers and may accept deposits outside New York with the approval of the Superintendent. Article XII Investment Companies may specialize in commercial or retail sales finance; others are involved in domestic and international commercial and merchant banking.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-fct-usfse;NonDepositoryTrustCompany">
@@ -633,6 +654,19 @@
 	<owl:Class rdf:about="&fibo-fbc-fct-usfse;RepresentativeOfficeOfAForeignBank">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-usfse;OfficeOfAForeignBank"/>
 		<rdfs:label>representative office of a foreign bank</rdfs:label>
+		<owl:disjointWith rdf:resource="&fibo-fbc-fct-usfse;DomesticBranchOfAForeignBank"/>
+		<owl:disjointWith>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-pty-rl;playsRole"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-fct-usfse;AgencyOfAForeignBankingOrganization"/>
+			</owl:Restriction>
+		</owl:disjointWith>
+		<owl:disjointWith>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-pty-rl;playsRole"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-fct-usfse;CommercialLendingCompany"/>
+			</owl:Restriction>
+		</owl:disjointWith>
 		<skos:definition>office of a foreign bank which is located in any state and is not a federal branch, federal agency, state branch, state agency, or commercial lending company subsidiary</skos:definition>
 		<cmns-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.ecfr.gov/current/title-12/chapter-II/subchapter-A/part-211/subpart-B/section-211.21</cmns-av:adaptedFrom>
 		<cmns-av:synonym>representative office</cmns-av:synonym>
