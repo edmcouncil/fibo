@@ -23,6 +23,7 @@
 	<!ENTITY fibo-fbc-pas-fpas "https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/">
 	<!ENTITY fibo-fnd-acc-cur "https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/">
 	<!ENTITY fibo-fnd-agr-ctr "https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/">
+	<!ENTITY fibo-fnd-arr-doc "https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Documents/">
 	<!ENTITY fibo-fnd-law-jur "https://spec.edmcouncil.org/fibo/ontology/FND/Law/Jurisdiction/">
 	<!ENTITY fibo-fnd-oac-ctl "https://spec.edmcouncil.org/fibo/ontology/FND/OwnershipAndControl/Control/">
 	<!ENTITY fibo-fnd-org-fm "https://spec.edmcouncil.org/fibo/ontology/FND/Organizations/FormalOrganizations/">
@@ -63,6 +64,7 @@
 	xmlns:fibo-fbc-pas-fpas="https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/"
 	xmlns:fibo-fnd-acc-cur="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"
 	xmlns:fibo-fnd-agr-ctr="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"
+	xmlns:fibo-fnd-arr-doc="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Documents/"
 	xmlns:fibo-fnd-law-jur="https://spec.edmcouncil.org/fibo/ontology/FND/Law/Jurisdiction/"
 	xmlns:fibo-fnd-oac-ctl="https://spec.edmcouncil.org/fibo/ontology/FND/OwnershipAndControl/Control/"
 	xmlns:fibo-fnd-org-fm="https://spec.edmcouncil.org/fibo/ontology/FND/Organizations/FormalOrganizations/"
@@ -97,6 +99,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Documents/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Law/Jurisdiction/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Organizations/FormalOrganizations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Organizations/Organizations/"/>
@@ -545,6 +548,7 @@ CCPs benefit both parties in a transaction because they bear most of the credit 
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-fct-fse;FinancialInstitution">
+		<rdfs:subClassOf rdf:resource="&fibo-be-fct-fct;FunctionalBusinessEntity"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;FinancialServiceProvider"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
@@ -646,7 +650,6 @@ A number of insurance companies operate brokerage arms that trade securities on 
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-fct-fse;InvestmentBank">
-		<rdfs:subClassOf rdf:resource="&fibo-be-fct-fct;FunctionalBusinessEntity"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-fse;FinancialInstitution"/>
 		<rdfs:subClassOf>
 			<owl:Class>
@@ -726,7 +729,6 @@ A number of insurance companies operate brokerage arms that trade securities on 
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-fct-fse;NonDepositoryInstitution">
-		<rdfs:subClassOf rdf:resource="&fibo-be-fct-fct;FunctionalBusinessEntity"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-fse;FinancialInstitution"/>
 		<rdfs:label>non-depository institution</rdfs:label>
 		<owl:disjointWith rdf:resource="&fibo-fbc-fct-fse;DepositoryInstitution"/>
@@ -891,16 +893,32 @@ A number of insurance companies operate brokerage arms that trade securities on 
 	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-fct-fse;hasDateEstablished">
 		<rdfs:subPropertyOf rdf:resource="&cmns-dt;hasExplicitDate"/>
+		<rdfs:subPropertyOf rdf:resource="&cmns-dt;hasStartDate"/>
 		<rdfs:label>has date established</rdfs:label>
 		<rdfs:range rdf:resource="&cmns-dt;ExplicitDate"/>
-		<skos:definition>the date that the financial service provider was established</skos:definition>
+		<skos:definition>the date that the financial service provider was formally established</skos:definition>
+		<cmns-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.ffiec.gov/nicpubweb/Content/DataDownload/NPW%20Data%20Dictionary.pdf</cmns-av:adaptedFrom>
+		<cmns-av:explanatoryNote>This may be the date on its papers of incorporation or formation document, or the date on which it was granted a license.</cmns-av:explanatoryNote>
+		<cmns-av:synonym>date of commencement of existence</cmns-av:synonym>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fbc-fct-fse;hasDateEstablishmentTerminated">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-arr-doc;hasExpirationDate"/>
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-arr-doc;hasTerminationDate"/>
+		<rdfs:subPropertyOf rdf:resource="&cmns-dt;hasExplicitDate"/>
+		<rdfs:label>has date establishment terminated</rdfs:label>
+		<rdfs:range rdf:resource="&cmns-dt;ExplicitDate"/>
+		<skos:definition>last full day that the entity existed</skos:definition>
+		<cmns-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.ffiec.gov/nicpubweb/Content/DataDownload/NPW%20Data%20Dictionary.pdf</cmns-av:adaptedFrom>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-fct-fse;hasDateInsured">
 		<rdfs:subPropertyOf rdf:resource="&cmns-dt;hasExplicitDate"/>
+		<rdfs:subPropertyOf rdf:resource="&cmns-dt;hasStartDate"/>
 		<rdfs:label>has date insured</rdfs:label>
 		<rdfs:range rdf:resource="&cmns-dt;ExplicitDate"/>
-		<skos:definition>the date that the financial service provider was first insured for the purposes of protecting client accounts</skos:definition>
+		<skos:definition>date on which insurance became effective</skos:definition>
+		<cmns-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.ffiec.gov/nicpubweb/Content/DataDownload/NPW%20Data%20Dictionary.pdf</cmns-av:adaptedFrom>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-fct-fse;hasPortfolioCompany">
