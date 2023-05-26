@@ -111,6 +111,18 @@
 		<skos:definition xml:lang="en">debt pool of auto-related loans or leases</skos:definition>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-sec-dbt-abs;BondPool">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-pls;DebtPool"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-col;hasConstituent"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;Bond"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">bond pool</rdfs:label>
+		<skos:definition xml:lang="en">debt pool of consisting of bonds</skos:definition>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-sec-dbt-abs;ConsumerAssetBackedSecurity">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-pbs;AssetBackedSecurity"/>
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-pbs;StructuredFinanceInstrument"/>
@@ -131,24 +143,31 @@
 		<cmns-av:adaptedFrom>https://content.naic.org/sites/default/files/capital-markets-primer-consumer-abs.pdf</cmns-av:adaptedFrom>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-dbt-abs;ControlledAmortizationBond">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;AmortizingBond"/>
+	<owl:Class rdf:about="&fibo-sec-dbt-abs;ControlledAmortizationAssetBackedSecurity">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-pbs;AssetBackedSecurity"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;hasUnderlier"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-pls;DebtPool"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbti;hasRepaymentTerms"/>
 				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-abs;ControlledAmortizationStructure"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label>controlled amortization bond</rdfs:label>
-		<skos:definition>bond that is securitized using a controlled amortization structure</skos:definition>
+		<rdfs:label>controlled amortization asset-backed security</rdfs:label>
+		<skos:definition>asset-backed security based on a pool of bonds securitized using a controlled amortization structure</skos:definition>
 		<cmns-av:adaptedFrom>http://www.investinginbonds.com/learnmore.asp?catid=11&amp;subcatid=57&amp;id=15</cmns-av:adaptedFrom>
-		<cmns-av:explanatoryNote>Revolving debt (primarily credit card receivables, but also HELOCs, trade receivables, dealer floor-plan loans and some leases) may be securitized using a controlled amortization structure. This is a method of providing investors with a relatively predictable repayment schedule, even though the underlying assets are nonamortizing. Controlled-amortization ABS resemble corporate bonds with a sinking fund. After a predetermined &apos;revolving&apos; period during which only interest payments are made, these securities attempt to return principal to investors in a series of defined periodic payments that usually occur over less than a year. A risk inherent in this kind of ABS is an early amortization event.</cmns-av:explanatoryNote>
+		<cmns-av:explanatoryNote>Controlled-amortization ABS resemble corporate bonds with a sinking fund. After a predetermined &apos;revolving&apos; period during which only interest payments are made, these securities attempt to return principal to investors in a series of defined periodic payments that usually occur over less than a year.</cmns-av:explanatoryNote>
+		<cmns-av:explanatoryNote>Revolving debt (primarily credit card receivables, but also HELOCs, trade receivables, dealer floor-plan loans and some leases) may be securitized using a controlled amortization structure. This is a method of providing investors with a relatively predictable repayment schedule, even though the underlying assets are nonamortizing. A risk inherent in this kind of ABS is an early amortization event.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-abs;ControlledAmortizationStructure">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;BondAmortizationPaymentTerms"/>
 		<rdfs:label>controlled amortization structure</rdfs:label>
-		<skos:definition>method of providing investors with a relatively predictable repayment schedule, even though the underlying assets are nonamortizing</skos:definition>
+		<skos:definition>method of providing investors with a relatively predictable repayment schedule, even though the underlying assets are non-amortizing</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-abs;CreditCardAssetBackedSecurity">
@@ -173,12 +192,25 @@
 		<cmns-av:explanatoryNote xml:lang="en">In a credit card securitization transaction only the receivables are sold, not the accounts that generate the receivables. The financial institution retains legal ownership of the credit card accounts and can continue to change the terms on the accounts. Accounts corresponding to securitized loans are typically referred to as the designated accounts (or sometimes trust accounts). The initial outstanding balances on the designated accounts are sold to the trust as are the rights to any new charges on the designated accounts. Subsequently, as cardholder purchase activity generates more receivables on the designated accounts, these new receivables are purchased by the trust from the originating institution/seller/transferor. The trust uses the monthly principal payments received from the cardholders to acquire these new charges or receivables. When the securitization is initially set up, the originating institution/seller adds sufficient receivables to support the principal balance of the certificates plus an additional amount (seller&apos;s interest) that serves to absorb fluctuations in the outstanding balance of the receivables. The originating institution/seller will make subsequent additions to the trust in order to keep the seller&apos;s interest at the required level.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-dbt-abs;FullyAmortizingBond">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;AmortizingBond"/>
-		<rdfs:label>fully amortizing bond</rdfs:label>
-		<skos:definition>amortizing bond that returns principal to investors over the life of the security</skos:definition>
-		<fibo-fnd-utl-av:definitionOrigin>http://www.investinginbonds.com/learnmore.asp?catid=11&amp;subcatid=57&amp;id=15</fibo-fnd-utl-av:definitionOrigin>
-		<cmns-av:explanatoryNote>Fully amortizing bonds are designed to closely reflect the full repayment of the underlying loans through scheduled interest and principal payments.</cmns-av:explanatoryNote>
+	<owl:Class rdf:about="&fibo-sec-dbt-abs;FullyAmortizingAssetBackedSecurity">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-pbs;AssetBackedSecurity"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;hasUnderlier"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-pls;DebtPool"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbti;hasRepaymentTerms"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-abs;ControlledAmortizationStructure"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>fully amortizing asset-backed security</rdfs:label>
+		<owl:disjointWith rdf:resource="&fibo-sec-dbt-abs;ControlledAmortizationAssetBackedSecurity"/>
+		<skos:definition>asset-backed security based on a pool of debt instruments that returns principal to investors over the life of the security</skos:definition>
+		<cmns-av:adaptedFrom>http://www.investinginbonds.com/learnmore.asp?catid=11&amp;subcatid=57&amp;id=15</cmns-av:adaptedFrom>
+		<cmns-av:explanatoryNote>Fully amortizing asset-backed securities are designed to closely reflect the full repayment of the underlying loans through scheduled interest and principal payments.</cmns-av:explanatoryNote>
 		<cmns-av:explanatoryNote>These are typically backed by HELs, auto loans, manufactured-housing contracts and other fully amortizing assets. Prepayment risk is a key consideration with such ABS, although the rate of prepayment may vary considerably by the type of underlying asset.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
@@ -206,160 +238,6 @@
 		<skos:definition xml:lang="en">asset-backed security based on home equity loan receivables</skos:definition>
 		<cmns-av:explanatoryNote xml:lang="en">If the credit risk of the pool has been decoupled from the institution via an SPV, then home equity asset-backed securities are also structured finance instruments.</cmns-av:explanatoryNote>
 		<cmns-av:explanatoryNote xml:lang="en">Similar to mortgages, home equity loans are often taken out by borrowers who have less-than-stellar credit scores or few assets - the reason why they didn’t qualify for a mortgage. These are amortizing loans - that is, payment goes toward satisfying a specific sum and consists of three categories: interest, principal, and prepayments.</cmns-av:explanatoryNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-sec-dbt-abs;IndexAmortizingBond">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-abs;IndexBasedCouponBond"/>
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;AmortizingBond"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbti;hasRepaymentTerms"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-abs;IndexLinkedPrincipalDeterminationTerms"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>index amortizing bond</rdfs:label>
-		<skos:definition></skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-sec-dbt-abs;IndexBasedCouponBond">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;VariableCouponBond"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;hasInterestRate"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-abs;IndexLinkedCoupon"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbti;hasInterestPaymentTerms"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-abs;IndexLinkedCouponTerms"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>index-based coupon bond</rdfs:label>
-		<skos:definition>variable coupon bond with payments that fluctuate according to an &quot;index&quot; other than an interest rate, such as an economic indicator</skos:definition>
-		<skos:editorialNote>Might also be referred to as Index Linked, but more commonly the term Index Linked refers to principal. So this term has a made up name for this kind of bond, following OTPP review in which we dealt with the distinction between index linked interest and index linked principal amounts. .</skos:editorialNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-sec-dbt-abs;IndexLinkedCoupon">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;BondVariableCoupon"/>
-		<rdfs:label>index linked coupon</rdfs:label>
-		<owl:disjointWith rdf:resource="&fibo-sec-dbt-abs;InflationBondVariableCoupon"/>
-		<owl:disjointWith rdf:resource="&fibo-sec-dbt-abs;WACBondCoupon"/>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-sec-dbt-abs;IndexLinkedCouponTerms">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;VariableCouponTerms"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;isBasedOn"/>
-				<owl:someValuesFrom>
-					<owl:Class>
-						<owl:unionOf rdf:parseType="Collection">
-							<rdf:Description rdf:about="&fibo-ind-ei-ei;EconomicIndicator">
-							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-ind-ind-ind;MarketRate">
-							</rdf:Description>
-						</owl:unionOf>
-					</owl:Class>
-				</owl:someValuesFrom>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>index-linked coupon terms</rdfs:label>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-sec-dbt-abs;IndexLinkedPrincipalDeterminationTerms">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;PrincipalRepaymentTerms"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasExpression"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-abs;PrincipalPaymentCalculation"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-abs;specifiesIndexParameter"/>
-				<owl:someValuesFrom>
-					<owl:Class>
-						<owl:unionOf rdf:parseType="Collection">
-							<rdf:Description rdf:about="&fibo-ind-ei-ei;EconomicIndicator">
-							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-ind-ind-ind;MarketRate">
-							</rdf:Description>
-						</owl:unionOf>
-					</owl:Class>
-				</owl:someValuesFrom>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>index-linked principal determination terms</rdfs:label>
-		<skos:definition>terms for payment of the principal that tie the principal amounts to some underlying index or interest rate</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-sec-dbt-abs;InflationBondInterestPaymentTerms">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;CouponPaymentTerms"/>
-		<rdfs:label>inflation bond interest payment terms</rdfs:label>
-		<skos:definition>terms for the payment of interest on an inflation bond</skos:definition>
-		<cmns-av:explanatoryNote>These may for example specify that the interest payments are by way of coupone calculated with reference to the inflation rate that is referenced for that bond, or they may not (for example they may specify a fixed coupon amount). Therefore these terms may specify any potential interest payment arrangement used on bonds.</cmns-av:explanatoryNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-sec-dbt-abs;InflationBondPrincipalRepaymentTerms">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-abs;IndexLinkedPrincipalDeterminationTerms"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasExpression"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-abs;InflationFactorExpression"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>inflation bond principal repayment terms</rdfs:label>
-		<skos:definition>terms specifying how the principal amount on an inflation bond is to be paid down</skos:definition>
-		<cmns-av:explanatoryNote>Further notes: This is typically but not necessarily with reference to the Inflation rate that is referred to for this bond. Further model action: identify and model terms for the case where the bond principal repayments are not pegged to an inflation rate.</cmns-av:explanatoryNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-sec-dbt-abs;InflationBondVariableCoupon">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;BondVariableCoupon"/>
-		<rdfs:label>inflation bond variable coupon</rdfs:label>
-		<owl:disjointWith rdf:resource="&fibo-sec-dbt-abs;WACBondCoupon"/>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-sec-dbt-abs;InflationBondVariableCouponTerms">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;VariableCouponTerms"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;hasInterestRate"/>
-				<owl:onClass rdf:resource="&fibo-sec-dbt-abs;InflationBondVariableCoupon"/>
-				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasExpression"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-abs;InflationFactorExpression"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>inflation bond variable coupon terms</rdfs:label>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-sec-dbt-abs;InflationFactorExpression">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;Expression"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasArgument"/>
-				<owl:someValuesFrom rdf:resource="&fibo-ind-ei-ei;InflationRate"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>inflation factor expression</rdfs:label>
-		<skos:definition>expression used to calculate the outstanding principal of the bond due to changes in the inflation rate</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-sec-dbt-abs;PrincipalPaymentCalculation">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;Expression"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasArgument"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-dae-dbt;Principal"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>principal payment calculation</rdfs:label>
-		<skos:definition>a formula for calculation of principal payments for certain kinds of bonds</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-abs;StudentLoanAssetBackedSecurity">
@@ -391,43 +269,6 @@
 	<owl:Class rdf:about="&fibo-sec-dbt-abs;WACBondCoupon">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-bnd;BondVariableCoupon"/>
 		<rdfs:label>w a c bond coupon</rdfs:label>
-	</owl:Class>
-	
-	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-abs;specifiesIndexParameter">
-		<rdfs:label>specifies index parameter</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-dbt-abs;IndexLinkedPrincipalDeterminationTerms"/>
-		<rdfs:range rdf:resource="&fibo-ind-ei-ei;InflationRate"/>
-		<skos:definition>indicates the index specified in the formula for determination of principal paydown amounts</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:Class rdf:about="&fibo-sec-dbt-bnd;InflationLinkedBond">
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbti;hasRepaymentTerms"/>
-				<owl:onClass rdf:resource="&fibo-sec-dbt-abs;IndexLinkedPrincipalDeterminationTerms"/>
-				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbti;hasInterestPaymentTerms"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-abs;InflationBondInterestPaymentTerms"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbti;hasInterestPaymentTerms"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-abs;InflationBondVariableCouponTerms"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-dbti;hasRepaymentTerms"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-abs;InflationBondPrincipalRepaymentTerms"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<cmns-av:explanatoryNote>The inflation rate is used to define the factor or multiplier for the bond, that is the factor that you multiply the bond by. How this works is that you take the inflation rate when the security was issued, and the inflation rate at the present. The difference between these becomes the Factor, e.g. 100% -&amp;gt; 101% gives 1% so for example for a $1000 issue - calculate the principal on which the interest is paid AND the principal from the point of view of how the principal is repaid. Some inflation bonds only do this on interest, some only on interest, but most apply it to the principal and interest. Coupon interest calculated based on the adjusted amount of the bond. so a fixed coupon rate is multiplied by e.g. 1010 in the example above. Variations e.g. Italy - daily published factor published for that bond, whereas other calculate based on underlying index. Typically a CPI or a statistical number generated by the govt. typically a lagging three month index. See UK bonds on this. US and Japanese ones - look at inflation rate 3 months prior. Unlike an Amortizing Security this principal value of the bond is increasing, whereas for and Amortizing, the principal is decreasing. In Canada, these are also referred to as &quot;real return bonds&quot;. 
-Further Notes:Additional review with OTPP May 05 2010 indicates that this is part of a classification of bonds where the principal amount itself varies according to some index, a point which was not understood at the original review session. Terms and labels revised to fit this picture.</cmns-av:explanatoryNote>
 	</owl:Class>
 
 </rdf:RDF>
