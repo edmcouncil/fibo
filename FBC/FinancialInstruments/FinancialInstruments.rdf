@@ -18,6 +18,7 @@
 	<!ENTITY fibo-fnd-plc-adr "https://spec.edmcouncil.org/fibo/ontology/FND/Places/Addresses/">
 	<!ENTITY fibo-fnd-pty-pty "https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Parties/">
 	<!ENTITY fibo-fnd-pty-rl "https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Roles/">
+	<!ENTITY fibo-fnd-qt-qtu "https://spec.edmcouncil.org/fibo/ontology/FND/Quantities/QuantitiesAndUnits/">
 	<!ENTITY fibo-fnd-rel-rel "https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
 	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
@@ -45,6 +46,7 @@
 	xmlns:fibo-fnd-plc-adr="https://spec.edmcouncil.org/fibo/ontology/FND/Places/Addresses/"
 	xmlns:fibo-fnd-pty-pty="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Parties/"
 	xmlns:fibo-fnd-pty-rl="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Roles/"
+	xmlns:fibo-fnd-qt-qtu="https://spec.edmcouncil.org/fibo/ontology/FND/Quantities/QuantitiesAndUnits/"
 	xmlns:fibo-fnd-rel-rel="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
@@ -70,13 +72,14 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Roles/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Places/Addresses/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/ProductsAndServices/ProductsAndServices/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Quantities/QuantitiesAndUnits/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Collections/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/ContextualDesignators/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Identifiers/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/20230301/FinancialInstruments/FinancialInstruments/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/20230501/FinancialInstruments/FinancialInstruments/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20150801/FinancialInstruments/FinancialInstruments/ version of this ontology was modified to reflect issue resolutions detailed in the FIBO FBC 1.0 FTF report.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20160801/FinancialInstruments/FinancialInstruments/ version of this ontology was modified for the FIBO 2.0 RFC, including minor bug fixes.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20180801/FinancialInstruments/FinancialInstruments/ version of this ontology was modified as a part of organizational hierarchy simplification, to add maturity-related properties, and to add exempt security.</skos:changeNote>
@@ -93,6 +96,7 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20220601/FinancialInstruments/FinancialInstruments/ version of this ontology was modified to address dead links and text formatting issues uncovered by hygiene testing.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20220801/FinancialInstruments/FinancialInstruments.rdf version of the ontology was modified to use the Commons Ontology Library (Commons) Annotation Vocabulary rather than the OMG&apos;s Specification Metadata vocabulary and to add a new property, has underlier, which is needed in both securities and derivatives.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20230101/FinancialInstruments/FinancialInstruments.rdf version of this ontology was modified to use the Commons Ontology Library (Commons) rather than the OMG&apos;s Languages, Countries and Codes (LCC), eliminating redundancies in FIBO as appropriate.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20230301/FinancialInstruments/FinancialInstruments.rdf version of this ontology was modified to augment the definition of a commodity contract with a quantity and price as of contract execution.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 		<cmns-av:copyright>Copyright (c) 2015-2023 EDM Council, Inc.</cmns-av:copyright>
 		<cmns-av:copyright>Copyright (c) 2015-2023 Object Management Group, Inc.</cmns-av:copyright>
@@ -117,8 +121,31 @@
 	
 	<owl:Class rdf:about="&fibo-fbc-fi-fi;CommodityInstrument">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;FinancialInstrument"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;hasCommodityValueAsOfExecutionDate"/>
+				<owl:onClass rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;involves"/>
+				<owl:onClass rdf:resource="&fibo-fnd-pas-pas;Commodity"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-qt-qtu;hasQuantityValue"/>
+				<owl:onClass rdf:resource="&fibo-fnd-qt-qtu;QuantityValue"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label>commodity instrument</rdfs:label>
 		<skos:definition>financial instrument representing an ownership interest in bulk goods, such as raw materials and primary agricultural products</skos:definition>
+		<cmns-av:adaptedFrom>ISO 10962, Securities and related financial instruments - Classification of Financial Instruments (CFI code), Fourth edition, 2019-10.</cmns-av:adaptedFrom>
+		<cmns-av:explanatoryNote>The value of the contract is derived from the market value of an underlying commodity or commodity index. Commodity derivatives can be physically or cash settled. Primary underliers include metals, agricultural goods and energy.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-fi-fi;CurrencyInstrument">
@@ -147,7 +174,7 @@
 		</rdfs:subClassOf>
 		<rdfs:label>debt instrument</rdfs:label>
 		<skos:definition>financial instrument and credit agreement evidencing monies owed by the issuer to the holder on terms as specified</skos:definition>
-		<cmns-av:adaptedFrom>ISO 10962, Securities and related financial instruments - Classification of Financial Instruments (CFI code), Second edition, 2001-05-01.</cmns-av:adaptedFrom>
+		<cmns-av:adaptedFrom>ISO 10962, Securities and related financial instruments - Classification of Financial Instruments (CFI code), Fourth edition, 2019-10.</cmns-av:adaptedFrom>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-fi-fi;DerivativeInstrument">
@@ -167,7 +194,7 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;Security"/>
 		<rdfs:label>entitlement</rdfs:label>
 		<skos:definition>financial instrument that provides the holder the privilege to subscribe to or to receive specific assets on terms specified</skos:definition>
-		<cmns-av:adaptedFrom>ISO 10962, Securities and related financial instruments - Classification of Financial Instruments (CFI code), Second edition, 2001-05-01.</cmns-av:adaptedFrom>
+		<cmns-av:adaptedFrom>ISO 10962, Securities and related financial instruments - Classification of Financial Instruments (CFI code), Fourth edition, 2019-10.</cmns-av:adaptedFrom>
 		<cmns-av:synonym>right</cmns-av:synonym>
 	</owl:Class>
 	
@@ -175,7 +202,7 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;Security"/>
 		<rdfs:label>equity instrument</rdfs:label>
 		<skos:definition>financial instrument representing an ownership interest in an entity or pool of assets</skos:definition>
-		<cmns-av:adaptedFrom>ISO 10962, Securities and related financial instruments - Classification of Financial Instruments (CFI code), Second edition, 2001-05-01.</cmns-av:adaptedFrom>
+		<cmns-av:adaptedFrom>ISO 10962, Securities and related financial instruments - Classification of Financial Instruments (CFI code), Fourth edition, 2019-10.</cmns-av:adaptedFrom>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-fi-fi;ExemptSecurity">
@@ -255,7 +282,7 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;DerivativeInstrument"/>
 		<rdfs:label>future</rdfs:label>
 		<skos:definition>derivative instrument that obligates the buyer to receive and the seller to deliver the assets specified at an agreed price, at some later point in time</skos:definition>
-		<cmns-av:adaptedFrom>ISO 10962, Securities and related financial instruments - Classification of Financial Instruments (CFI code), Second edition, 2001-05-01.</cmns-av:adaptedFrom>
+		<cmns-av:adaptedFrom>ISO 10962, Securities and related financial instruments - Classification of Financial Instruments (CFI code), Fourth edition, 2019-10.</cmns-av:adaptedFrom>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-fi-fi;Issuer">
@@ -303,7 +330,7 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;DerivativeInstrument"/>
 		<rdfs:label>option</rdfs:label>
 		<skos:definition>derivative instrument that grants to the holder either the privilege to purchase or the privilege to sell the assets specified at a predetermined price or formula at or within a time period in the future</skos:definition>
-		<cmns-av:adaptedFrom>ISO 10962, Securities and related financial instruments - Classification of Financial Instruments (CFI code), Second edition, 2001-05-01.</cmns-av:adaptedFrom>
+		<cmns-av:adaptedFrom>ISO 10962, Securities and related financial instruments - Classification of Financial Instruments (CFI code), Fourth edition, 2019-10.</cmns-av:adaptedFrom>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-fi-fi;PackagedFinancialProduct">
@@ -406,6 +433,13 @@
 		<skos:definition>something that can be assigned a value in the marketplace that forms the basis for a derivative or pool-backed instrument</skos:definition>
 		<fibo-fnd-utl-av:explanatoryNote>Underlier means any rate (including interest and foreign exchange rates), currency, commodity, security, instrument of indebtedness, index, quantitative measure, occurrence or non-occurrence of an event, or other financial or economic interest, or property of any kind, or any interest therein or based on the value thereof, in or by reference to which any payment or delivery under a transaction is to be made or determined.</fibo-fnd-utl-av:explanatoryNote>
 	</owl:Class>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fbc-fi-fi;hasCommodityValueAsOfExecutionDate">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasMonetaryAmount"/>
+		<rdfs:label>has commodity value as of execution date</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
+		<skos:definition>indicates the per unit value of a given commodity as of the date that the contract is executed</skos:definition>
+	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-fi-fi;hasNominalValue">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasMonetaryAmount"/>
