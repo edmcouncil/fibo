@@ -5,7 +5,11 @@
 	<!ENTITY cmns-cxtdsg "https://www.omg.org/spec/Commons/ContextualDesignators/">
 	<!ENTITY dct "http://purl.org/dc/terms/">
 	<!ENTITY fibo-der-cr-cds "https://spec.edmcouncil.org/fibo/ontology/DER/CreditDerivatives/CreditDefaultSwaps/">
+	<!ENTITY fibo-fbc-dae-dbt "https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/">
 	<!ENTITY fibo-fbc-fi-fi "https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/">
+	<!ENTITY fibo-fnd-acc-cur "https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/">
+	<!ENTITY fibo-fnd-dt-bd "https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/BusinessDates/">
+	<!ENTITY fibo-fnd-dt-fd "https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/">
 	<!ENTITY fibo-fnd-gao-obj "https://spec.edmcouncil.org/fibo/ontology/FND/GoalsAndObjectives/Objectives/">
 	<!ENTITY fibo-fnd-pty-pty "https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Parties/">
 	<!ENTITY fibo-fnd-pty-rl "https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Roles/">
@@ -34,7 +38,11 @@
 	xmlns:cmns-cxtdsg="https://www.omg.org/spec/Commons/ContextualDesignators/"
 	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fibo-der-cr-cds="https://spec.edmcouncil.org/fibo/ontology/DER/CreditDerivatives/CreditDefaultSwaps/"
+	xmlns:fibo-fbc-dae-dbt="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"
 	xmlns:fibo-fbc-fi-fi="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"
+	xmlns:fibo-fnd-acc-cur="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"
+	xmlns:fibo-fnd-dt-bd="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/BusinessDates/"
+	xmlns:fibo-fnd-dt-fd="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"
 	xmlns:fibo-fnd-gao-obj="https://spec.edmcouncil.org/fibo/ontology/FND/GoalsAndObjectives/Objectives/"
 	xmlns:fibo-fnd-pty-pty="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Parties/"
 	xmlns:fibo-fnd-pty-rl="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Roles/"
@@ -63,9 +71,13 @@
 		<dct:license rdf:datatype="&xsd;anyURI">https://opensource.org/licenses/MIT</dct:license>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/FunctionalEntities/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/CreditDerivatives/CreditDefaultSwaps/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/BusinessDates/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/GoalsAndObjectives/Objectives/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/OwnershipAndControl/Ownership/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Parties/"/>
@@ -121,14 +133,14 @@
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbti;DebtOffering"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-cdo;providesPrepaymentSupport"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-cdo;AgencyCMO"/>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-cdo;hasTrancheType"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-cdo;TrancheType"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-dbt-mbs;hasTrancheType"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-mbs;TrancheType"/>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-cdo;providesPrepaymentSupport"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-cdo;AgencyCMO"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -471,6 +483,19 @@
 		<cmns-av:abbreviation xml:lang="en">CLO offering</cmns-av:abbreviation>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-sec-dbt-cdo;FloaterTranche">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-cdo;TranchedMBSInstrument"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-dt-fd;hasRecurrenceInterval"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-bd;DayOfMonth"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">floater tranche</rdfs:label>
+		<skos:definition xml:lang="en">A floater tranche is a tranche that is keyed to an index and a spread.</skos:definition>
+		<cmns-av:explanatoryNote xml:lang="en">For example, 3 month LIBOR +50 -- meaning that the coupon would be whatever the 3 month LIBOR is plus 50 basis points. This is not a continuously updated number, rather it resets at specified intervals.</cmns-av:explanatoryNote>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-sec-dbt-cdo;HybridCDO">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-cdo;CDODeal"/>
 		<rdfs:subClassOf>
@@ -496,6 +521,13 @@
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-cdo;AgencyIOTranche"/>
 		<rdfs:label xml:lang="en">i oette</rdfs:label>
 		<skos:definition xml:lang="en">REVIEW: Is this a kind of IO Tranche.</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-dbt-cdo;InverseFloaterTranche">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-cdo;FloaterTranche"/>
+		<rdfs:label xml:lang="en">inverse floater tranche</rdfs:label>
+		<owl:disjointWith rdf:resource="&fibo-sec-dbt-cdo;RegularFloaterTranche"/>
+		<owl:disjointWith rdf:resource="&fibo-sec-dbt-cdo;SuperFloaterTranche"/>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-cdo;JumpZTriggerEvent">
@@ -537,7 +569,7 @@
 				<owl:someValuesFrom>
 					<owl:Class>
 						<owl:unionOf rdf:parseType="Collection">
-							<rdf:Description rdf:about="&fibo-sec-dbt-mbs;MBSTrancheNote">
+							<rdf:Description rdf:about="&fibo-sec-dbt-cdo;MBSTrancheNote">
 							</rdf:Description>
 							<rdf:Description rdf:about="&fibo-sec-dbt-mbs;PassThroughMBSInstrumentNote">
 							</rdf:Description>
@@ -549,6 +581,13 @@
 		<rdfs:label xml:lang="en">m b s instrument slice</rdfs:label>
 		<skos:definition xml:lang="en">A holding of an individual slice or slices of a tranche.</skos:definition>
 		<cmns-av:explanatoryNote xml:lang="en">These may be held in different notes, with different denominations. Tranche slice in this sense is only relevant in the context of something like a CDO or analogous things such as CBO.</cmns-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-dbt-cdo;MBSTrancheNote">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;PromissoryNote"/>
+		<rdfs:label xml:lang="en">m b s tranche note</rdfs:label>
+		<skos:definition xml:lang="en">An individual note of a tranche.</skos:definition>
+		<cmns-av:explanatoryNote xml:lang="en">A Tranche is made up of e.g. $500m in notes and so on. These may be in different notes, with different denominations. Analytics that would apply to the Tranche would by implication apply to each slice of the tranche.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-cdo;ManagedCDO">
@@ -608,12 +647,80 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-cdo;ratedAtIssue"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-mbs;TrancheRatingAtIssue"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-cdo;TrancheRatingAtIssue"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">mezzanine c d o tranche</rdfs:label>
 		<skos:definition xml:lang="en">The tranche between senior and subordinated. Mezzanine tranches of a CDO issue are typically rated B to BBB.</skos:definition>
 		<cmns-av:explanatoryNote xml:lang="en">If there are defaults or the CDO&apos;s collateral otherwise underperforms, scheduled payments to mezzanine tranches take precedence over those to subordinated/equity tranches.</cmns-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-dbt-cdo;MezzanineMBSTranche">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-cdo;TranchedMBSInstrument"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-cdo;seniorTo"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-cdo;SubordinatedMBSTranche"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">mezzanine m b s tranche</rdfs:label>
+		<skos:definition xml:lang="en">Specific kinds of tranche are modeled for example and investigation only and have been removed from the diagrams. These will be removed from the final model.</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-dbt-cdo;NonAgencyIOTranche">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-cdo;TranchedMBSInstrument"/>
+		<rdfs:label xml:lang="en">non agency i o tranche</rdfs:label>
+		<skos:definition xml:lang="en">Interest Only tranche, meaning that this tranche will only pay interest.</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-dbt-cdo;NonAgencyJumpTranche">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-cdo;TranchedMBSInstrument"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-cdo;specifiesTrigger"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-cdo;JumpZTriggerEvent"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">non agency jump tranche</rdfs:label>
+		<skos:definition xml:lang="en">A tranche where if there is some sort of trigger event reached then the holders of the tranche will begin to receive payments.</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-dbt-cdo;NonAgencyJumpZTranche">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-cdo;NonAgencyJumpTranche"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-cdo;NonAgencyZTranche"/>
+		<rdfs:label xml:lang="en">non agency jump z tranche</rdfs:label>
+		<skos:definition xml:lang="en">A Jump Z tranche is like a Z tranche but if there is some sort of trigger event reached then the holders of the Jump Z tranche will begin to receive payments. Regular non-Sticky Jump Z tranches maintain their changed status only while the trigger event is in effect, and revert to their old payment status once the trigger event has passed.</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-dbt-cdo;NonAgencyPOTranche">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-cdo;TranchedMBSInstrument"/>
+		<rdfs:label xml:lang="en">non agency p o tranche</rdfs:label>
+		<skos:definition xml:lang="en">Principal Only tranche. This tranche will only pay principal.</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-dbt-cdo;NonAgencyRegularJumpZTranche">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-cdo;NonAgencyJumpZTranche"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-cdo;reverts"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-cdo;JumpZTriggerEventReversal"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">non agency regular jump z tranche</rdfs:label>
+		<skos:definition xml:lang="en">Regular non-Sticky Jump Z tranches maintain their changed status only while the trigger event is in effect, and revert to their old payment status once the trigger event has passed.</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-dbt-cdo;NonAgencyStickyJumpZTranche">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-cdo;NonAgencyJumpZTranche"/>
+		<rdfs:label xml:lang="en">non agency sticky jump z tranche</rdfs:label>
+		<skos:definition xml:lang="en">&quot;Sticky&quot; Jump Z tranches maintain the payment priority of a Jump Z tranche until they are retired.</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-dbt-cdo;NonAgencyZTranche">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-cdo;TranchedMBSInstrument"/>
+		<rdfs:label xml:lang="en">non agency z tranche</rdfs:label>
+		<skos:definition xml:lang="en">A tranche that does not receive payments while other tranches remain.</skos:definition>
+		<skos:editorialNote xml:lang="en">These tranches are credited for interest that would have been received and that interest is accrued to the Z tranche. Once all other tranches have been paid, the holders of the Z tranche receive payments. Types of Z Tranche: A Jump Z tranche is like a Z tranche but if there is some sort of trigger event reached then the holders of the Jump Z tranche will begin to receive payments. &quot;Sticky&quot; Jump Z tranches maintain this payment priority until they are retired, while regular, non-Sticky Jump Z tranches maintain their changed status only while the trigger event is in effect, and revert to their old payment status once the trigger event has passed. Review note: These are currently separate entries - they should be entries for types of Z Tranche. Add new list and move these to there.</skos:editorialNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-cdo;PAC-1Class">
@@ -694,17 +801,43 @@
 		<cmns-av:explanatoryNote xml:lang="en">These tranches have priority over the other tranches in the deal, which are then referred to as the support or companion tranches. There are usually several PAC tranches created. PAC-1, PAC-2, PAC-3 -- this requires some more explanation. PAC-2 refers to a support tranche that is given a scheduled payment structure like a PAC bond. For example, let&apos;s say you have a deal with a PAC tranche and a support tranche (i.e., a tranche that is a support tranche and is therefore subordinate to the PAC tranche) that has a scheduled payment structure like you did with the PAC bond. That support bond then is called the PAC-2 bond. If you continue, and create another support tranche that also has scheduled payments, that would become the PAC-3 bond. Prospectus will cover each class. Prospectus is at the level of an issue.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-sec-dbt-cdo;RegularFloaterTranche">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-cdo;FloaterTranche"/>
+		<rdfs:label xml:lang="en">regular floater tranche</rdfs:label>
+		<owl:disjointWith rdf:resource="&fibo-sec-dbt-cdo;SuperFloaterTranche"/>
+		<skos:definition xml:lang="en">A floater tranche is a tranche that is keyed to an index and a spread. The spread is added to the index.</skos:definition>
+		<cmns-av:explanatoryNote xml:lang="en">For example, 3 month LIBOR +50 -- meaning that the coupon would be whatever the 3 month LIBOR is plus 50 basis points. This is not a continuously updated number, rather it resets at specified intervals.</cmns-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-dbt-cdo;ResidualTranche">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-cdo;TranchedMBSInstrument"/>
+		<rdfs:label xml:lang="en">residual tranche</rdfs:label>
+		<skos:definition xml:lang="en">Unknown Further notes: Verify whether Residual Tranche and Support Tranche are meant to be in the same list of types as PAC etc. i.e. can a tranche not be PAC and Residual? this looks suspicioulsy like two semantics.</skos:definition>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-sec-dbt-cdo;SeniorCDOTranche">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-cdo;CollateralizedDebtObligation"/>
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-pbs;Tranche"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-cdo;ratedAtIssue.1"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-mbs;TrancheRatingAtIssue"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-cdo;TrancheRatingAtIssue"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">senior c d o tranche</rdfs:label>
 		<skos:definition xml:lang="en">The most senior tranche of the CDO issue. Typically rated A to AAA. If there are defaults or the CDO&apos;s collateral otherwise underperforms, scheduled payments to senior tranches take precedence over those of mezzanine tranches.</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-dbt-cdo;SeniorMBSTranche">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-cdo;TranchedMBSInstrument"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-cdo;seniorTo"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-cdo;MezzanineMBSTranche"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">senior m b s tranche</rdfs:label>
+		<skos:definition xml:lang="en">Specific kinds of tranche are modeled for example and investigation only and have been removed from the diagrams. These will be removed from the final model.</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-cdo;StaticCDO">
@@ -739,6 +872,17 @@
 		<cmns-av:explanatoryNote xml:lang="en">This is not a tranche of the debt in the CDO but an equity interest in the pool of underlying. There is a very bottom piece, not a tranche, but rather called the preferred shares (or just pref shares, or equity) that is the very bottom most layer in a CDO and is also referred to as the &quot;first loss piece&quot; since, like equity in a corporation, losses are incurred here before any of the actual bond holders take losses. This isn&apos;t a tranche</cmns-av:explanatoryNote>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-sec-dbt-cdo;SubordinatedMBSTranche">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-cdo;TranchedMBSInstrument"/>
+		<rdfs:label xml:lang="en">subordinated m b s tranche</rdfs:label>
+		<skos:definition xml:lang="en">Specific kinds of tranche are modeled for example and investigation only and have been removed from the diagrams. These will be removed from the final model.</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-dbt-cdo;SuperFloaterTranche">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-cdo;FloaterTranche"/>
+		<rdfs:label xml:lang="en">super floater tranche</rdfs:label>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-sec-dbt-cdo;SuperPOTranche">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-cdo;AgencyPOTranche"/>
 		<rdfs:label xml:lang="en">super p o tranche</rdfs:label>
@@ -765,7 +909,7 @@
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-cdo;TACTranche">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-cdo;AgencyCMO"/>
-		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-mbs;TranchedMBSInstrument"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-cdo;TranchedMBSInstrument"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-dbt-cdo;specifies.1"/>
@@ -782,6 +926,56 @@
 		<rdfs:label xml:lang="en">t a c tranche amortization schedule</rdfs:label>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-sec-dbt-cdo;TrancheRatingAtIssue">
+		<rdfs:label xml:lang="en">tranche rating at issue</rdfs:label>
+		<skos:definition xml:lang="en">The rating at issue of a tranche of a security. Note this is under review</skos:definition>
+		<skos:editorialNote xml:lang="en">In the case of CDOs, senior and mezzanine tranches of a CDO issue are typically rated, with the former receiving ratings of A to AAA and the latter receiving ratings of B to BBB. The ratings reflect both the credit quality of underlying collateral as well as how much protection a given tranch is afforded by tranches that are subordinate to it. Review note: Remove this it&apos;s no different from an instrument.</skos:editorialNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-dbt-cdo;TrancheType">
+		<rdfs:label xml:lang="en">tranche type</rdfs:label>
+		<skos:definition xml:lang="en">the type of tranche in a tranched MBS security</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-dbt-cdo;TranchedMBSDeal">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbti;DebtOffering"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-cdo;isAlso.1"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-mbs;PrivateLabelMBSDeal"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">tranched m b s deal</rdfs:label>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-dbt-cdo;TranchedMBSDealProspectus">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-mbs;MortgageBackedSecurityOfferingProspectus"/>
+		<rdfs:label xml:lang="en">tranched m b s deal prospectus</rdfs:label>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-dbt-cdo;TranchedMBSInstrument">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-mbs;MortgageBackedSecurity"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-cdo;cashflowPrecedence"/>
+				<owl:allValuesFrom rdf:resource="&fibo-sec-dbt-cdo;TranchedMBSInstrument"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-cdo;providesCreditSupportTo"/>
+				<owl:allValuesFrom rdf:resource="&fibo-sec-dbt-cdo;TranchedMBSInstrument"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-mbs;hasNote"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-cdo;MBSTrancheNote"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">tranched m b s instrument</rdfs:label>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-sec-dbt-cdo;TriggerEvent">
 		<rdfs:label xml:lang="en">trigger event</rdfs:label>
 		<skos:definition xml:lang="en">Any event where some value passes some threashold. Or some other type of business event. This is not restricted to &quot;trigger&quot; in the sense of a value passing a threshold. Can also be an seen such as a CDO manager going into bankruptcy.</skos:definition>
@@ -792,15 +986,41 @@
 		<rdfs:label xml:lang="en">true p s objective</rdfs:label>
 	</owl:Class>
 	
+	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-cdo;cashflowPrecedence">
+		<rdfs:label xml:lang="en">cashflow precedence</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-cdo;TranchedMBSInstrument"/>
+		<rdfs:range rdf:resource="&fibo-sec-dbt-cdo;TranchedMBSInstrument"/>
+		<owl:inverseOf rdf:resource="&fibo-sec-dbt-cdo;providesCreditSupportTo"/>
+	</owl:ObjectProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-cdo;confersOwnershipOf">
 		<rdfs:label xml:lang="en">confers ownership of</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-dbt-cdo;SubordinatedCDOEquity"/>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-cdo;denomination">
+		<rdfs:label xml:lang="en">denomination</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-cdo;MBSTrancheNote"/>
+		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
+		<skos:definition xml:lang="en">The currency amount in which the Note is denominated, for example $500 notes.</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-cdo;hasCDOOriginationObjective">
 		<rdfs:label xml:lang="en">has c d o origination objective</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-dbt-cdo;CDODeal"/>
 		<rdfs:range rdf:resource="&fibo-sec-dbt-cdo;CDOOriginationObjective"/>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-cdo;hasTrancheType">
+		<rdfs:label xml:lang="en">has tranche type</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-pbs;StructuredFinanceInstrument"/>
+		<rdfs:range rdf:resource="&fibo-sec-dbt-cdo;TrancheType"/>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-cdo;isAlso.1">
+		<rdfs:label xml:lang="en">is also</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-cdo;TranchedMBSDeal"/>
+		<rdfs:range rdf:resource="&fibo-sec-dbt-mbs;PrivateLabelMBSDeal"/>
 	</owl:ObjectProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-sec-dbt-cdo;isCash">
@@ -843,6 +1063,13 @@
 		<rdfs:range rdf:resource="&fibo-sec-dbt-cdo;CDOOriginationObjective"/>
 	</owl:ObjectProperty>
 	
+	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-cdo;providesCreditSupportTo">
+		<rdfs:subPropertyOf rdf:resource="&fibo-sec-dbt-dbti;isSubordinatedTo"/>
+		<rdfs:label xml:lang="en">provides credit support to</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-cdo;TranchedMBSInstrument"/>
+		<rdfs:range rdf:resource="&fibo-sec-dbt-cdo;TranchedMBSInstrument"/>
+	</owl:ObjectProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-cdo;providesPrepaymentSupport">
 		<rdfs:label xml:lang="en">provides prepayment support</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-dbt-cdo;AgencyCMO"/>
@@ -860,19 +1087,35 @@
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-cdo;ratedAtIssue">
 		<rdfs:label xml:lang="en">rated at issue</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-dbt-cdo;MezzanineCDOTranche"/>
-		<rdfs:range rdf:resource="&fibo-sec-dbt-mbs;TrancheRatingAtIssue"/>
+		<rdfs:range rdf:resource="&fibo-sec-dbt-cdo;TrancheRatingAtIssue"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-cdo;ratedAtIssue.1">
 		<rdfs:label xml:lang="en">rated at issue</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-dbt-cdo;SeniorCDOTranche"/>
-		<rdfs:range rdf:resource="&fibo-sec-dbt-mbs;TrancheRatingAtIssue"/>
+		<rdfs:range rdf:resource="&fibo-sec-dbt-cdo;TrancheRatingAtIssue"/>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-cdo;reverts">
+		<rdfs:label xml:lang="en">reverts</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-cdo;NonAgencyRegularJumpZTranche"/>
+		<rdfs:range rdf:resource="&fibo-sec-dbt-cdo;JumpZTriggerEventReversal"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-cdo;revertsOn">
 		<rdfs:label xml:lang="en">reverts on</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-dbt-cdo;AgencyRegularJumpZ"/>
 		<rdfs:range rdf:resource="&fibo-sec-dbt-cdo;JumpZTriggerEventReversal"/>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-cdo;seniorTo">
+		<rdfs:subPropertyOf rdf:resource="&fibo-sec-dbt-cdo;cashflowPrecedence"/>
+		<rdfs:label xml:lang="en">senior to</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-cdo;MezzanineMBSTranche"/>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-cdo;SeniorMBSTranche"/>
+		<rdfs:range rdf:resource="&fibo-sec-dbt-cdo;MezzanineMBSTranche"/>
+		<rdfs:range rdf:resource="&fibo-sec-dbt-cdo;SubordinatedMBSTranche"/>
+		<skos:definition xml:lang="en">Specific kinds of tranche are modeled for example and investigation only and have been removed from the diagrams. These will be removed from the final model.</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-cdo;seniority">
@@ -927,7 +1170,9 @@
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-cdo;specifiesTrigger">
 		<rdfs:label xml:lang="en">specifies trigger</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-dbt-cdo;AgencyJumpTranche"/>
+		<rdfs:domain rdf:resource="&fibo-sec-dbt-cdo;NonAgencyJumpTranche"/>
 		<rdfs:range rdf:resource="&fibo-sec-dbt-cdo;JumpZTriggerEvent"/>
+		<skos:definition xml:lang="en">The event which, when it takes place, causes the Jump Z holders to begin receiving payments.</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-cdo;structure">
@@ -963,5 +1208,27 @@
 		<rdfs:domain rdf:resource="&fibo-sec-dbt-cdo;PAC-2Class"/>
 		<rdfs:range rdf:resource="&fibo-sec-dbt-cdo;PAC-3Class"/>
 	</owl:ObjectProperty>
+	
+	<owl:Class rdf:about="&fibo-sec-dbt-mbs;PassThroughMBSDeal">
+		<owl:disjointWith rdf:resource="&fibo-sec-dbt-cdo;TranchedMBSDeal"/>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-dbt-mbs;PassThroughMBSDealProspectus">
+		<owl:disjointWith rdf:resource="&fibo-sec-dbt-cdo;TranchedMBSDealProspectus"/>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-dbt-mbs;PassThroughMBSInstrument">
+		<owl:disjointWith rdf:resource="&fibo-sec-dbt-cdo;TranchedMBSInstrument"/>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-dbt-pbs;AssetBackedSecurity">
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-cdo;hasTrancheType"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-cdo;TrancheType"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<owl:disjointWith rdf:resource="&fibo-sec-dbt-mbs;MortgageBackedSecurity"/>
+	</owl:Class>
 
 </rdf:RDF>
