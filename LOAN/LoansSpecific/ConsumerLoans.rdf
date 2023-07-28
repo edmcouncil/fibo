@@ -4,10 +4,13 @@
 	<!ENTITY dct "http://purl.org/dc/terms/">
 	<!ENTITY fibo-be-le-lp "https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/">
 	<!ENTITY fibo-fbc-dae-dbt "https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/">
+	<!ENTITY fibo-fnd-pas-pas "https://spec.edmcouncil.org/fibo/ontology/FND/ProductsAndServices/ProductsAndServices/">
+	<!ENTITY fibo-fnd-pty-rl "https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Roles/">
 	<!ENTITY fibo-fnd-rel-rel "https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
 	<!ENTITY fibo-loan-ln-ln "https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansGeneral/Loans/">
 	<!ENTITY fibo-loan-spc-cns "https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansSpecific/ConsumerLoans/">
+	<!ENTITY fibo-loan-spc-crd "https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansSpecific/CardAccounts/">
 	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
 	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
 	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
@@ -19,10 +22,13 @@
 	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fibo-be-le-lp="https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/"
 	xmlns:fibo-fbc-dae-dbt="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"
+	xmlns:fibo-fnd-pas-pas="https://spec.edmcouncil.org/fibo/ontology/FND/ProductsAndServices/ProductsAndServices/"
+	xmlns:fibo-fnd-pty-rl="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Roles/"
 	xmlns:fibo-fnd-rel-rel="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
 	xmlns:fibo-loan-ln-ln="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansGeneral/Loans/"
 	xmlns:fibo-loan-spc-cns="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansSpecific/ConsumerLoans/"
+	xmlns:fibo-loan-spc-crd="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansSpecific/CardAccounts/"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
@@ -35,14 +41,21 @@
 		<dct:license rdf:datatype="&xsd;anyURI">http://opensource.org/licenses/MIT</dct:license>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Roles/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/ProductsAndServices/ProductsAndServices/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansGeneral/Loans/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansSpecific/CardAccounts/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/AnnotationVocabulary/"/>
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansSpecific/ConsumerLoans/"/>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Provisional"/>
 		<cmns-av:copyright>Copyright (c) 2015-2023 EDM Council, Inc.</cmns-av:copyright>
 	</owl:Ontology>
+	
+	<owl:Class rdf:about="&fibo-loan-spc-crd;ConsumerCreditCardAgreement">
+		<rdfs:subClassOf rdf:resource="&fibo-loan-spc-cns;ConsumerLoan"/>
+	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-spc-cns;AutoLoan">
 		<rdfs:subClassOf rdf:resource="&fibo-loan-ln-ln;CollateralizedLoan"/>
@@ -64,15 +77,22 @@
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;hasBorrower"/>
 				<owl:someValuesFrom>
-					<owl:Restriction>
-						<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;hasIdentity"/>
-						<owl:someValuesFrom rdf:resource="&fibo-be-le-lp;LegallyCompetentNaturalPerson"/>
-					</owl:Restriction>
+					<owl:Class>
+						<owl:unionOf rdf:parseType="Collection">
+							<rdf:Description rdf:about="&fibo-fnd-pas-pas;Consumer">
+							</rdf:Description>
+							<owl:Restriction>
+								<owl:onProperty rdf:resource="&fibo-fnd-pty-rl;isPlayedBy"/>
+								<owl:someValuesFrom rdf:resource="&fibo-be-le-lp;LegallyCompetentNaturalPerson"/>
+							</owl:Restriction>
+						</owl:unionOf>
+					</owl:Class>
 				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">consumer loan</rdfs:label>
-		<skos:definition xml:lang="en">loan whose borrower is person as opposed to an organization, i.e., a consumer</skos:definition>
+		<skos:definition xml:lang="en">loan to one or more individuals for household, family, or other personal expenditures</skos:definition>
+		<cmns-av:explanatoryNote xml:lang="en">In the United States, consumer loans do not include a home mortgage, small business, or small farm loans. They are defined by law to include the following: (1) Motor vehicle loan, which is a consumer loan extended for the purchase of and secured by a motor vehicle; (2) Credit card loan, which is a line of credit for household, family, or other personal expenditures that is accessed by a borrower&apos;s use of a &apos;credit card,&apos; as this term is defined in § 1026.2 of this chapter; (3) Other secured consumer loan, which is a secured consumer loan that is not included in one of the other categories of consumer loans; and (4) Other unsecured consumer loan, which is an unsecured consumer loan that is not included in one of the other categories of consumer loans.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-spc-cns;HomeEquityLineOfCredit">
