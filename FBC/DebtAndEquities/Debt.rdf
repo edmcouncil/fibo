@@ -99,7 +99,7 @@
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/DatesAndTimes/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Designators/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Identifiers/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/20230601/DebtAndEquities/Debt/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/20230901/DebtAndEquities/Debt/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20180801/DebtAndEquities/Debt/ version of this ontology was added to the FBC domain via the FIBO 2.0 RFC in support of several FIBO debt-oriented initiatives.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20180801/DebtAndEquities/Debt/ version of this ontology was modified to use the generic statistical measures and measurements now in FND.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20190501/DebtAndEquities/Debt/ version of this ontology was modified to add several common day count conventions used to calculate the amount of accrued interest or the present value when the next coupon payment is less than a full coupon period away, to support collateral agreements such as deeds of trust, UCC filings and the like, to add the concept of a rate reset time of day, to eliminate duplication of concepts in LCC, to simplify addresses, and to merge countries with locations.</skos:changeNote>
@@ -111,6 +111,7 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20220801/DebtAndEquities/Debt.rdf version of the ontology was modified to use the Commons Ontology Library (Commons) Annotation Vocabulary rather than the OMG&apos;s Specification Metadata vocabulary.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20230101/DebtAndEquities/Debt.rdf version of this ontology was modified to use the Commons Ontology Library (Commons) rather than the OMG&apos;s Languages, Countries and Codes (LCC), eliminating redundancies in FIBO as appropriate.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20230301/DebtAndEquities/Debt.rdf version of this ontology was modified to address a punning issue due to the use of hasMethod as the parent property for hasAccrualBasis that was not detected before the latest Commons ontologies were posted to the OMG site.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20230601/DebtAndEquities/Debt.rdf version of this ontology was extended to incorporate the concept of a lease.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 		<cmns-av:copyright>Copyright (c) 2016-2023 EDM Council, Inc.</cmns-av:copyright>
 		<cmns-av:copyright>Copyright (c) 2016-2023 Object Management Group, Inc.</cmns-av:copyright>
@@ -240,6 +241,14 @@
 		<rdfs:isDefinedBy rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"/>
 		<skos:definition>upper bound on the total amount of money that a lender believes a party has the ability to repay an obligation when due, as of some point in time</skos:definition>
 		<cmns-av:explanatoryNote>The notion of borrowing capacity is related to management decisions pertaining to credit, i.e., the creditworthiness of the borrower, loan amount, risk tolerance, and so forth, and may be reassessed from time to time depending on the type of credit agreement and regulatory requirements. Determining borrowing capacity is typically done as a part of loan origination, especially for residential mortgages.</cmns-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-dae-dbt;CapitalLease">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;Lease"/>
+		<rdfs:label>capital lease</rdfs:label>
+		<skos:definition>lease that must be reflected on an organization&apos;s balance sheet as an asset and as a corresponding liability</skos:definition>
+		<cmns-av:explanatoryNote>In the United States, such leases must be reported per Statement 13 of the Financial Accounting Standards Board. Generally, this applies to leases where the lessee acquires essentially all of the economic benefits and risks of the leased property.</cmns-av:explanatoryNote>
+		<cmns-av:synonym>financial lease</cmns-av:synonym>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-dae-dbt;Collateral">
@@ -691,6 +700,15 @@
 		<cmns-av:explanatoryNote>Note that in most cases, the dates and payment frequencies for interest will coincide with the dates and payment frequencies related to the principal.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-fbc-dae-dbt;Lease">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;CreditAgreementRepaidPeriodically"/>
+		<rdfs:label>lease</rdfs:label>
+		<skos:definition>credit agreement permitting the use of real estate, equipment or another asset, such as a vehicle, by the owner of that asset (the lessor) to a user (the lessee) for a specific period of time in return for payment as specified in the agreement</skos:definition>
+		<cmns-av:explanatoryNote>The lessor is the legal owner of the asset, while the lessee obtains the right to use the asset in return for rental payments. The lessee also agrees to abide by various conditions regarding their use of the property or equipment. For example, a person leasing a car may agree to the condition that the car will only be used for personal use.</cmns-av:explanatoryNote>
+		<cmns-av:synonym>lease agreement</cmns-av:synonym>
+		<cmns-av:synonym>lease contract</cmns-av:synonym>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-fbc-dae-dbt;Lender">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;Creditor"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractParty"/>
@@ -721,6 +739,13 @@
 		<rdfs:label>managed interest rate</rdfs:label>
 		<rdfs:isDefinedBy rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"/>
 		<skos:definition>a variable interest rate charged by a financial institution for borrowing that is not prescribed as a margin over base rate but is set from time to time by the institution</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-dae-dbt;MotorVehicleLease">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;Lease"/>
+		<rdfs:label>motor vehicle lease</rdfs:label>
+		<skos:definition>lease of a motor vehicle for a fixed period of time at an agreed amount of money</skos:definition>
+		<cmns-av:explanatoryNote>Motor vehicle leasing is commonly offered by dealers as an alternative to a vehicle purchase but is widely used by businesses as a method of acquiring (or having the use of) vehicles for business use, without the usually needed cash outlay. The key difference in a lease is that after the primary term (usually 2, 3 or 4 years) the vehicle has to either be returned to the leasing company or purchased for the residual value.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-dae-dbt;NegativeAmortization">
