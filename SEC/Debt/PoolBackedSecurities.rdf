@@ -8,6 +8,7 @@
 	<!ENTITY dct "http://purl.org/dc/terms/">
 	<!ENTITY fibo-be-le-lp "https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/">
 	<!ENTITY fibo-fbc-dae-dbt "https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/">
+	<!ENTITY fibo-fnd-arr-asmt "https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Assessments/">
 	<!ENTITY fibo-fnd-pty-rl "https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Roles/">
 	<!ENTITY fibo-fnd-rel-rel "https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/">
 	<!ENTITY fibo-fnd-utl-alx "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Analytics/">
@@ -30,6 +31,7 @@
 	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fibo-be-le-lp="https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/"
 	xmlns:fibo-fbc-dae-dbt="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"
+	xmlns:fibo-fnd-arr-asmt="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Assessments/"
 	xmlns:fibo-fnd-pty-rl="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Roles/"
 	xmlns:fibo-fnd-rel-rel="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"
 	xmlns:fibo-fnd-utl-alx="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Analytics/"
@@ -49,6 +51,7 @@
 		<dct:license rdf:datatype="&xsd;anyURI">https://opensource.org/licenses/MIT</dct:license>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Assessments/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Roles/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Analytics/"/>
@@ -60,10 +63,11 @@
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Collections/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/ContextualDesignators/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/DatesAndTimes/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20230501/Debt/PoolBackedSecurities/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20231001/Debt/PoolBackedSecurities/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20220101/Debt/PoolBackedSecurities.rdf version of the ontology was modified to use the Commons Ontology Library (Commons) Annotation Vocabulary rather than the OMG&apos;s Specification Metadata vocabulary.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20230201/Debt/PoolBackedSecurities.rdf version of this ontology was modified to use the Commons Ontology Library (Commons) rather than the OMG&apos;s Languages, Countries and Codes (LCC), eliminating redundancies in FIBO as appropriate, and added an explanatory note to ABS.</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20230301/Debt/PoolBackedSecurities.rdf version of this ontology was modified add a number of commonly used pool-backed security related statistical measures.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20230301/Debt/PoolBackedSecurities.rdf version of this ontology was modified to add a number of commonly used pool-backed security related statistical measures.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20230501/Debt/PoolBackedSecurities.rdf version of this ontology was modified to add the starting point value of the total collateral of a given tranche at the time it was created (DER-138).</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 		<cmns-av:copyright>Copyright (c) 2015-2023 EDM Council, Inc.</cmns-av:copyright>
 		<cmns-av:copyright>Copyright (c) 2015-2023 Object Management Group, Inc.</cmns-av:copyright>
@@ -201,6 +205,13 @@
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-pbs;StructuredFinanceInstrument"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-pbs;hasEstimatedTotalCollateralValueAtIssuance"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+				<owl:onDataRange rdf:resource="&fibo-fbc-dae-dbt;CollateralValueAsOfDate"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
 				<owl:onProperty rdf:resource="&cmns-col;comprises"/>
 				<owl:someValuesFrom>
 					<owl:Restriction>
@@ -274,6 +285,13 @@
 		<cmns-av:explanatoryNote xml:lang="en">The longer the WART, the longer the portfolio&apos;s assets will take to mature, on average. WART is often used in relation to mortgage-backed securities (MBS) but can also be applied to any portfolio of fixed-income securities. WART is closely related to weighted average loan age (WALA), which is its inverse.</cmns-av:explanatoryNote>
 		<cmns-av:synonym xml:lang="en">weighted average remaining maturity</cmns-av:synonym>
 	</owl:Class>
+	
+	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-pbs;hasEstimatedTotalCollateralValueAtIssuance">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-arr-asmt;isEstimatedValueOf"/>
+		<rdfs:label>is estimated value of</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fbc-dae-dbt;CollateralValueAsOfDate"/>
+		<skos:definition>indicates the estimated value of the combined underlying collateral for a given tranche at the time the instrument was issued</skos:definition>
+	</owl:ObjectProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-sec-dbt-pbs;isPassThrough">
 		<rdfs:label xml:lang="en">is pass through</rdfs:label>
