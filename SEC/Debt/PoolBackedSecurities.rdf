@@ -11,6 +11,7 @@
 	<!ENTITY fibo-fnd-acc-cur "https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/">
 	<!ENTITY fibo-fnd-arr-asmt "https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Assessments/">
 	<!ENTITY fibo-fnd-pty-rl "https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Roles/">
+	<!ENTITY fibo-fnd-qt-qtu "https://spec.edmcouncil.org/fibo/ontology/FND/Quantities/QuantitiesAndUnits/">
 	<!ENTITY fibo-fnd-rel-rel "https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/">
 	<!ENTITY fibo-fnd-utl-alx "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Analytics/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
@@ -35,6 +36,7 @@
 	xmlns:fibo-fnd-acc-cur="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"
 	xmlns:fibo-fnd-arr-asmt="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Assessments/"
 	xmlns:fibo-fnd-pty-rl="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Roles/"
+	xmlns:fibo-fnd-qt-qtu="https://spec.edmcouncil.org/fibo/ontology/FND/Quantities/QuantitiesAndUnits/"
 	xmlns:fibo-fnd-rel-rel="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"
 	xmlns:fibo-fnd-utl-alx="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Analytics/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
@@ -56,6 +58,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Assessments/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Roles/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Quantities/QuantitiesAndUnits/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Analytics/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
@@ -95,6 +98,22 @@
 		<cmns-av:explanatoryNote xml:lang="en">Asset-backed securities, for example home equity loans (HEL), credit cards, and so forth are backed by receivables [payments] that are either secured (such as HEL) or unsecured (for example, credit cards). They are typically tranched based on default risk.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-sec-dbt-pbs;AttachmentPoint">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-acc-cur;PercentageMonetaryAmount"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-arr-asmt;isEstimatedValueOf"/>
+				<owl:onClass rdf:resource="&fibo-fbc-dae-dbt;CollateralValueAsOfDate"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">attachment point</rdfs:label>
+		<skos:definition xml:lang="en">lower tranche boundary of a tranche defined as a percentage of the value of the total pool of collateral, either at issuance or as of some point in time</skos:definition>
+		<cmns-av:adaptedFrom xml:lang="en">Alexander Veremyev, Peter Tsyurmasto, and Stan Uryasev. &quot;Optimal Structuring of CDO contracts: Optimization Approach&quot;. https://www.ise.ufl.edu/uryasev/files/2012/10/structuring_CDO_JCR_oct12.pdf</cmns-av:adaptedFrom>
+		<cmns-av:adaptedFrom xml:lang="en">https://fincyclopedia.net/finance/</cmns-av:adaptedFrom>
+		<cmns-av:explanatoryNote xml:lang="en">The CDO tranche loss arises when the cumulative collateral loss exceeds the tranche&apos;s attachment point. The attachment point is the minimum of pool-level losses at which a given tranche becomes liable for losses. In other words, the attachment point is the level of subordination above which a given tranche stands.</cmns-av:explanatoryNote>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-sec-dbt-pbs;DebtPoolStatisticalMeasure">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;QualifiedMeasure"/>
 		<rdfs:subClassOf>
@@ -121,8 +140,31 @@
 		<skos:definition xml:lang="en">qualified measure of the rate at which holders of the debt instruments in the pool default on those instruments</skos:definition>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-sec-dbt-pbs;DetachmentPoint">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-acc-cur;PercentageMonetaryAmount"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-arr-asmt;isEstimatedValueOf"/>
+				<owl:onClass rdf:resource="&fibo-fbc-dae-dbt;CollateralValueAsOfDate"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">detachment point</rdfs:label>
+		<skos:definition xml:lang="en">upper tranche boundary of a tranche defined as a percentage of the value of the total pool of collateral, either at issuance or as of some point in time</skos:definition>
+		<cmns-av:adaptedFrom xml:lang="en">Alexander Veremyev, Peter Tsyurmasto, and Stan Uryasev. &quot;Optimal Structuring of CDO contracts: Optimization Approach&quot;. https://www.ise.ufl.edu/uryasev/files/2012/10/structuring_CDO_JCR_oct12.pdf</cmns-av:adaptedFrom>
+		<cmns-av:adaptedFrom xml:lang="en">https://fincyclopedia.net/finance/</cmns-av:adaptedFrom>
+		<cmns-av:explanatoryNote xml:lang="en">The CDO tranche loss arises when the cumulative collateral loss exceeds the tranche&apos;s attachment point. The detachment point corresponds to the amount of pool losses that will completely wipe out the respective tranche. The detachment point is the maximum of pool-level losses at which a given tranche becomes liable for losses.</cmns-av:explanatoryNote>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-sec-dbt-pbs;PoolBackedSecurity">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbti;TradableDebtInstrument"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-pbs;hasEstimatedTotalCollateralValueAtIssuance"/>
+				<owl:onClass rdf:resource="&fibo-fbc-dae-dbt;CollateralValueAsOfDate"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&cmns-cls;isCharacterizedBy"/>
@@ -215,6 +257,20 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-pbs;hasAttachmentPoint"/>
+				<owl:onClass rdf:resource="&fibo-sec-dbt-pbs;AttachmentPoint"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-dbt-pbs;hasDetachmentPoint"/>
+				<owl:onClass rdf:resource="&fibo-sec-dbt-pbs;DetachmentPoint"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
 				<owl:onProperty rdf:resource="&cmns-col;comprises"/>
 				<owl:someValuesFrom>
 					<owl:Restriction>
@@ -289,23 +345,21 @@
 		<cmns-av:synonym xml:lang="en">weighted average remaining maturity</cmns-av:synonym>
 	</owl:Class>
 	
-	<owl:DatatypeProperty rdf:about="&fibo-sec-dbt-pbs;hasAttachmentPoint">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasRateValue"/>
+	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-pbs;hasAttachmentPoint">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-qt-qtu;hasQuantityValue"/>
 		<rdfs:label>has attachment point</rdfs:label>
-		<rdfs:range rdf:resource="&xsd;decimal"/>
-		<skos:definition>indicates the minimum (lower boundary) of the total value at issuance of the underlying collateral at which point a given tranche becomes liable for losses</skos:definition>
-		<skos:editorialNote>*** Need to clarify what liable for losses means and whether or not this should be an object property with a range of expression or something like that***</skos:editorialNote>
-		<skos:note>The attachment point is the lower boundary that specifies, in addition to the upper tranche boundary (detachment point), a collateralized debt obligation tranche (CDO tranche). Specifically, a CDO tranche is specified by its attachment and detachment points as percentages of the value of the total pool of collateral. The CDO tranche loss arises when the cumulative collateral loss exceeds the tranche&apos;s attachment point. The attachment point is the minimum of pool-level losses at which a given tranche becomes liable for losses.</skos:note>
-	</owl:DatatypeProperty>
+		<rdfs:range rdf:resource="&fibo-sec-dbt-pbs;AttachmentPoint"/>
+		<skos:definition>indicates the minimum (lower boundary) of the total value of the underlying collateral, either at issuance or as of some point in time, at which point a given tranche becomes liable for losses</skos:definition>
+		<skos:editorialNote>*** Need to clarify what liable for losses means***</skos:editorialNote>
+	</owl:ObjectProperty>
 	
-	<owl:DatatypeProperty rdf:about="&fibo-sec-dbt-pbs;hasDetachmentPoint">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasRateValue"/>
+	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-pbs;hasDetachmentPoint">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-qt-qtu;hasQuantityValue"/>
 		<rdfs:label>has detachment point</rdfs:label>
-		<rdfs:range rdf:resource="&xsd;decimal"/>
-		<skos:definition>indicates the maximum (upper boundary) of the total value at issuance of the underlying collateral at which point the value of given tranche is wiped out</skos:definition>
-		<skos:editorialNote>*** Need to clarify what liable for losses means and whether or not this should be an object property with a range of expression or something like that***</skos:editorialNote>
-		<skos:note>The upper tranche boundary that specifies, in addition to the lower tranche boundary (attachment point), a collateralized debt obligation tranche (CDO tranche). Specifically, a CDO tranche is specified by its attachment and detachment points as percentages of the total pool of collateral. The CDO tranche loss arises when the cumulative collateral loss exceeds the tranche&apos;s attachment point. The detachment point corresponds to the amount of pool losses that will completely wipe out the respective tranche.</skos:note>
-	</owl:DatatypeProperty>
+		<rdfs:range rdf:resource="&fibo-sec-dbt-pbs;DetachmentPoint"/>
+		<skos:definition>indicates the maximum (upper boundary) of the total value of the underlying collateral, either at issuance or as of some point in time, at which point the value of given tranche is wiped out</skos:definition>
+		<skos:editorialNote>*** Need to clarify what liable for losses means***</skos:editorialNote>
+	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-dbt-pbs;hasEstimatedTotalCollateralValueAtIssuance">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-arr-asmt;isEstimatedValueOf"/>
