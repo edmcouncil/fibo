@@ -6,5 +6,5 @@ This directory contains ontologies belonging to the FIBO Securities (SEC) domain
 
 ## Links
 
-- [FIBO Viewer](https://jira.edmcouncil.org/browse/SEC)
+- [FIBO Viewer](https://spec.edmcouncil.org/fibo/ontology/SEC/MetadataSEC/SECDomain)
 - [WIKI](https://wiki.edmcouncil.org/display/SEC)
