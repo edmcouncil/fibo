@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE rdf:RDF [
 	<!ENTITY cmns-av "https://www.omg.org/spec/Commons/AnnotationVocabulary/">
+	<!ENTITY cmns-cds "https://www.omg.org/spec/Commons/CodesAndCodeSets/">
 	<!ENTITY cmns-cls "https://www.omg.org/spec/Commons/Classifiers/">
 	<!ENTITY cmns-dsg "https://www.omg.org/spec/Commons/Designators/">
 	<!ENTITY dct "http://purl.org/dc/terms/">
@@ -17,6 +18,7 @@
 ]>
 <rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesClassification/"
 	xmlns:cmns-av="https://www.omg.org/spec/Commons/AnnotationVocabulary/"
+	xmlns:cmns-cds="https://www.omg.org/spec/Commons/CodesAndCodeSets/"
 	xmlns:cmns-cls="https://www.omg.org/spec/Commons/Classifiers/"
 	xmlns:cmns-dsg="https://www.omg.org/spec/Commons/Designators/"
 	xmlns:dct="http://purl.org/dc/terms/"
@@ -41,8 +43,9 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Classifiers/"/>
+		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/CodesAndCodeSets/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Designators/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20230301/Securities/SecuritiesClassification/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20231201/Securities/SecuritiesClassification/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20180801/Securities/SecuritiesClassification.rdf version of this ontology was modified to rename (migrate) the hasDefinition property to isDefinedIn to clarify intent.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20190701/Securities/SecuritiesClassification.rdf version of this ontology was modified to eliminate duplication of concepts in LCC.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20200201/Securities/SecuritiesClassification.rdf version of this ontology was modified to add an class representing the ISO 10962 CFI standard and an individual for the 2019 version of that standard.</skos:changeNote>
@@ -50,6 +53,7 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20200701/Securities/SecuritiesClassification.rdf version of this ontology was revised to eliminate a reasoning issue with respect to the CFI codes related to making the classification code a code element (which makes it a code that applies to exactly one thing).</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20210401/Securities/SecuritiesClassification.rdf version of the ontology was modified to use the Commons Ontology Library (Commons) Annotation Vocabulary rather than the OMG&apos;s Specification Metadata vocabulary.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20230201/Securities/SecuritiesClassification.rdf version of this ontology was modified to use the Commons Ontology Library (Commons) rather than the OMG&apos;s Languages, Countries and Codes (LCC) and to eliminate redundancies in FIBO as appropriate.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20230301/Securities/SecuritiesClassification.rdf version of this ontology was augmented to include additional securities classification schemes that are widely used (SEC-119).</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 		<cmns-av:copyright>Copyright (c) 2016-2023 EDM Council, Inc.</cmns-av:copyright>
 		<cmns-av:copyright>Copyright (c) 2018-2023 Object Management Group, Inc.</cmns-av:copyright>
@@ -81,7 +85,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>asset class</rdfs:label>
-		<skos:definition>a financial instrument classifier for a group of securities that exhibit similar characteristics, behave similarly in the marketplace and are subject to the same laws and regulations</skos:definition>
+		<skos:definition>financial instrument classifier for a group of securities that exhibit similar characteristics, behave similarly in the marketplace and are subject to the same laws and regulations</skos:definition>
 		<cmns-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.investopedia.com/terms/a/assetclasses.asp</cmns-av:adaptedFrom>
 		<cmns-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.law.cornell.edu/cfr/text/17/45.1</cmns-av:adaptedFrom>
 		<cmns-av:explanatoryNote>Asset class means the broad category of goods, services or commodities, including any &apos;excluded commodity&apos; as defined in CEA section 1a(19), with common characteristics underlying a swap. The asset classes include credit, equity, foreign exchange (excluding cross-currency), interest rate (including cross-currency), other commodity, and such other asset classes as may be determined by the Commission.</cmns-av:explanatoryNote>
@@ -158,10 +162,58 @@
 		<skos:example>Examples include equity instrument, debt instrument, option, future, etc. per the the ISO 10962 CFI (Classification of Financial Instruments) standard, as cash instruments or derivative instruments per the Financial Accounting Standards Board (FASB) and International Accounting Standards Board (IASB) accounting standards, and so forth.</skos:example>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-sec-sec-cls;GlobalIndustryClassificationStandardsClassifier">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-cls;IndustrySectorClassifier"/>
+		<rdfs:subClassOf rdf:resource="&cmns-cds;CodeElement"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-dsg;isDefinedIn"/>
+				<owl:hasValue rdf:resource="&fibo-sec-sec-cls;GlobalIndustryClassificationStandardsScheme"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>Global Industry Classification Standards classifier</rdfs:label>
+		<skos:definition>four-tiered standardized classification or delineation for an organization based on the principal business activity of the organization</skos:definition>
+		<cmns-av:abbreviation>GICS classifier</cmns-av:abbreviation>
+		<cmns-av:abbreviation>GICS code</cmns-av:abbreviation>
+	</owl:Class>
+	
+	<owl:NamedIndividual rdf:about="&fibo-sec-sec-cls;GlobalIndustryClassificationStandardsScheme">
+		<rdf:type rdf:resource="&fibo-fnd-arr-cls;IndustrySectorClassificationScheme"/>
+		<rdfs:label>Global Industry Classification Standards scheme</rdfs:label>
+		<skos:definition>classification scheme that is a hierarchical four-level system classifying companies based on the principal business activity of the organization</skos:definition>
+		<cmns-av:acronym>GICS</cmns-av:acronym>
+		<cmns-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.msci.com/our-solutions/indexes/gics</cmns-av:adaptedFrom>
+		<cmns-av:explanatoryNote>The four tiers are: Sectors, Industry Groups, Industries and Sub-Industries. All definitions are standardized and applied to companies globally. Each company is assigned a single GICS classification in each of the four tiers, according to its principal business activity. Revenue is a key factor in determining a firm&apos;s principal business activity. MSCI and S&amp;P Dow Jones Indices developed this classification standard to provide investors with consistent and exhaustive industry definitions.</cmns-av:explanatoryNote>
+	</owl:NamedIndividual>
+	
 	<owl:NamedIndividual rdf:about="&fibo-sec-sec-cls;ISO10962-201910-CodeScheme">
 		<rdf:type rdf:resource="&fibo-sec-sec-cls;ClassificationOfFinancialInstrumentsCodeScheme"/>
 		<rdfs:label>ISO 10962 2019-10 code set</rdfs:label>
 		<skos:definition>Fourth Edition, 2019-10 version of the ISO 10962 Classification of Financial Instruments (CFI) Code scheme</skos:definition>
+	</owl:NamedIndividual>
+	
+	<owl:Class rdf:about="&fibo-sec-sec-cls;IndustryClassificationBenchmarkClassifier">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-cls;IndustrySectorClassifier"/>
+		<rdfs:subClassOf rdf:resource="&cmns-cds;CodeElement"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-dsg;isDefinedIn"/>
+				<owl:hasValue rdf:resource="&fibo-sec-sec-cls;IndustryClassificationBenchmarkScheme"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>industry classification benchmark classifier</rdfs:label>
+		<skos:definition>standardized classification or delineation for an organization based on their main source of revenue</skos:definition>
+		<cmns-av:abbreviation>ICB classifier</cmns-av:abbreviation>
+		<cmns-av:abbreviation>ICB code</cmns-av:abbreviation>
+	</owl:Class>
+	
+	<owl:NamedIndividual rdf:about="&fibo-sec-sec-cls;IndustryClassificationBenchmarkScheme">
+		<rdf:type rdf:resource="&fibo-fnd-arr-cls;IndustrySectorClassificationScheme"/>
+		<rdfs:label>Industry Classification Benchmark scheme</rdfs:label>
+		<skos:definition>classification scheme that is a hierarchical four-level system classifying companies based on their main source of revenue</skos:definition>
+		<cmns-av:acronym>ICB</cmns-av:acronym>
+		<cmns-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.ftserussell.com/data/industry-classification-benchmark-icb</cmns-av:adaptedFrom>
+		<cmns-av:explanatoryNote>It is operated and managed by FTSE Russell, a subsidiary of London Stock Exchange Group (LSEG). It is currently one of the major classification systems for securities. This system has been in use since its release in 2005. It is globally recognized and used by some of the biggest financial institutions, such as: London Stock Exchange, NYSE Euronext and NASDAQ.</cmns-av:explanatoryNote>
 	</owl:NamedIndividual>
 
 </rdf:RDF>
