@@ -246,7 +246,7 @@ Some of the more common annotations we use, in addition to the annotations we us
 * [cmns-av:explanatoryNote](https://www.omg.org/spec/Commons/AnnotationVocabulary/explanatoryNote) - to extend a definition with information relevant to the nature of an element, from the FIBO annotation vocabulary
 * usageNote - to provide additional details about how an element should be applied or used, from the FIBO annotation vocabulary
 * [skos:example](https://spec.edmcouncil.org/fibo/ontology?query=http%3A%2F%2Fwww.w3.org%2F2004%2F02%2Fskos%2Fcore%23example) - to enumerate relevant examples, from SKOS
-* [fibo-fnd-utl-alx:actualExpression](https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/Analytics/actualExpression) - to provide an equation that would be applied in a rule using the relevant elements defined in the ontology, from the FIBO Analytics ontology in FND Utilities
+* [cmns-qtu:describesActualExpression](https://www.omg.org/spec/Commons/QuantitiesAndUnits/describesActualExpression) - to provide an equation that would be applied in a rule using the relevant elements defined in the ontology, from the FIBO Analytics ontology in FND Utilities
 
 There are others as well, but these are the ones that we use the most and that FIBO developers should find helpful.
 
