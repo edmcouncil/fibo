@@ -6,6 +6,7 @@
 	<!ENTITY cmns-dsg "https://www.omg.org/spec/Commons/Designators/">
 	<!ENTITY cmns-dt "https://www.omg.org/spec/Commons/DatesAndTimes/">
 	<!ENTITY cmns-id "https://www.omg.org/spec/Commons/Identifiers/">
+	<!ENTITY cmns-pts "https://www.omg.org/spec/Commons/PartiesAndSituations/">
 	<!ENTITY cmns-rlcmp "https://www.omg.org/spec/Commons/RolesAndCompositions/">
 	<!ENTITY dct "http://purl.org/dc/terms/">
 	<!ENTITY fibo-fnd-aap-agt "https://spec.edmcouncil.org/fibo/ontology/FND/AgentsAndPeople/Agents/">
@@ -28,6 +29,7 @@
 	xmlns:cmns-dsg="https://www.omg.org/spec/Commons/Designators/"
 	xmlns:cmns-dt="https://www.omg.org/spec/Commons/DatesAndTimes/"
 	xmlns:cmns-id="https://www.omg.org/spec/Commons/Identifiers/"
+	xmlns:cmns-pts="https://www.omg.org/spec/Commons/PartiesAndSituations/"
 	xmlns:cmns-rlcmp="https://www.omg.org/spec/Commons/RolesAndCompositions/"
 	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fibo-fnd-aap-agt="https://spec.edmcouncil.org/fibo/ontology/FND/AgentsAndPeople/Agents/"
@@ -45,7 +47,7 @@
 	
 	<owl:Ontology rdf:about="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Parties/">
 		<rdfs:label>Parties Ontology</rdfs:label>
-		<dct:abstract>This ontology defines the high-level concepts for party roles. The concept of a party in a role describes some entity defined specifically in terms of one or more roles it performs in situations and other relationships such as some formal contractual or transactional relationship.</dct:abstract>
+		<dct:abstract>This ontology defines high-level party roles, over and above those provided in the OMG Commons Ontology Library. It describes entities in terms of one or more roles it performs in situations and other relationships such as some formal contractual or transactional relationship.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">https://opensource.org/licenses/MIT</dct:license>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/AgentsAndPeople/Agents/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/BusinessDates/"/>
@@ -59,6 +61,7 @@
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/DatesAndTimes/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Designators/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Identifiers/"/>
+		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/PartiesAndSituations/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/RolesAndCompositions/"/>
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20240101/Parties/Parties/"/>
 		<skos:changeNote>The http://www.omg.org/spec/EDMC-FIBO/FND/20130801/Parties/Parties.rdf version of the ontology was was modified per the issue resolutions identified in the FIBO FND 1.0 FTF report and in https://spec.edmcouncil.org/fibo/ontology/FND/1.0/AboutFND-1.0/.</skos:changeNote>
@@ -84,7 +87,7 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20220701/Parties/Parties.rdf version of the ontology was modified to use the Commons Ontology Library (Commons) Annotation Vocabulary rather than the OMG&apos;s Specification Metadata vocabulary.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20230101/Parties/Parties.rdf version of this ontology was modified to use the Commons Ontology Library (Commons) rather than the OMG&apos;s Languages, Countries and Codes (LCC) and to eliminate redundancies in FIBO as appropriate.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20230301/Parties/Parties.rdf version of the ontology was modified to eliminate deprecations that are more than 6 months old.</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20231101/Parties/Parties.rdf version of the ontology was modified to replace content that is now available in the OMG Commons Ontology Library (Commons) v1.1 (FND-380).</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20231101/Parties/Parties.rdf version of the ontology was modified extensively to replace content that is now available in the OMG Commons Ontology Library (Commons) v1.1 (FND-380).</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 		<cmns-av:copyright>Copyright (c) 2013-2024 EDM Council, Inc.</cmns-av:copyright>
 		<cmns-av:copyright>Copyright (c) 2013-2024 Object Management Group, Inc.</cmns-av:copyright>
@@ -114,12 +117,12 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>independent party</rdfs:label>
-		<owl:disjointWith rdf:resource="&fibo-fnd-pty-rl;AgentInRole"/>
+		<owl:disjointWith rdf:resource="&cmns-pts;AgentRole"/>
 		<skos:definition>any person or organization</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-pty-pty;PartyInRole">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-pty-rl;AgentInRole"/>
+		<rdfs:subClassOf rdf:resource="&cmns-pts;AgentRole"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-pty-pty;hasCommencementDate"/>
@@ -499,5 +502,9 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 	</owl:Class>
+	
+	<owl:ObjectProperty rdf:about="&cmns-rlcmp;isPlayedBy">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;hasIdentity"/>
+	</owl:ObjectProperty>
 
 </rdf:RDF>
