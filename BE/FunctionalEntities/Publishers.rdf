@@ -2,10 +2,10 @@
 <!DOCTYPE rdf:RDF [
 	<!ENTITY cmns-av "https://www.omg.org/spec/Commons/AnnotationVocabulary/">
 	<!ENTITY cmns-doc "https://www.omg.org/spec/Commons/Documents/">
+	<!ENTITY cmns-pts "https://www.omg.org/spec/Commons/PartiesAndSituations/">
 	<!ENTITY cmns-rlcmp "https://www.omg.org/spec/Commons/RolesAndCompositions/">
 	<!ENTITY dct "http://purl.org/dc/terms/">
 	<!ENTITY fibo-be-fct-pub "https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/Publishers/">
-	<!ENTITY fibo-fnd-pty-pty "https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Parties/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
 	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
 	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
@@ -16,10 +16,10 @@
 <rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/Publishers/"
 	xmlns:cmns-av="https://www.omg.org/spec/Commons/AnnotationVocabulary/"
 	xmlns:cmns-doc="https://www.omg.org/spec/Commons/Documents/"
+	xmlns:cmns-pts="https://www.omg.org/spec/Commons/PartiesAndSituations/"
 	xmlns:cmns-rlcmp="https://www.omg.org/spec/Commons/RolesAndCompositions/"
 	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fibo-be-fct-pub="https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/Publishers/"
-	xmlns:fibo-fnd-pty-pty="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Parties/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -31,10 +31,10 @@
 		<rdfs:label>Publishers Ontology</rdfs:label>
 		<dct:abstract>The concept of a publisher is central to the notion of a data provider in financial markets. This ontology defines the fundamental concepts for publishers of information, including entities whose primary function is to publish, and those (whether or not they are publishers in that sense) that play the role of the publisher of some information.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">https://opensource.org/licenses/MIT</dct:license>
-		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Parties/Parties/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Documents/"/>
+		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/PartiesAndSituations/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/RolesAndCompositions/"/>
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/20240101/FunctionalEntities/Publishers/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20140501/FunctionalEntities/Publishers.rdf version of this ontology was modified per the issue resolutions identified in the FIBO BE 1.0 FTF report.</skos:changeNote>
@@ -66,11 +66,11 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-fct-pub;Publisher">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-pty-pty;PartyInRole"/>
+		<rdfs:subClassOf rdf:resource="&cmns-pts;PartyRole"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&cmns-rlcmp;isPlayedBy"/>
-				<owl:onClass rdf:resource="&fibo-fnd-pty-pty;IndependentParty"/>
+				<owl:onClass rdf:resource="&cmns-pts;Party"/>
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -81,6 +81,8 @@
 	</owl:Class>
 	
 	<owl:ObjectProperty rdf:about="&fibo-be-fct-pub;hasPublisher">
+		<rdfs:subPropertyOf rdf:resource="&cmns-pts;hasPartyRole"/>
+		<rdfs:subPropertyOf rdf:resource="&cmns-rlcmp;manifests"/>
 		<rdfs:label>has publisher</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-be-fct-pub;Publication"/>
 		<rdfs:range rdf:resource="&fibo-be-fct-pub;Publisher"/>
@@ -89,13 +91,15 @@
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-be-fct-pub;isPublishedBy">
+		<rdfs:subPropertyOf rdf:resource="&cmns-pts;hasParty"/>
 		<rdfs:label>is published by</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-be-fct-pub;Publication"/>
-		<rdfs:range rdf:resource="&fibo-fnd-pty-pty;IndependentParty"/>
+		<rdfs:range rdf:resource="&cmns-pts;Party"/>
 		<skos:definition>identifies the independent party (i.e., the individual or organization) that disseminates the material</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-be-fct-pub;publishes">
+		<rdfs:subPropertyOf rdf:resource="&cmns-rlcmp;isManifestedIn"/>
 		<rdfs:label>publishes</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-be-fct-pub;Publisher"/>
 		<rdfs:range rdf:resource="&fibo-be-fct-pub;Publication"/>
