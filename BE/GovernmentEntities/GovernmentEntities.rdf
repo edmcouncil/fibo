@@ -79,7 +79,7 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20211201/GovernmentEntities/GovernmentEntities.rdf version of this ontology was modified to address text formatting hygiene issues and to use the Commons Ontology Library (Commons) Annotation Vocabulary rather than the OMG&apos;s Specification Metadata vocabulary.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20230101/GovernmentEntities/GovernmentEntities.rdf version of this ontology was modified to use the Commons Ontology Library (Commons) rather than the OMG&apos;s Languages, Countries and Codes (LCC), eliminating redundancies in FIBO as appropriate.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20230301/GovernmentEntities/GovernmentEntities.rdf version of this ontology was modified to augment the definition of instrumentality with additional notes.</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20230901/GovernmentEntities/GovernmentEntities.rdf version of this ontology was modified to replace content that is now available in the OMG Commons Ontology Library (Commons) v1.1 (FND-380).</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20230901/GovernmentEntities/GovernmentEntities.rdf version of this ontology was modified to replace content that is now available in the OMG Commons Ontology Library (Commons) v1.1 and loosened restrictions causing reasoning and representational challenges (FND-380).</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 		<cmns-av:copyright>Copyright (c) 2016-2024 EDM Council, Inc.</cmns-av:copyright>
 		<cmns-av:copyright>Copyright (c) 2016-2024 Object Management Group, Inc.</cmns-av:copyright>
@@ -118,8 +118,7 @@
 					</owl:Restriction>
 					<owl:Restriction>
 						<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;governs"/>
-						<owl:onClass rdf:resource="&fibo-fnd-plc-loc;FederalState"/>
-						<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">2</owl:minQualifiedCardinality>
+						<owl:someValuesFrom rdf:resource="&fibo-fnd-plc-loc;FederalState"/>
 					</owl:Restriction>
 				</owl:intersectionOf>
 			</owl:Class>
@@ -135,14 +134,12 @@
 			<owl:Class>
 				<owl:intersectionOf rdf:parseType="Collection">
 					<owl:Restriction>
-						<owl:onProperty rdf:resource="&fibo-be-ge-ge;isRepresentedBy"/>
-						<owl:onClass rdf:resource="&fibo-be-ge-ge;RegionalGovernment"/>
-						<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">2</owl:minQualifiedCardinality>
+						<owl:onProperty rdf:resource="&fibo-be-ge-ge;hasFullSovereigntyOver"/>
+						<owl:someValuesFrom rdf:resource="&lcc-cr;Country"/>
 					</owl:Restriction>
 					<owl:Restriction>
-						<owl:onProperty rdf:resource="&fibo-be-ge-ge;isRepresentedBy"/>
-						<owl:onClass rdf:resource="&fibo-be-ge-ge;FederalGovernment"/>
-						<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+						<owl:onProperty rdf:resource="&fibo-be-ge-ge;hasSharedSovereigntyOver"/>
+						<owl:someValuesFrom rdf:resource="&fibo-fnd-plc-loc;FederalState"/>
 					</owl:Restriction>
 				</owl:intersectionOf>
 			</owl:Class>
@@ -151,13 +148,13 @@
 			<owl:Class>
 				<owl:intersectionOf rdf:parseType="Collection">
 					<owl:Restriction>
-						<owl:onProperty rdf:resource="&fibo-be-ge-ge;hasFullSovereigntyOver"/>
-						<owl:someValuesFrom rdf:resource="&lcc-cr;Country"/>
+						<owl:onProperty rdf:resource="&fibo-be-ge-ge;isRepresentedBy"/>
+						<owl:someValuesFrom rdf:resource="&fibo-be-ge-ge;RegionalGovernment"/>
 					</owl:Restriction>
 					<owl:Restriction>
-						<owl:onProperty rdf:resource="&fibo-be-ge-ge;hasSharedSovereigntyOver"/>
-						<owl:onClass rdf:resource="&fibo-fnd-plc-loc;FederalState"/>
-						<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">2</owl:minQualifiedCardinality>
+						<owl:onProperty rdf:resource="&fibo-be-ge-ge;isRepresentedBy"/>
+						<owl:onClass rdf:resource="&fibo-be-ge-ge;FederalGovernment"/>
+						<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 					</owl:Restriction>
 				</owl:intersectionOf>
 			</owl:Class>
@@ -171,26 +168,29 @@
 		<rdfs:subClassOf rdf:resource="&fibo-be-fct-fct;FunctionalEntity"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-col;hasConstituent"/>
+				<owl:onClass rdf:resource="&fibo-be-ge-ge;BranchOfGovernment"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-col;hasConstituent"/>
+				<owl:onClass rdf:resource="&fibo-be-ge-ge;GovernmentAgency"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-col;hasConstituent"/>
+				<owl:onClass rdf:resource="&fibo-be-ge-ge;GovernmentDepartment"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;governs"/>
 				<owl:someValuesFrom rdf:resource="&lcc-cr;GeopoliticalEntity"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&cmns-col;hasPart"/>
-				<owl:someValuesFrom rdf:resource="&fibo-be-ge-ge;BranchOfGovernment"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&cmns-col;hasPart"/>
-				<owl:someValuesFrom rdf:resource="&fibo-be-ge-ge;GovernmentAgency"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&cmns-col;hasPart"/>
-				<owl:someValuesFrom rdf:resource="&fibo-be-ge-ge;GovernmentDepartment"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>government</rdfs:label>
@@ -204,7 +204,8 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isManagedBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-be-ge-ge;GovernmentAppointee"/>
+				<owl:onClass rdf:resource="&fibo-be-ge-ge;GovernmentAppointee"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>government agency</rdfs:label>
@@ -219,12 +220,14 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&cmns-rlcmp;isPlayedBy"/>
-				<owl:someValuesFrom>
+				<owl:onClass>
 					<owl:Restriction>
 						<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isDesignatedBy"/>
-						<owl:someValuesFrom rdf:resource="&fibo-be-ge-ge;GovernmentBody"/>
+						<owl:onClass rdf:resource="&fibo-be-ge-ge;GovernmentBody"/>
+						<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 					</owl:Restriction>
-				</owl:someValuesFrom>
+				</owl:onClass>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>government appointee</rdfs:label>
@@ -236,7 +239,8 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-gao-obj;hasObjective"/>
-				<owl:someValuesFrom rdf:resource="&fibo-be-le-lp;PublicPurpose"/>
+				<owl:onClass rdf:resource="&fibo-be-le-lp;PublicPurpose"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>government body</rdfs:label>
@@ -249,7 +253,8 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isManagedBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-be-ge-ge;GovernmentMinister"/>
+				<owl:onClass rdf:resource="&fibo-be-ge-ge;GovernmentMinister"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>government department</rdfs:label>
@@ -279,7 +284,8 @@
 				<owl:someValuesFrom>
 					<owl:Restriction>
 						<owl:onProperty rdf:resource="&cmns-col;isMemberOf"/>
-						<owl:allValuesFrom rdf:resource="&fibo-be-ge-ge;GovernmentBody"/>
+						<owl:onClass rdf:resource="&fibo-be-ge-ge;GovernmentBody"/>
+						<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 					</owl:Restriction>
 				</owl:someValuesFrom>
 			</owl:Restriction>
@@ -293,14 +299,15 @@
 		<rdfs:subClassOf rdf:resource="&fibo-be-le-lp;LegalEntity"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-be-ge-ge;isInstrumentOf"/>
-				<owl:someValuesFrom rdf:resource="&fibo-be-ge-ge;Government"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isMandatedBy"/>
+				<owl:onClass rdf:resource="&fibo-fnd-law-jur;StatuteLaw"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isMandatedBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-law-jur;StatuteLaw"/>
+				<owl:onProperty rdf:resource="&fibo-be-ge-ge;isInstrumentOf"/>
+				<owl:someValuesFrom rdf:resource="&fibo-be-ge-ge;Government"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>instrumentality</rdfs:label>
@@ -409,15 +416,14 @@
 		<rdfs:subClassOf rdf:resource="&fibo-be-ge-ge;Polity"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-be-ge-ge;isRepresentedBy"/>
-				<owl:onClass rdf:resource="&fibo-be-ge-ge;RegionalGovernment"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+				<owl:onProperty rdf:resource="&fibo-be-ge-ge;hasSharedSovereigntyOver"/>
+				<owl:someValuesFrom rdf:resource="&lcc-cr;GeopoliticalEntity"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-be-ge-ge;hasSharedSovereigntyOver"/>
-				<owl:someValuesFrom rdf:resource="&lcc-cr;GeopoliticalEntity"/>
+				<owl:onProperty rdf:resource="&fibo-be-ge-ge;isRepresentedBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-be-ge-ge;RegionalGovernment"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>regional sovereignty</rdfs:label>
@@ -449,8 +455,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-be-ge-ge;hasSharedSovereigntyOver"/>
-				<owl:onClass rdf:resource="&lcc-cr;Country"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">2</owl:minQualifiedCardinality>
+				<owl:someValuesFrom rdf:resource="&lcc-cr;Country"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
