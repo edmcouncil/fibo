@@ -90,7 +90,7 @@
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/DatesAndTimes/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Documents/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/QuantitiesAndUnits/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/20231201/RateDerivatives/IRSwaps/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/20240101/RateDerivatives/IRSwaps/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20180801/RateDerivatives/IRSwaps.rdf version of this ontology was modified to use the generic statistical measures and measurements now in FND.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20190501/RateDerivatives/IRSwaps/ version of this ontology was modified to eliminate the property &apos;hasPaymentSchedule&apos; from the Swaps ontology in favor of the equivalent property with the same name from FND.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20200701/RateDerivatives/IRSwaps/ version of this ontology was modified take advantage of basic fixed and floating legs as higher level concepts common to many swaps, and to refine definitions to eliminate ambiguity and conform with ISO 704.</skos:changeNote>
@@ -102,9 +102,10 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20230201/RateDerivatives/IRSwaps.rdf version of this ontology was modified to use the Commons Ontology Library (Commons) rather than the OMG&apos;s Languages, Countries and Codes (LCC), eliminating redundancies in FIBO as appropriate.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20230301/RateDerivatives/IRSwaps.rdf version of this ontology was modified to clarify restrictions on a plain vanilla IR swap.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20230501/RateDerivatives/IRSwaps.rdf version of this ontology was modified to replace content that is now available in the OMG Commons Ontology Library (Commons) v1.1 (FND-380).</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20231201/RateDerivatives/IRSwaps.rdf version of this ontology was modified to simplify the class hierarchy and add a definition for fixed-fixed interest rate swap (DER-126).</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
-		<cmns-av:copyright>Copyright (c) 2016-2023 EDM Council, Inc.</cmns-av:copyright>
-		<cmns-av:copyright>Copyright (c) 2016-2023 Object Management Group, Inc.</cmns-av:copyright>
+		<cmns-av:copyright>Copyright (c) 2016-2024 EDM Council, Inc.</cmns-av:copyright>
+		<cmns-av:copyright>Copyright (c) 2016-2024 Object Management Group, Inc.</cmns-av:copyright>
 	</owl:Ontology>
 	
 	<owl:Class rdf:about="&fibo-der-rtd-irswp;CrossCurrencyInterestRateSwap">
@@ -125,6 +126,23 @@
 		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-sch;ScheduledCalculationPeriodEndEvent"/>
 		<rdfs:label>explicit interest amount calculation event</rdfs:label>
 		<skos:definition>the explicit representation of the calculation event in a given period, in which an interest payment is calculated based on the rate (fixed or floating) and the notional amount (in the payment currency, and factored for Fx if necessary), on a given date</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-rtd-irswp;FixedFixedInterestRateSwap">
+		<rdfs:subClassOf rdf:resource="&fibo-der-rtd-irswp;InterestRateSwap"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;exchanges"/>
+				<owl:onClass rdf:resource="&fibo-der-rtd-irswp;FixedInterestRateLeg"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">2</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>fixed fixed interest rate swap</rdfs:label>
+		<skos:definition>interest rate swap in which both parties pay a fixed interest rate that they could not otherwise obtain outside of a swap arrangement</skos:definition>
+		<skos:example>For example, each counterparty uses a different native currency, but wants to borrow money in the other counterparty&apos;s native currency.</skos:example>
+		<skos:note>Fixed-fixed swaps generally take the form of either a zero coupon swap or a cross-currency swap.</skos:note>
+		<cmns-av:adaptedFrom>ISO 10962, Securities and related financial instruments - Classification of Financial Instruments (CFI code), Fourth edition, 2019-10.</cmns-av:adaptedFrom>
+		<cmns-av:synonym>fixed-fixed interest rate swap</cmns-av:synonym>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-rtd-irswp;FixedFloatCrossCurrencyInterestRateSwap">
@@ -681,7 +699,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-rtd-irswp;ZeroCouponInterestRateSwap">
-		<rdfs:subClassOf rdf:resource="&fibo-der-rtd-irswp;FixedFloatSingleCurrencyInterestRateSwap"/>
+		<rdfs:subClassOf rdf:resource="&fibo-der-rtd-irswp;InterestRateSwap"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-acc-cur;hasNotionalAmount"/>
@@ -690,7 +708,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>zero coupon interest rate swap</rdfs:label>
-		<skos:definition>fixed-float single currency interest rate swap in which payments on the floating leg are made periodically, similar to a plain vanilla interest rate swap, but the fixed rate cash flows are compounded and paid as a lump sum on the expiration date, rather than periodically</skos:definition>
+		<skos:definition>interest rate swap in which the fixed rate cash flows are compounded and paid once on the expiration date, rather than periodically; the payments on the other side (which can be based on a floating interest rate or a fixed rate) follow typical swap payment schedules</skos:definition>
 		<cmns-av:adaptedFrom xml:lang="en">ISO 10962, Securities and related financial instruments - Classification of financial instruments (CFI) code, Fifth edition, 2021-06-15</cmns-av:adaptedFrom>
 	</owl:Class>
 	
