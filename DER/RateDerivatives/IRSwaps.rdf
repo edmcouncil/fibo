@@ -102,7 +102,7 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20230201/RateDerivatives/IRSwaps.rdf version of this ontology was modified to use the Commons Ontology Library (Commons) rather than the OMG&apos;s Languages, Countries and Codes (LCC), eliminating redundancies in FIBO as appropriate.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20230301/RateDerivatives/IRSwaps.rdf version of this ontology was modified to clarify restrictions on a plain vanilla IR swap.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20230501/RateDerivatives/IRSwaps.rdf version of this ontology was modified to replace content that is now available in the OMG Commons Ontology Library (Commons) v1.1 (FND-380).</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20231201/RateDerivatives/IRSwaps.rdf version of this ontology was modified to simplify the class hierarchy and add a definition for fixed-fixed interest rate swap (DER-126).</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20231201/RateDerivatives/IRSwaps.rdf version of this ontology was modified to simplify the class hierarchy, add a definition for fixed-fixed interest rate swap (DER-126), and to revise definitions related to swap leg-specific events (FBC-317).</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 		<cmns-av:copyright>Copyright (c) 2016-2024 EDM Council, Inc.</cmns-av:copyright>
 		<cmns-av:copyright>Copyright (c) 2016-2024 Object Management Group, Inc.</cmns-av:copyright>
@@ -122,7 +122,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-rtd-irswp;ExplicitInterestAmountCalculationEvent">
-		<rdfs:subClassOf rdf:resource="&fibo-der-rtd-irswp;InterestRateStreamEvent"/>
+		<rdfs:subClassOf rdf:resource="&fibo-der-rtd-irswp;InterestRateLegEvent"/>
 		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-sch;ScheduledCalculationPeriodEndEvent"/>
 		<rdfs:label>explicit interest amount calculation event</rdfs:label>
 		<skos:definition>the explicit representation of the calculation event in a given period, in which an interest payment is calculated based on the rate (fixed or floating) and the notional amount (in the payment currency, and factored for Fx if necessary), on a given date</skos:definition>
@@ -236,8 +236,8 @@
 			</owl:Class>
 		</owl:equivalentClass>
 		<skos:definition>fixed leg that specifies fixed interest amounts and terms for the payment of that interest</skos:definition>
-		<cmns-av:explanatoryNote>This may be the funding leg of some swaps (i.e. one party agrees to pay fixed interest amounts in exchange for whatever is the other leg) or it may be one or both sides of an interest rate swap, where the two parties exchange different interest streams.</cmns-av:explanatoryNote>
-		<cmns-av:synonym>fixed interest rate swap stream</cmns-av:synonym>
+		<cmns-av:explanatoryNote>This may be the funding leg of some swaps (i.e. one party agrees to pay fixed interest amounts in exchange for whatever is the other leg) or it may be one or both sides of an interest rate swap, where the two parties exchange different interest payment streams.</cmns-av:explanatoryNote>
+		<cmns-av:synonym>fixed interest rate payment stream</cmns-av:synonym>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-rtd-irswp;FloatFloatCrossCurrencyInterestRateSwap">
@@ -383,10 +383,15 @@
 		<cmns-av:adaptedFrom xml:lang="en">ISO 10962, Securities and related financial instruments - Classification of financial instruments (CFI) code, Fifth edition, 2021-06-15</cmns-av:adaptedFrom>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-rtd-irswp;InterestRateStreamEvent">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-swp;SwapStreamEvent"/>
-		<rdfs:label>interest rate stream event</rdfs:label>
+	<owl:Class rdf:about="&fibo-der-rtd-irswp;InterestRateLegEvent">
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-swp;SwapLegEvent"/>
+		<rdfs:label>interest rate leg event</rdfs:label>
 		<skos:definition>interest-rate specific event occurring with respect to one leg of a swap</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-rtd-irswp;InterestRateStreamEvent">
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&fibo-der-rtd-irswp;InterestRateLegEvent"/>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-rtd-irswp;InterestRateSwap">
@@ -442,7 +447,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-fct-ra;specifies"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-rtd-irswp;InterestRateStreamEvent"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-rtd-irswp;InterestRateLegEvent"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -509,7 +514,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-rtd-irswp;NotionalStepChangeEvent">
-		<rdfs:subClassOf rdf:resource="&fibo-der-rtd-irswp;InterestRateStreamEvent"/>
+		<rdfs:subClassOf rdf:resource="&fibo-der-rtd-irswp;InterestRateLegEvent"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&cmns-dt;hasDate"/>
@@ -517,7 +522,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>notional step change event</rdfs:label>
-		<skos:definition>event in which a step change in the notional amount of the swap stream occurs</skos:definition>
+		<skos:definition>event in which a step change in the notional amount for a given swap leg occurs</skos:definition>
 		<cmns-av:explanatoryNote>This always occurs on a calculation date (that is, one of the calculation period end dates). Therefore the frequency / period length of the steps in the step schedule is a multiple of the calculation period or frequency. For example, if the notional is recalculated on every calculation date, applying a new interest rate to the new notional amount, then the two frequencies are the same. If notional is updated every second calculation period, then the step schedule specifies periods that are twice as long, and so on.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
@@ -623,7 +628,7 @@
 		<skos:definition>interest rate swap in which the two streams of interest payments are in the same currency</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-rtd-irswp;SwapStreamCalculationRelativeDate">
+	<owl:Class rdf:about="&fibo-der-rtd-irswp;SwapLegCalculationRelativeDate">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-fd;RelativeDate"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
@@ -631,8 +636,14 @@
 				<owl:someValuesFrom rdf:resource="&fibo-der-rtd-irswp;SwapStreamInterestRateResetSchedule"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label>swap stream calculation relative date</rdfs:label>
-		<skos:definition>calculation date that is relative to the rate reset schedule</skos:definition>
+		<rdfs:label>swap leg calculation relative date</rdfs:label>
+		<skos:definition>calculation date that is relative to the the rate reset date in a given reset schedule</skos:definition>
+		<skos:note>*** fix the restriction accordingly, and think about moving this up the hierarchy to cover loans, etc. rather than only swap legs ***</skos:note>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-rtd-irswp;SwapStreamCalculationRelativeDate">
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&fibo-der-rtd-irswp;SwapLegCalculationRelativeDate"/>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-rtd-irswp;SwapStreamInterestCalculation">
@@ -662,7 +673,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-rtd-irswp;SwapStreamInterestRateReset">
-		<rdfs:subClassOf rdf:resource="&fibo-der-rtd-irswp;InterestRateStreamEvent"/>
+		<rdfs:subClassOf rdf:resource="&fibo-der-rtd-irswp;InterestRateLegEvent"/>
 		<rdfs:label>swap stream interest rate reset</rdfs:label>
 		<skos:definition>event in which an interest rate for a given swap stream changes (resets)</skos:definition>
 	</owl:Class>
@@ -675,7 +686,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-rtd-irswp;SwapStreamInterestRateSettingEvent">
-		<rdfs:subClassOf rdf:resource="&fibo-der-rtd-irswp;InterestRateStreamEvent"/>
+		<rdfs:subClassOf rdf:resource="&fibo-der-rtd-irswp;InterestRateLegEvent"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&cmns-dt;hasDate"/>
