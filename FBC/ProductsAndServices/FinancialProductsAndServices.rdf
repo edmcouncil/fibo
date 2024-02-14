@@ -108,7 +108,7 @@
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/QuantitiesAndUnits/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/RolesAndCompositions/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/TextDatatype/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/20240101/ProductsAndServices/FinancialProductsAndServices/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/20240201/ProductsAndServices/FinancialProductsAndServices/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20150801/ProductsAndServices/FinancialProductsAndServices/ version of this ontology was modified to reflect issue resolutions detailed in the FIBO FBC 1.0 FTF report.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20160801/ProductsAndServices/FinancialProductsAndServices/ version of this ontology was modified by the FIBO 2.0 RFC, including, but not limited to, the addition of lifecycle events, concepts related to trade settlement, and the definition of a unique transaction identifier (UTI).</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20180801/ProductsAndServices/FinancialProductsAndServices/ version of this ontology was modified as a part of organizational hierarchy simplification and to correct a logical inconsistency with respect to the representation of baskets.</skos:changeNote>
@@ -127,6 +127,7 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20230301/ProductsAndServices/FinancialProductsAndServices.rdf version of this ontology was revised to augment the representation of institutions based on their definitions in the law, and to clarify and extend definitions related to non-bank financial institutions.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20230401/ProductsAndServices/FinancialProductsAndServices.rdf version of the ontology was modified to eliminate deprecations that are more than 6 months old and to replace content that is now available in the OMG Commons Ontology Library (Commons) v1.1 (FND-380).</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20231201/ProductsAndServices/FinancialProductsAndServices.rdf version of the ontology was modified to replace additional content that is now available in the OMG Commons Ontology Library (Commons) v1.1 (FND-380).</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20240101/ProductsAndServices/FinancialProductsAndServices.rdf version of the ontology was modified to add the concept of a contract lifecycle, as distinct from a product or trade lifecycle (FBC-317).</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 		<cmns-av:copyright>Copyright (c) 2015-2024 EDM Council, Inc.</cmns-av:copyright>
 		<cmns-av:copyright>Copyright (c) 2015-2024 Object Management Group, Inc.</cmns-av:copyright>
@@ -142,7 +143,7 @@
 		</rdfs:subClassOf>
 		<rdfs:label>agency agreement</rdfs:label>
 		<rdfs:seeAlso rdf:resource="http://www.sos.state.tx.us/corp/registeredagents.shtml"/>
-		<skos:definition>an agreement that designates a party as a registered agent to represent and act on behalf of another party in some, typically legal, financial, or medical capacity</skos:definition>
+		<skos:definition>agreement that designates a party as a registered agent to represent and act on behalf of another party in some, typically legal, financial, or medical capacity</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-fpas;AgentForServiceOfProcess">
@@ -150,7 +151,7 @@
 		<rdfs:label>agent for service of process</rdfs:label>
 		<rdfs:seeAlso rdf:resource="http://www.law.cornell.edu/wex/agent_for_service_of_process"/>
 		<rdfs:seeAlso rdf:resource="http://www.sos.state.tx.us/corp/registeredagents.shtml"/>
-		<skos:definition>a registered agent (person or organization) designated by a business entity, such as a corporation, to receive legal correspondence on behalf of the business entity in the jurisdiction in which the agent&apos;s address is located</skos:definition>
+		<skos:definition>registered agent (person or organization) designated by a business entity, such as a corporation, to receive legal correspondence on behalf of the business entity in the jurisdiction in which the agent&apos;s address is located</skos:definition>
 		<cmns-av:explanatoryNote>The person may be an officer of the corporation or a third party, such as the corporation&apos;s attorney, or a company providing such agency services.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
@@ -266,6 +267,131 @@
 		<skos:definition>stage in the lifecycle of a trade indicating that the trade has been finalized, and that there is no longer a corresponding open position on the books of the trader, eliminating any exposure</skos:definition>
 	</owl:NamedIndividual>
 	
+	<owl:Class rdf:about="&fibo-fbc-pas-fpas;ContractLifecycle">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-lif;Lifecycle"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-arr-lif;hasStage"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-fpas;ContractLifecycleStage"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-arr-lif;isLifecycleOf"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-agr-ctr;Contract"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-dsg;defines"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-fpas;ContractLifecycleStage"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>contract lifecycle</rdfs:label>
+		<skos:definition>lifecycle of an agreement, including, but not limited to a credit agreement, financial instrument, or other formal contract, from initial stages through retirement</skos:definition>
+		<cmns-av:explanatoryNote>Certain business agreements, such as partnership agreements,may involve planning, drafting/review/revision, execution and management, renewal, and possibly sunsetting phases. Financial contracts, such as loans and other instruments have specific stages and events during the execution and management phase, i.e. from the effective date of the contract through maturity and redemption.</cmns-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-pas-fpas;ContractLifecycleEvent">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-lif;LifecycleEvent"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-cxtdsg;appliesTo"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-fpas;ContractLifecycleStage"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>contract lifecycle event</rdfs:label>
+		<skos:definition>kind of event that occurs during one or more stages of the lifecycle of an agreement</skos:definition>
+		<skos:example>a call notification or coupon payment as a part of a bond lifecycle</skos:example>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-pas-fpas;ContractLifecycleEventOccurrence">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-lif;LifecycleEventOccurrence"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;exemplifies"/>
+				<owl:onClass rdf:resource="&fibo-fbc-pas-fpas;ContractLifecycleEvent"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-cxtdsg;appliesTo"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-fpas;ContractLifecycleStageOccurrence"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>contract lifecycle event occurrence</rdfs:label>
+		<skos:definition>actual occurrence of an event during a specific stage of a specific contract lifecycle</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-pas-fpas;ContractLifecycleOccurrence">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-lif;LifecycleOccurrence"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;exemplifies"/>
+				<owl:onClass rdf:resource="&fibo-fbc-pas-fpas;ContractLifecycle"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-arr-lif;hasStage"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-fpas;ContractLifecycleStageOccurrence"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>contract lifecycle occurrence</rdfs:label>
+		<skos:definition>realization of the lifecycle of a specific contract</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-pas-fpas;ContractLifecycleStage">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-lif;LifecycleStage"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-arr-lif;isStageOf"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-fpas;ContractLifecycle"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-col;comprises"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-fpas;ContractLifecycleEvent"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-dsg;isDefinedIn"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-fpas;ContractLifecycle"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>contract lifecycle stage</rdfs:label>
+		<skos:definition>phase in the lifecycle of an agreement</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-pas-fpas;ContractLifecycleStageOccurrence">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-lif;LifecycleStageOccurrence"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;exemplifies"/>
+				<owl:onClass rdf:resource="&fibo-fbc-pas-fpas;ContractLifecycleStage"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-arr-lif;isStageOf"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-fpas;ContractLifecycleOccurrence"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-col;comprises"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-fpas;ContractLifecycleEventOccurrence"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>contract lifecycle stage occurrence</rdfs:label>
+		<skos:definition>realization, from start to finish of a phase in an occurrence of a specific contract lifecycle</skos:definition>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-fbc-pas-fpas;Dealer">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-pas;ServiceProvider"/>
 		<rdfs:subClassOf>
@@ -331,7 +457,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>financial product catalog</rdfs:label>
-		<skos:definition>a catalog of financial products and/or services available for sale with their description and other product details</skos:definition>
+		<skos:definition>catalog of financial products and/or services available for sale with their description and other product details</skos:definition>
 		<cmns-av:adaptedFrom>Nordea Bank</cmns-av:adaptedFrom>
 	</owl:Class>
 	
@@ -483,7 +609,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>offeror</rdfs:label>
-		<skos:definition>a party that proposes to make something available to someone (i.e., an offeree) based on the terms of the offering</skos:definition>
+		<skos:definition>party that proposes to make something available to someone (i.e., an offeree) based on the terms of the offering</skos:definition>
 	</owl:Class>
 	
 	<owl:NamedIndividual rdf:about="&fibo-fbc-pas-fpas;OpenTrade">
@@ -527,7 +653,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>product lifecycle</rdfs:label>
-		<skos:definition>a lifecycle specific to a product or product family</skos:definition>
+		<skos:definition>lifecycle specific to a product or product family</skos:definition>
 		<skos:example>The product life cycle describes the period of time over which an item is developed, brought to market and eventually removed from the market. The cycle is broken into four stages: introduction, growth, maturity and decline. The idea of the product life cycle is used in marketing to decide when it is appropriate to advertise, reduce prices, explore new markets or create new packaging.</skos:example>
 	</owl:Class>
 	
@@ -540,8 +666,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>product lifecycle event</rdfs:label>
-		<skos:definition>a kind of event that occurs during one or more stages of a product lifecycle</skos:definition>
-		<skos:example>a call notification or coupon payment as a part of a bond lifecycle</skos:example>
+		<skos:definition>kind of event that occurs during one or more stages of a product lifecycle</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-fpas;ProductLifecycleEventOccurrence">
@@ -560,7 +685,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>product lifecycle event occurrence</rdfs:label>
-		<skos:definition>an occurrence of an event that occurs during a specific stage of a specific product lifecycle</skos:definition>
+		<skos:definition>actual occurrence of an event that happens during a specific stage of a specific product lifecycle</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-fpas;ProductLifecycleOccurrence">
@@ -579,7 +704,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>product lifecycle occurrence</rdfs:label>
-		<skos:definition>a realization of a product lifecycle</skos:definition>
+		<skos:definition>realization of the lifecycle of a specific product</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-fpas;ProductLifecycleStage">
@@ -609,8 +734,8 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>product lifecycle stage</rdfs:label>
-		<skos:definition>a phase in a product lifecycle</skos:definition>
-		<skos:example>a research and development phase of a product lifecycle, the introduction phase in a marketing lifecycle, a growth stage in an economic lifecycle, or the origination phase in the lifecycle of a loan</skos:example>
+		<skos:definition>phase in a product lifecycle</skos:definition>
+		<skos:example>research and development phase of a product lifecycle or the introduction phase in a marketing lifecycle, growth stage in an economic lifecycle for a product</skos:example>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-fpas;ProductLifecycleStageOccurrence">
@@ -635,7 +760,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>product lifecycle stage occurrence</rdfs:label>
-		<skos:definition>an instance of a phase in an occurrence of a given product lifecycle</skos:definition>
+		<skos:definition>realization of a specific stage in the lifecycle of a given product</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-fpas;RegisteredAgent">
@@ -663,7 +788,7 @@
 		<rdfs:label>registered agent</rdfs:label>
 		<rdfs:seeAlso rdf:resource="http://www.sos.state.tx.us/corp/registeredagents.shtml"/>
 		<rdfs:seeAlso rdf:resource="https://thelawdictionary.org/agent/"/>
-		<skos:definition>a legal agent designated by another party (person or organization), to represent and acts on their behalf under a formal agency agreement</skos:definition>
+		<skos:definition>legal agent designated by some party to represent them and act on their behalf under a formal agency agreement</skos:definition>
 		<cmns-av:explanatoryNote>Agency capacity, as specified in an agency agreement, may include power of attorney, the ability to act as an agent in certain kinds of transactions such as real estate, tax, audit or other financial or legal transactions, as a fiduciary, including as a trustee or legal guardian, for service of process, and so forth.</cmns-av:explanatoryNote>
 		<cmns-av:synonym>resident agent</cmns-av:synonym>
 		<cmns-av:synonym>statutory agent</cmns-av:synonym>
@@ -684,7 +809,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>regulated commodity</rdfs:label>
-		<skos:definition>a commodity under the jurisdiction of the regulatory agency, such as the Commodities Futures Trading Commission (CFTF), which includes any commodity traded in an organized contracts market</skos:definition>
+		<skos:definition>commodity under the jurisdiction of the regulatory agency, such as the Commodities Futures Trading Commission (CFTF) in the United States, which includes any commodity traded in an organized contracts market</skos:definition>
 		<cmns-av:explanatoryNote>The CFTC polices matters of information and disclosure, fair trading practices, registration of firms and individuals, protection of customer funds, record keeping, and maintenance of orderly options and futures markets in the United States.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
@@ -789,7 +914,7 @@
 		</rdfs:subClassOf>
 		<rdfs:label>trade identifier</rdfs:label>
 		<skos:definition>sequence of characters identifying a trade within some context</skos:definition>
-		<skos:note>Note that a given trade may consist of multiple transactions, and thus there may be multiple UTIs associated with a trade.</skos:note>
+		<skos:note>Note that a given trade may consist of multiple transactions, and thus there may be multiple identifiers for such transactions associated with a specific trade.</skos:note>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-fpas;TradeLifecycle">
@@ -813,8 +938,8 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>trade lifecycle</rdfs:label>
-		<skos:definition>a lifecycle that defines the evolution of a trade, from initiation through settlement</skos:definition>
-		<skos:example>The trade life cycle describes the period of time over which a trade is initiated, typically as a part of a broader deal, consumated, processed and executed, settled or closed for other reasons, and reported.</skos:example>
+		<skos:definition>lifecycle that defines the evolution of a trade, from initiation through settlement</skos:definition>
+		<skos:example>The trade life cycle describes the period of time over which a trade is initiated, typically as a part of a broader deal, consumated, processed and executed, settled or closed for other reasons, and reported. Parts of a trade lifecycle may include or overlap with the lifecycle of one or more contracts.</skos:example>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-fpas;TradeLifecycleEvent">
@@ -833,7 +958,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>trade lifecycle event</rdfs:label>
-		<skos:definition>a kind of event that occurs during one or more stages of the lifecycle of a trade</skos:definition>
+		<skos:definition>kind of event that occurs during one or more stages of the lifecycle of a trade</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-fpas;TradeLifecycleEventOccurrence">
@@ -859,7 +984,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>trade lifecycle event occurrence</rdfs:label>
-		<skos:definition>an occurrence of an event that occurs during a specific stage of a specific trade lifecycle</skos:definition>
+		<skos:definition>realization of an event that happens during a specific stage of a specific trade lifecycle</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-fpas;TradeLifecycleOccurrence">
@@ -878,7 +1003,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>trade lifecycle occurrence</rdfs:label>
-		<skos:definition>a realization of a trade lifecycle</skos:definition>
+		<skos:definition>realization of the lifecycle for a specific trade</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-fpas;TradeLifecycleStage">
@@ -915,7 +1040,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>trade lifecycle stage</rdfs:label>
-		<skos:definition>a phase in the lifecycle of a trade</skos:definition>
+		<skos:definition>phase in the lifecycle of a trade</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-fpas;TradeLifecycleStageOccurrence">
@@ -947,7 +1072,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>trade lifecycle stage occurrence</rdfs:label>
-		<skos:definition>an instance of a phase in an occurrence of a given trade lifecycle</skos:definition>
+		<skos:definition>realization of a phase in the lifecycle of a specific trade</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-fpas;Trader">
@@ -1049,8 +1174,8 @@
 			<rdf:Description rdf:about="&cmns-id;isIdentifiedBy">
 			</rdf:Description>
 		</owl:propertyChainAxiom>
-		<skos:definition>specifies an identifier for the entity that generated something</skos:definition>
-		<cmns-av:explanatoryNote>Note that the range of is identified by must be that entity&apos;s LEI in the context of a UTI</cmns-av:explanatoryNote>
+		<skos:definition>specifies an identifier for the entity that generated a unique transaction identifier</skos:definition>
+		<cmns-av:explanatoryNote>Note that the range of is identified by must be that entity&apos;s LEI in the context of a UTI.</cmns-av:explanatoryNote>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-pas-fpas;hasLegalAgent">

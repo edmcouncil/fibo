@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE rdf:RDF [
 	<!ENTITY cmns-av "https://www.omg.org/spec/Commons/AnnotationVocabulary/">
+	<!ENTITY cmns-cxtdsg "https://www.omg.org/spec/Commons/ContextualDesignators/">
 	<!ENTITY cmns-dsg "https://www.omg.org/spec/Commons/Designators/">
 	<!ENTITY cmns-dt "https://www.omg.org/spec/Commons/DatesAndTimes/">
 	<!ENTITY dct "http://purl.org/dc/terms/">
@@ -17,6 +18,7 @@
 ]>
 <rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/ParametricSchedules/"
 	xmlns:cmns-av="https://www.omg.org/spec/Commons/AnnotationVocabulary/"
+	xmlns:cmns-cxtdsg="https://www.omg.org/spec/Commons/ContextualDesignators/"
 	xmlns:cmns-dsg="https://www.omg.org/spec/Commons/Designators/"
 	xmlns:cmns-dt="https://www.omg.org/spec/Commons/DatesAndTimes/"
 	xmlns:dct="http://purl.org/dc/terms/"
@@ -40,17 +42,19 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/Occurrences/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/AnnotationVocabulary/"/>
+		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/ContextualDesignators/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/DatesAndTimes/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Designators/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20230301/Securities/ParametricSchedules/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20240201/Securities/ParametricSchedules/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20180801/Securities/ParametricSchedules.rdf version of this ontology was modified to rename (migrate) the hasDefinition property to isDefinedIn to clarify intent.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20190701/Securities/ParametricSchedules.rdf version of this ontology was modified to eliminate circular definitions.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20210201/Securities/ParametricSchedules.rdf version of this ontology was modified to address text formatting hygiene issues.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20220801/Securities/ParametricSchedules.rdf version of the ontology was modified to use the Commons Ontology Library (Commons) Annotation Vocabulary rather than the OMG&apos;s Specification Metadata vocabulary.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20230201/Securities/ParametricSchedules.rdf version of this ontology was modified to move the property, &apos;is conferred on&apos; to the Legal Capacity ontology and to use the Commons Ontology Library (Commons) rather than the OMG&apos;s Languages, Countries and Codes (LCC), eliminating redundancies in FIBO as appropriate.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20230301/Securities/ParametricSchedules.rdf version of this ontology was modified to integrate concepts related to scheduled interest rate related events that were previously embedded in DER to make them available for broader use.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
-		<cmns-av:copyright>Copyright (c) 2016-2023 EDM Council, Inc.</cmns-av:copyright>
-		<cmns-av:copyright>Copyright (c) 2018-2023 Object Management Group, Inc.</cmns-av:copyright>
+		<cmns-av:copyright>Copyright (c) 2016-2024 EDM Council, Inc.</cmns-av:copyright>
+		<cmns-av:copyright>Copyright (c) 2018-2024 Object Management Group, Inc.</cmns-av:copyright>
 	</owl:Ontology>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-sch;AuctionDateRule">
@@ -59,8 +63,30 @@
 		<skos:definition>a business recurrence interval convention that is a published rule for defining the date of some auction event</skos:definition>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-sec-sec-sch;CalculationEvent">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-oc;OccurrenceKind"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-cxtdsg;hasApplicablePeriod"/>
+				<owl:onClass rdf:resource="&fibo-sec-sec-sch;CalculationPeriod"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>calculation event</rdfs:label>
+		<skos:definition>event that is either scheduled or triggered by something, such as a related financial event, that causes a calculation to be performed</skos:definition>
+		<skos:note>A calculation event may be prescriptive, that occurs within a specified period, or ad hoc.</skos:note>
+		<skos:note>A calculation event related to a debt instrument might be a rate reset event, calculation of interest subsequent to a rate change, an amortization calculation, calculation of interest and/or recalculation of principal due to a late payment, etc. A calculation event related to an investment might involve the adjustment of the number of shares owned, such as a redemption or dividend related event.</skos:note>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-sec-sec-sch;CalculationPeriod">
 		<rdfs:subClassOf rdf:resource="&cmns-dt;DatePeriod"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-dt-bd;hasBusinessDayAdjustment"/>
+				<owl:onClass rdf:resource="&fibo-fnd-dt-bd;BusinessDayAdjustment"/>
+				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&cmns-dt;hasDuration"/>
@@ -89,7 +115,7 @@
 	<owl:Class rdf:about="&fibo-sec-sec-sch;CalculationPeriodLength">
 		<rdfs:subClassOf rdf:resource="&cmns-dt;ExplicitDuration"/>
 		<rdfs:label>calculation period length</rdfs:label>
-		<skos:definition>an explicit duration defined as the number of days from the adjusted effective or start date to the adjusted termination or end date calculated in accordance with the applicable day count fraction</skos:definition>
+		<skos:definition>explicit number of days from the adjusted effective or start date to the adjusted termination or end date calculated in accordance with the applicable day count fraction</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-sch;DateReturnedBySettlementDateRule">
