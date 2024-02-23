@@ -51,7 +51,7 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20210201/Securities/ParametricSchedules.rdf version of this ontology was modified to address text formatting hygiene issues.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20220801/Securities/ParametricSchedules.rdf version of the ontology was modified to use the Commons Ontology Library (Commons) Annotation Vocabulary rather than the OMG&apos;s Specification Metadata vocabulary.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20230201/Securities/ParametricSchedules.rdf version of this ontology was modified to move the property, &apos;is conferred on&apos; to the Legal Capacity ontology and to use the Commons Ontology Library (Commons) rather than the OMG&apos;s Languages, Countries and Codes (LCC), eliminating redundancies in FIBO as appropriate.</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20230301/Securities/ParametricSchedules.rdf version of this ontology was modified to integrate concepts related to scheduled interest rate related events that were previously embedded in DER to make them available for broader use.</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20230301/Securities/ParametricSchedules.rdf version of this ontology was modified to move certain very general concepts related to calculation dates and events to FND and to integrate concepts related to scheduled interest rate related events that were previously embedded in DER to make them available for broader use.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 		<cmns-av:copyright>Copyright (c) 2016-2024 EDM Council, Inc.</cmns-av:copyright>
 		<cmns-av:copyright>Copyright (c) 2018-2024 Object Management Group, Inc.</cmns-av:copyright>
@@ -64,44 +64,18 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-sch;CalculationEvent">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-oc;OccurrenceKind"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&cmns-cxtdsg;hasApplicablePeriod"/>
-				<owl:onClass rdf:resource="&fibo-sec-sec-sch;CalculationPeriod"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>calculation event</rdfs:label>
-		<skos:definition>event that is either scheduled or triggered by something, such as a related financial event, that causes a calculation to be performed</skos:definition>
-		<skos:note>A calculation event may be prescriptive, that occurs within a specified period, or ad hoc.</skos:note>
-		<skos:note>A calculation event related to a debt instrument might be a rate reset event, calculation of interest subsequent to a rate change, an amortization calculation, calculation of interest and/or recalculation of principal due to a late payment, etc. A calculation event related to an investment might involve the adjustment of the number of shares owned, such as a redemption or dividend related event.</skos:note>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&fibo-fnd-dt-oc;CalculationEvent"/>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-sch;CalculationPeriod">
-		<rdfs:subClassOf rdf:resource="&cmns-dt;ExplicitDatePeriod"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-dt-bd;hasBusinessDayAdjustment"/>
-				<owl:onClass rdf:resource="&fibo-fnd-dt-bd;BusinessDayAdjustment"/>
-				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&cmns-dt;hasDuration"/>
-				<owl:onClass rdf:resource="&fibo-sec-sec-sch;CalculationPeriodLength"/>
-				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>calculation period</rdfs:label>
-		<skos:definition>explicit period from the start to the end of the computation window</skos:definition>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&fibo-fnd-dt-fd;CalculationPeriod"/>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-sch;CalculationPeriodLength">
-		<rdfs:subClassOf rdf:resource="&cmns-dt;ExplicitDuration"/>
-		<rdfs:label>calculation period length</rdfs:label>
-		<skos:definition>explicit number of days from the adjusted effective or start date to the adjusted termination or end date calculated in accordance with the applicable day count fraction</skos:definition>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&fibo-fnd-dt-fd;CalculationPeriodLength"/>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-sch;DateReturnedBySettlementDateRule">
@@ -201,7 +175,7 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>parametric schedule</rdfs:label>
-		<skos:definition>a regular, parameterized schedule typically used for the calculation of payments for coupons, dividends, and interest</skos:definition>
+		<skos:definition>regular, parameterized schedule typically used for the calculation of payments for coupons, dividends, and interest</skos:definition>
 		<skos:editorialNote>This is a schedule for one of the events that occur in a periodic schedule of interest accruals, interest payments, and (for floating rate swapstreams), changes to the interest rate. These may be specified individually but more commonly the Calculation event is the one scheduled according to this kind of parametric schedule, with the other dates specified as an offset to these. Here we have allowed for each of the related dates to be independently parametrically scheduled. The notional amount step schedule is a separate kind of schedule, with similar terms but without a period length. For calculation schedules (and possibly payments, resets), there is a different end date to the end /start of the period, since events may be specified as being on specific dates - this is where the Roll Convention comes in. This has the same basic concepts as the generic schedule shown as the parent to this. However, where the upper model has Date with various applicable sub types (known i.e. calendar, specified or determined). For example, an ISDA FpML schedule has a Specified Date (via a convention), and then has a date roll rule which is specified for the whole schedule and applies to each of the dates returned by the parametric specification of the schedule. It has: A schedule beginning and end; A set of regular repeating periods: the scheduled event takes place once per period; Optionally one or two stubs (one start and one end); these may be longer than the repeating period, or shorter. The precise parameters used are: Start of the overall Schedule period: Effective Date End of the overall Schedule period: Termination Date Start of first regular period: not specified (assume Effective Date?) Length of each regular period: Frequency (actually a duration) There are generally three ways in which the regular periods of a parametric schedule may be expressed: first plus last first plus period length last plus period length event date plus period length. In FpML, Roll events (the date that something rolls over from the value used in one period to the value used in the next) is defined in a Roll Convention, which may be a day of the month, a day of the week, or some published set of dates, typically the ISDA quarterly dates for these events. This is therefore the date within the regular period (before adjustments) when the event occurs. This is in addition so a date for the start or end of such a period. In general this applies to the Calculation Schedule (i.e. the event is the calculation event) with other dates specified relative to this, however in principle the other related events (payment and reset or refix) are specified relative to this. It is not immediately clear what specification of a date replaces the Roll event convention element when this happens.</skos:editorialNote>
 	</owl:Class>
 	
