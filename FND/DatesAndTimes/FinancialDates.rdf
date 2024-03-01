@@ -33,7 +33,7 @@
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Collections/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/DatesAndTimes/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20240201/DatesAndTimes/FinancialDates/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20240301/DatesAndTimes/FinancialDates/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20141101/DatesAndTimes/FinancialDates/ version of this ontology was revised by the FIBO FND 1.2 RTF in order to introduce the definition of a time interval, which is a location, to ground some of the concepts such as a date period, and duration as well as to support the definition of business recurrence intervals for use in parametric schedules for securities.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20170201/DatesAndTimes/FinancialDates/ version of this ontology was revised by the FIBO 2.0 RFC in order to introduce the definition of a time instant, to eliminate a reasoning issue with relative dates, and remove a circular dependency inadvertently incorporated in the ontology with a FIBO FND 1.2 modification.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20180801/DatesAndTimes/FinancialDates/ version of this ontology was revised to introduce a composite date datatype to allow for cases whereby the representation of a date for certain purposes, such as GLEIF LEI data, is inconsistent, and to facilitate mapping FIBO to multiple data sources in user environments.</skos:changeNote>
@@ -316,8 +316,17 @@ Similar points apply to other kinds of calendar periods, such as calendar week, 
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-dt-fd;hasRecurrenceStartDate"/>
-				<owl:someValuesFrom rdf:resource="&cmns-dt;Date"/>
+				<owl:onProperty rdf:resource="&cmns-dt;hasStartDate"/>
+				<owl:someValuesFrom>
+					<owl:Class>
+						<owl:unionOf rdf:parseType="Collection">
+							<rdf:Description rdf:about="&fibo-fnd-dt-fd;CalculatedDate">
+							</rdf:Description>
+							<rdf:Description rdf:about="&cmns-dt;ExplicitDate">
+							</rdf:Description>
+						</owl:unionOf>
+					</owl:Class>
+				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>regular schedule</rdfs:label>
@@ -569,9 +578,8 @@ The recurrence start date can also be relative to the starting Date of the overa
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-dt-fd;hasRecurrenceStartDate">
-		<rdfs:subPropertyOf rdf:resource="&cmns-dt;hasStartDate"/>
-		<rdfs:label>has recurrence start date</rdfs:label>
-		<skos:definition>the starting date of the first recurrence in a regular schedule</skos:definition>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentProperty rdf:resource="&cmns-dt;hasStartDate"/>
 	</owl:ObjectProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-fnd-dt-fd;hasRelativeDuration">
