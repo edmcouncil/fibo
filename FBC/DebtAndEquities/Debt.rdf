@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE rdf:RDF [
 	<!ENTITY cmns-av "https://www.omg.org/spec/Commons/AnnotationVocabulary/">
+	<!ENTITY cmns-cls "https://www.omg.org/spec/Commons/Classifiers/">
 	<!ENTITY cmns-col "https://www.omg.org/spec/Commons/Collections/">
 	<!ENTITY cmns-cxtdsg "https://www.omg.org/spec/Commons/ContextualDesignators/">
 	<!ENTITY cmns-dsg "https://www.omg.org/spec/Commons/Designators/">
@@ -37,6 +38,7 @@
 ]>
 <rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"
 	xmlns:cmns-av="https://www.omg.org/spec/Commons/AnnotationVocabulary/"
+	xmlns:cmns-cls="https://www.omg.org/spec/Commons/Classifiers/"
 	xmlns:cmns-col="https://www.omg.org/spec/Commons/Collections/"
 	xmlns:cmns-cxtdsg="https://www.omg.org/spec/Commons/ContextualDesignators/"
 	xmlns:cmns-dsg="https://www.omg.org/spec/Commons/Designators/"
@@ -94,6 +96,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/AnnotationVocabulary/"/>
+		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Classifiers/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Collections/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/ContextualDesignators/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/DatesAndTimes/"/>
@@ -155,6 +158,20 @@
 	<owl:Class rdf:about="&fibo-fbc-dae-dbt;AmortizationSchedule">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;ProjectedContractEventSchedule"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-psch;PaymentSchedule"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-col;comprises"/>
+				<owl:onClass rdf:resource="&fibo-fbc-dae-dbt;InterestPaymentSchedule"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-col;comprises"/>
+				<owl:onClass rdf:resource="&fibo-fbc-dae-dbt;PrincipalPaymentSchedule"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;embodies"/>
@@ -559,7 +576,7 @@
 		</rdfs:subClassOf>
 		<rdfs:label>debt</rdfs:label>
 		<rdfs:isDefinedBy rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"/>
-		<skos:definition>an obligation to pay something, such as an amount of money, good, service, or instrument</skos:definition>
+		<skos:definition>obligation to pay something, such as an amount of money, good, service, or instrument</skos:definition>
 		<cmns-av:explanatoryNote>In cases where the debtor and payer are the same legal person, then a debt is equivalent to a payment obligation.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
@@ -608,7 +625,7 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-acc-cur;InterestRate"/>
 		<rdfs:label>fixed interest rate</rdfs:label>
 		<rdfs:isDefinedBy rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"/>
-		<skos:definition>an interest rate that does not fluctuate over the lifetime of a loan or other debt instrument</skos:definition>
+		<skos:definition>interest rate that does not fluctuate over the lifetime of a loan or other debt instrument</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-dae-dbt;FloatingInterestRate">
@@ -616,7 +633,7 @@
 		<rdfs:label>floating interest rate</rdfs:label>
 		<rdfs:isDefinedBy rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"/>
 		<rdfs:seeAlso rdf:resource="http://recomparison.com/comparisons/100975/floating-vs-variable-vs-adjustable-interest-rate/"/>
-		<skos:definition>a variable interest rate that is based on a specific index or benchmark rate</skos:definition>
+		<skos:definition>variable interest rate that is based on a specific index or benchmark rate</skos:definition>
 		<skos:example>Certain revolving credit, such as credit-card related debt, may adjust after a specified period of time to an absolute rate stated in the agreement (variable but not floating) rather than based on a benchmark rate (variable, floating).</skos:example>
 		<cmns-av:explanatoryNote>The index used to determine the specific interest rate is generally included in the terms of the loan. In most cases, lenders will also charge a spread, or added percentage points on top of the established index rate. If a loan is billed as prime plus 2.5 percent, for a prime rate of 3.5 percent, the terms of the loan will require the borrower to pay off a 6 percent interest. Floating interest rates typically involve periodic reset dates for the loan, particularly when the index rate changes. Resets may also occur online at market predetermined intervals, with yearly adjustments being a common arrangement.</cmns-av:explanatoryNote>
 	</owl:Class>
@@ -656,12 +673,32 @@
 	<owl:Class rdf:about="&fibo-fbc-dae-dbt;InterestCalculation">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;ContractLifecycleEventOccurrence"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-oc;Calculation"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;hasInterestRate"/>
+				<owl:onClass rdf:resource="&fibo-fnd-acc-cur;InterestRate"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-acc-cur;hasMonetaryAmount"/>
+				<owl:onClass rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label>interest calculation</rdfs:label>
 		<skos:definition>event reflecting the calculation of interest</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-dae-dbt;InterestCalculationSchedule">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;ProjectedContractEventSchedule"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-dt-oc;hasOccurrence"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-dae-dbt;InterestCalculation"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label>interest calculation schedule</rdfs:label>
 		<skos:definition>regular, contract-specific schedule including the dates on which interest is calculated</skos:definition>
 		<cmns-av:explanatoryNote>The dates may be fixed, or relative to the corresponding interest payment date. It may be the same as the payment date, in arrears, or forward looking to the next interest payment.</cmns-av:explanatoryNote>
@@ -676,6 +713,12 @@
 	<owl:Class rdf:about="&fibo-fbc-dae-dbt;InterestPaymentSchedule">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;ProjectedContractEventSchedule"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-psch;PaymentSchedule"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-dt-oc;hasOccurrence"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-dae-dbt;InterestPayment"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label>interest payment schedule</rdfs:label>
 		<skos:definition>regular, contract-specific schedule including the dates on which interest is due to be paid</skos:definition>
 		<cmns-av:explanatoryNote>The dates may be fixed, or expressed as an offset of the calculation dates. Typically the payment dates are fixed and calculation dates are expressed as an offset, however.</cmns-av:explanatoryNote>
@@ -844,6 +887,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-dae-dbt;Principal">
+		<rdfs:subClassOf rdf:resource="&cmns-cls;Aspect"/>
 		<rdfs:subClassOf>
 			<owl:Class>
 				<owl:unionOf rdf:parseType="Collection">
@@ -864,6 +908,26 @@
 		<rdfs:isDefinedBy rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"/>
 		<rdfs:seeAlso rdf:resource="http://www.finra.org/investors/bond-glossary#p"/>
 		<skos:definition>with respect to a debt: the value of an obligation, such as a bond or loan, raised and that must be repaid at maturity; for investments: the original amount of money invested, separate from any associated interest, dividends or capital gains</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-dae-dbt;PrincipalPayment">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-psch;Payment"/>
+		<rdfs:label>principal payment</rdfs:label>
+		<skos:definition>event reflecting the actual payment of some amount of the principal of a debt</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-dae-dbt;PrincipalPaymentSchedule">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;ProjectedContractEventSchedule"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-psch;PaymentSchedule"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-dt-oc;hasOccurrence"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-dae-dbt;PrincipalPayment"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>principal payment schedule</rdfs:label>
+		<skos:definition>regular, contract-specific schedule including the dates on which some percentage or all of the principal is due to be (re)paid</skos:definition>
+		<cmns-av:explanatoryNote>The dates may be fixed, or expressed as an offset of the calculation dates. Typically the payment dates are fixed and calculation dates are expressed as an offset, however.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-dae-dbt;PrincipalRepaymentTerms">
