@@ -123,7 +123,7 @@
 	
 	<owl:Class rdf:about="&fibo-der-rtd-irswp;ExplicitInterestAmountCalculationEvent">
 		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-		<owl:equivalentClass rdf:resource="&fibo-der-rtd-irswp;InterestCalculation"/>
+		<owl:equivalentClass rdf:resource="&fibo-fbc-dae-dbt;InterestCalculation"/>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-rtd-irswp;FixedFixedInterestRateSwap">
@@ -308,7 +308,7 @@
 		<rdfs:subClassOf rdf:resource="&fibo-der-rtd-irswp;InterestRateSwapLeg"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-rtd-irswp;hasInterestCalculationSchedule"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-dt-fd;hasSchedule"/>
 				<owl:onClass rdf:resource="&fibo-fbc-dae-dbt;InterestCalculationSchedule"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
@@ -322,7 +322,7 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-rtd-irswp;hasInterestRateResetSchedule"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-dt-fd;hasSchedule"/>
 				<owl:onClass rdf:resource="&fibo-fbc-dae-dbt;InterestRateResetSchedule"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
@@ -385,15 +385,9 @@
 		<cmns-av:adaptedFrom xml:lang="en">ISO 10962, Securities and related financial instruments - Classification of financial instruments (CFI) code, Fifth edition, 2021-06-15</cmns-av:adaptedFrom>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-rtd-irswp;InterestRateLegEvent">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-swp;SwapLegEvent"/>
-		<rdfs:label>interest rate leg event</rdfs:label>
-		<skos:definition>interest-rate specific event occurring with respect to one leg of a swap</skos:definition>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-der-rtd-irswp;InterestRateStreamEvent">
 		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-		<owl:equivalentClass rdf:resource="&fibo-der-rtd-irswp;InterestRateLegEvent"/>
+		<owl:equivalentClass rdf:resource="&fibo-der-drc-swp;SwapLegEvent"/>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-rtd-irswp;InterestRateSwap">
@@ -427,21 +421,7 @@
 		<rdfs:subClassOf rdf:resource="&fibo-der-drc-swp;RateBasedLeg"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&cmns-doc;specifies"/>
-				<owl:onClass rdf:resource="&fibo-der-rtd-irswp;InterestRateLegEvent"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&cmns-doc;specifies"/>
-				<owl:onClass rdf:resource="&fibo-der-rtd-irswp;NotionalStepChangeEvent"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-rtd-irswp;hasNotionalStepSchedule"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-dt-fd;hasSchedule"/>
 				<owl:onClass rdf:resource="&fibo-der-rtd-irswp;NotionalStepSchedule"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
@@ -478,7 +458,7 @@
 		<owl:equivalentClass>
 			<owl:Class>
 				<owl:intersectionOf rdf:parseType="Collection">
-					<rdf:Description rdf:about="&fibo-der-drc-swp;SwapLeg">
+					<rdf:Description rdf:about="&fibo-der-drc-swp;RateBasedLeg">
 					</rdf:Description>
 					<owl:Restriction>
 						<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;hasInterestRate"/>
@@ -487,7 +467,7 @@
 				</owl:intersectionOf>
 			</owl:Class>
 		</owl:equivalentClass>
-		<skos:definition>swap leg specifying an interest rate stream, including both a parametric and cashflow representation for the stream of payments</skos:definition>
+		<skos:definition>swap leg that has an interest rate payment stream, including both a parametric and cashflow representation for the stream of payments</skos:definition>
 		<cmns-av:synonym>interest rate swap stream</cmns-av:synonym>
 	</owl:Class>
 	
@@ -514,17 +494,17 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-rtd-irswp;NotionalStepChangeEvent">
-		<rdfs:subClassOf rdf:resource="&fibo-der-rtd-irswp;InterestRateLegEvent"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;ContractLifecycleEventOccurrence"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-oc;Calculation"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&cmns-dt;hasDate"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;CalculatedDate"/>
+				<owl:onProperty rdf:resource="&cmns-doc;specifies"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-rtd-irswp;NotionalStepAmount"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>notional step change event</rdfs:label>
 		<skos:definition>event in which a step change in the notional amount for a given swap leg occurs</skos:definition>
-		<cmns-av:explanatoryNote>This always occurs on a calculation date (that is, one of the calculation period end dates). Therefore the frequency / period length of the steps in the step schedule is a multiple of the calculation period or frequency. For example, if the notional is recalculated on every calculation date, applying a new interest rate to the new notional amount, then the two frequencies are the same. If notional is updated every second calculation period, then the step schedule specifies periods that are twice as long, and so on.</cmns-av:explanatoryNote>
+		<cmns-av:explanatoryNote>The frequency / period length of the steps in the step schedule is a multiple of the calculation period or frequency. For example, if the notional is recalculated on every calculation date, applying a new interest rate to the new notional amount, then the two frequencies are the same. If notional is updated every second calculation period, then the step schedule specifies periods that are twice as long, and so on.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-rtd-irswp;NotionalStepPeriodLength">
@@ -537,14 +517,14 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;ProjectedContractEventSchedule"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&cmns-doc;refersTo"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-dae-dbt;InterestCalculationSchedule"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-dt-fd;hasRecurrenceInterval"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-rtd-irswp;NotionalStepPeriodLength"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&cmns-doc;specifies"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-rtd-irswp;NotionalStepAmount"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-dt-oc;hasOccurrence"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-rtd-irswp;NotionalStepChangeEvent"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>notional step schedule</rdfs:label>
@@ -605,7 +585,7 @@
 				<owl:onProperty rdf:resource="&fibo-der-drc-swp;hasLeg"/>
 				<owl:someValuesFrom>
 					<owl:Restriction>
-						<owl:onProperty rdf:resource="&fibo-der-rtd-irswp;hasNotionalStepSchedule"/>
+						<owl:onProperty rdf:resource="&fibo-fnd-dt-fd;hasSchedule"/>
 						<owl:onClass rdf:resource="&fibo-der-rtd-irswp;NotionalStepSchedule"/>
 						<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:maxQualifiedCardinality>
 					</owl:Restriction>
@@ -629,22 +609,9 @@
 		<skos:definition>interest rate swap in which the two streams of interest payments are in the same currency</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-rtd-irswp;SwapLegCalculationRelativeDate">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-fd;RelativeDate"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-dt-fd;isRelativeTo"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-dae-dbt;InterestRateResetSchedule"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>swap leg calculation relative date</rdfs:label>
-		<skos:definition>calculation date that is relative to the the rate reset date in a given reset schedule</skos:definition>
-		<skos:note>*** fix the restriction accordingly, and think about moving this up the hierarchy to cover loans, etc. rather than only swap legs ***</skos:note>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-der-rtd-irswp;SwapStreamCalculationRelativeDate">
 		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-		<owl:equivalentClass rdf:resource="&fibo-der-rtd-irswp;SwapLegCalculationRelativeDate"/>
+		<owl:equivalentClass rdf:resource="&fibo-fnd-dt-fd;RelativeDate"/>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-rtd-irswp;SwapStreamInterestCalculation">
@@ -731,17 +698,13 @@
 	</owl:DatatypeProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-rtd-irswp;hasInterestCalculationSchedule">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasSchedule"/>
-		<rdfs:label>has interest calculation schedule</rdfs:label>
-		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;RegularSchedule"/>
-		<skos:definition>links a set of terms to a corresponding schedule for calculating interest</skos:definition>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentProperty rdf:resource="&fibo-fnd-dt-fd;hasSchedule"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-rtd-irswp;hasInterestRateResetSchedule">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasSchedule"/>
-		<rdfs:label>has interest rate reset schedule</rdfs:label>
-		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Schedule"/>
-		<skos:definition>links a set of terms to a corresponding schedule for resetting the interest rate</skos:definition>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentProperty rdf:resource="&fibo-fnd-dt-fd;hasSchedule"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-rtd-irswp;hasLastNotionalStepDate">
@@ -752,10 +715,8 @@
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-rtd-irswp;hasNotionalStepSchedule">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasSchedule"/>
-		<rdfs:label>has notional step schedule</rdfs:label>
-		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;Schedule"/>
-		<skos:definition>links a set of terms to a corresponding notional step schedule</skos:definition>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentProperty rdf:resource="&fibo-fnd-dt-fd;hasSchedule"/>
 	</owl:ObjectProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-der-rtd-irswp;hasRateMultiplier">
