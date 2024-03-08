@@ -21,7 +21,7 @@
 	<!ENTITY fibo-ind-ei-ei "https://spec.edmcouncil.org/fibo/ontology/IND/EconomicIndicators/EconomicIndicators/">
 	<!ENTITY fibo-ind-ir-ir "https://spec.edmcouncil.org/fibo/ontology/IND/InterestRates/InterestRates/">
 	<!ENTITY fibo-sec-dbt-dbti "https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtInstruments/">
-	<!ENTITY fibo-sec-sec-sch "https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/ParametricSchedules/">
+	<!ENTITY fibo-sec-sec-iss "https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesIssuance/">
 	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
 	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
 	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
@@ -50,7 +50,7 @@
 	xmlns:fibo-ind-ei-ei="https://spec.edmcouncil.org/fibo/ontology/IND/EconomicIndicators/EconomicIndicators/"
 	xmlns:fibo-ind-ir-ir="https://spec.edmcouncil.org/fibo/ontology/IND/InterestRates/InterestRates/"
 	xmlns:fibo-sec-dbt-dbti="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DebtInstruments/"
-	xmlns:fibo-sec-sec-sch="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/ParametricSchedules/"
+	xmlns:fibo-sec-sec-iss="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesIssuance/"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
@@ -234,7 +234,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-dbti;DebtOffering">
-		<rdfs:subClassOf rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesIssuance/SecuritiesOffering"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-iss;SecuritiesOffering"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&cmns-cxtdsg;appliesTo"/>
@@ -368,7 +368,7 @@
 	<owl:Class rdf:about="&fibo-sec-dbt-dbti;PrescriptiveEvent">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-oc;OccurrenceKind"/>
 		<rdfs:label>prescriptive event</rdfs:label>
-		<skos:definition>an event related to the imposition or enforcement of a rule, method, formula, etc.</skos:definition>
+		<skos:definition>event related to the imposition or enforcement of a rule, method, formula, etc.</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-dbti;PrincipalOnlyStrip">
@@ -479,6 +479,25 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-ip;SecurityPrice"/>
 		<rdfs:label>relative price</rdfs:label>
 		<skos:definition>security price specified in comparison with either a stated or market value for a debt instrument at some point in time</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-dbt-dbti;StepEvent">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-oc;CalculationEvent"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-dbt-dbti;PrescriptiveEvent"/>
+		<rdfs:label>step event</rdfs:label>
+		<skos:definition>event that prescribes a change in a contractual term, such as a rate or notional amount, for a given contract</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-dbt-dbti;StepSchedule">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-fd;Schedule"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-col;comprises"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-dbti;StepEvent"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>step schedule</rdfs:label>
+		<skos:definition>schedule specifying the date(s) and change in a contractual term(s), e.g., rate or notional amount, for a contract that has a feature where stipulated changes occur at specified intervals or on specified dates</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-dbt-dbti;Strip">
