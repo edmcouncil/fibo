@@ -94,11 +94,12 @@
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Documents/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/PartiesAndSituations/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/QuantitiesAndUnits/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/20240101/LoansGeneral/Loans/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/20240301/LoansGeneral/Loans/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/LOAN/20220601/LoansGeneral/Loans.rdf version of the ontology was modified to use the Commons Ontology Library (Commons) Annotation Vocabulary rather than the OMG&apos;s Specification Metadata vocabulary.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/LOAN/20230201/LoansGeneral/Loans.rdf version of this ontology was modified to use the Commons Ontology Library (Commons) rather than the OMG&apos;s Languages, Countries and Codes (LCC), eliminating redundancies in FIBO as appropriate.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/LOAN/20230301/LoansGeneral/Loans.rdf version of this ontology was modified to eliminate a subproperty relationship between the principal and notional amount, which may not be appropriate (DER-127) and to replace content that is now available in the OMG Commons Ontology Library (Commons) v1.1 (FND-380).</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/LOAN/20231201/LoansGeneral/Loans.rdf version of this ontology was modified to replace content that is now available in the OMG Commons Ontology Library (Commons) v1.1 (FND-380).</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/LOAN/20240101/LoansGeneral/Loans.rdf version of this ontology was modified to move certain terms athat are general debt schedule terms to the Debt ontology (FBC-317).</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 		<cmns-av:copyright>Copyright (c) 2016-2024 EDM Council, Inc.</cmns-av:copyright>
 		<cmns-av:copyright>Copyright (c) 2016-2024 Object Management Group, Inc.</cmns-av:copyright>
@@ -184,18 +185,18 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&cmns-qtu;hasArgument"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-arr-asmt;AppraisedValue"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&cmns-qtu;hasArgument"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-arr-asmt;AppraisedValue"/>
+				<owl:someValuesFrom rdf:resource="&fibo-loan-ln-ln;TotalOutstandingPrincipal"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>combined loan-to-value ratio</rdfs:label>
 		<skos:definition>ratio of the total amount of debt that is secured by the asset(s) and the appraised value of the asset(s) securing the financing</skos:definition>
-		<cmns-av:explanatoryNote>This is particularly important for secondary loans, or for refinancing that combines outstanding loans against a given asset.</cmns-av:explanatoryNote>
+		<cmns-av:explanatoryNote>This is particularly important for secondary loans, or for refinancing that combines outstanding loans against a given asset. Lenders use this ratio to evaluate the risk of extending a loan to a borrower(s) in cases where multiple loans are involved.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:NamedIndividual rdf:about="&fibo-loan-ln-ln;FeeSimpleOwnershipInterest">
@@ -330,11 +331,10 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-ln-ln;LoanPaymentSchedule">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;ProjectedContractEventSchedule"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-pas-psch;PaymentSchedule"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;AmortizationSchedule"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-loan-ln-ln;hasAnticipatedNumberOfPayments"/>
+				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;hasAnticipatedNumberOfPayments"/>
 				<owl:someValuesFrom rdf:resource="&xsd;positiveInteger"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -425,7 +425,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&cmns-qtu;hasArgument"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-dae-dbt;Principal"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -573,6 +573,12 @@
 		<skos:definition xml:lang="en">secondary or lower position in the order of seniority in which the law recognizes lenders&apos; claims against a property</skos:definition>
 	</owl:NamedIndividual>
 	
+	<owl:Class rdf:about="&fibo-loan-ln-ln;TotalOutstandingPrincipal">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;Principal"/>
+		<rdfs:label>total outstanding principal</rdfs:label>
+		<skos:definition>the principal balance of all loans secured by the property</skos:definition>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-loan-ln-ln;UnsecuredLoan">
 		<rdfs:subClassOf rdf:resource="&fibo-loan-ln-ln;Loan"/>
 		<rdfs:label>unsecured loan</rdfs:label>
@@ -581,10 +587,8 @@
 	</owl:Class>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-loan-ln-ln;hasAnticipatedNumberOfPayments">
-		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-dt-fd;hasCount"/>
-		<rdfs:label>has anticipated number of payments</rdfs:label>
-		<rdfs:range rdf:resource="&xsd;positiveInteger"/>
-		<skos:definition>specifies the number payments promised per the terms of the contract over the lifetime of the contract assuming all payments are made</skos:definition>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentProperty rdf:resource="&fibo-fbc-dae-dbt;hasAnticipatedNumberOfPayments"/>
 	</owl:DatatypeProperty>
 	
 	<owl:DatatypeProperty rdf:about="&fibo-loan-ln-ln;hasBalloonPayment">
