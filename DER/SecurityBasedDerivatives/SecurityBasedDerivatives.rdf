@@ -7,6 +7,7 @@
 	<!ENTITY fibo-der-drc-bsc "https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/DerivativesBasics/">
 	<!ENTITY fibo-der-drc-swp "https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Swaps/">
 	<!ENTITY fibo-der-sbd-sbd "https://spec.edmcouncil.org/fibo/ontology/DER/SecurityBasedDerivatives/SecurityBasedDerivatives/">
+	<!ENTITY fibo-fbc-dae-dbt "https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/">
 	<!ENTITY fibo-fbc-fi-fi "https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/">
 	<!ENTITY fibo-fbc-pas-fpas "https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
@@ -29,6 +30,7 @@
 	xmlns:fibo-der-drc-bsc="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/DerivativesBasics/"
 	xmlns:fibo-der-drc-swp="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Swaps/"
 	xmlns:fibo-der-sbd-sbd="https://spec.edmcouncil.org/fibo/ontology/DER/SecurityBasedDerivatives/SecurityBasedDerivatives/"
+	xmlns:fibo-fbc-dae-dbt="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"
 	xmlns:fibo-fbc-fi-fi="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"
 	xmlns:fibo-fbc-pas-fpas="https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
@@ -49,6 +51,7 @@
 		<dct:license rdf:datatype="&xsd;anyURI">https://opensource.org/licenses/MIT</dct:license>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/DerivativesBasics/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/Swaps/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
@@ -60,10 +63,11 @@
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Collections/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/RolesAndCompositions/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/20240101/SecurityBasedDerivatives/SecurityBasedDerivatives/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/20240301/SecurityBasedDerivatives/SecurityBasedDerivatives/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20201201/SecurityBasedDerivatives/SecurityBasedDerivatives.rdf version of this ontology was modified to use the Commons Ontology Library (Commons) Annotation Vocabulary rather than the OMG&apos;s Specification Metadata vocabulary, to move the definition of an underlier and the related property, has underlier, to financial instruments so that these concepts are also available for use in relation to pool-backed securities.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20230201/SecurityBasedDerivatives/SecurityBasedDerivatives.rdf version of this ontology was modified to use the Commons Ontology Library (Commons) rather than the OMG&apos;s Languages, Countries and Codes (LCC), eliminating redundancies in FIBO as appropriate.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20230301/SecurityBasedDerivatives/SecurityBasedDerivatives.rdf version of this ontology was modified to replace content that is now available in the OMG Commons Ontology Library (Commons) v1.1 (FND-380).</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20240101/SecurityBasedDerivatives/SecurityBasedDerivatives.rdf version of this ontology was modified to augment the concept of a basket of debt instruments with several variants (SEC-181).</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 		<cmns-av:copyright>Copyright (c) 2016-2024 EDM Council, Inc.</cmns-av:copyright>
 		<cmns-av:copyright>Copyright (c) 2016-2024 Object Management Group, Inc.</cmns-av:copyright>
@@ -84,6 +88,50 @@
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">basket of debt instruments</rdfs:label>
 		<skos:definition xml:lang="en">basket of securities whose constituents are debt instruments</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-sbd-sbd;CapitalizedLeaseObligationDebtBasket">
+		<rdfs:subClassOf rdf:resource="&fibo-der-sbd-sbd;BasketOfDebtInstruments"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-col;hasConstituent"/>
+				<owl:someValuesFrom>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&cmns-col;comprises"/>
+						<owl:allValuesFrom rdf:resource="&fibo-fbc-dae-dbt;Lease"/>
+					</owl:Restriction>
+				</owl:someValuesFrom>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">capitalized lease obligation debt basket</rdfs:label>
+		<skos:definition xml:lang="en">basket of debt instruments whose constituents are contracts entitling a renter the temporary use of an asset and, in accounting terms, has asset ownership characteristics</skos:definition>
+		<cmns-av:explanatoryNote xml:lang="en">A capitalized lease obligation basket is increasingly broadly drafted to include indebtedness incurred to finance the purchase, improvement, repair, renewal etc. of property (including the purchase of stock of a person owning such property).</cmns-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-sbd-sbd;ContributionDebtBasket">
+		<rdfs:subClassOf rdf:resource="&fibo-der-sbd-sbd;BasketOfDebtInstruments"/>
+		<rdfs:label xml:lang="en">contribution debt basket</rdfs:label>
+		<skos:definition xml:lang="en">basket of debt instruments that allows a company to incur an amount of indebtedness that is equal to (or in top tier sponsor transactions in the U.S., up to two times) the amount of equity contributed to the group</skos:definition>
+		<cmns-av:explanatoryNote xml:lang="en">A non-guarantor debt basket is often also permitted to be secured by assets of a subsidiary other than the issuer/borrower or guarantors.</cmns-av:explanatoryNote>
+		<cmns-av:explanatoryNote xml:lang="en">In U.S. law, a non-guarantor debt basket is a shared basket in an amount not to exceed the greater of $150,000,000 and 20% of Consolidated EBITDA for the most recently ended Test Period at any time outstanding that may be used for (A) the incurrence of certain Indebtedness by Restricted Subsidiaries that are not Loan Parties under Sections 6.01(a)(xii), 6.01(a)(xix) and 6.01(a)(xx) and (B) Secured Cash Management Obligations of any Restricted Subsidiary that is not a Loan Party.</cmns-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-sbd-sbd;CreditFacilityDebtBasket">
+		<rdfs:subClassOf rdf:resource="&fibo-der-sbd-sbd;BasketOfDebtInstruments"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-col;hasConstituent"/>
+				<owl:someValuesFrom>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&cmns-col;comprises"/>
+						<owl:allValuesFrom rdf:resource="&fibo-fbc-dae-dbt;CreditFacility"/>
+					</owl:Restriction>
+				</owl:someValuesFrom>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">credit facility debt basket</rdfs:label>
+		<skos:definition xml:lang="en">basket of securities whose constituents are credit agreements that allow the borrower to periodically take out money over an extended period of time rather than reapplying for a loan every time they need funds</skos:definition>
+		<cmns-av:explanatoryNote xml:lang="en">The credit facility debt basket consists of a number of credit facilities including revolving loans/line of credit, committed facilities, letters of credit and most retail credit accounts. The first port of call for issuers is the credit facility debt basket. In addition to the fixed dollar (or euro) amounts, credit facility debt baskets in senior secured notes and indentures typically provide for a grower component that is the greater of the fixed dollar/euro amount and a percentage of total assets, total tangible assets or EBITDA.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-sbd-sbd;DebtInstrumentDerivative">
@@ -161,6 +209,53 @@
 		</rdfs:subClassOf>
 		<rdfs:label>equity observable</rdfs:label>
 		<skos:definition>security underlier that is equity based, such as individual shares, equity indices, and custom basket of equity assets</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-sbd-sbd;GeneralDebtBasket">
+		<rdfs:subClassOf rdf:resource="&fibo-der-sbd-sbd;BasketOfDebtInstruments"/>
+		<rdfs:label xml:lang="en">general debt basket</rdfs:label>
+		<skos:definition xml:lang="en">basket of debt instruments that provides additional capacity for potential funding and does not require the proceeds to be used for any particular purpose</skos:definition>
+		<cmns-av:explanatoryNote xml:lang="en">The general debt basket has increasingly become a basket for additional secured debt. Lenders providing funding to companies need to carefully consider whether any previous debt incurred by the company using this basket has reduced the available capacity.</cmns-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-sbd-sbd;IncrementalFacilityDebtBasket">
+		<rdfs:subClassOf rdf:resource="&fibo-der-sbd-sbd;CreditFacilityDebtBasket"/>
+		<rdfs:label xml:lang="en">incremental facility debt basket</rdfs:label>
+		<skos:definition xml:lang="en">basket of credit facilities whose constituents are extensible, allowing companies to borrow an additional term loan or revolving credit facility (or increase the commitments applicable thereto) under the same credit agreement subject to certain parameters</skos:definition>
+		<cmns-av:explanatoryNote xml:lang="en">The incremental debt basket is available to borrowers and guarantors only; it cannot be used by non-guarantor entities to raise indebtedness. The size of the incremental debt basket varies depending on the size and creditworthiness of the credit group. The principle of a basket consists of allowing the borrower, up to a maximum determined amount, to make restricted payments, disposals or investments, or take on incremental debt. Commonly, a basket is expressed as subject to restrictions based on a fixed (&apos;hard cap&apos;) amount (e.g., may not exceed EUR 5,000,000).</cmns-av:explanatoryNote>
+		<cmns-av:synonym xml:lang="en">builder basket</cmns-av:synonym>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-sbd-sbd;LocalLinesOfCreditDebtBasket">
+		<rdfs:subClassOf rdf:resource="&fibo-der-sbd-sbd;BasketOfDebtInstruments"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-col;hasConstituent"/>
+				<owl:someValuesFrom>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&cmns-col;comprises"/>
+						<owl:allValuesFrom rdf:resource="&fibo-fbc-dae-dbt;RevolvingLineOfCredit"/>
+					</owl:Restriction>
+				</owl:someValuesFrom>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">local lines of credit debt basket</rdfs:label>
+		<skos:definition xml:lang="en">basket of debt instruments that may be relevant for companies with international operations, often permitting debt to be incurred by a non-guarantor restricted subsidiary</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-sbd-sbd;Non-GuarantorDebtBasket">
+		<rdfs:subClassOf rdf:resource="&fibo-der-sbd-sbd;BasketOfDebtInstruments"/>
+		<rdfs:label xml:lang="en">non-guarantor debt basket</rdfs:label>
+		<skos:definition xml:lang="en">basket of debt instruments that include a provision allowing certain subsidiaries within a corporate group, which are not part of the loan guarantee, to incur a specified amount of indebtedness</skos:definition>
+		<cmns-av:explanatoryNote xml:lang="en">A non-guarantor debt basket is often also permitted to be secured by assets of a subsidiary other than the issuer/borrower or guarantors.</cmns-av:explanatoryNote>
+		<cmns-av:explanatoryNote xml:lang="en">In U.S. law, a non-guarantor debt basket is a shared basket in an amount not to exceed the greater of $150,000,000 and 20% of Consolidated EBITDA for the most recently ended Test Period at any time outstanding that may be used for (A) the incurrence of certain Indebtedness by Restricted Subsidiaries that are not Loan Parties under Sections 6.01(a)(xii), 6.01(a)(xix) and 6.01(a)(xx) and (B) Secured Cash Management Obligations of any Restricted Subsidiary that is not a Loan Party.</cmns-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-sbd-sbd;RatioDebtBasket">
+		<rdfs:subClassOf rdf:resource="&fibo-der-sbd-sbd;BasketOfDebtInstruments"/>
+		<rdfs:label xml:lang="en">ratio debt basket</rdfs:label>
+		<skos:definition xml:lang="en">basket of debt instruments whose constituents are specified based on a leverage ratio based on total debt rather than only secured debt</skos:definition>
+		<cmns-av:explanatoryNote xml:lang="en">The ratio basket provides different ratio tests depending on the type of indebtedness being incurred (for example, first lien leverage ratio in respect of first lien indebtedness, senior secured leverage ratio in respect of indebtedness secured by a junior lien and a total net leverage ratio or interest coverage ratio in respect of unsecured indebtedness). A ratio basket would typically allow the borrower to incur debt secured on a senior secured basis subject to a maximum senior secured leverage ratio and unsecured debt subject to a maximum total leverage ratio.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-sbd-sbd;SecurityBasedDerivative">
