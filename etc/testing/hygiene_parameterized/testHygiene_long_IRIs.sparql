@@ -1,0 +1,12 @@
+##
+# banner No IRI should be longer than 255 chars.
+
+
+SELECT DISTINCT ?error ?resource
+WHERE
+{
+  ?resource ?property ?value .
+  FILTER (STRLEN(STR(?resource)) > 255)
+  FILTER regex(str(?resource), <HYGIENE_TESTS_FILTER_PARAMETER>)
+  BIND (concat("PRODERROR: IRI ", STR(?resource), " is longer than 255 chars.") AS ?error)
+}

@@ -1,0 +1,31 @@
+prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+prefix owl:   <http://www.w3.org/2002/07/owl#>
+prefix xsd:   <http://www.w3.org/2001/XMLSchema#>
+prefix afn:   <http://jena.apache.org/ARQ/function#>
+
+##
+# banner We may want to avoid restrictions that can be remotely inferred from other restrictions. Here we check remote someValues and exact cardinality restrictions.
+
+SELECT ?error ?class
+WHERE
+{
+    ?class rdfs:subClassOf+ ?restriction1.
+    ?superClass rdfs:subClassOf ?restriction1.
+    ?class rdfs:subClassOf ?restriction2.
+    ?restriction1 rdf:type owl:Restriction.
+    ?restriction2 rdf:type owl:Restriction.
+    ?restriction1 owl:onProperty ?property1.
+    ?restriction2 owl:onProperty ?property2.
+    ?restriction1 owl:someValuesFrom ?restrictingClass1.
+    ?restriction2 owl:onClass ?restrictingClass2.
+    ?restriction2 owl:qualifiedCardinality ?cardinality2.
+    ?property1 rdfs:subPropertyOf* ?property2.
+    ?restrictingClass1 rdfs:subClassOf* ?restrictingClass2.
+    FILTER (?restriction1 != ?restriction2)
+    FILTER (?cardinality2 > 0)
+    FILTER regex(str(?class), <HYGIENE_TESTS_FILTER_PARAMETER>)
+    BIND (CONCAT(STR(afn:localname(?property1)), " someValuesFrom ", STR("1"), " ", STR(afn:localname(?restrictingClass1))) as ?restriction1String)
+    BIND (CONCAT(STR(afn:localname(?property2)), " exact ", STR(?cardinality2), " ", STR(afn:localname(?restrictingClass2))) as ?restriction2String)
+    BIND(CONCAT("WARN: Class ", STR(?class), " may inherit obsolete exact cardinality restriction <", ?restriction2String, "> because of someValues restriction <", ?restriction1String, ">", " from class ", STR(?superClass)) as ?error)
+}

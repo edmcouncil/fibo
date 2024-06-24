@@ -1,0 +1,94 @@
+prefix owl:   <http://www.w3.org/2002/07/owl#>
+prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix xsd:   <http://www.w3.org/2001/XMLSchema#>
+prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+
+##
+# banner We should provide all required properties for examples.
+
+SELECT DISTINCT ?error ?instance ?property
+WHERE
+{
+    ?instance rdf:type ?class.
+    FILTER (ISIRI(?instance))
+    
+    
+    ?class rdfs:subClassOf ?restriction.
+    ?restriction rdf:type owl:Restriction.
+    {
+        ?restriction owl:onProperty ?property.
+        ?restriction owl:onClass ?restrictingClass.
+        ?restriction owl:minQualifiedCardinality ?cardinality.
+		FILTER (?cardinality > 0)
+    }
+    UNION
+    {
+        ?restriction owl:onProperty ?property.
+        ?restriction owl:someValuesFrom ?restrictingClass.
+    }
+
+    FILTER NOT EXISTS 
+    {
+        {?property owl:inverseOf ?inverseProperty.}
+        UNION
+        {?inverseProperty owl:inverseOf ?property.}
+
+        ?subInverseProperty rdfs:subPropertyOf* ?inverseProperty.
+        ?inverseRestriction owl:hasValue ?instance.
+        ?restrictedClass rdfs:subClassOf* ?restrictingClass.
+        ?restrictedClass rdfs:subClassOf* ?inverseRestriction.
+    }
+    
+    FILTER NOT EXISTS 
+    {
+        ?instance (owl:sameAs | ^owl:sameAs)* ?sameasinstance.
+        {?property owl:inverseOf ?inverseProperty.}
+        UNION
+        {?inverseProperty owl:inverseOf ?property.}
+
+        ?subInverseProperty rdfs:subPropertyOf* ?inverseProperty.
+        ?inverseRestriction owl:hasValue ?sameasinstance.
+        ?restrictedClass rdfs:subClassOf* ?restrictingClass.
+        ?restrictedClass rdfs:subClassOf* ?inverseRestriction.
+    }
+    
+    FILTER NOT EXISTS 
+    {
+        {?property owl:inverseOf ?inverseProperty.}
+        UNION
+        {?inverseProperty owl:inverseOf ?property.}
+
+        ?subInverseProperty rdfs:subPropertyOf* ?inverseProperty.
+        ?inverseInstance ?subInverseProperty ?instance.
+        ?inverseInstance rdf:type/rdfs:subClassOf* ?restrictingClass.
+    }
+    
+    FILTER NOT EXISTS 
+    {
+        ?instance (owl:sameAs | ^owl:sameAs)* ?sameasinstance.
+        {?property owl:inverseOf ?inverseProperty.}
+        UNION
+        {?inverseProperty owl:inverseOf ?property.}
+
+        ?subInverseProperty rdfs:subPropertyOf* ?inverseProperty.
+        ?inverseInstance ?subInverseProperty ?sameasinstance.
+        ?inverseInstance rdf:type/rdfs:subClassOf* ?restrictingClass.
+    }
+
+    FILTER NOT EXISTS 
+    {
+        ?subProperty rdfs:subPropertyOf* ?property. 
+        ?instance ?subProperty ?value.
+
+    }
+    
+    FILTER NOT EXISTS 
+    {
+        ?instance (owl:sameAs | ^owl:sameAs)* ?sameasinstance.
+        ?subProperty rdfs:subPropertyOf* ?property. 
+        ?sameasinstance ?subProperty ?value.
+    }
+
+    BIND (concat ("WARN: Individual ", STR(?instance), " looks like an unfinished example because it is missing a property required by its type.") AS ?error)
+}
+ORDER BY ?instance

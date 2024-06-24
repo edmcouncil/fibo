@@ -5,13 +5,15 @@ prefix xsd:   <http://www.w3.org/2001/XMLSchema#>
 prefix afn:   <http://jena.apache.org/ARQ/function#>
 
 ##
-# banner We should avoid restrictions that can be inferred from other restrictions. Here we check someValues restrictions.
+# banner We may want to avoid restrictions that can be remotely inferred from other restrictions. Here we check remote someValues restrictions.
+
 
 
 SELECT ?error
 WHERE
 {
-    ?class rdfs:subClassOf ?restriction1.
+    ?class rdfs:subClassOf+ ?restriction1.
+    ?superClass rdfs:subClassOf ?restriction1.
     ?class rdfs:subClassOf ?restriction2.
     ?restriction1 rdf:type owl:Restriction.
     ?restriction2 rdf:type owl:Restriction.
@@ -25,5 +27,5 @@ WHERE
     FILTER regex(str(?class), <HYGIENE_TESTS_FILTER_PARAMETER>)
     BIND (CONCAT(STR(afn:localname(?property1)), " someValuesFrom ", STR(afn:localname(?restrictingClass1))) as ?restriction1String)
     BIND (CONCAT(STR(afn:localname(?property2)), " someValuesFrom ", STR(afn:localname(?restrictingClass2))) as ?restriction2String)
-    BIND(CONCAT("PRODERROR: Class ", STR(?class), " has obsolete someValues restriction <", ?restriction2String, "> because of someValues restriction <", ?restriction1String, ">.") as ?error)
+    BIND(CONCAT("WARN: Class ", STR(?class), " may inherit obsolete someValues restriction <", ?restriction2String, "> because of someValues restriction <", ?restriction1String, ">", " from class ", STR(?superClass)) as ?error)
 }
