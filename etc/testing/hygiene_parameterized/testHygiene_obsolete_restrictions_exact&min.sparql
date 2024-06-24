@@ -21,8 +21,7 @@ WHERE
     ?restriction1 owl:qualifiedCardinality ?cardinality1.
     ?restriction2 owl:minQualifiedCardinality ?cardinality2.
     {?property1 rdfs:subPropertyOf+ ?property2.} UNION  {FILTER (?property1 = ?property2)}
-    ?restrictingClass1 rdfs:subClassOf* ?restrictingClass2.
-    FILTER (?restriction1 != ?restriction2)
+    {?restrictingClass1 rdfs:subClassOf+ ?restrictingClass2.} UNION {FILTER (?restrictingClass1 = ?restrictingClass2)}
     FILTER (?cardinality1 >= ?cardinality2)
     FILTER regex(str(?class), <HYGIENE_TESTS_FILTER_PARAMETER>)
     BIND (CONCAT(STR(afn:localname(?property1)), " exactly ", STR(?cardinality1), " ", STR(afn:localname(?restrictingClass1))) as ?restriction1String)
