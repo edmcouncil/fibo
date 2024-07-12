@@ -5,7 +5,9 @@
 	<!ENTITY cmns-cxtdsg "https://www.omg.org/spec/Commons/ContextualDesignators/">
 	<!ENTITY dct "http://purl.org/dc/terms/">
 	<!ENTITY fibo-fbc-fi-fi "https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/">
+	<!ENTITY fibo-fnd-acc-cur "https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
+	<!ENTITY fibo-sec-eq-eq "https://spec.edmcouncil.org/fibo/ontology/SEC/Equities/EquityInstruments/">
 	<!ENTITY fibo-sec-sec-cls "https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesClassification/">
 	<!ENTITY fibo-sec-sec-eurst "https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/EuropeanJurisdiction/EUSecuritiesRestrictions/">
 	<!ENTITY fibo-sec-sec-rst "https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesRestrictions/">
@@ -22,7 +24,9 @@
 	xmlns:cmns-cxtdsg="https://www.omg.org/spec/Commons/ContextualDesignators/"
 	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fibo-fbc-fi-fi="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"
+	xmlns:fibo-fnd-acc-cur="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
+	xmlns:fibo-sec-eq-eq="https://spec.edmcouncil.org/fibo/ontology/SEC/Equities/EquityInstruments/"
 	xmlns:fibo-sec-sec-cls="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesClassification/"
 	xmlns:fibo-sec-sec-eurst="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/EuropeanJurisdiction/EUSecuritiesRestrictions/"
 	xmlns:fibo-sec-sec-rst="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesRestrictions/"
@@ -38,7 +42,9 @@
 		<dct:abstract>This ontology defines the concepts related to restrictions issued by the European Securities and Markets Authority (ESMA) and other EU regulatory agencies on finanicial instruments, securities and listings.</dct:abstract>
 		<dct:license rdf:datatype="&xsd;anyURI">https://opensource.org/licenses/MIT</dct:license>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Equities/EquityInstruments/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesClassification/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesRestrictions/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/AnnotationVocabulary/"/>
@@ -108,6 +114,26 @@
 		<cmns-av:synonym>Short Selling Regulation</cmns-av:synonym>
 	</owl:NamedIndividual>
 	
+	<owl:Class rdf:about="&fibo-sec-sec-eurst;MiFIDRegulatedSecurity">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;Security"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-sec-eurst;isMiFIDReportingRequired"/>
+				<owl:hasValue rdf:datatype="&xsd;boolean">true</owl:hasValue>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-sec-eurst;hasUpperLimitOnFloatingShares"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+				<owl:onDataRange rdf:resource="&xsd;decimal"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">MiFID regulated security</rdfs:label>
+		<skos:definition xml:lang="en">security for which MiFID reporting is required</skos:definition>
+		<cmns-av:explanatoryNote>A MiFID requlated security is one that is traded on a MiFID regulated market and for which certain additional reporting requirements apply. Markets in Financial Instruments Directive (MiFID), which is a European regulation, issued by the European Securities and Markets Authority (ESMA), that aims to increase transparency across the European Union&apos;s financial markets and standardize regulatory disclosures required for firms operating within the EU.</cmns-av:explanatoryNote>
+	</owl:Class>
+	
 	<owl:NamedIndividual rdf:about="&fibo-sec-sec-eurst;Tier1Capital">
 		<rdf:type rdf:resource="&fibo-sec-sec-eurst;BaselIIIDesignation"/>
 		<rdfs:label>tier 1 capital</rdfs:label>
@@ -123,12 +149,18 @@
 		<cmns-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.highradius.com/resources/Blog/basel-iii-compliance-and-capital-requirements/</cmns-av:adaptedFrom>
 	</owl:NamedIndividual>
 	
-	<owl:DatatypeProperty rdf:about="&fibo-sec-sec-eurst;isMiFIDRegulated">
-		<rdfs:label>is MiFID regulated</rdfs:label>
+	<owl:DatatypeProperty rdf:about="&fibo-sec-sec-eurst;hasUpperLimitOnFloatingShares">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasAmount"/>
+		<rdfs:label xml:lang="en">has upper limit on floating shares</rdfs:label>
+		<rdfs:range rdf:resource="&xsd;decimal"/>
+		<skos:definition xml:lang="en">indicates the upper limit on the number of free float shares to be reported, if applicable</skos:definition>
+	</owl:DatatypeProperty>
+	
+	<owl:DatatypeProperty rdf:about="&fibo-sec-sec-eurst;isMiFIDReportingRequired">
+		<rdfs:label>is MiFID reporting required</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fbc-fi-fi;Security"/>
 		<rdfs:range rdf:resource="&xsd;boolean"/>
-		<rdfs:seeAlso rdf:resource="https://www.fdic.gov/resources/deposit-insurance/"/>
-		<skos:definition>indicates whether the security is regulated by the Markets in Financial Instruments Directive (MiFID), which is a European regulation that aims to increase transparency across the European Union&apos;s financial markets and standardize regulatory disclosures required for firms operating within the EU</skos:definition>
+		<skos:definition>indicates whether reporting on the security is required by the Markets in Financial Instruments Directive (MiFID)</skos:definition>
 		<cmns-av:explanatoryNote>This indicator specifies whether the security is eligible for trade reporting within the Markets in Financial Instruments Directive (MiFID) zone.</cmns-av:explanatoryNote>
 	</owl:DatatypeProperty>
 
