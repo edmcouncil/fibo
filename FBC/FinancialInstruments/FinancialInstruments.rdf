@@ -79,7 +79,7 @@
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/PartiesAndSituations/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/QuantitiesAndUnits/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/RolesAndCompositions/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/20240501/FinancialInstruments/FinancialInstruments/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/20240801/FinancialInstruments/FinancialInstruments/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20150801/FinancialInstruments/FinancialInstruments/ version of this ontology was modified to reflect issue resolutions detailed in the FIBO FBC 1.0 FTF report.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20160801/FinancialInstruments/FinancialInstruments/ version of this ontology was modified for the FIBO 2.0 RFC, including minor bug fixes.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20180801/FinancialInstruments/FinancialInstruments/ version of this ontology was modified as a part of organizational hierarchy simplification, to add maturity-related properties, and to add exempt security.</skos:changeNote>
@@ -100,6 +100,7 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20230501/FinancialInstruments/FinancialInstruments.rdf version of the ontology was modified to eliminate deprecations that are more than 6 months old.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20231101/FinancialInstruments/FinancialInstruments.rdf version of this ontology was modified to tease out the distinction between the nominal and notional amount, which were confused (DER-127)and to replace content that is now available in the OMG Commons Ontology Library (Commons) v1.1 (FND-380).</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20231201/FinancialInstruments/FinancialInstruments.rdf version of this ontology was modified to replace additional content that is now available in the OMG Commons Ontology Library (Commons) v1.1 (FND-380).</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20240101/FinancialInstruments/FinancialInstruments.rdf version of this ontology was modified to augment the definition of currency instrument with the notions of buying and selling currencies as well as the source(s) for anticipated rates (DER-143).</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20240101/FinancialInstruments/FinancialInstruments.rdf version of this ontology was modified to refine the definition of issuer (FBC-284).</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 		<cmns-av:copyright>Copyright (c) 2015-2024 EDM Council, Inc.</cmns-av:copyright>
@@ -154,6 +155,20 @@
 	
 	<owl:Class rdf:about="&fibo-fbc-fi-fi;CurrencyInstrument">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;FinancialInstrument"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;hasBuyingCurrency"/>
+				<owl:onClass rdf:resource="&fibo-fnd-acc-cur;Currency"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;hasSellingCurrency"/>
+				<owl:onClass rdf:resource="&fibo-fnd-acc-cur;Currency"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label>currency instrument</rdfs:label>
 		<skos:definition>financial instrument used for the purposes of currency trading</skos:definition>
 		<skos:example>Example currencies include UK pounds, US dollars, Euro. An example currency instrument is spot currency instrument.</skos:example>
@@ -448,6 +463,14 @@
 		<cmns-av:explanatoryNote>Underlier means any rate (including interest and foreign exchange rates), currency, commodity, security, instrument of indebtedness, index, quantitative measure, occurrence or non-occurrence of an event, or other financial or economic interest, or property of any kind, or any interest therein or based on the value thereof, in or by reference to which any payment or delivery under a transaction is to be made or determined.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
+	<owl:ObjectProperty rdf:about="&fibo-fbc-fi-fi;hasBuyingCurrency">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasDealtCurrency"/>
+		<rdfs:label xml:lang="en">has buying currency</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;Currency"/>
+		<skos:definition xml:lang="en">indicates the currency purchased with respect to a currency or related instrument</skos:definition>
+		<cmns-av:explanatoryNote xml:lang="en">Note that the buying and selling currencies could be the same under certain circumstances.</cmns-av:explanatoryNote>
+	</owl:ObjectProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-fi-fi;hasCommodityValueAsOfExecutionDate">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasMonetaryAmount"/>
 		<rdfs:label>has commodity value as of execution date</rdfs:label>
@@ -481,6 +504,14 @@
 		<rdfs:label>has redemption terms</rdfs:label>
 		<rdfs:range rdf:resource="&fibo-fbc-fi-fi;RedemptionProvision"/>
 		<skos:definition>indicates the specific terms related to redemption as specified in the instrument or a related contract document</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fbc-fi-fi;hasSellingCurrency">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-acc-cur;hasBaseCurrency"/>
+		<rdfs:label xml:lang="en">has selling currency</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;Currency"/>
+		<skos:definition xml:lang="en">indicates the currency sold with respect to a currency or related instrument</skos:definition>
+		<cmns-av:explanatoryNote xml:lang="en">Note that the buying and selling currencies could be the same under certain circumstances.</cmns-av:explanatoryNote>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-fi-fi;hasShareholder">
