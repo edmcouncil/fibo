@@ -6,11 +6,11 @@ prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
 ##
 # banner Deprecated resources should not be used.
 
-SELECT DISTINCT ?warning ?resource
+SELECT DISTINCT ?error ?resource
 WHERE
 {
     ?resource owl:deprecated "true"^^xsd:boolean .
-    FILTER NOT EXISTS {?resource rdf:type/rdf:type/(rdfs:subClassOf*) owl:Class.}
+    FILTER NOT EXISTS {?resource rdf:type owl:NamedIndividual}
     FILTER regex(str(?resource), <HYGIENE_TESTS_FILTER_PARAMETER>)
     {
         ?resource ?property1 ?object.
@@ -21,5 +21,5 @@ WHERE
         ?subject ?property2 ?resource .
         FILTER (?property2 != owl:equivalentClass && ?property2 != owl:deprecated && ?property2 != rdf:type && ?property2 != owl:equivalentProperty)
     }
-    BIND ("WARN: Deprecated resource " + str(?resource) + " is still in use." as ?warning)
+    BIND ("PRODERROR: Deprecated resource " + str(?resource) + " is still in use." as ?error)
 }
