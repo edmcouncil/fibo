@@ -4,6 +4,7 @@
 	<!ENTITY cmns-col "https://www.omg.org/spec/Commons/Collections/">
 	<!ENTITY cmns-cxtdsg "https://www.omg.org/spec/Commons/ContextualDesignators/">
 	<!ENTITY cmns-cxtid "https://www.omg.org/spec/Commons/ContextualIdentifiers/">
+	<!ENTITY cmns-doc "https://www.omg.org/spec/Commons/Documents/">
 	<!ENTITY cmns-id "https://www.omg.org/spec/Commons/Identifiers/">
 	<!ENTITY cmns-pts "https://www.omg.org/spec/Commons/PartiesAndSituations/">
 	<!ENTITY dct "http://purl.org/dc/terms/">
@@ -29,6 +30,7 @@
 	xmlns:cmns-col="https://www.omg.org/spec/Commons/Collections/"
 	xmlns:cmns-cxtdsg="https://www.omg.org/spec/Commons/ContextualDesignators/"
 	xmlns:cmns-cxtid="https://www.omg.org/spec/Commons/ContextualIdentifiers/"
+	xmlns:cmns-doc="https://www.omg.org/spec/Commons/Documents/"
 	xmlns:cmns-id="https://www.omg.org/spec/Commons/Identifiers/"
 	xmlns:cmns-pts="https://www.omg.org/spec/Commons/PartiesAndSituations/"
 	xmlns:dct="http://purl.org/dc/terms/"
@@ -66,6 +68,7 @@
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Collections/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/ContextualDesignators/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/ContextualIdentifiers/"/>
+		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Documents/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Identifiers/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/PartiesAndSituations/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Countries/CountryRepresentation/"/>
@@ -94,27 +97,40 @@
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">personal property</rdfs:label>
 		<owl:disjointWith rdf:resource="&fibo-fnd-plc-rp;RealProperty"/>
-		<skos:definition xml:lang="en">asset that includes movable items or possessions that are not fixed to land</skos:definition>
+		<skos:definition xml:lang="en">asset that is a movable item or possession not fixed to land</skos:definition>
 		<cmns-av:explanatoryNote xml:lang="en">Personal property may include tangible assets, such as machinery, furniture, vehicles, artwork, and jewelry, regardless of whether such assets are owned by a person or organization, and intangible assets, including but not limited to intellectual property and financial instruments.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-plc-rp;PropertyInspection">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-asmt;AssessmentActivity"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-asmt;AssessmentEvent"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-dt-oc;hasOutput"/>
+				<owl:onClass rdf:resource="&fibo-fnd-plc-rp;PropertyInspectionReport"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;evaluates"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fnd-plc-rp;RealProperty"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
+		<rdfs:label>property inspection</rdfs:label>
+		<skos:definition>event that involves analyzing one or more aspects of a real property</skos:definition>
+		<cmns-av:explanatoryNote>The concept of a property inspection is separate from conducting an overarching appraisal. Examples are termite inspections, construction inspections, evaluation for completion of some milestone, improvement, correction, etc.</cmns-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-plc-rp;PropertyInspectionReport">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-arr-asmt;AssessmentReport"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isProvidedBy"/>
-				<owl:someValuesFrom rdf:resource="&cmns-pts;PartyRole"/>
+				<owl:onProperty rdf:resource="&cmns-doc;isAbout"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-plc-rp;RealProperty"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label>property inspection</rdfs:label>
-		<skos:definition>assessment activity that involves analyzing one or more aspects of a real property with respect to status or deficiency</skos:definition>
-		<cmns-av:explanatoryNote>The concept of a property inspection is independent and separate from conducting an appraisal. Examples are termite inspections, construction inspections, etc.</cmns-av:explanatoryNote>
+		<rdfs:label>property inspection report</rdfs:label>
+		<skos:definition>report covering the findings of a property inspection</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-plc-rp;RealEstate">
@@ -138,7 +154,7 @@
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">real property</rdfs:label>
 		<rdfs:seeAlso rdf:resource="https://www.investopedia.com/terms/r/real-property.asp"/>
-		<skos:definition xml:lang="en">physical asset defined as land together with any structures that are permanently attached to that land, such as houses, trees, fences and other improvements</skos:definition>
+		<skos:definition xml:lang="en">physical asset defined as land together with any structures that are permanently attached to that land, such as houses, trees, fences and improvements</skos:definition>
 		<cmns-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.law.cornell.edu/cfr/text/10/600.101</cmns-av:adaptedFrom>
 		<cmns-av:explanatoryNote xml:lang="en">Real property may be classified according to its general use as residential, commercial, agricultural, industrial, or special purpose. This term is sometimes used synonymously with &apos;real estate&apos;, though not in all circumstances under US law.</cmns-av:explanatoryNote>
 		<cmns-av:explanatoryNote xml:lang="en">Real property typically encompasses both the physical land and everything that lies above, below, or on its surface, including any fixed structures, natural resources, and rights or interests (e.g., mineral rights). There are cases, such as condominiums, in which the interior of the structure is owned by a party that may not own the land. There are also cases in which certain long-term leases have similar characteristics to ownership, but are time-bound.</cmns-av:explanatoryNote>
@@ -150,7 +166,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-dt-oc;hasInput"/>
-				<owl:onClass rdf:resource="&fibo-fnd-plc-rp;PropertyInspection"/>
+				<owl:onClass rdf:resource="&fibo-fnd-plc-rp;PropertyInspectionReport"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -162,7 +178,7 @@
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isGeneratedBy"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isProvidedBy"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fnd-arr-asmt;Appraiser"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
