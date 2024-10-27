@@ -100,7 +100,7 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/LOAN/20230301/LoansGeneral/Loans.rdf version of this ontology was modified to eliminate a subproperty relationship between the principal and notional amount, which may not be appropriate (DER-127) and to replace content that is now available in the OMG Commons Ontology Library (Commons) v1.1 (FND-380).</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/LOAN/20231201/LoansGeneral/Loans.rdf version of this ontology was modified to replace content that is now available in the OMG Commons Ontology Library (Commons) v1.1 (FND-380).</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/LOAN/20240101/LoansGeneral/Loans.rdf version of this ontology was modified to move certain terms athat are general debt schedule terms to the Debt ontology (FBC-317).</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/LOAN/20240301/LoansGeneral/Loans.rdf version of this ontology was modified to correct the distinction between amortization schedule and loan payment schedule (LOAN-168).</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/LOAN/20240301/LoansGeneral/Loans.rdf version of this ontology was modified to correct the distinction between amortization schedule and loan payment schedule and move security agreement to the debt ontology (LOAN-168).</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 		<cmns-av:copyright>Copyright (c) 2016-2024 EDM Council, Inc.</cmns-av:copyright>
 		<cmns-av:copyright>Copyright (c) 2016-2024 Object Management Group, Inc.</cmns-av:copyright>
@@ -129,6 +129,21 @@
 				<owl:onProperty rdf:resource="&fibo-loan-ln-ln;isInitiallyPayable"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 				<owl:onDataRange rdf:resource="&xsd;boolean"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-dae-dbt;SecurityAgreement">
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-cls;isClassifiedBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-loan-ln-ln;LenderLienPosition"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-cls;isClassifiedBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-loan-ln-ln;OwnershipInterest"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 	</owl:Class>
@@ -517,7 +532,7 @@
 				<owl:unionOf rdf:parseType="Collection">
 					<owl:Restriction>
 						<owl:onProperty rdf:resource="&cmns-col;comprises"/>
-						<owl:someValuesFrom rdf:resource="&fibo-loan-ln-ln;SecurityAgreement"/>
+						<owl:someValuesFrom rdf:resource="&fibo-fbc-dae-dbt;SecurityAgreement"/>
 					</owl:Restriction>
 					<owl:Restriction>
 						<owl:onProperty rdf:resource="&cmns-col;comprises"/>
@@ -528,37 +543,6 @@
 		</rdfs:subClassOf>
 		<rdfs:label>secured loan</rdfs:label>
 		<skos:definition>loan in which the borrower pledges some asset via a security agreement as collateral for the loan, or that is secured via third-party guarantee</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-loan-ln-ln;SecurityAgreement">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;CollateralAgreement"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-arr-asmt;hasEstimatedValue"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&cmns-cls;isClassifiedBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-loan-ln-ln;LenderLienPosition"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&cmns-cls;isClassifiedBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-loan-ln-ln;OwnershipInterest"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&cmns-col;isPartOf"/>
-				<owl:someValuesFrom rdf:resource="&fibo-loan-ln-ln;Loan"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>security agreement</rdfs:label>
-		<skos:definition>agreement between parties that contains information about their relative duties and rights regarding the disposition of a specified asset used as collateral</skos:definition>
-		<cmns-av:adaptedFrom>ISO 20022</cmns-av:adaptedFrom>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-ln-ln;Servicer">
