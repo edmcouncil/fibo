@@ -102,20 +102,23 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20231201/FinancialInstruments/FinancialInstruments.rdf version of this ontology was modified to replace additional content that is now available in the OMG Commons Ontology Library (Commons) v1.1 (FND-380).</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20240101/FinancialInstruments/FinancialInstruments.rdf version of this ontology was modified to augment the definition of currency instrument with the notions of buying and selling currencies as well as the source(s) for anticipated rates (DER-143).</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20240101/FinancialInstruments/FinancialInstruments.rdf version of this ontology was modified to refine the definition of issuer (FBC-284).</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20240801/FinancialInstruments/FinancialInstruments.rdf version of this ontology was modified to loosen the constraint on financial instrument with respect to having exactly 1 currency (DER-113).</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20240801/FinancialInstruments/FinancialInstruments.rdf version of this ontology was modified to loosen the constraint on financial instrument with respect to having exactly 1 currency (DER-113), and to move the definition of promissory note from debt to financial instruments (LOAN-168).</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 		<cmns-av:copyright>Copyright (c) 2015-2024 EDM Council, Inc.</cmns-av:copyright>
 		<cmns-av:copyright>Copyright (c) 2015-2024 Object Management Group, Inc.</cmns-av:copyright>
 	</owl:Ontology>
 	
-	<owl:Class rdf:about="&fibo-fbc-dae-dbt;PromissoryNote">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;DebtInstrument"/>
+	<owl:Class rdf:about="&fibo-fbc-dae-dbt;CreditFacility">
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;isNegotiable"/>
-				<owl:hasValue rdf:datatype="&xsd;boolean">true</owl:hasValue>
+				<owl:onProperty rdf:resource="&cmns-col;hasConstituent"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-fi;PromissoryNote"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-dae-dbt;PromissoryNote">
+		<owl:equivalentClass rdf:resource="&fibo-fbc-fi-fi;PromissoryNote"/>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-fi-fi;CashInstrument">
@@ -401,6 +404,13 @@
 		<cmns-av:explanatoryNote>SEC Rule 434 defines structured securities as &apos;securities whose cash flow characteristics depend upon one or more indices or that have embedded forwards or options or securities where an investor&apos;s investment return and the issuer&apos;s payment obligations are contingent on, or highly sensitive to, changes in the value of underlying assets, indices, interest rates or cash flows&apos;.</cmns-av:explanatoryNote>
 		<cmns-av:synonym>market-linked investment</cmns-av:synonym>
 		<cmns-av:synonym>structured product</cmns-av:synonym>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-fi-fi;PromissoryNote">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;DebtInstrument"/>
+		<rdfs:label>promissory note</rdfs:label>
+		<skos:definition>debt instrument that is a written promise by one party to another that commits that party to pay a specified sum on demand or within a specified time frame under specified terms</skos:definition>
+		<cmns-av:explanatoryNote>Promissory notes are generally fully fungible. They may or may not be negotiable.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-fi-fi;RedemptionProvision">

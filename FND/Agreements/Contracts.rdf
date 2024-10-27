@@ -95,7 +95,7 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20230301/Agreements/Contracts.rdf version of the ontology was modified to replace concepts from several FIBO FND ontologies with their counterparts added to the Commons Ontology Library (Commons) v1.1.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20231201/Agreements/Contracts.rdf version of the ontology was modified to replace additional concepts from several FIBO FND ontologies with their counterparts added to the Commons Ontology Library (Commons) v1.1.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20240101/Agreements/Contracts.rdf version of the ontology was modified to better integrate the parties to a contract with the latest patterns (FBC-284).</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20240501/Agreements/Contracts.rdf version of the ontology was modified to add an optional date of issuance to written contract, which may or may not be the same as the effective date (FBC-322).</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20240501/Agreements/Contracts.rdf version of the ontology was modified to add an optional date of issuance to written contract, which may or may not be the same as the effective date (FBC-322) and add a general notion of collateral agreement (LOAN-168).</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 		<cmns-av:copyright>Copyright (c) 2013-2024 EDM Council, Inc.</cmns-av:copyright>
 		<cmns-av:copyright>Copyright (c) 2013-2024 Object Management Group, Inc.</cmns-av:copyright>
@@ -195,6 +195,20 @@
 		<rdfs:label xml:lang="en">breach of covenant</rdfs:label>
 		<skos:definition xml:lang="en">classifier of events representing breaking a promise specified in a contract to do or not to do something, without a legitimate excuse</skos:definition>
 		<cmns-av:explanatoryNote xml:lang="en">In the case of a breach of a covenant or warranty, the contract remains binding and damages only are recoverable for the breach, whereas a breach of contract typically invalidates the entire contract.</cmns-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-agr-ctr;CollateralAgreement">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;WrittenContract"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;isSubordinateTo"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-agr-ctr;WrittenContract"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>collateral agreement</rdfs:label>
+		<skos:definition>written contract related to another contract designed to provide clarity and additional protection for all parties involved, that is separate from the primary contract and that can be independently enforced</skos:definition>
+		<skos:example>Examples may be related to leases, to clarify responsibilities with respect to maintance and repair, to partnerships, clarifying how disputes should be resolved, loan agreements such as deeds of trust, covering the conditions under which the collateral would be forfeited, and uniform commercial code (UCC) agreements.</skos:example>
+		<cmns-av:explanatoryNote>In cases where there are discrepancies between the collateral agreement and primary contract, the primary contract, which may be a master agreement, for example, takes precedence.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-agr-ctr;ConditionPrecedent">
@@ -636,10 +650,28 @@
 		<skos:definition>is attested by</skos:definition>
 	</owl:ObjectProperty>
 	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-agr-ctr;isPrimaryContractFor">
+		<rdfs:subPropertyOf rdf:resource="&cmns-doc;isReferredToBy"/>
+		<rdfs:label>is primary contract for</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fnd-agr-ctr;WrittenContract"/>
+		<rdfs:range rdf:resource="&fibo-fnd-agr-ctr;WrittenContract"/>
+		<owl:inverseOf rdf:resource="&fibo-fnd-agr-ctr;isSubordinateTo"/>
+		<skos:definition>indicates any subordinate agreement, such as a collateral agreement</skos:definition>
+	</owl:ObjectProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-agr-ctr;isQualifiedBy">
 		<rdfs:subPropertyOf rdf:resource="&cmns-cls;isCharacterizedBy"/>
 		<rdfs:label>is qualified by</rdfs:label>
 		<skos:definition>indicates a constraint, limitation or refinement on something</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-agr-ctr;isSubordinateTo">
+		<rdfs:subPropertyOf rdf:resource="&cmns-doc;refersTo"/>
+		<rdfs:label>is subordinate to</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fnd-agr-ctr;WrittenContract"/>
+		<rdfs:range rdf:resource="&fibo-fnd-agr-ctr;WrittenContract"/>
+		<skos:definition>indicates the primary contract referenced by a subordinate agreement, such as a collateral agreement</skos:definition>
+		<cmns-av:explanatoryNote>This property may also be used as the basis for linking agreements based on priority, such as linking a second or junior lien to the primary lien on some collateral</cmns-av:explanatoryNote>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-agr-ctr;qualifies">
