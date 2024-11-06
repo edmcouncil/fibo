@@ -13,6 +13,7 @@
 	<!ENTITY fibo-fnd-aap-ppl "https://spec.edmcouncil.org/fibo/ontology/FND/AgentsAndPeople/People/">
 	<!ENTITY fibo-fnd-agr-agr "https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Agreements/">
 	<!ENTITY fibo-fnd-agr-ctr "https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/">
+	<!ENTITY fibo-fnd-dt-fd "https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/">
 	<!ENTITY fibo-fnd-dt-oc "https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/Occurrences/">
 	<!ENTITY fibo-fnd-law-jur "https://spec.edmcouncil.org/fibo/ontology/FND/Law/Jurisdiction/">
 	<!ENTITY fibo-fnd-plc-adr "https://spec.edmcouncil.org/fibo/ontology/FND/Places/Addresses/">
@@ -38,6 +39,7 @@
 	xmlns:fibo-fnd-aap-ppl="https://spec.edmcouncil.org/fibo/ontology/FND/AgentsAndPeople/People/"
 	xmlns:fibo-fnd-agr-agr="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Agreements/"
 	xmlns:fibo-fnd-agr-ctr="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"
+	xmlns:fibo-fnd-dt-fd="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"
 	xmlns:fibo-fnd-dt-oc="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/Occurrences/"
 	xmlns:fibo-fnd-law-jur="https://spec.edmcouncil.org/fibo/ontology/FND/Law/Jurisdiction/"
 	xmlns:fibo-fnd-plc-adr="https://spec.edmcouncil.org/fibo/ontology/FND/Places/Addresses/"
@@ -55,6 +57,7 @@
 		<dct:license rdf:datatype="&xsd;anyURI">https://opensource.org/licenses/MIT</dct:license>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/AgentsAndPeople/People/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Agreements/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/Occurrences/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Law/Jurisdiction/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Places/Addresses/"/>
@@ -255,6 +258,26 @@
 		<skos:scopeNote>Written here does not necessarily mean a paper document but includes situations in which the contract is expressed electronically, whether as an electronic representation of a formal document such as in PDF form or as an electronic message, provided in the latter case that the message is expressly given formal contractual standing, for example as indicated in a separate covering agreement between the parties.</skos:scopeNote>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-fnd-agr-ctr;ContractMilestone">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ConditionPrecedent"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-oc;OccurrenceKind"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-cxtdsg;appliesTo"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-agr-ctr;Contract"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-doc;refersTo"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-agr-ctr;ContractualCommitment"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">contract milestone</rdfs:label>
+		<skos:definition xml:lang="en">classifier for an event (milestone), or set of events related to the status or level of completion of a designated activity, task, or segment of work required for contract fulfillment</skos:definition>
+		<cmns-av:explanatoryNote xml:lang="en">Milestones are checkpoints that are predefined in the contract, used to measure progress. They specify tasks, deliverables, or objectives that must be achieved to meet each milestone and may trigger partial payment.</cmns-av:explanatoryNote>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-fnd-agr-ctr;ContractParty">
 		<rdfs:subClassOf rdf:resource="&cmns-pts;PartyRole"/>
 		<rdfs:subClassOf>
@@ -313,6 +336,13 @@
 	
 	<owl:Class rdf:about="&fibo-fnd-agr-ctr;ContractualElement">
 		<rdfs:subClassOf rdf:resource="&cmns-col;Constituent"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;hasLegalDescription"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+				<owl:onDataRange rdf:resource="&xsd;string"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label>contractual element</rdfs:label>
 		<skos:definition>element, such as an arrangement, provision, requirement, rule, specification, and standard that forms an integral part of an agreement</skos:definition>
 	</owl:Class>
@@ -354,6 +384,31 @@
 		<skos:example>Some credit facilities and many brokerage arrangements are master agreements.</skos:example>
 		<cmns-av:explanatoryNote>A master agreement can be used to set out standard terms and conditions so that any new agreements don&apos;t need to cover the same information again.</cmns-av:explanatoryNote>
 		<cmns-av:synonym>master contract</cmns-av:synonym>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-agr-ctr;MilestoneEvent">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-oc;Occurrence"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-cls;isClassifiedBy"/>
+				<owl:onClass rdf:resource="&fibo-fnd-agr-ctr;ContractMilestone"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>milestone event</rdfs:label>
+		<skos:definition>event related to the status or level of completion of a designated activity, task, or segment of work required for contract fulfillment</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-agr-ctr;MilestoneSchedule">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-fd;Schedule"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-col;hasMember"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-agr-ctr;MilestoneEvent"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>milestone schedule</rdfs:label>
+		<skos:definition>schedule of milestone events, observations, or other occurrences and the associated dates and/or times when they will be done</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-agr-ctr;MutualContractualAgreement">
@@ -594,6 +649,22 @@
 		<skos:definition>indicates the jurisdiction governing the contract, as agreed by all parties</skos:definition>
 		<skos:editorialNote>As modeled, this relationship combines two slightly different senses in which a Jurisdiction may be named in some Contract: the jurisdiction under whose laws the contract is deemed to be in force, and the jurisdiction under which the parties agree to submit in the event of any dispute resolution. ScopeNote: One thing to tease out is whether &apos;Dispute Resolution&apos; and other forms of &apos;Governing Law&apos; are one and the same thing or not. Dispute Resolution is uncontroversial, the question is whether there are other implications to Governing Law or if it&apos;s the same thing. For instance I may undertake to behave as though I were responsible to a particular authority i.e., a particular set of statutes.</skos:editorialNote>
 		<cmns-av:explanatoryNote>In a written contract this is generally identified, for example, as Governing Law, namely the jurisdiction in which any disputes arising from the contract are to be resolved.</cmns-av:explanatoryNote>
+	</owl:ObjectProperty>
+	
+	<owl:DatatypeProperty rdf:about="&fibo-fnd-agr-ctr;hasLegalDescription">
+		<rdfs:subPropertyOf rdf:resource="&cmns-dsg;hasDescription"/>
+		<rdfs:label>has legal description</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fnd-agr-ctr;ContractualElement"/>
+		<rdfs:range rdf:resource="&xsd;string"/>
+		<skos:definition>provides the text, or a summary thereof, expressed in legal terms, of the contract provision, clause, or other element</skos:definition>
+	</owl:DatatypeProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-agr-ctr;hasMilestoneProvision">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-agr-ctr;hasContractualElement"/>
+		<rdfs:label>has milestone provision</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fnd-agr-agr;Agreement"/>
+		<rdfs:range rdf:resource="&fibo-fnd-agr-ctr;ContractMilestone"/>
+		<skos:definition>refers to a requirement included in an agreement related to fulfillment as of some point in time in the lifetime of the contract</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-agr-ctr;hasNonBindingTerm">
