@@ -2,6 +2,7 @@
 <!DOCTYPE rdf:RDF [
 	<!ENTITY cmns-av "https://www.omg.org/spec/Commons/AnnotationVocabulary/">
 	<!ENTITY cmns-cls "https://www.omg.org/spec/Commons/Classifiers/">
+	<!ENTITY cmns-cxtdsg "https://www.omg.org/spec/Commons/ContextualDesignators/">
 	<!ENTITY cmns-rlcmp "https://www.omg.org/spec/Commons/RolesAndCompositions/">
 	<!ENTITY dct "http://purl.org/dc/terms/">
 	<!ENTITY fibo-be-fct-fct "https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/FunctionalEntities/">
@@ -27,6 +28,7 @@
 <rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansSpecific/GreenLoans/"
 	xmlns:cmns-av="https://www.omg.org/spec/Commons/AnnotationVocabulary/"
 	xmlns:cmns-cls="https://www.omg.org/spec/Commons/Classifiers/"
+	xmlns:cmns-cxtdsg="https://www.omg.org/spec/Commons/ContextualDesignators/"
 	xmlns:cmns-rlcmp="https://www.omg.org/spec/Commons/RolesAndCompositions/"
 	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fibo-be-fct-fct="https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/FunctionalEntities/"
@@ -68,6 +70,7 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Debt/DistributedLoans/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Classifiers/"/>
+		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/ContextualDesignators/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/RolesAndCompositions/"/>
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansSpecific/GreenLoans/"/>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Provisional"/>
@@ -138,7 +141,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&cmns-cls;isCharacterizedBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-utl-alx;KeyPerformanceIndicator"/>
+				<owl:someValuesFrom rdf:resource="&fibo-loan-spc-grn;SustainabilityKeyPerformanceIndicator"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">sustainability and business strategy</rdfs:label>
@@ -146,7 +149,6 @@
 		<cmns-av:adaptedFrom xml:lang="en">https://www.lsta.org/content/sustainability-linked-loan-principles-sllp/</cmns-av:adaptedFrom>
 		<cmns-av:explanatoryNote xml:lang="en">A SLL borrower should clearly communicate to its lender(s) its rationale for the selection of its KPI(s) (i.e. relevance, materiality, whether it is core to the borrower&apos;s overall business) and the motivation for the SPT(s) (i.e. ambition level, benchmarking approach and how the borrower intends to reach such SPTs). Borrowers are encouraged to position this information within the context of their overarching objectives, sustainability strategy, policy, sustainability commitments and/or processes relating to sustainability.</cmns-av:explanatoryNote>
 		<cmns-av:explanatoryNote xml:lang="en">SLLs aim to support a borrower&apos;s efforts in improving its sustainability profile over the term of the loan. They do so by aligning loan terms to the borrower&apos;s performance, which is measured using one or more sustainability KPIs that can be internal and/or external. The KPIs must be material to the borrower&apos;s core sustainability and business strategy, and address relevant ESG challenges of its industry sector.</cmns-av:explanatoryNote>
-		<cmns-av:explanatoryNote xml:lang="en">The KPIs must be: (a) relevant, core and material to the borrower&apos;s overall business, and of high strategic significance to the borrower&apos;s current and/or future operations; (b) measurable or quantifiable on a consistent methodological basis; and (c) able to be benchmarked (i.e. as much as possible using an external reference or definitions to facilitate the assessment of the SPT&apos;s level of ambition). A clear definition of the KPI(s) should be provided by the borrower and should include the applicable scope or parameters, as well as the calculation methodology, a definition of a baseline and be benchmarked against an industry standard and/or industry peers where feasible.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-spc-grn;SustainabilityBusinessObjective">
@@ -155,6 +157,21 @@
 		<skos:definition xml:lang="en">objective related to improving the sustainability profile of the business</skos:definition>
 		<cmns-av:adaptedFrom xml:lang="en">https://www.lsta.org/content/sustainability-linked-loan-principles-sllp/</cmns-av:adaptedFrom>
 		<cmns-av:explanatoryNote xml:lang="en">The borrower of an SLL should clearly communicate to its lenders its sustainability objective(s) and how such objectives align with its proposed sustainability performance targets (SPTs).</cmns-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-loan-spc-grn;SustainabilityKeyPerformanceIndicator">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;KeyPerformanceIndicator"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasTargetValue"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+				<owl:someValuesFrom rdf:resource="&fibo-loan-spc-grn;SustainabilityPerformanceTarget"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">sustainability key performance indicator</rdfs:label>
+		<skos:definition xml:lang="en">measurable performance indicator that is sustainability specific</skos:definition>
+		<cmns-av:adaptedFrom xml:lang="en">https://www.lsta.org/content/sustainability-linked-loan-principles-sllp/</cmns-av:adaptedFrom>
+		<cmns-av:explanatoryNote xml:lang="en">A sustainability KPI must be: (a) relevant, core and material to the borrower&apos;s overall business, and of high strategic significance to the borrower&apos;s current and/or future operations; (b) measurable or quantifiable on a consistent methodological basis; and (c) able to be benchmarked (i.e. as much as possible using an external reference or definitions to facilitate the assessment of the SPT&apos;s level of ambition). A clear definition of the KPI(s) should be provided by the borrower and should include the applicable scope or parameters, as well as the calculation methodology, a definition of a baseline and be benchmarked against an industry standard and/or industry peers where feasible.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-spc-grn;SustainabilityLinkedLoan">
@@ -196,9 +213,15 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-spc-grn;SustainabilityPerformanceTarget">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;QualifiedMeasure"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-fd;DatedStructuredCollection"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;isCalculatedViaMethodology"/>
+				<owl:someValuesFrom rdf:resource="&xsd;string"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">sustainability performance target</rdfs:label>
-		<skos:definition xml:lang="en">quantitative measure used to calibrate the level of achievement a borrower makes with respect to a key performance indicator, including, but not limited to, the methodology used to calculate its value at any point over the lifetime of a loan</skos:definition>
+		<skos:definition xml:lang="en">collection of quantitative target values used to calibrate the level of achievement a borrower makes with respect to a key performance indicator, by date, including, but not limited to, the methodology used to calculate its value at any point over the lifetime of a loan</skos:definition>
 		<cmns-av:abbreviation xml:lang="en">SPT</cmns-av:abbreviation>
 		<cmns-av:adaptedFrom xml:lang="en">https://www.lsta.org/content/sustainability-linked-loan-principles-sllp/</cmns-av:adaptedFrom>
 		<cmns-av:explanatoryNote xml:lang="en">A SLL borrower should clearly communicate to its lenders its rationale for the selection of its KPI(s) (i.e. relevance, materiality, whether it is core to the borrower’s overall business) and the motivation for the SPT(s) (i.e. ambition level, benchmarking approach and how the borrower intends to reach such SPTs). Borrowers are encouraged to position this information within the context of their overarching objectives, sustainability strategy, policy, sustainability commitments and/or processes relating to sustainability.</cmns-av:explanatoryNote>
