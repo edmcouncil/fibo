@@ -9,6 +9,7 @@
 	<!ENTITY fibo-fnd-rel-rel "https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
 	<!ENTITY fibo-loan-ln-ln "https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansGeneral/Loans/">
+	<!ENTITY fibo-loan-reln-mtg "https://spec.edmcouncil.org/fibo/ontology/LOAN/RealEstateLoans/Mortgages/">
 	<!ENTITY fibo-loan-spc-cns "https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansSpecific/ConsumerLoans/">
 	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
 	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
@@ -26,6 +27,7 @@
 	xmlns:fibo-fnd-rel-rel="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
 	xmlns:fibo-loan-ln-ln="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansGeneral/Loans/"
+	xmlns:fibo-loan-reln-mtg="https://spec.edmcouncil.org/fibo/ontology/LOAN/RealEstateLoans/Mortgages/"
 	xmlns:fibo-loan-spc-cns="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansSpecific/ConsumerLoans/"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -43,10 +45,11 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/LoansGeneral/Loans/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/RealEstateLoans/Mortgages/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/RolesAndCompositions/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/20241201/LoansSpecific/ConsumerLoans/"/>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/LOAN/20230901/LoansSpecific/ConsumerLoans.rdf version of the ontology was modified to replace content that is now available in the OMG Commons Ontology Library (Commons) v1.1 (FND-380).</skos:changeNote>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/LOAN/20241101/LoansSpecific/ConsumerLoans/"/>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/LOAN/20230901/LoansSpecific/ConsumerLoans.rdf version of the ontology was modified to replace content that is now available in the OMG Commons Ontology Library (Commons) v1.1 (FND-380) and to integrate the concept that a HELOC is a loan secured by real estate (LOAN-169).</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 		<cmns-av:copyright>Copyright (c) 2015-2024 EDM Council, Inc.</cmns-av:copyright>
 		<cmns-av:copyright>Copyright (c) 2023-2024 Object Management Group, Inc.</cmns-av:copyright>
@@ -81,19 +84,13 @@
 	
 	<owl:Class rdf:about="&fibo-loan-spc-cns;HomeEquityLineOfCredit">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;RevolvingLineOfCredit"/>
-		<rdfs:subClassOf rdf:resource="&fibo-loan-ln-ln;CollateralizedLoan"/>
 		<rdfs:subClassOf rdf:resource="&fibo-loan-spc-cns;SecuredConsumerLoan"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;isCollateralizedBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-dae-dbt;PhysicalCollateral"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
+		<rdfs:subClassOf rdf:resource="&fibo-loan-reln-mtg;LoanSecuredByRealEstate"/>
 		<rdfs:label xml:lang="en">home equity line of credit</rdfs:label>
 		<skos:definition xml:lang="en">line of credit granted to a homeowner secured by the equity value in a borrower&apos;s home or other property</skos:definition>
 		<cmns-av:acronym xml:lang="en">HELOC</cmns-av:acronym>
 		<cmns-av:explanatoryNote xml:lang="en">Home equity loans allow the borrower to borrow against the difference between the fair market value of the property, as determined by an appraisal, and the amount of any outstanding debt on that property, which is typically a first mortgage. Common practice is to set the maximum amount that can be borrowed of up to 80 percent of the fair market value less any outstanding debt.</cmns-av:explanatoryNote>
-		<cmns-av:explanatoryNote xml:lang="en">Usually, the term of a HELOC can vary from 5 to up to 25 years, with an initial draw period during which the borrower can access the line of credit, followed by a repayment period during which monthly payments on principal and interest are due until the loan is paid in full.</cmns-av:explanatoryNote>
+		<cmns-av:explanatoryNote xml:lang="en">Usually, the term of a HELOC can vary from 5 to up to 25 years, with an initial draw period during which the borrower can access the line of credit, followed by a repayment period during which monthly payments on principal and interest are due until the loan is paid in full. Note that there are restrictions in the US on the nature of the property that may be used as collateral for a HELOC - it must be classified as a 1-4 family dwelling. That determination is independent from the use of proceeds.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-loan-spc-cns;MotorVehicleLoan">

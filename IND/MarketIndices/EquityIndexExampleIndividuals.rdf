@@ -3,6 +3,7 @@
 	<!ENTITY cmns-av "https://www.omg.org/spec/Commons/AnnotationVocabulary/">
 	<!ENTITY cmns-col "https://www.omg.org/spec/Commons/Collections/">
 	<!ENTITY cmns-dt "https://www.omg.org/spec/Commons/DatesAndTimes/">
+	<!ENTITY cmns-qtu "https://www.omg.org/spec/Commons/QuantitiesAndUnits/">
 	<!ENTITY cmns-rlcmp "https://www.omg.org/spec/Commons/RolesAndCompositions/">
 	<!ENTITY dct "http://purl.org/dc/terms/">
 	<!ENTITY fibo-be-fct-pub "https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/Publishers/">
@@ -37,6 +38,7 @@
 	xmlns:cmns-av="https://www.omg.org/spec/Commons/AnnotationVocabulary/"
 	xmlns:cmns-col="https://www.omg.org/spec/Commons/Collections/"
 	xmlns:cmns-dt="https://www.omg.org/spec/Commons/DatesAndTimes/"
+	xmlns:cmns-qtu="https://www.omg.org/spec/Commons/QuantitiesAndUnits/"
 	xmlns:cmns-rlcmp="https://www.omg.org/spec/Commons/RolesAndCompositions/"
 	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fibo-be-fct-pub="https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/Publishers/"
@@ -95,12 +97,15 @@
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Collections/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/DatesAndTimes/"/>
+		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/QuantitiesAndUnits/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/RolesAndCompositions/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/20240101/MarketIndices/EquityIndexExampleIndividuals/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/20241101/MarketIndices/EquityIndexExampleIndividuals/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20210901/MarketIndices/EquityIndexExampleIndividuals.rdf version of this ontology was modified to reflect the move of market data provider from interest rates in IND to publishers in BE.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20221001/MarketIndices/EquityIndexExampleIndividuals.rdf version of the ontology was modified to use the Commons Ontology Library (Commons) Annotation Vocabulary rather than the OMG&apos;s Specification Metadata vocabulary.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20230201/MarketIndices/EquityIndexExampleIndividuals.rdf version of this ontology was modified to use the Commons Ontology Library (Commons) rather than the OMG&apos;s Languages, Countries and Codes (LCC), eliminating redundancies in FIBO as appropriate.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20230301/MarketIndices/EquityIndexExampleIndividuals.rdf version of this ontology was modified to replace content that is now available in the OMG Commons Ontology Library (Commons) v1.1 (FND-380).</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20240101/MarketIndices/EquityIndexExampleIndividuals.rdf version of this ontology was modified to eliminate implicit punning and revise properties that are now deprecated (moved to Commons).</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/IND/20240901/MarketIndices/EquityIndexExampleIndividuals.rdf version of this ontology was modified to revise a remaining property that moved to Commons.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 		<cmns-av:copyright>Copyright (c) 2020-2024 EDM Council, Inc.</cmns-av:copyright>
 		<cmns-av:copyright>Copyright (c) 2020-2024 Object Management Group, Inc.</cmns-av:copyright>
@@ -120,10 +125,15 @@
 	
 	<owl:NamedIndividual rdf:about="&fibo-ind-mkt-eqind;DowJonesIndustrialAverageBasket">
 		<rdf:type rdf:resource="&fibo-ind-mkt-bas;BasketOfEquities"/>
+		<rdf:type>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-qtu;hasExpression"/>
+				<owl:someValuesFrom rdf:resource="&fibo-ind-mkt-bas;CapitalizationBasedWeightingFunction"/>
+			</owl:Restriction>
+		</rdf:type>
 		<rdfs:label>Dow Jones Industrial Average basket</rdfs:label>
 		<skos:definition>basket of 30 substantial stocks that are traded on the New York Stock Exchange (NYSE) and the Nasdaq</skos:definition>
 		<fibo-fbc-pas-fpas:hasSelectionCriteria>The Averages Committee, which includes the managing editor of The Wall Street Journal, the head of Dow Jones Indexes research, and the head of CME Group research, determine which components become a part of the DJIA. There are no set rules the Averages Committee must follow when selecting Dow components, only broad parameters to ensure those companies represent a large portion of the overall economic performance in the United States. Each average is reviewed at least once annually, but composition changes are rare for the sake of continuity. Since its beginnings in May of 1896, the Dow Jones stocks list has only changed 54 times. As of June 2018, the last remaining company of the original 12 components of the DJIA, General Electric (GE), was replaced by Walgreens Boots Alliance.</fibo-fbc-pas-fpas:hasSelectionCriteria>
-		<fibo-fnd-utl-alx:hasExpression rdf:resource="&fibo-ind-mkt-bas;CapitalizationBasedWeightingFunction"/>
 	</owl:NamedIndividual>
 	
 	<owl:NamedIndividual rdf:about="&fibo-ind-mkt-eqind;DowJonesIndustrialAverageBasket-AppleIncCommonStockConstituent">
@@ -216,8 +226,8 @@
 		<rdfs:label>Dow Jones Industrial Average value as of Mar 6, 2020</rdfs:label>
 		<skos:definition>individual representing the value of the DJIA on 6 Mar 2020 at 12:05:14 pm in NYC</skos:definition>
 		<fibo-fnd-acc-cur:hasRateValue rdf:datatype="&xsd;decimal">25523.20</fibo-fnd-acc-cur:hasRateValue>
-		<fibo-fnd-utl-alx:isValueOf rdf:resource="&fibo-ind-mkt-eqind;DowJonesIndustrialAverage"/>
 		<fibo-ind-ind-ind:hasQuotationDateTime rdf:datatype="&xsd;dateTime">2020-03-06T12:05:14-05:00</fibo-ind-ind-ind:hasQuotationDateTime>
+		<cmns-qtu:isValueOf rdf:resource="&fibo-ind-mkt-eqind;DowJonesIndustrialAverage"/>
 	</owl:NamedIndividual>
 	
 	<owl:NamedIndividual rdf:about="&fibo-ind-mkt-eqind;SPDowJonesIndices">
@@ -251,11 +261,16 @@
 	
 	<owl:NamedIndividual rdf:about="&fibo-ind-mkt-eqind;StandardAndPoors500CompositeIndexBasket">
 		<rdf:type rdf:resource="&fibo-ind-mkt-bas;BasketOfEquities"/>
+		<rdf:type>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-qtu;hasExpression"/>
+				<owl:someValuesFrom rdf:resource="&fibo-ind-mkt-bas;CapitalizationBasedWeightingFunction"/>
+			</owl:Restriction>
+		</rdf:type>
 		<rdfs:label>Standard &amp; Poor&apos;s Composite Index basket</rdfs:label>
 		<skos:definition>basket of common shares issued by approximately 500 large-cap companies that are traded on American stock exchanges</skos:definition>
 		<fibo-fbc-pas-fpas:hasSelectingParty rdf:resource="&fibo-ind-mkt-eqind;SPDowJonesIndicesLLC-US-DE"/>
 		<fibo-fbc-pas-fpas:hasSelectionCriteria>To qualify for the S&amp;P 500, a company must meet certain committee-established criteria, which include (1) a market cap of at least $13.1 billion, (2) trading the value of its market capitalization annually, (3) at least a quarter-million of its shares have been traded in each of the previous six months (4) the majority of shares are in the public&apos;s hands, (5) being publicly traded for at least a year, and (6) earnings over the most recent four quarters and in the most recent quarter must be positive.</fibo-fbc-pas-fpas:hasSelectionCriteria>
-		<fibo-fnd-utl-alx:hasExpression rdf:resource="&fibo-ind-mkt-bas;CapitalizationBasedWeightingFunction"/>
 	</owl:NamedIndividual>
 
 </rdf:RDF>

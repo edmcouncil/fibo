@@ -66,7 +66,7 @@
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Identifiers/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/QuantitiesAndUnits/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/LCC/Countries/CountryRepresentation/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20240201/Utilities/Analytics/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20241101/Utilities/Analytics/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20140501/Utilities/Analytics.rdf version of this ontology was modified per the issue resolutions identified in the FIBO FND 1.0 FTF report and in https://spec.edmcouncil.org/fibo/ontology/FND/1.0/AboutFND-1.0/.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20141101/Utilities/Analytics.rdf version of this ontology was modified to address issue FIBOFND11-20, which added the definition of Calculation and corrected a reasoning issue related to the use of a custom datatype.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20160201/Utilities/Analytics.rdf version of this ontology was modified per the FIBO 2.0 RFC.</skos:changeNote>
@@ -89,6 +89,7 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20230501/Utilities/Analytics.rdf version of the ontology was modified to eliminate deprecations that are more than 6 months old.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20231101/Utilities/Analytics.rdf version of the ontology was modified to replace content that is now available in the OMG Commons Ontology Library (Commons) v1.1 (FND-380).</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20231201/Utilities/Analytics.rdf version of the ontology was modified to replace additional content that is now available in the OMG Commons Ontology Library (Commons) v1.1 (FND-380) and to move the concept of an anchor date to Financial Dates (FBC-317).</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20240201/Utilities/Analytics.rdf version of the ontology was modified to eliminate elements that have been deprecated for several quarters (FND-386) and to add the concept of a key performance indicator (KPI) (LOAN-169).</skos:changeNote>
 		<skos:changeNote>This ontology was added to Foundations in advance of the June 2014 Boston meeting in support of the IND RFC.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 		<cmns-av:copyright>Copyright (c) 2013-2024 EDM Council, Inc.</cmns-av:copyright>
@@ -140,11 +141,6 @@
 		<cmns-av:synonym>mean absolute deviation</cmns-av:synonym>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-fnd-utl-alx;Constant">
-		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-		<owl:equivalentClass rdf:resource="&cmns-qtu;Constant"/>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-fnd-utl-alx;Difference">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;StatisticalMeasure"/>
 		<rdfs:subClassOf rdf:resource="&cmns-qtu;Expression"/>
@@ -194,11 +190,6 @@
 		<cmns-av:explanatoryNote>It is usually measured as an average deviation about some central value (e.g. mean deviation, standard deviation) or by an order statistic (e.g. quartile deviation, range) but may also be a mean of deviations of values among themselves (e.g. Gini&apos;s mean difference and also standard deviation).</cmns-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-fnd-utl-alx;Expression">
-		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-		<owl:equivalentClass rdf:resource="&cmns-qtu;Expression"/>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-fnd-utl-alx;FinitePopulation">
 		<rdfs:subClassOf rdf:resource="&cmns-col;Collection"/>
 		<rdfs:label>finite population</rdfs:label>
@@ -227,6 +218,32 @@
 		<cmns-av:explanatoryNote>The geometric mean is defined as the nth root of the product of n numbers. A geometric mean is often used when comparing different items - finding a single &apos;figure of merit&apos; for these items - when each item has multiple properties that have different numeric ranges. For example, the geometric mean can give a meaningful &apos;average&apos; to compare two companies which are each rated at 0 to 5 for their environmental sustainability, and are rated at 0 to 100 for their financial viability. If an arithmetic mean were used instead of a geometric mean, the financial viability is given more weight because its numeric range is larger - so a small percentage change in the financial rating (e.g. going from 80 to 90) makes a much larger difference in the arithmetic mean than a large percentage change in environmental sustainability (e.g. going from 2 to 5).</cmns-av:explanatoryNote>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-fnd-utl-alx;KeyPerformanceIndicator">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;QualifiedMeasure"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasObservedValue"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;DatedStructuredCollection"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-utl-alx;hasTargetValue"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-dt-fd;DatedStructuredCollection"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>key performance indicator</rdfs:label>
+		<skos:definition>measurable target that indicates how an individual or business is performing in terms of meeting its goals</skos:definition>
+		<skos:example>Examples include profits, sales numbers, employee turnover and average annual expenses.</skos:example>
+		<cmns-av:abbreviation>KPI</cmns-av:abbreviation>
+		<cmns-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.forbes.com/advisor/business/what-is-a-kpi-definition-examples/</cmns-av:adaptedFrom>
+		<cmns-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.kpi.org/KPI-Basics/</cmns-av:adaptedFrom>
+		<cmns-av:explanatoryNote>Although they are both designed to measure performance, KPIs and metrics have different characteristics and are used by businesses in different ways. Metrics are measures used to track progress and evaluate success, while KPIs are metrics tied to specific goals during a certain period of time. KPIs are designed to align with business goals and targets, while metrics evaluate the performance of particular processes.</cmns-av:explanatoryNote>
+		<cmns-av:explanatoryNote>Key Performance Indicators (KPIs) are the critical (key) quantifiable indicators of progress toward an intended result. KPIs provide a focus for strategic and operational improvement, create an analytical basis for decision making and help focus attention on what matters most. Managing with the use of KPIs includes setting targets (the desired level of performance) and tracking progress against those targets.</cmns-av:explanatoryNote>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-fnd-utl-alx;Mean">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;StatisticalMeasure"/>
 		<rdfs:subClassOf rdf:resource="&cmns-qtu;Expression"/>
@@ -244,11 +261,6 @@
 		<cmns-av:symbol>μ</cmns-av:symbol>
 		<cmns-av:synonym>expected value</cmns-av:synonym>
 		<cmns-av:synonym>first (raw) moment</cmns-av:synonym>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-fnd-utl-alx;Measure">
-		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-		<owl:equivalentClass rdf:resource="&cmns-qtu;Measure"/>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-utl-alx;Median">
@@ -284,7 +296,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&cmns-qtu;isValueOf"/>
-				<owl:onClass rdf:resource="&fibo-fnd-utl-alx;ScopedMeasure"/>
+				<owl:onClass rdf:resource="&fibo-fnd-utl-alx;QualifiedMeasure"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -299,11 +311,6 @@
 		<skos:definition>numeric value of some aggregate relative to the value of that aggregate as of some date</skos:definition>
 		<cmns-av:adaptedFrom rdf:datatype="&xsd;anyURI">http://www.statcan.gc.ca/edu/power-pouvoir/glossary-glossaire/5214842-eng.htm#i</cmns-av:adaptedFrom>
 		<cmns-av:explanatoryNote>A mathematical device or number which is used to express the observation (e.g., price level, volume of trade, relative amount etc.) of a given period, in comparison with that of a prior period.</cmns-av:explanatoryNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-fnd-utl-alx;Percentage">
-		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-		<owl:equivalentClass rdf:resource="&cmns-qtu;Percentage"/>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-utl-alx;QualifiedMeasure">
@@ -333,16 +340,6 @@
 		</rdfs:subClassOf>
 		<rdfs:label>qualified measure</rdfs:label>
 		<skos:definition>statistical measure that is constrained by features, quantity kinds or units that refine how it is calculated</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-fnd-utl-alx;Ratio">
-		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-		<owl:equivalentClass rdf:resource="&cmns-qtu;Ratio"/>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-fnd-utl-alx;RatioValue">
-		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-		<owl:equivalentClass rdf:resource="&cmns-qtu;Ratio"/>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-utl-alx;SamplingVariance">
@@ -530,16 +527,6 @@
 		<cmns-av:adaptedFrom rdf:resource="http://stats.oecd.org/glossary/detail.asp?ID=2087"/>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-fnd-utl-alx;Total">
-		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-		<owl:equivalentClass rdf:resource="&cmns-qtu;Total"/>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-fnd-utl-alx;Variable">
-		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-		<owl:equivalentClass rdf:resource="&cmns-qtu;Variable"/>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-fnd-utl-alx;Variance">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-utl-alx;Dispersion"/>
 		<rdfs:subClassOf>
@@ -565,31 +552,6 @@
 		<cmns-av:explanatoryNote>For certain indices, one of the most common weighting factor is by market capitalization. In that case, each of the elements in the basket is multiplied by its market cap to determine its relative importance to the basket overall.</cmns-av:explanatoryNote>
 		<cmns-av:explanatoryNote>With respect to discrete calculations, weighting functions are positive functions defined on discrete sets, such as weighted sums and weighted averages.</cmns-av:explanatoryNote>
 	</owl:Class>
-	
-	<owl:AnnotationProperty rdf:about="&fibo-fnd-utl-alx;actualExpression">
-		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-		<owl:equivalentProperty rdf:resource="&cmns-qtu;describesActualExpression"/>
-	</owl:AnnotationProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-fnd-utl-alx;hasAnchorDate">
-		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-		<owl:equivalentProperty rdf:resource="&fibo-fnd-dt-fd;hasAnchorDate"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-fnd-utl-alx;hasApplicableDatePeriod">
-		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-		<owl:equivalentProperty rdf:resource="&cmns-cxtdsg;hasApplicablePeriod"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-fnd-utl-alx;hasArgument">
-		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-		<owl:equivalentProperty rdf:resource="&cmns-qtu;hasArgument"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-fnd-utl-alx;hasExpression">
-		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-		<owl:equivalentProperty rdf:resource="&cmns-qtu;hasExpression"/>
-	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-utl-alx;hasFixedComparativeDate">
 		<rdfs:subPropertyOf rdf:resource="&cmns-dt;hasExplicitDate"/>
@@ -695,6 +657,13 @@
 		<skos:definition>specifies the quantity value that is subtracted from something</skos:definition>
 	</owl:ObjectProperty>
 	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-utl-alx;hasTargetValue">
+		<rdfs:subPropertyOf rdf:resource="&cmns-qtu;hasArgument"/>
+		<rdfs:label>has target value</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fnd-dt-fd;DatedStructuredCollection"/>
+		<skos:definition>specifies a collection of values that represent planned or projected goals or objectives for some something over time</skos:definition>
+	</owl:ObjectProperty>
+	
 	<owl:DatatypeProperty rdf:about="&fibo-fnd-utl-alx;hasUniverseSize">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-arr-arr;hasCollectionSize"/>
 		<rdfs:label>has universe size</rdfs:label>
@@ -721,11 +690,6 @@
 		<rdfs:range rdf:resource="&xsd;boolean"/>
 		<skos:definition>indicates whether the measure reflects an estimate (approximation) or not</skos:definition>
 	</owl:DatatypeProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-fnd-utl-alx;isValueOf">
-		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-		<owl:equivalentProperty rdf:resource="&cmns-qtu;isValueOf"/>
-	</owl:ObjectProperty>
 	
 	<owl:Class rdf:about="&cmns-qtu;Expression">
 		<rdfs:subClassOf rdf:resource="&cmns-doc;Specification"/>

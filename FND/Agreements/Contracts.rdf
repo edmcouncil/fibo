@@ -13,6 +13,7 @@
 	<!ENTITY fibo-fnd-aap-ppl "https://spec.edmcouncil.org/fibo/ontology/FND/AgentsAndPeople/People/">
 	<!ENTITY fibo-fnd-agr-agr "https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Agreements/">
 	<!ENTITY fibo-fnd-agr-ctr "https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/">
+	<!ENTITY fibo-fnd-dt-fd "https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/">
 	<!ENTITY fibo-fnd-dt-oc "https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/Occurrences/">
 	<!ENTITY fibo-fnd-law-jur "https://spec.edmcouncil.org/fibo/ontology/FND/Law/Jurisdiction/">
 	<!ENTITY fibo-fnd-plc-adr "https://spec.edmcouncil.org/fibo/ontology/FND/Places/Addresses/">
@@ -38,6 +39,7 @@
 	xmlns:fibo-fnd-aap-ppl="https://spec.edmcouncil.org/fibo/ontology/FND/AgentsAndPeople/People/"
 	xmlns:fibo-fnd-agr-agr="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Agreements/"
 	xmlns:fibo-fnd-agr-ctr="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"
+	xmlns:fibo-fnd-dt-fd="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"
 	xmlns:fibo-fnd-dt-oc="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/Occurrences/"
 	xmlns:fibo-fnd-law-jur="https://spec.edmcouncil.org/fibo/ontology/FND/Law/Jurisdiction/"
 	xmlns:fibo-fnd-plc-adr="https://spec.edmcouncil.org/fibo/ontology/FND/Places/Addresses/"
@@ -55,6 +57,7 @@
 		<dct:license rdf:datatype="&xsd;anyURI">https://opensource.org/licenses/MIT</dct:license>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/AgentsAndPeople/People/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Agreements/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/Occurrences/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Law/Jurisdiction/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Places/Addresses/"/>
@@ -69,7 +72,7 @@
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Documents/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/PartiesAndSituations/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/RolesAndCompositions/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20240501/Agreements/Contracts/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20241101/Agreements/Contracts/"/>
 		<skos:changeNote>The http://www.omg.org/spec/FIBO/Foundations/20130601/Agreements/Contracts.owl version of the ontology was revised in advance of the September 2013 New Brunswick, NJ meeting, as follows:
 		(1) to use slash style URI/IRIss (also called 303 URIs, vs. hash style) as required to support server side processing 
 		(2) to use version-independent IRIs for all definitions internally as opposed to version-specific IRIs
@@ -95,6 +98,7 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20230301/Agreements/Contracts.rdf version of the ontology was modified to replace concepts from several FIBO FND ontologies with their counterparts added to the Commons Ontology Library (Commons) v1.1.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20231201/Agreements/Contracts.rdf version of the ontology was modified to replace additional concepts from several FIBO FND ontologies with their counterparts added to the Commons Ontology Library (Commons) v1.1.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20240101/Agreements/Contracts.rdf version of the ontology was modified to better integrate the parties to a contract with the latest patterns (FBC-284).</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20240501/Agreements/Contracts.rdf version of the ontology was modified to add an optional date of issuance to written contract, which may or may not be the same as the effective date (FBC-322), to add a general notion of collateral agreement (LOAN-168), and to add provisions for disclosures and use of proceeds (LOAN-169).</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 		<cmns-av:copyright>Copyright (c) 2013-2024 EDM Council, Inc.</cmns-av:copyright>
 		<cmns-av:copyright>Copyright (c) 2013-2024 Object Management Group, Inc.</cmns-av:copyright>
@@ -196,6 +200,20 @@
 		<cmns-av:explanatoryNote xml:lang="en">In the case of a breach of a covenant or warranty, the contract remains binding and damages only are recoverable for the breach, whereas a breach of contract typically invalidates the entire contract.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-fnd-agr-ctr;CollateralAgreement">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;WrittenContract"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;isSubordinateTo"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-agr-ctr;WrittenContract"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>collateral agreement</rdfs:label>
+		<skos:definition>written contract related to another contract designed to provide clarity and additional protection for all parties involved, that is separate from the primary contract and that can be independently enforced</skos:definition>
+		<skos:example>Examples may be related to leases, to clarify responsibilities with respect to maintance and repair, to partnerships, clarifying how disputes should be resolved, loan agreements such as deeds of trust, covering the conditions under which the collateral would be forfeited, and uniform commercial code (UCC) agreements.</skos:example>
+		<cmns-av:explanatoryNote>In cases where there are discrepancies between the collateral agreement and primary contract, the primary contract, which may be a master agreement, for example, takes precedence.</cmns-av:explanatoryNote>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-fnd-agr-ctr;ConditionPrecedent">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractualElement"/>
 		<rdfs:label>condition precedent</rdfs:label>
@@ -230,6 +248,7 @@
 		<skos:definition>voluntary, deliberate agreement between competent parties to which the parties agree to be legally bound, and for which the parties provide valuable consideration</skos:definition>
 		<cmns-av:explanatoryNote>A contractual relationship is evidenced by (1) an offer, (2) acceptance of the offer, and a (3) valid (legal and valuable) consideration. A contract is a kind of agreement, and as such it embodies the assertion that it has been negotiated, such negotiation having included the presence of some offer and the acceptance of that offer on the part of either or both of the parties.</cmns-av:explanatoryNote>
 		<cmns-av:explanatoryNote>Contracts are usually written but may be spoken or implied, and generally have to do with employment, sale or lease, or tenancy.</cmns-av:explanatoryNote>
+		<cmns-av:explanatoryNote>Note that the data of issuance may be, but is not always, the same as the effective date.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-agr-ctr;ContractDocument">
@@ -237,6 +256,27 @@
 		<rdfs:label>contract document</rdfs:label>
 		<skos:definition>legal document that records the formal terms and conditions of some contract</skos:definition>
 		<skos:scopeNote>Written here does not necessarily mean a paper document but includes situations in which the contract is expressed electronically, whether as an electronic representation of a formal document such as in PDF form or as an electronic message, provided in the latter case that the message is expressly given formal contractual standing, for example as indicated in a separate covering agreement between the parties.</skos:scopeNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-agr-ctr;ContractMilestone">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ConditionPrecedent"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-oc;OccurrenceKind"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-cls;classifies"/>
+				<owl:onClass rdf:resource="&fibo-fnd-agr-ctr;MilestoneEvent"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-cxtdsg;appliesTo"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-agr-ctr;Contract"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">contract milestone</rdfs:label>
+		<skos:definition xml:lang="en">classifier for an event (milestone), or set of events related to the status or level of completion of a designated activity, task, or segment of work required for contract fulfillment</skos:definition>
+		<cmns-av:explanatoryNote xml:lang="en">Milestones are checkpoints that are predefined in the contract, used to measure progress. They specify tasks, deliverables, or objectives that must be achieved to meet each milestone and may trigger partial payment.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-agr-ctr;ContractParty">
@@ -297,6 +337,13 @@
 	
 	<owl:Class rdf:about="&fibo-fnd-agr-ctr;ContractualElement">
 		<rdfs:subClassOf rdf:resource="&cmns-col;Constituent"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;hasLegalDescription"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+				<owl:onDataRange rdf:resource="&xsd;string"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label>contractual element</rdfs:label>
 		<skos:definition>element, such as an arrangement, provision, requirement, rule, specification, and standard that forms an integral part of an agreement</skos:definition>
 	</owl:Class>
@@ -306,6 +353,14 @@
 		<rdfs:label>counterparty</rdfs:label>
 		<skos:definition>party to a contract with whom one negotiates on a given agreement</skos:definition>
 		<cmns-av:explanatoryNote>The counterparty is usually the party &apos;on the other side&apos; of a contract from the perspective of the issuer or holder. The term &apos;counterparty&apos; can refer to any party to an agreement, depending on context.</cmns-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-agr-ctr;DisclosureProvision">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractualCommitment"/>
+		<rdfs:label xml:lang="en">disclosure provision</rdfs:label>
+		<skos:definition>contractual provision that outlines the requirements and responsibilities of one or both parties to reveal certain information to each other</skos:definition>
+		<cmns-av:explanatoryNote>Disclosure provisions are crucial in ensuring transparency, mitigating risks, and maintaining trust between the parties. Typical elements of a disclosure provision include (1) scope - defining the kind of information that must be disclosed, (2) materiality - which usually states that only information material to the agreement must be disclosed, (3) timing - specifying when such disclosures must be made, (4) ongoing requirements - outlining whether or not disclosures any time significant changes or new information must be made available over some period of time, (5) method - specifying how such disclosures must be made, for example, in writing, (6) exclusions - information that is explicitly out of scope with respect to disclosure requirements, (7) confidentiality - restrictions related to whether or not the information is confidential and on how it may be used, and (8) penalities - specifying consequences for failing to disclose relevant information.</cmns-av:explanatoryNote>
+		<cmns-av:explanatoryNote>With respect to contracts, failure to disclose key details can lead to breaches of contract or claims of misrepresentation. Disclosure requirements are typically specific to the nature of the contract and jurisdiction.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-agr-ctr;ExtensionProvision">
@@ -338,6 +393,30 @@
 		<skos:example>Some credit facilities and many brokerage arrangements are master agreements.</skos:example>
 		<cmns-av:explanatoryNote>A master agreement can be used to set out standard terms and conditions so that any new agreements don&apos;t need to cover the same information again.</cmns-av:explanatoryNote>
 		<cmns-av:synonym>master contract</cmns-av:synonym>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-agr-ctr;MilestoneEvent">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-oc;Occurrence"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-cls;isClassifiedBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-agr-ctr;ContractMilestone"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>milestone event</rdfs:label>
+		<skos:definition>event related to the status or level of completion of a designated activity, task, or segment of work required for contract fulfillment</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-agr-ctr;MilestoneSchedule">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-fd;Schedule"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-col;hasMember"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-agr-ctr;MilestoneEvent"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>milestone schedule</rdfs:label>
+		<skos:definition>schedule of milestone events, observations, or other occurrences and the associated dates and/or times when they will be done</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-agr-ctr;MutualContractualAgreement">
@@ -410,6 +489,13 @@
 		<cmns-av:explanatoryNote>In a unilateral, or one-sided, contract, one party, known as the offeror, makes a promise in exchange for an act (or abstention from acting) by another party, known as the offeree. If the offeree acts on the offeror&apos;s promise, the offeror is legally obligated to fulfill the contract, but an offeree cannot be forced to act (or not act), because no return promise has been made to the offeror. After an offeree has performed, only one enforceable promise exists, that of the offeror.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-fnd-agr-ctr;UseOfProceedsProvision">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractualCommitment"/>
+		<rdfs:label>use of proceeds provision</rdfs:label>
+		<skos:definition>contract provision specifying how funds obtained through financing, such as through a credit agreement, offering, warrant, or other instrument are intended to be used</skos:definition>
+		<cmns-av:explanatoryNote>Examples include for working capital and corporate expenses, for the purchase or upgrades to facilities and/or equipment, and so forth.</cmns-av:explanatoryNote>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-fnd-agr-ctr;VerbalContract">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;Contract"/>
 		<rdfs:label>verbal contract</rdfs:label>
@@ -429,6 +515,13 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;hasExecutionDate"/>
+				<owl:onClass rdf:resource="&cmns-dt;Date"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-dt;hasDateOfIssuance"/>
 				<owl:onClass rdf:resource="&cmns-dt;Date"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
@@ -573,6 +666,22 @@
 		<cmns-av:explanatoryNote>In a written contract this is generally identified, for example, as Governing Law, namely the jurisdiction in which any disputes arising from the contract are to be resolved.</cmns-av:explanatoryNote>
 	</owl:ObjectProperty>
 	
+	<owl:DatatypeProperty rdf:about="&fibo-fnd-agr-ctr;hasLegalDescription">
+		<rdfs:subPropertyOf rdf:resource="&cmns-dsg;hasDescription"/>
+		<rdfs:label>has legal description</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fnd-agr-ctr;ContractualElement"/>
+		<rdfs:range rdf:resource="&xsd;string"/>
+		<skos:definition>provides the text, or a summary thereof, expressed in legal terms, of the contract provision, clause, or other element</skos:definition>
+	</owl:DatatypeProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-agr-ctr;hasMilestoneProvision">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-agr-ctr;hasContractualElement"/>
+		<rdfs:label>has milestone provision</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fnd-agr-agr;Agreement"/>
+		<rdfs:range rdf:resource="&fibo-fnd-agr-ctr;ContractMilestone"/>
+		<skos:definition>refers to a requirement included in an agreement related to fulfillment as of some point in time in the lifetime of the contract</skos:definition>
+	</owl:ObjectProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-agr-ctr;hasNonBindingTerm">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-agr-ctr;hasContractualElement"/>
 		<rdfs:label>has non-binding term</rdfs:label>
@@ -627,10 +736,28 @@
 		<skos:definition>is attested by</skos:definition>
 	</owl:ObjectProperty>
 	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-agr-ctr;isPrimaryContractFor">
+		<rdfs:subPropertyOf rdf:resource="&cmns-doc;isReferredToBy"/>
+		<rdfs:label>is primary contract for</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fnd-agr-ctr;WrittenContract"/>
+		<rdfs:range rdf:resource="&fibo-fnd-agr-ctr;WrittenContract"/>
+		<owl:inverseOf rdf:resource="&fibo-fnd-agr-ctr;isSubordinateTo"/>
+		<skos:definition>indicates any subordinate agreement, such as a collateral agreement</skos:definition>
+	</owl:ObjectProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-agr-ctr;isQualifiedBy">
 		<rdfs:subPropertyOf rdf:resource="&cmns-cls;isCharacterizedBy"/>
 		<rdfs:label>is qualified by</rdfs:label>
 		<skos:definition>indicates a constraint, limitation or refinement on something</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-agr-ctr;isSubordinateTo">
+		<rdfs:subPropertyOf rdf:resource="&cmns-doc;refersTo"/>
+		<rdfs:label>is subordinate to</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fnd-agr-ctr;WrittenContract"/>
+		<rdfs:range rdf:resource="&fibo-fnd-agr-ctr;WrittenContract"/>
+		<skos:definition>indicates the primary contract referenced by a subordinate agreement, such as a collateral agreement</skos:definition>
+		<cmns-av:explanatoryNote>This property may also be used as the basis for linking agreements based on priority, such as linking a second or junior lien to the primary lien on some collateral</cmns-av:explanatoryNote>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-agr-ctr;qualifies">

@@ -4,6 +4,7 @@
 	<!ENTITY cmns-cls "https://www.omg.org/spec/Commons/Classifiers/">
 	<!ENTITY cmns-col "https://www.omg.org/spec/Commons/Collections/">
 	<!ENTITY cmns-cxtdsg "https://www.omg.org/spec/Commons/ContextualDesignators/">
+	<!ENTITY cmns-doc "https://www.omg.org/spec/Commons/Documents/">
 	<!ENTITY cmns-dsg "https://www.omg.org/spec/Commons/Designators/">
 	<!ENTITY cmns-dt "https://www.omg.org/spec/Commons/DatesAndTimes/">
 	<!ENTITY cmns-id "https://www.omg.org/spec/Commons/Identifiers/">
@@ -41,6 +42,7 @@
 	xmlns:cmns-cls="https://www.omg.org/spec/Commons/Classifiers/"
 	xmlns:cmns-col="https://www.omg.org/spec/Commons/Collections/"
 	xmlns:cmns-cxtdsg="https://www.omg.org/spec/Commons/ContextualDesignators/"
+	xmlns:cmns-doc="https://www.omg.org/spec/Commons/Documents/"
 	xmlns:cmns-dsg="https://www.omg.org/spec/Commons/Designators/"
 	xmlns:cmns-dt="https://www.omg.org/spec/Commons/DatesAndTimes/"
 	xmlns:cmns-id="https://www.omg.org/spec/Commons/Identifiers/"
@@ -101,11 +103,12 @@
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/ContextualDesignators/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/DatesAndTimes/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Designators/"/>
+		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Documents/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Identifiers/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/PartiesAndSituations/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/QuantitiesAndUnits/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/RolesAndCompositions/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/20240301/DebtAndEquities/Debt/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/20241201/DebtAndEquities/Debt/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20180801/DebtAndEquities/Debt/ version of this ontology was added to the FBC domain via the FIBO 2.0 RFC in support of several FIBO debt-oriented initiatives.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20180801/DebtAndEquities/Debt/ version of this ontology was modified to use the generic statistical measures and measurements now in FND.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20190501/DebtAndEquities/Debt/ version of this ontology was modified to add several common day count conventions used to calculate the amount of accrued interest or the present value when the next coupon payment is less than a full coupon period away, to support collateral agreements such as deeds of trust, UCC filings and the like, to add the concept of a rate reset time of day, to eliminate duplication of concepts in LCC, to simplify addresses, and to merge countries with locations.</skos:changeNote>
@@ -121,6 +124,9 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20230901/DebtAndEquities/Debt.rdf version of this ontology was modified to add the starting point value of some collateral when it was acquired (DER-138) and to replace content that is now available in the OMG Commons Ontology Library (Commons) v1.1 (FND-380).</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20231201/DebtAndEquities/Debt.rdf version of this ontology was modified to replace additional content that is now available in the OMG Commons Ontology Library (Commons) v1.1 (FND-380).</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20240101/DebtAndEquities/Debt.rdf version of this ontology was modified to incorporate certain general debt schedule terms that were previously in more specific ontologies (FBC-317).</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20240301/DebtAndEquities/Debt.rdf version of this ontology was modified to include a definition for accrued interest, needed for pricing, and correct certain process (methodology) issues in the class hierarchy (SEC-185).</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20240701/DebtAndEquities/Debt.rdf version of this ontology was modified to include a synonym of &apos;has dated date&apos; for &apos;has initial interest accrual date&apos; (FBC-322), to move the definition of promissory note to financial instruments and clarify the definitions of collateral and collateral agreement(LOAN-168), and to add a use of proceeds provision, optionally, to any credit agreement (LOAN-169).</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20241101/DebtAndEquities/Debt.rdf version of this ontology was modified to add initial exchange date to any credit agreement.</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 		<cmns-av:copyright>Copyright (c) 2016-2024 EDM Council, Inc.</cmns-av:copyright>
 		<cmns-av:copyright>Copyright (c) 2016-2024 Object Management Group, Inc.</cmns-av:copyright>
@@ -139,6 +145,19 @@
 		<rdfs:isDefinedBy rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"/>
 		<skos:definition>the process of accumulating interest or other income that has been earned but not paid</skos:definition>
 		<cmns-av:explanatoryNote>There are legal contractual terms for the accrual of interest, as distinct from the payment of interest.</cmns-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-dae-dbt;AccruedInterest">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;Interest"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-dt-fd;hasAsOfDate"/>
+				<owl:someValuesFrom rdf:resource="&cmns-dt;ExplicitDate"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">accrued interest</rdfs:label>
+		<skos:definition>amount of interest that has been incurred, as of a specific date, on a loan or other financial obligation but has not yet been paid out</skos:definition>
+		<cmns-av:explanatoryNote xml:lang="en">Accrued interest refers to the interest that has accumulated on a bond or other financial obligation since the last interest payment up to, but not including, the settlement date. This interest is earned over time but not yet paid out to the bondholder, for example. If this is a dirty price, this is the amount of accrued interest that is included in the price. This is therefore passed on to the purchaser of the bond or debt instrument.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-dae-dbt;Amortization">
@@ -279,7 +298,7 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;isCollateralizationOf"/>
-				<owl:onClass rdf:resource="&fibo-fnd-oac-own;TangibleAsset"/>
+				<owl:onClass rdf:resource="&fibo-fnd-oac-own;Asset"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -289,18 +308,8 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-dae-dbt;CollateralAgreement">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;WrittenContract"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;involves"/>
-				<owl:onClass rdf:resource="&fibo-fbc-dae-dbt;Collateral"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>collateral agreement</rdfs:label>
-		<rdfs:isDefinedBy rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"/>
-		<skos:definition>written contract that specifies terms, over and above those specified in a promissory note, loan, or other debt instrument, under which the collateral must be made available to the lender</skos:definition>
-		<skos:example>Examples include deeds of trust and uniform commercial code (UCC) agreements.</skos:example>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&fibo-fnd-agr-ctr;CollateralAgreement"/>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-dae-dbt;CollateralValueAsOfDate">
@@ -355,6 +364,20 @@
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;isCollateralizedBy"/>
 				<owl:onClass rdf:resource="&fibo-fbc-dae-dbt;Collateral"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;hasContractualElement"/>
+				<owl:onClass rdf:resource="&fibo-fnd-agr-ctr;UseOfProceedsProvision"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;hasInitialExchangeDate"/>
+				<owl:onClass rdf:resource="&cmns-dt;ExplicitDate"/>
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -428,12 +451,6 @@
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-acc-cur;hasMonetaryAmount"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&cmns-col;hasConstituent"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-dae-dbt;PromissoryNote"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">credit facility</rdfs:label>
@@ -858,7 +875,7 @@
 		</rdfs:subClassOf>
 		<rdfs:label>managed interest rate</rdfs:label>
 		<rdfs:isDefinedBy rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"/>
-		<skos:definition>a variable interest rate charged by a financial institution for borrowing that is not prescribed as a margin over base rate but is set from time to time by the institution</skos:definition>
+		<skos:definition>variable interest rate charged by a financial institution for borrowing that is not prescribed as a margin over base rate but is set from time to time by the institution</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-dae-dbt;MotorVehicleLease">
@@ -1025,10 +1042,7 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-dae-dbt;PromissoryNote">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;CreditAgreement"/>
-		<rdfs:label>promissory note</rdfs:label>
-		<skos:definition>negotiable instrument that is a written promise by one party to another that commits that party to pay a specified sum on demand or within a specified time frame under specified terms</skos:definition>
-		<cmns-av:explanatoryNote>Promissory notes are generally fully fungible.</cmns-av:explanatoryNote>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-dae-dbt;RateResetTimeOfDay">
@@ -1065,6 +1079,27 @@
 		<rdfs:label xml:lang="en">revolving line of credit</rdfs:label>
 		<skos:definition xml:lang="en">credit facility that enables the borrower to withdraw funds, repay, and withdraw again</skos:definition>
 		<cmns-av:explanatoryNote xml:lang="en">Revolving credit facilities are essentially lines of credit with variable interest rates.</cmns-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-dae-dbt;SecurityAgreement">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;CollateralAgreement"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;isCollateralizedBy"/>
+				<owl:onClass rdf:resource="&fibo-fbc-dae-dbt;Collateral"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-arr-asmt;hasEstimatedValue"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>security agreement</rdfs:label>
+		<skos:definition>collateral agreement that grants a financial interest in some collateral to a party that is not an owner of that collateral, specifying terms including relative duties and rights, over and above those specified in the primary contract, uregarding the disposition of the asset used as collateral</skos:definition>
+		<skos:example>Examples include deeds of trust and uniform commercial code (UCC) agreements.</skos:example>
+		<cmns-av:adaptedFrom>ISO 20022</cmns-av:adaptedFrom>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-dae-dbt;SubFacility">
@@ -1179,11 +1214,22 @@
 		<skos:definition>the date on which the last interest payment is due</skos:definition>
 	</owl:ObjectProperty>
 	
+	<owl:ObjectProperty rdf:about="&fibo-fbc-dae-dbt;hasInitialExchangeDate">
+		<rdfs:subPropertyOf rdf:resource="&cmns-dt;hasExplicitDate"/>
+		<rdfs:subPropertyOf rdf:resource="&cmns-dt;hasStartDate"/>
+		<rdfs:label>has initial exchange date</rdfs:label>
+		<rdfs:range rdf:resource="&cmns-dt;ExplicitDate"/>
+		<skos:definition>indicates the specific date when the initial exchange of assets or funds takes place</skos:definition>
+		<cmns-av:abbreviation>IED</cmns-av:abbreviation>
+		<cmns-av:explanatoryNote>For a credit agreement, this is the initial funding date, such as the funding of the principal amount, or a portion thereof, but for other kinds of instruments, it may be something else. In the context of contracts related to swaps, options, or other derivative instruments, the initial exchange date marks the point where the parties legally commit to the terms of the agreement and exchange the initial required amounts.</cmns-av:explanatoryNote>
+	</owl:ObjectProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-dae-dbt;hasInitialInterestAccrualDate">
 		<rdfs:subPropertyOf rdf:resource="&cmns-dt;hasStartDate"/>
 		<rdfs:label>has initial interest accrual date</rdfs:label>
 		<rdfs:range rdf:resource="&cmns-dt;Date"/>
 		<skos:definition>the date from which interest begins to accrue</skos:definition>
+		<cmns-av:synonym>has dated date</cmns-av:synonym>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-dae-dbt;hasInitialInterestPaymentDate">
@@ -1312,14 +1358,14 @@
 		<rdfs:label>is collateralization of</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-fbc-dae-dbt;Collateral"/>
 		<rdfs:isDefinedBy rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"/>
-		<skos:definition>relates some collateral to a credit agreement or debt instrument for which the property has been pledged as security for the debt</skos:definition>
+		<skos:definition>relates some collateral to an agreement pledging the asset as security</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-dae-dbt;isCollateralizedBy">
 		<rdfs:label>is collateralized by</rdfs:label>
 		<rdfs:isDefinedBy rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"/>
 		<rdfs:range rdf:resource="&fibo-fbc-dae-dbt;Collateral"/>
-		<skos:definition>relates a credit agreement or debt instrument to property pledged as security for the debt</skos:definition>
+		<skos:definition>relates an agreement to an asset pledged as security</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-dae-dbt;isInterestOn">
