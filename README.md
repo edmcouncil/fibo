@@ -46,7 +46,8 @@ In case of experiencing any problem with our development infrastructure (Jenkins
 # How to contribute
 
 ## Contributing to FIBO
-The FIBO development process follows rigorous and well-defined rules and principles. Please read [CONTRIBUTING.md](CONTRIBUTING.md) and [ONTOLOGY\_GUIDE.md](ONTOLOGY_GUIDE.md) for more details. 
+The FIBO development process follows rigorous and well-defined rules and principles. Please read [CONTRIBUTING.md](CONTRIBUTING.md) and [ONTOLOGY\_GUIDE.md](ONTOLOGY_GUIDE.md) for more details.
+FIBO activities and development process are documented on [the FIBO Confluence space](https://dil-edmcouncil.atlassian.net/wiki/spaces/FIBO/overview) and across various projects in [the EDMC projects' space](https://dil-edmcouncil.atlassian.net/jira).
 
 ## Developer Certificate of Origin (DCO) 
 
