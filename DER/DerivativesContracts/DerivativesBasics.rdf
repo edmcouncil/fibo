@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE rdf:RDF [
 	<!ENTITY cmns-av "https://www.omg.org/spec/Commons/AnnotationVocabulary/">
+	<!ENTITY cmns-col "https://www.omg.org/spec/Commons/Collections/">
+	<!ENTITY cmns-cxtdsg "https://www.omg.org/spec/Commons/ContextualDesignators/">
 	<!ENTITY cmns-cxtid "https://www.omg.org/spec/Commons/ContextualIdentifiers/">
 	<!ENTITY cmns-dt "https://www.omg.org/spec/Commons/DatesAndTimes/">
 	<!ENTITY cmns-id "https://www.omg.org/spec/Commons/Identifiers/">
@@ -38,6 +40,8 @@
 ]>
 <rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/DerivativesBasics/"
 	xmlns:cmns-av="https://www.omg.org/spec/Commons/AnnotationVocabulary/"
+	xmlns:cmns-col="https://www.omg.org/spec/Commons/Collections/"
+	xmlns:cmns-cxtdsg="https://www.omg.org/spec/Commons/ContextualDesignators/"
 	xmlns:cmns-cxtid="https://www.omg.org/spec/Commons/ContextualIdentifiers/"
 	xmlns:cmns-dt="https://www.omg.org/spec/Commons/DatesAndTimes/"
 	xmlns:cmns-id="https://www.omg.org/spec/Commons/Identifiers/"
@@ -109,6 +113,8 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/Baskets/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/SecuritiesListings/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/AnnotationVocabulary/"/>
+		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Collections/"/>
+		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/ContextualDesignators/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/ContextualIdentifiers/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/DatesAndTimes/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Identifiers/"/>
@@ -331,6 +337,42 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		- Non-listed and complex listed options (H)
 		- Others (miscellaneous) (M)</skos:scopeNote>
 		<cmns-av:abbreviation>UPI</cmns-av:abbreviation>
+		<cmns-av:explanatoryNote>The UPI code consists of 12 alphanumeric characters decomposed as follows:
+		- the two-character prefix &apos;QZ&apos;
+		- nine alphanumeric characters (upper case A-Z and 0-9 only, excluding the vowel characters (A, E, I, O, U) and the character Y) without separators or special characters
+		- one alphanumeric check character (A-Z and 0-9 only, excluding the vowel characters (A, E, I, O, U) and the character Y), calculated using the method specified in Annex C of the specification document.</cmns-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:NamedIndividual rdf:about="&fibo-der-drc-bsc;UniqueProductIdentifierReferenceDataLibrary">
+		<rdf:type rdf:resource="&fibo-fbc-fct-ra;Registry"/>
+		<rdfs:label>unique product identifier reference data library</rdfs:label>
+		<skos:definition>set of data comprised of reference data elements with specific values that together describe the product</skos:definition>
+		<fibo-fnd-rel-rel:isManagedBy rdf:resource="&fibo-der-drc-bsc;UniqueProductIdentifierServiceProvider"/>
+	</owl:NamedIndividual>
+	
+	<owl:Class rdf:about="&fibo-der-drc-bsc;UniqueProductIdentifierRegistryEntry">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fct-ra;RegistryEntry"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-cxtdsg;appliesTo"/>
+				<owl:allValuesFrom rdf:resource="&fibo-der-drc-bsc;OverTheCounterDerivativeInstrument"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-col;isIncludedIn"/>
+				<owl:hasValue rdf:resource="&fibo-der-drc-bsc;UniqueProductIdentifierReferenceDataLibrary"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-col;comprises"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-drc-bsc;UniqueProductIdentifier"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>unique product identifier registry entry</rdfs:label>
+		<skos:definition>entry in a unique product identifier registry</skos:definition>
+		<cmns-av:explanatoryNote>The Reference Data Library (RDL) is a set of reference data elements, together with their values, which is properly organized and maintained by the UPI service provider. The library associates UPI codes with the values of the reference data elements characterizing the product. Each entry in the library (the registry entry) contains a minimum number of elements as defined in the ISO standard, and may be extended by the service provider.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-bsc;UniqueProductIdentifierServiceProvider">
