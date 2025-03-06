@@ -4,6 +4,7 @@
 	<!ENTITY cmns-cxtdsg "https://www.omg.org/spec/Commons/ContextualDesignators/">
 	<!ENTITY cmns-dt "https://www.omg.org/spec/Commons/DatesAndTimes/">
 	<!ENTITY cmns-qtu "https://www.omg.org/spec/Commons/QuantitiesAndUnits/">
+	<!ENTITY cmns-rlcmp "https://www.omg.org/spec/Commons/RolesAndCompositions/">
 	<!ENTITY dct "http://purl.org/dc/terms/">
 	<!ENTITY fibo-be-fct-pub "https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/Publishers/">
 	<!ENTITY fibo-der-drc-bsc "https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/DerivativesBasics/">
@@ -39,6 +40,7 @@
 	xmlns:cmns-cxtdsg="https://www.omg.org/spec/Commons/ContextualDesignators/"
 	xmlns:cmns-dt="https://www.omg.org/spec/Commons/DatesAndTimes/"
 	xmlns:cmns-qtu="https://www.omg.org/spec/Commons/QuantitiesAndUnits/"
+	xmlns:cmns-rlcmp="https://www.omg.org/spec/Commons/RolesAndCompositions/"
 	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fibo-be-fct-pub="https://spec.edmcouncil.org/fibo/ontology/BE/FunctionalEntities/Publishers/"
 	xmlns:fibo-der-drc-bsc="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/DerivativesBasics/"
@@ -108,7 +110,8 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/ContextualDesignators/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/DatesAndTimes/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/QuantitiesAndUnits/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/20250201/DerivativesContracts/FuturesAndForwards/"/>
+		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/RolesAndCompositions/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/20250301/DerivativesContracts/FuturesAndForwards/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20210301/DerivativesContracts/FuturesAndForwards.rdf version of this ontology was modified to eliminate references to hasContractSize, clean up unnecessary restrictions on Future and Forward, and eliminate the redundant listing class.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20210601/DerivativesContracts/FuturesAndForwards.rdf version of this ontology was modified to move designated contract market to the markets ontology in FBC and revise the definition of a CurrencyFuture to eliminate an unnecessary superclass and restriction due to the release of CurrencyContracts and to revise the definition of a dividend future to reference the listed share that it tracks rather than the dividend itself.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20210701/DerivativesContracts/FuturesAndForwards.rdf version of this ontology was modified to incorporate the concepts that were originally in a separate, very small equity forwards ontology.</skos:changeNote>
@@ -117,6 +120,7 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20230201/DerivativesContracts/FuturesAndForwards.rdf version of this ontology was modified to use the Commons Ontology Library (Commons) rather than the OMG&apos;s Languages, Countries and Codes (LCC), eliminating redundancies in FIBO as appropriate.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20230301/DerivativesContracts/FuturesAndForwards.rdf version of this ontology was modified to use the Commons Ontology Library (Commons) rather than the OMG&apos;s Languages, Countries and Codes (LCC), eliminating redundancies in FIBO as appropriate and to replace content that is now available in the OMG Commons Ontology Library (Commons) v1.1 (FND-380).</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20231201/DerivativesContracts/FuturesAndForwards.rdf version of this ontology was modified to support details of ISO 4914, Financial services - Unique Product Identifier (UPI), (DER-146).</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20250201/DerivativesContracts/FuturesAndForwards.rdf version of this ontology was modified to simplify and refine definitions related to underliers (DER-112).</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 		<cmns-av:copyright>Copyright (c) 2015-2025 EDM Council, Inc.</cmns-av:copyright>
 		<cmns-av:copyright>Copyright (c) 2015-2025 Object Management Group, Inc.</cmns-av:copyright>
@@ -127,7 +131,12 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;hasUnderlier"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-bsk;MixedBasket"/>
+				<owl:someValuesFrom>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&cmns-rlcmp;isPlayedBy"/>
+						<owl:someValuesFrom rdf:resource="&fibo-sec-sec-bsk;MixedBasket"/>
+					</owl:Restriction>
+				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">basket future</rdfs:label>
@@ -140,7 +149,12 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;hasUnderlier"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;Bond"/>
+				<owl:someValuesFrom>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&cmns-rlcmp;isPlayedBy"/>
+						<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-bnd;Bond"/>
+					</owl:Restriction>
+				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">bond future</rdfs:label>
@@ -162,7 +176,12 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;hasUnderlier"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-fi;DebtInstrument"/>
+				<owl:someValuesFrom>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&cmns-rlcmp;isPlayedBy"/>
+						<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-fi;DebtInstrument"/>
+					</owl:Restriction>
+				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">debt instrument future</rdfs:label>
@@ -182,7 +201,12 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;hasUnderlier"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-eq-eq;ListedShare"/>
+				<owl:someValuesFrom>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&cmns-rlcmp;isPlayedBy"/>
+						<owl:someValuesFrom rdf:resource="&fibo-sec-eq-eq;ListedShare"/>
+					</owl:Restriction>
+				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">dividend future</rdfs:label>
@@ -208,20 +232,25 @@ See https://opensource.org/licenses/MIT.</dct:license>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;hasUnderlier"/>
 				<owl:someValuesFrom>
-					<owl:Class>
-						<owl:unionOf rdf:parseType="Collection">
-							<rdf:Description rdf:about="&fibo-ind-mkt-bas;BasketOfEquities">
-							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-sec-eq-eq;ListedShare">
-							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-ind-mkt-bas;EquityIndex">
-							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-der-drc-ff;EquityFuture">
-							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-der-drc-opt;EquityOption">
-							</rdf:Description>
-						</owl:unionOf>
-					</owl:Class>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&cmns-rlcmp;isPlayedBy"/>
+						<owl:someValuesFrom>
+							<owl:Class>
+								<owl:unionOf rdf:parseType="Collection">
+									<rdf:Description rdf:about="&fibo-ind-mkt-bas;BasketOfEquities">
+									</rdf:Description>
+									<rdf:Description rdf:about="&fibo-sec-eq-eq;ListedShare">
+									</rdf:Description>
+									<rdf:Description rdf:about="&fibo-ind-mkt-bas;EquityIndex">
+									</rdf:Description>
+									<rdf:Description rdf:about="&fibo-der-drc-ff;EquityFuture">
+									</rdf:Description>
+									<rdf:Description rdf:about="&fibo-der-drc-opt;EquityOption">
+									</rdf:Description>
+								</owl:unionOf>
+							</owl:Class>
+						</owl:someValuesFrom>
+					</owl:Restriction>
 				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -242,7 +271,12 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;hasUnderlier"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-eq-eq;ListedShare"/>
+				<owl:someValuesFrom>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&cmns-rlcmp;isPlayedBy"/>
+						<owl:someValuesFrom rdf:resource="&fibo-sec-eq-eq;ListedShare"/>
+					</owl:Restriction>
+				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">equity future</rdfs:label>
@@ -278,7 +312,12 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;hasUnderlier"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-fi;Future"/>
+				<owl:someValuesFrom>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&cmns-rlcmp;isPlayedBy"/>
+						<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-fi;Future"/>
+					</owl:Restriction>
+				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">future on future</rdfs:label>
@@ -291,7 +330,12 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;hasUnderlier"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-fi;Option"/>
+				<owl:someValuesFrom>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&cmns-rlcmp;isPlayedBy"/>
+						<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-fi;Option"/>
+					</owl:Restriction>
+				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">future on option</rdfs:label>
@@ -304,7 +348,12 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;hasUnderlier"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-drc-swp;Swap"/>
+				<owl:someValuesFrom>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&cmns-rlcmp;isPlayedBy"/>
+						<owl:someValuesFrom rdf:resource="&fibo-der-drc-swp;Swap"/>
+					</owl:Restriction>
+				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">future on swap</rdfs:label>
@@ -318,14 +367,19 @@ See https://opensource.org/licenses/MIT.</dct:license>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;hasUnderlier"/>
 				<owl:someValuesFrom>
-					<owl:Class>
-						<owl:unionOf rdf:parseType="Collection">
-							<rdf:Description rdf:about="&fibo-ind-ei-ei;EconomicIndicator">
-							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-ind-mkt-bas;ReferenceIndex">
-							</rdf:Description>
-						</owl:unionOf>
-					</owl:Class>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&cmns-rlcmp;isPlayedBy"/>
+						<owl:someValuesFrom>
+							<owl:Class>
+								<owl:unionOf rdf:parseType="Collection">
+									<rdf:Description rdf:about="&fibo-ind-ei-ei;EconomicIndicator">
+									</rdf:Description>
+									<rdf:Description rdf:about="&fibo-ind-mkt-bas;ReferenceIndex">
+									</rdf:Description>
+								</owl:unionOf>
+							</owl:Class>
+						</owl:someValuesFrom>
+					</owl:Restriction>
 				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -341,14 +395,19 @@ See https://opensource.org/licenses/MIT.</dct:license>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;hasUnderlier"/>
 				<owl:someValuesFrom>
-					<owl:Class>
-						<owl:unionOf rdf:parseType="Collection">
-							<rdf:Description rdf:about="&fibo-fbc-fi-fi;CashInstrument">
-							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-sec-dbt-dbti;FixedIncomeSecurity">
-							</rdf:Description>
-						</owl:unionOf>
-					</owl:Class>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&cmns-rlcmp;isPlayedBy"/>
+						<owl:someValuesFrom>
+							<owl:Class>
+								<owl:unionOf rdf:parseType="Collection">
+									<rdf:Description rdf:about="&fibo-fbc-fi-fi;CashInstrument">
+									</rdf:Description>
+									<rdf:Description rdf:about="&fibo-sec-dbt-dbti;FixedIncomeSecurity">
+									</rdf:Description>
+								</owl:unionOf>
+							</owl:Class>
+						</owl:someValuesFrom>
+					</owl:Restriction>
 				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -363,7 +422,12 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;hasUnderlier"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-tstd;MoneyMarketInstrument"/>
+				<owl:someValuesFrom>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&cmns-rlcmp;isPlayedBy"/>
+						<owl:someValuesFrom rdf:resource="&fibo-sec-dbt-tstd;MoneyMarketInstrument"/>
+					</owl:Restriction>
+				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">money market future</rdfs:label>
