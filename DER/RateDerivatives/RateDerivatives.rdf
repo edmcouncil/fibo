@@ -40,7 +40,16 @@
 	<owl:Ontology rdf:about="https://spec.edmcouncil.org/fibo/ontology/DER/RateDerivatives/RateDerivatives/">
 		<rdfs:label>Rate Derivatives Ontology</rdfs:label>
 		<dct:abstract>This ontology defines concepts that are common to derivatives based on variation in some defined variable, such as an economic rate, an interest rate or an index value.</dct:abstract>
-		<dct:license rdf:datatype="&xsd;anyURI">https://opensource.org/licenses/MIT</dct:license>
+		<dct:license>Copyright (c) 2016-2025 EDM Council, Inc.
+Copyright (c) 2016-2025 Object Management Group, Inc.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the &apos;Software&apos;), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+		
+See https://opensource.org/licenses/MIT.</dct:license>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/DerivativesContracts/DerivativesBasics/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/FinancialDates/"/>
@@ -51,15 +60,16 @@
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/InterestRates/InterestRates/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/Baskets/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/AnnotationVocabulary/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/20240901/RateDerivatives/RateDerivatives/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/DER/20250301/RateDerivatives/RateDerivatives/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20180801/RateDerivatives/RateDerivatives.rdf version of this ontology was extended to include foreign exchange rates, forward rate agreements, and revise definitions to be unambiguous and ISO 704 compliant.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20201201/RateDerivatives/RateDerivatives.rdf version of this ontology was modified to eliminate the dependency on NonPhysicalUnderlier, which was redundant.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20210801/RateDerivatives/RateDerivatives.rdf version of this ontology was modified to use the Commons Ontology Library (Commons) Annotation Vocabulary rather than the OMG&apos;s Specification Metadata vocabulary, to move the definition of an underlier and the related property, has underlier, to financial instruments so that these concepts are also available for use in relation to pool-backed securities.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20230201/RateDerivatives/RateDerivatives.rdf version of this ontology was modified to replace content that is now available in the OMG Commons Ontology Library (Commons) v1.1 (FND-380).</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20240101/RateDerivatives/RateDerivatives.rdf version of this ontology was modified to deprecate ForeignExchangeRateObservable after other changes that eliminated its usage in currency derivatives and made it obsolete (DER-143).</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20240901/RateDerivatives/RateDerivatives.rdf version of this ontology was modified to simplify and refine definitions related to underliers (DER-112).</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
-		<cmns-av:copyright>Copyright (c) 2016-2024 EDM Council, Inc.</cmns-av:copyright>
-		<cmns-av:copyright>Copyright (c) 2016-2024 Object Management Group, Inc.</cmns-av:copyright>
+		<cmns-av:copyright>Copyright (c) 2016-2025 EDM Council, Inc.</cmns-av:copyright>
+		<cmns-av:copyright>Copyright (c) 2016-2025 Object Management Group, Inc.</cmns-av:copyright>
 	</owl:Ontology>
 	
 	<owl:Class rdf:about="&fibo-der-rtd-rtd;EconomicRateBasedDerivativeInstrument">
@@ -67,29 +77,26 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;hasUnderlier"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-rtd-rtd;EconomicRateObservable"/>
+				<owl:someValuesFrom>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&cmns-rlcmp;isPlayedBy"/>
+						<owl:someValuesFrom rdf:resource="&fibo-ind-ei-ei;EconomicIndicator"/>
+					</owl:Restriction>
+				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>economic rate-based derivative instrument</rdfs:label>
-		<skos:definition>rate-based derivative whose underlier is an economic indicator</skos:definition>
+		<skos:definition>rate-based derivative whose underlier is some economic indicator</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-rtd-rtd;EconomicRateObservable">
-		<rdfs:subClassOf rdf:resource="&fibo-der-rtd-rtd;RateBasedObservable"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&cmns-rlcmp;isPlayedBy"/>
-				<owl:onClass rdf:resource="&fibo-ind-ei-ei;EconomicIndicator"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">economic rate observable</rdfs:label>
-		<skos:definition>rate-based observable that is specifically an economic indicator</skos:definition>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&fibo-fbc-fi-fi;Underlier"/>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-rtd-rtd;ForeignExchangeRateObservable">
 		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
-		<owl:equivalentClass rdf:resource="&fibo-der-rtd-rtd;RateBasedObservable"/>
+		<owl:equivalentClass rdf:resource="&fibo-fbc-fi-fi;Underlier"/>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-rtd-rtd;ForwardRateAgreement">
@@ -105,7 +112,12 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;hasUnderlier"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-rtd-rtd;InterestRateObservable"/>
+				<owl:someValuesFrom>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&cmns-rlcmp;isPlayedBy"/>
+						<owl:someValuesFrom rdf:resource="&fibo-ind-ir-ir;ReferenceInterestRate"/>
+					</owl:Restriction>
+				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>interest rate derivative instrument</rdfs:label>
@@ -113,15 +125,8 @@
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-rtd-rtd;InterestRateObservable">
-		<rdfs:subClassOf rdf:resource="&fibo-der-rtd-rtd;RateBasedObservable"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&cmns-rlcmp;isPlayedBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-ind-ir-ir;ReferenceInterestRate"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>interest rate observable</rdfs:label>
-		<skos:definition>rate-based observable that is an interest rate, typically a well-known reference interest rate</skos:definition>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&fibo-fbc-fi-fi;Underlier"/>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-rtd-rtd;RateBasedDerivativeInstrument">
@@ -129,37 +134,34 @@
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-fi-fi;hasUnderlier"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-rtd-rtd;RateBasedObservable"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>rate-based derivative instrument</rdfs:label>
-		<skos:definition>derivative instrument whose underlier is a non-physical observable rate</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-rtd-rtd;RateBasedObservable">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-bsc;ObservableValue"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&cmns-rlcmp;isPlayedBy"/>
 				<owl:someValuesFrom>
-					<owl:Class>
-						<owl:unionOf rdf:parseType="Collection">
-							<rdf:Description rdf:about="&fibo-sec-sec-bsk;BasketOfIndices">
-							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-ind-ind-ind;MarketRate">
-							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-ind-ei-ei;EconomicIndicator">
-							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-ind-fx-fx;QuotedExchangeRate">
-							</rdf:Description>
-						</owl:unionOf>
-					</owl:Class>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&cmns-rlcmp;isPlayedBy"/>
+						<owl:someValuesFrom>
+							<owl:Class>
+								<owl:unionOf rdf:parseType="Collection">
+									<rdf:Description rdf:about="&fibo-sec-sec-bsk;BasketOfIndices">
+									</rdf:Description>
+									<rdf:Description rdf:about="&fibo-ind-ind-ind;MarketRate">
+									</rdf:Description>
+									<rdf:Description rdf:about="&fibo-ind-ei-ei;EconomicIndicator">
+									</rdf:Description>
+									<rdf:Description rdf:about="&fibo-ind-fx-fx;QuotedExchangeRate">
+									</rdf:Description>
+								</owl:unionOf>
+							</owl:Class>
+						</owl:someValuesFrom>
+					</owl:Restriction>
 				</owl:someValuesFrom>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label>rate-based observable</rdfs:label>
-		<skos:definition>non-physical observable value, such as an interest rate, market rate, economic indicator, statistical measure calculated over some collection of indices, or some other rate that is readily observable in the world</skos:definition>
-		<cmns-av:explanatoryNote>Rate-based observables interest rates, market rate, economic indicators, statistical measure calculated over some collection of indices, foreign exchange rates and others that are readily observable in the world</cmns-av:explanatoryNote>
+		<rdfs:label>rate-based derivative instrument</rdfs:label>
+		<skos:definition>derivative instrument whose underlier is a non-physical observable value, such as an interest rate, market rate, economic indicator, statistical measure calculated over some collection of indices, or some other rate</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-der-rtd-rtd;RateBasedObservable">
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&fibo-fbc-fi-fi;Underlier"/>
 	</owl:Class>
 
 </rdf:RDF>
