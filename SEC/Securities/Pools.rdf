@@ -42,8 +42,8 @@
 	<owl:Ontology rdf:about="https://spec.edmcouncil.org/fibo/ontology/SEC/Securities/Pools/">
 		<rdfs:label>Securities Pools Ontology</rdfs:label>
 		<dct:abstract>This ontology defines concepts related to high-level securities pools.</dct:abstract>
-		<dct:license>Copyright (c) 2016-2025 EDM Council, Inc.
-Copyright (c) 2018-2025 Object Management Group, Inc.
+		<dct:license>Copyright (c) 2015-2025 EDM Council, Inc.
+Copyright (c) 2015-2025 Object Management Group, Inc.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the &apos;Software&apos;), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -75,15 +75,15 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20230301/Securities/Pools.rdf version of this ontology was modified to replace content that is now available in the OMG Commons Ontology Library (Commons) v1.1 (FND-380).</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20240101/Securities/Pools.rdf version of this ontology was modified to add the notion of a private credit fund and adjust inconsistencies in private equity fund (SEC-203).</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
-		<cmns-av:copyright>Copyright (c) 2016-2025 EDM Council, Inc.</cmns-av:copyright>
-		<cmns-av:copyright>Copyright (c) 2018-2025 Object Management Group, Inc.</cmns-av:copyright>
+		<cmns-av:copyright>Copyright (c) 2015-2025 EDM Council, Inc.</cmns-av:copyright>
+		<cmns-av:copyright>Copyright (c) 2015-2025 Object Management Group, Inc.</cmns-av:copyright>
 	</owl:Ontology>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-pls;DebtPool">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-pls;InstrumentPool"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&cmns-col;hasConstituent"/>
+				<owl:onProperty rdf:resource="&cmns-col;hasPart"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-fi;DebtInstrument"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -102,7 +102,7 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&cmns-col;hasConstituent"/>
+				<owl:onProperty rdf:resource="&cmns-col;hasPart"/>
 				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-pls;ManagedInvestment"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -114,7 +114,7 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-pls;Pool"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&cmns-col;hasConstituent"/>
+				<owl:onProperty rdf:resource="&cmns-col;hasPart"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-fi;FinancialInstrument"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -168,7 +168,7 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<rdfs:subClassOf rdf:resource="&cmns-col;Collection"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&cmns-col;hasConstituent"/>
+				<owl:onProperty rdf:resource="&cmns-col;hasPart"/>
 				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-pls;PoolConstituent"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -182,22 +182,16 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<rdfs:label>pool constituent</rdfs:label>
 		<owl:equivalentClass>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&cmns-col;isConstituentOf"/>
+				<owl:onProperty rdf:resource="&cmns-col;isPartOf"/>
 				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-pls;Pool"/>
 			</owl:Restriction>
 		</owl:equivalentClass>
 		<skos:definition>component of a pool</skos:definition>
-		<cmns-av:explanatoryNote>The pool may be a pool of almost anything, brought together for some purpose. It differs from a less formal collection in that there are facts defined about the constituents and the proportions of these in the pool. Modeling note: A constituent of a pool may have facts which vary over time (such as balances) but the basic nature of the thing as a member of the pool remains the same, along with some facts which vary over time but which have a value as of the time they become members of the pool.</cmns-av:explanatoryNote>
+		<cmns-av:explanatoryNote>A pool may consist of almost anything brought together for some purpose. It differs from a less formal collection in that there are typically facts defined about the members of the pool and potentially regarding the proportions of those members in the pool. Pool membership may change over time, and certain facts about the pool may also vary over time. However, the basic nature of something as a member of the pool is static while that membership holds.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-pls;PooledFund">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-pls;Pool"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&cmns-col;hasConstituent"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-cur;AmountOfMoney"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label>pooled fund</rdfs:label>
 		<rdfs:seeAlso rdf:resource="https://www.sec.gov/resources-small-businesses/capital-raising-building-blocks/private-funds"/>
 		<skos:definition>pool of funds that a group of investors combines for common benefit</skos:definition>
@@ -218,26 +212,17 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-pls;InstrumentPool"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&cmns-col;hasConstituent"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-pls;SecuritiesPoolConstituent"/>
+				<owl:onProperty rdf:resource="&cmns-col;hasPart"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-fi;Security"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>securities pool</rdfs:label>
-		<skos:definition>a pool of securities organized for the purpose of issuing notes against those securities</skos:definition>
+		<skos:definition>pool of securities organized for the purpose of issuing notes against those securities</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-pls;SecuritiesPoolConstituent">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;Security"/>
-		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-pls;PoolConstituent"/>
-		<rdfs:label>securities pool constituent</rdfs:label>
-		<owl:equivalentClass>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&cmns-col;isConstituentOf"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-pls;SecuritiesPool"/>
-			</owl:Restriction>
-		</owl:equivalentClass>
-		<skos:definition>security that is included in a securities pool</skos:definition>
-		<cmns-av:explanatoryNote>This is a pool of any kind of security, and not therefore necessarily a pool of debt, though usually it is debt securities which are pooled.</cmns-av:explanatoryNote>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&fibo-sec-sec-pls;PoolConstituent"/>
 	</owl:Class>
 
 </rdf:RDF>
