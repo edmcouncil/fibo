@@ -50,7 +50,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-		
+
 		See https://opensource.org/licenses/MIT.</dct:license>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LegalPersons/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"/>
@@ -73,22 +73,31 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20220501/Securities/Pools.rdf version of the ontology was modified to use the Commons Ontology Library (Commons) Annotation Vocabulary rather than the OMG&apos;s Specification Metadata vocabulary.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20230201/Securities/Pools.rdf version of this ontology was modified to use the Commons Ontology Library (Commons) rather than the OMG&apos;s Languages, Countries and Codes (LCC), eliminating redundancies in FIBO as appropriate.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20230301/Securities/Pools.rdf version of this ontology was modified to replace content that is now available in the OMG Commons Ontology Library (Commons) v1.1 (FND-380).</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20240101/Securities/Pools.rdf version of the ontology was modified to replace additional content that is now available in the OMG Commons Ontology Library (Commons) v1.2 (FND-389).</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20240101/Securities/Pools.rdf version of this ontology was modified to replace additional content that is now available in the OMG Commons Ontology Library (Commons) v1.2 (FND-389), and to add the notion of a private credit fund and adjust inconsistencies in private equity fund (SEC-203).</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 		<cmns-av:copyright>Copyright (c) 2016-2025 EDM Council, Inc.</cmns-av:copyright>
 		<cmns-av:copyright>Copyright (c) 2018-2025 Object Management Group, Inc.</cmns-av:copyright>
 	</owl:Ontology>
 	
+	<owl:Class rdf:about="&fibo-sec-sec-pls;CollectiveInvestmentVehicle">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-pls;PooledFund"/>
+		<rdfs:label xml:lang="en">collective investment vehicle</rdfs:label>
+		<skos:definition xml:lang="en">assets pooled by investors whose share capital remains separate from the assets of the vehicle</skos:definition>
+		<cmns-av:adaptedFrom xml:lang="en">ISO 10962:2019 Securities and related financial instruments - Classification of financial instruments (CFI) code, Fourth edition, October 2019</cmns-av:adaptedFrom>
+		<cmns-av:explanatoryNote xml:lang="en">A fund is an entity created to pool money from multiple investors - often referred to as limited partners. Each investor makes an investment in the fund by purchasing an interest in the fund entity, and the adviser uses that money to make investments on behalf of the fund.</cmns-av:explanatoryNote>
+		<cmns-av:explanatoryNote xml:lang="en">Collective investment vehicles are typically organized and operated by management companies, banks, or trust companies. Shares or units are issued in the form of unit trusts, mutual funds, or other similar contracts. Common kinds of funds include pension funds, insurance funds, foundations, and endowments. Such pools are often invested and professionally managed, including investment pools, umbrella pools, share class pools, etc.</cmns-av:explanatoryNote>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-sec-sec-pls;DebtPool">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-pls;InstrumentPool"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&cmns-col;hasConstituent"/>
+				<owl:onProperty rdf:resource="&cmns-col;hasPart"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-fi;DebtInstrument"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>debt pool</rdfs:label>
-		<skos:definition>a pool consisting of debt instruments, such as bonds, loans or mortgages</skos:definition>
+		<skos:definition>pool consisting of debt instruments, such as bonds, loans or mortgages</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-pls;FundFamily">
@@ -102,19 +111,19 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&cmns-col;hasConstituent"/>
+				<owl:onProperty rdf:resource="&cmns-col;hasPart"/>
 				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-pls;ManagedInvestment"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>fund family</rdfs:label>
-		<skos:definition>a collection of managed investments that are all managed by a single investment institution</skos:definition>
+		<skos:definition>collection of managed investments that are all managed by a single investment institution</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-pls;InstrumentPool">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-pls;Pool"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&cmns-col;hasConstituent"/>
+				<owl:onProperty rdf:resource="&cmns-col;hasPart"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-fi;FinancialInstrument"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -152,7 +161,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-pls;ManagedInvestment">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-pls;PooledFund"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-pls;CollectiveInvestmentVehicle"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&cmns-org;isManagedBy"/>
@@ -168,12 +177,12 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<rdfs:subClassOf rdf:resource="&cmns-col;Collection"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&cmns-col;hasConstituent"/>
+				<owl:onProperty rdf:resource="&cmns-col;hasPart"/>
 				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-pls;PoolConstituent"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>pool</rdfs:label>
-		<skos:definition>a combination of resources for a common purpose or benefit</skos:definition>
+		<skos:definition>combination of resources for a common purpose or benefit</skos:definition>
 		<cmns-av:adaptedFrom>Barron&apos;s Dictionary of Finance and Investment Terms, Ninth Edition, 2014</cmns-av:adaptedFrom>
 	</owl:Class>
 	
@@ -182,51 +191,47 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<rdfs:label>pool constituent</rdfs:label>
 		<owl:equivalentClass>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&cmns-col;isConstituentOf"/>
+				<owl:onProperty rdf:resource="&cmns-col;isPartOf"/>
 				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-pls;Pool"/>
 			</owl:Restriction>
 		</owl:equivalentClass>
 		<skos:definition>component of a pool</skos:definition>
-		<cmns-av:explanatoryNote>The pool may be a pool of almost anything, brought together for some purpose. It differs from a less formal collection in that there are facts defined about the constituents and the proportions of these in the pool. Modeling note: A constituent of a pool may have facts which vary over time (such as balances) but the basic nature of the thing as a member of the pool remains the same, along with some facts which vary over time but which have a value as of the time they become members of the pool.</cmns-av:explanatoryNote>
+		<cmns-av:explanatoryNote>A pool may consist of almost anything brought together for some purpose. It differs from a less formal collection in that there are typically facts defined about the members of the pool and potentially regarding the proportions of those members in the pool. Pool membership may change over time, and certain facts about the pool may also vary over time. However, the basic nature of something as a member of the pool is static while that membership holds.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-pls;PooledFund">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-pls;Pool"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&cmns-col;hasConstituent"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-cur;AmountOfMoney"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
 		<rdfs:label>pooled fund</rdfs:label>
-		<skos:definition>a pool of funds that a group of investors combines for common benefit</skos:definition>
+		<rdfs:seeAlso rdf:resource="https://www.sec.gov/resources-small-businesses/capital-raising-building-blocks/private-funds"/>
+		<skos:definition>pool of funds that a group of investors combines for common benefit</skos:definition>
 		<skos:example>An investment club pools the funds of its members, giving them the opportunity to share in a portfolio offering greater diversification and the hope of a better return on their money than they could get individually.</skos:example>
+		<cmns-av:explanatoryNote>The US Securities and Exchange Commission describes a fund as an entity created to pool money from multiple investors.</cmns-av:explanatoryNote>
+		<cmns-av:synonym>fund</cmns-av:synonym>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-sec-pls;PrivateFund">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-pls;ManagedInvestment"/>
+		<rdfs:label>private fund</rdfs:label>
+		<rdfs:seeAlso rdf:resource="https://www.sec.gov/resources-small-businesses/capital-raising-building-blocks/private-funds"/>
+		<skos:definition>managed investment that cannot offer securities to the public</skos:definition>
+		<cmns-av:explanatoryNote>Private funds are not required to be registered or regulated as investment companies under the U.S. federal securities laws. They raise capital from investors through exempt offerings, which means the offering must fall within an exemption from registration under the Securities Act of 1933.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-pls;SecuritiesPool">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-pls;InstrumentPool"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&cmns-col;hasConstituent"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-pls;SecuritiesPoolConstituent"/>
+				<owl:onProperty rdf:resource="&cmns-col;hasPart"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-fi-fi;Security"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>securities pool</rdfs:label>
-		<skos:definition>a pool of securities organized for the purpose of issuing notes against those securities</skos:definition>
+		<skos:definition>pool of securities organized for the purpose of issuing notes against those securities</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-sec-pls;SecuritiesPoolConstituent">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;Security"/>
-		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-pls;PoolConstituent"/>
-		<rdfs:label>securities pool constituent</rdfs:label>
-		<owl:equivalentClass>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&cmns-col;isConstituentOf"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-pls;SecuritiesPool"/>
-			</owl:Restriction>
-		</owl:equivalentClass>
-		<skos:definition>security that is included in a securities pool</skos:definition>
-		<cmns-av:explanatoryNote>This is a pool of any kind of security, and not therefore necessarily a pool of debt, though usually it is debt securities which are pooled.</cmns-av:explanatoryNote>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&fibo-sec-sec-pls;PoolConstituent"/>
 	</owl:Class>
 
 </rdf:RDF>

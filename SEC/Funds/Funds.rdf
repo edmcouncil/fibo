@@ -56,13 +56,13 @@
 		<dct:contributor>Wells Fargo Bank, N.A.</dct:contributor>
 		<dct:license>Copyright (c) 2018-2025 EDM Council, Inc.
 Copyright (c) 2018-2025 Object Management Group, Inc.
-		
+
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the &apos;Software&apos;), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-		
+
 		See https://opensource.org/licenses/MIT.</dct:license>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/FormalBusinessOrganizations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/BE/Trusts/Trusts/"/>
@@ -87,7 +87,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20220501/Funds/Funds.rdf version of this ontology was modified to address text formatting hygiene issues.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20220801/Funds/Funds.rdf version of the ontology was modified to use the Commons Ontology Library (Commons) Annotation Vocabulary rather than the OMG&apos;s Specification Metadata vocabulary.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20230201/Funds/Funds.rdf version of this ontology was modified to use the Commons Ontology Library (Commons) rather than the OMG&apos;s Languages, Countries and Codes (LCC), eliminating redundancies in FIBO as appropriate.</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20230301/Funds/Funds.rdf version of the ontology was modified to replace additional content that is now available in the OMG Commons Ontology Library (Commons) v1.2 (FND-389).</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20230301/Funds/Funds.rdf version of this ontology was modified to replace additional content that is now available in the OMG Commons Ontology Library (Commons) v1.2 (FND-389), and to add the notion of a private credit fund and adjust inconsistencies in private equity fund (SEC-203).</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 		<cmns-av:copyright>Copyright (c) 2018-2025 EDM Council, Inc.</cmns-av:copyright>
 		<cmns-av:copyright>Copyright (c) 2018-2025 Object Management Group, Inc.</cmns-av:copyright>
@@ -107,17 +107,8 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-fund-fund;CollectiveInvestmentVehicle">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-pls;PooledFund"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-fund-fund;hasLegalStructure"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-fund-fund;LegalFundStructure"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">collective investment vehicle</rdfs:label>
-		<skos:definition xml:lang="en">assets pooled by investors whose share capital remains separate from the assets of the vehicle</skos:definition>
-		<cmns-av:adaptedFrom xml:lang="en">ISO 10962:2019 Securities and related financial instruments - Classification of financial instruments (CFI) code, Fourth edition, October 2019</cmns-av:adaptedFrom>
-		<cmns-av:explanatoryNote xml:lang="en">Collective investment vehicles are typically organized and operated by management companies, banks, or trust companies. Shares or units are issued in the form of unit trusts, mutual funds, or other similar contracts. Common kinds of funds include pension funds, insurance funds, foundations, and endowments. Such pools are often invested and professionally managed, including investment pools, umbrella pools, share class pools, etc.</cmns-av:explanatoryNote>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&fibo-sec-sec-pls;CollectiveInvestmentVehicle"/>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-fund-fund;ExchangeTradedFund">
@@ -140,7 +131,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-fund-fund;hasSubFund"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-fund-fund;CollectiveInvestmentVehicle"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-pls;CollectiveInvestmentVehicle"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">fund of funds</rdfs:label>
@@ -159,7 +150,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&cmns-col;isConstituentOf"/>
+				<owl:onProperty rdf:resource="&cmns-col;isPartOf"/>
 				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-pls;PooledFund"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -227,11 +218,22 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<cmns-av:explanatoryNote xml:lang="en">A pension fund is a common asset pool meant to generate stable growth over a long-term investment horizon.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-sec-fund-fund;PrivateCreditFund">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-pls;PrivateFund"/>
+		<rdfs:label xml:lang="en">private credit fund</rdfs:label>
+		<owl:disjointWith rdf:resource="&fibo-sec-fund-fund;PrivateEquityFund"/>
+		<skos:definition xml:lang="en">investment vehicle that provides loans or other forms of credit to companies, typically outside of the traditional banking system</skos:definition>
+		<cmns-av:explanatoryNote xml:lang="en">These funds are managed by asset managers, private equity firms or specialized lenders and cater to institutional investors, high-net-worth individuals, and family offices. The kinds of loans they provide include senior secured loans, mezzanine debt, unitranche loans, and special situations financing through direct lending to mid-sized companies. These funds are typically illiquid, with long investment horizons (5–10 years). They generally provide higher returns than traditional fixed-income instruments, but with greater risk due to borrower default potential. Key features of private credit funds include:
+- Loans are held on the fund&apos;s balance sheet
+- Returns come primarily from interest income and potential capital appreciation
+- Often involve direct negotiations and customized loan terms</cmns-av:explanatoryNote>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-sec-fund-fund;PrivateEquityFund">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-pls;ManagedInvestment"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-pls;PrivateFund"/>
 		<rdfs:label xml:lang="en">private equity fund</rdfs:label>
 		<skos:definition xml:lang="en">investment fund used for making investments in various equity (and to a lesser extent debt) securities according to an investment strategy associated with private equity</skos:definition>
-		<cmns-av:abbreviation xml:lang="en">ETF</cmns-av:abbreviation>
+		<cmns-av:abbreviation xml:lang="en">PE fund</cmns-av:abbreviation>
 		<cmns-av:adaptedFrom xml:lang="en">ISO 10962:2019 Securities and related financial instruments - Classification of financial instruments (CFI) code, Fourth edition, October 2019</cmns-av:adaptedFrom>
 		<cmns-av:explanatoryNote xml:lang="en">Private equity funds are typically structured as limited partnerships or limited liability companies, wherein investors are limited partners, and the fund is managed by one or more general partners. It is composed of investors and funds that invest directly in private companies, or that engage in buyouts of public companies, resulting in the delisting of the public equity.</cmns-av:explanatoryNote>
 	</owl:Class>
@@ -252,7 +254,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-fund-fund;SovereignWealthFund">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-fund-fund;CollectiveInvestmentVehicle"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-pls;CollectiveInvestmentVehicle"/>
 		<rdfs:label xml:lang="en">sovereign wealth fund</rdfs:label>
 		<skos:definition xml:lang="en">state-owned investment fund that consists of pools of money derived from a country&apos;s reserves</skos:definition>
 		<cmns-av:explanatoryNote xml:lang="en">Sovereign wealth funds include the International Monetary Fund, whose corresponding legal entity is a polity.</cmns-av:explanatoryNote>
@@ -282,6 +284,14 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<skos:definition xml:lang="en">indicates whether the fund is an open-end/closed-end fund</skos:definition>
 	</owl:DatatypeProperty>
 	
+	<owl:DatatypeProperty rdf:about="&fibo-sec-fund-fund;isPrivate">
+		<rdfs:label xml:lang="en">is private</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-sec-sec-pls;PooledFund"/>
+		<rdfs:range rdf:resource="&xsd;boolean"/>
+		<skos:definition xml:lang="en">indicates that the fund does not offer its securities to the general public</skos:definition>
+		<cmns-av:explanatoryNote xml:lang="en">In the U.S., private funds are exempt from certain regulations under the Investment Company Act of 1940. Common types include venture capital funds, private equity funds, and some hedge funds. They often target illiquid assets or use aggressive strategies, offering flexibility compared to public funds.</cmns-av:explanatoryNote>
+	</owl:DatatypeProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-sec-fund-fund;isSubFundOf">
 		<rdfs:subPropertyOf rdf:resource="&cmns-col;isPartOf"/>
 		<rdfs:label xml:lang="en">is sub-fund of</rdfs:label>
@@ -291,8 +301,17 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<skos:definition xml:lang="en">relates a pooled fund to a parent fund</skos:definition>
 	</owl:ObjectProperty>
 	
+	<owl:Class rdf:about="&fibo-sec-sec-pls;CollectiveInvestmentVehicle">
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-fund-fund;hasLegalStructure"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-fund-fund;LegalFundStructure"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-sec-sec-pls;ManagedInvestment">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-fund-fund;CollectiveInvestmentVehicle"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-pls;CollectiveInvestmentVehicle"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-fund-fund;isOpenEnded"/>
@@ -308,6 +327,12 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-acc-aeq;FinancialAsset"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-fund-fund;isPrivate"/>
+				<owl:allValuesFrom rdf:resource="&xsd;boolean"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fbc-fct-fse;hasDateEstablished"/>
 				<owl:someValuesFrom rdf:resource="&cmns-dt;ExplicitDate"/>
 			</owl:Restriction>
@@ -320,12 +345,21 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&cmns-col;hasConstituent"/>
+				<owl:onProperty rdf:resource="&cmns-col;hasPart"/>
 				<owl:someValuesFrom rdf:resource="&fibo-sec-fund-fund;FundUnit"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<cmns-av:explanatoryNote xml:lang="en">A fund can be established for any purpose, such as a municipality setting aside money for a construction project, monies designated to endow a university chair or for scholarships, or funds set aside by insurance companies to settle claims.</cmns-av:explanatoryNote>
 		<cmns-av:synonym xml:lang="en">fund</cmns-av:synonym>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-sec-pls;PrivateFund">
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-sec-fund-fund;isPrivate"/>
+				<owl:hasValue rdf:datatype="&xsd;boolean">true</owl:hasValue>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 	</owl:Class>
 
 </rdf:RDF>
