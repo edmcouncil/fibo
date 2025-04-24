@@ -10,7 +10,9 @@
 	<!ENTITY fibo-fbc-dae-cre "https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/CreditEvents/">
 	<!ENTITY fibo-fbc-dae-dbt "https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/">
 	<!ENTITY fibo-fnd-acc-cur "https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/">
+	<!ENTITY fibo-fnd-agr-agr "https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Agreements/">
 	<!ENTITY fibo-fnd-agr-ctr "https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/">
+	<!ENTITY fibo-fnd-arr-asmt "https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Assessments/">
 	<!ENTITY fibo-fnd-arr-doc "https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Documents/">
 	<!ENTITY fibo-fnd-dt-oc "https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/Occurrences/">
 	<!ENTITY fibo-fnd-gao-obj "https://spec.edmcouncil.org/fibo/ontology/FND/GoalsAndObjectives/Objectives/">
@@ -34,7 +36,9 @@
 	xmlns:fibo-fbc-dae-cre="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/CreditEvents/"
 	xmlns:fibo-fbc-dae-dbt="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"
 	xmlns:fibo-fnd-acc-cur="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"
+	xmlns:fibo-fnd-agr-agr="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Agreements/"
 	xmlns:fibo-fnd-agr-ctr="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"
+	xmlns:fibo-fnd-arr-asmt="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Assessments/"
 	xmlns:fibo-fnd-arr-doc="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Documents/"
 	xmlns:fibo-fnd-dt-oc="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/Occurrences/"
 	xmlns:fibo-fnd-gao-obj="https://spec.edmcouncil.org/fibo/ontology/FND/GoalsAndObjectives/Objectives/"
@@ -64,7 +68,9 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/CreditEvents/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Agreements/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Assessments/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Documents/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/Occurrences/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/GoalsAndObjectives/Objectives/"/>
@@ -100,14 +106,14 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;hasEstimatedValue"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
+				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;isCollateralizedBy"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-dae-dbt;Collateral"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fbc-dae-dbt;isCollateralizedBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fbc-dae-dbt;Collateral"/>
+				<owl:onProperty rdf:resource="&fibo-fnd-arr-asmt;hasEstimatedValue"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -122,6 +128,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-ma;CreditSupportBeneficiary">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-agr;Beneficiary"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;Counterparty"/>
 		<rdfs:label xml:lang="en">credit support beneficiary</rdfs:label>
 	</owl:Class>
@@ -141,13 +148,13 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-ma;CrossDefaultProvisions">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-ma;MasterAgreementContractualCommitment"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractualCommitment"/>
 		<rdfs:label xml:lang="en">cross default provisions</rdfs:label>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-ma;CurrencySpecificationTerm">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-ma;MasterAgreementElement"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractualDefinition"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractualElement"/>
 		<rdfs:label xml:lang="en">currency specification term</rdfs:label>
 		<skos:definition xml:lang="en">Term defining the currency or currencies for payments.</skos:definition>
 		<skos:editorialNote xml:lang="en">is found in general terms in example Master Agreement.</skos:editorialNote>
@@ -172,7 +179,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;hasContractualElement"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-drc-ma;MasterAgreementElement"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-agr-ctr;ContractualElement"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">derivative transaction master agreement</rdfs:label>
@@ -180,7 +187,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<skos:example xml:lang="en">Sample preamble to one of these: &quot;EXAMPLE BANK, a Michigan banking corporation and SAMPLECOMPANY US, INC. a Delaware corporation have entered and/or anticipate entering into one or more transactions (each a &quot;Transaction&quot;) that are or will be governed by this Master Agreement, which includes the schedule (the &quot;Schedule&quot;), and the documents and other confirming evidence (each a &quot;Confirmation&quot;) exchanged between the parties confirming those Transactions. &quot;</skos:example>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-drc-ma;EarlyTermination">
+	<owl:Class rdf:about="&fibo-der-drc-ma;EarlyTerminationProvision">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;TerminationProvision"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
@@ -200,7 +207,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 				<owl:someValuesFrom rdf:resource="&cmns-dt;ExplicitDate"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label>early termination</rdfs:label>
+		<rdfs:label>early termination provision</rdfs:label>
 		<skos:definition>termination of an agreement for any reason prior to its expiration date</skos:definition>
 		<cmns-av:explanatoryNote>Early termination may be automatically triggered by an event of default with respect to any contract obligation, due to corporate action, or for other reasons.  An early termination date may be calculated per the terms of the agreement or specified explicitly at the time the termination event occurs.</cmns-av:explanatoryNote>
 	</owl:Class>
@@ -219,9 +226,9 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<cmns-av:explanatoryNote xml:lang="en">General term of which Change of Account is an example.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-drc-ma;MasterAgreementConditionsPrecedent">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-ma;MasterAgreementElement"/>
+	<owl:Class rdf:about="&fibo-der-drc-ma;MasterAgreementConditionPrecedent">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ConditionPrecedent"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractualElement"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-der-drc-ma;isPredicatedOn"/>
@@ -242,41 +249,15 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<skos:example xml:lang="en">Example text: &quot;Each obligation of each party under Section 2(a)(i) is subject to (1) the condition precedent that no Event of Default or Potential Event of Default with respect to the other party has occurred and is continuing, (2) the condition precedent that no Early Termination Date in respect of the relevant Transaction has occurred or been effectively designated and (3) each other applicable condition precedent specified in this Agreement. &quot; In the above, the Obligations defined under Section 2(a)(i) of the Master Agrement is the obligation to make each payment or delivery defined in a Confirmation for a transaction carried out under this Master Agreement.</skos:example>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-drc-ma;MasterAgreementContractualCommitment">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-ma;MasterAgreementElement"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractualCommitment"/>
-		<rdfs:label xml:lang="en">master agreement contractual commitment</rdfs:label>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-drc-ma;MasterAgreementEarlyTerminationProvisions">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-ma;MasterAgreementTerminationProvision"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;definesTermsFor"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-drc-ma;MasterAgreementEarlyTerminationRight"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">master agreement early termination provisions</rdfs:label>
-		<skos:definition xml:lang="en">Terms and Conditions around early termination of the Master Agreement.</skos:definition>
-		<cmns-av:explanatoryNote xml:lang="en">Terms here include: Additional Terminaton Event Affected Parties</cmns-av:explanatoryNote>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-der-drc-ma;MasterAgreementEarlyTerminationRight">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-law-lcap;ContractualRight"/>
 		<rdfs:label xml:lang="en">master agreement early termination right</rdfs:label>
-		<skos:definition xml:lang="en">a contractual right of a party to the master agreement to terminate the agreement early</skos:definition>
+		<skos:definition xml:lang="en">contractual right of a party to the master agreement to terminate the agreement early</skos:definition>
 		<cmns-av:explanatoryNote xml:lang="en">This generally arises from some Default Event on the part of the other party.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-drc-ma;MasterAgreementElement">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractualElement"/>
-		<rdfs:label xml:lang="en">master agreement element</rdfs:label>
-		<skos:definition xml:lang="en">a contract element specific to a master agreement governing derivatives transactions between contract parties</skos:definition>
-		<skos:editorialNote xml:lang="en">This is included so that all OTC Master Agreement Contract Terms Sets may be included under this one set. Terms are also described as specializations of the sorts of terms that they are (e.g. conditions Precedent, Commitments Terms and so on).</skos:editorialNote>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-der-drc-ma;MasterAgreementObligationTerms">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-ma;MasterAgreementContractualCommitment"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractualCommitment"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;definesTermsFor"/>
@@ -286,14 +267,6 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<rdfs:label xml:lang="en">master agreement obligations terms</rdfs:label>
 		<skos:definition xml:lang="en">contract terms setting out the obligations on a party to the agreement</skos:definition>
 		<skos:editorialNote xml:lang="en">The obligations are modeled in detail as Obligations. There is little merit in setting out the terms themselves as a model of textual elements - these terms are bext understood in relation to the Obligations which they represent, which are modeled in detail.</skos:editorialNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-drc-ma;MasterAgreementRepresentation">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractualElement"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;Representation"/>
-		<rdfs:label xml:lang="en">master agreement representation</rdfs:label>
-		<skos:definition xml:lang="en">a representation made by one of the parties included in the master agreement</skos:definition>
-		<cmns-av:explanatoryNote xml:lang="en">These typically include: Basic Representations - Status of the organization - Powers of the organization - Absence of conflicts - Existence of the relevant consents - Binding nature of the Agreement. Absence of default and similar events Absence of litigation Accuracy of information Tax representations (withholding; notifications) - Payer - Payee Representations as to the Credit Support Agreement Representations as to regulatory matters</cmns-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-ma;MasterAgreementRightToTerminationFollowingDefaultEvent">
@@ -328,22 +301,8 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<skos:definition xml:lang="en">&quot;Termination Event&quot; means an Illegality, a Tax Event or a Tax Event Upon Merger or, if specified to be applicable, a Credit Event Upon Merger or an Additional Termination Event.</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-drc-ma;MasterAgreementTerminationProvision">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-ma;MasterAgreementElement"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;TerminationProvision"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-der-drc-ma;describesTreatmentOf"/>
-				<owl:someValuesFrom rdf:resource="&fibo-der-drc-ma;MasterAgreementTerminationEvent"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">master agreement termination provision</rdfs:label>
-		<skos:definition xml:lang="en">a provision in the master agreement, setting out the conditions, consequences etc. of termination of the agreement</skos:definition>
-		<cmns-av:explanatoryNote xml:lang="en">Early Termination is a specific set of terms within this, that are specific to this kind of Master Agreement.</cmns-av:explanatoryNote>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-der-drc-ma;NettingTerms">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-ma;MasterAgreementContractualCommitment"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractualCommitment"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;definesTermsFor"/>
@@ -478,7 +437,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 	
 	<owl:ObjectProperty rdf:about="&fibo-der-drc-ma;describesTreatmentOf">
 		<rdfs:label xml:lang="en">describes treatment of</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-drc-ma;MasterAgreementTerminationProvision"/>
+		<rdfs:domain rdf:resource="&fibo-fnd-agr-ctr;TerminationProvision"/>
 		<rdfs:range rdf:resource="&fibo-der-drc-ma;MasterAgreementTerminationEvent"/>
 	</owl:ObjectProperty>
 	
@@ -491,7 +450,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 	
 	<owl:DatatypeProperty rdf:about="&fibo-der-drc-ma;effectOfDesignation">
 		<rdfs:label xml:lang="en">effect of designation</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-drc-ma;MasterAgreementEarlyTerminationProvisions"/>
+		<rdfs:domain rdf:resource="&fibo-der-drc-ma;EarlyTerminationProvision"/>
 		<rdfs:range rdf:resource="&xsd;string"/>
 		<skos:definition xml:lang="en">Description of the effect of designation of this right.</skos:definition>
 	</owl:DatatypeProperty>
@@ -525,7 +484,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 	
 	<owl:DatatypeProperty rdf:about="&fibo-der-drc-ma;inDefault">
 		<rdfs:label xml:lang="en">in default</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-drc-ma;MasterAgreementConditionsPrecedent"/>
+		<rdfs:domain rdf:resource="&fibo-der-drc-ma;MasterAgreementConditionPrecedent"/>
 		<rdfs:range rdf:resource="&xsd;boolean"/>
 		<skos:definition xml:lang="en">The condition that some default has occurred in respect to the other party. Further notes: Conditions precedent typically include that no default has occurred, so this is typically or always &quot;no&quot;. Sample text (of which this term is a part): &quot; the condition precedent that no Event of Default or Potential Event of Default with respect to the other party has occurred and is continuing, &quot;</skos:definition>
 	</owl:DatatypeProperty>
@@ -590,7 +549,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 	
 	<owl:DatatypeProperty rdf:about="&fibo-der-drc-ma;ongoingDefault">
 		<rdfs:label xml:lang="en">ongoing default</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-drc-ma;MasterAgreementConditionsPrecedent"/>
+		<rdfs:domain rdf:resource="&fibo-der-drc-ma;MasterAgreementConditionPrecedent"/>
 		<rdfs:range rdf:resource="&xsd;boolean"/>
 		<skos:definition xml:lang="en">The condition that some default or potential default is ongoing in respect to the other party. Further notes: Conditions precedent typically include that no default is ongoing, so this is typically or always &quot;no&quot;. Sample text (of which this term is a part): &quot; the condition precedent that no Event of Default or Potential Event of Default with respect to the other party has occurred and is continuing, &quot;</skos:definition>
 	</owl:DatatypeProperty>
@@ -611,7 +570,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 	
 	<owl:DatatypeProperty rdf:about="&fibo-der-drc-ma;paymentDateCalculationRequirement">
 		<rdfs:label xml:lang="en">payment date calculation requirement</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-drc-ma;MasterAgreementEarlyTerminationProvisions"/>
+		<rdfs:domain rdf:resource="&fibo-der-drc-ma;EarlyTerminationProvision"/>
 		<rdfs:range rdf:resource="&xsd;string"/>
 		<skos:definition xml:lang="en">Provisions for calculation of Payment dates in the event of this Early Termination.</skos:definition>
 	</owl:DatatypeProperty>
@@ -632,7 +591,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 	
 	<owl:DatatypeProperty rdf:about="&fibo-der-drc-ma;potentialDefault">
 		<rdfs:label xml:lang="en">potential default</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-drc-ma;MasterAgreementConditionsPrecedent"/>
+		<rdfs:domain rdf:resource="&fibo-der-drc-ma;MasterAgreementConditionPrecedent"/>
 		<rdfs:range rdf:resource="&xsd;boolean"/>
 		<skos:definition xml:lang="en">The condition that some potential default has occurred in respect to the other party. Further notes: Conditions precedent typically include that no potential default has occurred, so this is typically or always &quot;no&quot;. Sample text (of which this term is a part): &quot; the condition precedent that no Event of Default or Potential Event of Default with respect to the other party has occurred and is continuing, &quot;</skos:definition>
 	</owl:DatatypeProperty>
@@ -653,7 +612,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 	
 	<owl:DatatypeProperty rdf:about="&fibo-der-drc-ma;statementCalculationRequirements">
 		<rdfs:label xml:lang="en">statement calculation requirements</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-drc-ma;MasterAgreementEarlyTerminationProvisions"/>
+		<rdfs:domain rdf:resource="&fibo-der-drc-ma;EarlyTerminationProvision"/>
 		<rdfs:range rdf:resource="&xsd;string"/>
 		<skos:definition xml:lang="en">Provisions for calculation of statements and statement amounts in the event of this Early Termination.</skos:definition>
 	</owl:DatatypeProperty>
@@ -674,9 +633,19 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 	
 	<owl:DatatypeProperty rdf:about="&fibo-der-drc-ma;transactionEarlyTerminationDate">
 		<rdfs:label xml:lang="en">transaction early termination date</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-drc-ma;MasterAgreementConditionsPrecedent"/>
+		<rdfs:domain rdf:resource="&fibo-der-drc-ma;MasterAgreementConditionPrecedent"/>
 		<rdfs:range rdf:resource="&xsd;boolean"/>
 		<skos:definition xml:lang="en">The condition that some early termination date as been defined in respect to the transaction carried out under this Master Agreement. Further notes: note that this is in respect of a specific transaction transacted under the Master Agreement, so that the condition precedent for the obligation in respect of that specific transaction, is that this early transaction termation has not taken place in respect of this same transaction. Conditions precedent typically include this is not the case, so this is typically or always &quot;no&quot;. Sample text: &quot;the condition precedent that no Early Termination Date in respect of the relevant Transaction has occurred or been effectively designated.&quot;</skos:definition>
 	</owl:DatatypeProperty>
+	
+	<owl:Class rdf:about="&fibo-fnd-agr-ctr;TerminationProvision">
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-der-drc-ma;describesTreatmentOf"/>
+				<owl:someValuesFrom rdf:resource="&fibo-der-drc-ma;MasterAgreementTerminationEvent"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<cmns-av:explanatoryNote xml:lang="en">Early Termination is a specific set of terms within this, that are specific to this kind of Master Agreement.</cmns-av:explanatoryNote>
+	</owl:Class>
 
 </rdf:RDF>
