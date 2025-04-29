@@ -109,7 +109,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-agr-ctr;isSubordinateTo"/>
-				<owl:onClass rdf:resource="&fibo-der-drc-ma;DerivativeTransactionMasterAgreement"/>
+				<owl:onClass rdf:resource="&fibo-der-drc-ma;DerivativeMasterAgreement"/>
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -162,11 +162,12 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<cmns-av:explanatoryNote xml:lang="en">The beneficiary actually holds the collateral and has the right to ask for additional collateral if its value falls below the threshold agreed upon in the credit support agreement.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-der-drc-ma;DerivativeTransactionMasterAgreement">
+	<owl:Class rdf:about="&fibo-der-drc-ma;DerivativeMasterAgreement">
 		<rdfs:subClassOf rdf:resource="&fibo-fbc-dae-dbt;CreditAgreement"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;MasterAgreement"/>
-		<rdfs:label xml:lang="en">derivative transaction master agreement</rdfs:label>
+		<rdfs:label xml:lang="en">derivative master agreement</rdfs:label>
 		<skos:definition xml:lang="en">master agreement covering derivatives transactions to be carried out between the parties to this contract</skos:definition>
+		<skos:example xml:lang="en">Related to conditions precedent that may apply: &quot;Each obligation of each party under Section 2(a)(i) is subject to (1) the condition precedent that no Event of Default or Potential Event of Default with respect to the other party has occurred and is continuing, (2) the condition precedent that no Early Termination Date in respect of the relevant Transaction has occurred or been effectively designated and (3) each other applicable condition precedent specified in this Agreement. &quot; In the above, the Obligations defined under Section 2(a)(i) of the Master Agrement is the obligation to make each payment or delivery defined in a Confirmation for a transaction carried out under this Master Agreement.</skos:example>
 		<skos:example xml:lang="en">Sample preamble to one of these: &quot;EXAMPLE BANK, a Michigan banking corporation and SAMPLECOMPANY US, INC. a Delaware corporation have entered and/or anticipate entering into one or more transactions (each a &quot;Transaction&quot;) that are or will be governed by this Master Agreement, which includes the schedule (the &quot;Schedule&quot;), and the documents and other confirming evidence (each a &quot;Confirmation&quot;) exchanged between the parties confirming those Transactions. &quot;</skos:example>
 	</owl:Class>
 	
@@ -194,28 +195,6 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<rdfs:label>early termination provision</rdfs:label>
 		<skos:definition>termination of an agreement for any reason prior to its expiration date</skos:definition>
 		<cmns-av:explanatoryNote>Early termination may be automatically triggered by an event of default with respect to any contract obligation, due to corporate action, or for other reasons.  An early termination date may be calculated per the terms of the agreement or specified explicitly at the time the termination event occurs.</cmns-av:explanatoryNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-der-drc-ma;MasterAgreementConditionPrecedent">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ConditionPrecedent"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-law-lcap;isPredicatedOn"/>
-				<owl:someValuesFrom>
-					<owl:Class>
-						<owl:unionOf rdf:parseType="Collection">
-							<rdf:Description rdf:about="&fibo-fnd-law-lcap;DeliveryObligation">
-							</rdf:Description>
-							<rdf:Description rdf:about="&fibo-fnd-pas-psch;PaymentObligation">
-							</rdf:Description>
-						</owl:unionOf>
-					</owl:Class>
-				</owl:someValuesFrom>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">master agreement condition precedent</rdfs:label>
-		<skos:definition xml:lang="en">condition precedent on payment or delivery on a transaction transacted under this Master Agreement.</skos:definition>
-		<skos:example xml:lang="en">Example text: &quot;Each obligation of each party under Section 2(a)(i) is subject to (1) the condition precedent that no Event of Default or Potential Event of Default with respect to the other party has occurred and is continuing, (2) the condition precedent that no Early Termination Date in respect of the relevant Transaction has occurred or been effectively designated and (3) each other applicable condition precedent specified in this Agreement. &quot; In the above, the Obligations defined under Section 2(a)(i) of the Master Agrement is the obligation to make each payment or delivery defined in a Confirmation for a transaction carried out under this Master Agreement.</skos:example>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-ma;MasterAgreementEarlyTerminationRight">
@@ -406,7 +385,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 	
 	<owl:DatatypeProperty rdf:about="&fibo-der-drc-ma;inDefault">
 		<rdfs:label xml:lang="en">in default</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-drc-ma;MasterAgreementConditionPrecedent"/>
+		<rdfs:domain rdf:resource="&fibo-fnd-agr-ctr;ConditionPrecedent"/>
 		<rdfs:range rdf:resource="&xsd;boolean"/>
 		<skos:definition xml:lang="en">The condition that some default has occurred in respect to the other party. Further notes: Conditions precedent typically include that no default has occurred, so this is typically or always &quot;no&quot;. Sample text (of which this term is a part): &quot; the condition precedent that no Event of Default or Potential Event of Default with respect to the other party has occurred and is continuing, &quot;</skos:definition>
 	</owl:DatatypeProperty>
@@ -452,7 +431,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 	
 	<owl:DatatypeProperty rdf:about="&fibo-der-drc-ma;ongoingDefault">
 		<rdfs:label xml:lang="en">ongoing default</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-drc-ma;MasterAgreementConditionPrecedent"/>
+		<rdfs:domain rdf:resource="&fibo-fnd-agr-ctr;ConditionPrecedent"/>
 		<rdfs:range rdf:resource="&xsd;boolean"/>
 		<skos:definition xml:lang="en">The condition that some default or potential default is ongoing in respect to the other party. Further notes: Conditions precedent typically include that no default is ongoing, so this is typically or always &quot;no&quot;. Sample text (of which this term is a part): &quot; the condition precedent that no Event of Default or Potential Event of Default with respect to the other party has occurred and is continuing, &quot;</skos:definition>
 	</owl:DatatypeProperty>
@@ -487,7 +466,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 	
 	<owl:DatatypeProperty rdf:about="&fibo-der-drc-ma;potentialDefault">
 		<rdfs:label xml:lang="en">potential default</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-der-drc-ma;MasterAgreementConditionPrecedent"/>
+		<rdfs:domain rdf:resource="&fibo-fnd-agr-ctr;ConditionPrecedent"/>
 		<rdfs:range rdf:resource="&xsd;boolean"/>
 		<skos:definition xml:lang="en">The condition that some potential default has occurred in respect to the other party. Further notes: Conditions precedent typically include that no potential default has occurred, so this is typically or always &quot;no&quot;. Sample text (of which this term is a part): &quot; the condition precedent that no Event of Default or Potential Event of Default with respect to the other party has occurred and is continuing, &quot;</skos:definition>
 	</owl:DatatypeProperty>
