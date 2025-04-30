@@ -72,7 +72,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/PartiesAndSituations/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/RegulatoryAgencies/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/RolesAndCompositions/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20250301/Law/LegalCapacity/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20250401/Law/LegalCapacity/"/>
 		<skos:changeNote>The http://www.omg.org/spec/FIBO/Foundations/20130601/Law/LegalCapacity.owl version of the ontology was revised in advance of the September 2013 New Brunswick, NJ meeting, as follows:
 	(1) to use slash style URI/IRIss (also called 303 URIs, vs. hash style) as required to support server side processing 
 	(2) to use version-independent IRIs for all definitions internally as opposed to version-specific IRIs
@@ -94,11 +94,30 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20230101/Law/LegalCapacity.rdf version of the ontology was modified to move the property, &apos;is conferred on&apos; from Relations to the Legal Capacity ontology and to use the Commons Ontology Library (Commons) rather than the OMG&apos;s Languages, Countries and Codes (LCC), eliminating redundancies in FIBO as appropriate.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20230301/Law/LegalCapacity.rdf version of the ontology was modified to replace concepts from several FIBO FND ontologies with their counterparts added to the Commons Ontology Library (Commons) v1.1.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20231201/Law/LegalCapacity.rdf version of the ontology was modified to replace additional concepts from several FIBO FND ontologies with their counterparts added to the Commons Ontology Library (Commons) v1.1.</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20240101/Law/LegalCapacity.rdf version of the ontology was modified to replace additional content that is now available in the OMG Commons Ontology Library (Commons) v1.2 (FND-389). Note that this ontology will be removed from FIBO when the deprecated elements herein are eliminated (after a minimum of 6 months).</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20240101/Law/LegalCapacity.rdf version of the ontology was modified to replace additional content that is now available in the OMG Commons Ontology Library (Commons) v1.2 (FND-389).</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20250301/Law/LegalCapacity.rdf version of the ontology was modified to add contractual obligations needed for certain agreements, including some master agreements, and to link a condition precedent to the clause of a contract on which it depends (DER-55).</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 		<cmns-av:copyright>Copyright (c) 2013-2025 EDM Council, Inc.</cmns-av:copyright>
 		<cmns-av:copyright>Copyright (c) 2013-2025 Object Management Group, Inc.</cmns-av:copyright>
 	</owl:Ontology>
+	
+	<owl:Class rdf:about="&fibo-fnd-agr-ctr;ConditionPrecedent">
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-law-lcap;isPredicatedOn"/>
+				<owl:someValuesFrom>
+					<owl:Class>
+						<owl:unionOf rdf:parseType="Collection">
+							<rdf:Description rdf:about="&fibo-fnd-agr-ctr;ContractualCommitment">
+							</rdf:Description>
+							<rdf:Description rdf:about="&fibo-fnd-law-lcap;ContractualObligation">
+							</rdf:Description>
+						</owl:unionOf>
+					</owl:Class>
+				</owl:someValuesFrom>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-law-lcap;Claim">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-law-lcap;LegalConstruct"/>
@@ -166,7 +185,8 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>contractual obligation</rdfs:label>
-		<skos:definition>obligation or duty that is specified in and imposed by a contract</skos:definition>
+		<skos:definition>legally binding obligation that arises from the terms of a contract</skos:definition>
+		<skos:explanatoryNote>Contractual obligations require a party to perform or refrain from performing specific actions, and failure to meet an obligation can result in legal consequences.</skos:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-law-lcap;ContractualOption">
@@ -199,6 +219,14 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<skos:definition>institutionalized and legal power inherent in a particular job, function, or position that is meant to enable its holder to successfully carry out his or her responsibilities, where such power has been delegated through some formal means</skos:definition>
 		<skos:scopeNote>This specifically means the authority to make legally binding commitments.</skos:scopeNote>
 		<cmns-av:explanatoryNote>This is always accompanied by an equal responsibility for one&apos;s actions or a failure to act.</cmns-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-law-lcap;DeliveryObligation">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-law-lcap;ContingentObligation"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-law-lcap;LegalObligation"/>
+		<rdfs:label xml:lang="en">delivery obligation</rdfs:label>
+		<skos:definition xml:lang="en">obligation to deliver something in order to satisfy a claim or debt</skos:definition>
+		<cmns-av:explanatoryNote xml:lang="en">A delivery obligation is the responsibility of one party to deliver goods, services, instruments, money, or other specified items to another party, typically as outlined in an agreement. Failure to do so may result in breach of contract if the obligation is specified as such, which may have further legal ramifications.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-law-lcap;Duty">
@@ -423,6 +451,14 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<skos:definition>the legal capacity to pursue a litigation action in law</skos:definition>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-fnd-law-lcap;NotificationObligation">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-law-lcap;ContingentObligation"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-law-lcap;LegalObligation"/>
+		<rdfs:label xml:lang="en">notification obligation</rdfs:label>
+		<skos:definition xml:lang="en">requirement for one party to formally inform another party (or parties) about specific events, actions, or changes as outlined in the agreement</skos:definition>
+		<cmns-av:explanatoryNote xml:lang="en">Common triggering events include breaches, changes in circumstances, delays, or other kinds of events that may have a material impact on the agreement.</cmns-av:explanatoryNote>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-fnd-law-lcap;Policy">
 		<rdfs:subClassOf>
 			<owl:Restriction>
@@ -547,6 +583,24 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<rdfs:range rdf:resource="&cmns-pts;PartyRole"/>
 		<owl:inverseOf rdf:resource="&fibo-fnd-law-lcap;licenses"/>
 		<skos:definition>indicates the party that has issued a particular license to some other party</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-law-lcap;isPredicatedOn">
+		<rdfs:subPropertyOf rdf:resource="&cmns-doc;isSpecifiedIn"/>
+		<rdfs:subPropertyOf rdf:resource="&cmns-doc;refersTo"/>
+		<rdfs:label xml:lang="en">is predicated on</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fnd-agr-ctr;ConditionPrecedent"/>
+		<rdfs:range>
+			<owl:Class>
+				<owl:unionOf rdf:parseType="Collection">
+					<rdf:Description rdf:about="&fibo-fnd-agr-ctr;ContractualCommitment">
+					</rdf:Description>
+					<rdf:Description rdf:about="&fibo-fnd-law-lcap;ContractualObligation">
+					</rdf:Description>
+				</owl:unionOf>
+			</owl:Class>
+		</rdfs:range>
+		<skos:definition>depends on an assumption or requirement stated in</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-law-lcap;licenses">

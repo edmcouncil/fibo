@@ -84,7 +84,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/PartiesAndSituations/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/RegulatoryAgencies/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/RolesAndCompositions/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20250301/Agreements/Contracts/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20250401/Agreements/Contracts/"/>
 		<skos:changeNote>The http://www.omg.org/spec/FIBO/Foundations/20130601/Agreements/Contracts.owl version of the ontology was revised in advance of the September 2013 New Brunswick, NJ meeting, as follows:
 		(1) to use slash style URI/IRIss (also called 303 URIs, vs. hash style) as required to support server side processing 
 		(2) to use version-independent IRIs for all definitions internally as opposed to version-specific IRIs
@@ -112,6 +112,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20240101/Agreements/Contracts.rdf version of the ontology was modified to better integrate the parties to a contract with the latest patterns (FBC-284).</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20240501/Agreements/Contracts.rdf version of the ontology was modified to add an optional date of issuance to written contract, which may or may not be the same as the effective date (FBC-322), to add a general notion of collateral agreement (LOAN-168), and to add provisions for disclosures and use of proceeds (LOAN-169).</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20241101/Agreements/Contracts.rdf version of the ontology was modified to replace additional content that is now available in the OMG Commons Ontology Library (Commons) v1.2 (FND-389).</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20250301/Agreements/Contracts.rdf version of the ontology was modified to link a condition precedent to the contract or clause of a contract on which it depends (DER-55).</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 		<cmns-av:copyright>Copyright (c) 2013-2025 EDM Council, Inc.</cmns-av:copyright>
 		<cmns-av:copyright>Copyright (c) 2013-2025 Object Management Group, Inc.</cmns-av:copyright>
@@ -266,6 +267,12 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 	
 	<owl:Class rdf:about="&fibo-fnd-agr-ctr;ContractDocument">
 		<rdfs:subClassOf rdf:resource="&cmns-doc;LegalDocument"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-doc;records"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-agr-ctr;Contract"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label>contract document</rdfs:label>
 		<skos:definition>legal document that records the formal terms and conditions of some contract</skos:definition>
 		<skos:scopeNote>Written here does not necessarily mean a paper document but includes situations in which the contract is expressed electronically, whether as an electronic representation of a formal document such as in PDF form or as an electronic message, provided in the latter case that the message is expressly given formal contractual standing, for example as indicated in a separate covering agreement between the parties.</skos:scopeNote>
@@ -330,7 +337,6 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-agr-ctr;ContractualCommitment">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-agr;MutualCommitment"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractualElement"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
@@ -345,8 +351,8 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>contractual commitment</rdfs:label>
-		<skos:definition>provision specifying something that the contracting parties agree to</skos:definition>
-		<skos:scopeNote>Contractual commitments include general conditions which are common to all types of contracts, such as general and special arrangements, provisions, requirements, rules, rights and obligations, specifications, and standards that form an integral part of an agreement or contract, as well as special conditions which are peculiar to a specific contract (such as, contract change conditions, payment conditions, price variation clauses, penalties).</skos:scopeNote>
+		<skos:definition>provision specifying something that the contracting parties agree to, i.e., a promise or pledge made by one of the parties to perform some action or fulfill some duty</skos:definition>
+		<skos:scopeNote>Contractual commitments include general conditions which are common to all types of contracts, such as general and special arrangements, provisions, requirements, rules, rights and obligations, specifications, and standards that form an integral part of an agreement or contract, as well as special conditions which are peculiar to a specific contract (such as, contract change conditions, payment conditions, price variation clauses, penalties). Such a commitment indicates an intention or willingness to do something, which may not be legally binding, for example, to negotiate in good faith.</skos:scopeNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-agr-ctr;ContractualDefinition">
