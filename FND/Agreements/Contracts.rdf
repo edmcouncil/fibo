@@ -113,7 +113,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20240501/Agreements/Contracts.rdf version of the ontology was modified to add an optional date of issuance to written contract, which may or may not be the same as the effective date (FBC-322), to add a general notion of collateral agreement (LOAN-168), and to add provisions for disclosures and use of proceeds (LOAN-169).</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20241101/Agreements/Contracts.rdf version of the ontology was modified to replace additional content that is now available in the OMG Commons Ontology Library (Commons) v1.2 (FND-389).</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20250301/Agreements/Contracts.rdf version of the ontology was modified to link a condition precedent to the contract or clause of a contract on which it depends (DER-55).</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20250401/Agreements/Contracts.rdf version of the ontology was modified to link a beneficiary to the contract to which they are a counterparty (DER-55a).</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20250401/Agreements/Contracts.rdf version of the ontology was modified to link a beneficiary to the contract to which they are a counterparty, and add netting provisions (DER-55a).</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 		<cmns-av:copyright>Copyright (c) 2013-2025 EDM Council, Inc.</cmns-av:copyright>
 		<cmns-av:copyright>Copyright (c) 2013-2025 Object Management Group, Inc.</cmns-av:copyright>
@@ -177,6 +177,12 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<cmns-av:explanatoryNote>Note that while the assignor may divest themselves of some rights, that assignment does not necessarily eliminate performance obligations of the assignor to the third party. Characteristics that are important to understand with respect to an assignment include the circumstances in which the assignor remains obligated and any remedies available if the assignor does not perform.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-fnd-agr-ctr;BilateralNettingProvision">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;NettingProvision"/>
+		<rdfs:label xml:lang="en">bilateral netting provision</rdfs:label>
+		<skos:definition xml:lang="en">netting provision that ...</skos:definition>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-fnd-agr-ctr;BreachOfContract">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-dt-oc;OccurrenceKind"/>
 		<rdfs:subClassOf>
@@ -213,6 +219,14 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<rdfs:label xml:lang="en">breach of covenant</rdfs:label>
 		<skos:definition xml:lang="en">classifier of events representing breaking a promise specified in a contract to do or not to do something, without a legitimate excuse</skos:definition>
 		<cmns-av:explanatoryNote xml:lang="en">In the case of a breach of a covenant or warranty, the contract remains binding and damages only are recoverable for the breach, whereas a breach of contract typically invalidates the entire contract.</cmns-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-agr-ctr;CloseOutNettingProvision">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;NettingProvision"/>
+		<rdfs:label xml:lang="en">close-out netting provision</rdfs:label>
+		<owl:disjointWith rdf:resource="&fibo-fnd-agr-ctr;SettlementNettingProvision"/>
+		<skos:definition xml:lang="en">netting provision that ...</skos:definition>
+		<cmns-av:synonym>close out netting provision</cmns-av:synonym>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-agr-ctr;CollateralAgreement">
@@ -446,6 +460,13 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<skos:definition>schedule of milestone events, observations, or other occurrences and the associated dates and/or times when they will be done</skos:definition>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-fnd-agr-ctr;MultilateralNettingProvision">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;NettingProvision"/>
+		<rdfs:label xml:lang="en">multilateral netting provision</rdfs:label>
+		<owl:disjointWith rdf:resource="&fibo-fnd-agr-ctr;BilateralNettingProvision"/>
+		<skos:definition xml:lang="en">netting provision that ...</skos:definition>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-fnd-agr-ctr;MutualContractualAgreement">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-agr;MutualAgreement"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;Contract"/>
@@ -454,6 +475,12 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<skos:definition>contract between named parties whose individual rights and obligations are not transferable to another party without prior written permission</skos:definition>
 		<cmns-av:explanatoryNote>A mutual contractual agreement involves an exchange of a promises in which the promises made by each party represent considerations supporting the promises of the other party(ies).</cmns-av:explanatoryNote>
 		<cmns-av:synonym>bilateral contract</cmns-av:synonym>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-agr-ctr;NettingProvision">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractualCommitment"/>
+		<rdfs:label xml:lang="en">netting provision</rdfs:label>
+		<skos:definition xml:lang="en">contractual element that ...</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-agr-ctr;NonBindingTerm">
@@ -470,11 +497,27 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<cmns-av:explanatoryNote>Novation is different from assignment in the following ways: (1) novation is a consensual transfer of contractual rights and obligations, while an assignment can transfer only obligations and does not require the consent of the benefiting party, and (2) novation terminates the original contract, but assignment does not.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-fnd-agr-ctr;NovationNettingProvision">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;NettingProvision"/>
+		<rdfs:label xml:lang="en">novation netting provision</rdfs:label>
+		<skos:definition xml:lang="en">contractual element that specifies what should be done with respect to netting when a given contract is replaced with another</skos:definition>
+		<cmns-av:explanatoryNote>Novation netting contemplates that for each value date and for each currency, the parties agree that all existing contracts will be canceled (discharged and extinguished) and simultaneously replaced by a new contract that aggregates and nets all of the payment obligations of the original contracts. Novation netting occurs immediately when a nettable transaction is entered into.</cmns-av:explanatoryNote>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-fnd-agr-ctr;Representation">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractualCommitment"/>
 		<rdfs:label xml:lang="en">representation</rdfs:label>
 		<skos:definition xml:lang="en">contractual element that is a statement made by a party to the contract, before or at the time of making the contract, in regard to some fact, circumstance, or state of affairs pertinent to the contract, which the counterparty(ies) rely on, or is influential in bringing about the contract</skos:definition>
 		<cmns-av:explanatoryNote>A party may later claim misrepresentation if a false representation has been made. They may be entitled to rescind the contract, which means that the contract would be set aside and the receiving party may also be entitled to damages to put them back into the position they would have been had the contract never been entered into.</cmns-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-agr-ctr;SettlementNettingProvision">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;NettingProvision"/>
+		<rdfs:label xml:lang="en">settlement netting provision</rdfs:label>
+		<rdfs:seeAlso rdf:resource="https://www.newyorkfed.org/medialibrary/microsites/fmlg/files/Millerspresentationonnetting.pdf"/>
+		<skos:definition xml:lang="en">netting provision that specifies the way in which on a given payment date, each party will aggregate the amounts of a currency to be delivered by it, and only the difference in the aggregate amounts will be delivered by the party with the larger aggregate obligation</skos:definition>
+		<cmns-av:explanatoryNote>Payment netting is defined as the arrangement between two counterparties to net all payments in a single currency owed between them on a given value date. For each value date and for each traded currency, the parties will aggregate and net all payments owed between them to arrive at a single currency obligation for each currency payable between the parties. The parties calculate net payments at some pre-agreed time, typically the day before value date (although it is possible to agree net payments on the value date, depending on the currency and time zone).</cmns-av:explanatoryNote>
+		<cmns-av:synonym>payment netting provision</cmns-av:synonym>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-agr-ctr;TermSheet">
