@@ -91,7 +91,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/QuantitiesAndUnits/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/RegulatoryAgencies/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/RolesAndCompositions/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/20250301/FinancialInstruments/FinancialInstruments/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/20250501/FinancialInstruments/FinancialInstruments/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20150801/FinancialInstruments/FinancialInstruments/ version of this ontology was modified to reflect issue resolutions detailed in the FIBO FBC 1.0 FTF report.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20160801/FinancialInstruments/FinancialInstruments/ version of this ontology was modified for the FIBO 2.0 RFC, including minor bug fixes.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20180801/FinancialInstruments/FinancialInstruments/ version of this ontology was modified as a part of organizational hierarchy simplification, to add maturity-related properties, and to add exempt security.</skos:changeNote>
@@ -118,6 +118,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20241001/FinancialInstruments/FinancialInstruments.rdf version of this ontology was modified to add a restriction related to initial exchange date.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20241201/FinancialInstruments/FinancialInstruments.rdf version of this ontology was modified to unify and simplify the notion of an underlier across FIBO (DER-112).</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20250201/FinancialInstruments/FinancialInstruments.rdf version of the ontology was modified to replace additional content that is now available in the OMG Commons Ontology Library (Commons) v1.2 (FND-389).</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FBC/20250301/FinancialInstruments/FinancialInstruments.rdf version of the ontology was modified to add calculation agent, which may appear at a higher level than derivatives (DER-55).</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 		<cmns-av:copyright>Copyright (c) 2015-2025 EDM Council, Inc.</cmns-av:copyright>
 		<cmns-av:copyright>Copyright (c) 2015-2025 Object Management Group, Inc.</cmns-av:copyright>
@@ -134,6 +135,13 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 	
 	<owl:Class rdf:about="&fibo-fbc-dae-dbt;PromissoryNote">
 		<owl:equivalentClass rdf:resource="&fibo-fbc-fi-fi;PromissoryNote"/>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-fi-fi;CalculationAgent">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;ThirdPartyAgent"/>
+		<rdfs:label xml:lang="en">calculation agent</rdfs:label>
+		<skos:definition xml:lang="en">party that is responsible for determining the value of an instrument and in some cases, determines how much the parties owe one another</skos:definition>
+		<cmns-av:explanatoryNote xml:lang="en">A calculation agent is an entity responsible for performing calculations and determinations outlined in financial agreements, often related to derivatives or structured products. They ensure accuracy and timeliness in calculating payments, interest rates, or other terms based on predefined formulas and market conditions. The agent can establish the price for a given instrument and may act as its guarantor and issuer. If the counterparty in a derivative transaction is a broker-dealer, then the broker-dealer will often act as the calculation agent.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-fi-fi;CashInstrument">
@@ -501,6 +509,13 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<rdfs:range rdf:resource="&fibo-fnd-acc-cur;Currency"/>
 		<skos:definition xml:lang="en">indicates the currency purchased with respect to a currency or related instrument</skos:definition>
 		<cmns-av:explanatoryNote xml:lang="en">Note that the buying and selling currencies could be the same under certain circumstances.</cmns-av:explanatoryNote>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fbc-fi-fi;hasCalculationAgent">
+		<rdfs:subPropertyOf rdf:resource="&cmns-org;isProvidedBy"/>
+		<rdfs:label xml:lang="en">has calculation agent</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fbc-fi-fi;CalculationAgent"/>
+		<skos:definition>indicates a party (role) responsible for determining the value of an instrument</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-fi-fi;hasCommodityValueAsOfExecutionDate">

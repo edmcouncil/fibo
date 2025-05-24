@@ -36,7 +36,7 @@
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/PartiesAndSituations/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/RolesAndCompositions/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20240101/Agreements/Agreements/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20250501/Agreements/Agreements/"/>
 		<skos:changeNote>The http://www.omg.org/spec/FIBO/Foundations/20130601/Agreements/Agreements.owl version of the ontology was revised in advance of the September 2013 New Brunswick, NJ meeting, as follows:
    (1) to use slash style URI/IRIss (also called 303 URIs, vs. hash style) as required to support server side processing 
    (2) to use version-independent IRIs for all definitions internally as opposed to version-specific IRIs
@@ -50,6 +50,7 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20180801/Agreements/Agreement.rdf version of the ontology was modified to eliminate duplication of concepts in LCC.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20200301/Agreements/Agreement.rdf version of the ontology was modified to use the Commons Ontology Library (Commons) Annotation Vocabulary rather than the OMG&apos;s Specification Metadata vocabulary, clean up definitions to conform with ISO 704, add a missing restriction to mutual commitment, and eliminate an unnecessary reference to LCC.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20230101/Agreements/Agreement.rdf version of the ontology was modified to replace content that is now available in the OMG Commons Ontology Library (Commons) v1.1 (FND-380).</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20240101/Agreements/Agreement.rdf version of the ontology was modified to add bilateral and multilateral agreement definitions (DER-55).</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 		<cmns-av:copyright>Copyright (c) 2013-2024 EDM Council, Inc.</cmns-av:copyright>
 		<cmns-av:copyright>Copyright (c) 2013-2024 Object Management Group, Inc.</cmns-av:copyright>
@@ -94,6 +95,19 @@
 		<skos:definition>party that receives some benefit or advantage or profits from something</skos:definition>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-fnd-agr-agr;BilateralAgreement">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-agr;Agreement"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-pts;hasPartyRole"/>
+				<owl:onClass rdf:resource="&cmns-pts;PartyRole"/>
+				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">2</owl:qualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">bilateral agreement</rdfs:label>
+		<skos:definition>agreement where two parties commit to perform specific actions or obligations towards each other</skos:definition>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-fnd-agr-agr;Commitment">
 		<rdfs:subClassOf rdf:resource="&cmns-pts;Situation"/>
 		<rdfs:label xml:lang="en">commitment</rdfs:label>
@@ -112,6 +126,21 @@
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-agr;UnilateralCommitment"/>
 		<rdfs:label>individual unilateral commitment</rdfs:label>
 		<skos:definition>commitment made by some party unilaterally to another specific party</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-agr-agr;MultilateralAgreement">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-agr;Agreement"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-pts;hasPartyRole"/>
+				<owl:onClass rdf:resource="&cmns-pts;PartyRole"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">3</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">multilateral agreement</rdfs:label>
+		<owl:disjointWith rdf:resource="&fibo-fnd-agr-agr;BilateralAgreement"/>
+		<skos:definition>agreements that involve or include multiple parties</skos:definition>
+		<cmns-av:explanatoryNote>Multilateral agreements are characterized by the participation and commitment of multiple countries or parties to achieve a common objective or address a shared issue.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-agr-agr;MutualAgreement">
@@ -187,7 +216,7 @@
 	<owl:Class rdf:about="&fibo-fnd-agr-agr;UnilateralCommitment">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-agr;Commitment"/>
 		<rdfs:label>unilateral commitment</rdfs:label>
-		<skos:definition>commitment made by one party without reference any other the party to which the commitment is made</skos:definition>
+		<skos:definition>commitment made by one party without reference to any other the party to which the commitment is made</skos:definition>
 	</owl:Class>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-agr-agr;hasObligation">
