@@ -116,7 +116,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20240501/Agreements/Contracts.rdf version of the ontology was modified to add an optional date of issuance to written contract, which may or may not be the same as the effective date (FBC-322), to add a general notion of collateral agreement (LOAN-168), and to add provisions for disclosures and use of proceeds (LOAN-169).</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20241101/Agreements/Contracts.rdf version of the ontology was modified to replace additional content that is now available in the OMG Commons Ontology Library (Commons) v1.2 (FND-389).</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20250301/Agreements/Contracts.rdf version of the ontology was modified to link a condition precedent to the contract or clause of a contract on which it depends (DER-55).</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20250401/Agreements/Contracts.rdf version of the ontology was modified to link a beneficiary to the contract to which they are a counterparty, and add netting provisions (DER-55a).</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20250401/Agreements/Contracts.rdf version of the ontology was modified to link a beneficiary to the contract to which they are a counterparty, add netting provisions (DER-55a), and to eliminate certain constructs that are redundant and will never be materialized to reduce the number of nodes required for various contract-related constructs (FND-391).</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 		<cmns-av:copyright>Copyright (c) 2013-2025 EDM Council, Inc.</cmns-av:copyright>
 		<cmns-av:copyright>Copyright (c) 2013-2025 Object Management Group, Inc.</cmns-av:copyright>
@@ -182,7 +182,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 	
 	<owl:Class rdf:about="&fibo-fnd-agr-ctr;BilateralContract">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-agr;BilateralAgreement"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;Contract"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;WrittenContract"/>
 		<rdfs:label>bilateral contract</rdfs:label>
 		<skos:definition>contract where two parties commit to perform specific actions or obligations towards each other</skos:definition>
 	</owl:Class>
@@ -449,7 +449,6 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-agr-ctr;MasterAgreement">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;MutualContractualAgreement"/>
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;WrittenContract"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
@@ -492,7 +491,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 	
 	<owl:Class rdf:about="&fibo-fnd-agr-ctr;MultilateralContract">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-agr;MultilateralAgreement"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;Contract"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;WrittenContract"/>
 		<rdfs:label>multilateral contract</rdfs:label>
 		<skos:definition>contract where multiple parties (i.e., more than two) commit to perform specific actions or obligations towards each other</skos:definition>
 	</owl:Class>
@@ -512,11 +511,8 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-agr-ctr;MutualContractualAgreement">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-agr;MutualAgreement"/>
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;Contract"/>
-		<rdfs:label>mutual contractual agreement</rdfs:label>
-		<owl:disjointWith rdf:resource="&fibo-fnd-agr-ctr;UnilateralContract"/>
-		<skos:definition>contract between named parties whose individual rights and obligations are not transferable to another party without prior written permission</skos:definition>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&fibo-fnd-agr-ctr;Contract"/>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-agr-ctr;NettingProvision">
@@ -530,6 +526,13 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;ContractualElement"/>
 		<rdfs:label>non-binding term</rdfs:label>
 		<skos:definition>contractual element that is not legally binding on any party to the agreement</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-agr-ctr;NonTransferableContract">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;WrittenContract"/>
+		<rdfs:label>non-transferable contract</rdfs:label>
+		<owl:disjointWith rdf:resource="&fibo-fnd-agr-ctr;TransferableContract"/>
+		<skos:definition>contract between whose individual rights and obligations are not transferable to another party without prior written permission</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-agr-ctr;NovateableContract">
@@ -606,7 +609,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-agr-ctr;UnilateralContract">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;Contract"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-agr-ctr;WrittenContract"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;confers"/>
@@ -614,7 +617,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>unilateral contract</rdfs:label>
-		<skos:definition>contract in which one party makes an express promise without securing a reciprocal agreement from the other party(ies)</skos:definition>
+		<skos:definition>contract in which one party makes an offer that can only be accepted through performance rather than a return promise</skos:definition>
 		<cmns-av:explanatoryNote>In a unilateral, or one-sided, contract, one party, known as the offeror, makes a promise in exchange for an act (or abstention from acting) by another party, known as the offeree. If the offeree acts on the offeror&apos;s promise, the offeror is legally obligated to fulfill the contract, but an offeree cannot be forced to act (or not act), because no return promise has been made to the offeror. After an offeree has performed, only one enforceable promise exists, that of the offeror.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
