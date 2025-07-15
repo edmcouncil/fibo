@@ -99,7 +99,7 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20230801/DerivativesContracts/RightsAndWarrants.rdf version of this ontology was modified to replace content that is now available in the OMG Commons Ontology Library (Commons) v1.1 (FND-380).</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20231201/DerivativesContracts/RightsAndWarrants.rdf version of this ontology was modified to replace additional content that is now available in the OMG Commons Ontology Library (Commons) v1.1 (FND-380).</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20240101/DerivativesContracts/RightsAndWarrants.rdf version of this ontology was modified to simplify and refine definitions related to underliers (DER-112).</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20250301/DerivativesContracts/RightsAndWarrants.rdf version of the ontology was modified to align the definition of &apos;bond with warrant&apos; with the CFI definition (SEC-207).</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/DER/20250301/DerivativesContracts/RightsAndWarrants.rdf version of the ontology was modified to align the definition of &apos;bond with warrant&apos; with the CFI definition (SEC-207) and to adjust the class hierarchy and add definitions related to certain specific kinds of warrants (DER-150).</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 		<cmns-av:copyright>Copyright (c) 2015-2025 EDM Council, Inc.</cmns-av:copyright>
 		<cmns-av:copyright>Copyright (c) 2015-2025 Object Management Group, Inc.</cmns-av:copyright>
@@ -202,6 +202,8 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<rdfs:label xml:lang="en">call put warrant</rdfs:label>
 		<skos:definition xml:lang="en">warrant that either does not specify call or put features, or that explicitly includes both a call and put feature</skos:definition>
 		<cmns-av:adaptedFrom xml:lang="en">ISO 10962, Securities and related financial instruments - Classification of financial instruments (CFI) code, Fourth Edition, 2019.</cmns-av:adaptedFrom>
+		<cmns-av:explanatoryNote xml:lang="en">The call and put code, &apos;B&apos;, in the CFI stands for &apos;Both&apos;, meaning such a warrant embodies characteristics of both a call and a put. This can appear in structured warrants or exotic warrants where payout may depend on movements in either direction (or give the holder a choice at certain triggers).</cmns-av:explanatoryNote>
+		<cmns-av:synonym xml:lang="en">straddle warrant</cmns-av:synonym>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-raw;CallWarrant">
@@ -209,6 +211,7 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<rdfs:label xml:lang="en">call warrant</rdfs:label>
 		<skos:definition xml:lang="en">warrant giving the buyer (holder) the right, but not the obligation, to acquire specific underlying assets during a specified period at a specified price</skos:definition>
 		<cmns-av:adaptedFrom xml:lang="en">ISO 10962, Securities and related financial instruments - Classification of financial instruments (CFI) code, Fourth Edition, 2019.</cmns-av:adaptedFrom>
+		<cmns-av:explanatoryNote xml:lang="en">Exercising a call warrant whose underlying instrument is an equity involves buying new shares directly from the company, causing dilution.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-raw;CombinedInstrumentsPurchaseRight">
@@ -307,22 +310,8 @@ See https://opensource.org/licenses/MIT.</dct:license>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-raw;CompanyWarrant">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-raw;EquityWarrant"/>
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-raw;TraditionalWarrant"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isIssuedBy"/>
-				<owl:someValuesFrom>
-					<owl:Restriction>
-						<owl:onProperty rdf:resource="&cmns-rlcmp;isPlayedBy"/>
-						<owl:allValuesFrom rdf:resource="&fibo-be-le-cb;StockCorporation"/>
-					</owl:Restriction>
-				</owl:someValuesFrom>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">company warrant</rdfs:label>
-		<rdfs:seeAlso rdf:resource="https://www.lawinsider.com/dictionary/company-warrant"/>
-		<skos:definition xml:lang="en">equity warrant to purchase shares of capital stock issued by the corporation whose equity is the underlying asset</skos:definition>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&fibo-der-drc-raw;EquityWarrant"/>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-raw;ConstantLeverageCertificate">
@@ -366,11 +355,26 @@ See https://opensource.org/licenses/MIT.</dct:license>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-raw;EquityWarrant">
-		<rdfs:subClassOf rdf:resource="&fibo-der-drc-raw;Warrant"/>
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-raw;CallWarrant"/>
+		<rdfs:subClassOf rdf:resource="&fibo-der-drc-raw;TraditionalWarrant"/>
 		<rdfs:subClassOf rdf:resource="&fibo-der-sbd-sbd;EquityDerivative"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-rel-rel;isIssuedBy"/>
+				<owl:someValuesFrom>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&cmns-rlcmp;isPlayedBy"/>
+						<owl:allValuesFrom rdf:resource="&fibo-be-le-cb;StockCorporation"/>
+					</owl:Restriction>
+				</owl:someValuesFrom>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">equity warrant</rdfs:label>
+		<rdfs:seeAlso rdf:resource="https://www.lawinsider.com/dictionary/company-warrant"/>
 		<skos:definition xml:lang="en">warrant that permits the holder to acquire a specified amount of an equity instrument during a specified period at a specified price</skos:definition>
 		<cmns-av:adaptedFrom xml:lang="en">ISO 10962, Securities and related financial instruments - Classification of financial instruments (CFI) code, Fourth Edition, October 2019</cmns-av:adaptedFrom>
+		<cmns-av:explanatoryNote xml:lang="en">An equity warrant typically enables a buyer to purchase shares of capital stock issued by the corporation whose equity is the underlying asset.</cmns-av:explanatoryNote>
+		<cmns-av:synonym xml:lang="en">company warrant</cmns-av:synonym>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-raw;ExchangeTradedWarrant">
@@ -544,8 +548,9 @@ See https://opensource.org/licenses/MIT.</dct:license>
 	<owl:Class rdf:about="&fibo-der-drc-raw;PutWarrant">
 		<rdfs:subClassOf rdf:resource="&fibo-der-drc-raw;Warrant"/>
 		<rdfs:label xml:lang="en">put warrant</rdfs:label>
-		<skos:definition xml:lang="en">warrant giving the buyer (holder) the right, but not the obligation, to sell the assets specified (i.e., acquire cash in exchange for the underlying assets) back to the issuer at a fixed price or formula, on or before a specified date</skos:definition>
+		<skos:definition xml:lang="en">warrant giving the buyer (holder) the right, but not the obligation, to sell the assets specified (i.e., acquire cash in exchange for the underlying assets, such as stock) back to the issuer at a fixed price or formula, on or before a specified date</skos:definition>
 		<cmns-av:adaptedFrom xml:lang="en">ISO 10962, Securities and related financial instruments - Classification of financial instruments (CFI) code, Fourth Edition, 2019.</cmns-av:adaptedFrom>
+		<cmns-av:explanatoryNote xml:lang="en">A put warrant is essentially a company-issued option to sell shares back to the issuer.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-der-drc-raw;ShortMiniFutureCertificate">
