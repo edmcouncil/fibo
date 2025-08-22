@@ -40,7 +40,16 @@
 	<owl:Ontology rdf:about="https://spec.edmcouncil.org/fibo/ontology/FND/GoalsAndObjectives/Objectives/">
 		<rdfs:label>Objectives Ontology</rdfs:label>
 		<dct:abstract>This ontology defines concepts including goal, objective, program, and strategy. Objectives are defined as being distinct from goals, in that they constitute time limited and measurable targets which some entity may seek to attain in pursuit of its goals.</dct:abstract>
-		<dct:license rdf:datatype="&xsd;anyURI">https://opensource.org/licenses/MIT</dct:license>
+		<dct:license>Copyright (c) 2013-2025 EDM Council, Inc.
+Copyright (c) 2013-2025 Object Management Group, Inc.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the &apos;Software&apos;), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+		
+		See https://opensource.org/licenses/MIT.</dct:license>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/Occurrences/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/AnnotationVocabulary/"/>
@@ -51,7 +60,7 @@
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Designators/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Identifiers/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/PartiesAndSituations/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20241101/GoalsAndObjectives/Objectives/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20250801/GoalsAndObjectives/Objectives/"/>
 		<skos:changeNote>The http://www.omg.org/spec/FIBO/Foundations/20130601/GoalsAndObjectives/Objectives.owl version of the ontology was revised in advance of the September 2013 New Brunswick, NJ meeting, as follows:
 	(1) to use slash style URI/IRIss (also called 303 URIs, vs. hash style) as required to support server side processing 
 	(2) to use version-independent IRIs for all definitions internally as opposed to version-specific IRIs
@@ -68,9 +77,10 @@
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20221001/GoalsAndObjectives/Objectives.rdf version of the ontology was modified to use the Commons Ontology Library (Commons) Annotation Vocabulary rather than the OMG&apos;s Specification Metadata vocabulary and eliminate unnecessary references to LCC.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20230101/GoalsAndObjectives/Objectives.rdf version of this ontology was modified to use the Commons Ontology Library (Commons) rather than the OMG&apos;s Languages, Countries and Codes (LCC), eliminating redundancies in FIBO as appropriate.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20230301/GoalsAndObjectives/Objectives.rdf version of this ontology was modified to add the concept of a project and related attributes (LOAN-169).</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20241101/GoalsAndObjectives/Objectives.rdf version of this ontology was modified to add the concept of a method (SEC-200).</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
-		<cmns-av:copyright>Copyright (c) 2013-2024 EDM Council, Inc.</cmns-av:copyright>
-		<cmns-av:copyright>Copyright (c) 2013-2024 Object Management Group, Inc.</cmns-av:copyright>
+		<cmns-av:copyright>Copyright (c) 2013-2025 EDM Council, Inc.</cmns-av:copyright>
+		<cmns-av:copyright>Copyright (c) 2013-2025 Object Management Group, Inc.</cmns-av:copyright>
 	</owl:Ontology>
 	
 	<owl:Class rdf:about="&fibo-fnd-gao-obj;BusinessObjective">
@@ -118,6 +128,18 @@
 		<skos:definition>financial objective used by an investor to determine whether or not a given potential investment is appropriate for themselves or on behalf of another party</skos:definition>
 		<skos:example>An investor whose objective is capital growth might choose to invest in more aggressive, growth-oriented mutual funds and/or stocks, over income-generating mutual funds and/or bonds.</skos:example>
 		<cmns-av:explanatoryNote>The combination of investment objectives and risk tolerance are typically used to identify appropriate investment options.</cmns-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fnd-gao-obj;Method">
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-gao-obj;hasObjective"/>
+				<owl:onClass rdf:resource="&fibo-fnd-gao-obj;Objective"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>method</rdfs:label>
+		<skos:definition>systematic procedure or approach for doing or calculating something, consisting of defined steps or rules to achieve a result</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-gao-obj;Objective">
@@ -313,26 +335,34 @@
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>strategy</rdfs:label>
-		<skos:definition>plan or method for achieving a specific goal, objective, solution or outcome</skos:definition>
-		<cmns-av:explanatoryNote xml:lang="en">A strategy may involve activities that are needed in order to achieve specific goals or objectives. It may take into account one or more policies or any number of restrictions and constraints.</cmns-av:explanatoryNote>
+		<skos:definition>high-level plan or approach for achieving a specific goal, objective, solution or outcome</skos:definition>
+		<cmns-av:explanatoryNote xml:lang="en">A strategy is a high-level plan or approach designed to achieve a long-term goal or outcome, often by choosing among different possible methods or courses of action. A strategy may involve activities that are needed in order to achieve specific goals or objectives. It may take into account one or more policies or any number of restrictions and constraints.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-gao-obj;hasGoal">
 		<rdfs:label>has goal</rdfs:label>
 		<rdfs:range rdf:resource="&fibo-fnd-gao-obj;Goal"/>
-		<skos:definition>relates something to a long-term, desired outcome</skos:definition>
+		<skos:definition>has long-term, desired outcome</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-gao-obj;hasObjective">
 		<rdfs:label>has objective</rdfs:label>
 		<rdfs:range rdf:resource="&fibo-fnd-gao-obj;Objective"/>
-		<skos:definition>relates something to a specific objective (result) that it aims to achieve within a time frame and with available resources</skos:definition>
+		<skos:definition>aims to achieve within a time frame and with available resources</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-gao-obj;hasStrategy">
+		<rdfs:subPropertyOf rdf:resource="&cmns-cxtdsg;uses"/>
 		<rdfs:label>has strategy</rdfs:label>
 		<rdfs:range rdf:resource="&fibo-fnd-gao-obj;Strategy"/>
-		<skos:definition>relates something to a plan or method for achieving a specific goal, objective, solution or outcome</skos:definition>
+		<skos:definition>applies strategy</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-gao-obj;usesMethod">
+		<rdfs:subPropertyOf rdf:resource="&cmns-cxtdsg;uses"/>
+		<rdfs:label>uses method</rdfs:label>
+		<rdfs:range rdf:resource="&fibo-fnd-gao-obj;Method"/>
+		<skos:definition>employs method</skos:definition>
 	</owl:ObjectProperty>
 
 </rdf:RDF>
