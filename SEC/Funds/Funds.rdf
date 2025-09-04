@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE rdf:RDF [
+	<!ENTITY IdentifiersAndIndices "https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/IdentifiersAndIndices/">
+	<!ENTITY SpecificationMetadata "http://www.omg.org/techprocess/ab/SpecificationMetadata/">
 	<!ENTITY cmns-av "https://www.omg.org/spec/Commons/AnnotationVocabulary/">
 	<!ENTITY cmns-col "https://www.omg.org/spec/Commons/Collections/">
 	<!ENTITY cmns-dt "https://www.omg.org/spec/Commons/DatesAndTimes/">
@@ -25,6 +27,8 @@
 	<!ENTITY xsd "http://www.w3.org/2001/XMLSchema#">
 ]>
 <rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/ontology/SEC/Funds/Funds/"
+	xmlns:IdentifiersAndIndices="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/IdentifiersAndIndices/"
+	xmlns:SpecificationMetadata="http://www.omg.org/techprocess/ab/SpecificationMetadata/"
 	xmlns:cmns-av="https://www.omg.org/spec/Commons/AnnotationVocabulary/"
 	xmlns:cmns-col="https://www.omg.org/spec/Commons/Collections/"
 	xmlns:cmns-dt="https://www.omg.org/spec/Commons/DatesAndTimes/"
@@ -102,6 +106,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">closed-end investment</rdfs:label>
+		<owl:disjointWith rdf:resource="&fibo-sec-fund-fund;OpenEndInvestment"/>
 		<skos:definition xml:lang="en">investment fund that has a fixed number of shares offered by an investment company through an initial public offering</skos:definition>
 		<cmns-av:synonym xml:lang="en">closed-end fund</cmns-av:synonym>
 	</owl:Class>
@@ -170,9 +175,9 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<rdfs:subClassOf>
 			<owl:Class>
 				<owl:unionOf rdf:parseType="Collection">
-					<rdf:Description rdf:about="&cmns-org;LegalEntity">
-					</rdf:Description>
 					<rdf:Description rdf:about="&fibo-sec-fund-fund;FundContract">
+					</rdf:Description>
+					<rdf:Description rdf:about="&cmns-org;LegalEntity">
 					</rdf:Description>
 				</owl:unionOf>
 			</owl:Class>
@@ -204,7 +209,6 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">open-end investment</rdfs:label>
-		<owl:disjointWith rdf:resource="&fibo-sec-fund-fund;ClosedEndInvestment"/>
 		<skos:definition xml:lang="en">investment fund that offered through a fund company that sells shares directly to investors</skos:definition>
 		<cmns-av:synonym xml:lang="en">open-end fund</cmns-av:synonym>
 	</owl:Class>
@@ -223,7 +227,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<rdfs:label xml:lang="en">private credit fund</rdfs:label>
 		<owl:disjointWith rdf:resource="&fibo-sec-fund-fund;PrivateEquityFund"/>
 		<skos:definition xml:lang="en">investment vehicle that provides loans or other forms of credit to companies, typically outside of the traditional banking system</skos:definition>
-		<cmns-av:explanatoryNote xml:lang="en">These funds are managed by asset managers, private equity firms or specialized lenders and cater to institutional investors, high-net-worth individuals, and family offices. The kinds of loans they provide include senior secured loans, mezzanine debt, unitranche loans, and special situations financing through direct lending to mid-sized companies. These funds are typically illiquid, with long investment horizons (5–10 years). They generally provide higher returns than traditional fixed-income instruments, but with greater risk due to borrower default potential. Key features of private credit funds include:
+		<cmns-av:explanatoryNote xml:lang="en">These funds are managed by asset managers, private equity firms or specialized lenders (both nonprofit and for-profit) and cater to institutional investors, high-net-worth individuals, family offices, and, in some cases, retail investors. The kinds of loans they provide include senior secured loans, mezzanine debt, unitranche loans, and special situations financing through direct lending to companies. These funds are typically illiquid, with long investment horizons (5–10 years). They generally provide higher returns than traditional fixed-income instruments, but with greater risk due to borrower default potential. Nonprofit funds may provide lower returns because of the mission to provide affordable funding to disadvantaged borrowers. Key features of private credit funds include:
 - Loans are held on the fund&apos;s balance sheet
 - Returns come primarily from interest income and potential capital appreciation
 - Often involve direct negotiations and customized loan terms</cmns-av:explanatoryNote>
@@ -274,6 +278,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<rdfs:label xml:lang="en">has sub-fund</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-sec-pls;PooledFund"/>
 		<rdfs:range rdf:resource="&fibo-sec-sec-pls;PooledFund"/>
+		<owl:inverseOf rdf:resource="&fibo-sec-fund-fund;isSubFundOf"/>
 		<skos:definition xml:lang="en">relates a pooled fund to a sub-fund that is a constituent of the parent fund</skos:definition>
 	</owl:ObjectProperty>
 	
@@ -297,7 +302,6 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<rdfs:label xml:lang="en">is sub-fund of</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-sec-pls;PooledFund"/>
 		<rdfs:range rdf:resource="&fibo-sec-sec-pls;PooledFund"/>
-		<owl:inverseOf rdf:resource="&fibo-sec-fund-fund;hasSubFund"/>
 		<skos:definition xml:lang="en">relates a pooled fund to a parent fund</skos:definition>
 	</owl:ObjectProperty>
 	
