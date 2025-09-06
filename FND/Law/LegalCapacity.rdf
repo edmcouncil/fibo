@@ -6,6 +6,7 @@
 	<!ENTITY cmns-dt "https://www.omg.org/spec/Commons/DatesAndTimes/">
 	<!ENTITY cmns-id "https://www.omg.org/spec/Commons/Identifiers/">
 	<!ENTITY cmns-pts "https://www.omg.org/spec/Commons/PartiesAndSituations/">
+	<!ENTITY cmns-qtu "https://www.omg.org/spec/Commons/QuantitiesAndUnits/">
 	<!ENTITY cmns-rga "https://www.omg.org/spec/Commons/RegulatoryAgencies/">
 	<!ENTITY cmns-rlcmp "https://www.omg.org/spec/Commons/RolesAndCompositions/">
 	<!ENTITY dct "http://purl.org/dc/terms/">
@@ -29,6 +30,7 @@
 	xmlns:cmns-dt="https://www.omg.org/spec/Commons/DatesAndTimes/"
 	xmlns:cmns-id="https://www.omg.org/spec/Commons/Identifiers/"
 	xmlns:cmns-pts="https://www.omg.org/spec/Commons/PartiesAndSituations/"
+	xmlns:cmns-qtu="https://www.omg.org/spec/Commons/QuantitiesAndUnits/"
 	xmlns:cmns-rga="https://www.omg.org/spec/Commons/RegulatoryAgencies/"
 	xmlns:cmns-rlcmp="https://www.omg.org/spec/Commons/RolesAndCompositions/"
 	xmlns:dct="http://purl.org/dc/terms/"
@@ -70,9 +72,10 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Documents/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Identifiers/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/PartiesAndSituations/"/>
+		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/QuantitiesAndUnits/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/RegulatoryAgencies/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/RolesAndCompositions/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20250601/Law/LegalCapacity/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20250901/Law/LegalCapacity/"/>
 		<skos:changeNote>The http://www.omg.org/spec/FIBO/Foundations/20130601/Law/LegalCapacity.owl version of the ontology was revised in advance of the September 2013 New Brunswick, NJ meeting, as follows:
 	(1) to use slash style URI/IRIss (also called 303 URIs, vs. hash style) as required to support server side processing 
 	(2) to use version-independent IRIs for all definitions internally as opposed to version-specific IRIs
@@ -96,6 +99,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20231201/Law/LegalCapacity.rdf version of the ontology was modified to replace additional concepts from several FIBO FND ontologies with their counterparts added to the Commons Ontology Library (Commons) v1.1.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20240101/Law/LegalCapacity.rdf version of the ontology was modified to replace additional content that is now available in the OMG Commons Ontology Library (Commons) v1.2 (FND-389).</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20250301/Law/LegalCapacity.rdf version of the ontology was modified to add contractual obligations needed for certain agreements, including some master agreements, and to link a condition precedent to the clause of a contract on which it depends (DER-55).</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20250601/Law/LegalCapacity.rdf version of the ontology was modified to clarify the definition of right and add contractual interest, including a property to represent fractional interest (SEC-200).</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 		<cmns-av:copyright>Copyright (c) 2013-2025 EDM Council, Inc.</cmns-av:copyright>
 		<cmns-av:copyright>Copyright (c) 2013-2025 Object Management Group, Inc.</cmns-av:copyright>
@@ -170,6 +174,21 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<skos:editorialNote>This is the capacity which defines Contractually Capable Entity (sometimes labeled as &apos;Legal Entity&apos;) as distinct from &apos;Legal Person&apos;. In the latter case the liabilities incurred in the contract accrue also to the Legal Person. In the case of contractual capability, the entity has the authority to enter into contracts, whether or not the liabilities accrue to that same entity (which they do if it is also a Legal Person). For Legal Entities which are not Legal Persons, the liability unwinds to some legal person within the structure of the entity, for example a General Partner or a Trustee.</skos:editorialNote>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-fnd-law-lcap;ContractualInterest">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-law-lcap;ContractualRight"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-law-lcap;hasFractionalInterest"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+				<owl:onDataRange rdf:resource="&xsd;decimal"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>contractual interest</rdfs:label>
+		<skos:definition>legally enforceable benefit or entitlement arising from a contract, agreement, or instrument, in which an entity holds specified rights or obligations related to the performance, use, or benefit of something, without necessarily holding ownership</skos:definition>
+		<cmns-av:explanatoryNote>Contractual interest may include rights to income, access, use, or participation, and is governed by the terms and conditions of the underlying contract. It may be transferable or limited, and can coexist with or be independent of ownership rights.</cmns-av:explanatoryNote>
+		<cmns-av:explanatoryNote>Contractual interests differ from ownership interests in terms of (1) the source of rights, which are specified in an agreement or contract in the case of contractual interests, and in terms of title or equity with respect to ownership, (2) control, which is typically limited at best in the case of contractual interest, and (3) transferability, which depends on the terms of the contract. Examples of contractual interest include fund units, leaseholds, annuities, and rights to certain services, whereas shares, real estate, and assets of a trust reflect ownership interest.</cmns-av:explanatoryNote>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-fnd-law-lcap;ContractualObligation">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-law-lcap;LegalObligation"/>
 		<rdfs:subClassOf>
@@ -210,7 +229,8 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>contractual right</rdfs:label>
-		<skos:definition>power, privilege, demand, or claim possessed by some party that is conferred by contract</skos:definition>
+		<skos:definition>legally enforceable benefit or entitlement granted to a party within a binding agreement</skos:definition>
+		<cmns-av:explanatoryNote>Contractual rights are established by the terms of a contract, which can be explicit (written) or implied by law, industry standards, or consistent practices.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-law-lcap;DelegatedLegalAuthority">
@@ -340,8 +360,9 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>legal right</rdfs:label>
-		<skos:definition>power, privilege, demand, or claim possessed by some party by virtue of law</skos:definition>
-		<cmns-av:explanatoryNote>Every legal right that an individual possesses relates to a corresponding legal duty imposed on another and is recognized and delimited by law for the purpose of securing it. A legal right, if challenged, may be supported in court as recognizable and enforceable in law, statutes, regulations, or other legislative actions.</cmns-av:explanatoryNote>
+		<skos:definition>personal right, privilege, or benefit that a government, contract, or law provides or protects, making an individual or entity eligible to receive something</skos:definition>
+		<cmns-av:explanatoryNote>A legal right, if challenged, may be supported in court as recognizable and enforceable in law, statutes, regulations, or other legislative actions.</cmns-av:explanatoryNote>
+		<cmns-av:explanatoryNote>This entitlement creates a corresponding obligation for the provider to deliver that benefit.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-law-lcap;LiabilityCapacity">
@@ -518,7 +539,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-law-lcap;LegalConstruct"/>
 		<rdfs:label>right</rdfs:label>
 		<rdfs:seeAlso rdf:resource="https://plato.stanford.edu/entries/rights/"/>
-		<skos:definition>entitlement (not) to perform certain actions, or (not) to be in certain states; or entitlement that others (not) perform certain actions or (not) be in certain states</skos:definition>
+		<skos:definition>entitlement to perform certain actions (or not), or to be in certain states (or not); or entitlement that requires others to perform certain actions or be in certain states (or not)</skos:definition>
 		<skos:example>Examples include contractual rights, legal rights, human rights, political rights, and so forth.</skos:example>
 		<cmns-av:explanatoryNote>Rights dominate modern understandings of what actions are permissible and which institutions are just. Rights structure the form of governments, the content of laws, and the shape of morality as many now see it. To accept a set of rights is to approve a distribution of freedom and authority, and so to endorse a certain view of what may, must, and must not be done. According to the Hohfeldian incidents (Wesley Hohfeld (1879-1918)), rights are complex and consist of four major components: privilege, claim, power, and immunity.</cmns-av:explanatoryNote>
 	</owl:Class>
@@ -536,6 +557,14 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<owl:inverseOf rdf:resource="&fibo-fnd-law-lcap;isCapacityOf"/>
 		<skos:definition>identifies an individual or organization that has some ability and availability to carry out certain actions, or has certain rights or obligations</skos:definition>
 	</owl:ObjectProperty>
+	
+	<owl:DatatypeProperty rdf:about="&fibo-fnd-law-lcap;hasFractionalInterest">
+		<rdfs:subPropertyOf rdf:resource="&cmns-qtu;hasNumericValue"/>
+		<rdfs:label>has fractional interest</rdfs:label>
+		<rdfs:range rdf:resource="&xsd;decimal"/>
+		<skos:definition>has proportionate, non-exclusive entitlement to</skos:definition>
+		<cmns-av:explanatoryNote>Fractional interest may be expressed as a percentage, ratio, or unit count, and typically arises in contexts where multiple parties share contractual claims to income, usage, ownership, or participation. It does not imply full control or sole ownership, and may be subject to limitations specified in the underlying legal framework.</cmns-av:explanatoryNote>
+	</owl:DatatypeProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-law-lcap;implements">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;involves"/>
