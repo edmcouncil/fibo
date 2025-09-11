@@ -3,6 +3,7 @@
 	<!ENTITY cmns-av "https://www.omg.org/spec/Commons/AnnotationVocabulary/">
 	<!ENTITY cmns-col "https://www.omg.org/spec/Commons/Collections/">
 	<!ENTITY cmns-dt "https://www.omg.org/spec/Commons/DatesAndTimes/">
+	<!ENTITY cmns-loc "https://www.omg.org/spec/Commons/Locations/">
 	<!ENTITY cmns-org "https://www.omg.org/spec/Commons/Organizations/">
 	<!ENTITY cmns-rga "https://www.omg.org/spec/Commons/RegulatoryAgencies/">
 	<!ENTITY dct "http://purl.org/dc/terms/">
@@ -29,6 +30,7 @@
 	xmlns:cmns-av="https://www.omg.org/spec/Commons/AnnotationVocabulary/"
 	xmlns:cmns-col="https://www.omg.org/spec/Commons/Collections/"
 	xmlns:cmns-dt="https://www.omg.org/spec/Commons/DatesAndTimes/"
+	xmlns:cmns-loc="https://www.omg.org/spec/Commons/Locations/"
 	xmlns:cmns-org="https://www.omg.org/spec/Commons/Organizations/"
 	xmlns:cmns-rga="https://www.omg.org/spec/Commons/RegulatoryAgencies/"
 	xmlns:dct="http://purl.org/dc/terms/"
@@ -82,6 +84,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Collections/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/DatesAndTimes/"/>
+		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Locations/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Organizations/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/RegulatoryAgencies/"/>
 		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20250901/Funds/Funds/"/>
@@ -92,11 +95,20 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20220801/Funds/Funds.rdf version of the ontology was modified to use the Commons Ontology Library (Commons) Annotation Vocabulary rather than the OMG&apos;s Specification Metadata vocabulary.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20230201/Funds/Funds.rdf version of this ontology was modified to use the Commons Ontology Library (Commons) rather than the OMG&apos;s Languages, Countries and Codes (LCC), eliminating redundancies in FIBO as appropriate.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20230301/Funds/Funds.rdf version of this ontology was modified to replace additional content that is now available in the OMG Commons Ontology Library (Commons) v1.2 (FND-389), and to add the notion of a private credit fund and adjust inconsistencies in private equity fund (SEC-203).</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20250301/Funds/Funds.rdf version of this ontology was modified to broaden the definition of fund unit (SEC-200).</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20250301/Funds/Funds.rdf version of this ontology was modified to broaden the definition of fund unit (SEC-200) and add certain private fund details (SEC-208).</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 		<cmns-av:copyright>Copyright (c) 2018-2025 EDM Council, Inc.</cmns-av:copyright>
 		<cmns-av:copyright>Copyright (c) 2018-2025 Object Management Group, Inc.</cmns-av:copyright>
 	</owl:Ontology>
+	
+	<owl:Class rdf:about="&fibo-sec-fund-fund;AlignedCommunityInvestmentFund">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-fund-fund;CommunityInvestmentFund"/>
+		<rdfs:label xml:lang="en">aligned community investment fund</rdfs:label>
+		<dct:source xml:lang="en">Aligned Community Investment Fund, available at https://www.nc3now.org/uploads/1/4/0/1/140134350/acif_overview.pdf.</dct:source>
+		<skos:definition xml:lang="en">community investment fund that raises capital publicly from community members and deploys some of that capital via investments into its client businesses or other businesses in the community</skos:definition>
+		<cmns-av:abbreviation xml:lang="en">ACIF</cmns-av:abbreviation>
+		<cmns-av:explanatoryNote xml:lang="en">For example, an entrepreneurial support organization (ESO) that derives most of its income from providing consulting services to early stage businesses, can raise capital publicly from its community and deploy some of that capital via investments into its client businesses. These investments would comprise its ACIF.</cmns-av:explanatoryNote>
+	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-fund-fund;ClosedEndInvestment">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-pls;ManagedInvestment"/>
@@ -114,6 +126,36 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 	<owl:Class rdf:about="&fibo-sec-fund-fund;CollectiveInvestmentVehicle">
 		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
 		<owl:equivalentClass rdf:resource="&fibo-sec-sec-pls;CollectiveInvestmentVehicle"/>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-fund-fund;CommunityInvestmentFund">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-pls;PrivateFund"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-gao-obj;hasObjective"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-gao-obj;LocalInvestmentObjective"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-loc;hasCoverageArea"/>
+				<owl:someValuesFrom rdf:resource="&cmns-loc;GeographicRegion"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">community investment fund</rdfs:label>
+		<skos:definition xml:lang="en">professionally-managed investment fund with three essential characteristics: capital is sourced from people in the community (ideally from retail/non-accredited investors); capital is invested into local people, projects, and businesses; and capital is deployed by individuals in the community, typically but not necessarily a nonprofit fund</skos:definition>
+		<cmns-av:abbreviation xml:lang="en">CIF</cmns-av:abbreviation>
+		<cmns-av:adaptedFrom xml:lang="en">Community Investment Fund Handbook and Toolkit, available at https://www.nc3now.org/community-investment-fund-handbook--toolkit.html.</cmns-av:adaptedFrom>
+		<cmns-av:explanatoryNote xml:lang="en">A community investment fund is typically but not necessarily a nonprofit fund.</cmns-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-fund-fund;DiversifiedCommunityInvestmentFund">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-fund-fund;CommunityInvestmentFund"/>
+		<rdfs:label xml:lang="en">diversified community investment fund</rdfs:label>
+		<dct:source xml:lang="en">Diversified Community Investment Fund, available at https://www.nc3now.org/uploads/1/4/0/1/140134350/dcif_overview.pdf.</dct:source>
+		<skos:definition xml:lang="en">community investment fund that invests primarily in real estate but can also invest in any local business or project, and can do so with investment capital raised publicly from within the fund&apos;s own community, including community investors</skos:definition>
+		<cmns-av:abbreviation xml:lang="en">DCIF</cmns-av:abbreviation>
+		<cmns-av:explanatoryNote xml:lang="en">A Diversified Community Investment Fund (DCIF) is a specialized community-scale investment vehicle structured to both support local development and comply with U.S. securities laws - particularly the Investment Company Act of 1940 (the &apos;ICA&apos;). This type of fund must meet two requirements: (1) its primary business is investing in real estate, rather than securities (e.g., stock) issued by other companies; and (2) real estate and other non-securities assets must comprise at least 60% of the fund&apos;s assets. The DCIF structure is intentionally calibrated to circumvent classification as an investment company - which would trigger certain SEC registration and disclosure requirements. Under the ICA, if a fund is &apos;primarily engaged in ... investing ... in securities,&apos; it must register as an investment company. By meeting the 60/40 real estate-to-business allocation, the DCIF qualifies instead as a real estate fund, avoiding that designation.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-fund-fund;ExchangeTradedFund">
@@ -205,6 +247,21 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<cmns-av:explanatoryNote>Non-tradable fund units are commonly found in pension funds, insurance pools, or internal benefit plans, where units serve as accounting or entitlement mechanisms without market transferability.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-sec-fund-fund;NonprofitFund">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-pls;PrivateFund"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-gao-obj;hasObjective"/>
+				<owl:onClass rdf:resource="&fibo-fnd-gao-obj;TripleBottomLineObjective"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">nonprofit fund</rdfs:label>
+		<skos:definition xml:lang="en">investment vehicle designed to support a nonprofit mission, whose objectives include environmental stewardship and/or social responsibility in addition to financial performance</skos:definition>
+		<skos:example xml:lang="en">Common examples include endowment funds (permanently invested, only earnings are spent), operating funds (used for day-to-day expenses), and special project funds (earmarked for particular initiatives).</skos:example>
+		<cmns-av:explanatoryNote xml:lang="en">A nonprofit fund is a pool of financial resources that is established and managed by a nonprofit organization to support its mission and activities, organized for charitable, educational, religious, cultural, or other purposes recognized as serving the public good. Some nonprofit funds are restricted by donors for a specific use (such as an endowment for scholarships), while others are unrestricted and can be used at the nonprofit&apos;s discretion.</cmns-av:explanatoryNote>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-sec-fund-fund;OpenEndInvestment">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-pls;ManagedInvestment"/>
 		<rdfs:subClassOf>
@@ -233,10 +290,10 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<rdfs:label xml:lang="en">private credit fund</rdfs:label>
 		<owl:disjointWith rdf:resource="&fibo-sec-fund-fund;PrivateEquityFund"/>
 		<skos:definition xml:lang="en">investment vehicle that provides loans or other forms of credit to companies, typically outside of the traditional banking system</skos:definition>
-		<cmns-av:explanatoryNote xml:lang="en">These funds are managed by asset managers, private equity firms or specialized lenders and cater to institutional investors, high-net-worth individuals, and family offices. The kinds of loans they provide include senior secured loans, mezzanine debt, unitranche loans, and special situations financing through direct lending to mid-sized companies. These funds are typically illiquid, with long investment horizons (5–10 years). They generally provide higher returns than traditional fixed-income instruments, but with greater risk due to borrower default potential. Key features of private credit funds include:
+		<cmns-av:explanatoryNote xml:lang="en">These funds are managed by asset managers, private equity firms or specialized lenders (both nonprofit and for-profit) and cater to institutional investors, high-net-worth individuals, family offices, and, in some cases, retail investors. The kinds of loans they provide include senior secured loans, mezzanine debt, unitranche loans, and special situations financing through direct lending to companies. These funds are typically illiquid, with long investment horizons (5–10 years). They generally provide higher returns than traditional fixed-income instruments, but with greater risk due to borrower default potential. Nonprofit funds may provide lower returns because of the mission to provide affordable funding to disadvantaged borrowers. Key features of private credit funds include:
 - Loans are held on the fund&apos;s balance sheet
 - Returns come primarily from interest income and potential capital appreciation
-- Often involve direct negotiations and customized loan terms</cmns-av:explanatoryNote>
+- Often involve direct negotiations and customized loan terms.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-fund-fund;PrivateEquityFund">
