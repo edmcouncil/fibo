@@ -7,6 +7,7 @@
 	<!ENTITY cmns-rga "https://www.omg.org/spec/Commons/RegulatoryAgencies/">
 	<!ENTITY dct "http://purl.org/dc/terms/">
 	<!ENTITY fibo-be-le-fbo "https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/FormalBusinessOrganizations/">
+	<!ENTITY fibo-be-le-lei "https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LEIEntities/">
 	<!ENTITY fibo-be-tr-tr "https://spec.edmcouncil.org/fibo/ontology/BE/Trusts/Trusts/">
 	<!ENTITY fibo-fbc-fct-fse "https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/FinancialServicesEntities/">
 	<!ENTITY fibo-fbc-fi-fi "https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/">
@@ -32,6 +33,7 @@
 	xmlns:cmns-rga="https://www.omg.org/spec/Commons/RegulatoryAgencies/"
 	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fibo-be-le-fbo="https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/FormalBusinessOrganizations/"
+	xmlns:fibo-be-le-lei="https://spec.edmcouncil.org/fibo/ontology/BE/LegalEntities/LEIEntities/"
 	xmlns:fibo-be-tr-tr="https://spec.edmcouncil.org/fibo/ontology/BE/Trusts/Trusts/"
 	xmlns:fibo-fbc-fct-fse="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/FinancialServicesEntities/"
 	xmlns:fibo-fbc-fi-fi="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"
@@ -52,6 +54,8 @@
 	<owl:Ontology rdf:about="https://spec.edmcouncil.org/fibo/ontology/SEC/Funds/Funds/">
 		<rdfs:label xml:lang="en">Funds Ontology</rdfs:label>
 		<dct:abstract>This ontology defines fundamental concepts about funds and collective investment vehicles (CIVs).</dct:abstract>
+		<dct:contributor>Federated Knowledge, LLC</dct:contributor>
+		<dct:contributor>ProBanker Simulations, LLC</dct:contributor>
 		<dct:contributor>Thematix Partners LLC</dct:contributor>
 		<dct:contributor>Wells Fargo Bank, N.A.</dct:contributor>
 		<dct:license>Copyright (c) 2018-2025 EDM Council, Inc.
@@ -80,7 +84,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/DatesAndTimes/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Organizations/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/RegulatoryAgencies/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20250301/Funds/Funds/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20250901/Funds/Funds/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20201201/Funds/Funds.rdf version of this ontology was modified to replace the original fibo-sec-fnd-fnd prefix with fibo-sec-fund-fund for the sake of clarity and to change the restriction on LegalFundStructure from an equivalence to a subclass relationship to address a reasoning error as well as adding a missing restriction on jurisdiction.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20210501/Funds/Funds.rdf version of this ontology was modified to move the definition of SpecialPurposeVehicle to the Pools ontology to make it available for use more generally.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20220101/Funds/Funds.rdf version of this ontology was modified to eliminate a deprecated element for SpecialPurposeVehicle, which was moved to Pools last quarter.</skos:changeNote>
@@ -88,6 +92,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20220801/Funds/Funds.rdf version of the ontology was modified to use the Commons Ontology Library (Commons) Annotation Vocabulary rather than the OMG&apos;s Specification Metadata vocabulary.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20230201/Funds/Funds.rdf version of this ontology was modified to use the Commons Ontology Library (Commons) rather than the OMG&apos;s Languages, Countries and Codes (LCC), eliminating redundancies in FIBO as appropriate.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20230301/Funds/Funds.rdf version of this ontology was modified to replace additional content that is now available in the OMG Commons Ontology Library (Commons) v1.2 (FND-389), and to add the notion of a private credit fund and adjust inconsistencies in private equity fund (SEC-203).</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20250301/Funds/Funds.rdf version of this ontology was modified to broaden the definition of fund unit (SEC-200).</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 		<cmns-av:copyright>Copyright (c) 2018-2025 EDM Council, Inc.</cmns-av:copyright>
 		<cmns-av:copyright>Copyright (c) 2018-2025 Object Management Group, Inc.</cmns-av:copyright>
@@ -141,21 +146,17 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-fund-fund;FundUnit">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-eq-eq;Share"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-acc-cur;hasCurrency"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-cur;Currency"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-law-lcap;ContractualInterest"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&cmns-col;isPartOf"/>
 				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-pls;PooledFund"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">fund unit</rdfs:label>
-		<skos:definition xml:lang="en">security representing a unit in a fund</skos:definition>
+		<rdfs:label>fund unit</rdfs:label>
+		<skos:definition>quantified share of beneficial interest in a pooled fund, representing a proportional claim on the fund&apos;s assets, income, or entitlements</skos:definition>
+		<cmns-av:explanatoryNote>A fund unit may be tradable or non-tradable depending on the legal form, regulatory status, and operational framework of the fund.</cmns-av:explanatoryNote>
+		<cmns-av:explanatoryNote>Fund units are allocated to a participant, investor, or beneficiary according to the fund&apos;s governing structure.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-fund-fund;HedgeFund">
@@ -193,6 +194,15 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<skos:definition xml:lang="en">open-end professionally managed investment fund established for the purpose of investing in securities such as stocks, bonds, money market instruments and similar assets</skos:definition>
 		<cmns-av:adaptedFrom xml:lang="en">ISO 10962:2019 Securities and related financial instruments - Classification of financial instruments (CFI) code, Fourth edition, October 2019</cmns-av:adaptedFrom>
 		<cmns-av:synonym xml:lang="en">standard (vanilla) investment fund</cmns-av:synonym>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-fund-fund;NonTradableFundUnit">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;NonNegotiableSecurity"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-fund-fund;FundUnit"/>
+		<rdfs:label xml:lang="en">non-tradable fund unit</rdfs:label>
+		<owl:disjointWith rdf:resource="&fibo-sec-fund-fund;TradableFundUnit"/>
+		<skos:definition xml:lang="en">security representing an interest in a fund that cannot be traded ontside of the fund itself</skos:definition>
+		<cmns-av:explanatoryNote>Non-tradable fund units are commonly found in pension funds, insurance pools, or internal benefit plans, where units serve as accounting or entitlement mechanisms without market transferability.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-fund-fund;OpenEndInvestment">
@@ -260,6 +270,15 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<cmns-av:explanatoryNote xml:lang="en">Sovereign wealth funds include the International Monetary Fund, whose corresponding legal entity is a polity.</cmns-av:explanatoryNote>
 		<cmns-av:synonym xml:lang="en">social wealth fund</cmns-av:synonym>
 		<cmns-av:synonym xml:lang="en">sovereign investment fund</cmns-av:synonym>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-fund-fund;TradableFundUnit">
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;EquityInstrument"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-fi-fi;NegotiableSecurity"/>
+		<rdfs:subClassOf rdf:resource="&fibo-sec-fund-fund;FundUnit"/>
+		<rdfs:label xml:lang="en">tradable fund unit</rdfs:label>
+		<skos:definition xml:lang="en">security representing a tradable interest in a fund</skos:definition>
+		<cmns-av:explanatoryNote>Tradable fund units typically occur in collective investment schemes such as mutual funds or exchange-traded funds (ETFs), where units are bought and sold on regulated markets.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-fund-fund;hasLegalStructure">

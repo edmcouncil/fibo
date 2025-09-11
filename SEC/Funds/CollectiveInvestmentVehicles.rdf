@@ -504,12 +504,6 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-fund-civ;hasLiquidity"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-fund-civ;Liquidity"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-fund-civ;implementsFundPolicy"/>
 				<owl:someValuesFrom rdf:resource="&fibo-sec-fund-civ;FundPortfolioInvestmentPolicy"/>
 			</owl:Restriction>
@@ -803,18 +797,6 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<cmns-av:explanatoryNote>Key investor information shall include appropriate information about the essential characteristics of the UCITS concerned, which is to be provided to investors so that they are reasonably able to understand the nature and the risks of the investment product that is being offered to them and, consequently, to take investment decisions on an informed basis.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-fund-civ;Liquidity">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-oac-own;Asset"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-acc-cur;hasCurrency"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-cur;Currency"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">liquidity</rdfs:label>
-		<skos:definition xml:lang="en">Precise definition needed for liquidity, and check that it is modeled accordingly.</skos:definition>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-sec-fund-civ;NetAssetValueCalculationMethod">
 		<rdfs:subClassOf rdf:resource="&cmns-qtu;Expression"/>
 		<rdfs:subClassOf>
@@ -828,11 +810,37 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<skos:editorialNote xml:lang="en">These terms were in the ISO FIBIM model but correspond to some details in the EFAMA DD.</skos:editorialNote>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-sec-fund-civ;NoteFund">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-sec-pls;ManagedInvestment"/>
+		<rdfs:label>note fund</rdfs:label>
+		<skos:definition>pooled investment vehicle that issues debt instruments (notes) to investors rather than (or in addition to) traditional equity interests</skos:definition>
+		<cmns-av:explanatoryNote>The notes issued by a note fund are typically privately rated by agencies like KBRA, DBRS, or Moody&apos;s, tranched into senior and junior classes, and linked to underlying assets such as private loans, credit instruments, or structured products. Note funds are designed to optimize regulatory capital treatment, especially for insurance companies, by offering rated debt instead of equity.</cmns-av:explanatoryNote>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-fund-civ;NoteFundShare">
+		<rdfs:subClassOf rdf:resource="&fibo-sec-fund-fund;FundUnit"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-col;isPartOf"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-fund-civ;NoteFund"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>note fund share</rdfs:label>
+		<skos:definition>investment interest in a fund that issues notes rather than traditional equity, in cases where the fund is structured as a company</skos:definition>
+		<cmns-av:explanatoryNote>A note fund share refers to an equity or debt-linked interest in a corporate fund vehicle that issues notes.</cmns-av:explanatoryNote>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-sec-fund-civ;NoteFundUnit">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-fund-fund;FundUnit"/>
-		<rdfs:label xml:lang="en">note fund unit</rdfs:label>
-		<skos:definition xml:lang="en">Need a legal definition - to follow. This is one of the mechanisms by which an investor may hold an interest in a fund, but is not a Bond or a Share.</skos:definition>
-		<skos:editorialNote xml:lang="en">It is not possible to determine at this time whether some of the policy facts that apply to bund and share class units apply to all fund units including this one. Once this is defined, all Fund Distribution Policy terms and relationships should be rechecked.</skos:editorialNote>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-col;isPartOf"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-fund-civ;NoteFund"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>note fund unit</rdfs:label>
+		<skos:definition>investment interest in a fund that issues notes rather than traditional equity, in cases where the fund is structured as a trust, partnership, or unitized fund</skos:definition>
+		<cmns-av:explanatoryNote>A note fund unit refers to a non-equity interest in a fund that issues rated notes and is organized as a unit trust or limited partnership.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-fund-civ;OrganizationStrategy">
@@ -1290,12 +1298,6 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<rdfs:domain rdf:resource="&fibo-sec-fund-fund;FundUnit"/>
 		<rdfs:range rdf:resource="&cmns-dt;Date"/>
 		<skos:definition xml:lang="en">Date of first NAV calculation and start of performance calculations (same as launch date)</skos:definition>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-sec-fund-civ;hasLiquidity">
-		<rdfs:label xml:lang="en">has liquidity</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-fund-civ;FundPortfolio"/>
-		<rdfs:range rdf:resource="&fibo-sec-fund-civ;Liquidity"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-fund-civ;hasManagementCompany">
