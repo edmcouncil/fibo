@@ -87,7 +87,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Locations/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Organizations/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/RegulatoryAgencies/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20250901/Funds/Funds/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/SEC/20251001/Funds/Funds/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20201201/Funds/Funds.rdf version of this ontology was modified to replace the original fibo-sec-fnd-fnd prefix with fibo-sec-fund-fund for the sake of clarity and to change the restriction on LegalFundStructure from an equivalence to a subclass relationship to address a reasoning error as well as adding a missing restriction on jurisdiction.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20210501/Funds/Funds.rdf version of this ontology was modified to move the definition of SpecialPurposeVehicle to the Pools ontology to make it available for use more generally.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20220101/Funds/Funds.rdf version of this ontology was modified to eliminate a deprecated element for SpecialPurposeVehicle, which was moved to Pools last quarter.</skos:changeNote>
@@ -96,6 +96,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20230201/Funds/Funds.rdf version of this ontology was modified to use the Commons Ontology Library (Commons) rather than the OMG&apos;s Languages, Countries and Codes (LCC), eliminating redundancies in FIBO as appropriate.</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20230301/Funds/Funds.rdf version of this ontology was modified to replace additional content that is now available in the OMG Commons Ontology Library (Commons) v1.2 (FND-389), and to add the notion of a private credit fund and adjust inconsistencies in private equity fund (SEC-203).</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20250301/Funds/Funds.rdf version of this ontology was modified to broaden the definition of fund unit (SEC-200) and add certain private fund details (SEC-208).</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/SEC/20250901/Funds/Funds.rdf version of this ontology was modified to add fund-specific roles (SEC-213).</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 		<cmns-av:copyright>Copyright (c) 2018-2025 EDM Council, Inc.</cmns-av:copyright>
 		<cmns-av:copyright>Copyright (c) 2018-2025 Object Management Group, Inc.</cmns-av:copyright>
@@ -167,10 +168,28 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<cmns-av:explanatoryNote xml:lang="en">An ETF holds assets such as stocks, commodities, or bonds, and trades close to its net asset value over the course of the trading day. Most ETFs track an index, such as a stock, bond, or commodity index.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
+	<owl:Class rdf:about="&fibo-sec-fund-fund;FundAdministrator">
+		<rdfs:subClassOf rdf:resource="&cmns-org;ServiceProvider"/>
+		<rdfs:label xml:lang="en">fund administrator</rdfs:label>
+		<skos:definition xml:lang="en">role of the party responsible for managing the operational, accounting, and compliance functions of an investment fund</skos:definition>
+		<cmns-av:explanatoryNote xml:lang="en">A fund administrator performs administrative tasks on behalf of an investment fund, including net asset value (NAV) calculation, financial reporting, investor servicing, and regulatory compliance. The role supports operational efficiency and transparency, enabling fund managers to focus on investment strategy.</cmns-av:explanatoryNote>
+	</owl:Class>
+	
 	<owl:Class rdf:about="&fibo-sec-fund-fund;FundContract">
 		<rdfs:subClassOf rdf:resource="&fibo-be-le-fbo;OrganizationCoveringAgreement"/>
 		<rdfs:label xml:lang="en">fund contract</rdfs:label>
 		<skos:definition xml:lang="en">contract that embodies and defines the fund legal form in cases where there is no independent organization</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-sec-fund-fund;FundManager">
+		<rdfs:subClassOf rdf:resource="&cmns-org;ServiceProvider"/>
+		<rdfs:label xml:lang="en">fund manager</rdfs:label>
+		<rdfs:seeAlso rdf:resource="https://www.investor.gov/introduction-investing/investing-basics/glossary/529-plan-or-program-manager"/>
+		<skos:definition xml:lang="en">role of the party responsible for making investment decisions and managing the portfolio of an investment fund</skos:definition>
+		<cmns-av:explanatoryNote xml:lang="en">A fund manager is an individual or entity that oversees the investment strategy and asset allocation of a fund, with the objective of achieving financial returns in accordance with the fund&apos;s mandate. The fund manager may operate under regulatory oversight and fiduciary obligations, and may be supported by analysts, traders, and compliance officers.</cmns-av:explanatoryNote>
+		<cmns-av:explanatoryNote xml:lang="en">A fund manager, often a mutual fund company, a brokerage firm, an investment adviser, or an insurance company, handles all of the transactions and investments within the plan.</cmns-av:explanatoryNote>
+		<cmns-av:synonym xml:lang="en">plan manager</cmns-av:synonym>
+		<cmns-av:synonym xml:lang="en">program manager</cmns-av:synonym>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-fund-fund;FundOfFunds">
@@ -189,6 +208,12 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 	
 	<owl:Class rdf:about="&fibo-sec-fund-fund;FundUnit">
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-law-lcap;ContractualInterest"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-acc-cur;hasCurrency"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-cur;Currency"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&cmns-col;isPartOf"/>

@@ -22,6 +22,7 @@
 	<!ENTITY fibo-be-oac-cown "https://spec.edmcouncil.org/fibo/ontology/BE/OwnershipAndControl/CorporateOwnership/">
 	<!ENTITY fibo-be-oac-opty "https://spec.edmcouncil.org/fibo/ontology/BE/OwnershipAndControl/OwnershipParties/">
 	<!ENTITY fibo-fbc-dae-dbt "https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/">
+	<!ENTITY fibo-fbc-fct-fse "https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/FinancialServicesEntities/">
 	<!ENTITY fibo-fbc-fi-fi "https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/">
 	<!ENTITY fibo-fbc-fi-stl "https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/Settlement/">
 	<!ENTITY fibo-fbc-pas-caa "https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/ClientsAndAccounts/">
@@ -78,6 +79,7 @@
 	xmlns:fibo-be-oac-cown="https://spec.edmcouncil.org/fibo/ontology/BE/OwnershipAndControl/CorporateOwnership/"
 	xmlns:fibo-be-oac-opty="https://spec.edmcouncil.org/fibo/ontology/BE/OwnershipAndControl/OwnershipParties/"
 	xmlns:fibo-fbc-dae-dbt="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"
+	xmlns:fibo-fbc-fct-fse="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/FinancialServicesEntities/"
 	xmlns:fibo-fbc-fi-fi="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"
 	xmlns:fibo-fbc-fi-stl="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/Settlement/"
 	xmlns:fibo-fbc-pas-caa="https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/ClientsAndAccounts/"
@@ -134,6 +136,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/DebtAndEquities/Debt/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/Settlement/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/FunctionalEntities/FinancialServicesEntities/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/ClientsAndAccounts/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FBC/ProductsAndServices/FinancialProductsAndServices/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/AccountingEquity/"/>
@@ -274,25 +277,6 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<skos:definition xml:lang="en">The party that keeps accounting records of the available assets and liabilities of the Fund. It calculates dealing prices, the Net Asset Value (NAV) of the Fund, and may provide fund performance and tax data. Can be subcontracted by the FundAdministrator.</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-fund-civ;FundAdministrator">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-fund-civ;FundsProcessingParty"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-fund-civ;mayAlsoBe"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-fund-civ;UnitIssuer"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&cmns-rlcmp;isPlayedBy"/>
-				<owl:someValuesFrom rdf:resource="&cmns-org;LegalEntity"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">fund administrator</rdfs:label>
-		<skos:definition xml:lang="en">Entity that has to fulfil the legal and supervisory requirements of the fund. Responsible for all the business purposes around the investment pool, and so is reponsible for the issuing of the shares.</skos:definition>
-		<cmns-av:explanatoryNote xml:lang="en">If the unit is a bond, then the issuer is separate from the Fund Administrator. WG11 text: The party in charge of financial accounting, NAV calculation, management and performance fee calculation. Can also be in charge of orders centralisation and registration. Definition origin:EFAMA DD</cmns-av:explanatoryNote>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-sec-fund-civ;FundAuditor">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-fund-civ;FundsProcessingParty"/>
 		<rdfs:label xml:lang="en">fund auditor</rdfs:label>
@@ -409,7 +393,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-fund-civ;statedIn"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-fund-civ;FundProspectus"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-iss;Prospectus"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">fund investment objective</rdfs:label>
@@ -448,25 +432,6 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<rdfs:label xml:lang="en">fund legal form documentation</rdfs:label>
 		<skos:definition xml:lang="en">For a fund which is constituted under the law of contract, the constitution or articles that define the fund. These are embodied in a Contract.</skos:definition>
 		<cmns-av:explanatoryNote xml:lang="en">From ISO FIBIM &quot;Umbrella Fund&quot; narrative: In securities, a collective investment scheme that has a contractual or a corporate form. When it has a contractual form, a fund is constituted under either the law of contract or under the trust law and thus it is not a legal entity. In its corporate form, a fund is a legal entity and is structured as a company.</cmns-av:explanatoryNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-sec-fund-civ;FundManagementCompany">
-		<rdfs:subClassOf rdf:resource="&cmns-org;LegalEntity"/>
-		<rdfs:label xml:lang="en">fund management company</rdfs:label>
-		<skos:definition xml:lang="en">The party that sets up the fund, decides the investment strategy, appoints the agents, and is responsible for the promotion and the marketing of the fund. It makes all of the important decisions related to the fund. Also called fund promotor or fund sponsor or fund manager.</skos:definition>
-		<cmns-av:explanatoryNote xml:lang="en">In the US: operates on a percentage of the Portfolio assets under management.</cmns-av:explanatoryNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-sec-fund-civ;FundManager">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-fund-civ;FundsProcessingParty"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&cmns-rlcmp;isPlayedBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-fund-civ;FundManagementCompany"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">fund manager</rdfs:label>
-		<skos:definition xml:lang="en">The party that sets up the fund, decides the investment strategy, appoints the agents, and is responsible for the promotion and the marketing of the fund. It makes all of the important decisions related to the fund. Also called fund promotor or fund sponsor. This is a dupliucate of Fund Management Company at the moment</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-fund-civ;FundOrderDesk">
@@ -512,12 +477,6 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&cmns-col;comprises"/>
 				<owl:someValuesFrom rdf:resource="&fibo-sec-sec-ast;Portfolio"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&cmns-org;isManagedBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-fund-civ;PortfolioManager"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label xml:lang="en">fund portfolio</rdfs:label>
@@ -573,12 +532,6 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<rdfs:label xml:lang="en">fund processing terms</rdfs:label>
 		<skos:definition xml:lang="en">Formal terms for processing of the fund. These set out what the investor and the fund may or may not do. These include terms for redemption and subscription processing as well as general processing terms. ISO FIBIM definition: Processing characteristics linked to the instrument, ie, not to the market.</skos:definition>
 		<cmns-av:explanatoryNote xml:lang="en">These include Fund Subscription Terms, Fund Redemption Terms. and terms which relate to general processing and restrictions or otherwise on the holder. FPP notes: FPP presentation identifies many of these terms under the heading of Valuation Dealing characteristics. May need to revise which goes where in line with FPP. See also terms under NAV Valuation Calculation Method. Others of these terms appear in FPP under Instrument Restrictions. These cover the subscription, redemption and holding amounts and units and minimum holding period.</cmns-av:explanatoryNote>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-sec-fund-civ;FundPromoter">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-fund-civ;FundsProcessingParty"/>
-		<rdfs:label xml:lang="en">fund promoter</rdfs:label>
-		<skos:definition xml:lang="en">An entity that promotes a fund. May be an investor, pension fund, bank, insurance company or management company</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-fund-civ;FundProspectus">
@@ -725,18 +678,6 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<rdfs:subClassOf rdf:resource="&fibo-sec-fund-civ;FundUnitDistributionMethod"/>
 		<rdfs:label xml:lang="en">income accumulation</rdfs:label>
 		<skos:definition xml:lang="en">Accrued income is not distributed and instead remains reflected within the unit/share price.</skos:definition>
-	</owl:Class>
-	
-	<owl:Class rdf:about="&fibo-sec-fund-civ;InvestmentAdvisor">
-		<rdfs:subClassOf rdf:resource="&fibo-sec-fund-civ;FundsProcessingParty"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&cmns-rlcmp;isPlayedBy"/>
-				<owl:someValuesFrom rdf:resource="&cmns-org;LegalEntity"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">investment advisor</rdfs:label>
-		<skos:definition xml:lang="en">The party that provides investment guidance at a fee. Definition origin:EFAMA DD</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-sec-fund-civ;InvestmentRestriction">
@@ -893,29 +834,6 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<cmns-av:explanatoryNote xml:lang="en">Describes how you get there. E.g fully invested v not fully invested. MB Note: The terms labeled &quot;Strategy&quot; in EFAMA and in FIBIM are more like dictionary definition of policy, while &quot;How you get there&quot; is a dictionary definition of Strategy. Therefore original labels may be reversed from dictionary definition of the global semantics these are derived from.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-sec-fund-civ;PortfolioManager">
-		<rdfs:subClassOf rdf:resource="&cmns-org;OrganizationMember"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&cmns-org;manages"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-fund-civ;FundPortfolio"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&cmns-rlcmp;isPlayedBy"/>
-				<owl:someValuesFrom>
-					<owl:Restriction>
-						<owl:onProperty rdf:resource="&cmns-col;isMemberOf"/>
-						<owl:allValuesFrom rdf:resource="&fibo-sec-fund-civ;FundManagementCompany"/>
-					</owl:Restriction>
-				</owl:someValuesFrom>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>portfolio manager</rdfs:label>
-		<skos:definition>person or entity responsible for day to day investment decisions for a fund or asset</skos:definition>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-sec-fund-civ;PreferredShareInFund">
 		<rdfs:subClassOf rdf:resource="&fibo-sec-fund-civ;FundShareClassUnit"/>
 		<rdfs:label xml:lang="en">preferred share in fund</rdfs:label>
@@ -1028,26 +946,14 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<rdfs:subPropertyOf rdf:resource="&fibo-sec-fund-civ;fundHasRelatedParty"/>
 		<rdfs:label xml:lang="en">administered by</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-sec-pls;CollectiveInvestmentVehicle"/>
-		<rdfs:range rdf:resource="&fibo-sec-fund-civ;FundAdministrator"/>
+		<rdfs:range rdf:resource="&fibo-sec-fund-fund;FundAdministrator"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-fund-civ;advisedBy">
 		<rdfs:subPropertyOf rdf:resource="&fibo-sec-fund-civ;fundHasRelatedParty"/>
 		<rdfs:label xml:lang="en">advised by</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-sec-pls;CollectiveInvestmentVehicle"/>
-		<rdfs:range rdf:resource="&fibo-sec-fund-civ;InvestmentAdvisor"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-sec-fund-civ;anticipatedVolatility">
-		<rdfs:label xml:lang="en">anticipated volatility</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-fund-civ;FundProspectus"/>
-		<rdfs:range rdf:resource="&cmns-qtu;Percentage"/>
-	</owl:ObjectProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-sec-fund-civ;anticipates">
-		<rdfs:label xml:lang="en">anticipates</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-fund-civ;FundProspectus"/>
-		<rdfs:range rdf:resource="&fibo-ind-ind-ind;MarketRate"/>
+		<rdfs:range rdf:resource="&fibo-fbc-fct-fse;RegisteredInvestmentAdvisor"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-fund-civ;assessedAgainst">
@@ -1228,11 +1134,6 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<rdfs:range rdf:resource="&fibo-sec-fund-civ;FundAuditor"/>
 	</owl:ObjectProperty>
 	
-	<owl:ObjectProperty rdf:about="&fibo-sec-fund-civ;hasContactDetails">
-		<rdfs:label xml:lang="en">has contact details</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-fund-civ;PortfolioManager"/>
-	</owl:ObjectProperty>
-	
 	<owl:ObjectProperty rdf:about="&fibo-sec-fund-civ;hasDataProvider">
 		<rdfs:subPropertyOf rdf:resource="&fibo-sec-fund-civ;fundHasRelatedParty"/>
 		<rdfs:label xml:lang="en">has data provider</rdfs:label>
@@ -1304,7 +1205,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<rdfs:subPropertyOf rdf:resource="&fibo-sec-fund-civ;fundHasRelatedParty"/>
 		<rdfs:label xml:lang="en">has management company</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-sec-sec-pls;CollectiveInvestmentVehicle"/>
-		<rdfs:range rdf:resource="&fibo-sec-fund-civ;FundManager"/>
+		<rdfs:range rdf:resource="&fibo-sec-fund-fund;FundManager"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-fund-civ;hasPolicyTerms">
@@ -1522,7 +1423,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-fund-civ;mayAlsoBe">
 		<rdfs:label xml:lang="en">may also be</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-fund-civ;FundAdministrator"/>
+		<rdfs:domain rdf:resource="&fibo-sec-fund-fund;FundAdministrator"/>
 		<rdfs:range rdf:resource="&fibo-sec-fund-civ;UnitIssuer"/>
 		<skos:definition xml:lang="en">The unit issuer would be the fund administrator (except when it is a Bond).</skos:definition>
 	</owl:ObjectProperty>
@@ -1658,13 +1559,6 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<rdfs:range rdf:resource="&xsd;string"/>
 		<skos:definition xml:lang="en">Company specific description of a group of funds.</skos:definition>
 	</owl:DatatypeProperty>
-	
-	<owl:ObjectProperty rdf:about="&fibo-sec-fund-civ;promotedBy">
-		<rdfs:subPropertyOf rdf:resource="&fibo-sec-fund-civ;fundHasRelatedParty"/>
-		<rdfs:label xml:lang="en">promoted by</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-sec-sec-pls;CollectiveInvestmentVehicle"/>
-		<rdfs:range rdf:resource="&fibo-sec-fund-civ;FundPromoter"/>
-	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-sec-fund-civ;providesDepositaryServiceFor">
 		<rdfs:label xml:lang="en">provides depositary service for</rdfs:label>
@@ -1887,12 +1781,6 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 	<owl:Class rdf:about="&fibo-sec-fund-fund;FundUnit">
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-fnd-acc-cur;hasCurrency"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-cur;hasCurrency"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-fund-civ;hasDetails"/>
 				<owl:someValuesFrom rdf:resource="&fibo-sec-fund-civ;NetAssetValueCalculationMethod"/>
 			</owl:Restriction>
@@ -1940,13 +1828,13 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-fund-civ;administeredBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-fund-civ;FundAdministrator"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-fund-fund;FundAdministrator"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-fund-civ;advisedBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-fund-civ;InvestmentAdvisor"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-fct-fse;RegisteredInvestmentAdvisor"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -1994,7 +1882,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-fund-civ;hasManagementCompany"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-fund-civ;FundManager"/>
+				<owl:someValuesFrom rdf:resource="&fibo-sec-fund-fund;FundManager"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -2013,12 +1901,6 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-sec-fund-civ;hasTransferAgent"/>
 				<owl:someValuesFrom rdf:resource="&fibo-sec-fund-civ;FundTransferAgent"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-sec-fund-civ;promotedBy"/>
-				<owl:someValuesFrom rdf:resource="&fibo-sec-fund-civ;FundPromoter"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
