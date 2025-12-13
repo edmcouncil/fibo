@@ -230,14 +230,14 @@ You can test Your Installation with the following steps.  These steps assume you
 * Create a branch of the FIBO repository (in Sourcetree, click the "branch" icon).  Name your branch SerializerTest.
 * In a text editor, open the file fibo/BE/LegalEntities/LegalPersons.rdf
 * Find the definition of LegalPerson in this file; it looks like this: 
-```<owl:Class rdf:about="&fibo-be-le-lp;LegalPerson">```
+```<owl:Class rdf:about="&cmns-org;LegalPerson">```
 
 * A few lines later, notice a line that contains 
-```&fibo-fnd-law-lcap;hasCapacity```. It is a few lines after a line that contains ```fibo-be-le-lp;isRecognizedIn.```
+```&fibo-fnd-law-lcap;hasCapacity```. It is a few lines after a line that contains ```cmns-rga;isRecognizedIn.```
 
 * Change ```&fibo-fnd-law-lcap;hasCapacity``` to ```&fibo-be-le-lp;isCapableOf```. Save the file. 
 * Commit the file to your branch.  In Sourcetree, select LegalPersons.rdf in the staging area, then "Stage Selected", then click "Commit" in the upper left.  Enter a comment (e.g., "Test serialization"), and click "commit" in the lower right.   Make sure that the toggle "Push changes immediately ..." is unselected. 
-* Examine LegalPersons.rdf,  It should have changed since you saved in a few steps ago.  Verify that your new line, with ```&fibo-be-le-lp;isCapableOf``` now appears before the line with ```fibo-be-le-lp;isRecognizedIn```.
+* Examine LegalPersons.rdf,  It should have changed since you saved in a few steps ago.  Verify that your new line, with ```&fibo-be-le-lp;isCapableOf``` now appears before the line with ```cmns-rga;isRecognizedIn```.
 * Return to the branch you were working on before this test (in Sourcetree, double-click in the left pane on, e.g., "master"). 
 * Delete branch SerializerTest.  (in Sourcetree, right-click on the branch in the left pane, and select "delete".  You might have to enable "Force delete" to make it work correctly. 
 
