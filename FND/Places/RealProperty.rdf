@@ -9,6 +9,7 @@
 	<!ENTITY cmns-org "https://www.omg.org/spec/Commons/Organizations/">
 	<!ENTITY cmns-pts "https://www.omg.org/spec/Commons/PartiesAndSituations/">
 	<!ENTITY cmns-rga "https://www.omg.org/spec/Commons/RegulatoryAgencies/">
+	<!ENTITY cmns-sfc "https://www.omg.org/spec/Commons/SitesAndFacilities/">
 	<!ENTITY dct "http://purl.org/dc/terms/">
 	<!ENTITY fibo-fnd-acc-aeq "https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/AccountingEquity/">
 	<!ENTITY fibo-fnd-arr-asmt "https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Assessments/">
@@ -34,6 +35,7 @@
 	xmlns:cmns-org="https://www.omg.org/spec/Commons/Organizations/"
 	xmlns:cmns-pts="https://www.omg.org/spec/Commons/PartiesAndSituations/"
 	xmlns:cmns-rga="https://www.omg.org/spec/Commons/RegulatoryAgencies/"
+	xmlns:cmns-sfc="https://www.omg.org/spec/Commons/SitesAndFacilities/"
 	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fibo-fnd-acc-aeq="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/AccountingEquity/"
 	xmlns:fibo-fnd-arr-asmt="https://spec.edmcouncil.org/fibo/ontology/FND/Arrangements/Assessments/"
@@ -79,8 +81,10 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Organizations/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/PartiesAndSituations/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/RegulatoryAgencies/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20250301/Places/RealProperty/"/>
+		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/SitesAndFacilities/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/20251201/Places/RealProperty/"/>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20241001/Places/RealProperty.rdf version of the ontology was modified to replace additional content that is now available in the OMG Commons Ontology Library (Commons) v1.2 (FND-389).</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/FND/20250301/Places/RealProperty.rdf version of the ontology was modified to replace additional content that is now available in the OMG Commons Ontology Library (Commons) v1.3 (FND-399).</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 		<cmns-av:copyright>Copyright (c) 2024-2025 EDM Council, Inc.</cmns-av:copyright>
 		<cmns-av:copyright>Copyright (c) 2024-2025 Object Management Group, Inc.</cmns-av:copyright>
@@ -208,27 +212,16 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-plc-rp;TractIdentifier">
-		<rdfs:subClassOf rdf:resource="&cmns-cxtid;ContextualIdentifier"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&cmns-cxtdsg;isApplicableIn"/>
-				<owl:onClass rdf:resource="&cmns-rga;Jurisdiction"/>
-				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&cmns-id;identifies"/>
-				<owl:onClass rdf:resource="&fibo-fnd-plc-rp;TractOfLand"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>tract identifier</rdfs:label>
-		<skos:definition>unique identifier given to identify a tract in some jurisidiction</skos:definition>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&cmns-sfc;TractIdentifier"/>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-plc-rp;TractOfLand">
-		<rdfs:subClassOf rdf:resource="https://www.omg.org/spec/Commons/Locations/GeographicRegion"/>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&cmns-sfc;TractOfLand"/>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&cmns-sfc;TractOfLand">
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-plc-adr;hasAddress"/>
@@ -236,16 +229,6 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="https://www.omg.org/spec/Commons/Locations/isSubregionOf"/>
-				<owl:someValuesFrom rdf:resource="https://www.omg.org/spec/Commons/Locations/GeographicRegion"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label xml:lang="en">tract of land</rdfs:label>
-		<skos:definition xml:lang="en">geographic region that is a specific area within a larger region on the surface of the earth</skos:definition>
-		<cmns-av:explanatoryNote xml:lang="en">In some cases, such as in the case of unimproved land that may be owned by a government but without improvements, there may not be an address.</cmns-av:explanatoryNote>
-		<cmns-av:explanatoryNote xml:lang="en">Such a description typically includes a detailed, quantitative specification for that region specified using a prescribed coordinate and/or mapping system and/or a narrative description, such as &apos;metes and bounds&apos;, which provides a qualitative, but less precise, legal description of the location. The system(s) used to describe the tract are specified in local, regional, and national law.</cmns-av:explanatoryNote>
 	</owl:Class>
 
 </rdf:RDF>
