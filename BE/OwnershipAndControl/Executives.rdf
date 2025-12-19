@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE rdf:RDF [
 	<!ENTITY cmns-av "https://www.omg.org/spec/Commons/AnnotationVocabulary/">
+	<!ENTITY cmns-bauth "https://www.omg.org/spec/Commons/BusinessAuthorizations/">
 	<!ENTITY cmns-col "https://www.omg.org/spec/Commons/Collections/">
 	<!ENTITY cmns-org "https://www.omg.org/spec/Commons/Organizations/">
 	<!ENTITY cmns-pts "https://www.omg.org/spec/Commons/PartiesAndSituations/">
@@ -29,6 +30,7 @@
 ]>
 <rdf:RDF xml:base="https://spec.edmcouncil.org/fibo/ontology/BE/OwnershipAndControl/Executives/"
 	xmlns:cmns-av="https://www.omg.org/spec/Commons/AnnotationVocabulary/"
+	xmlns:cmns-bauth="https://www.omg.org/spec/Commons/BusinessAuthorizations/"
 	xmlns:cmns-col="https://www.omg.org/spec/Commons/Collections/"
 	xmlns:cmns-org="https://www.omg.org/spec/Commons/Organizations/"
 	xmlns:cmns-pts="https://www.omg.org/spec/Commons/PartiesAndSituations/"
@@ -82,6 +84,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/AnnotationVocabulary/"/>
+		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/BusinessAuthorizations/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Collections/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Organizations/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/PartiesAndSituations/"/>
@@ -107,7 +110,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20240101/OwnershipAndControl/Executives.rdf version of the ontology was modified to replace additional content that is now available in the OMG Commons Ontology Library (Commons) v1.2 (FND-389).</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20250301/OwnershipAndControl/Executives.rdf version of the ontology was modified to align the concept of beneficial ownership with the broader ownership pattern (SEC-202).</skos:changeNote>
 		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20250301/OwnershipAndControl/Executives.rdf version of the ontology was modified to merge details from the old corporations ontology into the corporate bodies ontology for consistency and useability (BE-259).</skos:changeNote>
-		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20251001/OwnershipAndControl/Executives.rdf version of the ontology was modified to add the distinction between an internal and external auditor (SEC-213).</skos:changeNote>
+		<skos:changeNote>The https://spec.edmcouncil.org/fibo/ontology/BE/20251001/OwnershipAndControl/Executives.rdf version of the ontology was modified to add the distinction between an internal and external auditor (SEC-213) and to use new constructs from the Commons 1.3 Business Authorizations ontology (FND-401).</skos:changeNote>
 		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 		<cmns-av:copyright>Copyright (c) 2013-2025 EDM Council, Inc.</cmns-av:copyright>
 		<cmns-av:copyright>Copyright (c) 2013-2025 Object Management Group, Inc.</cmns-av:copyright>
@@ -138,7 +141,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 	<owl:Class rdf:about="&fibo-be-oac-cown;BeneficialOwner">
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-be-oac-exec;delegatesControlTo"/>
+				<owl:onProperty rdf:resource="&cmns-bauth;delegatesControlTo"/>
 				<owl:someValuesFrom rdf:resource="&fibo-be-oac-exec;ControllingNominee"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -152,7 +155,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-oac-exec;Auditor">
-		<rdfs:subClassOf rdf:resource="&fibo-be-oac-exec;AuthorizedParty"/>
+		<rdfs:subClassOf rdf:resource="&cmns-bauth;AuthorizedParty"/>
 		<rdfs:label>auditor</rdfs:label>
 		<skos:definition>party qualified and authorized to review and verify the accuracy of financial records and ensure that companies comply with tax laws</skos:definition>
 		<cmns-av:explanatoryNote>An auditor is authorized to audit one or more specific organizations, i.e., by the authorizing party indicated by the situation.</cmns-av:explanatoryNote>
@@ -160,25 +163,12 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-oac-exec;Authorization">
-		<rdfs:subClassOf rdf:resource="&cmns-pts;Situation"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-be-oac-exec;hasAuthorizedParty"/>
-				<owl:someValuesFrom rdf:resource="&fibo-be-oac-exec;AuthorizedParty"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-be-oac-exec;hasAuthorizingParty"/>
-				<owl:someValuesFrom rdf:resource="&fibo-be-oac-exec;AuthorizingParty"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>authorization</rdfs:label>
-		<skos:definition>situation in which a party authorizes someone to act on their behalf under certain conditions for some period of time</skos:definition>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&cmns-bauth;Authorization"/>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-be-oac-exec;AuthorizedParty">
-		<rdfs:subClassOf rdf:resource="&fibo-be-oac-exec;ResponsibleParty"/>
+	<owl:Class rdf:about="&fibo-be-oac-exec;AuthorizedIndividual">
+		<rdfs:subClassOf rdf:resource="&cmns-bauth;ResponsibleParty"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&cmns-rlcmp;isPlayedBy"/>
@@ -186,33 +176,18 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-be-oac-exec;isAuthorizedThrough"/>
-				<owl:someValuesFrom rdf:resource="&fibo-be-oac-exec;Authorization"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>authorized party</rdfs:label>
-		<skos:definition>party that has been given the responsibility to act on behalf of another party under some set of guidelines</skos:definition>
+		<rdfs:label>authorized individual</rdfs:label>
+		<skos:definition>role of an individual that has been given the responsibility to act on behalf of another party under some set of guidelines</skos:definition>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-be-oac-exec;AuthorizedParty">
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&cmns-bauth;AuthorizedParty"/>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-oac-exec;AuthorizingParty">
-		<rdfs:subClassOf rdf:resource="&cmns-pts;Actor"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&cmns-rlcmp;isPlayedBy"/>
-				<owl:onClass rdf:resource="&cmns-org;LegalPerson"/>
-				<owl:qualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:qualifiedCardinality>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-be-oac-exec;authorizesThrough"/>
-				<owl:someValuesFrom rdf:resource="&fibo-be-oac-exec;Authorization"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>authorizing party</rdfs:label>
-		<skos:definition>party that delegates some role, authority, or control to another party</skos:definition>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&cmns-bauth;AuthorizingParty"/>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-oac-exec;BoardCapacity">
@@ -285,8 +260,8 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-oac-exec;BoardMember">
-		<rdfs:subClassOf rdf:resource="&fibo-be-oac-exec;LegallyDelegatedAuthority"/>
-		<rdfs:subClassOf rdf:resource="&fibo-be-oac-exec;ResponsibleParty"/>
+		<rdfs:subClassOf rdf:resource="&cmns-bauth;LegallyDelegatedAuthority"/>
+		<rdfs:subClassOf rdf:resource="&cmns-bauth;ResponsibleParty"/>
 		<rdfs:subClassOf rdf:resource="&cmns-org;OrganizationMember"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
@@ -434,10 +409,10 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-oac-exec;ControllingNominee">
-		<rdfs:subClassOf rdf:resource="&fibo-be-oac-exec;LegallyDelegatedAuthority"/>
+		<rdfs:subClassOf rdf:resource="&cmns-bauth;LegallyDelegatedAuthority"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&fibo-be-oac-exec;hasDelegatedControlOf"/>
+				<owl:onProperty rdf:resource="&cmns-bauth;hasDelegatedControlOf"/>
 				<owl:someValuesFrom rdf:resource="&fibo-fnd-oac-own;Asset"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
@@ -471,7 +446,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-oac-exec;Executive">
-		<rdfs:subClassOf rdf:resource="&fibo-be-oac-exec;LegallyDelegatedAuthority"/>
+		<rdfs:subClassOf rdf:resource="&cmns-bauth;LegallyDelegatedAuthority"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&cmns-rlcmp;isPlayedBy"/>
@@ -507,15 +482,8 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-oac-exec;LegallyDelegatedAuthority">
-		<rdfs:subClassOf rdf:resource="&fibo-fnd-oac-ctl;ControllingParty"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&cmns-rlcmp;isPlayedBy"/>
-				<owl:allValuesFrom rdf:resource="&cmns-org;LegalPerson"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>legally delegated authority</rdfs:label>
-		<skos:definition>party empowered with some level of legal control and corresponding responsibility</skos:definition>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&cmns-bauth;LegallyDelegatedAuthority"/>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-be-oac-exec;NonExecutiveBoardMember">
@@ -533,32 +501,9 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<skos:definition>controlling party that is responsible for the management of daily business operations of an organization</skos:definition>
 	</owl:Class>
 	
-	<owl:Class rdf:about="&fibo-be-oac-exec;ResponsibleParty">
-		<rdfs:subClassOf rdf:resource="&cmns-pts;PartyRole"/>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&cmns-rlcmp;isPlayedBy"/>
-				<owl:allValuesFrom rdf:resource="&fibo-be-le-lp;LegallyCompetentNaturalPerson"/>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:subClassOf>
-			<owl:Restriction>
-				<owl:onProperty rdf:resource="&cmns-rlcmp;isPlayedBy"/>
-				<owl:someValuesFrom>
-					<owl:Restriction>
-						<owl:onProperty rdf:resource="&fibo-be-oac-exec;hasResponsibility"/>
-						<owl:allValuesFrom rdf:resource="&fibo-fnd-law-lcap;Duty"/>
-					</owl:Restriction>
-				</owl:someValuesFrom>
-			</owl:Restriction>
-		</rdfs:subClassOf>
-		<rdfs:label>responsible party</rdfs:label>
-		<skos:definition>person acting in a role that has some formal responsibility, such as a fiduciary responsibility, a signatory, an examiner or registrar, etc.</skos:definition>
-	</owl:Class>
-	
 	<owl:Class rdf:about="&fibo-be-oac-exec;Signatory">
-		<rdfs:subClassOf rdf:resource="&fibo-be-oac-exec;AuthorizedParty"/>
-		<rdfs:subClassOf rdf:resource="&fibo-be-oac-exec;LegallyDelegatedAuthority"/>
+		<rdfs:subClassOf rdf:resource="&fibo-be-oac-exec;AuthorizedIndividual"/>
+		<rdfs:subClassOf rdf:resource="&cmns-bauth;LegallyDelegatedAuthority"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&cmns-rlcmp;isPlayedBy"/>
@@ -575,33 +520,22 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 	</owl:Class>
 	
 	<owl:ObjectProperty rdf:about="&fibo-be-oac-exec;authorizes">
-		<rdfs:subPropertyOf rdf:resource="&cmns-pts;actsOn"/>
-		<rdfs:label>authorizes</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-be-oac-exec;AuthorizingParty"/>
-		<rdfs:range rdf:resource="&fibo-be-oac-exec;AuthorizedParty"/>
-		<owl:inverseOf rdf:resource="&fibo-be-oac-exec;isAuthorizedBy"/>
-		<skos:definition>endorses, enables, empowers, or gives permission to</skos:definition>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentProperty rdf:resource="&cmns-bauth;authorizes"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-be-oac-exec;authorizesThrough">
-		<rdfs:subPropertyOf rdf:resource="&cmns-pts;actsIn"/>
-		<rdfs:label>authorizes through</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-be-oac-exec;AuthorizingParty"/>
-		<rdfs:range rdf:resource="&fibo-be-oac-exec;Authorization"/>
-		<owl:inverseOf rdf:resource="&fibo-be-oac-exec;hasAuthorizingParty"/>
-		<skos:definition>indicates the situation that facilitates designation of an authorized party by the authorizing party for some purpose</skos:definition>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentProperty rdf:resource="&cmns-bauth;authorizesThrough"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-be-oac-exec;delegatesControlTo">
-		<rdfs:subPropertyOf rdf:resource="&fibo-be-oac-exec;authorizes"/>
-		<rdfs:subPropertyOf rdf:resource="&cmns-org;designates"/>
-		<rdfs:label>delegates control to</rdfs:label>
-		<rdfs:range rdf:resource="&fibo-be-oac-exec;LegallyDelegatedAuthority"/>
-		<skos:definition>indicates a party to which this legal person has delegated some authority or control</skos:definition>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentProperty rdf:resource="&cmns-bauth;delegatesControlTo"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-be-oac-exec;designatesSignatory">
-		<rdfs:subPropertyOf rdf:resource="&fibo-be-oac-exec;authorizes"/>
+		<rdfs:subPropertyOf rdf:resource="&cmns-bauth;authorizes"/>
 		<rdfs:subPropertyOf rdf:resource="&cmns-org;designates"/>
 		<rdfs:label>designates signatory</rdfs:label>
 		<rdfs:range rdf:resource="&fibo-be-oac-exec;Signatory"/>
@@ -618,19 +552,13 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-be-oac-exec;hasAuthorizedParty">
-		<rdfs:subPropertyOf rdf:resource="&cmns-pts;hasUndergoer"/>
-		<rdfs:label>has authorized party</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-be-oac-exec;Authorization"/>
-		<rdfs:range rdf:resource="&fibo-be-oac-exec;AuthorizedParty"/>
-		<skos:definition>indicates the party that is endorsed, enabled, empowered, or otherwise permitted to do something in the situation</skos:definition>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentProperty rdf:resource="&cmns-bauth;hasAuthorizedParty"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-be-oac-exec;hasAuthorizingParty">
-		<rdfs:subPropertyOf rdf:resource="&cmns-pts;hasActor"/>
-		<rdfs:label>has authorizing party</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-be-oac-exec;Authorization"/>
-		<rdfs:range rdf:resource="&fibo-be-oac-exec;AuthorizingParty"/>
-		<skos:definition>indicates the party that endorses, enables, empowers, or gives permission in the situation</skos:definition>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentProperty rdf:resource="&cmns-bauth;hasAuthorizingParty"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-be-oac-exec;hasCorporateOfficer">
@@ -642,9 +570,8 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-be-oac-exec;hasDelegatedControlOf">
-		<rdfs:label>has delegated control of</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-be-oac-exec;LegallyDelegatedAuthority"/>
-		<skos:definition>indicates something or some party that is controlled via delegation</skos:definition>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentProperty rdf:resource="&cmns-bauth;hasDelegatedControlOf"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-be-oac-exec;hasDirector">
@@ -673,15 +600,12 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-be-oac-exec;hasResponsibleParty">
-		<rdfs:subPropertyOf rdf:resource="&cmns-pts;hasPartyRole"/>
-		<rdfs:label>has responsible party</rdfs:label>
-		<rdfs:domain rdf:resource="&cmns-org;FormalOrganization"/>
-		<rdfs:range rdf:resource="&fibo-be-oac-exec;ResponsibleParty"/>
-		<skos:definition>identifies a party that has some assignment, commitment or obligation with respect to the formal organization</skos:definition>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentProperty rdf:resource="&cmns-bauth;hasResponsibleParty"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-be-oac-exec;hasSigningAuthorityFor">
-		<rdfs:subPropertyOf rdf:resource="&fibo-be-oac-exec;isAuthorizedBy"/>
+		<rdfs:subPropertyOf rdf:resource="&cmns-bauth;isAuthorizedBy"/>
 		<rdfs:label>has signing authority for</rdfs:label>
 		<rdfs:domain rdf:resource="&fibo-be-oac-exec;Signatory"/>
 		<owl:inverseOf rdf:resource="&fibo-be-oac-exec;designatesSignatory"/>
@@ -691,26 +615,19 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 	<owl:ObjectProperty rdf:about="&fibo-be-oac-exec;hasVestedInIt">
 		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-law-lcap;hasCapacity"/>
 		<rdfs:label>has vested in it</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-be-oac-exec;LegallyDelegatedAuthority"/>
+		<rdfs:domain rdf:resource="&cmns-bauth;LegallyDelegatedAuthority"/>
 		<rdfs:range rdf:resource="&fibo-fnd-law-lcap;DelegatedLegalAuthority"/>
 		<skos:definition>indicates the delegated legal authority that is vested in the controlling party</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-be-oac-exec;isAuthorizedBy">
-		<rdfs:subPropertyOf rdf:resource="&cmns-pts;isAffectedBy"/>
-		<rdfs:label>is authorized by</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-be-oac-exec;AuthorizedParty"/>
-		<rdfs:range rdf:resource="&fibo-be-oac-exec;AuthorizingParty"/>
-		<skos:definition>is endorsed, enabled, empowered, or otherwise permitted by</skos:definition>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentProperty rdf:resource="&cmns-bauth;isAuthorizedBy"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-be-oac-exec;isAuthorizedThrough">
-		<rdfs:subPropertyOf rdf:resource="&cmns-pts;undergoes"/>
-		<rdfs:label>is authorized through</rdfs:label>
-		<rdfs:domain rdf:resource="&fibo-be-oac-exec;AuthorizedParty"/>
-		<rdfs:range rdf:resource="&fibo-be-oac-exec;Authorization"/>
-		<owl:inverseOf rdf:resource="&fibo-be-oac-exec;hasAuthorizedParty"/>
-		<skos:definition>indicates the situation that faciliates endorsement of the authorized party for some purpose</skos:definition>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentProperty rdf:resource="&cmns-bauth;isAuthorizedThrough"/>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-be-oac-exec;isDirectorOf">
@@ -746,5 +663,31 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<skos:definition>appoints or proposes for appointment to an office or place</skos:definition>
 		<cmns-av:usageNote>Note that nominates is defined as a relation between two parties-in-role (the range of which could be a corporation or partnership in the case of an auditor), whereas appoints between independent parties.</cmns-av:usageNote>
 	</owl:ObjectProperty>
+	
+	<owl:Class rdf:about="&cmns-bauth;LegallyDelegatedAuthority">
+		<rdfs:subClassOf rdf:resource="&fibo-fnd-oac-ctl;ControllingParty"/>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&cmns-bauth;ResponsibleParty">
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-rlcmp;isPlayedBy"/>
+				<owl:allValuesFrom rdf:resource="&fibo-be-le-lp;LegallyCompetentNaturalPerson"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-rlcmp;isPlayedBy"/>
+				<owl:someValuesFrom>
+					<owl:Restriction>
+						<owl:onProperty rdf:resource="&fibo-be-oac-exec;hasResponsibility"/>
+						<owl:allValuesFrom rdf:resource="&fibo-fnd-law-lcap;Duty"/>
+					</owl:Restriction>
+				</owl:someValuesFrom>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<owl:deprecated rdf:datatype="&xsd;boolean">true</owl:deprecated>
+		<owl:equivalentClass rdf:resource="&cmns-bauth;ResponsibleParty"/>
+	</owl:Class>
 
 </rdf:RDF>
