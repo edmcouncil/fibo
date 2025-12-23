@@ -11,6 +11,7 @@
 	<!ENTITY dct "http://purl.org/dc/terms/">
 	<!ENTITY fibo-fnd-dt-oc "https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/Occurrences/">
 	<!ENTITY fibo-fnd-gao-obj "https://spec.edmcouncil.org/fibo/ontology/FND/GoalsAndObjectives/Objectives/">
+	<!ENTITY fibo-fnd-rel-rel "https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
 	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
 	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
@@ -30,6 +31,7 @@
 	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fibo-fnd-dt-oc="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/Occurrences/"
 	xmlns:fibo-fnd-gao-obj="https://spec.edmcouncil.org/fibo/ontology/FND/GoalsAndObjectives/Objectives/"
+	xmlns:fibo-fnd-rel-rel="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -51,6 +53,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		
 		See https://opensource.org/licenses/MIT.</dct:license>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/DatesAndTimes/Occurrences/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Relations/Relations/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Collections/"/>
@@ -85,12 +88,26 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 	</owl:Ontology>
 	
 	<owl:Class rdf:about="&fibo-fnd-gao-obj;Aim">
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-gao-obj;isAddressedBy"/>
+				<owl:onClass rdf:resource="&fibo-fnd-gao-obj;Approach"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:label>aim</rdfs:label>
-		<skos:definition>intended end state characterized by desired outcomes toward which actions are directed, regardless of scope or measurability</skos:definition>
+		<skos:definition>intention specifying a desired direction, condition, or situation toward which an agent&apos;s actions are directed, without requiring precise scope or measurable criteria</skos:definition>
 		<cmns-av:explanatoryNote>Business aims are sometimes considered broad, long-term goals, and in such cases, the term &apos;aim&apos; is used interchangeably with goal. Here, however we differentiate between qualitative goals and quantitative objectives, both of which are kinds of aims, with the critical differences including measurability and time frame. Goals tend to have a much longer trajectory, provide the basis for determining objectives, and are often aligned with an organization&apos;s mission, whereas objectives are short term and measurable.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-gao-obj;Approach">
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fnd-gao-obj;addresses"/>
+				<owl:onClass rdf:resource="&fibo-fnd-gao-obj;Aim"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-fnd-gao-obj;hasObjective"/>
@@ -99,7 +116,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>approach</rdfs:label>
-		<skos:definition>way of addressing an aim or problem characterized by high-level planning (strategy) and systematic execution (method), without presupposing scope or granularity</skos:definition>
+		<skos:definition>way of addressing an aim or problem characterized by high-level planning and systematic execution, without presupposing scope or granularity</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-gao-obj;BusinessObjective">
@@ -165,12 +182,20 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<rdfs:subClassOf rdf:resource="&fibo-fnd-gao-obj;Aim"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-cxtdsg;appliesTo"/>
+				<owl:onClass rdf:resource="&fibo-fnd-gao-obj;Goal"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
 				<owl:onProperty rdf:resource="&cmns-dt;hasDatePeriod"/>
-				<owl:someValuesFrom rdf:resource="&cmns-dt;DatePeriod"/>
+				<owl:onClass rdf:resource="&cmns-dt;DatePeriod"/>
+				<owl:minQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:minQualifiedCardinality>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>objective</rdfs:label>
-		<skos:definition>aim distinguished by specific scope and measurable criteria, often quantitative and short-term that a party seeks to attain in order to achieve its long-term goals</skos:definition>
+		<skos:definition>aim distinguished by specific scope and measurable criteria, often quantitative and short-term that a party seeks to attain, typically in order to achieve its long-term goals</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-gao-obj;Program">
@@ -349,8 +374,8 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:label>strategy</rdfs:label>
-		<skos:definition>high-level approach for achieving a specific goal, objective, solution or outcome, distinguished by long-term orientation, adaptive planning, and broad scope</skos:definition>
-		<cmns-av:explanatoryNote xml:lang="en">A strategy is a high-level plan or approach designed to achieve a long-term goal or outcome, often by choosing among different possible methods or courses of action. A strategy may involve activities that are needed in order to achieve specific goals or objectives. It may take into account one or more policies or any number of restrictions and constraints.</cmns-av:explanatoryNote>
+		<skos:definition>high-level approach that guides decision-making and the coordination of actions and plans in pursuit of some aim</skos:definition>
+		<cmns-av:explanatoryNote xml:lang="en">A strategy is a high-level plan or approach designed to achieve a long-term goal or outcome, often by choosing among different possible methods or courses of action. A strategy may involve activities that are needed in order to achieve specific goals or objectives. It may take into account one or more policies or any number of restrictions and constraints. Strategies are typically distinguished by long-term orientation, adaptive planning, and broad scope.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fnd-gao-obj;TripleBottomLineObjective">
@@ -358,6 +383,12 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<rdfs:label>triple bottom line objective</rdfs:label>
 		<skos:definition>financial objective that integrates economic performance, environmental stewardship, and social responsibility as co-equal criteria for success</skos:definition>
 	</owl:Class>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-gao-obj;addresses">
+		<rdfs:subPropertyOf rdf:resource="&fibo-fnd-rel-rel;involves"/>
+		<rdfs:label>addresses</rdfs:label>
+		<skos:definition>deals with, handles, or gives attention to</skos:definition>
+	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-gao-obj;hasGoal">
 		<rdfs:label>has goal</rdfs:label>
@@ -376,6 +407,12 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<rdfs:label>has strategy</rdfs:label>
 		<rdfs:range rdf:resource="&fibo-fnd-gao-obj;Strategy"/>
 		<skos:definition>applies strategy</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fnd-gao-obj;isAddressedBy">
+		<rdfs:label>is addressed by</rdfs:label>
+		<owl:inverseOf rdf:resource="&fibo-fnd-gao-obj;addresses"/>
+		<skos:definition>indicates something, such a goal or objective, that is dealt with by</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fnd-gao-obj;usesMethod">
