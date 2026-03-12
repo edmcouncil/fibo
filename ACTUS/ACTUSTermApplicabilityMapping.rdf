@@ -14,8 +14,10 @@
 	<!ENTITY fibo-actus-act "https://spec.edmcouncil.org/fibo/ontology/ACTUS/ACTUSContractTerms/">
 	<!ENTITY fibo-actus-acv "https://spec.edmcouncil.org/fibo/ontology/ACTUS/ACTUSTaxonomy/">
 	<!ENTITY fibo-actus-atam "https://spec.edmcouncil.org/fibo/ontology/ACTUS/ACTUSTermApplicabilityMapping/">
+	<!ENTITY fibo-fnd-acc-cur "https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/">
 	<!ENTITY fibo-fnd-agr-ctr "https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
+	<!ENTITY fibo-ind-fx-fx "https://spec.edmcouncil.org/fibo/ontology/IND/ForeignExchange/ForeignExchange/">
 	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
 	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
 	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
@@ -37,8 +39,10 @@
 	xmlns:fibo-actus-act="https://spec.edmcouncil.org/fibo/ontology/ACTUS/ACTUSContractTerms/"
 	xmlns:fibo-actus-acv="https://spec.edmcouncil.org/fibo/ontology/ACTUS/ACTUSTaxonomy/"
 	xmlns:fibo-actus-atam="https://spec.edmcouncil.org/fibo/ontology/ACTUS/ACTUSTermApplicabilityMapping/"
+	xmlns:fibo-fnd-acc-cur="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"
 	xmlns:fibo-fnd-agr-ctr="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
+	xmlns:fibo-ind-fx-fx="https://spec.edmcouncil.org/fibo/ontology/IND/ForeignExchange/ForeignExchange/"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
@@ -62,8 +66,10 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<dct:source rdf:datatype="&xsd;anyURI">https://www.actusfrf.org</dct:source>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/ACTUS/ACTUSContractTerms/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/ACTUS/ACTUSTaxonomy/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Accounting/CurrencyAmount/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Agreements/Contracts/"/>
 		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"/>
+		<owl:imports rdf:resource="https://spec.edmcouncil.org/fibo/ontology/IND/ForeignExchange/ForeignExchange/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/AnnotationVocabulary/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Classifiers/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/CodesAndCodeSets/"/>
@@ -88,27 +94,30 @@ See https://opensource.org/licenses/MIT.</dct:license>
 				<owl:someValuesFrom rdf:resource="&cmns-id;Identifier"/>
 			</owl:Restriction>
 		</rdf:type>
-		<cmns-av:usageNote>Financial instrument identifier is the range of the property cmns-id;isIdentifiedBy in the case of any financial instrument, including most loans. In order to map this to ACTUS data, the property, &apos;is identified by&apos; should be used together with the identifier, where the identifier for the contract may be a CUSIP, SEDOL code, FIGI, or something else, including a bespoke identifier for contracts traded over the counter. Typically, CID would denote a financial instrument identifier.</cmns-av:usageNote>
+		<fibo-actus-act:hasParameterMapping>Starting from the contract, cmns-id:isIdentifiedBy cmns-id:Identifier; cmns-txt;hasTextValue xsd:string</fibo-actus-act:hasParameterMapping>
+		<cmns-av:usageNote>Financial instrument identifier is the range of the property cmns-id;isIdentifiedBy in the case of any financial instrument, including most loans. In order to map this to ACTUS data, the property, &apos;is identified by&apos; should be used together with the identifier, where the identifier for the contract may be a CUSIP, SEDOL code, FIGI, or something else, including a bespoke identifier for a contract traded over the counter, non-tradable contract such as many credit agreements, and the like. Typically, CID would denote a financial instrument identifier.</cmns-av:usageNote>
 	</owl:NamedIndividual>
 	
 	<owl:NamedIndividual rdf:about="&fibo-actus-act;ACTUSContractTerm-CNTRL">
 		<rdf:type>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&cmns-dsg;denotes"/>
-				<owl:someValuesFrom rdf:resource="&cmns-pts;PartyRole"/>
+				<owl:someValuesFrom rdf:resource="&cmns-pts;Role"/>
 			</owl:Restriction>
 		</rdf:type>
-		<cmns-av:explanatoryNote>This should really map to a union of roles that themselves map to the controlled vocabulary from the ACTUS specification for such roles (valid values).</cmns-av:explanatoryNote>
+		<fibo-actus-act:hasParameterMapping>Starting from the contract, this concept maps to (1) fibo-fnd-agr-ctr:hasContractParty fibo-fnd-agr-ctr:ContractParty; cmns-rlcmp:isPlayedBy cmns-org:LegalPerson; cmns-id:isIdentifiedBy cmns-id:Identifier; cmns-txt:hasTextValue xsd:string or (2) fibo-fnd-agr-ctr:hasContractParty fibo-fnd-agr-ctr:ContractParty; cmns-pts:actsOn (fibo-fnd-oac-own:Asset union fibo-fbc-dae-dbt:Collateral union) or (3) fibo-fnd-agr-ctr:hasContractParty fibo-fnd-agr-ctr:ContractParty; fibo-fnd-oac-own:isOwningParty fibo-fbc-pas-fpas:Position. Note that liability is not defined in FIBO which is a gap and should be added in parallel with asset.</fibo-actus-act:hasParameterMapping>
+		<cmns-av:explanatoryNote>This should really map to a union of roles that themselves map to the controlled vocabulary from the ACTUS specification for such roles (valid values). The roles may include buyer, seller, obligor, obligee, etc., or to a union of roles played by a financial asset or liability on the balance sheet of the legal entity playing the role.</cmns-av:explanatoryNote>
 	</owl:NamedIndividual>
 	
 	<owl:NamedIndividual rdf:about="&fibo-actus-act;ACTUSContractTerm-CRID">
 		<rdf:type>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&cmns-dsg;denotes"/>
-				<owl:someValuesFrom rdf:resource="&fibo-fnd-agr-ctr;ContractPrincipal"/>
+				<owl:someValuesFrom rdf:resource="&cmns-id;Identifier"/>
 			</owl:Restriction>
 		</rdf:type>
-		<cmns-av:explanatoryNote>This is called the creator identifier in the ACTUS applicability rules - perhaps should point to an identifier for the party playing the role of contract &apos;creator&apos; -- could be a union of principal, originator, and issuer.</cmns-av:explanatoryNote>
+		<fibo-actus-act:hasParameterMapping>Starting from the contract principal, originator, or issuer, cmns-rlcmp:isPlayedBy cmns-pts:Party; cmns-id:isIdentifiedBy cmns-id:Identifier; cmns-txt;hasTextValue xsd:string</fibo-actus-act:hasParameterMapping>
+		<cmns-av:explanatoryNote>This is called the creator identifier in the ACTUS applicability rules.</cmns-av:explanatoryNote>
 	</owl:NamedIndividual>
 	
 	<owl:NamedIndividual rdf:about="&fibo-actus-act;ACTUSContractTerm-CT">
@@ -130,8 +139,54 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<cmns-av:explanatoryNote>This should really map to a collection of contracts or a single contract, but to map it properly requires input from the ACTUS experts. Depends on what ACTUS means by contract structure.</cmns-av:explanatoryNote>
 	</owl:NamedIndividual>
 	
+	<owl:NamedIndividual rdf:about="&fibo-actus-act;ACTUSContractTerm-CUR">
+		<rdf:type>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-dsg;denotes"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-cur;Currency"/>
+			</owl:Restriction>
+		</rdf:type>
+		<fibo-actus-act:hasParameterMapping>Starting from the contract, (1) fibo-fnd-acc-cur:hasCurrency fibo-fnd-acc-cur:Currency; cmns-dsg:isSignifiedBy fibo-fnd-acc-cur:CurrencyIdentifier; fibo-fnd-rel-rel;hasTag xsd:string, or (2) starting specifically from a currency instrument, fibo-fnd-acc-cur:hasBaseCurrency fibo-fnd-acc-cur:Currency; cmns-dsg:isSignifiedBy fibo-fnd-acc-cur:CurrencyIdentifier; fibo-fnd-rel-rel;hasTag xsd:string, where the base currency denotes the selling currency</fibo-actus-act:hasParameterMapping>
+	</owl:NamedIndividual>
+	
+	<owl:NamedIndividual rdf:about="&fibo-actus-act;ACTUSContractTerm-CUR2">
+		<rdf:type>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-dsg;denotes"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-cur;Currency"/>
+			</owl:Restriction>
+		</rdf:type>
+		<fibo-actus-act:hasParameterMapping>Starting from the contract, (1) fibo-fnd-acc-cur:hasCurrency fibo-fnd-acc-cur:Currency; cmns-dsg:isSignifiedBy fibo-fnd-acc-cur:CurrencyIdentifier; fibo-fnd-rel-rel;hasTag xsd:string, or (2) starting specifically from a currency instrument, fibo-fnd-acc-cur:hasDealtCurrency fibo-fnd-acc-cur:Currency; cmns-dsg:isSignifiedBy fibo-fnd-acc-cur:CurrencyIdentifier; fibo-fnd-rel-rel;hasTag xsd:string, where the base currency denotes the buying currency</fibo-actus-act:hasParameterMapping>
+	</owl:NamedIndividual>
+	
 	<owl:NamedIndividual rdf:about="&fibo-actus-act;ACTUSContractTerm-MOC">
 		<cmns-av:explanatoryNote>Need to investigate what to map to represent the market value for a contract ...</cmns-av:explanatoryNote>
+	</owl:NamedIndividual>
+	
+	<owl:NamedIndividual rdf:about="&fibo-actus-act;ACTUSContractTerm-NT">
+		<rdf:type>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-dsg;denotes"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
+			</owl:Restriction>
+		</rdf:type>
+		<rdf:type>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-dsg;denotes"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fnd-acc-cur;MonetaryAmount"/>
+			</owl:Restriction>
+		</rdf:type>
+		<fibo-actus-act:hasParameterMapping>Starting from the contract, fibo-fnd-acc-cur:hasNotionalAmount fibo-fnd-acc-cur:MonetaryAmount; fibo-fnd-acc-cur:hasAmount xsd:decimal</fibo-actus-act:hasParameterMapping>
+	</owl:NamedIndividual>
+	
+	<owl:NamedIndividual rdf:about="&fibo-actus-act;ACTUSContractTerm-PTD">
+		<rdf:type>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-dsg;denotes"/>
+				<owl:someValuesFrom rdf:resource="&fibo-ind-fx-fx;QuotedExchangeRate"/>
+			</owl:Restriction>
+		</rdf:type>
+		<fibo-actus-act:hasParameterMapping>Starting from the contract, fibo-ind-fx-fx:hasQuotedExchangeRate fibo-ind-fx-fx:QuotedExchangeRate; fibo-fnd-acc-cur:hasRateValue xsd:decimal</fibo-actus-act:hasParameterMapping>
 	</owl:NamedIndividual>
 	
 	<owl:NamedIndividual rdf:about="&fibo-actus-act;ACTUSContractTerm-SD">
