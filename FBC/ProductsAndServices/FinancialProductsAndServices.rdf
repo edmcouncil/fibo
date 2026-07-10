@@ -459,16 +459,49 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-fpas;Exposure">
 		<rdfs:subClassOf rdf:resource="&cmns-pts;Undergoer"/>
+		<rdfs:label>exposure</rdfs:label>
+		<skos:definition>means by which an individual or organization is unprotected and open to damage, danger, risk of suffering a loss, or uncertainty</skos:definition>
+		<skos:example>Examples include financial exposure, credit exposure, legal exposure, credit rating exposure, reputational exposure, and so forth.</skos:example>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-pas-fpas;ExposureBearer">
+		<rdfs:subClassOf rdf:resource="&cmns-pts;Actor"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
-				<owl:onProperty rdf:resource="&cmns-dt;hasStartDate"/>
-				<owl:onClass rdf:resource="&cmns-dt;ExplicitDate"/>
-				<owl:maxQualifiedCardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:maxQualifiedCardinality>
+				<owl:onProperty rdf:resource="&fibo-fbc-pas-fpas;isExposedPartyIn"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-fpas;ExposureSituation"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
-		<rdfs:label>exposure</rdfs:label>
-		<skos:definition>the extent to which an individual or organization is unprotected and open to damage, danger, risk of suffering a loss, or uncertainty</skos:definition>
-		<skos:example>Examples include financial exposure, credit exposure, legal exposure, credit rating exposure, reputational exposure, and so forth.</skos:example>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-pas-fpas;isExposedTo"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-fpas;Exposure"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label>exposure bearer</rdfs:label>
+		<skos:definition>party subject to influence or risk arising from a specific contract, instrument, or arrangement</skos:definition>
+		<skos:note>Note that the name given to the party at risk is dependent on the jurisdiction and nature of the risk. Different regulations use differing terminology for this party, and exposure bearer is considered more general that some synonyms.</skos:note>
+		<cmns-av:synonym>exposed party</cmns-av:synonym>
+		<cmns-av:synonym>risk bearer</cmns-av:synonym>
+		<cmns-av:synonym>risk-bearing party</cmns-av:synonym>
+	</owl:Class>
+	
+	<owl:Class rdf:about="&fibo-fbc-pas-fpas;ExposureSituation">
+		<rdfs:subClassOf rdf:resource="&cmns-pts;Situation"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-pas-fpas;hasExposedParty"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-fpas;ExposureBearer"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&fibo-fbc-pas-fpas;hasExposureTo"/>
+				<owl:someValuesFrom rdf:resource="&fibo-fbc-pas-fpas;Exposure"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:label xml:lang="en">exposure situation</rdfs:label>
+		<skos:definition>state of affairs in which some party is subject to influence or risk arising from a specific contract, instrument, or arrangement</skos:definition>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-fpas;FinancialExposure">
@@ -476,6 +509,7 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<rdfs:label>financial exposure</rdfs:label>
 		<skos:definition>the extent to which an individual or organization is open to risk of suffering a loss in a transaction, or with respect to some investment or set of investments, e.g., some holding; the amount one stands to lose in that transaction or investment</skos:definition>
 		<skos:example>Examples in banking include the total amount of unsecured loans, the amount of loans advanced to a single borrower, group, industry, or country, and the probability of loss from devaluation, revaluation, or foreign exchange fluctuations.</skos:example>
+		<skos:note>Financial exposure may be related to a holding, involving ownership, or may involve rights or obligations related to borrowing or derivatives.</skos:note>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-fpas;FinancialIntermediationService">
@@ -661,10 +695,17 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 	</owl:NamedIndividual>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-fpas;Position">
-		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;Exposure"/>
+		<rdfs:subClassOf rdf:resource="&fibo-fbc-pas-fpas;FinancialExposure"/>
 		<rdfs:label>position</rdfs:label>
-		<skos:definition>investor&apos;s exposure (owned or not) resulting from owning, borrowing, shorting, or entering into a contract (e.g., derivatives)</skos:definition>
+		<skos:definition>financial exposure resulting from owning, borrowing, shorting, or entering into a contract (e.g., derivatives)</skos:definition>
 		<cmns-av:explanatoryNote>A position can be long or short, and it can be in any asset class, such as stocks, bonds, futures, or options. A position can be open (current) or closed (past), but in general use, unless a position is specifically referred to as closed, the assumption is that it references an open position.</cmns-av:explanatoryNote>
+		<cmns-av:explanatoryNote>Regulators use &apos;position&apos; when speaking about exposure with respect to 
+- CFTC futures/options positions
+- Basel risk-weighted exposures
+- Short-selling regulations (net short position)
+- Derivatives reporting (swap positions)
+
+A position may exist without a holding (e.g., short sale, swap exposure). A holding always implies a long position, but a position does not always imply a holding.</cmns-av:explanatoryNote>
 	</owl:Class>
 	
 	<owl:Class rdf:about="&fibo-fbc-pas-fpas;ProductLifecycle">
@@ -1228,10 +1269,36 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<skos:definition>component of a basket whose relative importance with respect to other basket constituents is known</skos:definition>
 	</owl:Class>
 	
+	<owl:ObjectProperty rdf:about="&fibo-fbc-pas-fpas;exposesIn">
+		<rdfs:subPropertyOf rdf:resource="&cmns-pts;undergoes"/>
+		<rdfs:label>exposes in</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fbc-pas-fpas;Exposure"/>
+		<rdfs:range rdf:resource="&fibo-fbc-pas-fpas;ExposureSituation"/>
+		<skos:definition>indicates the state of affairs in which exposure occurs</skos:definition>
+	</owl:ObjectProperty>
+	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-pas-fpas;facilitates">
 		<rdfs:subPropertyOf rdf:resource="&cmns-pts;playsActivePartyIn"/>
 		<rdfs:label>facilitates</rdfs:label>
 		<skos:definition>acts as an enabler in a situation in which an event, a task, a conversation or something else occurs</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fbc-pas-fpas;hasExposedParty">
+		<rdfs:subPropertyOf rdf:resource="&cmns-pts;hasActor"/>
+		<rdfs:label>has exposed party</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fbc-pas-fpas;ExposureSituation"/>
+		<rdfs:range rdf:resource="&fibo-fbc-pas-fpas;ExposureBearer"/>
+		<owl:inverseOf rdf:resource="&fibo-fbc-pas-fpas;isExposedPartyIn"/>
+		<skos:definition>indicates the party subject to influence or risk in</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fbc-pas-fpas;hasExposureTo">
+		<rdfs:subPropertyOf rdf:resource="&cmns-pts;hasUndergoer"/>
+		<rdfs:label>has exposure to</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fbc-pas-fpas;ExposureSituation"/>
+		<rdfs:range rdf:resource="&fibo-fbc-pas-fpas;Exposure"/>
+		<owl:inverseOf rdf:resource="&fibo-fbc-pas-fpas;exposesIn"/>
+		<skos:definition>involves influence or risk from</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-pas-fpas;hasGeneratingEntity">
@@ -1329,6 +1396,31 @@ THE SOFTWARE IS PROVIDED &apos;AS IS&apos;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 		<rdfs:label>is embodied in</rdfs:label>
 		<owl:inverseOf rdf:resource="&fibo-fnd-rel-rel;embodies"/>
 		<skos:definition>identifies the representation or tangible form of something in some context</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fbc-pas-fpas;isExposedPartyIn">
+		<rdfs:subPropertyOf rdf:resource="&cmns-pts;actsIn"/>
+		<rdfs:label>is exposed party in</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fbc-pas-fpas;ExposureBearer"/>
+		<rdfs:range rdf:resource="&fibo-fbc-pas-fpas;ExposureSituation"/>
+		<skos:definition>indicates the state of affairs in which the party bears the risk</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fbc-pas-fpas;isExposedTo">
+		<rdfs:subPropertyOf rdf:resource="&cmns-pts;actsOn"/>
+		<rdfs:label>is exposed to</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fbc-pas-fpas;ExposureBearer"/>
+		<rdfs:range rdf:resource="&fibo-fbc-pas-fpas;Exposure"/>
+		<owl:inverseOf rdf:resource="&fibo-fbc-pas-fpas;isExposureOf"/>
+		<skos:definition>is subject to influence or risk from</skos:definition>
+	</owl:ObjectProperty>
+	
+	<owl:ObjectProperty rdf:about="&fibo-fbc-pas-fpas;isExposureOf">
+		<rdfs:subPropertyOf rdf:resource="&cmns-pts;isAffectedBy"/>
+		<rdfs:label>is exposure of</rdfs:label>
+		<rdfs:domain rdf:resource="&fibo-fbc-pas-fpas;Exposure"/>
+		<rdfs:range rdf:resource="&fibo-fbc-pas-fpas;ExposureBearer"/>
+		<skos:definition>is the influence or risk borne by</skos:definition>
 	</owl:ObjectProperty>
 	
 	<owl:ObjectProperty rdf:about="&fibo-fbc-pas-fpas;isFacilitatedBy">
