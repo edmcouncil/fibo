@@ -10,6 +10,7 @@
 	<!ENTITY dct "http://purl.org/dc/terms/">
 	<!ENTITY fibo-actus-acv "https://spec.edmcouncil.org/fibo/ontology/ACTUS/ACTUSTaxonomy/">
 	<!ENTITY fibo-fnd-utl-av "https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/">
+	<!ENTITY mvf "https://www.omg.org/spec/MVF/MultipleVocabularyFacility/">
 	<!ENTITY owl "http://www.w3.org/2002/07/owl#">
 	<!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#">
 	<!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#">
@@ -27,6 +28,7 @@
 	xmlns:dct="http://purl.org/dc/terms/"
 	xmlns:fibo-actus-acv="https://spec.edmcouncil.org/fibo/ontology/ACTUS/ACTUSTaxonomy/"
 	xmlns:fibo-fnd-utl-av="https://spec.edmcouncil.org/fibo/ontology/FND/Utilities/AnnotationVocabulary/"
+	xmlns:mvf="https://www.omg.org/spec/MVF/MultipleVocabularyFacility/"
 	xmlns:owl="http://www.w3.org/2002/07/owl#"
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
@@ -35,9 +37,9 @@
 	
 	<owl:Ontology rdf:about="https://spec.edmcouncil.org/fibo/ontology/ACTUS/ACTUSTaxonomy/">
 		<rdfs:label>ACTUS Controlled Vocabulary</rdfs:label>
-		<dct:abstract>This ontology represents the ACTUS taxonomy as a controlled vocabulary and maps it to FIBO, providing the corresponding semantics and enabling integration of knowledge graphs based on FIBO with the ACTUS system.</dct:abstract>
+		<dct:abstract>This ontology represents the ACTUS taxonomy as a controlled vocabulary.</dct:abstract>
 		<dct:license>Copyright (c) 2024-2026 ACTUS Financial Research Foundation
-2024-2026 EDM Association dba EDM Council, Inc.
+Copyright (c) 2024-2026 EDM Association dba EDM Council, Inc.
 Copyright (c) 2024-2025 Object Management Group, Inc.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the &apos;Software&apos;), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
@@ -56,9 +58,10 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Designators/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/Documents/"/>
 		<owl:imports rdf:resource="https://www.omg.org/spec/Commons/TextDatatype/"/>
-		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/ACTUS/ACTUSTaxonomy/"/>
-		<skos:note>This version of the ACTUS taxonomy, which is provisional in FIBO, is as of the end of June 2026. It is considered ACTUS 1.1 by the ACTUS team. We anticipate additional changes over the course of Q3 2026.</skos:note>
-		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Provisional"/>
+		<owl:imports rdf:resource="https://www.omg.org/spec/MVF/MultipleVocabularyFacility/"/>
+		<owl:versionIRI rdf:resource="https://spec.edmcouncil.org/fibo/ontology/ACTUS/20261001/ACTUSTaxonomy/"/>
+		<skos:note>This version of the ACTUS taxonomy corresponds to the ACTUS 1.1 version of the taxonomy. It is derived from a combination of the online taxonomy available at https://www.actusfrf.org/taxonomy, and the JSON version defined in the ACTUS GitHub repository at https://github.com/actusfrf/actus-dictionary. Note that the taxonomy is slightly ahead of the JSON in terms of revision status as of the Q3 2026 release of FIBO.</skos:note>
+		<fibo-fnd-utl-av:hasMaturityLevel rdf:resource="&fibo-fnd-utl-av;Release"/>
 		<cmns-av:copyright>Copyright (c) 2024-2025 Object Management Group, Inc.</cmns-av:copyright>
 		<cmns-av:copyright>Copyright (c) 2024-2026 ACTUS Financial Research Foundation</cmns-av:copyright>
 		<cmns-av:copyright>Copyright (c) 2024-2026 EDM Association dba EDM Council, Inc.</cmns-av:copyright>
@@ -66,10 +69,17 @@ See https://opensource.org/licenses/MIT.</dct:license>
 	
 	<owl:Class rdf:about="&fibo-actus-acv;ACTUSContractType">
 		<rdfs:subClassOf rdf:resource="&cmns-cls;Classifier"/>
+		<rdfs:subClassOf rdf:resource="&mvf;VocabularyEntry"/>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&fibo-actus-acv;hasCoverageDescription"/>
 				<owl:allValuesFrom rdf:resource="&xsd;string"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-col;isIncludedIn"/>
+				<owl:hasValue rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
 			</owl:Restriction>
 		</rdfs:subClassOf>
 		<rdfs:subClassOf>
@@ -89,13 +99,11 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<rdfs:label>ACTUS contract type - annuity</rdfs:label>
 		<dct:source>https://www.actusfrf.org/taxonomy</dct:source>
 		<skos:definition>cashflow classifier that applies to contracts whose principal is paid fully at the initial exchange date and principal plus interest is repaid periodically in constant amounts until maturity</skos:definition>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-FixedIncome"/>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractFamily-Basic"/>
-		<skos:note>If the contract has a variable rate, the total amount of principal and interest is recalculated to be fully matured at the maturity date.</skos:note>
-		<fibo-actus-acv:hasCoverageDescription>classic level payment mortgages, leasing contracts, etc.</fibo-actus-acv:hasCoverageDescription>
-		<cmns-col:isMemberOf rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
-		<cmns-dsg:isDefinedIn rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
+		<fibo-actus-acv:hasCoverageDescription>Classical level payment mortgages, leasing contracts etc.</fibo-actus-acv:hasCoverageDescription>
+		<cmns-dsg:hasDescription>Principal payment fully at IED and interest plus principal repaid periodically in constant amounts till MD. If variable rate, total amount for interest and principal is recalculated to be fully matured at MD.</cmns-dsg:hasDescription>
+		<cmns-dsg:hasTextualName>Annuity</cmns-dsg:hasTextualName>
 		<cmns-txt:hasTextValue>ANN</cmns-txt:hasTextValue>
+		<mvf:hasNarrowerEntry rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-FixedIncome"/>
 	</owl:NamedIndividual>
 	
 	<owl:NamedIndividual rdf:about="&fibo-actus-acv;ACTUSContractType-BondWithWarrant">
@@ -103,12 +111,11 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<rdfs:label>ACTUS contract type - bond with warrant</rdfs:label>
 		<dct:source>https://www.actusfrf.org/taxonomy</dct:source>
 		<skos:definition>cashflow classifier that applies to bonds with attached warrants</skos:definition>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-Asymmetric"/>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractFamily-Combined"/>
 		<fibo-actus-acv:hasCoverageDescription>Warrants.</fibo-actus-acv:hasCoverageDescription>
-		<cmns-col:isMemberOf rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
-		<cmns-dsg:isDefinedIn rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
+		<cmns-dsg:hasDescription>Bonds with a warrant. If option is exercised, underlying bond continues to exist.</cmns-dsg:hasDescription>
+		<cmns-dsg:hasTextualName>Warrant</cmns-dsg:hasTextualName>
 		<cmns-txt:hasTextValue>BNDWR</cmns-txt:hasTextValue>
+		<mvf:hasNarrowerEntry rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-Options"/>
 	</owl:NamedIndividual>
 	
 	<owl:NamedIndividual rdf:about="&fibo-actus-acv;ACTUSContractType-BoundaryControlledSwitch">
@@ -116,13 +123,11 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<rdfs:label>ACTUS contract type - boundary controlled switch</rdfs:label>
 		<dct:source>https://www.actusfrf.org/taxonomy</dct:source>
 		<skos:definition>cashflow classifier that applies to derivative contracts with subcontract legs which can be activated (knocked in) or extinguished (knocked out) when the underlying asset price reaches a specified value</skos:definition>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-Asymmetric"/>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractFamily-Combined"/>
-		<skos:note>The underlying asset may be a stock, index, or exchange-traded fund. Boundary controlled switch contracts with a single boundary are currently defined.</skos:note>
 		<fibo-actus-acv:hasCoverageDescription>Knock-in and Knock-out barrier options with a single boundary. Bonus contracts with payout when underlying asset price remains above or below a specified level for specified period.</fibo-actus-acv:hasCoverageDescription>
-		<cmns-col:isMemberOf rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
-		<cmns-dsg:isDefinedIn rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
+		<cmns-dsg:hasDescription>A boundary controlled switch is a derivative contract with subcontract legs which can be activated (knocked in) or extinguished (knocked out) when the underlying asset price reaches a specified value. The underlying asset may be a stock, index, or exchange-traded fund. Boundary controlled switch contracts with a single boundary are currently defined.</cmns-dsg:hasDescription>
+		<cmns-dsg:hasTextualName>Boundary Controlled Switch</cmns-dsg:hasTextualName>
 		<cmns-txt:hasTextValue>BCS</cmns-txt:hasTextValue>
+		<mvf:hasNarrowerEntry rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-Options"/>
 	</owl:NamedIndividual>
 	
 	<owl:NamedIndividual rdf:about="&fibo-actus-acv;ACTUSContractType-CallMoney">
@@ -130,13 +135,11 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<rdfs:label>ACTUS contract type - call money</rdfs:label>
 		<dct:source>https://www.actusfrf.org/taxonomy</dct:source>
 		<skos:definition>cashflow classifier that applies to loans that are rolled over as long as they are not called</skos:definition>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-FixedIncome"/>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractFamily-Basic"/>
-		<skos:note>Once called, they must be repaid after the stipulated notice period.</skos:note>
 		<fibo-actus-acv:hasCoverageDescription>Interbank loans with call features.</fibo-actus-acv:hasCoverageDescription>
-		<cmns-col:isMemberOf rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
-		<cmns-dsg:isDefinedIn rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
+		<cmns-dsg:hasDescription>Loans that are rolled over as long as they are not called. Once called it has to be paid back after the stipulated notice period.</cmns-dsg:hasDescription>
+		<cmns-dsg:hasTextualName>Call Money</cmns-dsg:hasTextualName>
 		<cmns-txt:hasTextValue>CLM</cmns-txt:hasTextValue>
+		<mvf:hasNarrowerEntry rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-FixedIncome"/>
 	</owl:NamedIndividual>
 	
 	<owl:NamedIndividual rdf:about="&fibo-actus-acv;ACTUSContractType-CapFloorOption">
@@ -144,12 +147,11 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<rdfs:label>ACTUS contract type - cap floor option</rdfs:label>
 		<dct:source>https://www.actusfrf.org/taxonomy</dct:source>
 		<skos:definition>cashflow classifier that applies to interest rate options expressed with a maximum or minimum interest rate</skos:definition>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-Asymmetric"/>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractFamily-Combined"/>
 		<fibo-actus-acv:hasCoverageDescription>Cap and floor options.</fibo-actus-acv:hasCoverageDescription>
-		<cmns-col:isMemberOf rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
-		<cmns-dsg:isDefinedIn rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
+		<cmns-dsg:hasDescription>Interest rate option expressed in a maximum or minimum interest rate.</cmns-dsg:hasDescription>
+		<cmns-dsg:hasTextualName>Cap Floors</cmns-dsg:hasTextualName>
 		<cmns-txt:hasTextValue>CAPFL</cmns-txt:hasTextValue>
+		<mvf:hasNarrowerEntry rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-Options"/>
 	</owl:NamedIndividual>
 	
 	<owl:NamedIndividual rdf:about="&fibo-actus-acv;ACTUSContractType-Cash">
@@ -157,12 +159,11 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<rdfs:label>ACTUS contract type - cash</rdfs:label>
 		<dct:source>https://www.actusfrf.org/taxonomy</dct:source>
 		<skos:definition>cashflow classifier that applies to cash or cash equivalent positions</skos:definition>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-Ownership"/>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractFamily-Basic"/>
-		<fibo-actus-acv:hasCoverageDescription>Cash, deposits at a central or other institution</fibo-actus-acv:hasCoverageDescription>
-		<cmns-col:isMemberOf rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
-		<cmns-dsg:isDefinedIn rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
+		<fibo-actus-acv:hasCoverageDescription>Cash, deposits at central bank</fibo-actus-acv:hasCoverageDescription>
+		<cmns-dsg:hasDescription>Cash or cash equivalent position</cmns-dsg:hasDescription>
+		<cmns-dsg:hasTextualName>Cash</cmns-dsg:hasTextualName>
 		<cmns-txt:hasTextValue>CSH</cmns-txt:hasTextValue>
+		<mvf:hasNarrowerEntry rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-FixedIncome"/>
 	</owl:NamedIndividual>
 	
 	<owl:NamedIndividual rdf:about="&fibo-actus-acv;ACTUSContractType-Collateral">
@@ -170,12 +171,11 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<rdfs:label>ACTUS contract type - collateral</rdfs:label>
 		<dct:source>https://www.actusfrf.org/taxonomy</dct:source>
 		<skos:definition>cashflow classifier that applies to relationships between collateral, an obligee and a debtor, covering the exposure from the debtor with the collateral</skos:definition>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-CreditEnhancement"/>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractFamily-CreditEnhancement"/>
 		<fibo-actus-acv:hasCoverageDescription>Mortgages include a collateral contract. Any coverage with financial or physical collateral.</fibo-actus-acv:hasCoverageDescription>
-		<cmns-col:isMemberOf rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
-		<cmns-dsg:isDefinedIn rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
+		<cmns-dsg:hasDescription>Collateral creates a relationship between a collateral an obligee and a debtor, covering the exposure from the debtor with the collateral.</cmns-dsg:hasDescription>
+		<cmns-dsg:hasTextualName>Collateral</cmns-dsg:hasTextualName>
 		<cmns-txt:hasTextValue>CEC</cmns-txt:hasTextValue>
+		<mvf:hasNarrowerEntry rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-CreditEnhancement"/>
 	</owl:NamedIndividual>
 	
 	<owl:NamedIndividual rdf:about="&fibo-actus-acv;ACTUSContractType-Commodity">
@@ -183,48 +183,43 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<rdfs:label>ACTUS contract type - commodity</rdfs:label>
 		<dct:source>https://www.actusfrf.org/taxonomy</dct:source>
 		<skos:definition>cashflow classifier that applies to movements of commodities such as oil, gas or even houses that can serve as underlyings of commodity futures, guarantees or simply asset positions</skos:definition>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-Ownership"/>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractFamily-Basic"/>
 		<fibo-actus-acv:hasCoverageDescription>Oil, gas, electricity, houses etc.</fibo-actus-acv:hasCoverageDescription>
-		<cmns-col:isMemberOf rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
-		<cmns-dsg:isDefinedIn rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
-		<cmns-txt:hasTextValue>CEC</cmns-txt:hasTextValue>
+		<cmns-dsg:hasDescription>This is not a financial contract in its propper sense. However it tracks movements of commodities such as oil, gas or even houses. Such commodities can serve as underlyings of commodity futures, guarantees or simply asset positions.</cmns-dsg:hasDescription>
+		<cmns-dsg:hasTextualName>Commodity</cmns-dsg:hasTextualName>
+		<cmns-txt:hasTextValue>COM</cmns-txt:hasTextValue>
+		<mvf:hasNarrowerEntry rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-ExchangeTraded"/>
 	</owl:NamedIndividual>
 	
 	<owl:NamedIndividual rdf:about="&fibo-actus-acv;ACTUSContractType-ConvertibleNote">
 		<rdf:type rdf:resource="&fibo-actus-acv;ACTUSContractType"/>
 		<rdfs:label>ACTUS contract type - convertible note</rdfs:label>
 		<skos:definition>cashflow classifier that applies to bonds with a call or put option</skos:definition>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-Asymmetric"/>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractFamily-Combined"/>
-		<skos:note>If the option is exercised, the underlying bond ceases to exist.</skos:note>
 		<fibo-actus-acv:hasCoverageDescription>Callable and puttable bonds or loans.</fibo-actus-acv:hasCoverageDescription>
-		<cmns-col:isMemberOf rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
-		<cmns-dsg:isDefinedIn rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
+		<cmns-dsg:hasDescription>Bonds with a call or put option. If option is exercised, underlying bond ceases to exist.</cmns-dsg:hasDescription>
+		<cmns-dsg:hasTextualName>Convertible Note</cmns-dsg:hasTextualName>
 		<cmns-txt:hasTextValue>BNDCP</cmns-txt:hasTextValue>
+		<mvf:hasNarrowerEntry rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-Options"/>
 	</owl:NamedIndividual>
 	
 	<owl:NamedIndividual rdf:about="&fibo-actus-acv;ACTUSContractType-CreditDefaultSwap">
 		<rdf:type rdf:resource="&fibo-actus-acv;ACTUSContractType"/>
 		<rdfs:label>ACTUS contract type - credit default swap</rdfs:label>
 		<skos:definition>cashflow classifier that applies to contracts for which a payment is triggered if one or more of the underlying counterparties defaults</skos:definition>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-Asymmetric"/>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractFamily-Combined"/>
 		<fibo-actus-acv:hasCoverageDescription>All sorts of credit default swaps.</fibo-actus-acv:hasCoverageDescription>
-		<cmns-col:isMemberOf rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
-		<cmns-dsg:isDefinedIn rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
+		<cmns-dsg:hasDescription>A payment is triggered if one or more of the underlying counterparties defaults.</cmns-dsg:hasDescription>
+		<cmns-dsg:hasTextualName>Credit Default Swap</cmns-dsg:hasTextualName>
 		<cmns-txt:hasTextValue>CDSWP</cmns-txt:hasTextValue>
+		<mvf:hasNarrowerEntry rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-Securitization"/>
 	</owl:NamedIndividual>
 	
 	<owl:NamedIndividual rdf:about="&fibo-actus-acv;ACTUSContractType-CreditLinkedNote">
 		<rdf:type rdf:resource="&fibo-actus-acv;ACTUSContractType"/>
 		<rdfs:label>ACTUS contract type - credit linked note</rdfs:label>
 		<skos:definition>cashflow classifier that applies to securities with an embedded credit default swap, linking the credit risk of a reference entity to the note&apos;s performance</skos:definition>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-Asymmetric"/>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractFamily-Combined"/>
-		<cmns-col:isMemberOf rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
-		<cmns-dsg:isDefinedIn rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
+		<cmns-dsg:hasDescription>A credit linked note is a security with an embedded CDSWP</cmns-dsg:hasDescription>
+		<cmns-dsg:hasTextualName>Credit Linked Note</cmns-dsg:hasTextualName>
 		<cmns-txt:hasTextValue>CLNTE</cmns-txt:hasTextValue>
+		<mvf:hasNarrowerEntry rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-Securitization"/>
 	</owl:NamedIndividual>
 	
 	<owl:NamedIndividual rdf:about="&fibo-actus-acv;ACTUSContractType-ExoticAnnuity">
@@ -232,13 +227,11 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<rdfs:label>ACTUS contract type - exotic annuity</rdfs:label>
 		<dct:source>https://www.actusfrf.org/taxonomy</dct:source>
 		<skos:definition>cashflow classifier that applies to contracts whose principal is paid fully at the initial exchange date and principal plus interest payments may include step ups in principal and/or interest until maturity</skos:definition>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-FixedIncome"/>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractFamily-Basic"/>
-		<skos:note>Highly flexible to match totally irregular principal payments. Principal can also be paid out in steps.</skos:note>
 		<fibo-actus-acv:hasCoverageDescription>A special version of this kind are teaser rate loans and mortgages with annuity features.</fibo-actus-acv:hasCoverageDescription>
-		<cmns-col:isMemberOf rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
-		<cmns-dsg:isDefinedIn rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
+		<cmns-dsg:hasDescription>Exotic version of ANN. However step ups with respect to (i) Principal, (ii) Interest rates are possible. Highly flexible to match totally irregular principal payments. Principal can also be paid out in steps.</cmns-dsg:hasDescription>
+		<cmns-dsg:hasTextualName>Exotic Annuity</cmns-dsg:hasTextualName>
 		<cmns-txt:hasTextValue>ANX</cmns-txt:hasTextValue>
+		<mvf:hasNarrowerEntry rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-FixedIncome"/>
 	</owl:NamedIndividual>
 	
 	<owl:NamedIndividual rdf:about="&fibo-actus-acv;ACTUSContractType-ExoticLinearAmortizer">
@@ -246,13 +239,11 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<rdfs:label>ACTUS contract type - exotic linear amortizer</rdfs:label>
 		<dct:source>https://www.actusfrf.org/taxonomy</dct:source>
 		<skos:definition>cashflow classifier that applies to contracts whose principal is typically, but not always, paid fully at the initial exchange date and where the principal is typically repaid in equal amounts until a step change or maturity, with interest payments decreasing accordingly until a step change in the interest amount</skos:definition>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-FixedIncome"/>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractFamily-Basic"/>
-		<skos:note>Loans with highly flexible schedules to match totally irregular principal payments are possible. In such cases, the principal can also be paid out in steps.</skos:note>
 		<fibo-actus-acv:hasCoverageDescription>A special version of this kind are teaser rate loans and mortgages.</fibo-actus-acv:hasCoverageDescription>
-		<cmns-col:isMemberOf rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
-		<cmns-dsg:isDefinedIn rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
+		<cmns-dsg:hasDescription>Exotic version of LAM. However step ups with respect to (i) Principal, (ii) Interest rates are possible. Highly flexible to match totally irregular principal payments. Principal can also be paid out in steps.</cmns-dsg:hasDescription>
+		<cmns-dsg:hasTextualName>Exotic Linear Amortizer</cmns-dsg:hasTextualName>
 		<cmns-txt:hasTextValue>LAX</cmns-txt:hasTextValue>
+		<mvf:hasNarrowerEntry rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-FixedIncome"/>
 	</owl:NamedIndividual>
 	
 	<owl:NamedIndividual rdf:about="&fibo-actus-acv;ACTUSContractType-ExoticNegativeAmortizer">
@@ -260,63 +251,55 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<rdfs:label>ACTUS contract type - exotic negative amortizer</rdfs:label>
 		<dct:source>https://www.actusfrf.org/taxonomy</dct:source>
 		<skos:definition>cashflow classifier that applies to negative amortizing contracts but allowing step ups in principal and interest</skos:definition>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-FixedIncome"/>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractFamily-Basic"/>
-		<skos:note>Highly flexible to match totally irregular principal payments. Principal can also be paid out in steps.</skos:note>
 		<fibo-actus-acv:hasCoverageDescription>A special version of this kind are teaser rate loans and mortgages with a variable maturity date.</fibo-actus-acv:hasCoverageDescription>
-		<cmns-col:isMemberOf rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
-		<cmns-dsg:isDefinedIn rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
+		<cmns-dsg:hasDescription>Exotic version of NAM. However step ups with respect to (i) Principal, (ii) Interest rates are possible. Highly flexible to match totally irregular principal payments. Principal can also be paid out in steps.</cmns-dsg:hasDescription>
+		<cmns-dsg:hasTextualName>Exotic Negative Amortizer</cmns-dsg:hasTextualName>
 		<cmns-txt:hasTextValue>NAX</cmns-txt:hasTextValue>
+		<mvf:hasNarrowerEntry rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-FixedIncome"/>
 	</owl:NamedIndividual>
 	
 	<owl:NamedIndividual rdf:about="&fibo-actus-acv;ACTUSContractType-ExoticOption">
 		<rdf:type rdf:resource="&fibo-actus-acv;ACTUSContractType"/>
 		<rdfs:label>ACTUS contract type - exotic option</rdfs:label>
 		<skos:definition>cashflow classifier that applies to exotic options</skos:definition>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-Asymmetric"/>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractFamily-Combined"/>
-		<skos:note>As of current, most of the exotic options which were popular before 2008 are out of favor and factually irrelevant. Which of the exotic options will be implemented will depend on the real relevance in the future.</skos:note>
 		<fibo-actus-acv:hasCoverageDescription>Knock-in and Knock-out, Barrier, Ladder, Rainbow options etc.</fibo-actus-acv:hasCoverageDescription>
-		<cmns-col:isMemberOf rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
-		<cmns-dsg:isDefinedIn rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
+		<cmns-dsg:hasDescription>As of current, most of the exotic options which were popular before 2008 are out of favor and factually irrelevant. Which of the exotic options will be implemented will depend on the real relevance in the future.</cmns-dsg:hasDescription>
+		<cmns-dsg:hasTextualName>EXOTi</cmns-dsg:hasTextualName>
 		<cmns-txt:hasTextValue>EXOTi</cmns-txt:hasTextValue>
+		<mvf:hasNarrowerEntry rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-Options"/>
 	</owl:NamedIndividual>
 	
 	<owl:NamedIndividual rdf:about="&fibo-actus-acv;ACTUSContractType-ForeignExchangeOutright">
 		<rdf:type rdf:resource="&fibo-actus-acv;ACTUSContractType"/>
 		<rdfs:label>ACTUS contract type - foreign exchange outright</rdfs:label>
 		<skos:definition>cashflow classifier that applies to agreements where two parties agree to exchange fixed cash flows in different currencies at a specified future date</skos:definition>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-Symmetric"/>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractFamily-Combined"/>
-		<fibo-actus-acv:hasCoverageDescription>Standard interest rate, FX, stock and commodity futures.</fibo-actus-acv:hasCoverageDescription>
-		<cmns-col:isMemberOf rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
-		<cmns-dsg:isDefinedIn rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
+		<fibo-actus-acv:hasCoverageDescription>Any FX-outright transaction at a future date. This is also the underlying of FX-options and FX futures.</fibo-actus-acv:hasCoverageDescription>
+		<cmns-dsg:hasDescription>Two parties agree to exchange two fixed cash flows in different currencies at a certain point in time in future.</cmns-dsg:hasDescription>
+		<cmns-dsg:hasTextualName>Foreign Ex-change Outright</cmns-dsg:hasTextualName>
 		<cmns-txt:hasTextValue>FXOUT</cmns-txt:hasTextValue>
+		<mvf:hasNarrowerEntry rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-Symmetric"/>
 	</owl:NamedIndividual>
 	
 	<owl:NamedIndividual rdf:about="&fibo-actus-acv;ACTUSContractType-Future">
 		<rdf:type rdf:resource="&fibo-actus-acv;ACTUSContractType"/>
 		<rdfs:label>ACTUS contract type - future</rdfs:label>
 		<skos:definition>cashflow classifier that applies to futures</skos:definition>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-Symmetric"/>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractFamily-Combined"/>
-		<skos:note>Keeps track of value changes for any basic contract as underlying (PAM, ANN etc. but also FXOUT, STK, COM). Handles margining calls.</skos:note>
 		<fibo-actus-acv:hasCoverageDescription>Standard interest rate, FX, stock and commodity futures.</fibo-actus-acv:hasCoverageDescription>
-		<cmns-col:isMemberOf rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
-		<cmns-dsg:isDefinedIn rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
+		<cmns-dsg:hasDescription>Keeps track of value changes for any basic CT as underlying (PAM, ANN etc. but also FXOUT, STK, COM). Handles margining calls.</cmns-dsg:hasDescription>
+		<cmns-dsg:hasTextualName>Future</cmns-dsg:hasTextualName>
 		<cmns-txt:hasTextValue>FUTUR</cmns-txt:hasTextValue>
+		<mvf:hasNarrowerEntry rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-Symmetric"/>
 	</owl:NamedIndividual>
 	
 	<owl:NamedIndividual rdf:about="&fibo-actus-acv;ACTUSContractType-Guarantee">
 		<rdf:type rdf:resource="&fibo-actus-acv;ACTUSContractType"/>
 		<rdfs:label>ACTUS contract type - guarantee</rdfs:label>
 		<skos:definition>cashflow classifier that applies to credit enhancements that create a relationship between a guarantor, an obligee and a debtor, moving the exposure from the debtor to the guarantor</skos:definition>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-CreditEnhancement"/>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractFamily-CreditEnhancement"/>
 		<fibo-actus-acv:hasCoverageDescription>Personal guarantee. Government guarantee. Underlyings of CDO&apos;s.</fibo-actus-acv:hasCoverageDescription>
-		<cmns-col:isMemberOf rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
-		<cmns-dsg:isDefinedIn rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
+		<cmns-dsg:hasDescription>Guarantee creates a relationship between a guarantor, an obligee and a debtor, moving the exposure from the debtor to the guarantor.</cmns-dsg:hasDescription>
+		<cmns-dsg:hasTextualName>Guarantee</cmns-dsg:hasTextualName>
 		<cmns-txt:hasTextValue>CEG</cmns-txt:hasTextValue>
+		<mvf:hasNarrowerEntry rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-CreditEnhancement"/>
 	</owl:NamedIndividual>
 	
 	<owl:NamedIndividual rdf:about="&fibo-actus-acv;ACTUSContractType-LinearAmortizer">
@@ -324,25 +307,22 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<rdfs:label>ACTUS contract type - linear amortizer</rdfs:label>
 		<dct:source>https://www.actusfrf.org/taxonomy</dct:source>
 		<skos:definition>cashflow classifier that applies to contracts whose principal is paid fully at the initial exchange date and where the principal is repaid in equal amounts until maturity, with interest payments decreasing accordingly</skos:definition>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-FixedIncome"/>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractFamily-Basic"/>
-		<skos:note>Interest payments decrease over time as the outstanding principal reduces.</skos:note>
-		<fibo-actus-acv:hasCoverageDescription>Standard amortizing loans with fixed principal repayments.</fibo-actus-acv:hasCoverageDescription>
-		<cmns-col:isMemberOf rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
-		<cmns-dsg:isDefinedIn rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
+		<fibo-actus-acv:hasCoverageDescription>Many amortizing loans.</fibo-actus-acv:hasCoverageDescription>
+		<cmns-dsg:hasDescription>Principal payment fully at IED. Principal repaid periodically in constant amounts till MD. Interest gets reduced accordingly. If variable rate, only interest payment is recalculated. Fixed and variable rates.</cmns-dsg:hasDescription>
+		<cmns-dsg:hasTextualName>Linear Amortizer</cmns-dsg:hasTextualName>
 		<cmns-txt:hasTextValue>LAM</cmns-txt:hasTextValue>
+		<mvf:hasNarrowerEntry rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-FixedIncome"/>
 	</owl:NamedIndividual>
 	
 	<owl:NamedIndividual rdf:about="&fibo-actus-acv;ACTUSContractType-Margining">
 		<rdf:type rdf:resource="&fibo-actus-acv;ACTUSContractType"/>
 		<rdfs:label>ACTUS contract type - margining</rdfs:label>
 		<skos:definition>cashflow classifier that applies to margin contracts that traces the value changes and the different margin categories like inital and variation margin</skos:definition>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-CreditEnhancement"/>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractFamily-CreditEnhancement"/>
 		<fibo-actus-acv:hasCoverageDescription>Margin contracts as applied in central depositories for any underlying or portfolio of underlying instruments.</fibo-actus-acv:hasCoverageDescription>
-		<cmns-col:isMemberOf rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
-		<cmns-dsg:isDefinedIn rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
+		<cmns-dsg:hasDescription>A Margining contract traces the value changes and the different margin categories like inital and variation margin.</cmns-dsg:hasDescription>
+		<cmns-dsg:hasTextualName>Margining</cmns-dsg:hasTextualName>
 		<cmns-txt:hasTextValue>MAR</cmns-txt:hasTextValue>
+		<mvf:hasNarrowerEntry rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-CreditEnhancement"/>
 	</owl:NamedIndividual>
 	
 	<owl:NamedIndividual rdf:about="&fibo-actus-acv;ACTUSContractType-NegativeAmortizer">
@@ -350,26 +330,22 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<rdfs:label>ACTUS contract type - negative amortizer</rdfs:label>
 		<dct:source>https://www.actusfrf.org/taxonomy</dct:source>
 		<skos:definition>cashflow classifier that applies to contracts whose principal is paid fully at the initial exchange date and principal plus interest is repaid periodically in constant amounts until maturity, however, when resetting the rate, the total payment (principal plus interest remains constant) thus the maturity changes</skos:definition>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-FixedIncome"/>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractFamily-Basic"/>
-		<skos:note>For loans where scheduled payments are insufficient to cover interest due to an increase in the rate, the principal increases with deferred interest payments leading to growing principal balances, and extending the maturity date.</skos:note>
 		<fibo-actus-acv:hasCoverageDescription>Special class of ARMs (adjustable rate mortgages), certain other loans, with payment caps.</fibo-actus-acv:hasCoverageDescription>
-		<cmns-col:isMemberOf rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
-		<cmns-dsg:isDefinedIn rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
+		<cmns-dsg:hasDescription>Similar as ANN. However when resetting rate, total amount (interest plus principal) stay constant. MD shifts. Only variable rates.</cmns-dsg:hasDescription>
+		<cmns-dsg:hasTextualName>Negative Amortizer</cmns-dsg:hasTextualName>
 		<cmns-txt:hasTextValue>NAM</cmns-txt:hasTextValue>
+		<mvf:hasNarrowerEntry rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-FixedIncome"/>
 	</owl:NamedIndividual>
 	
 	<owl:NamedIndividual rdf:about="&fibo-actus-acv;ACTUSContractType-Option">
 		<rdf:type rdf:resource="&fibo-actus-acv;ACTUSContractType"/>
 		<rdfs:label>ACTUS contract type - option</rdfs:label>
 		<skos:definition>cashflow classifier that calculates straight option pay-off for any basic contract as underlying (PAM, ANN etc.) but also SWAPS, FXOUT, STK and COM</skos:definition>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-Asymmetric"/>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractFamily-Combined"/>
-		<skos:note>Single, periodic and continuous strike is supported.</skos:note>
 		<fibo-actus-acv:hasCoverageDescription>European, American and Bermudan options with Interest rate, FX and stock futures as underlying instruments.</fibo-actus-acv:hasCoverageDescription>
-		<cmns-col:isMemberOf rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
-		<cmns-dsg:isDefinedIn rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
+		<cmns-dsg:hasDescription>Calculates straight option pay-off for any basic CT as underlying (PAM, ANN etc.) but also SWAPS, FXOUT, STK and COM. Single, periodic and continuous strike is supported.</cmns-dsg:hasDescription>
+		<cmns-dsg:hasTextualName>Option</cmns-dsg:hasTextualName>
 		<cmns-txt:hasTextValue>OPTNS</cmns-txt:hasTextValue>
+		<mvf:hasNarrowerEntry rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-Options"/>
 	</owl:NamedIndividual>
 	
 	<owl:NamedIndividual rdf:about="&fibo-actus-acv;ACTUSContractType-PerpetualBond">
@@ -377,13 +353,11 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<rdfs:label>ACTUS contract type - perpetual bond</rdfs:label>
 		<dct:source>https://www.actusfrf.org/taxonomy</dct:source>
 		<skos:definition>cashflow classifier that applies to bonds without any maturity date</skos:definition>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-FixedIncome"/>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractFamily-Basic"/>
-		<skos:note>Interest is paid into eternity if is not terminated.</skos:note>
 		<fibo-actus-acv:hasCoverageDescription>Consoles, war loans.</fibo-actus-acv:hasCoverageDescription>
-		<cmns-col:isMemberOf rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
-		<cmns-dsg:isDefinedIn rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
+		<cmns-dsg:hasDescription>Bonds without any maturity date. Interest is paid into eternity if is not terminated.</cmns-dsg:hasDescription>
+		<cmns-dsg:hasTextualName>Perpetual Bonds</cmns-dsg:hasTextualName>
 		<cmns-txt:hasTextValue>PBN</cmns-txt:hasTextValue>
+		<mvf:hasNarrowerEntry rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-FixedIncome"/>
 	</owl:NamedIndividual>
 	
 	<owl:NamedIndividual rdf:about="&fibo-actus-acv;ACTUSContractType-PlainVanillaSwap">
@@ -391,12 +365,11 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<rdfs:label>ACTUS contract type - plain vanilla swap</rdfs:label>
 		<dct:source>https://www.actusfrf.org/taxonomy</dct:source>
 		<skos:definition>cashflow classifier that applies to swaps where the underlyings are always two identical PAM&apos;s however with one leg fixed and the other variable</skos:definition>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-Symmetric"/>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractFamily-Combined"/>
 		<fibo-actus-acv:hasCoverageDescription>More than 90% of all interest rate swaps follow this simple pattern.</fibo-actus-acv:hasCoverageDescription>
-		<cmns-col:isMemberOf rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
-		<cmns-dsg:isDefinedIn rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
+		<cmns-dsg:hasDescription>Plain vanilla swaps where the underlyings are always two identical PAM´s however with one leg fixed and the other variable.</cmns-dsg:hasDescription>
+		<cmns-dsg:hasTextualName>Plain Vanilla Swap</cmns-dsg:hasTextualName>
 		<cmns-txt:hasTextValue>SWPPV</cmns-txt:hasTextValue>
+		<mvf:hasNarrowerEntry rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-Symmetric"/>
 	</owl:NamedIndividual>
 	
 	<owl:NamedIndividual rdf:about="&fibo-actus-acv;ACTUSContractType-PrincipalAtMaturity">
@@ -404,24 +377,22 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<rdfs:label>ACTUS contract type - principal at maturity</rdfs:label>
 		<dct:source>https://www.actusfrf.org/taxonomy</dct:source>
 		<skos:definition>cashflow classifier that applies to contracts whose principal is paid fully at the initial exchange date and repaid at maturity</skos:definition>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-FixedIncome"/>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractFamily-Basic"/>
 		<fibo-actus-acv:hasCoverageDescription>all kinds of bonds, term deposits, bullet loans, and so forth</fibo-actus-acv:hasCoverageDescription>
-		<cmns-col:isMemberOf rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
-		<cmns-dsg:isDefinedIn rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
+		<cmns-dsg:hasDescription>Principal payment fully at Initial Exchange Date (IED) and repaid at Maturity Date (MD). Fixed and variable rates.</cmns-dsg:hasDescription>
+		<cmns-dsg:hasTextualName>Principal at Maturity</cmns-dsg:hasTextualName>
 		<cmns-txt:hasTextValue>PAM</cmns-txt:hasTextValue>
+		<mvf:hasNarrowerEntry rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-FixedIncome"/>
 	</owl:NamedIndividual>
 	
 	<owl:NamedIndividual rdf:about="&fibo-actus-acv;ACTUSContractType-RepurchaseAgreement">
 		<rdf:type rdf:resource="&fibo-actus-acv;ACTUSContractType"/>
 		<rdfs:label>ACTUS contract type - repurchase agreement</rdfs:label>
 		<skos:definition>cashflow classifier that applies to contracts that control and manage the sale and repurchase of assets on the books</skos:definition>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-CreditEnhancement"/>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractFamily-CreditEnhancement"/>
 		<fibo-actus-acv:hasCoverageDescription>Classical repo and reverse repo agreements.</fibo-actus-acv:hasCoverageDescription>
-		<cmns-col:isMemberOf rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
-		<cmns-dsg:isDefinedIn rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
+		<cmns-dsg:hasDescription>A Repo contract controls and manages the sale and repurchase of assets on the books.</cmns-dsg:hasDescription>
+		<cmns-dsg:hasTextualName>Repurchase Agreement</cmns-dsg:hasTextualName>
 		<cmns-txt:hasTextValue>REP</cmns-txt:hasTextValue>
+		<mvf:hasNarrowerEntry rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-CreditEnhancement"/>
 	</owl:NamedIndividual>
 	
 	<owl:NamedIndividual rdf:about="&fibo-actus-acv;ACTUSContractType-SecuritizationCreditRisk">
@@ -429,12 +400,11 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<rdfs:label>ACTUS contract type - securitization credit risk</rdfs:label>
 		<dct:source>https://www.actusfrf.org/taxonomy</dct:source>
 		<skos:definition>cashflow classifier that applies to securitization contracts ranked according to credit default</skos:definition>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-Securitization"/>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractFamily-Combined"/>
-		<fibo-actus-acv:hasCoverageDescription>CDOs</fibo-actus-acv:hasCoverageDescription>
-		<cmns-col:isMemberOf rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
-		<cmns-dsg:isDefinedIn rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
+		<fibo-actus-acv:hasCoverageDescription>CDO&apos;s</fibo-actus-acv:hasCoverageDescription>
+		<cmns-dsg:hasDescription>Securitiazion contracts where contracs are ranked according to credit default. The lower ranked tranches are hit by the first defaults. Only when the lowest tranches are wiped out, the next higher tranch is hit.</cmns-dsg:hasDescription>
+		<cmns-dsg:hasTextualName>Securitization Credit Risk</cmns-dsg:hasTextualName>
 		<cmns-txt:hasTextValue>SCRCR</cmns-txt:hasTextValue>
+		<mvf:hasNarrowerEntry rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-Securitization"/>
 	</owl:NamedIndividual>
 	
 	<owl:NamedIndividual rdf:about="&fibo-actus-acv;ACTUSContractType-SecuritizationMarketRisk">
@@ -442,26 +412,24 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<rdfs:label>ACTUS contract type - securitization market risk</rdfs:label>
 		<dct:source>https://www.actusfrf.org/taxonomy</dct:source>
 		<skos:definition>cashflow classifier that applies to securitization contracts where all underlying contracts are treated equally</skos:definition>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-Securitization"/>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractFamily-Combined"/>
 		<skos:note>The buyer of a tranche gets a part of the cash-flows.</skos:note>
 		<fibo-actus-acv:hasCoverageDescription>ABS&apos;s, MBS&apos;s of all sorts. Could be a simple tranche or more complex tranch like interest only and principal only.</fibo-actus-acv:hasCoverageDescription>
-		<cmns-col:isMemberOf rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
-		<cmns-dsg:isDefinedIn rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
+		<cmns-dsg:hasDescription>Securitization contracts where all underlying contracts are treated equal. The buyer of a tranche gets a part of the cash-flows.</cmns-dsg:hasDescription>
+		<cmns-dsg:hasTextualName>Securitization Market Risk</cmns-dsg:hasTextualName>
 		<cmns-txt:hasTextValue>SCRMR</cmns-txt:hasTextValue>
+		<mvf:hasNarrowerEntry rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-Securitization"/>
 	</owl:NamedIndividual>
 	
 	<owl:NamedIndividual rdf:about="&fibo-actus-acv;ACTUSContractType-Stock">
 		<rdf:type rdf:resource="&fibo-actus-acv;ACTUSContractType"/>
 		<rdfs:label>ACTUS contract type - stock</rdfs:label>
 		<dct:source>https://www.actusfrf.org/taxonomy</dct:source>
-		<skos:definition>cashflow classifier that applies to equity instruments representing ownership in a company, that is bought at a certain amount (normally market price), that then follows an index</skos:definition>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-Ownership"/>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractFamily-Basic"/>
+		<skos:definition>cashflow classifier that applies to equity instruments representing ownership in a company, that is bought at a certain amount (normally market price), then follows an index</skos:definition>
 		<fibo-actus-acv:hasCoverageDescription>All straight stocks.</fibo-actus-acv:hasCoverageDescription>
-		<cmns-col:isMemberOf rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
-		<cmns-dsg:isDefinedIn rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
+		<cmns-dsg:hasDescription>Any instrument which is bought at a certain amount (market price normally) and then follows an index.</cmns-dsg:hasDescription>
+		<cmns-dsg:hasTextualName>Stock</cmns-dsg:hasTextualName>
 		<cmns-txt:hasTextValue>STK</cmns-txt:hasTextValue>
+		<mvf:hasNarrowerEntry rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-ExchangeTraded"/>
 	</owl:NamedIndividual>
 	
 	<owl:NamedIndividual rdf:about="&fibo-actus-acv;ACTUSContractType-Swap">
@@ -469,13 +437,11 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<rdfs:label>ACTUS contract type - swap</rdfs:label>
 		<dct:source>https://www.actusfrf.org/taxonomy</dct:source>
 		<skos:definition>cashflow classifier that applies to derivative contracts where two parties exchange contracts</skos:definition>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-Symmetric"/>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractFamily-Combined"/>
-		<skos:note>Normally one leg is fixed, the other variable. However all variants possible including different currencies for cross currency swaps, basic swaps or even different principal exchange programs.</skos:note>
 		<fibo-actus-acv:hasCoverageDescription>All kind of swaps. The variety is defined by the underlying CT&apos;s which often are PAM and ANN in all its flavors. With each new basic CT the variety rises.</fibo-actus-acv:hasCoverageDescription>
-		<cmns-col:isMemberOf rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
-		<cmns-dsg:isDefinedIn rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
+		<cmns-dsg:hasDescription>Exchange of two basic CT&apos;s (PAM, ANN etc.). Normally one is fixed, the other variable. However all variants possible including different currencies for cross currency swaps, basic swaps or even different principal exchange programs.</cmns-dsg:hasDescription>
+		<cmns-dsg:hasTextualName>Swap</cmns-dsg:hasTextualName>
 		<cmns-txt:hasTextValue>SWAPS</cmns-txt:hasTextValue>
+		<mvf:hasNarrowerEntry rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-Symmetric"/>
 	</owl:NamedIndividual>
 	
 	<owl:NamedIndividual rdf:about="&fibo-actus-acv;ACTUSContractType-TotalReturnSwap">
@@ -483,11 +449,10 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<rdfs:label>ACTUS contract type - total return swap</rdfs:label>
 		<dct:source>https://www.actusfrf.org/taxonomy</dct:source>
 		<skos:definition>cashflow classifier that applies to swaps in which one party makes payments based on a set rate, either fixed or variable, while the other party makes payments based on the return of an underlying asset, which includes both the income it generates and any capital gains</skos:definition>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-Asymmetric"/>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractFamily-Combined"/>
-		<cmns-col:isMemberOf rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
-		<cmns-dsg:isDefinedIn rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
+		<cmns-dsg:hasDescription>A total return swap is a swap agreement in which one party makes payments based on a set rate, either fixed or variable, while the other party makes payments based on the return of an underlying asset, which includes both the income it generates and any capital gains.</cmns-dsg:hasDescription>
+		<cmns-dsg:hasTextualName>Total Return Swap</cmns-dsg:hasTextualName>
 		<cmns-txt:hasTextValue>TRSWP</cmns-txt:hasTextValue>
+		<mvf:hasNarrowerEntry rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-Securitization"/>
 	</owl:NamedIndividual>
 	
 	<owl:NamedIndividual rdf:about="&fibo-actus-acv;ACTUSContractType-UndefinedMaturityProfile">
@@ -495,17 +460,22 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<rdfs:label>ACTUS contract type - undefined maturity profile</rdfs:label>
 		<dct:source>https://www.actusfrf.org/taxonomy</dct:source>
 		<skos:definition>cashflow classifier that applies to contracts whose principal may be paid in and out at any point in time without prefixed schedule</skos:definition>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-FixedIncome"/>
-		<skos:isNarrowerThan rdf:resource="&fibo-actus-acv;AlgorithmicContractFamily-Basic"/>
-		<skos:note>Interest calculated on outstanding and capitalized periodically. Needs link to a behavioral function describing expected flows.</skos:note>
 		<fibo-actus-acv:hasCoverageDescription>Saving products of all kind, current accounts. In some countries even variable rate mortgages can be represented with this contract type.</fibo-actus-acv:hasCoverageDescription>
-		<cmns-col:isMemberOf rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
-		<cmns-dsg:isDefinedIn rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
+		<cmns-dsg:hasDescription>Principal paid in and out at any point in time without prefixed schedule. Interest calculated on outstanding and capitalized periodically. Needs link to a behavioral function describing expected flows.</cmns-dsg:hasDescription>
+		<cmns-dsg:hasTextualName>Undefined Maturity Profile</cmns-dsg:hasTextualName>
 		<cmns-txt:hasTextValue>UMP</cmns-txt:hasTextValue>
+		<mvf:hasNarrowerEntry rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory-FixedIncome"/>
 	</owl:NamedIndividual>
 	
 	<owl:Class rdf:about="&fibo-actus-acv;AlgorithmicContractCategory">
 		<rdfs:subClassOf rdf:resource="&cmns-cls;Classifier"/>
+		<rdfs:subClassOf rdf:resource="&mvf;VocabularyEntry"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-col;isIncludedIn"/>
+				<owl:hasValue rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&cmns-dsg;isDefinedIn"/>
@@ -516,24 +486,20 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<skos:definition>classifier for the cashflows generated by a group of credit agreements, financial instruments, or related contracts, within an ACTUS cashflow family, based on their more specific, common characteristics</skos:definition>
 	</owl:Class>
 	
-	<owl:NamedIndividual rdf:about="&fibo-actus-acv;AlgorithmicContractCategory-Asymmetric">
-		<rdf:type rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory"/>
-		<rdfs:label>algorithmic contract category - asymmetric</rdfs:label>
-		<dct:source>https://www.actusfrf.org/taxonomy</dct:source>
-		<skos:definition>cashflow category that applies to combined contracts processed as members of the asymmetric class</skos:definition>
-		<cmns-col:isMemberOf rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
-		<cmns-dsg:isDefinedIn rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
-		<cmns-txt:hasTextValue>Asymmetric</cmns-txt:hasTextValue>
-	</owl:NamedIndividual>
-	
 	<owl:NamedIndividual rdf:about="&fibo-actus-acv;AlgorithmicContractCategory-CreditEnhancement">
 		<rdf:type rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory"/>
 		<rdfs:label>algorithmic contract category - credit enhancement</rdfs:label>
 		<dct:source>https://www.actusfrf.org/taxonomy</dct:source>
 		<skos:definition>cashflow category that applies to basic contracts processed as members of the credit enhancement class</skos:definition>
-		<cmns-col:isMemberOf rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
-		<cmns-dsg:isDefinedIn rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
 		<cmns-txt:hasTextValue>Credit Enhancement</cmns-txt:hasTextValue>
+	</owl:NamedIndividual>
+	
+	<owl:NamedIndividual rdf:about="&fibo-actus-acv;AlgorithmicContractCategory-ExchangeTraded">
+		<rdf:type rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory"/>
+		<rdfs:label>algorithmic contract category - exchange traded</rdfs:label>
+		<dct:source>https://www.actusfrf.org/taxonomy</dct:source>
+		<skos:definition>cashflow category that applies to basic contracts processed as members of the exchange traded class</skos:definition>
+		<cmns-txt:hasTextValue>Exchange Traded</cmns-txt:hasTextValue>
 	</owl:NamedIndividual>
 	
 	<owl:NamedIndividual rdf:about="&fibo-actus-acv;AlgorithmicContractCategory-FixedIncome">
@@ -541,19 +507,15 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<rdfs:label>algorithmic contract category - fixed income</rdfs:label>
 		<dct:source>https://www.actusfrf.org/taxonomy</dct:source>
 		<skos:definition>cashflow category that applies to basic contracts processed as members of the fixed-income class</skos:definition>
-		<cmns-col:isMemberOf rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
-		<cmns-dsg:isDefinedIn rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
 		<cmns-txt:hasTextValue>Fixed Income</cmns-txt:hasTextValue>
 	</owl:NamedIndividual>
 	
-	<owl:NamedIndividual rdf:about="&fibo-actus-acv;AlgorithmicContractCategory-Ownership">
+	<owl:NamedIndividual rdf:about="&fibo-actus-acv;AlgorithmicContractCategory-Options">
 		<rdf:type rdf:resource="&fibo-actus-acv;AlgorithmicContractCategory"/>
-		<rdfs:label>algorithmic contract category - ownership</rdfs:label>
+		<rdfs:label>algorithmic contract category - options</rdfs:label>
 		<dct:source>https://www.actusfrf.org/taxonomy</dct:source>
-		<skos:definition>cashflow category that applies to basic contracts processed as members of the ownership class</skos:definition>
-		<cmns-col:isMemberOf rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
-		<cmns-dsg:isDefinedIn rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
-		<cmns-txt:hasTextValue>Ownership</cmns-txt:hasTextValue>
+		<skos:definition>cashflow category that applies to combined contracts processed as members of the options class</skos:definition>
+		<cmns-txt:hasTextValue>Options</cmns-txt:hasTextValue>
 	</owl:NamedIndividual>
 	
 	<owl:NamedIndividual rdf:about="&fibo-actus-acv;AlgorithmicContractCategory-Securitization">
@@ -561,8 +523,6 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<rdfs:label>algorithmic contract category - securitization</rdfs:label>
 		<dct:source>https://www.actusfrf.org/taxonomy</dct:source>
 		<skos:definition>cashflow category that applies to combined contracts processed as members of the securitization class</skos:definition>
-		<cmns-col:isMemberOf rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
-		<cmns-dsg:isDefinedIn rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
 		<cmns-txt:hasTextValue>Securitization</cmns-txt:hasTextValue>
 	</owl:NamedIndividual>
 	
@@ -571,13 +531,18 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<rdfs:label>algorithmic contract category - symmetric</rdfs:label>
 		<dct:source>https://www.actusfrf.org/taxonomy</dct:source>
 		<skos:definition>cashflow category that applies to combined contracts processed as members of the symmetric class</skos:definition>
-		<cmns-col:isMemberOf rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
-		<cmns-dsg:isDefinedIn rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
 		<cmns-txt:hasTextValue>Symmetric</cmns-txt:hasTextValue>
 	</owl:NamedIndividual>
 	
 	<owl:Class rdf:about="&fibo-actus-acv;AlgorithmicContractFamily">
-		<rdfs:subClassOf rdf:resource="&cmns-col;Collection"/>
+		<rdfs:subClassOf rdf:resource="&cmns-cls;Classifier"/>
+		<rdfs:subClassOf rdf:resource="&mvf;VocabularyEntry"/>
+		<rdfs:subClassOf>
+			<owl:Restriction>
+				<owl:onProperty rdf:resource="&cmns-col;isIncludedIn"/>
+				<owl:hasValue rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
+			</owl:Restriction>
+		</rdfs:subClassOf>
 		<rdfs:subClassOf>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&cmns-dsg;isDefinedIn"/>
@@ -596,8 +561,6 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<owl:differentFrom rdf:resource="&fibo-actus-acv;AlgorithmicContractFamily-CreditEnhancement"/>
 		<skos:definition>contract family classifier that applies to single (simple) contracts</skos:definition>
 		<cmns-av:explanatoryNote>Basic, or atomic contracts include those individual contracts that have schedules associated with them, i.e., that have traditional maturity dates and future cash flows, or that represent demand deposits, i.e., accounts that have no structured maturity term, whose cash flows or amounts depend on counterparty behavior, as well as other assets such as stocks. Such contracts and related assets are typically bilateral.</cmns-av:explanatoryNote>
-		<cmns-col:isMemberOf rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
-		<cmns-dsg:isDefinedIn rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
 		<cmns-txt:hasTextValue>Basic</cmns-txt:hasTextValue>
 	</owl:NamedIndividual>
 	
@@ -608,8 +571,6 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<owl:differentFrom rdf:resource="&fibo-actus-acv;AlgorithmicContractFamily-Basic"/>
 		<owl:differentFrom rdf:resource="&fibo-actus-acv;AlgorithmicContractFamily-CreditEnhancement"/>
 		<skos:definition>contract family classifier that applies to combined (complex, derived) contracts, such as derivatives</skos:definition>
-		<cmns-col:isMemberOf rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
-		<cmns-dsg:isDefinedIn rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
 		<cmns-txt:hasTextValue>Combined</cmns-txt:hasTextValue>
 	</owl:NamedIndividual>
 	
@@ -620,14 +581,13 @@ See https://opensource.org/licenses/MIT.</dct:license>
 		<owl:differentFrom rdf:resource="&fibo-actus-acv;AlgorithmicContractFamily-Basic"/>
 		<owl:differentFrom rdf:resource="&fibo-actus-acv;AlgorithmicContractFamily-Combined"/>
 		<skos:definition>contract family classifier that applies to agreements that are related to other agreements or accounts, and provide credit support to existing contracts</skos:definition>
-		<cmns-col:isMemberOf rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
-		<cmns-dsg:isDefinedIn rdf:resource="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme"/>
 		<cmns-txt:hasTextValue>Credit Enhancement</cmns-txt:hasTextValue>
 	</owl:NamedIndividual>
 	
 	<owl:NamedIndividual rdf:about="&fibo-actus-acv;AlgorithmicContractTypesClassificationScheme">
 		<rdf:type rdf:resource="&cmns-cls;ClassificationScheme"/>
 		<rdf:type rdf:resource="&cmns-cds;CodeSet"/>
+		<rdf:type rdf:resource="&mvf;Vocabulary"/>
 		<rdf:type>
 			<owl:Restriction>
 				<owl:onProperty rdf:resource="&cmns-dsg;defines"/>
@@ -635,7 +595,7 @@ See https://opensource.org/licenses/MIT.</dct:license>
 			</owl:Restriction>
 		</rdf:type>
 		<rdfs:label>Algorithmic Contract Types classification scheme</rdfs:label>
-		<skos:definition>classification scheme behind the ACTUS modeling paradigm, in which standardized Contract Types (CTs) are the granular building blocks of the financial world</skos:definition>
+		<skos:definition>classification scheme and controlled vocabulary behind the ACTUS modeling paradigm, in which standardized Contract Types (CTs) are the granular building blocks of the financial world</skos:definition>
 		<cmns-av:abbreviation>ACTUS classification scheme</cmns-av:abbreviation>
 		<cmns-av:adaptedFrom rdf:datatype="&xsd;anyURI">https://www.actusfrf.org/methodology</cmns-av:adaptedFrom>
 	</owl:NamedIndividual>
@@ -643,7 +603,7 @@ See https://opensource.org/licenses/MIT.</dct:license>
 	<owl:DatatypeProperty rdf:about="&fibo-actus-acv;hasCoverageDescription">
 		<rdfs:subPropertyOf rdf:resource="&cmns-dsg;hasDescription"/>
 		<rdfs:label>has coverage description</rdfs:label>
-		<skos:definition>describes the contracts that the classifier applies to</skos:definition>
+		<skos:definition>describes the range of contracts that the classifier applies to</skos:definition>
 	</owl:DatatypeProperty>
 
 </rdf:RDF>
